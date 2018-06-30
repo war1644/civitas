@@ -1152,7 +1152,7 @@ civitas.SETTLEMENTS = {
 };
 
 /**
- * List of world rulers.
+ * List of possible world rulers.
  *
  * @constant
  * @type {Array}
@@ -1315,7 +1315,7 @@ civitas.RULERS = [
 ];
 
 /**
- * List of world settlement names.
+ * List of possible world settlement names.
  *
  * @constant
  * @type {Array}
@@ -1432,7 +1432,8 @@ civitas.SETTLEMENT_NAMES = [
 ];
 
 /**
- * List of random ruler names for settlements and various other obscure reasons.
+ * List of possible ruler names for settlements and various other obscure
+ * reasons.
  *
  * @type {Array}
  * @constant

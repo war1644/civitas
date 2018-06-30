@@ -1,86 +1,230 @@
 /*
- * Item types
+ * Items in Civitas
+ * ================
  *
+ * The items in Civitas follow a very simple rule: common is the worst type,
+ * rare is good, epic is very good, legendary is for the gods and heroes.
+ *
+ * That's it for now.
  */
 
+/**
+ * Armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_TYPE_ARMOR = 1;
 
+/**
+ * Weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_TYPE_WEAPON = 2;
 
-/*
- * Armor types
+/**
+ * Other
  *
+ * @constant
+ * @type {Number}
  */
+civitas.ITEM_TYPE_OTHER = 3
 
+/**
+ * Cloth armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_CLOTH = 1;
 
+/**
+ * Leather armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_LEATHER = 2;
 
+/**
+ * Mail armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_MAIL = 3;
 
+/**
+ * Plate armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_PLATE = 4;
 
-/*
- * Weapon types
+/**
+ * Melee weapon
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.WEAPON_TYPE_MELEE = 1;
 
+/**
+ * Ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED = 2;
 
-/*
- * Ranged weapon types
+/**
+ * Bow ranged weapon
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.WEAPON_TYPE_RANGED_BOW = 1;
 
+/**
+ * Crossbow ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED_CROSSBOW = 2;
 
+/**
+ * Gun ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED_GUN = 3;
 
+/**
+ * Thrown ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED_THROWN = 4;
 
-/*
- * Melee weapon types
+/**
+ * Dagger melee weapon
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.WEAPON_TYPE_MELEE_DAGGER = 1;
 
+/**
+ * One-handed axe melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_AXE_ONE_HAND = 2;
 
+/**
+ * Two-handed axe melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_AXE_TWO_HAND = 3;
 
+/**
+ * Fist melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_FIST = 4;
 
+/**
+ * One-handed mace melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_MACE_ONE_HAND = 5;
 
+/**
+ * Two-handed mace melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_MACE_TWO_HAND = 6;
 
+/**
+ * Polearm melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_POLEARM = 7;
 
+/**
+ * Staff melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_STAFF = 8;
 
+/**
+ * One-handed sword melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_SWORD_ONE_HAND = 9;
 
+/**
+ * Two-handed sword melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_SWORD_TWO_HAND = 10;
 
-/*
- * Item quality
+/**
+ * Common quality, bad
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.ITEM_QUALITY_COMMON = 1;
 
+/**
+ * Rare quality, good
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_QUALITY_RARE = 2;
 
+/**
+ * Epic quality, very good
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_QUALITY_EPIC = 3;
 
+/**
+ * Legendary quality, legen-wait for it-dary!
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_QUALITY_LEGENDARY = 4;
 
-/*
+/**
  * Names of the types of item quality
  *
  * @constant
@@ -94,7 +238,7 @@ civitas.ITEM_QUALITY_LIST = [
 	'Legendary'
 ];
 
-/*
+/**
  * List of colors for each type of item quality
  *
  * @constant
@@ -108,38 +252,111 @@ civitas.ITEM_QUALITY_COLORS = [
 	'#ff8000'
 ];
 
-/*
- * Item slots
+/**
+ * No actual slot, reserved
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.ITEM_SLOT_NONE = 0;
 
+/**
+ * Neck item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_NECK = 1;
 
+/**
+ * Head item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_HEAD = 2;
 
+/**
+ * Ring item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_RING = 3;
 
+/**
+ * Shoulder item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_SHOULDER = 4;
 
+/**
+ * Chestpiece item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_CHEST = 5;
 
+/**
+ * Leggings item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_LEGS = 6;
 
+/**
+ * Hands item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_HANDS = 7;
 
+/**
+ * Waist item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_WAIST = 8;
 
+/**
+ * Feet item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_FEET = 9;
 
+/**
+ * Main hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_MAIN_HAND = 10;
 
+/**
+ * Off hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_OFF_HAND = 11;
 
+/**
+ * Any hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_ANY_HAND = 12;
 
-/*
+/**
  * Number of item slots
  *
  * @constant
@@ -147,7 +364,7 @@ civitas.ITEM_SLOT_ANY_HAND = 12;
  */
 civitas.ITEM_SLOTS_NUM = 12;
 
-/*
+/**
  * Number of backpack slots
  *
  * @constant
@@ -155,7 +372,7 @@ civitas.ITEM_SLOTS_NUM = 12;
  */
 civitas.ITEM_BACKPACK_NUM = 6;
 
-/*
+/**
  * Name of item slots
  *
  * @constant
@@ -177,9 +394,11 @@ civitas.ITEM_SLOTS_LIST = [
 	''
 ];
 
-/*
+/**
  * Random items
  *
+ * @constant
+ * @type {Array}
  */
 civitas.RANDOM_UNCOMMON = [
 	{
@@ -300,9 +519,11 @@ civitas.RANDOM_UNCOMMON = [
 	}
 ];
 
-/*
+/**
  * Weapon items
  *
+ * @constant
+ * @type {Object}
  */
 civitas.ITEM_WEAPON_DAGGER_WICKED = {
 	name: 'Wicked Dagger',

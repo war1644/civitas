@@ -50,7 +50,7 @@ civitas.CAMPAIGN_SPY = 3;
 civitas.CAMPAIGN_ARMY_RETURN = 4;
 
 /**
- * Just met, temporary trucem can declare war, can trade.
+ * Just met, temporary truce, can declare war, can trade.
  * 
  * @constant
  * @type {Number}
@@ -74,7 +74,8 @@ civitas.DIPLOMACY_WAR = 1;
 civitas.DIPLOMACY_PACT = 2;
 
 /**
- * In an alliance, cannot declare war, can trade with discounts, can share armies.
+ * In an alliance, cannot declare war, can trade with discounts,
+ * can share armies.
  * 
  * @constant
  * @type {Number}
@@ -186,8 +187,8 @@ civitas.MAX_RESEARCH_VALUE = 1000;
 civitas.MAX_ESPIONAGE_VALUE = 1000;
 
 /**
- * The success rate of an espionage mission is the espionage points assigned to the mission
- * divided by this value.
+ * The success rate of an espionage mission is the espionage points
+ * assigned to the mission divided by this value.
  *
  * @constant
  * @type {Number}
@@ -217,7 +218,8 @@ civitas.SPY_MISSIONS = [
 ];
 
 /**
- * Spy mission to do absolutely nothing in the target city (except maybe get noticed?).
+ * Spy mission to do absolutely nothing in the target city (except
+ * maybe get noticed?).
  *
  * @constant
  * @type {Number}
@@ -225,7 +227,8 @@ civitas.SPY_MISSIONS = [
 civitas.SPY_MISSION_NONE = 0;
 
 /**
- * Spy mission to persuade the target city to take the same religion as the spy home city.
+ * Spy mission to persuade the target city to take the same religion
+ * as the spy home city.
  *
  * @constant
  * @type {Number}
@@ -233,7 +236,8 @@ civitas.SPY_MISSION_NONE = 0;
 civitas.SPY_MISSION_RELIGION = 1;
 
 /**
- * Spy mission to raise the influence of the spy's home city with the target city.
+ * Spy mission to raise the influence of the spy's home city with the
+ * target city.
  *
  * @constant
  * @type {Number}
@@ -295,7 +299,8 @@ civitas.ARMY_COSTS = {
 }
 
 /**
- * Amount of influence a settlement gains when sending a caravan to another settlement.
+ * Amount of influence a settlement gains when sending a caravan
+ * to another settlement.
  *
  * @constant
  * @type {Number}

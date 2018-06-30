@@ -24,7 +24,8 @@ if (typeof civitas.modules === 'undefined') {
  * @returns {String}
  */
 civitas.l = function (value) {
-	if (typeof civitas.lang[value] !== 'undefined' && civitas.lang[value] !== '') {
+	if (typeof civitas.lang[value] !== 'undefined' &&
+		civitas.lang[value] !== '') {
 		return civitas.lang[value];
 	} else {
 		return value;
@@ -169,7 +170,9 @@ civitas.LEVELS = [
  * @constant
  * @type {String}
  */
-civitas.VERSION = '0.2.0.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + 
+civitas.VERSION = '0.2.0.' +
+	((new Date()).getMonth() + 1) + '' +
+	(new Date()).getDate() + '' + 
 	(new Date()).getFullYear();
 
 /**
@@ -190,8 +193,8 @@ civitas.DEBUG = true;
 civitas.STORAGE_KEY = 'civitas';
 
 /**
- * Goods importance, vital means at most 500 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, vital means at most 500 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -199,8 +202,8 @@ civitas.STORAGE_KEY = 'civitas';
 civitas.IMPORTANCE_VITAL = 50;
 
 /**
- * Goods importance, high means at most 300 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, high means at most 300 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -208,8 +211,8 @@ civitas.IMPORTANCE_VITAL = 50;
 civitas.IMPORTANCE_HIGH = 30;
 
 /**
- * Goods importance, medium means at most 200 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, medium means at most 200 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -217,8 +220,8 @@ civitas.IMPORTANCE_HIGH = 30;
 civitas.IMPORTANCE_MEDIUM = 20;
 
 /**
- * Goods importance, low means at most 100 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, low means at most 100 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -258,7 +261,8 @@ civitas.DIFFICULTY_HARD = 3;
 civitas.DIFFICULTY_HARDCORE = 4;
 
 /**
- * When a building is notifying the player it's out of resources (the building, not the player).
+ * When a building is notifying the player it's out of resources (the
+ * building, not the player).
  *
  * @constant
  * @type {Number}
@@ -266,7 +270,8 @@ civitas.DIFFICULTY_HARDCORE = 4;
 civitas.NOTIFICATION_MISSING_RESOURCES = 1;
 
 /**
- * When a building is notifying the player its production is paused manually by the player.
+ * When a building is notifying the player its production is paused
+ * manually by the player.
  *
  * @constant
  * @type {Number}

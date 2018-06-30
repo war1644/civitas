@@ -7,7 +7,7 @@ civitas.PANEL_ACADEMY = {
 	template: civitas.ui.building_panel_template(),
 	id: 'academy',
 	on_show: function(params) {
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), 
+		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'),
 			civitas.l('Research')]));
 	},
 	on_refresh: function() {

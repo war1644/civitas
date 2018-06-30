@@ -1,20 +1,57 @@
-/*
- * List of in-game heroes classes.
+/**
+ * Warrior class
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.HERO_CLASS_WARRIOR = 1;
 
+/**
+ * Mage class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_MAGE = 2;
 
+/**
+ * Druid class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_DRUID = 3;
 
+/**
+ * Priest class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_PRIEST = 4;
 
+/**
+ * Rogue class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_ROGUE = 5;
 
+/**
+ * Shaman class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_SHAMAN = 6;
 
+/**
+ * List of names for hero classes
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.HERO_CLASS_LIST = [
 	'',
 	'Warrior',
@@ -25,11 +62,12 @@ civitas.HERO_CLASS_LIST = [
 	'Shaman'
 ];
 
-/*
+/**
  * List of in-game heroes.
  *
+ * @constant
+ * @type {Object}
  */
-
 civitas.HEROES = {
 	1: {
 		name: 'Achilles',

@@ -40,6 +40,7 @@ civitas.SETTLEMENT_START_BUILDINGS_TROPICAL = [{
 		level: 1
 	}];
 */
+
 /**
  * Buildings native to the tropical climate.
  * 
@@ -49,12 +50,12 @@ civitas.SETTLEMENT_START_BUILDINGS_TROPICAL = [{
 civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 
+	'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'house8',
-	'house9', 'house10', 'house11', 'house12',
+	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
+	'house8', 'house9', 'house10', 'house11', 'house12',
 
 	/* Food Production */
 	'mill', 'bakery', 'butcher',
@@ -66,19 +67,21 @@ civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'carpetmanufacturer',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'gunpowdermill',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'jeweler', 'toolmaker',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
-	'cannonfoundry',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'carpetmanufacturer',
+	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
+	'gunpowdermill', 'redsmithsworkshop', 'ropeyard', 'glassworks',
+	'silkweaver', 'jeweler', 'toolmaker', 'apiary', 'beehive',
+	'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
+	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter',
+	'marzipanworkshop', 'cannonfoundry',
 
 	/* Farms */
-	'almondsfarm', 'almondsfield', 'cattlefarm', 'cattlefield', 'coffeefarm', 'coffeefield',
-	'grainfarm', 'grainfield', 'datesfarm', 'datesfield', 'goatfarm', 'goatfield',
-	'grapesfarm', 'grapesfield', 'hempfarm', 'hempfield', 'pigfarm', 'pigfield',
-	'sugarfarm', 'sugarfield', 'indigofarm', 'indigofield'
+	'almondsfarm', 'almondsfield', 'cattlefarm', 'cattlefield', 'coffeefarm',
+	'coffeefield', 'grainfarm', 'grainfield', 'datesfarm', 'datesfield',
+	'goatfarm', 'goatfield', 'grapesfarm', 'grapesfield', 'hempfarm',
+	'hempfield', 'pigfarm', 'pigfield', 'sugarfarm', 'sugarfield',
+	'indigofarm', 'indigofield'
 ];
 
 /**
@@ -90,8 +93,8 @@ civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 civitas.SETTLEMENT_BUILDINGS_POLAR = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp',
+	'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
 	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
@@ -106,12 +109,12 @@ civitas.SETTLEMENT_BUILDINGS_POLAR = [
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'gunpowdermill',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'cannonfoundry',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
+	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
+	'gunpowdermill', 'redsmithsworkshop', 'ropeyard', 'glassworks',
+	'silkweaver', 'marzipanworkshop', 'apiary', 'beehive', 'barrelcooperage',
+	'brewery', 'candlemakersworkshop', 'sugarmill', 'cannonfoundry',
 	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter'
 ];
 
@@ -124,8 +127,8 @@ civitas.SETTLEMENT_BUILDINGS_POLAR = [
 civitas.SETTLEMENT_BUILDINGS_ARID = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery',
+	'camp', 'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
 	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
@@ -134,23 +137,26 @@ civitas.SETTLEMENT_BUILDINGS_ARID = [
 	'mill', 'bakery', 'butcher',
 
 	/* Mines */
-	'coppermine', 'goldmine', 'ironmine', 'saltmine', 'claymine', 'coalmine', 'quartzmine',
+	'coppermine', 'goldmine', 'ironmine', 'saltmine', 'claymine', 'coalmine',
+	'quartzmine',
 
 	/* Smelters */
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
 	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'gunpowdermill',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
+	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver',
+	'gunpowdermill', 'apiary', 'beehive', 'barrelcooperage', 'brewery',
+	'candlemakersworkshop', 'sugarmill', 'perfumery', 'weaver',
+	'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
 	'cannonfoundry',
 
 	/* Farms */
-	'goatfarm', 'goatfield', 'cattlefarm', 'cattlefield', 'pigfarm', 'pigfield', 'indigofarm',
-	'indigofield', 'spicefarm', 'spicefield', 'datesfarm', 'datesfield'
+	'goatfarm', 'goatfield', 'cattlefarm', 'cattlefield', 'pigfarm',
+	'pigfield', 'indigofarm', 'indigofield', 'spicefarm', 'spicefield',
+	'datesfarm', 'datesfield'
 ];
 
 /**
@@ -162,12 +168,12 @@ civitas.SETTLEMENT_BUILDINGS_ARID = [
 civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp',
+	'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'house8',
-	'house9', 'house10', 'house11', 'house12',
+	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
+	'house8', 'house9', 'house10', 'house11', 'house12',
 
 	/* Food Production */
 	'mill', 'bakery', 'butcher',
@@ -179,18 +185,19 @@ civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker', 'carpetmanufacturer',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'gunpowdermill',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter', 'catapultworkshop',
-	'cannonfoundry',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
+	'carpetmanufacturer', 'charcoalburnerhut', 'opticiansworkshop',
+	'papermill', 'printingpress', 'gunpowdermill', 'redsmithsworkshop',
+	'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop', 'apiary',
+	'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop',
+	'sugarmill', 'perfumery', 'weaver', 'clothingfactory', 'provisions',
+	'carpenter', 'catapultworkshop', 'cannonfoundry',
 
 	/* Farms */
-	'cattlefarm', 'cattlefield', 'ciderfarm', 'ciderfield', 'grainfarm', 'grainfield',
-	'grapesfarm', 'grapesfield', 'rosenursery', 'rosefield', 'goatfarm', 'goatfield',
-	'hempfarm', 'hempfield', 'pigfarm', 'pigfield'
+	'cattlefarm', 'cattlefield', 'ciderfarm', 'ciderfield', 'grainfarm',
+	'grainfield', 'grapesfarm', 'grapesfield', 'rosenursery', 'rosefield',
+	'goatfarm', 'goatfield', 'hempfarm', 'hempfield', 'pigfarm', 'pigfield'
 ];
 
 /**
@@ -200,25 +207,26 @@ civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
  * @type {Array}
  */
 civitas.BUILDINGS_ALL = [
-	'marketplace', 'lumberjack', 'camp', 'warehouse', 'mill', 'castle', 'stonequarry', 'claymine',
-	'ironmine', 'trapper', 'almondsfarm', 'almondsfield', 'tavern', 'tournir',
-	'shipyard', 'pigfarm', 'cattlefarm', 'pigfield', 'cattlefield', 'house1', 'house2',
-	'house3', 'house4', 'house5', 'house6', 'house7', 'datesfarm', 'datesfield', 
-	'house8', 'house9', 'house10', 'house11', 'house12', 'church', 'bakery', 'butcher',
+	'marketplace', 'lumberjack', 'camp', 'warehouse', 'mill', 'castle',
+	'stonequarry', 'claymine', 'ironmine', 'trapper', 'almondsfarm',
+	'almondsfield', 'tavern', 'tournir', 'shipyard', 'pigfarm', 'cattlefarm',
+	'pigfield', 'cattlefield', 'house1', 'house2', 'house3', 'house4',
+	'house5', 'house6', 'house7', 'datesfarm', 'datesfield', 'house8',
+	'house9', 'house10', 'house11', 'house12', 'church', 'bakery', 'butcher',
 	'grainfarm', 'grainfield', 'ironsmelter', 'tannery', 'furrier', 'saltmine',
-	'coppermine', 'goldmine', 'goldsmelter', 'coppersmelter', 'armory', 'coffeefarm',
-	'coffeefield', 'hempfarm', 'hempfield', 'sugarfarm', 'spicefarm', 'spicefield',
-	'sugarfield', 'silkfarm', 'silkfield', 'coffeeroaster', 'quartzmine', 'grapesfarm',
-	'grapesfield', 'winery', 'saltworks', 'carpenter', 'pottery', 'jeweler', 'toolmaker',
-	'charcoalburnerhut', 'monastery', 'opticiansworkshop', 'papermill', 'printingpress',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'provisions', 'silkweaver', 'gunpowdermill',
-	'goatfarm', 'goatfield', 'coalmine', 'carpetmanufacturer',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'indigofarm',
-	'indigofield',
-	'ciderfarm', 'ciderfield', 'sugarmill', 'rosenursery', 'rosefield', 'catapultworkshop',
-	'cannonfoundry',
-	'perfumery', 'tradingpost', 'clothingfactory', 'weaver', 'embassy',  'academy',
-	'marzipanworkshop'
+	'coppermine', 'goldmine', 'goldsmelter', 'coppersmelter', 'armory',
+	'coffeefarm', 'coffeefield', 'hempfarm', 'hempfield', 'sugarfarm',
+	'spicefarm', 'spicefield', 'sugarfield', 'silkfarm', 'silkfield',
+	'coffeeroaster', 'quartzmine', 'grapesfarm', 'grapesfield', 'winery',
+	'saltworks', 'carpenter', 'pottery', 'jeweler', 'toolmaker',
+	'charcoalburnerhut', 'monastery', 'opticiansworkshop', 'papermill',
+	'printingpress', 'redsmithsworkshop', 'ropeyard', 'glassworks',
+	'provisions', 'silkweaver', 'gunpowdermill', 'goatfarm', 'goatfield',
+	'coalmine', 'carpetmanufacturer', 'apiary', 'beehive', 'barrelcooperage',
+	'brewery', 'candlemakersworkshop', 'indigofarm', 'indigofield',
+	'ciderfarm', 'ciderfield', 'sugarmill', 'rosenursery', 'rosefield',
+	'catapultworkshop', 'cannonfoundry', 'perfumery', 'tradingpost',
+	'clothingfactory', 'weaver', 'embassy',  'academy', 'marzipanworkshop'
 ];
 
 /**

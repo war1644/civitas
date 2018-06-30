@@ -337,7 +337,8 @@ civitas.RESOURCES = {
 };
 
 /**
- * Resources that don't actually use up storage space, they're more ... virtual.
+ * Resources that don't actually use up storage space, they're more ...
+ * virtual.
  *
  * @constant
  * @type {Array}
@@ -353,8 +354,9 @@ civitas.NON_RESOURCES = [
  * @type {Array}
  */
 civitas.MAIN_RESOURCES = [
-	'beer', 'bread', 'brass', 'brine', 'cannons', 'cattle', 'cider', 'clay', 'clothes', 
-	'coal', 'copper', 'fish', 'flour', 'furs', 'gold', 'goldores', 'herbs', 'hides',
-	'iron', 'ironores', 'meat', 'milk', 'ropes', 'salt', 'stones', 'weapons', 'wheat',
-	'wine', 'wood', 'woodplanks'
+	'beer', 'bread', 'brass', 'brine', 'cannons', 'cattle', 'cider',
+	'clay', 'clothes', 'coal', 'copper', 'fish', 'flour', 'furs', 'gold',
+	'goldores', 'herbs', 'hides', 'iron', 'ironores', 'meat', 'milk',
+	'ropes', 'salt', 'stones', 'weapons', 'wheat', 'wine', 'wood',
+	'woodplanks'
 ];

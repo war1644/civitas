@@ -29,7 +29,7 @@ civitas.PERSONALITY_BALANCED = 1;
 civitas.PERSONALITY_DIPLOMAT = 2;
 
 /**
- * If you upset this ruler, he will go to war with you.
+ * If you upset this ruler, he will go to war and give you hell.
  * 
  * @constant
  * @type {Number}
