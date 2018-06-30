@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.1072017
+ * @version 0.2.0.6302018
  * @license MIT
  */ 'use strict';
 
@@ -45,7 +45,8 @@ if (typeof civitas.modules === 'undefined') {
  * @returns {String}
  */
 civitas.l = function (value) {
-	if (typeof civitas.lang[value] !== 'undefined' && civitas.lang[value] !== '') {
+	if (typeof civitas.lang[value] !== 'undefined' &&
+		civitas.lang[value] !== '') {
 		return civitas.lang[value];
 	} else {
 		return value;
@@ -190,7 +191,9 @@ civitas.LEVELS = [
  * @constant
  * @type {String}
  */
-civitas.VERSION = '0.2.0.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + 
+civitas.VERSION = '0.2.0.' +
+	((new Date()).getMonth() + 1) + '' +
+	(new Date()).getDate() + '' + 
 	(new Date()).getFullYear();
 
 /**
@@ -211,8 +214,8 @@ civitas.DEBUG = true;
 civitas.STORAGE_KEY = 'civitas';
 
 /**
- * Goods importance, vital means at most 500 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, vital means at most 500 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -220,8 +223,8 @@ civitas.STORAGE_KEY = 'civitas';
 civitas.IMPORTANCE_VITAL = 50;
 
 /**
- * Goods importance, high means at most 300 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, high means at most 300 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -229,8 +232,8 @@ civitas.IMPORTANCE_VITAL = 50;
 civitas.IMPORTANCE_HIGH = 30;
 
 /**
- * Goods importance, medium means at most 200 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, medium means at most 200 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -238,8 +241,8 @@ civitas.IMPORTANCE_HIGH = 30;
 civitas.IMPORTANCE_MEDIUM = 20;
 
 /**
- * Goods importance, low means at most 100 stacks of goods will be up for importing
- * or exporting.
+ * Goods importance, low means at most 100 stacks of goods will be up
+ * for importing or exporting.
  *
  * @constant
  * @type {Number}
@@ -279,7 +282,8 @@ civitas.DIFFICULTY_HARD = 3;
 civitas.DIFFICULTY_HARDCORE = 4;
 
 /**
- * When a building is notifying the player it's out of resources (the building, not the player).
+ * When a building is notifying the player it's out of resources (the
+ * building, not the player).
  *
  * @constant
  * @type {Number}
@@ -287,7 +291,8 @@ civitas.DIFFICULTY_HARDCORE = 4;
 civitas.NOTIFICATION_MISSING_RESOURCES = 1;
 
 /**
- * When a building is notifying the player its production is paused manually by the player.
+ * When a building is notifying the player its production is paused
+ * manually by the player.
  *
  * @constant
  * @type {Number}
@@ -663,7 +668,7 @@ civitas.CAMPAIGN_SPY = 3;
 civitas.CAMPAIGN_ARMY_RETURN = 4;
 
 /**
- * Just met, temporary trucem can declare war, can trade.
+ * Just met, temporary truce, can declare war, can trade.
  * 
  * @constant
  * @type {Number}
@@ -687,7 +692,8 @@ civitas.DIPLOMACY_WAR = 1;
 civitas.DIPLOMACY_PACT = 2;
 
 /**
- * In an alliance, cannot declare war, can trade with discounts, can share armies.
+ * In an alliance, cannot declare war, can trade with discounts,
+ * can share armies.
  * 
  * @constant
  * @type {Number}
@@ -799,8 +805,8 @@ civitas.MAX_RESEARCH_VALUE = 1000;
 civitas.MAX_ESPIONAGE_VALUE = 1000;
 
 /**
- * The success rate of an espionage mission is the espionage points assigned to the mission
- * divided by this value.
+ * The success rate of an espionage mission is the espionage points
+ * assigned to the mission divided by this value.
  *
  * @constant
  * @type {Number}
@@ -830,7 +836,8 @@ civitas.SPY_MISSIONS = [
 ];
 
 /**
- * Spy mission to do absolutely nothing in the target city (except maybe get noticed?).
+ * Spy mission to do absolutely nothing in the target city (except
+ * maybe get noticed?).
  *
  * @constant
  * @type {Number}
@@ -838,7 +845,8 @@ civitas.SPY_MISSIONS = [
 civitas.SPY_MISSION_NONE = 0;
 
 /**
- * Spy mission to persuade the target city to take the same religion as the spy home city.
+ * Spy mission to persuade the target city to take the same religion
+ * as the spy home city.
  *
  * @constant
  * @type {Number}
@@ -846,7 +854,8 @@ civitas.SPY_MISSION_NONE = 0;
 civitas.SPY_MISSION_RELIGION = 1;
 
 /**
- * Spy mission to raise the influence of the spy's home city with the target city.
+ * Spy mission to raise the influence of the spy's home city with the
+ * target city.
  *
  * @constant
  * @type {Number}
@@ -908,7 +917,8 @@ civitas.ARMY_COSTS = {
 }
 
 /**
- * Amount of influence a settlement gains when sending a caravan to another settlement.
+ * Amount of influence a settlement gains when sending a caravan
+ * to another settlement.
  *
  * @constant
  * @type {Number}
@@ -1244,12 +1254,28 @@ civitas.PERSONALITY_BALANCED = 1;
 civitas.PERSONALITY_DIPLOMAT = 2;
 
 /**
- * If you upset this ruler, he will go to war with you.
+ * If you upset this ruler, he will go to war and give you hell.
  * 
  * @constant
  * @type {Number}
  */
 civitas.PERSONALITY_WARLORD = 3;
+
+/**
+ * The attacking side (left) in a battleground.
+ *
+ * @type {Number}
+ * @constant
+ */
+civitas.BATTLEGROUND_ATTACK = 1;
+
+/**
+ * The defending side (right) in a battleground.
+ *
+ * @type {Number}
+ * @constant
+ */
+civitas.BATTLEGROUND_DEFENSE = 2;
 
 /**
  * List of soldier types, their attributes and cost.
@@ -1523,8 +1549,9 @@ civitas.MERCENARIES = [{
 	cost: 120000
 }, {
 	name: 'Magna Societas Catalanorum',
-	description: 'The Catalan Company of the East, officially the Magna Societas ' +
-		'Catalanorum is a company of mercenaries founded by Roger de Flor.',
+	description: 'The Catalan Company of the East, officially the Magna ' +
+		'Societas Catalanorum is a company of mercenaries founded by Roger de ' +
+		'Flor.',
 	handle: 'catalan',
 	icon: 23,
 	army: {
@@ -1536,8 +1563,8 @@ civitas.MERCENARIES = [{
 	cost: 100000
 }, {
 	name: 'Army of the Western Garden',
-	description: 'The Army of the Western Garden is an army established during the ' +
-		'reign of Emperor Ling in the Eastern Han Dynasty.',
+	description: 'The Army of the Western Garden is an army established ' +
+		'during the reign of Emperor Ling in the Eastern Han Dynasty.',
 	handle: 'western',
 	icon: 27,
 	army: {
@@ -1549,9 +1576,10 @@ civitas.MERCENARIES = [{
 	cost: 90000
 }, {
 	name: 'Scholae Palatinae',
-	description: 'The Scholae Palatinae are an elite military guard unit, usually ' +
-		'ascribed to the Roman Emperor Constantine the Great as a replacement for the ' +
-		'equites singulares Augusti, the cavalry arm of the Praetorian Guard.',
+	description: 'The Scholae Palatinae are an elite military guard unit, ' +
+		'usually ascribed to the Roman Emperor Constantine the Great as a ' +
+		'replacement for the equites singulares Augusti, the cavalry arm ' +
+		'of the Praetorian Guard.',
 	handle: 'scholae',
 	icon: 26,
 	army: {
@@ -1563,9 +1591,10 @@ civitas.MERCENARIES = [{
 	cost: 290000
 }, {
 	name: 'Imperial Guards',
-	description: 'The Imperial Guards of the Tang Dynasty, also known as the Forbidden ' +
-		'Troops were initially honor guards of the emperor and garrisons of the imperial ' +
-		'capitals during the Tang`s dinasty formation in early 7th century.',
+	description: 'The Imperial Guards of the Tang Dynasty, also known as ' +
+		'the Forbidden Troops were initially honor guards of the emperor ' +
+		'and garrisons of the imperial capitals during the Tang`s dinasty ' +
+		'formation in early 7th century.',
 	handle: 'forbidden',
 	icon: 25,
 	army: {
@@ -1577,9 +1606,9 @@ civitas.MERCENARIES = [{
 	cost: 130000
 }, {
 	name: 'Navy of the Order of Saint John',
-	description: 'The navy of the Order of Saint John, also known as the Maltese Navy, ' +
-		'was the first navy of a chivalric order, established in the Middle Ages, around ' +
-		'the late 12th century.',
+	description: 'The navy of the Order of Saint John, also known as the ' +
+		'Maltese Navy, was the first navy of a chivalric order, established ' +
+		'in the Middle Ages, around the late 12th century.',
 	handle: 'maltesenavy',
 	icon: 28,
 	navy: {
@@ -1590,22 +1619,6 @@ civitas.MERCENARIES = [{
 	},
 	cost: 1500000
 }];
-
-/**
- * The attacking side (left) in a battleground.
- *
- * @type {Number}
- * @constant
- */
-civitas.BATTLEGROUND_ATTACK = 1;
-
-/**
- * The defending side (right) in a battleground.
- *
- * @type {Number}
- * @constant
- */
-civitas.BATTLEGROUND_DEFENSE = 2;
 
 /**
  * List of ship types, their attributes and cost.
@@ -1768,6 +1781,7 @@ civitas.SETTLEMENT_START_BUILDINGS_TROPICAL = [{
 		level: 1
 	}];
 */
+
 /**
  * Buildings native to the tropical climate.
  * 
@@ -1777,12 +1791,12 @@ civitas.SETTLEMENT_START_BUILDINGS_TROPICAL = [{
 civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 
+	'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'house8',
-	'house9', 'house10', 'house11', 'house12',
+	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
+	'house8', 'house9', 'house10', 'house11', 'house12',
 
 	/* Food Production */
 	'mill', 'bakery', 'butcher',
@@ -1794,19 +1808,21 @@ civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'carpetmanufacturer',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'gunpowdermill',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'jeweler', 'toolmaker',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
-	'cannonfoundry',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'carpetmanufacturer',
+	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
+	'gunpowdermill', 'redsmithsworkshop', 'ropeyard', 'glassworks',
+	'silkweaver', 'jeweler', 'toolmaker', 'apiary', 'beehive',
+	'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
+	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter',
+	'marzipanworkshop', 'cannonfoundry',
 
 	/* Farms */
-	'almondsfarm', 'almondsfield', 'cattlefarm', 'cattlefield', 'coffeefarm', 'coffeefield',
-	'grainfarm', 'grainfield', 'datesfarm', 'datesfield', 'goatfarm', 'goatfield',
-	'grapesfarm', 'grapesfield', 'hempfarm', 'hempfield', 'pigfarm', 'pigfield',
-	'sugarfarm', 'sugarfield', 'indigofarm', 'indigofield'
+	'almondsfarm', 'almondsfield', 'cattlefarm', 'cattlefield', 'coffeefarm',
+	'coffeefield', 'grainfarm', 'grainfield', 'datesfarm', 'datesfield',
+	'goatfarm', 'goatfield', 'grapesfarm', 'grapesfield', 'hempfarm',
+	'hempfield', 'pigfarm', 'pigfield', 'sugarfarm', 'sugarfield',
+	'indigofarm', 'indigofield'
 ];
 
 /**
@@ -1818,8 +1834,8 @@ civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 civitas.SETTLEMENT_BUILDINGS_POLAR = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp',
+	'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
 	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
@@ -1834,12 +1850,12 @@ civitas.SETTLEMENT_BUILDINGS_POLAR = [
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'gunpowdermill',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'cannonfoundry',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
+	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
+	'gunpowdermill', 'redsmithsworkshop', 'ropeyard', 'glassworks',
+	'silkweaver', 'marzipanworkshop', 'apiary', 'beehive', 'barrelcooperage',
+	'brewery', 'candlemakersworkshop', 'sugarmill', 'cannonfoundry',
 	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter'
 ];
 
@@ -1852,8 +1868,8 @@ civitas.SETTLEMENT_BUILDINGS_POLAR = [
 civitas.SETTLEMENT_BUILDINGS_ARID = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery',
+	'camp', 'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
 	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
@@ -1862,23 +1878,26 @@ civitas.SETTLEMENT_BUILDINGS_ARID = [
 	'mill', 'bakery', 'butcher',
 
 	/* Mines */
-	'coppermine', 'goldmine', 'ironmine', 'saltmine', 'claymine', 'coalmine', 'quartzmine',
+	'coppermine', 'goldmine', 'ironmine', 'saltmine', 'claymine', 'coalmine',
+	'quartzmine',
 
 	/* Smelters */
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
 	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'gunpowdermill',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
+	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver',
+	'gunpowdermill', 'apiary', 'beehive', 'barrelcooperage', 'brewery',
+	'candlemakersworkshop', 'sugarmill', 'perfumery', 'weaver',
+	'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
 	'cannonfoundry',
 
 	/* Farms */
-	'goatfarm', 'goatfield', 'cattlefarm', 'cattlefield', 'pigfarm', 'pigfield', 'indigofarm',
-	'indigofield', 'spicefarm', 'spicefield', 'datesfarm', 'datesfield'
+	'goatfarm', 'goatfield', 'cattlefarm', 'cattlefield', 'pigfarm',
+	'pigfield', 'indigofarm', 'indigofield', 'spicefarm', 'spicefield',
+	'datesfarm', 'datesfield'
 ];
 
 /**
@@ -1890,12 +1909,12 @@ civitas.SETTLEMENT_BUILDINGS_ARID = [
 civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
 
 	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp', 'castle',
-	'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
+	'marketplace', 'warehouse', 'tradingpost', 'church', 'monastery', 'camp',
+	'castle', 'shipyard', 'embassy', 'academy', 'tavern', 'tournir',
 
 	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'house8',
-	'house9', 'house10', 'house11', 'house12',
+	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
+	'house8', 'house9', 'house10', 'house11', 'house12',
 
 	/* Food Production */
 	'mill', 'bakery', 'butcher',
@@ -1907,18 +1926,19 @@ civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
 
 	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory', 'coffeeroaster',
-	'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker', 'carpetmanufacturer',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'gunpowdermill',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'perfumery', 'weaver', 'clothingfactory', 'provisions', 'carpenter', 'catapultworkshop',
-	'cannonfoundry',
+	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
+	'coffeeroaster', 'winery', 'saltworks', 'pottery', 'jeweler', 'toolmaker',
+	'carpetmanufacturer', 'charcoalburnerhut', 'opticiansworkshop',
+	'papermill', 'printingpress', 'gunpowdermill', 'redsmithsworkshop',
+	'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop', 'apiary',
+	'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop',
+	'sugarmill', 'perfumery', 'weaver', 'clothingfactory', 'provisions',
+	'carpenter', 'catapultworkshop', 'cannonfoundry',
 
 	/* Farms */
-	'cattlefarm', 'cattlefield', 'ciderfarm', 'ciderfield', 'grainfarm', 'grainfield',
-	'grapesfarm', 'grapesfield', 'rosenursery', 'rosefield', 'goatfarm', 'goatfield',
-	'hempfarm', 'hempfield', 'pigfarm', 'pigfield'
+	'cattlefarm', 'cattlefield', 'ciderfarm', 'ciderfield', 'grainfarm',
+	'grainfield', 'grapesfarm', 'grapesfield', 'rosenursery', 'rosefield',
+	'goatfarm', 'goatfield', 'hempfarm', 'hempfield', 'pigfarm', 'pigfield'
 ];
 
 /**
@@ -1928,25 +1948,26 @@ civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
  * @type {Array}
  */
 civitas.BUILDINGS_ALL = [
-	'marketplace', 'lumberjack', 'camp', 'warehouse', 'mill', 'castle', 'stonequarry', 'claymine',
-	'ironmine', 'trapper', 'almondsfarm', 'almondsfield', 'tavern', 'tournir',
-	'shipyard', 'pigfarm', 'cattlefarm', 'pigfield', 'cattlefield', 'house1', 'house2',
-	'house3', 'house4', 'house5', 'house6', 'house7', 'datesfarm', 'datesfield', 
-	'house8', 'house9', 'house10', 'house11', 'house12', 'church', 'bakery', 'butcher',
+	'marketplace', 'lumberjack', 'camp', 'warehouse', 'mill', 'castle',
+	'stonequarry', 'claymine', 'ironmine', 'trapper', 'almondsfarm',
+	'almondsfield', 'tavern', 'tournir', 'shipyard', 'pigfarm', 'cattlefarm',
+	'pigfield', 'cattlefield', 'house1', 'house2', 'house3', 'house4',
+	'house5', 'house6', 'house7', 'datesfarm', 'datesfield', 'house8',
+	'house9', 'house10', 'house11', 'house12', 'church', 'bakery', 'butcher',
 	'grainfarm', 'grainfield', 'ironsmelter', 'tannery', 'furrier', 'saltmine',
-	'coppermine', 'goldmine', 'goldsmelter', 'coppersmelter', 'armory', 'coffeefarm',
-	'coffeefield', 'hempfarm', 'hempfield', 'sugarfarm', 'spicefarm', 'spicefield',
-	'sugarfield', 'silkfarm', 'silkfield', 'coffeeroaster', 'quartzmine', 'grapesfarm',
-	'grapesfield', 'winery', 'saltworks', 'carpenter', 'pottery', 'jeweler', 'toolmaker',
-	'charcoalburnerhut', 'monastery', 'opticiansworkshop', 'papermill', 'printingpress',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'provisions', 'silkweaver', 'gunpowdermill',
-	'goatfarm', 'goatfield', 'coalmine', 'carpetmanufacturer',
-	'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'indigofarm',
-	'indigofield',
-	'ciderfarm', 'ciderfield', 'sugarmill', 'rosenursery', 'rosefield', 'catapultworkshop',
-	'cannonfoundry',
-	'perfumery', 'tradingpost', 'clothingfactory', 'weaver', 'embassy',  'academy',
-	'marzipanworkshop'
+	'coppermine', 'goldmine', 'goldsmelter', 'coppersmelter', 'armory',
+	'coffeefarm', 'coffeefield', 'hempfarm', 'hempfield', 'sugarfarm',
+	'spicefarm', 'spicefield', 'sugarfield', 'silkfarm', 'silkfield',
+	'coffeeroaster', 'quartzmine', 'grapesfarm', 'grapesfield', 'winery',
+	'saltworks', 'carpenter', 'pottery', 'jeweler', 'toolmaker',
+	'charcoalburnerhut', 'monastery', 'opticiansworkshop', 'papermill',
+	'printingpress', 'redsmithsworkshop', 'ropeyard', 'glassworks',
+	'provisions', 'silkweaver', 'gunpowdermill', 'goatfarm', 'goatfield',
+	'coalmine', 'carpetmanufacturer', 'apiary', 'beehive', 'barrelcooperage',
+	'brewery', 'candlemakersworkshop', 'indigofarm', 'indigofield',
+	'ciderfarm', 'ciderfield', 'sugarmill', 'rosenursery', 'rosefield',
+	'catapultworkshop', 'cannonfoundry', 'perfumery', 'tradingpost',
+	'clothingfactory', 'weaver', 'embassy',  'academy', 'marzipanworkshop'
 ];
 
 /**
@@ -5820,7 +5841,7 @@ civitas.SETTLEMENTS = {
 };
 
 /**
- * List of world rulers.
+ * List of possible world rulers.
  *
  * @constant
  * @type {Array}
@@ -5983,7 +6004,7 @@ civitas.RULERS = [
 ];
 
 /**
- * List of world settlement names.
+ * List of possible world settlement names.
  *
  * @constant
  * @type {Array}
@@ -6100,7 +6121,8 @@ civitas.SETTLEMENT_NAMES = [
 ];
 
 /**
- * List of random ruler names for settlements and various other obscure reasons.
+ * List of possible ruler names for settlements and various other obscure
+ * reasons.
  *
  * @type {Array}
  * @constant
@@ -6150,24 +6172,27 @@ civitas.EVENTS = [{
 	}
 }, {
 	name: 'Royal marriage',
-	description: 'A marriage was arranged between a member of your family and the royal ' +
-		'family of SETTLEMENT. This raises your influence on SETTLEMENT by INFLUENCE. Good job!',
+	description: 'A marriage was arranged between a member of your family ' +
+		'and the royal family of SETTLEMENT. This raises your influence on ' +
+		'SETTLEMENT by INFLUENCE. Good job!',
 	chance: 0.0001,
 	raise: {
 		influence: 10
 	}
 }, {
 	name: 'Raiders attack',
-	description: 'A band of raiders attacked the outskirts of your settlement. Repairing the ' +
-		'affected buildings costs your settlement COINS coins.',
+	description: 'A band of raiders attacked the outskirts of your ' +
+		'settlement. Repairing the affected buildings costs your settlement ' +
+		'COINS coins.',
 	chance: 0.0002,
 	lower: {
 		coins: 1000
 	}
 }, {
 	name: 'Discovery',
-	description: 'The engineers in your settlement made a great discovery which made you ' +
-		'more famous, thus gaining FAME fame and RESEARCH research.',
+	description: 'The engineers in your settlement made a great discovery ' +
+		'which made you more famous, thus gaining FAME fame and RESEARCH ' +
+		'research.',
 	chance: 0.0004,
 	raise: {
 		fame: 100,
@@ -6175,16 +6200,17 @@ civitas.EVENTS = [{
 	}
 }, {
 	name: 'Foreign spy discovered',
-	description: 'A spy from SETTLEMENT was found hiding in your settlement, as a reward for ' +
-		'finding him you gain ESPIONAGE espionage.',
+	description: 'A spy from SETTLEMENT was found hiding in your ' +
+		'settlement, as a reward for finding him you gain ESPIONAGE ' +
+		'espionage.',
 	chance: 0.002,
 	raise: {
 		espionage: 10
 	}
 }, {
 	name: 'Your spy uncovered',
-	description: 'One of your spies in SETTLEMENT was discovered, SETTLEMENT`s ruler is angry ' +
-		'so you lose PRESTIGE prestige.',
+	description: 'One of your spies in SETTLEMENT was discovered, ' +
+		'SETTLEMENT`s ruler is angry so you lose PRESTIGE prestige.',
 	chance: 0.003,
 	lower: {
 		prestige: 10
@@ -6530,7 +6556,8 @@ civitas.RESOURCES = {
 };
 
 /**
- * Resources that don't actually use up storage space, they're more ... virtual.
+ * Resources that don't actually use up storage space, they're more ...
+ * virtual.
  *
  * @constant
  * @type {Array}
@@ -6546,10 +6573,11 @@ civitas.NON_RESOURCES = [
  * @type {Array}
  */
 civitas.MAIN_RESOURCES = [
-	'beer', 'bread', 'brass', 'brine', 'cannons', 'cattle', 'cider', 'clay', 'clothes', 
-	'coal', 'copper', 'fish', 'flour', 'furs', 'gold', 'goldores', 'herbs', 'hides',
-	'iron', 'ironores', 'meat', 'milk', 'ropes', 'salt', 'stones', 'weapons', 'wheat',
-	'wine', 'wood', 'woodplanks'
+	'beer', 'bread', 'brass', 'brine', 'cannons', 'cattle', 'cider',
+	'clay', 'clothes', 'coal', 'copper', 'fish', 'flour', 'furs', 'gold',
+	'goldores', 'herbs', 'hides', 'iron', 'ironores', 'meat', 'milk',
+	'ropes', 'salt', 'stones', 'weapons', 'wheat', 'wine', 'wood',
+	'woodplanks'
 ];
 
 /**
@@ -6928,87 +6956,237 @@ civitas.ACHIEVEMENTS = [
 ];
 
 /*
- * Item types
+ * Items in Civitas
+ * ================
  *
+ * The items in Civitas follow a very simple rule: common is the worst type,
+ * rare is good, epic is very good, legendary is for the gods and heroes.
+ *
+ * That's it for now.
  */
 
+/**
+ * Armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_TYPE_ARMOR = 1;
 
+/**
+ * Weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_TYPE_WEAPON = 2;
 
-/*
- * Armor types
+/**
+ * Other
  *
+ * @constant
+ * @type {Number}
  */
+civitas.ITEM_TYPE_OTHER = 3
 
+/**
+ * Cloth armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_CLOTH = 1;
 
+/**
+ * Leather armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_LEATHER = 2;
 
+/**
+ * Mail armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_MAIL = 3;
 
+/**
+ * Plate armor
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ARMOR_TYPE_PLATE = 4;
 
-/*
- * Weapon types
+/**
+ * Melee weapon
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.WEAPON_TYPE_MELEE = 1;
 
+/**
+ * Ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED = 2;
 
-/*
- * Ranged weapon types
+/**
+ * Bow ranged weapon
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.WEAPON_TYPE_RANGED_BOW = 1;
 
+/**
+ * Crossbow ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED_CROSSBOW = 2;
 
+/**
+ * Gun ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED_GUN = 3;
 
+/**
+ * Thrown ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_RANGED_THROWN = 4;
 
-/*
- * Melee weapon types
+/**
+ * Dagger melee weapon
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.WEAPON_TYPE_MELEE_DAGGER = 1;
 
+/**
+ * One-handed axe melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_AXE_ONE_HAND = 2;
 
+/**
+ * Two-handed axe melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_AXE_TWO_HAND = 3;
 
+/**
+ * Fist melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_FIST = 4;
 
+/**
+ * One-handed mace melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_MACE_ONE_HAND = 5;
 
+/**
+ * Two-handed mace melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_MACE_TWO_HAND = 6;
 
+/**
+ * Polearm melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_POLEARM = 7;
 
+/**
+ * Staff melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_STAFF = 8;
 
+/**
+ * One-handed sword melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_SWORD_ONE_HAND = 9;
 
+/**
+ * Two-handed sword melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WEAPON_TYPE_MELEE_SWORD_TWO_HAND = 10;
 
-/*
- * Item quality
+/**
+ * Common quality, bad
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.ITEM_QUALITY_COMMON = 1;
 
+/**
+ * Rare quality, good
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_QUALITY_RARE = 2;
 
+/**
+ * Epic quality, very good
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_QUALITY_EPIC = 3;
 
+/**
+ * Legendary quality, legen-wait for it-dary!
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_QUALITY_LEGENDARY = 4;
 
+/**
+ * Names of the types of item quality
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.ITEM_QUALITY_LIST = [
 	'',
 	'Common',
@@ -7017,6 +7195,12 @@ civitas.ITEM_QUALITY_LIST = [
 	'Legendary'
 ];
 
+/**
+ * List of colors for each type of item quality
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.ITEM_QUALITY_COLORS = [
 	'',
 	'#00ff00',
@@ -7024,41 +7208,133 @@ civitas.ITEM_QUALITY_COLORS = [
 	'#a335ee',
 	'#ff8000'
 ];
-/*
- * Item slots
- *
- */
 
+/**
+ * No actual slot, reserved
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_NONE = 0;
 
+/**
+ * Neck item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_NECK = 1;
 
+/**
+ * Head item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_HEAD = 2;
 
+/**
+ * Ring item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_RING = 3;
 
+/**
+ * Shoulder item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_SHOULDER = 4;
 
+/**
+ * Chestpiece item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_CHEST = 5;
 
+/**
+ * Leggings item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_LEGS = 6;
 
+/**
+ * Hands item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_HANDS = 7;
 
+/**
+ * Waist item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_WAIST = 8;
 
+/**
+ * Feet item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_FEET = 9;
 
+/**
+ * Main hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_MAIN_HAND = 10;
 
+/**
+ * Off hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_OFF_HAND = 11;
 
+/**
+ * Any hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOT_ANY_HAND = 12;
 
+/**
+ * Number of item slots
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOTS_NUM = 12;
 
+/**
+ * Number of backpack slots
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_BACKPACK_NUM = 6;
 
+/**
+ * Name of item slots
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.ITEM_SLOTS_LIST = [
 	'',
 	'Neck',
@@ -7075,11 +7351,12 @@ civitas.ITEM_SLOTS_LIST = [
 	''
 ];
 
-/*
+/**
  * Random items
  *
+ * @constant
+ * @type {Array}
  */
-
 civitas.RANDOM_UNCOMMON = [
 	{
 		name: 'ITEM of Spirit',
@@ -7199,11 +7476,12 @@ civitas.RANDOM_UNCOMMON = [
 	}
 ];
 
-/*
+/**
  * Weapon items
  *
+ * @constant
+ * @type {Object}
  */
-
 civitas.ITEM_WEAPON_DAGGER_WICKED = {
 	name: 'Wicked Dagger',
 	id: 1,
@@ -7503,35 +7781,76 @@ civitas.ITEM_GAUNTLETS_OF_GHASTLY_GLARE = {
 	cost: 1
 };
 
-/*
- * List of in-game heroes classes.
+/**
+ * Warrior class
  *
+ * @constant
+ * @type {Number}
  */
-
 civitas.HERO_CLASS_WARRIOR = 1;
 
+/**
+ * Mage class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_MAGE = 2;
 
+/**
+ * Druid class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_DRUID = 3;
 
+/**
+ * Priest class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_PRIEST = 4;
 
+/**
+ * Rogue class
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.HERO_CLASS_ROGUE = 5;
 
+/**
+ * Shaman class
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.HERO_CLASS_SHAMAN = 6;
+
+/**
+ * List of names for hero classes
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.HERO_CLASS_LIST = [
 	'',
 	'Warrior',
 	'Mage',
 	'Druid',
 	'Priest',
-	'Rogue'
+	'Rogue',
+	'Shaman'
 ];
 
-/*
+/**
  * List of in-game heroes.
  *
+ * @constant
+ * @type {Object}
  */
-
 civitas.HEROES = {
 	1: {
 		name: 'Achilles',
@@ -7551,7 +7870,8 @@ civitas.HEROES = {
 		items: [
 			civitas.ITEM_TROJAN_BASTARD_SWORD
 		],
-		backpack: []
+		backpack: [
+		]
 	},
 	2: {
 		name: 'Hector',
@@ -7574,7 +7894,8 @@ civitas.HEROES = {
 			civitas.ITEM_EXCALIBUR,
 			civitas.ITEM_GOLDEN_KATANA
 		],
-		backpack: []
+		backpack: [
+		]
 	},
 	3: {
 		name: 'Hannibal',
@@ -7590,8 +7911,10 @@ civitas.HEROES = {
 			intellect: 9
 		},
 		class: civitas.HERO_CLASS_WARRIOR,
-		items: [],
-		backpack: []
+		items: [
+		],
+		backpack: [
+		]
 	},
 	4: {
 		name: 'Heracles',
@@ -7623,7 +7946,8 @@ civitas.HEROES = {
 			civitas.ITEM_MOUNTAIN_TROLLS,
 			civitas.ITEM_GAUNTLETS_OF_GHASTLY_GLARE
 		],
-		backpack: []
+		backpack: [
+		]
 	},
 	5: {
 		name: 'Akhenaten',
@@ -7642,7 +7966,8 @@ civitas.HEROES = {
 		class: civitas.HERO_CLASS_WARRIOR,
 		items: [
 		],
-		backpack: []
+		backpack: [
+		]
 	}
 };
 
@@ -18262,7 +18587,7 @@ civitas.PANEL_ACADEMY = {
 	template: civitas.ui.building_panel_template(),
 	id: 'academy',
 	on_show: function(params) {
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), 
+		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'),
 			civitas.l('Research')]));
 	},
 	on_refresh: function() {
