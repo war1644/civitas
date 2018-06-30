@@ -13,13 +13,16 @@ civitas.HERO_CLASS_PRIEST = 4;
 
 civitas.HERO_CLASS_ROGUE = 5;
 
+civitas.HERO_CLASS_SHAMAN = 6;
+
 civitas.HERO_CLASS_LIST = [
 	'',
 	'Warrior',
 	'Mage',
 	'Druid',
 	'Priest',
-	'Rogue'
+	'Rogue',
+	'Shaman'
 ];
 
 /*
@@ -46,7 +49,8 @@ civitas.HEROES = {
 		items: [
 			civitas.ITEM_TROJAN_BASTARD_SWORD
 		],
-		backpack: []
+		backpack: [
+		]
 	},
 	2: {
 		name: 'Hector',
@@ -69,7 +73,8 @@ civitas.HEROES = {
 			civitas.ITEM_EXCALIBUR,
 			civitas.ITEM_GOLDEN_KATANA
 		],
-		backpack: []
+		backpack: [
+		]
 	},
 	3: {
 		name: 'Hannibal',
@@ -85,8 +90,10 @@ civitas.HEROES = {
 			intellect: 9
 		},
 		class: civitas.HERO_CLASS_WARRIOR,
-		items: [],
-		backpack: []
+		items: [
+		],
+		backpack: [
+		]
 	},
 	4: {
 		name: 'Heracles',
@@ -118,7 +125,8 @@ civitas.HEROES = {
 			civitas.ITEM_MOUNTAIN_TROLLS,
 			civitas.ITEM_GAUNTLETS_OF_GHASTLY_GLARE
 		],
-		backpack: []
+		backpack: [
+		]
 	},
 	5: {
 		name: 'Akhenaten',
@@ -137,6 +145,7 @@ civitas.HEROES = {
 		class: civitas.HERO_CLASS_WARRIOR,
 		items: [
 		],
-		backpack: []
+		backpack: [
+		]
 	}
 };

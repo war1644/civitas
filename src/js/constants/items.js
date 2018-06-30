@@ -80,6 +80,12 @@ civitas.ITEM_QUALITY_EPIC = 3;
 
 civitas.ITEM_QUALITY_LEGENDARY = 4;
 
+/*
+ * Names of the types of item quality
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.ITEM_QUALITY_LIST = [
 	'',
 	'Common',
@@ -88,6 +94,12 @@ civitas.ITEM_QUALITY_LIST = [
 	'Legendary'
 ];
 
+/*
+ * List of colors for each type of item quality
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.ITEM_QUALITY_COLORS = [
 	'',
 	'#00ff00',
@@ -95,6 +107,7 @@ civitas.ITEM_QUALITY_COLORS = [
 	'#a335ee',
 	'#ff8000'
 ];
+
 /*
  * Item slots
  *
@@ -126,10 +139,28 @@ civitas.ITEM_SLOT_OFF_HAND = 11;
 
 civitas.ITEM_SLOT_ANY_HAND = 12;
 
+/*
+ * Number of item slots
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_SLOTS_NUM = 12;
 
+/*
+ * Number of backpack slots
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.ITEM_BACKPACK_NUM = 6;
 
+/*
+ * Name of item slots
+ *
+ * @constant
+ * @type {Array}
+ */
 civitas.ITEM_SLOTS_LIST = [
 	'',
 	'Neck',
@@ -150,7 +181,6 @@ civitas.ITEM_SLOTS_LIST = [
  * Random items
  *
  */
-
 civitas.RANDOM_UNCOMMON = [
 	{
 		name: 'ITEM of Spirit',
@@ -274,7 +304,6 @@ civitas.RANDOM_UNCOMMON = [
  * Weapon items
  *
  */
-
 civitas.ITEM_WEAPON_DAGGER_WICKED = {
 	name: 'Wicked Dagger',
 	id: 1,
