@@ -7,4 +7,3 @@ ToDo
 - Jailer component that assures game data integrity (no cheating).
 - Any player interaction since no data is transmitted to the server component.
 - Artificial Intelligence (AI) for computer-controlled cities.
-

@@ -11,35 +11,35 @@ For all source files, the soft and hard tab widths are set at 4 spaces; if possi
 Control statements requiring curly brace blocks should have the opening brace on the same line as the statement, separated from the statement with a single space:
 
 	statement {
-	    ... code ...
+		... code ...
 	}
 
 	function(arg, arg2) {
-	    ... code ...
+		... code ...
 	}
 
 Control statements with parenthesis-enclosed statements, such as if, should have a space between the statement and the opening parenthesis:
 
 	statement (expr) {
-	    ... code ...
+		... code ...
 	}
 
-Else statements should be on a separate line from the closing brace of the previous if statement:
+Else statements should be on the same line with the closing brace of the previous if statement:
 
 	if (expr) {
-	    ... code ...
-	}
-	else {
-	    ... code ...
+		... code ...
+	} else {
+		... code ...
 	}
 
 Else statements may have if statements immediately following them forming a sort of "else if" statement on a single line:
 
 	if (expr) {
-	}
-	else if (expr) {
-	}
-	else {
+		... code ...
+	} else if (expr) {
+		... code ...
+	} else {
+		... code ...
 	}
 
 Statements that can use curly-brace enclosed blocks should use them, even if there is only a single statement in the block, unless that statement is a return statement for a single value, which may be inlined:
@@ -49,7 +49,7 @@ Statements that can use curly-brace enclosed blocks should use them, even if the
 
 	// good
 	if (expr) {
-	    statement;
+		statement;
 	}
 
 	// acceptable
@@ -107,23 +107,23 @@ Called functions and function declarations must not have a space between the fun
 Functions should declare all variables in a contiguous block at the top of the function body that is separated from any further code by a single empty line:
 
 	function() {
-	    var var1 = 1;
-	    var var2 = [];
+		var var1 = 1;
+		var var2 = [];
 
-	    ... code ...
+		... code ...
 	}
 
 If no variables are declared in a function, there may still be a space between the function prototype line and the remaining code:
 
 	// ok
 	function() {
-	    ... code ...
+		... code ...
 	}
 
 	// good
 	function() {
 
-	    ... code ...
+		... code ...
 	}
 
 Commenting and Blocks
@@ -134,26 +134,26 @@ When commenting inside functions, place single-line comments at the beginning of
 	// wrong
 	function() {
 
-	    line1; // this is an awesome line
-	    // this is a cool line
-	    line2;
+		line1; // this is an awesome line
+		// this is a cool line
+		line2;
 	}
 
 	// right
 	function() {
 
-	    // this is an awesome line
-	    line1;
+		// this is an awesome line
+		line1;
 
-	    // this is a cool line
-	    line2;
+		// this is a cool line
+		line2;
 	}
 
 Single line comments can be either C++ or C style (i.e., they can start with // or be delimited by /* and */); multiple line comments, however, must be C++ style. This is because it is impossible to comment out multiple lines with C style comments if those lines contain other C style comments.
 
 Multiple-line comments inside functions may be of the following form:
 
-	/*
-	 * This is a multi-line comment.
-	 * Please make it multiple lines.
-	 */
+/*
+ * This is a multi-line comment.
+ * Please make it multiple lines.
+ */

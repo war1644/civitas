@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.1102019
+ * @version 0.2.0.5112019
  * @license MIT
  */ 'use strict';
 

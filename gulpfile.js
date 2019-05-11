@@ -10,7 +10,7 @@ var replace = require('gulp-replace');
 
 gulp.task('app', function() {
 	del([
-		'dist/application.*.js'
+		'dist/app.*.js'
     ]);
 	return gulp.src([
 	  	'src/js/others/functions.js',
@@ -89,37 +89,30 @@ gulp.task('app', function() {
 		'src/js/definitions/ui/window/signup.js',
 		'src/js/definitions/ui/window/options.js'
   	])
-    .pipe(concat('application.debug.js'))
+    .pipe(concat('app.debug.js'))
     .pipe(header(fs.readFileSync('HEADER', 'utf8'), { pkg: pkg } ))
-    .pipe(replace('__VERSION_NUMBER__', pkg.version + '.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + (new Date()).getFullYear()))
+    .pipe(replace('__VERSION_NUMBER__', pkg.version +
+    	'.' + ((new Date()).getMonth() + 1) + '' +
+    	(new Date()).getDate() + '' + (new Date()).getFullYear()))
     .pipe(gulp.dest('dist/'))
 });
 
-gulp.task('app_minify', ['app'], function() {
+gulp.task('app_minify', gulp.parallel('app'), function() {
 	return gulp.src([
-		'dist/application.debug.js'
+		'dist/app.debug.js'
   	])
-    .pipe(concat('application.min.js'))
+    .pipe(concat('app.min.js'))
     .pipe(uglify())
     .pipe(header(fs.readFileSync('HEADER', 'utf8'), { pkg: pkg } ))
-    .pipe(replace('__VERSION_NUMBER__', pkg.version + '.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + (new Date()).getFullYear()))
-    .pipe(gulp.dest('dist/'))
-});
-
-gulp.task('lib_minify', ['lib'], function() {
-	return gulp.src([
-		'dist/libraries.debug.js'
-  	])
-    .pipe(concat('libraries.min.js'))
-    .pipe(uglify({
-    	preserveComments: 'license'
-  	}))
+    .pipe(replace('__VERSION_NUMBER__', pkg.version +
+    	'.' + ((new Date()).getMonth() + 1) + '' +
+    	(new Date()).getDate() + '' + (new Date()).getFullYear()))
     .pipe(gulp.dest('dist/'))
 });
 
 gulp.task('lib', function() {
 	del([
-		'dist/libraries.*.js'
+		'dist/libs.*.js'
     ]);
 	return gulp.src([
 	  	'vendor/js/jquery.js',
@@ -128,13 +121,24 @@ gulp.task('lib', function() {
 		'vendor/js/jquery.tipsy.js',
 		'vendor/js/crypto.js'
   	])
-    .pipe(concat('libraries.debug.js'))
+    .pipe(concat('libs.debug.js'))
+    .pipe(gulp.dest('dist/'))
+});
+
+gulp.task('lib_minify', gulp.parallel('lib'), function() {
+	return gulp.src([
+		'dist/libs.debug.js'
+  	])
+    .pipe(concat('libs.min.js'))
+    .pipe(uglify({
+    	preserveComments: 'license'
+  	}))
     .pipe(gulp.dest('dist/'))
 });
 
 gulp.task('css', function() {
 	del([
-		'dist/styles.*.css'
+		'dist/app.*.css'
     ]);
 	return gulp.src([
 		'src/css/animation.css',
@@ -149,31 +153,33 @@ gulp.task('css', function() {
 		'src/css/tips.css',
 		'src/css/window.css'
   	])
-    .pipe(concat('styles.debug.css'))
+    .pipe(concat('app.debug.css'))
     .pipe(header(fs.readFileSync('HEADER', 'utf8'), { pkg: pkg } ))
-    .pipe(replace('__VERSION_NUMBER__', pkg.version + '.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + (new Date()).getFullYear()))
+    .pipe(replace('__VERSION_NUMBER__', pkg.version +
+    	'.' + ((new Date()).getMonth() + 1) + '' +
+    	(new Date()).getDate() + '' + (new Date()).getFullYear()))
     .pipe(gulp.dest('dist/'))
 });
 
-gulp.task('css_minify', ['css'], function() {
+gulp.task('css_minify', gulp.parallel('css'), function() {
 	return gulp.src([
-		'dist/styles.debug.css'
+		'dist/app.debug.css'
   	])
-    .pipe(concat('styles.min.css'))
+    .pipe(concat('app.min.css'))
     .pipe(cleanCSS())
     .pipe(gulp.dest('dist/'))
 });
 
-gulp.task('minify', ['app_minify', 'lib_minify', 'css_minify'], function() {
+gulp.task('minify', gulp.parallel('app_minify', 'lib_minify', 'css_minify'), function() {
 	return true;
 });
 
 gulp.task('watch', function () {
-	gulp.watch("src/**/*.js", ['app']);
-	gulp.watch("src/**/*.css", ['css']);
-	gulp.watch("vendor/**/*.js", ['lib']);
+	gulp.watch("src/**/*.js", gulp.parallel('app'));
+	gulp.watch("src/**/*.css", gulp.parallel('css'));
+	gulp.watch("vendor/**/*.js", gulp.parallel('lib'));
 });
 
-gulp.task('build', ['css', 'app', 'lib']);
+gulp.task('build', gulp.parallel('css', 'app', 'lib'));
 
-gulp.task('default', ['watch', 'build']);
+gulp.task('default', gulp.parallel('watch', 'build'));
