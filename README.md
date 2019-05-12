@@ -113,7 +113,7 @@ Civitas is written using Javascript, has ~15000 lines of code, ~250Kb minified a
 Dependencies
 ============
 
-- [jQuery 3.2.1](https://jquery.com/)
+- [jQuery 3.4.1](https://jquery.com/)
 - [jQuery UI 1.11.2](https://jqueryui.com/)
 - [jQuery Tipsy 1.0.0a](https://github.com/jaz303/tipsy)
 - [jQuery scrollTo 1.4.14](https://github.com/flesler/jquery.scrollTo)
