@@ -1,13 +1,13 @@
 /* Main rules */
 
 @font-face {
-	font-family: 'Nova Oval';
+	font-family: 'Poppins';
 	font-style: normal;
 	font-weight: 400;
-	src: local('Nova Oval'),
-		local('NovaOval'),
-		url(../fonts/nova-oval.woff2) format('woff2');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+	src: local('Poppins Regular'),
+		local('Poppins-Regular'),
+		url(../fonts/poppins.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 * {
@@ -17,7 +17,7 @@
 	-moz-user-select: -moz-none;
 	-ms-user-select: none;
 	user-select: none;
-	font-family: 'Nova Oval';
+	font-family: 'Poppins';
 }
 
 a {
@@ -198,7 +198,7 @@ td.icon {
 
 .ui > header .cityname {
 	position: absolute;
-	top: 5px;
+	top: 2px;
 	font-size: 16px;
 	left: 84px;
 	width: 124px;
@@ -214,7 +214,7 @@ td.icon {
 	text-align: center;
 	position: absolute;
 	right: 20px;
-	top: 22px;
+	top: 14px;
 }
 
 .ui > header .top-panel {
