@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.5172019
+ * @version 0.2.0.5182019
  * @license MIT
  */ 'use strict';
 
@@ -14822,6 +14822,23 @@ civitas.game.prototype.set_storage_data = function (key, value) {
 };
 
 /**
+ * Set game storage data as text.
+ * 
+ * @param {String} key
+ * @param {Mixed} value
+ * @public
+ * @returns {civitas.game}
+ */
+civitas.game.prototype.set_storage_data_as_text = function (key, value) {
+	if (civitas.ENCRYPTION === true) {
+		localStorage.setItem(civitas.STORAGE_KEY + '.' + key, this.encrypt(value));
+	} else {
+		localStorage.setItem(civitas.STORAGE_KEY + '.' + key, value);
+	}
+	return this;
+};
+
+/**
  * Check if there is any stored data.
  *
  * @public
@@ -14857,6 +14874,30 @@ civitas.game.prototype.get_storage_data = function (key) {
 		}
 		if (decrypted !== false) {
 			return JSON.parse(decrypted);
+		}
+	}
+	return false;
+};
+
+/**
+ * Retrieve game storage data as text.
+ * 
+ * @param {String} key
+ * @public
+ * @returns {Mixed}
+ */
+civitas.game.prototype.get_storage_data_as_text = function (key) {
+	if (typeof key === 'undefined') {
+		key = 'live';
+	}
+	if (this.has_storage_data(key)) {
+		if (civitas.ENCRYPTION === true) {
+			var decrypted = this.decrypt(localStorage.getItem(civitas.STORAGE_KEY + '.' + key));
+		} else {
+			var decrypted = localStorage.getItem(civitas.STORAGE_KEY + '.' + key);	
+		}
+		if (decrypted !== false) {
+			return decrypted;
 		}
 	}
 	return false;
@@ -16355,6 +16396,7 @@ civitas.PANEL_HELP = {
 					'<a href="#" class="btn iblock twelve">' + civitas.l('random ships') + '</a> ' +
 					'<a href="#" class="btn iblock fourty">' + civitas.l('defend city') + '</a> ' +
 					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> ' +
+					'<a href="#" class="btn iblock sixty">' + civitas.l('save') + '</a> ' +
 				'</div>');
 			$(this.handle).on('click', '.fourty', function() {
 				var city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
@@ -16459,6 +16501,9 @@ civitas.PANEL_HELP = {
 			}).on('click', '.seven', function() {
 				core.refresh_trades();
 				core.save_and_refresh();
+				return false;
+			}).on('click', '.sixty', function() {
+				console.log(JSON.stringify(core.get_storage_data()));
 				return false;
 			});
 		}
@@ -18897,6 +18942,11 @@ civitas.WINDOW_OPTIONS = {
 			'<fieldset>' +
 				'<a href="#" class="do-pause button">' + civitas.l('Pause') + '</a>' +
 				'<a href="#" class="do-restart button">' + civitas.l('Restart') + '</a>' +
+				'<a href="#" class="do-importexport button">' + civitas.l('Import/Export') + '</a>' +
+				'<div class="do-importexport-panel">' +
+				'<textarea class="do-importexport-textarea"></textarea>' +
+				'<a href="#" class="do-load button highlight">' + civitas.l('Load') + '</a>' +
+				'</div>' +
 				'<a href="#" class="do-options button">' + civitas.l('Options') + '</a>' +
 				'<div class="options-game"></div>' +
 				civitas.ui.window_about_section() +
@@ -18945,6 +18995,28 @@ civitas.WINDOW_OPTIONS = {
 			return false;
 		}).on('click', '.do-about', function () {
 			$(handle + ' .about-game').slideToggle();
+			return false;
+		}).on('click', '.do-importexport', function () {
+			$(handle + ' .do-importexport-textarea').val(core.get_storage_data_as_text());
+			$(handle + ' .do-importexport-panel').slideToggle();
+			return false;
+		}).on('click', '.do-load', function () {
+			var save_game = $(handle + ' .do-importexport-textarea').val();
+			if (save_game != '') {
+				core.open_modal(
+					function(button) {
+						if (button === 'yes') {
+							core.set_storage_data_as_text('live', save_game);
+							document.location.reload();
+						}
+					},
+					'Are you sure you want to load a new game? You wll lose all progress ' +
+						'on the current game!',
+					'Civitas'
+				);
+			} else {
+				core.error(civitas.l('Invalid save game.'));
+			}
 			return false;
 		}).on('click', '.do-restart', function () {
 			core.open_modal(

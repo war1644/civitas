@@ -81,6 +81,23 @@ civitas.game.prototype.set_storage_data = function (key, value) {
 };
 
 /**
+ * Set game storage data as text.
+ * 
+ * @param {String} key
+ * @param {Mixed} value
+ * @public
+ * @returns {civitas.game}
+ */
+civitas.game.prototype.set_storage_data_as_text = function (key, value) {
+	if (civitas.ENCRYPTION === true) {
+		localStorage.setItem(civitas.STORAGE_KEY + '.' + key, this.encrypt(value));
+	} else {
+		localStorage.setItem(civitas.STORAGE_KEY + '.' + key, value);
+	}
+	return this;
+};
+
+/**
  * Check if there is any stored data.
  *
  * @public
@@ -116,6 +133,30 @@ civitas.game.prototype.get_storage_data = function (key) {
 		}
 		if (decrypted !== false) {
 			return JSON.parse(decrypted);
+		}
+	}
+	return false;
+};
+
+/**
+ * Retrieve game storage data as text.
+ * 
+ * @param {String} key
+ * @public
+ * @returns {Mixed}
+ */
+civitas.game.prototype.get_storage_data_as_text = function (key) {
+	if (typeof key === 'undefined') {
+		key = 'live';
+	}
+	if (this.has_storage_data(key)) {
+		if (civitas.ENCRYPTION === true) {
+			var decrypted = this.decrypt(localStorage.getItem(civitas.STORAGE_KEY + '.' + key));
+		} else {
+			var decrypted = localStorage.getItem(civitas.STORAGE_KEY + '.' + key);	
+		}
+		if (decrypted !== false) {
+			return decrypted;
 		}
 	}
 	return false;
