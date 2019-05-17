@@ -16396,7 +16396,6 @@ civitas.PANEL_HELP = {
 					'<a href="#" class="btn iblock twelve">' + civitas.l('random ships') + '</a> ' +
 					'<a href="#" class="btn iblock fourty">' + civitas.l('defend city') + '</a> ' +
 					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> ' +
-					'<a href="#" class="btn iblock sixty">' + civitas.l('save') + '</a> ' +
 				'</div>');
 			$(this.handle).on('click', '.fourty', function() {
 				var city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
@@ -16501,9 +16500,6 @@ civitas.PANEL_HELP = {
 			}).on('click', '.seven', function() {
 				core.refresh_trades();
 				core.save_and_refresh();
-				return false;
-			}).on('click', '.sixty', function() {
-				console.log(JSON.stringify(core.get_storage_data()));
 				return false;
 			});
 		}
