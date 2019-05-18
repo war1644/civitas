@@ -15,6 +15,14 @@ civitas.CITY = 0;
 civitas.VILLAGE = 1;
 
 /**
+ * Max number of settlements on a map.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MAX_SETTLEMENTS = 20;
+
+/**
  * List of all the settlements in the world.
  * 
  * @constant
