@@ -177,7 +177,6 @@ civitas.game.prototype.import = function(data) {
 		this.date(data.date);
 		this.set_black_market(data.black_market);
 		this.set_settings_music(data.settings.music);
-		this.set_settings_console(data.settings.console);
 	} else {
 		this.error('There was a problem loading the game data, it is probably corrupted');
 		return false;

@@ -11,11 +11,6 @@ civitas.WINDOW_OPTIONS = {
 			'<fieldset>' +
 				'<a href="#" class="do-pause button">' + civitas.l('Pause') + '</a>' +
 				'<a href="#" class="do-restart button">' + civitas.l('Restart') + '</a>' +
-				'<a href="#" class="do-importexport button">' + civitas.l('Import/Export') + '</a>' +
-				'<div class="do-importexport-panel">' +
-				'<textarea class="do-importexport-textarea"></textarea>' +
-				'<a href="#" class="do-load button highlight">' + civitas.l('Load') + '</a>' +
-				'</div>' +
 				'<a href="#" class="do-options button">' + civitas.l('Options') + '</a>' +
 				'<div class="options-game"></div>' +
 				civitas.ui.window_about_section() +
@@ -38,9 +33,6 @@ civitas.WINDOW_OPTIONS = {
 			((core.get_settings('music') !== true) ? 'disabled' : '') + ' />' +
 			'</div>');
 		$(handle + ' #tab-ui').append('<div>' +
-			'<a href="#" class="console-control ui-control ' +
-			((core.get_settings('console') === true) ? 'on' : 'off') + '">' +
-			civitas.l('toggle console') + '</a>' +
 			'</div>');
 		$(handle + ' .tabs').tabs();
 		$(handle).on('click', '.do-resume', function () {
@@ -65,28 +57,6 @@ civitas.WINDOW_OPTIONS = {
 		}).on('click', '.do-about', function () {
 			$(handle + ' .about-game').slideToggle();
 			return false;
-		}).on('click', '.do-importexport', function () {
-			$(handle + ' .do-importexport-textarea').val(core.get_storage_data_as_text());
-			$(handle + ' .do-importexport-panel').slideToggle();
-			return false;
-		}).on('click', '.do-load', function () {
-			var save_game = $(handle + ' .do-importexport-textarea').val();
-			if (save_game != '') {
-				core.open_modal(
-					function(button) {
-						if (button === 'yes') {
-							core.set_storage_data_as_text('live', save_game);
-							document.location.reload();
-						}
-					},
-					'Are you sure you want to load a new game? You wll lose all progress ' +
-						'on the current game!',
-					'Civitas'
-				);
-			} else {
-				core.error(civitas.l('Invalid save game.'));
-			}
-			return false;
 		}).on('click', '.do-restart', function () {
 			core.open_modal(
 				function(button) {
@@ -109,16 +79,6 @@ civitas.WINDOW_OPTIONS = {
 				$(this).removeClass('off').addClass('on');
 				$('.music-volume').attr('disabled', false);
 				core.set_settings_music(false);
-			}
-			core.save();
-			return false;
-		}).on('click', '.console-control', function () {
-			if ($(this).hasClass('on')) {
-				$(this).removeClass('on').addClass('off');
-				core.set_settings_console(false);
-			} else {
-				$(this).removeClass('off').addClass('on');
-				core.set_settings_console(true);
 			}
 			core.save();
 			return false;

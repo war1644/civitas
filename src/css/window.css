@@ -30,24 +30,11 @@
 }
 
 .window .about-game,
-.window .do-importexport-panel,
 .window .options-game {
 	position: relative;
 	display: none;
 	padding: 10px 0;
 	margin: 0;
-}
-
-.window .do-importexport-panel textarea {
-	width: 350px;
-	height: 80px;
-	padding: 5px;
-	border: 0;
-	-webkit-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
-	-moz-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
-	box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
-	font-size: 10px;
-	resize: none !important;
 }
 
 .window li > a,

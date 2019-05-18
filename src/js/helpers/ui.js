@@ -59,8 +59,6 @@ civitas.ui = {
 				'<ul>' +
 					'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a>' +
 					' for the music (Glandula Pinealis).</li>' +
-					'<li><a target="_blank" href="https://brendaneich.com/">Brendan Eich</a> ' +
-					'for Javascript.</li>' +
 					'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno ' +
 					'1404.</li>' +
 				'</ul>' +
@@ -329,10 +327,9 @@ civitas.ui = {
 
 	resource_storage_el: function (resource, amount) {
 		return '<div class="storage-item">' +
-			'<span class="title">' + civitas.utils.get_resource_name(resource) + '</span>' +
-			'<img src="' + civitas.ASSETS_URL + 'images/assets/resources/' + 
-			resource + '.png" />' +
-			'<span class="amount">' + amount + '</amount>' +
+				'<span class="title">' + civitas.utils.get_resource_name(resource) + '</span>' +
+				'<img src="' + civitas.ASSETS_URL + 'images/assets/resources/' +  resource + '.png" />' +
+				'<span class="amount">' + amount + '</amount>' +
 			'</div>';
 	},
 
@@ -340,8 +337,9 @@ civitas.ui = {
 		var out = '<div class="tabs">' +
 				'<ul>';
 		for (var i = 0; i < data.length; i++) {
-			out += '<li><a href="#tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' + 
-				data[i] + '</a></li>';
+			out += '<li>' +
+					'<a href="#tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' + data[i] + '</a>' +
+				'</li>';
 		}
 		out += '</ul>';
 		for (var i = 0; i < data.length; i++) {

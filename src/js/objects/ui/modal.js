@@ -104,9 +104,9 @@ civitas.controls.modal = function (params) {
 	 */
 	this._clear = function() {
 		$('.modal-overlay').remove();
-		//$('body').append(this._template);
+		// $('body').append(this._template);
 		this.core().hide_loader();
-		//this._resize();
+		// this._resize();
 		return true;
 	};
 

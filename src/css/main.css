@@ -319,61 +319,6 @@ a.disabled {
 	cursor: default;
 }
 
-/* Game console */
-
-.ui .console {
-	height: 137px;
-	width: 494px;
-	position: fixed;
-	top: 0;
-	right: 0;
-	z-index: 999;
-	font-size: 11px;
-	color: #777;
-	font-size: 12px;
-	opacity: 0.8;
-	display: none;
-}
-
-.ui .console:hover {
-	opacity: 0.9;
-}
-
-.scrollbar {
-	position: absolute;
-	right:14px;
-	top: 20px;
-}
-
-.scrollbar .up,
-.scrollbar .down {
-	width: 24px;
-	height: 24px;
-	cursor: pointer;
-}
-
-.scrollbar .up {
-	margin-bottom: 5px;
-}
-
-.ui .console .separator {
-	margin-top: 5px;
-	padding-top: 5px;
-	border-top: 1px solid #301c11;
-	height: 1px;
-}
-
-.ui .console .contents {
-	margin: 18px 40px 20px 16px;
-	overflow: hidden;
-	height: 100px;
-	width: 434px;
-}
-
-.ui .console div.error {
-	color: #aa4600;
-}
-
 /* Others */
 
 .loading {
@@ -500,4 +445,21 @@ span.red {
 
 span.blue {
 	color: #11f;
+}
+
+.scrollbar {
+	position: absolute;
+	right:14px;
+	top: 20px;
+}
+
+.scrollbar .up,
+.scrollbar .down {
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+}
+
+.scrollbar .up {
+	margin-bottom: 5px;
 }

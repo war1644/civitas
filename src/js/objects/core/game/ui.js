@@ -48,13 +48,6 @@ civitas.game.prototype._build_ui = function() {
 				'</div>' +
 				'<div class="top-panel"></div>' +
 			'</header>' +
-			'<aside class="console">' +
-				'<div class="scrollbar">' +
-					'<div class="up"></div>' +
-					'<div class="down"></div>' +
-				'</div>' +
-				'<div class="contents"></div>' +
-			'</aside>' +
 			'<section class="game"></section>' +
 			'<footer>' +
 				'<div class="toolbar">' +
@@ -71,7 +64,8 @@ civitas.game.prototype._build_ui = function() {
 					'<a href="#" data-action="panel" data-panel="world" class="tips" title="' +
 						civitas.l('World Map') + '"></a>' +
 					'<a href="#" class="" title=""></a>' +
-					'<a href="#" class="" title=""></a>' +
+					'<a href="#" data-action="panel" data-panel="debug" class="tips" title="' +
+						civitas.l('Debug') + '"></a>' +
 					'<a href="#" data-action="panel" data-panel="help" class="tips" title="' +
 						civitas.l('Help') + '"></a>' +
 				'</div>' +
@@ -378,11 +372,7 @@ civitas.game.prototype._setup_ui = function () {
 			'_small.png) no-repeat"></span>';
 	}
 	$('.top-panel').empty().append(_t);
-	$('.ui').on('click', '.console .down', function () {
-		$('.console .contents').scrollTo('+=97px', 500);
-	}).on('click', '.console .up', function () {
-		$('.console .contents').scrollTo('-=97px', 500);
-	}).on('click', '.cityavatar', function () {
+	$('.ui').on('click', '.cityavatar', function () {
 		self.open_panel(civitas.PANEL_COUNCIL);
 		return false;
 	}).on('click', 'a[data-action=panel]', function () {
@@ -469,15 +459,13 @@ civitas.game.prototype.open_modal = function(callback, text, title) {
  * @returns {civitas.game}
  */
 civitas.game.prototype.log = function (message, error) {
-	if ($('.ui .console .contents div').length > 1000) {
-		$('.ui .console .contents').empty();
+	if ($('#panel-debug .console p').length > 1000) {
+		$('#panel-debug .console').empty();
 	}
 	if (typeof message !== 'undefined') {
-		$('.ui .console .contents').prepend('<div' + 
+		$('#panel-debug .console').prepend('<p' + 
 			((typeof error !== 'undefined' && error === true) ? ' class="error"' : '') + '>' + 
-			'<span>' + civitas.utils.get_now() + '</span> - ' + message + '</div>');
-	} else {
-		$('.ui .console .contents').prepend('<div class="separator"></div>');
+			'<span>' + civitas.utils.get_now() + '</span> - ' + message + '</p>');
 	}
 	return this;
 };

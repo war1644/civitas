@@ -567,61 +567,6 @@ a.disabled {
 	cursor: default;
 }
 
-/* Game console */
-
-.ui .console {
-	height: 137px;
-	width: 494px;
-	position: fixed;
-	top: 0;
-	right: 0;
-	z-index: 999;
-	font-size: 11px;
-	color: #777;
-	font-size: 12px;
-	opacity: 0.8;
-	display: none;
-}
-
-.ui .console:hover {
-	opacity: 0.9;
-}
-
-.scrollbar {
-	position: absolute;
-	right:14px;
-	top: 20px;
-}
-
-.scrollbar .up,
-.scrollbar .down {
-	width: 24px;
-	height: 24px;
-	cursor: pointer;
-}
-
-.scrollbar .up {
-	margin-bottom: 5px;
-}
-
-.ui .console .separator {
-	margin-top: 5px;
-	padding-top: 5px;
-	border-top: 1px solid #301c11;
-	height: 1px;
-}
-
-.ui .console .contents {
-	margin: 18px 40px 20px 16px;
-	overflow: hidden;
-	height: 100px;
-	width: 434px;
-}
-
-.ui .console div.error {
-	color: #aa4600;
-}
-
 /* Others */
 
 .loading {
@@ -748,6 +693,23 @@ span.red {
 
 span.blue {
 	color: #11f;
+}
+
+.scrollbar {
+	position: absolute;
+	right:14px;
+	top: 20px;
+}
+
+.scrollbar .up,
+.scrollbar .down {
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+}
+
+.scrollbar .up {
+	margin-bottom: 5px;
 }
 
 /* Modal Windows */
@@ -1139,6 +1101,42 @@ span.blue {
 	line-height: 20px;
 	margin-bottom: 5px;
 	width: 140px;
+}
+
+/* Debug panel */
+
+#panel-debug {
+	max-width: 600px;
+	width: 600px;
+	height: auto;
+	max-height: 400px;
+}
+
+#panel-debug .console {
+	overflow: auto;
+	max-height: 300px;
+}
+
+#panel-debug .console p {
+	padding: 2px 5px;
+	background-color: #efefef;
+	margin: 2px 0 0 0;
+}
+
+#panel-debug .console p.error {
+	color: #aa4600;
+}
+
+#panel-debug textarea {
+	width: 590px;
+	height: 200px;
+	padding: 5px;
+	border: 0;
+	-webkit-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
+	-moz-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
+	box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
+	font-size: 10px;
+	resize: none !important;
 }
 
 /* Help panel */
@@ -1982,10 +1980,6 @@ footer a[data-panel=help] {
 	background: transparent url(../images/ui/loading.svg) no-repeat;
 }
 
-.ui .console {
-	background: transparent url(../images/ui/console.jpg) no-repeat;
-}
-
 .notifications .notty .hide,
 .achievements-notifications .notty .hide {
 	background: transparent url(../images/ui/icons/close.png) no-repeat;
@@ -2348,24 +2342,11 @@ td a.btn {
 }
 
 .window .about-game,
-.window .do-importexport-panel,
 .window .options-game {
 	position: relative;
 	display: none;
 	padding: 10px 0;
 	margin: 0;
-}
-
-.window .do-importexport-panel textarea {
-	width: 350px;
-	height: 80px;
-	padding: 5px;
-	border: 0;
-	-webkit-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
-	-moz-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
-	box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
-	font-size: 10px;
-	resize: none !important;
 }
 
 .window li > a,

@@ -3,6 +3,14 @@
  */
 civitas.utils = {
 
+	/**
+	 * Get the total damage points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @public
+	 * @param {Object} hero
+	 * @returns {Object}
+	 */
 	get_damage_points: function(hero) {
 		var damage_val = (hero.stats.strength * 2) + hero.stats.agility;
 		var damage_min = 0;
@@ -30,6 +38,14 @@ civitas.utils = {
 		}
 	},
 
+	/**
+	 * Get the total mana points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @public
+	 * @param {Object} hero
+	 * @returns {Number}
+	 */
 	get_mana_points: function(hero) {
 		var mana = hero.stats.intellect * 50 + hero.stats.spirit * 10;
 		for (var i = 0; i < hero.items.length; i++) {
@@ -45,6 +61,14 @@ civitas.utils = {
 		return mana;
 	},
 
+	/**
+	 * Get the total health points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @public
+	 * @param {Object} hero
+	 * @returns {Number}
+	 */
 	get_health_points: function(hero) {
 		var health = hero.stats.stamina * 30 + hero.stats.strength * 5;
 		for (var i = 0; i < hero.items.length; i++) {
@@ -76,11 +100,27 @@ civitas.utils = {
 		return false;
 	},
 
+	/**
+	 * Get the distance between two points.
+	 *
+	 * @public
+	 * @param {Number} source
+	 * @param {Number} destination
+	 * @returns {Number}
+	 */
 	get_distance: function(source, destination) {
 		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + 
 			Math.pow(destination.y - source.y, 2)));
 	},
 
+	/**
+	 * Get the distance between two points in days
+	 *
+	 * @public
+	 * @param {Number} source
+	 * @param {Number} destination
+	 * @returns {Number}
+	 */
 	get_distance_in_days: function(source, destination) {
 		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + 
 			Math.pow(destination.y - source.y, 2)) / 10);
@@ -99,76 +139,63 @@ civitas.utils = {
 				2, 
 				"One second", 
 				"1 second from now"
-			], 
-			[
+			], [
 				60, 
 				"seconds", 
 				1
-			], 
-			[
+			], [
 				120, 
 				"One minute", 
 				"1 minute from now"
-			], 
-			[
+			], [
 				3600, 
 				"minutes", 
 				60
-			], 
-			[
+			], [
 				7200, 
 				"One hour", 
 				"1 hour from now"
-			], 
-			[
+			], [
 				86400, 
 				"hours", 
 				3600
-			], 
-			[
+			], [
 				172800, 
 				"One day", 
 				"tomorrow"
-			],
-			[
+			], [
 				604800, 
 				"days", 
-				86400], 
-			[
+				86400
+			], [
 				1209600, 
 				"One week", 
 				"next week"
-			], 
-			[
+			], [
 				2419200, 
 				"weeks", 
 				604800
-			], 
-			[
+			], [
 				4838400, 
 				"One month", 
 				"next month"
-			], 
-			[
+			], [
 				29030400, 
 				"months", 
-				2419200], 
-			[
+				2419200
+			], [
 				58060800, 
 				"One year", 
 				"next year"
-			], 
-			[
+			], [
 				2903040000, 
 				"years", 
 				29030400
-			], 
-			[
+			], [
 				5806080000, 
 				"One century", 
 				"next century"
-			], 
-			[
+			], [
 				58060800000, 
 				"centuries", 
 				2903040000
@@ -314,6 +341,13 @@ civitas.utils = {
 		return num;
 	},
 
+	/**
+	 * Return a random unique array element.
+	 *
+	 * @public
+	 * @param {Array} from
+	 * @returns {Mixed}
+	 */
 	get_random_unique: function(from) {
 		var id = civitas.utils.get_random(0, from.length - 1);
 		var element = from[id];

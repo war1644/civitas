@@ -141,6 +141,42 @@
 	width: 140px;
 }
 
+/* Debug panel */
+
+#panel-debug {
+	max-width: 600px;
+	width: 600px;
+	height: auto;
+	max-height: 400px;
+}
+
+#panel-debug .console {
+	overflow: auto;
+	max-height: 300px;
+}
+
+#panel-debug .console p {
+	padding: 2px 5px;
+	background-color: #efefef;
+	margin: 2px 0 0 0;
+}
+
+#panel-debug .console p.error {
+	color: #aa4600;
+}
+
+#panel-debug textarea {
+	width: 590px;
+	height: 200px;
+	padding: 5px;
+	border: 0;
+	-webkit-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
+	-moz-box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
+	box-shadow: inset 0 0 10px 0 rgba(20, 20, 20, 0.75);
+	font-size: 10px;
+	resize: none !important;
+}
+
 /* Help panel */
 
 #panel-help {

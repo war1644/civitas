@@ -7940,6 +7940,14 @@ civitas.HEROES = {
  */
 civitas.utils = {
 
+	/**
+	 * Get the total damage points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @public
+	 * @param {Object} hero
+	 * @returns {Object}
+	 */
 	get_damage_points: function(hero) {
 		var damage_val = (hero.stats.strength * 2) + hero.stats.agility;
 		var damage_min = 0;
@@ -7967,6 +7975,14 @@ civitas.utils = {
 		}
 	},
 
+	/**
+	 * Get the total mana points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @public
+	 * @param {Object} hero
+	 * @returns {Number}
+	 */
 	get_mana_points: function(hero) {
 		var mana = hero.stats.intellect * 50 + hero.stats.spirit * 10;
 		for (var i = 0; i < hero.items.length; i++) {
@@ -7982,6 +7998,14 @@ civitas.utils = {
 		return mana;
 	},
 
+	/**
+	 * Get the total health points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @public
+	 * @param {Object} hero
+	 * @returns {Number}
+	 */
 	get_health_points: function(hero) {
 		var health = hero.stats.stamina * 30 + hero.stats.strength * 5;
 		for (var i = 0; i < hero.items.length; i++) {
@@ -8013,11 +8037,27 @@ civitas.utils = {
 		return false;
 	},
 
+	/**
+	 * Get the distance between two points.
+	 *
+	 * @public
+	 * @param {Number} source
+	 * @param {Number} destination
+	 * @returns {Number}
+	 */
 	get_distance: function(source, destination) {
 		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + 
 			Math.pow(destination.y - source.y, 2)));
 	},
 
+	/**
+	 * Get the distance between two points in days
+	 *
+	 * @public
+	 * @param {Number} source
+	 * @param {Number} destination
+	 * @returns {Number}
+	 */
 	get_distance_in_days: function(source, destination) {
 		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + 
 			Math.pow(destination.y - source.y, 2)) / 10);
@@ -8036,76 +8076,63 @@ civitas.utils = {
 				2, 
 				"One second", 
 				"1 second from now"
-			], 
-			[
+			], [
 				60, 
 				"seconds", 
 				1
-			], 
-			[
+			], [
 				120, 
 				"One minute", 
 				"1 minute from now"
-			], 
-			[
+			], [
 				3600, 
 				"minutes", 
 				60
-			], 
-			[
+			], [
 				7200, 
 				"One hour", 
 				"1 hour from now"
-			], 
-			[
+			], [
 				86400, 
 				"hours", 
 				3600
-			], 
-			[
+			], [
 				172800, 
 				"One day", 
 				"tomorrow"
-			],
-			[
+			], [
 				604800, 
 				"days", 
-				86400], 
-			[
+				86400
+			], [
 				1209600, 
 				"One week", 
 				"next week"
-			], 
-			[
+			], [
 				2419200, 
 				"weeks", 
 				604800
-			], 
-			[
+			], [
 				4838400, 
 				"One month", 
 				"next month"
-			], 
-			[
+			], [
 				29030400, 
 				"months", 
-				2419200], 
-			[
+				2419200
+			], [
 				58060800, 
 				"One year", 
 				"next year"
-			], 
-			[
+			], [
 				2903040000, 
 				"years", 
 				29030400
-			], 
-			[
+			], [
 				5806080000, 
 				"One century", 
 				"next century"
-			], 
-			[
+			], [
 				58060800000, 
 				"centuries", 
 				2903040000
@@ -8251,6 +8278,13 @@ civitas.utils = {
 		return num;
 	},
 
+	/**
+	 * Return a random unique array element.
+	 *
+	 * @public
+	 * @param {Array} from
+	 * @returns {Mixed}
+	 */
 	get_random_unique: function(from) {
 		var id = civitas.utils.get_random(0, from.length - 1);
 		var element = from[id];
@@ -8382,8 +8416,6 @@ civitas.ui = {
 				'<ul>' +
 					'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a>' +
 					' for the music (Glandula Pinealis).</li>' +
-					'<li><a target="_blank" href="https://brendaneich.com/">Brendan Eich</a> ' +
-					'for Javascript.</li>' +
 					'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno ' +
 					'1404.</li>' +
 				'</ul>' +
@@ -8652,10 +8684,9 @@ civitas.ui = {
 
 	resource_storage_el: function (resource, amount) {
 		return '<div class="storage-item">' +
-			'<span class="title">' + civitas.utils.get_resource_name(resource) + '</span>' +
-			'<img src="' + civitas.ASSETS_URL + 'images/assets/resources/' + 
-			resource + '.png" />' +
-			'<span class="amount">' + amount + '</amount>' +
+				'<span class="title">' + civitas.utils.get_resource_name(resource) + '</span>' +
+				'<img src="' + civitas.ASSETS_URL + 'images/assets/resources/' +  resource + '.png" />' +
+				'<span class="amount">' + amount + '</amount>' +
 			'</div>';
 	},
 
@@ -8663,8 +8694,9 @@ civitas.ui = {
 		var out = '<div class="tabs">' +
 				'<ul>';
 		for (var i = 0; i < data.length; i++) {
-			out += '<li><a href="#tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' + 
-				data[i] + '</a></li>';
+			out += '<li>' +
+					'<a href="#tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' + data[i] + '</a>' +
+				'</li>';
 		}
 		out += '</ul>';
 		for (var i = 0; i < data.length; i++) {
@@ -13448,9 +13480,9 @@ civitas.controls.modal = function (params) {
 	 */
 	this._clear = function() {
 		$('.modal-overlay').remove();
-		//$('body').append(this._template);
+		// $('body').append(this._template);
 		this.core().hide_loader();
-		//this._resize();
+		// this._resize();
 		return true;
 	};
 
@@ -13867,7 +13899,6 @@ civitas.game = function () {
 	 * @private
 	 */
 	this.settings = {
-		console: false,
 		music: false
 	};
 
@@ -13961,24 +13992,6 @@ civitas.game = function () {
 			this.music.pause();
 		}
 		this.set_settings('music', value);
-		return this;
-	};
-
-	/**
-	 * Set console display on/off
-	 * 
-	 * @param {String} key
-	 * @param {Mixed} value
-	 * @public
-	 * @returns {civitas.game}
-	 */
-	this.set_settings_console = function(value) {
-		if (value === true) {
-			$('aside.console').show();
-		} else {
-			$('aside.console').hide();
-		}
-		this.set_settings('console', value);
 		return this;
 	};
 
@@ -14909,7 +14922,6 @@ civitas.game.prototype.import = function(data) {
 		this.date(data.date);
 		this.set_black_market(data.black_market);
 		this.set_settings_music(data.settings.music);
-		this.set_settings_console(data.settings.console);
 	} else {
 		this.error('There was a problem loading the game data, it is probably corrupted');
 		return false;
@@ -15015,13 +15027,6 @@ civitas.game.prototype._build_ui = function() {
 				'</div>' +
 				'<div class="top-panel"></div>' +
 			'</header>' +
-			'<aside class="console">' +
-				'<div class="scrollbar">' +
-					'<div class="up"></div>' +
-					'<div class="down"></div>' +
-				'</div>' +
-				'<div class="contents"></div>' +
-			'</aside>' +
 			'<section class="game"></section>' +
 			'<footer>' +
 				'<div class="toolbar">' +
@@ -15038,7 +15043,8 @@ civitas.game.prototype._build_ui = function() {
 					'<a href="#" data-action="panel" data-panel="world" class="tips" title="' +
 						civitas.l('World Map') + '"></a>' +
 					'<a href="#" class="" title=""></a>' +
-					'<a href="#" class="" title=""></a>' +
+					'<a href="#" data-action="panel" data-panel="debug" class="tips" title="' +
+						civitas.l('Debug') + '"></a>' +
 					'<a href="#" data-action="panel" data-panel="help" class="tips" title="' +
 						civitas.l('Help') + '"></a>' +
 				'</div>' +
@@ -15345,11 +15351,7 @@ civitas.game.prototype._setup_ui = function () {
 			'_small.png) no-repeat"></span>';
 	}
 	$('.top-panel').empty().append(_t);
-	$('.ui').on('click', '.console .down', function () {
-		$('.console .contents').scrollTo('+=97px', 500);
-	}).on('click', '.console .up', function () {
-		$('.console .contents').scrollTo('-=97px', 500);
-	}).on('click', '.cityavatar', function () {
+	$('.ui').on('click', '.cityavatar', function () {
 		self.open_panel(civitas.PANEL_COUNCIL);
 		return false;
 	}).on('click', 'a[data-action=panel]', function () {
@@ -15436,15 +15438,13 @@ civitas.game.prototype.open_modal = function(callback, text, title) {
  * @returns {civitas.game}
  */
 civitas.game.prototype.log = function (message, error) {
-	if ($('.ui .console .contents div').length > 1000) {
-		$('.ui .console .contents').empty();
+	if ($('#panel-debug .console p').length > 1000) {
+		$('#panel-debug .console').empty();
 	}
 	if (typeof message !== 'undefined') {
-		$('.ui .console .contents').prepend('<div' + 
+		$('#panel-debug .console').prepend('<p' + 
 			((typeof error !== 'undefined' && error === true) ? ' class="error"' : '') + '>' + 
-			'<span>' + civitas.utils.get_now() + '</span> - ' + message + '</div>');
-	} else {
-		$('.ui .console .contents').prepend('<div class="separator"></div>');
+			'<span>' + civitas.utils.get_now() + '</span> - ' + message + '</p>');
 	}
 	return this;
 };
@@ -16272,7 +16272,7 @@ civitas.PANEL_HELP = {
 		var self = this;
 		var core = this.core();
 		var settlement = core.get_settlement();
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('About'), civitas.l('Buildings'), civitas.l('Settlements'), civitas.l('Religion'), civitas.l('Research'), civitas.l('Cheats')]));
+		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('About'), civitas.l('Buildings'), civitas.l('Settlements'), civitas.l('Religion'), civitas.l('Research')]));
 		$(this.handle + ' header').append(civitas.l('Help'));
 		$(this.handle + ' #tab-buildings').empty().append(
 			'<fieldset>' +
@@ -16366,134 +16366,183 @@ civitas.PANEL_HELP = {
 			'');
 		$(this.handle + ' #tab-diplomacy').empty().append('<h2>Diplomacy</h2>' +
 			'');
-		if (civitas.DEBUG === true) {
-			$(this.handle + ' #tab-cheats').empty().append('<h2>Cheats</h2>' +
+	}
+};
+
+/**
+ * Debug panel data.
+ *
+ * @type {Object}
+ */
+civitas.PANEL_DEBUG = {
+	template: civitas.ui.generic_panel_template(),
+	id: 'debug',
+	on_show: function(params) {
+		var self = this;
+		var core = this.core();
+		var settlement = core.get_settlement();
+		var handle = this.handle;
+		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Data'), civitas.l('Console'), civitas.l('Cheats')]));
+		$(this.handle + ' header').append(civitas.l('Debug'));
+		$(this.handle + ' #tab-console').empty().append(
+			'<div class="console"></div>');
+		$(this.handle + ' #tab-cheats').empty().append('' +
 				'<div class="toolbar">' +
-					'<a href="#" class="btn iblock thirteen">' + civitas.l('+1k coins') + '</a> ' +
-					'<a href="#" class="btn iblock one">' + civitas.l('+10k coins') + '</a> ' +
-					'<a href="#" class="btn iblock nine">' + civitas.l('+100k coins') + '</a> ' +
-					'<a href="#" class="btn iblock eight">' + civitas.l('+1M coins') + '</a> <br /><br />' +
-					'<a href="#" class="btn iblock two">' + civitas.l('+100 wood') + '</a> ' +
-					'<a href="#" class="btn iblock three">' + civitas.l('+100 stones') + '</a> ' +
-					'<a href="#" class="btn iblock thirty">' + civitas.l('+4 bread') + '</a> ' +
-					'<a href="#" class="btn iblock fifteen">' + civitas.l('+1000 provisions') + '</a> ' +
-					'<a href="#" class="btn iblock four">' + civitas.l('+100 wood planks') + '</a> <br /><br />' +
+					'<a href="#" class="btn iblock one">' + civitas.l('+1M coins') + '</a> ' +
+					'<a href="#" class="btn iblock two">' + civitas.l('+1000 wood') + '</a> ' +
+					'<a href="#" class="btn iblock three">' + civitas.l('+1000 stones') + '</a> ' +
+					'<a href="#" class="btn iblock thirty">' + civitas.l('+1000 bread') + '</a> ' +
+					'<a href="#" class="btn iblock fifteen">' + civitas.l('+1000 provisions') + '</a> <br /><br />' +
+					'<a href="#" class="btn iblock four">' + civitas.l('+1000 wood planks') + '</a> ' +
 					'<a href="#" class="btn iblock five">' + civitas.l('level up') + '</a> ' +
 					'<a href="#" class="btn iblock fourteen">' + civitas.l('+900 faith') + '</a> ' +
 					'<a href="#" class="btn iblock six">' + civitas.l('+1000 fame') + '</a> ' +
 					'<a href="#" class="btn iblock ten">' + civitas.l('+5000 fame') + '</a> <br /><br />' +
-					'<a href="#" class="btn iblock seven">' + civitas.l('refresh trades') + '</a> <br /><br />' +
+					'<a href="#" class="btn iblock seven">' + civitas.l('refresh trades') + '</a> ' +
 					'<a href="#" class="btn iblock eleven">' + civitas.l('random soldiers') + '</a> ' +
 					'<a href="#" class="btn iblock twelve">' + civitas.l('random ships') + '</a> ' +
 					'<a href="#" class="btn iblock fourty">' + civitas.l('defend city') + '</a> ' +
 					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> ' +
 				'</div>');
-			$(this.handle).on('click', '.fourty', function() {
-				var city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
-				var _settlement = core.get_settlement(city_index);
-				core.add_to_queue(_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
-					army: {
-						militia: 40,
-						axeman: 30,
-						knight: 10,
-						bowman: 20,
-						cannon: 200,
-						heavycannon: 200,
-						catapult: 300,
-						crossbowman: 10,
-						pikeman: 30
-					}
-				});
-				return false;
-			}).on('click', '.fifty', function() {
-				for (var i = 0; i < 9; i++) {
-					settlement.level_up();
+		$(this.handle + ' #tab-data').empty().append(
+			'<textarea class="storage-data"></textarea>' +
+			'<div class="toolbar">' +
+				'<a href="#" class="btn iblock refresh">' + civitas.l('Refresh') + '</a> ' +
+				'<a href="#" class="btn iblock load">' + civitas.l('Load') + '</a> ' +
+				'<a href="#" class="btn iblock save">' + civitas.l('Save') + '</a> ' +
+			'</div>');
+		$(this.handle).on('click', '.fourty', function() {
+			var city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
+			var _settlement = core.get_settlement(city_index);
+			core.add_to_queue(_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
+				army: {
+					militia: 40,
+					axeman: 30,
+					knight: 10,
+					bowman: 20,
+					cannon: 200,
+					heavycannon: 200,
+					catapult: 300,
+					crossbowman: 10,
+					pikeman: 30
 				}
-				settlement.add_to_storage('wood', 1000);
-				settlement.add_to_storage('stones', 1000);
-				settlement.add_to_storage('woodplanks', 1000);
-				settlement.add_to_storage('provisions', 1000);
-				settlement.inc_coins(1000000);
-				var army = settlement.get_army();
-				for (var soldier in army) {
-					army[soldier] = civitas.utils.get_random(1, 100);
-				}
-				settlement.build('provisions');
-				settlement.build('camp');
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.eleven', function() {
-				var army = settlement.get_army();
-				for (var soldier in army) {
-					army[soldier] = civitas.utils.get_random(1, 100);
-				}
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.twelve', function() {
-				var navy = settlement.get_navy();
-				for (var ship in navy) {
-					navy[ship] = civitas.utils.get_random(1, 10);
-				}
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.fourteen', function() {
-				settlement.raise_faith(900);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.thirteen', function() {
-				settlement.inc_coins(1000);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.nine', function() {
-				settlement.inc_coins(100000);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.eight', function() {
-				settlement.inc_coins(1000000);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.one', function() {
-				settlement.inc_coins(10000);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.fifteen', function() {
-				settlement.add_to_storage('provisions', 1000);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.two', function() {
-				settlement.add_to_storage('wood', 100);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.thirty', function() {
-				settlement.add_to_storage('bread', 4);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.three', function() {
-				settlement.add_to_storage('stones', 100);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.four', function() {
-				settlement.add_to_storage('woodplanks', 100);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.five', function() {
-				settlement.level_up();
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.ten', function() {
-				settlement.raise_fame(5000);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.six', function() {
-				settlement.raise_fame(1000);
-				core.save_and_refresh();
-				return false;
-			}).on('click', '.seven', function() {
-				core.refresh_trades();
-				core.save_and_refresh();
-				return false;
 			});
-		}
+			return false;
+		}).on('click', '.fifty', function() {
+			for (var i = 0; i < 9; i++) {
+				settlement.level_up();
+			}
+			settlement.add_to_storage('wood', 1000);
+			settlement.add_to_storage('stones', 1000);
+			settlement.add_to_storage('woodplanks', 1000);
+			settlement.add_to_storage('provisions', 1000);
+			settlement.inc_coins(1000000);
+			var army = settlement.get_army();
+			for (var soldier in army) {
+				army[soldier] = civitas.utils.get_random(1, 100);
+			}
+			settlement.build('provisions');
+			settlement.build('camp');
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.eleven', function() {
+			var army = settlement.get_army();
+			for (var soldier in army) {
+				army[soldier] = civitas.utils.get_random(1, 100);
+			}
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.twelve', function() {
+			var navy = settlement.get_navy();
+			for (var ship in navy) {
+				navy[ship] = civitas.utils.get_random(1, 10);
+			}
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.fourteen', function() {
+			settlement.raise_faith(900);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.one', function() {
+			settlement.inc_coins(1000000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.fifteen', function() {
+			settlement.add_to_storage('provisions', 1000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.two', function() {
+			settlement.add_to_storage('wood', 1000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.thirty', function() {
+			settlement.add_to_storage('bread', 1000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.three', function() {
+			settlement.add_to_storage('stones', 1000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.four', function() {
+			settlement.add_to_storage('woodplanks', 1000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.five', function() {
+			settlement.level_up();
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.ten', function() {
+			settlement.raise_fame(5000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.six', function() {
+			settlement.raise_fame(1000);
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.seven', function() {
+			core.refresh_trades();
+			core.save_and_refresh();
+			return false;
+		}).on('click', '.refresh', function() {
+			$(handle + ' .storage-data').val(core.get_storage_data_as_text());
+			return false;
+		}).on('click', '.load', function() {
+			var save_game = $(handle + ' .storage-data').val();
+			if (save_game != '') {
+				core.open_modal(
+					function(button) {
+						if (button === 'yes') {
+							core.set_storage_data_as_text('live', save_game);
+							document.location.reload();
+						}
+					},
+					'Are you sure you want to load a new game? You wll lose all progress ' +
+						'on the current game!',
+					'Civitas'
+				);
+			} else {
+				core.error(civitas.l('Invalid save game.'));
+			}
+			return false;
+		}).on('click', '.save', function() {
+			var save_game = $(handle + ' .storage-data').val();
+			if (save_game == '') {
+				save_game = core.get_storage_data_as_text();
+			}
+			var a = document.createElement("a");
+			a.style.display = "none";
+			document.body.appendChild(a);
+			a.href = window.URL.createObjectURL(
+				new Blob([save_game], {
+					type: 'text/plain'
+				})
+			);
+			a.setAttribute("download", 'civitas_savegame.json');
+			a.click();
+			window.URL.revokeObjectURL(a.href);
+			document.body.removeChild(a);
+			return false;
+		});
 	}
 };
 
@@ -18935,11 +18984,6 @@ civitas.WINDOW_OPTIONS = {
 			'<fieldset>' +
 				'<a href="#" class="do-pause button">' + civitas.l('Pause') + '</a>' +
 				'<a href="#" class="do-restart button">' + civitas.l('Restart') + '</a>' +
-				'<a href="#" class="do-importexport button">' + civitas.l('Import/Export') + '</a>' +
-				'<div class="do-importexport-panel">' +
-				'<textarea class="do-importexport-textarea"></textarea>' +
-				'<a href="#" class="do-load button highlight">' + civitas.l('Load') + '</a>' +
-				'</div>' +
 				'<a href="#" class="do-options button">' + civitas.l('Options') + '</a>' +
 				'<div class="options-game"></div>' +
 				civitas.ui.window_about_section() +
@@ -18962,9 +19006,6 @@ civitas.WINDOW_OPTIONS = {
 			((core.get_settings('music') !== true) ? 'disabled' : '') + ' />' +
 			'</div>');
 		$(handle + ' #tab-ui').append('<div>' +
-			'<a href="#" class="console-control ui-control ' +
-			((core.get_settings('console') === true) ? 'on' : 'off') + '">' +
-			civitas.l('toggle console') + '</a>' +
 			'</div>');
 		$(handle + ' .tabs').tabs();
 		$(handle).on('click', '.do-resume', function () {
@@ -18989,28 +19030,6 @@ civitas.WINDOW_OPTIONS = {
 		}).on('click', '.do-about', function () {
 			$(handle + ' .about-game').slideToggle();
 			return false;
-		}).on('click', '.do-importexport', function () {
-			$(handle + ' .do-importexport-textarea').val(core.get_storage_data_as_text());
-			$(handle + ' .do-importexport-panel').slideToggle();
-			return false;
-		}).on('click', '.do-load', function () {
-			var save_game = $(handle + ' .do-importexport-textarea').val();
-			if (save_game != '') {
-				core.open_modal(
-					function(button) {
-						if (button === 'yes') {
-							core.set_storage_data_as_text('live', save_game);
-							document.location.reload();
-						}
-					},
-					'Are you sure you want to load a new game? You wll lose all progress ' +
-						'on the current game!',
-					'Civitas'
-				);
-			} else {
-				core.error(civitas.l('Invalid save game.'));
-			}
-			return false;
 		}).on('click', '.do-restart', function () {
 			core.open_modal(
 				function(button) {
@@ -19033,16 +19052,6 @@ civitas.WINDOW_OPTIONS = {
 				$(this).removeClass('off').addClass('on');
 				$('.music-volume').attr('disabled', false);
 				core.set_settings_music(false);
-			}
-			core.save();
-			return false;
-		}).on('click', '.console-control', function () {
-			if ($(this).hasClass('on')) {
-				$(this).removeClass('on').addClass('off');
-				core.set_settings_console(false);
-			} else {
-				$(this).removeClass('off').addClass('on');
-				core.set_settings_console(true);
 			}
 			core.save();
 			return false;

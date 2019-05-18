@@ -212,10 +212,6 @@ footer a[data-panel=help] {
 	background: transparent url(../images/ui/loading.svg) no-repeat;
 }
 
-.ui .console {
-	background: transparent url(../images/ui/console.jpg) no-repeat;
-}
-
 .notifications .notty .hide,
 .achievements-notifications .notty .hide {
 	background: transparent url(../images/ui/icons/close.png) no-repeat;

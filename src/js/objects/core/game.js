@@ -66,7 +66,6 @@ civitas.game = function () {
 	 * @private
 	 */
 	this.settings = {
-		console: false,
 		music: false
 	};
 
@@ -160,24 +159,6 @@ civitas.game = function () {
 			this.music.pause();
 		}
 		this.set_settings('music', value);
-		return this;
-	};
-
-	/**
-	 * Set console display on/off
-	 * 
-	 * @param {String} key
-	 * @param {Mixed} value
-	 * @public
-	 * @returns {civitas.game}
-	 */
-	this.set_settings_console = function(value) {
-		if (value === true) {
-			$('aside.console').show();
-		} else {
-			$('aside.console').hide();
-		}
-		this.set_settings('console', value);
 		return this;
 	};
 
