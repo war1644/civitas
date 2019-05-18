@@ -1216,8 +1216,8 @@ span.blue {
 
 #panel-camp,
 #panel-shipyard {
-	width: 750px;
-	max-width: 750px;
+	width: 780px;
+	max-width: 780px;
 	height: auto;
 	max-height: 600px;
 }
@@ -1236,7 +1236,7 @@ span.blue {
 
 .ui .panel .army-recruiter,
 .ui .panel .navy-recruiter {
-	width: 600px;
+	width: 630px;
 	float: right;
 	padding: 10px 0 0 0;
 	max-height: 410px;

@@ -406,110 +406,94 @@ civitas.RANDOM_UNCOMMON = [
 		stats: {
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Intellect',
 		stats: {
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Strength',
 		stats: {
 			strength: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Stamina',
 		stats: {
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Agility',
 		stats: {
 			agility: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Tiger',
 		stats: {
 			strength: 0,
 			agility: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Bear',
 		stats: {
 			strength: 0,
 			stamina: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Gorilla',
 		stats: {
 			strength: 0,
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Boar',
 		stats: {
 			strength: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Monkey',
 		stats: {
 			agility: 0,
 			stamina: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Falcon',
 		stats: {
 			agility: 0,
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Wolf',
 		stats: {
 			agility: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Eagle',
 		stats: {
 			stamina: 0,
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Whale',
 		stats: {
 			stamina: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Owl',
 		stats: {
 			intellect: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Bandit',
 		stats: {
 			agility: 0,
 			stamina: 0,
 			attackPower: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Beast',
 		stats: {
 			agility: 0,

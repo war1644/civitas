@@ -2651,7 +2651,7 @@ civitas.BUILDINGS = [{
 			stones: 20
 		},
 		requires: {
-			settlement_level: 8
+			settlement_level: 5
 		}
 	}, {
 		name: 'Clay Mine',
@@ -2728,9 +2728,9 @@ civitas.BUILDINGS = [{
 			settlement_level: 4
 		}
 	}, {
-		name: 'Mill',
+		name: 'Flour Mill',
 		handle: 'mill',
-		description: 'The Mill produces flour from the wheat cultivated by your Grain Farm.',
+		description: 'The Flour Mill produces flour from the wheat cultivated by your Grain Farm.',
 		is_production: true,
 		production: {
 			flour: 3
@@ -4254,7 +4254,7 @@ civitas.BUILDINGS = [{
 			clay: 20
 		},
 		requires: {
-			settlement_level: 3
+			settlement_level: 10
 		}
 	}, {
 		name: 'Grain farm',
@@ -5853,78 +5853,67 @@ civitas.RULERS = [
 		avatar: 1,
 		nationality: civitas.NATION_ROMAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Cronus',
 		title: 'Ruler',
 		avatar: 3,
 		nationality: civitas.NATION_PHOENICIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Dido',
 		title: 'Queen',
 		avatar: 6,
 		nationality: civitas.NATION_CARTHAGINIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Genghis',
 		title: 'Khan',
 		avatar: 19,
 		nationality: civitas.NATION_MONGOLIAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Khufu',
 		title: 'Pharaoh',
 		avatar: 20,
 		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Musa I',
 		title: 'Mansa',
 		avatar: 30,
 		nationality: civitas.NATION_MALINESE,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Sennacherib',
 		title: 'King',
 		avatar: 2,
 		nationality: civitas.NATION_ASSYRIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Pepi',
 		title: 'Pharaoh',
 		avatar: 40,
 		nationality: civitas.NATION_SUDANESE,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Hatshepsut',
 		title: 'Pharaoh',
 		avatar: 5,
 		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Clovis',
 		title: 'King',
 		avatar: 13,
 		nationality: civitas.NATION_FRANKS,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Gilgamesh',
 		title: 'King',
 		avatar: 31,
 		nationality: civitas.NATION_SUMERIAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Dalai Lama',
 		title: 'Priest',
 		avatar: 48,
@@ -5937,64 +5926,55 @@ civitas.RULERS = [
 		avatar: 28,
 		nationality: civitas.NATION_INDIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Charlemagne',
 		title: 'King',
 		avatar: 43,
 		nationality: civitas.NATION_FRANKS,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Darius',
 		title: 'King',
 		avatar: 38,
 		nationality: civitas.NATION_PERSAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Ivan III',
 		title: 'Tzar',
 		avatar: 19,
 		nationality: civitas.NATION_RUSSIAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Qin Shi Huang',
 		title: 'Emperor',
 		avatar: 45,
 		nationality: civitas.NATION_CHINESE,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Ozymandias',
 		title: 'Pharaoh',
 		avatar: 33,
 		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Timur',
 		title: 'Emperor',
 		avatar: 37,
 		nationality: civitas.NATION_PERSAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Pol Pot',
 		title: 'President',
 		avatar: 46,
 		nationality: civitas.NATION_KHMER,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Napoleon',
 		title: 'Emperor',
 		avatar: 47,
 		nationality: civitas.NATION_FRENCH,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Hirohito',
 		title: 'Emperor',
 		avatar: 30,
@@ -7363,110 +7343,94 @@ civitas.RANDOM_UNCOMMON = [
 		stats: {
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Intellect',
 		stats: {
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Strength',
 		stats: {
 			strength: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Stamina',
 		stats: {
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of Agility',
 		stats: {
 			agility: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Tiger',
 		stats: {
 			strength: 0,
 			agility: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Bear',
 		stats: {
 			strength: 0,
 			stamina: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Gorilla',
 		stats: {
 			strength: 0,
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Boar',
 		stats: {
 			strength: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Monkey',
 		stats: {
 			agility: 0,
 			stamina: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Falcon',
 		stats: {
 			agility: 0,
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Wolf',
 		stats: {
 			agility: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Eagle',
 		stats: {
 			stamina: 0,
 			intellect: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Whale',
 		stats: {
 			stamina: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Owl',
 		stats: {
 			intellect: 0,
 			spirit: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Bandit',
 		stats: {
 			agility: 0,
 			stamina: 0,
 			attackPower: 0
 		}
-	},
-	{
+	}, {
 		name: 'ITEM of the Beast',
 		stats: {
 			agility: 0,
@@ -8033,6 +7997,13 @@ civitas.utils = {
 		return health;
 	},
 
+	/**
+	 * Check if resource exists.
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @returns {Boolean}
+	 */
 	resource_exists: function(resource) {
 		for (var item in civitas.RESOURCES) {
 			if (item === resource) {
@@ -8355,6 +8326,13 @@ civitas.modules.ai = function (params) {
  */
 civitas.ui = {
 
+	/**
+	 * Create an item tooltip.
+	 *
+	 * @public
+	 * @param {Object} item
+	 * @returns {String}
+	 */
 	item_tooltip: function(item) {
 		var out = '<h4 style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + item.name + '</h4>';
 		if (item.flavour) {
@@ -8386,6 +8364,12 @@ civitas.ui = {
 		return out;
 	},
 
+	/**
+	 * Build the About section of the UI.
+	 *
+	 * @public
+	 * @returns {String}
+	 */
 	window_about_section: function() {
 		var out = '<a href="#" class="do-about button">' + civitas.l('About') + '</a>' +
 			'<div class="about-game">' +
@@ -8407,6 +8391,13 @@ civitas.ui = {
 		return out;
 	},
 
+	/**
+	 * Generate a generic panel template.
+	 *
+	 * @public
+	 * @param {String} title
+	 * @returns {String}
+	 */
 	generic_panel_template: function(title) {
 		if (typeof title === 'undefined') {
 			title = '';
@@ -17925,7 +17916,11 @@ civitas.PANEL_TRADES = {
 			}
 		}
 		$(el + ' .bm-materials').empty().append(out);
-		$(el).on('click', '.buy:not(.disabled)', function () {
+		$(el).on('click', '.settlement-info', function () {
+			var _settlement_name = $(this).data('settlement');
+			core.open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
+			return false;
+		}).on('click', '.buy:not(.disabled)', function () {
 			if (!settlement.can_trade()) {
 				core.error(civitas.l('You will need to construct a Trading Post before being ' +
 					'able to trade resources with other settlements.'));
@@ -18021,7 +18016,9 @@ civitas.PANEL_TRADES = {
 						civitas.TRADES_DISCOUNT) / 100);
 					var discount_price = Math.ceil(civitas.RESOURCES[item].price - discount);
 					out += '<tr>' +
-							'<td>' + settlements[z].name() + '</td>' +
+							'<td><a href="#" class="settlement-info tips" data-settlement="' + settlements[z].name() + '" title="' + 
+								civitas.l('View info about this settlement.') + 
+								'">' + settlements[z].name() + '</a></td>' +
 							'<td class="center">' + civitas.ui.resource_small_img(item) +
 							'</td>' +
 							'<td class="center">' + imports[item] + '</td>' +
@@ -18529,7 +18526,7 @@ civitas.PANEL_TAVERN = {
 			$(self.handle + ' #tab-info')
 				.empty()
 				.append(civitas.ui.building_panel(self.params_data, building.get_level()));
-			function empty_items() {
+			self.empty_items = function() {
 				$(self.handle + ' .hero-items')
 					.empty()
 					.append('<h3>' + civitas.l('Equipment') + '</h3>');
@@ -18545,7 +18542,7 @@ civitas.PANEL_TAVERN = {
 						.append('<div class="slot" data-backpack-slot="' + i + '"></div>');
 				}
 			}
-			empty_items();
+			self.empty_items();
 			for (var item in civitas.HEROES) {
 				_t += '<p><a href="#" data-hero="' + item + '">' + civitas.HEROES[item].name + 
 					'</a></p>';
@@ -18585,7 +18582,7 @@ civitas.PANEL_TAVERN = {
 							civitas.utils.get_damage_points(hero_data).min + '-' + 
 							civitas.utils.get_damage_points(hero_data).max + '</span>'
 					);
-					empty_items();
+					self.empty_items();
 					for (var x = 0; x < hero_data.items.length; x++) {
 						var slot = hero_data.items[x].slot;
 						$(self.handle + ' .hero-items > div.slot[data-slot="' + slot + '"]')

@@ -1164,78 +1164,67 @@ civitas.RULERS = [
 		avatar: 1,
 		nationality: civitas.NATION_ROMAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Cronus',
 		title: 'Ruler',
 		avatar: 3,
 		nationality: civitas.NATION_PHOENICIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Dido',
 		title: 'Queen',
 		avatar: 6,
 		nationality: civitas.NATION_CARTHAGINIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Genghis',
 		title: 'Khan',
 		avatar: 19,
 		nationality: civitas.NATION_MONGOLIAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Khufu',
 		title: 'Pharaoh',
 		avatar: 20,
 		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Musa I',
 		title: 'Mansa',
 		avatar: 30,
 		nationality: civitas.NATION_MALINESE,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Sennacherib',
 		title: 'King',
 		avatar: 2,
 		nationality: civitas.NATION_ASSYRIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Pepi',
 		title: 'Pharaoh',
 		avatar: 40,
 		nationality: civitas.NATION_SUDANESE,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Hatshepsut',
 		title: 'Pharaoh',
 		avatar: 5,
 		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Clovis',
 		title: 'King',
 		avatar: 13,
 		nationality: civitas.NATION_FRANKS,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Gilgamesh',
 		title: 'King',
 		avatar: 31,
 		nationality: civitas.NATION_SUMERIAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Dalai Lama',
 		title: 'Priest',
 		avatar: 48,
@@ -1248,64 +1237,55 @@ civitas.RULERS = [
 		avatar: 28,
 		nationality: civitas.NATION_INDIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Charlemagne',
 		title: 'King',
 		avatar: 43,
 		nationality: civitas.NATION_FRANKS,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Darius',
 		title: 'King',
 		avatar: 38,
 		nationality: civitas.NATION_PERSAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Ivan III',
 		title: 'Tzar',
 		avatar: 19,
 		nationality: civitas.NATION_RUSSIAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Qin Shi Huang',
 		title: 'Emperor',
 		avatar: 45,
 		nationality: civitas.NATION_CHINESE,
 		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
+	}, {
 		name: 'Ozymandias',
 		title: 'Pharaoh',
 		avatar: 33,
 		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_BALANCED
-	},
-	{
+	}, {
 		name: 'Timur',
 		title: 'Emperor',
 		avatar: 37,
 		nationality: civitas.NATION_PERSAN,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Pol Pot',
 		title: 'President',
 		avatar: 46,
 		nationality: civitas.NATION_KHMER,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Napoleon',
 		title: 'Emperor',
 		avatar: 47,
 		nationality: civitas.NATION_FRENCH,
 		personality: civitas.PERSONALITY_WARLORD
-	},
-	{
+	}, {
 		name: 'Hirohito',
 		title: 'Emperor',
 		avatar: 30,

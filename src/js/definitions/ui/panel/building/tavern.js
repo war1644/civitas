@@ -23,7 +23,7 @@ civitas.PANEL_TAVERN = {
 			$(self.handle + ' #tab-info')
 				.empty()
 				.append(civitas.ui.building_panel(self.params_data, building.get_level()));
-			function empty_items() {
+			self.empty_items = function() {
 				$(self.handle + ' .hero-items')
 					.empty()
 					.append('<h3>' + civitas.l('Equipment') + '</h3>');
@@ -39,7 +39,7 @@ civitas.PANEL_TAVERN = {
 						.append('<div class="slot" data-backpack-slot="' + i + '"></div>');
 				}
 			}
-			empty_items();
+			self.empty_items();
 			for (var item in civitas.HEROES) {
 				_t += '<p><a href="#" data-hero="' + item + '">' + civitas.HEROES[item].name + 
 					'</a></p>';
@@ -79,7 +79,7 @@ civitas.PANEL_TAVERN = {
 							civitas.utils.get_damage_points(hero_data).min + '-' + 
 							civitas.utils.get_damage_points(hero_data).max + '</span>'
 					);
-					empty_items();
+					self.empty_items();
 					for (var x = 0; x < hero_data.items.length; x++) {
 						var slot = hero_data.items[x].slot;
 						$(self.handle + ' .hero-items > div.slot[data-slot="' + slot + '"]')

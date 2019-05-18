@@ -60,6 +60,13 @@ civitas.utils = {
 		return health;
 	},
 
+	/**
+	 * Check if resource exists.
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @returns {Boolean}
+	 */
 	resource_exists: function(resource) {
 		for (var item in civitas.RESOURCES) {
 			if (item === resource) {

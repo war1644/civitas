@@ -3,6 +3,13 @@
  */
 civitas.ui = {
 
+	/**
+	 * Create an item tooltip.
+	 *
+	 * @public
+	 * @param {Object} item
+	 * @returns {String}
+	 */
 	item_tooltip: function(item) {
 		var out = '<h4 style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + item.name + '</h4>';
 		if (item.flavour) {
@@ -34,6 +41,12 @@ civitas.ui = {
 		return out;
 	},
 
+	/**
+	 * Build the About section of the UI.
+	 *
+	 * @public
+	 * @returns {String}
+	 */
 	window_about_section: function() {
 		var out = '<a href="#" class="do-about button">' + civitas.l('About') + '</a>' +
 			'<div class="about-game">' +
@@ -55,6 +68,13 @@ civitas.ui = {
 		return out;
 	},
 
+	/**
+	 * Generate a generic panel template.
+	 *
+	 * @public
+	 * @param {String} title
+	 * @returns {String}
+	 */
 	generic_panel_template: function(title) {
 		if (typeof title === 'undefined') {
 			title = '';

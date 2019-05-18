@@ -75,7 +75,11 @@ civitas.PANEL_TRADES = {
 			}
 		}
 		$(el + ' .bm-materials').empty().append(out);
-		$(el).on('click', '.buy:not(.disabled)', function () {
+		$(el).on('click', '.settlement-info', function () {
+			var _settlement_name = $(this).data('settlement');
+			core.open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
+			return false;
+		}).on('click', '.buy:not(.disabled)', function () {
 			if (!settlement.can_trade()) {
 				core.error(civitas.l('You will need to construct a Trading Post before being ' +
 					'able to trade resources with other settlements.'));
@@ -171,7 +175,9 @@ civitas.PANEL_TRADES = {
 						civitas.TRADES_DISCOUNT) / 100);
 					var discount_price = Math.ceil(civitas.RESOURCES[item].price - discount);
 					out += '<tr>' +
-							'<td>' + settlements[z].name() + '</td>' +
+							'<td><a href="#" class="settlement-info tips" data-settlement="' + settlements[z].name() + '" title="' + 
+								civitas.l('View info about this settlement.') + 
+								'">' + settlements[z].name() + '</a></td>' +
 							'<td class="center">' + civitas.ui.resource_small_img(item) +
 							'</td>' +
 							'<td class="center">' + imports[item] + '</td>' +

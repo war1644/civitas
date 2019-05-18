@@ -910,7 +910,7 @@ civitas.BUILDINGS = [{
 			stones: 20
 		},
 		requires: {
-			settlement_level: 8
+			settlement_level: 5
 		}
 	}, {
 		name: 'Clay Mine',
@@ -987,9 +987,9 @@ civitas.BUILDINGS = [{
 			settlement_level: 4
 		}
 	}, {
-		name: 'Mill',
+		name: 'Flour Mill',
 		handle: 'mill',
-		description: 'The Mill produces flour from the wheat cultivated by your Grain Farm.',
+		description: 'The Flour Mill produces flour from the wheat cultivated by your Grain Farm.',
 		is_production: true,
 		production: {
 			flour: 3
@@ -2513,7 +2513,7 @@ civitas.BUILDINGS = [{
 			clay: 20
 		},
 		requires: {
-			settlement_level: 3
+			settlement_level: 10
 		}
 	}, {
 		name: 'Grain farm',

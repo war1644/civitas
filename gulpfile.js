@@ -97,7 +97,7 @@ gulp.task('app', function() {
     .pipe(gulp.dest('dist/'))
 });
 
-gulp.task('app_minify', gulp.parallel('app'), function() {
+gulp.task('app_minify', gulp.series(gulp.parallel('app'), function() {
 	return gulp.src([
 		'dist/app.debug.js'
   	])
@@ -108,7 +108,7 @@ gulp.task('app_minify', gulp.parallel('app'), function() {
     	'.' + ((new Date()).getMonth() + 1) + '' +
     	(new Date()).getDate() + '' + (new Date()).getFullYear()))
     .pipe(gulp.dest('dist/'))
-});
+}));
 
 gulp.task('lib', function() {
 	del([
@@ -125,16 +125,14 @@ gulp.task('lib', function() {
     .pipe(gulp.dest('dist/'))
 });
 
-gulp.task('lib_minify', gulp.parallel('lib'), function() {
+gulp.task('lib_minify', gulp.series(gulp.parallel('lib'), function() {
 	return gulp.src([
 		'dist/libs.debug.js'
   	])
     .pipe(concat('libs.min.js'))
-    .pipe(uglify({
-    	preserveComments: 'license'
-  	}))
+    .pipe(uglify())
     .pipe(gulp.dest('dist/'))
-});
+}));
 
 gulp.task('css', function() {
 	del([
@@ -161,18 +159,18 @@ gulp.task('css', function() {
     .pipe(gulp.dest('dist/'))
 });
 
-gulp.task('css_minify', gulp.parallel('css'), function() {
+gulp.task('css_minify', gulp.series(gulp.parallel('css'), function() {
 	return gulp.src([
 		'dist/app.debug.css'
   	])
     .pipe(concat('app.min.css'))
     .pipe(cleanCSS())
     .pipe(gulp.dest('dist/'))
-});
+}));
 
-gulp.task('minify', gulp.parallel('app_minify', 'lib_minify', 'css_minify'), function() {
+gulp.task('minify', gulp.series(gulp.parallel(['app_minify', 'lib_minify', 'css_minify']), async function() {
 	return true;
-});
+}));
 
 gulp.task('watch', function () {
 	gulp.watch("src/**/*.js", gulp.parallel('app'));
@@ -180,6 +178,6 @@ gulp.task('watch', function () {
 	gulp.watch("vendor/**/*.js", gulp.parallel('lib'));
 });
 
-gulp.task('build', gulp.parallel('css', 'app', 'lib'));
+gulp.task('build', gulp.series(gulp.parallel('css', 'app', 'lib')));
 
-gulp.task('default', gulp.parallel('watch', 'build'));
+gulp.task('default', gulp.series(gulp.parallel('watch', 'build')));
