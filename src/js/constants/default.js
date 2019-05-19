@@ -106,7 +106,7 @@ civitas.TRADES_DISCOUNT = 20;
  * @constant
  * @type {Number}
  */
-civitas.POPULATION_PER_LEVEL = 230000;
+civitas.POPULATION_PER_LEVEL = 2300;
 
 /**
  * The black market discount.

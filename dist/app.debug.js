@@ -127,7 +127,7 @@ civitas.TRADES_DISCOUNT = 20;
  * @constant
  * @type {Number}
  */
-civitas.POPULATION_PER_LEVEL = 230000;
+civitas.POPULATION_PER_LEVEL = 2300;
 
 /**
  * The black market discount.
@@ -8768,9 +8768,7 @@ civitas.objects.settlement.prototype.storage = function(value) {
 civitas.objects.settlement.prototype._fill_resources = function(resources) {
 	var difficulty = this.core().difficulty();
 	if (this.is_player()) {
-		if (typeof resources === 'undefined') {
-			resources = civitas.START_RESOURCES[difficulty - 1];
-		}
+		resources = civitas.START_RESOURCES[difficulty - 1];
 	}
 	for (var item in civitas.RESOURCES) {
 		if (typeof resources[item] === 'undefined') {
