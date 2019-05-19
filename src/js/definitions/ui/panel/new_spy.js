@@ -23,7 +23,7 @@ civitas.PANEL_NEW_SPY = {
 		var settlements = core.get_settlements();
 		var espionage = my_settlement.espionage();
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
-		var distance = civitas.utils.get_distance_in_days(location, civitas.SETTLEMENTS[settlement.id()].location);
+		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
 		var _t = '<fieldset>' +
 			'<legend>' + civitas.l('Initial costs') + '</legend>' +
 			'<dl>';

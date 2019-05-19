@@ -35,23 +35,26 @@ civitas.PANEL_WORLD = {
 		var settlements = core.get_settlements();
 		var queue_actions = core.queue();
 		var class_name = '';
+		var location = {
+		};
 		var loc = civitas['SETTLEMENT_LOCATION_' + settlement.climate().name.toUpperCase()];
 		var out = '<div data-name="yoursettlement" class="tips settlement c1" title="' +
 			civitas.l('City of') + ' ' + settlement.name() + '" style="left:' + loc.x + 'px;top:' +
 			loc.y + 'px"></div>';
 		for (var i = 1; i < settlements.length; i++) {
+			location = settlements[i].get_location();
 			if (settlements[i].get_type() === civitas.CITY) {
 				out += '<div data-name="' + settlements[i].name() + '" class="tips settlement c' +
-					civitas.SETTLEMENTS[settlements[i].id()].icon + '" title="' +
+					settlements[i].icon() + '" title="' +
 					civitas.l('City of') + ' ' + settlements[i].name() + '" style="left:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.x + 'px;top:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.y + 'px"></div>';
+					location.x + 'px;top:' +
+					location.y + 'px"></div>';
 			} else {
 				out += '<div data-name="' + settlements[i].name() +
 					'" class="tips settlement v1" title="' + civitas.l('Village of') + ' ' +
 					settlements[i].name() + '" style="left:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.x + 'px;top:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.y + 'px"></div>';
+					location.x + 'px;top:' +
+					location.y + 'px"></div>';
 			}
 		}
 		for (var i = 0; i < queue_actions.length; i++) {

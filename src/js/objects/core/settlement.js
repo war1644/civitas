@@ -25,7 +25,19 @@ civitas.objects.settlement = function(params) {
 		population: null,
 		ruler: null,
 		religion: null,
-		player: null
+		player: null,
+		nationality: null
+	};
+
+	/**
+	 * Location of the settlement.
+	 *
+	 * @private
+	 * @type {Object}
+	 */
+	this.location = {
+		x: 0,
+		y: 0
 	};
 
 	/**
@@ -127,6 +139,8 @@ civitas.objects.settlement = function(params) {
 			params.properties.climate : civitas.CLIMATE_TEMPERATE;
 		this.properties.religion = (typeof params.properties.religion !== 'undefined') ?
 			params.properties.religion : civitas.RELIGION_NONE;
+		this.properties.nationality = (typeof params.properties.nationality !== 'undefined') ?
+			params.properties.nationality : civitas.NATION_PHOENICIAN;
 		this.properties.ruler = params.properties.ruler;
 		this.properties.icon = (typeof params.properties.icon !== 'undefined') ?
 			params.properties.icon : 1;
@@ -140,10 +154,14 @@ civitas.objects.settlement = function(params) {
 		this._status = (typeof params.status !== 'undefined') ? params.status : {};
 		this._heroes = (typeof params.heroes !== 'undefined') ? params.heroes : [];
 		this.resources = this._fill_resources(params.resources);
+		this.location = params.location;
 		if (typeof params.trades !== 'undefined') {
 			this.trades = params.trades;
 		} else {
-			this.reset_trades();
+			this.trades = {
+				'imports': {},
+				'exports': {}
+			};
 		}
 		if (this.is_player() === false) {
 			this.resources.fame = civitas.LEVELS[this.level()];
@@ -182,7 +200,8 @@ civitas.objects.settlement = function(params) {
 			navy: this.get_navy(),
 			buildings: this.export_buildings(),
 			mercenary: this.mercenary(),
-			heroes: this.heroes()
+			heroes: this.heroes(),
+			location: this.get_location()
 		};
 		if (this.is_player()) {
 			data.status = this.status();
@@ -457,8 +476,8 @@ civitas.objects.settlement = function(params) {
 			this.properties.nationality = value;
 		}
 		return {
-			id: this.properties.ruler.nationality,
-			name: civitas.NATIONS[this.properties.ruler.nationality].capitalize()
+			id: this.properties.nationality,
+			name: civitas.NATIONS[this.properties.nationality].capitalize()
 		};
 	};
 
@@ -584,6 +603,28 @@ civitas.objects.settlement = function(params) {
 			this._heroes = value;
 		}
 		return this._heroes;
+	};
+
+	/**
+	 * Get the location of the settlement.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	this.get_location = function() {
+		return this.location;
+	};
+
+	/**
+	 * Set the location of the settlement.
+	 *
+	 * @public
+	 * @param {Object} location
+	 * @returns {civitas.settlement}
+	 */
+	this.set_location = function(location) {
+		this.location = location;
+		return this;
 	};
 
 	// Fire up the constructor

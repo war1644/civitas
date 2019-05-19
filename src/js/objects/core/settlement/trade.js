@@ -119,33 +119,20 @@ civitas.objects.settlement.prototype.buy_from_settlement = function(settlement, 
  * @returns {Boolean}
  */
 civitas.objects.settlement.prototype.reset_trades = function() {
-	var trades = {
-		'imports': {},
-		'exports': {}
-	};
-	var amount = 0;
-	if (typeof civitas.SETTLEMENTS[this.id()] !== 'undefined') {
-		var _trades = civitas.SETTLEMENTS[this.id()].trades;
-		for (var goods_type in _trades) {
-			for (var item in _trades[goods_type]) {
-				amount = civitas.utils.get_random_by_importance(_trades[goods_type][item])
-				if (goods_type === 'exports') {
-					if (this.resources[item] < amount) {
-						this.resources[item] += amount;
-					}
-					/* else {
-						this.resources[item] = Math.floor(this.resources[item] / 2);
-					}*/
-				}
-				trades[goods_type][item] = amount;
-			}
-		}
-		this.trades = trades;
-		return true;
-	} else {
-		this.trades = trades;
-		return false;
+	var data = this.core.generate_random_resources(false, this.get_type());
+	var new_resources = data.resources;
+	new_resources.coins = this.resources.coins;
+	new_resources.fame = this.resources.fame;
+	new_resources.prestige = this.resources.prestige;
+	new_resources.espionage = this.resources.espionage;
+	new_resources.research = this.resources.research;
+	new_resources.faith = this.resources.faith;
+	this.resources = this._fill_resources(new_resources);
+	if (this.get_type === civitas.CITY) {
+		var new_trades = data.trades;
+		this.trades = new_trades;
 	}
+	return true;
 };
 
 /**
@@ -358,7 +345,27 @@ civitas.objects.settlement.prototype.remove_from_imports = function(settlement, 
 civitas.objects.settlement.prototype.get_trades = function() {
 	return this.trades;
 };
-	
+
+/**
+ * Get the exports of this settlement.
+ * 
+ * @public
+ * @returns {Object}
+ */
+civitas.objects.settlement.prototype.get_trades_exports = function() {
+	return this.trades.exports;
+};
+
+/**
+ * Get the imports of this settlement.
+ * 
+ * @public
+ * @returns {Object}
+ */
+civitas.objects.settlement.prototype.get_trades_imports = function() {
+	return this.trades.imports;
+};
+
 /**
  * Set the imports and exports of this settlement.
  * 

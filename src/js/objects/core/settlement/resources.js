@@ -97,33 +97,19 @@ civitas.objects.settlement.prototype.storage = function(value) {
  * @private
  * @returns {Object}
  */
-civitas.objects.settlement.prototype._fill_resources = function(_resources) {
+civitas.objects.settlement.prototype._fill_resources = function(resources) {
 	var difficulty = this.core().difficulty();
-	var _trades = {};
-	if (!this.is_player()) {
-		if (this.is_city() && typeof civitas.SETTLEMENTS[this.id()] !== 'undefined') {
-			_trades = civitas.SETTLEMENTS[this.id()].trades.exports;
-		}
-		for (var item in civitas.RESOURCES) {
-			if (typeof _resources[item] === 'undefined') {
-				if (typeof _trades[item] !== 'undefined') {
-					_resources[item] = civitas.utils.get_random_by_importance(_trades[item]);
-				} else {
-					_resources[item] = 0;
-				}
-			}
-		}
-	} else {
-		if (typeof _resources === 'undefined') {
-			_resources = civitas.START_RESOURCES[difficulty - 1];
-		}
-		for (var item in civitas.RESOURCES) {
-			if (typeof _resources[item] === 'undefined') {
-				_resources[item] = 0;
-			}
+	if (this.is_player()) {
+		if (typeof resources === 'undefined') {
+			resources = civitas.START_RESOURCES[difficulty - 1];
 		}
 	}
-	return _resources;
+	for (var item in civitas.RESOURCES) {
+		if (typeof resources[item] === 'undefined') {
+			resources[item] = 0;
+		}
+	}
+	return resources;
 };
 
 /**

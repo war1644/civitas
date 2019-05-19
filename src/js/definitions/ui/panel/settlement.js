@@ -216,9 +216,9 @@ civitas.PANEL_SETTLEMENT = {
 				my_settlement.get_diplomacy_status(settlement.id()).name + '</dd>' +
 				'<dt>' + civitas.l('Distance') + '</dt><dd>' +
 				civitas.utils.get_distance(location,
-					civitas.SETTLEMENTS[settlement.id()].location) + ' miles (' +
+					settlement.get_location()) + ' miles (' +
 				civitas.utils.get_distance_in_days(location,
-					civitas.SETTLEMENTS[settlement.id()].location) + ' days)</dd>' +
+					settlement.get_location()) + ' days)</dd>' +
 			'</dl>');
 		$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(settlement.get_army()));
 		$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));

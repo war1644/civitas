@@ -31,7 +31,8 @@ civitas.PANEL_DEBUG = {
 					'<a href="#" class="btn iblock eleven">' + civitas.l('random soldiers') + '</a> ' +
 					'<a href="#" class="btn iblock twelve">' + civitas.l('random ships') + '</a> ' +
 					'<a href="#" class="btn iblock fourty">' + civitas.l('defend city') + '</a> ' +
-					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> ' +
+					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> <br /><br />' +
+					'<a href="#" class="btn iblock ninety">' + civitas.l('add city') + '</a> ' +
 				'</div>');
 		$(this.handle + ' #tab-data').empty().append(
 			'<textarea class="storage-data"></textarea>' +
@@ -134,6 +135,9 @@ civitas.PANEL_DEBUG = {
 			return false;
 		}).on('click', '.refresh', function() {
 			$(handle + ' .storage-data').val(core.get_storage_data_as_text());
+			return false;
+		}).on('click', '.ninety', function() {
+			core.add_random_settlement();
 			return false;
 		}).on('click', '.load', function() {
 			var save_game = $(handle + ' .storage-data').val();

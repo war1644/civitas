@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.5182019
+ * @version 0.2.0.5192019
  * @license MIT
  */ 'use strict';
 
@@ -75,7 +75,7 @@ civitas.ENCRYPTION = false;
  * @constant
  * @type {Number}
  */
-civitas.MAX_SETTLEMENT_LEVEL = 40;
+civitas.MAX_SETTLEMENT_LEVEL = 45;
 
 /**
  * URL to the game assets
@@ -182,7 +182,8 @@ civitas.LEVELS = [
 	610000, 730000, 800000, 930000, 1100000,
 	1300000, 1500000, 1800000, 2500000, 3000000, 
 	4000000, 5500000, 6500000, 8000000, 9000000, 
-	10000000, 12000000, 16000000, 20000000, 50000000
+	10000000, 12000000, 16000000, 20000000, 50000000,
+	60000000, 70000000, 80000000, 90000000, 100000000
 ];
 
 /**
@@ -1739,49 +1740,6 @@ civitas.SHIPS = {
 	}
 };
 
-/*
-civitas.SETTLEMENT_START_BUILDINGS_TROPICAL = [{
-		handle: 'marketplace',
-		level: 4
-	}, {
-		handle: 'lumberjack',
-		level: 1
-	}, {
-		handle: 'stone',
-		level: 1
-	}, {
-		handle: 'house1',
-		level: 6
-	}, {
-		handle: 'house2',
-		level: 6
-	}, {
-		handle: 'house3',
-		level: 6
-	}, {
-		handle: 'house4',
-		level: 6
-	}, {
-		handle: 'almondsfield',
-		level: 1
-	}, {
-		handle: 'almondsfarm',
-		level: 1
-	}, {
-		handle: 'sugarfield',
-		level: 1
-	}, {
-		handle: 'sugarfarm',
-		level: 1
-	}, {
-		handle: 'indigofield',
-		level: 1
-	}, {
-		handle: 'indigofarm',
-		level: 1
-	}];
-*/
-
 /**
  * Buildings native to the tropical climate.
  * 
@@ -2753,7 +2711,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Bakery',
 		handle: 'bakery',
-		description: 'The Bakery creates bread from flour, thus providing your settlers with basic food.',
+		description: 'The Bakery creates bread from flour, thus providing your settlers ' +
+			'with basic food.',
 		is_production: true,
 		production: {
 			bread: 4
@@ -2777,7 +2736,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Pottery Workshop',
 		handle: 'pottery',
-		description: 'The Pottery Workshop uses a high-temperature kiln and clay to create pottery for the inhabitants of your settlement.',
+		description: 'The Pottery Workshop uses a high-temperature kiln and clay to ' +
+			'create pottery for the inhabitants of your settlement.',
 		is_production: true,
 		production: {
 			pottery: 4
@@ -2802,7 +2762,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Gunpowder Mill',
 		handle: 'gunpowdermill',
-		description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder from the sulphur found in your Charcoal Burner`s Hut.',
+		description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder ' +
+			'from the sulphur found in your Charcoal Burner`s Hut.',
 		is_production: true,
 		production: {
 			gunpowder: 1
@@ -2828,7 +2789,9 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Armory',
 		handle: 'armory',
-		description: 'The Armory is a major building that produces weapons and armor for your soldiers. If you want to conquer other settlements, you will need to build one and keep it stocked with materials.',
+		description: 'The Armory is a major building that produces weapons and armor for your ' +
+			'soldiers. If you want to conquer other settlements, you will need to build one and ' +
+			'keep it stocked with materials.',
 		is_production: true,
 		production: {
 			weapons: 1,
@@ -2857,7 +2820,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Butcher',
 		handle: 'butcher',
-		description: 'The Butcher slaughters cattle for meat, providing food that is more nutritious. Hides will be processed further at the Tannery.',
+		description: 'The Butcher slaughters cattle for meat, providing food that is more nutritious. ' +
+			'Hides will be processed further at the Tannery.',
 		is_production: true,
 		production: {
 			meat: 3,
@@ -2883,7 +2847,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Iron smelter',
 		handle: 'ironsmelter',
-		description: 'The Iron Smelter (or foundry) smelts iron ores into iron bars using coal, ready to be transformed into weapons.',
+		description: 'The Iron Smelter (or foundry) smelts iron ores into iron bars using coal, ' +
+			'ready to be transformed into weapons.',
 		is_production: true,
 		production: {
 			iron: 4
@@ -3005,7 +2970,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Clothing Factory',
 		handle: 'clothingfactory',
-		description: 'The Clothing Factory produces clothes for your settlement. You don`t want naked citizens, do you?',
+		description: 'The Clothing Factory produces clothes for your settlement. You don`t ' +
+			'want naked citizens, do you?',
 		is_production: true,
 		production: {
 			clothes: 1
@@ -3135,7 +3101,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Winery',
 		handle: 'winery',
-		description: 'The Winery uses the grapes from your Grapes Farm and processes them into wine. You will need to import the bottles from another settlement though.',
+		description: 'The Winery uses the grapes from your Grapes Farm and processes them ' +
+			'into wine. You will need to import the bottles from another settlement though.',
 		is_production: true,
 		production: {
 			wine: 2
@@ -3188,7 +3155,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Paper Mill',
 		handle: 'papermill',
-		description: 'The Paper Mill uses wood to produce paper, which is used together with indigo to produce books at the Printing House.',
+		description: 'The Paper Mill uses wood to produce paper, which is used together with ' +
+			'indigo to produce books at the Printing House.',
 		is_production: true,
 		production: {
 			paper: 2
@@ -3372,7 +3340,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Marzipan Workshop',
 		handle: 'marzipanworkshop',
-		description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage to create delicious marzipan. Your settlers will definitely appreciate it.',
+		description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage ' +
+			'to create delicious marzipan. Your settlers will definitely appreciate it.',
 		is_production: true,
 		production: {
 			marzipan: 1
@@ -3516,7 +3485,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Brewery',
 		handle: 'brewery',
-		description: 'The Brewery brews beer from wheat. Beer is needed for higher-level hourses or your city`s navy.',
+		description: 'The Brewery brews beer from wheat. Beer is needed for higher-level ' +
+			'hourses or your city`s navy.',
 		is_production: true,
 		production: {
 			beer: 2
@@ -3627,7 +3597,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Charcoal Burner`s Hut',
 		handle: 'charcoalburnerhut',
-		description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which is needed by all your smelters.',
+		description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which ' +
+			'is needed by all your smelters.',
 		is_production: true,
 		production: {
 			coal: 4,
@@ -4127,7 +4098,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Cattle Farm',
 		handle: 'cattlefarm',
-		description: 'A Cattle Farm grows cattle so your settlers can eat food that is more nutritious than bread.',
+		description: 'A Cattle Farm grows cattle so your settlers can eat food that ' +
+			'is more nutritious than bread.',
 		is_production: true,
 		production: {
 			cattle: 1,
@@ -4171,7 +4143,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Pig Farm',
 		handle: 'pigfarm',
-		description: 'A Pig Farm grows pigs so your settlers can eat food that is more nutritious than bread.',
+		description: 'A Pig Farm grows pigs so your settlers can eat food that is more ' +
+			'nutritious than bread.',
 		is_production: true,
 		production: {
 			meat: 1,
@@ -4342,7 +4315,8 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Coffee farm',
 		handle: 'coffeefarm',
-		description: 'A Coffee Farm cultivates coffee beans in your city, ready to be processed into coffee.',
+		description: 'A Coffee Farm cultivates coffee beans in your city, ready to be ' +
+			'processed into coffee.',
 		is_production: true,
 		production: {
 			coffeebeans: 2,
@@ -4507,7 +4481,8 @@ civitas.BUILDINGS = [{
 		name: 'Indigo farm',
 		handle: 'indigofarm',
 		is_production: true,
-		description: 'The Indigo Farm produces indigo that can be turned to ink and used to create books.',
+		description: 'The Indigo Farm produces indigo that can be turned to ink and ' +
+			'used to create books.',
 		production: {
 			indigo: 1,
 			herbs: 1
@@ -4635,7 +4610,8 @@ civitas.BUILDINGS = [{
 		name: 'Toolmaker Workshop',
 		handle: 'toolmaker',
 		is_production: true,
-		description: 'Tools are needed to construct higher-level buildings, and a Toolmaker Workshop will create those for your settlement.',
+		description: 'Tools are needed to construct higher-level buildings, and a ' +
+			'Toolmaker Workshop will create those for your settlement.',
 		production: {
 			tools: 2
 		},
@@ -4703,1142 +4679,29 @@ civitas.CITY = 0;
  */
 civitas.VILLAGE = 1;
 
-/**
- * List of all the settlements in the world.
- * 
- * @constant
- * @type {Object}
- */
-civitas.SETTLEMENTS = {
-	1: {
-		icon: 7,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		level: 3,
-		resources: {
-			coins: 2300000,
-			prestige: 3700,
-			espionage: 400
-		},
-		trades: {
-			imports: {
-				gold: civitas.IMPORTANCE_MEDIUM,
-				milk: civitas.IMPORTANCE_HIGH,
-				goldores: civitas.IMPORTANCE_HIGH,
-				weapons: civitas.IMPORTANCE_LOW,
-				herbs: civitas.IMPORTANCE_HIGH,
-				sugarcane: civitas.IMPORTANCE_HIGH,
-				quartz: civitas.IMPORTANCE_HIGH,
-				gunpowder: civitas.IMPORTANCE_HIGH,
-				roses: civitas.IMPORTANCE_MEDIUM,
-				wine: civitas.IMPORTANCE_VITAL,
-				clay: civitas.IMPORTANCE_VITAL,
-				provisions: civitas.IMPORTANCE_HIGH,
-				fish: civitas.IMPORTANCE_MEDIUM,
-				catapults: civitas.IMPORTANCE_MEDIUM
-			},
-			exports: {
-				hemp: civitas.IMPORTANCE_VITAL,
-				indigo: civitas.IMPORTANCE_HIGH,
-				armor: civitas.IMPORTANCE_MEDIUM,
-				sugar: civitas.IMPORTANCE_HIGH,
-				barrels: civitas.IMPORTANCE_MEDIUM,
-				paper: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				stones: civitas.IMPORTANCE_HIGH
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		navy: {
-			corsair: 4,
-			caravel: 2,
-			galleon: 2,
-			warship: 6,
-			shipoftheline: 1
-		},
-		location: {
-			x: 380,
-			y: 190
-		}
-	},
-	2: {
-		icon: 4,
-		climate: civitas.CLIMATE_TROPICAL,
-		religion: civitas.RELIGION_TAOISM,
-		level: 32,
-		resources: {
-			coins: 2300000,
-			prestige: 2700,
-			espionage: 1000
-		},
-		trades: {
-			imports: {
-				wax: civitas.IMPORTANCE_HIGH,
-				pottery: civitas.IMPORTANCE_HIGH,
-				sugar: civitas.IMPORTANCE_VITAL,
-				sugarcane: civitas.IMPORTANCE_MEDIUM,
-				glasses: civitas.IMPORTANCE_HIGH,
-				furs: civitas.IMPORTANCE_VITAL,
-				stones: civitas.IMPORTANCE_HIGH,
-				fish: civitas.IMPORTANCE_HIGH,
-				mosaic: civitas.IMPORTANCE_HIGH,
-				candles: civitas.IMPORTANCE_LOW,
-				bread: civitas.IMPORTANCE_VITAL,
-				pearls: civitas.IMPORTANCE_LOW,
-				salt: civitas.IMPORTANCE_HIGH
-			},
-			exports: {
-				leather: civitas.IMPORTANCE_MEDIUM,
-				indigo: civitas.IMPORTANCE_LOW,
-				flour: civitas.IMPORTANCE_VITAL,
-				donkeys: civitas.IMPORTANCE_HIGH,
-				glass: civitas.IMPORTANCE_MEDIUM,
-				coal: civitas.IMPORTANCE_HIGH,
-				gunpowder: civitas.IMPORTANCE_HIGH,
-				bottles: civitas.IMPORTANCE_HIGH,
-				fish: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_VITAL,
-				wood: civitas.IMPORTANCE_VITAL
-			}
-		},
-		navy: {
-			corsair: 6,
-			caravel: 4,
-			galleon: 2,
-			warship: 3,
-			shipoftheline: 4
-		},
-		army: {
-			militia: 40,
-			axeman: 50,
-			knight: 10,
-			bowman: 50,
-			crossbowman: 50,
-			pikeman: 40
-		},
-		navy: {
+civitas.WORLD_SIZE_WIDTH = 960;
 
-		},
-		location: {
-			x: 140,
-			y: 400
-		}
-	},
-	3: {
-		icon: 7,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_JUDAISM,
-		level: 30,
-		resources: {
-			coins: 1600000,
-			prestige: 4000,
-			espionage: 800
-		},
-		trades: {
-			imports: {
-				wheat: civitas.IMPORTANCE_VITAL,
-				wood: civitas.IMPORTANCE_HIGH,
-				barrels: civitas.IMPORTANCE_MEDIUM,
-				provisions: civitas.IMPORTANCE_HIGH,
-				furs: civitas.IMPORTANCE_VITAL,
-				sugar: civitas.IMPORTANCE_LOW,
-				bottles: civitas.IMPORTANCE_HIGH,
-				jewelery: civitas.IMPORTANCE_HIGH,
-				tools: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_HIGH,
-				sugarcane: civitas.IMPORTANCE_LOW,
-				clay: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				herbs: civitas.IMPORTANCE_HIGH,
-				silver: civitas.IMPORTANCE_VITAL,
-				sugarcane: civitas.IMPORTANCE_HIGH,
-				glasses: civitas.IMPORTANCE_LOW,
-				furcoats: civitas.IMPORTANCE_MEDIUM,
-				indigo: civitas.IMPORTANCE_LOW,
-				pottery: civitas.IMPORTANCE_HIGH,
-				wheat: civitas.IMPORTANCE_HIGH
-			}
-		},
-		army: {
-			militia: 1210,
-			axeman: 520,
-			crossbowman: 320,
-			pikeman: 300
-		},
-		location: {
-			x: 240,
-			y: 140
-		}
-	},
-	4: {
-		icon: 5,
-		climate: civitas.CLIMATE_TROPICAL,
-		religion: civitas.RELIGION_BUDDHISM,
-		level: 28,
-		resources: {
-			coins: 2000000,
-			prestige: 3500,
-			espionage: 300
-		},
-		trades: {
-			imports: {
-				flour: civitas.IMPORTANCE_HIGH,
-				milk: civitas.IMPORTANCE_VITAL,
-				brass: civitas.IMPORTANCE_HIGH,
-				furs: civitas.IMPORTANCE_LOW,
-				goldores: civitas.IMPORTANCE_HIGH,
-				fibers: civitas.IMPORTANCE_MEDIUM,
-				fish: civitas.IMPORTANCE_VITAL,
-				cider: civitas.IMPORTANCE_LOW,
-				silk: civitas.IMPORTANCE_HIGH,
-				cattle: civitas.IMPORTANCE_MEDIUM,
-				wheat: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				meat: civitas.IMPORTANCE_VITAL,
-				clothes: civitas.IMPORTANCE_VITAL,
-				fish: civitas.IMPORTANCE_HIGH,
-				bottles: civitas.IMPORTANCE_HIGH,
-				camels: civitas.IMPORTANCE_HIGH,
-				armor: civitas.IMPORTANCE_MEDIUM,
-				gunpowder: civitas.IMPORTANCE_HIGH,
-				pottery: civitas.IMPORTANCE_HIGH,
-				coffeebeans: civitas.IMPORTANCE_HIGH,
-				silk: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 90,
-			axeman: 70,
-			bowman: 50,
-			crossbowman: 30,
-			pikeman: 90
-		},
-		location: {
-			x: 890,
-			y: 150
-		}
-	},
-	5: {
-		icon: 5,
-		climate: civitas.CLIMATE_ARID,
-		religion: civitas.RELIGION_ISLAM,
-		level: 39,
-		resources: {
-			coins: 2000000,
-			prestige: 7800,
-			espionage: 900
-		},
-		trades: {
-			imports: {
-				barrels: civitas.IMPORTANCE_HIGH,
-				books: civitas.IMPORTANCE_LOW,
-				paper: civitas.IMPORTANCE_LOW,
-				coal: civitas.IMPORTANCE_VITAL,
-				provisions: civitas.IMPORTANCE_HIGH,
-				herbs: civitas.IMPORTANCE_HIGH,
-				tools: civitas.IMPORTANCE_HIGH,
-				copper: civitas.IMPORTANCE_MEDIUM,
-				mosaic: civitas.IMPORTANCE_MEDIUM,
-				woodplanks: civitas.IMPORTANCE_HIGH,
-				indigo: civitas.IMPORTANCE_HIGH
-			},
-			exports: {
-				coal: civitas.IMPORTANCE_VITAL,
-				ironores: civitas.IMPORTANCE_LOW,
-				copper: civitas.IMPORTANCE_MEDIUM,
-				goldores: civitas.IMPORTANCE_LOW,
-				oil: civitas.IMPORTANCE_HIGH,
-				camels: civitas.IMPORTANCE_VITAL,
-				iron: civitas.IMPORTANCE_LOW,
-				gold: civitas.IMPORTANCE_VITAL,
-				catapults: civitas.IMPORTANCE_MEDIUM,
-				brass: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 120,
-			knight: 10,
-			bowman: 120,
-			crossbowman: 30,
-			pikeman: 50
-		},
-		location: {
-			x: 830,
-			y: 530
-		}
-	},
-	6: {
-		icon: 2,
-		climate: civitas.CLIMATE_TROPICAL,
-		religion: civitas.RELIGION_HINDUISM,
-		level: 29,
-		resources: {
-			coins: 1900000,
-			prestige: 5700,
-			espionage: 500
-		},
-		trades: {
-			imports: {
-				meat: civitas.IMPORTANCE_HIGH,
-				milk: civitas.IMPORTANCE_LOW,
-				weapons: civitas.IMPORTANCE_VITAL,
-				roses: civitas.IMPORTANCE_MEDIUM,
-				fibers: civitas.IMPORTANCE_HIGH,
-				perfume: civitas.IMPORTANCE_LOW,
-				sulphur: civitas.IMPORTANCE_HIGH,
-				goldores: civitas.IMPORTANCE_HIGH,
-				jewelery: civitas.IMPORTANCE_HIGH,
-				iron: civitas.IMPORTANCE_VITAL,
-				ironores: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				brine: civitas.IMPORTANCE_MEDIUM,
-				clothes: civitas.IMPORTANCE_HIGH,
-				glass: civitas.IMPORTANCE_HIGH,
-				oil: civitas.IMPORTANCE_HIGH,
-				wheat: civitas.IMPORTANCE_VITAL,
-				pottery: civitas.IMPORTANCE_HIGH,
-				hides: civitas.IMPORTANCE_LOW,
-				paper: civitas.IMPORTANCE_HIGH
-			}
-		},
-		army: {
-			militia: 200,
-			bowman: 200,
-		},
-		location: {
-			x: 690,
-			y: 60
-		}
-	},
-	7: {
-		icon: 4,
-		climate: civitas.CLIMATE_ARID,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		level: 22,
-		resources: {
-			coins: 6300000,
-			prestige: 2780,
-			espionage: 400
-		},
-		trades: {
-			imports: {
-				silk: civitas.IMPORTANCE_LOW,
-				clothes: civitas.IMPORTANCE_HIGH,
-				leather: civitas.IMPORTANCE_HIGH,
-				bottles: civitas.IMPORTANCE_HIGH,
-				brine: civitas.IMPORTANCE_MEDIUM,
-				hides: civitas.IMPORTANCE_HIGH,
-				clay: civitas.IMPORTANCE_MEDIUM,
-				bottles: civitas.IMPORTANCE_MEDIUM,
-				pottery: civitas.IMPORTANCE_HIGH,
-				meat: civitas.IMPORTANCE_MEDIUM
-			},
-			exports: {
-				ropes: civitas.IMPORTANCE_MEDIUM,
-				gold: civitas.IMPORTANCE_LOW,
-				iron: civitas.IMPORTANCE_VITAL,
-				gunpowder: civitas.IMPORTANCE_HIGH,
-				sulphur: civitas.IMPORTANCE_HIGH,
-				ironores: civitas.IMPORTANCE_MEDIUM,
-				copper: civitas.IMPORTANCE_HIGH,
-				camels: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				coal: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 300,
-			y: 480
-		}
-	},
-	8: {
-		icon: 7,
-		climate: civitas.CLIMATE_POLAR,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		level: 29,
-		resources: {
-			coins: 3000000,
-			prestige: 4200,
-			espionage: 850
-		},
-		trades: {
-			imports: {
-				furs: civitas.IMPORTANCE_HIGH,
-				goldores: civitas.IMPORTANCE_HIGH,
-				gold: civitas.IMPORTANCE_VITAL,
-				milk: civitas.IMPORTANCE_MEDIUM,
-				brine: civitas.IMPORTANCE_VITAL,
-				leather: civitas.IMPORTANCE_LOW,
-				herbs: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				fish: civitas.IMPORTANCE_VITAL,
-				furcoats: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				herbs: civitas.IMPORTANCE_VITAL,
-				statues: civitas.IMPORTANCE_VITAL,
-				camels: civitas.IMPORTANCE_HIGH,
-				wax: civitas.IMPORTANCE_HIGH,
-				barrels: civitas.IMPORTANCE_MEDIUM,
-				candles: civitas.IMPORTANCE_LOW,
-				armor: civitas.IMPORTANCE_HIGH,
-				salt: civitas.IMPORTANCE_MEDIUM
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 700,
-			y: 280
-		}
-	},
-	9: {
-		icon: 4,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_CONFUCIANISM,
-		level: 30,
-		resources: {
-			coins: 3300000,
-			prestige: 6900,
-			espionage: 900
-		},
-		trades: {
-			imports: {
-				perfume: civitas.IMPORTANCE_MEDIUM,
-				coffee: civitas.IMPORTANCE_LOW,
-				cider: civitas.IMPORTANCE_HIGH,
-				hemp: civitas.IMPORTANCE_HIGH,
-				bottles: civitas.IMPORTANCE_HIGH,
-				wine: civitas.IMPORTANCE_HIGH,
-				hides: civitas.IMPORTANCE_VITAL,
-				beer: civitas.IMPORTANCE_HIGH,
-				mosaic: civitas.IMPORTANCE_VITAL,
-				woodplanks: civitas.IMPORTANCE_HIGH,
-				silk: civitas.IMPORTANCE_MEDIUM
-			},
-			exports: {
-				statues: civitas.IMPORTANCE_VITAL,
-				barrels: civitas.IMPORTANCE_MEDIUM,
-				brine: civitas.IMPORTANCE_LOW,
-				brass: civitas.IMPORTANCE_VITAL,
-				candlesticks: civitas.IMPORTANCE_LOW,
-				cattle: civitas.IMPORTANCE_VITAL,
-				glass: civitas.IMPORTANCE_MEDIUM,
-				gold: civitas.IMPORTANCE_MEDIUM,
-				wheat: civitas.IMPORTANCE_MEDIUM,
-				iron: civitas.IMPORTANCE_LOW,
-				grapes: civitas.IMPORTANCE_HIGH,
-				hemp: civitas.IMPORTANCE_HIGH,
-				herbs: civitas.IMPORTANCE_HIGH,
-				quartz: civitas.IMPORTANCE_MEDIUM
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 320,
-			knight: 10,
-			bowman: 220,
-			crossbowman: 210,
-			pikeman: 90
-		},
-		location: {
-			x: 920,
-			y: 440
-		}
-	},
-	10: {
-		icon: 7,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_BUDDHISM,
-		level: 28,
-		resources: {
-			coins: 2200000,
-			prestige: 1460,
-			espionage: 500
-		},
-		trades: {
-			imports: {
-				flour: civitas.IMPORTANCE_LOW,
-				bread: civitas.IMPORTANCE_HIGH,
-				fibers: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				armor: civitas.IMPORTANCE_HIGH,
-				brass: civitas.IMPORTANCE_MEDIUM,
-				sulphur: civitas.IMPORTANCE_HIGH,
-				brine: civitas.IMPORTANCE_MEDIUM,
-				copper: civitas.IMPORTANCE_VITAL,
-				clay: civitas.IMPORTANCE_MEDIUM,
-				coal: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				wood: civitas.IMPORTANCE_LOW,
-				meat: civitas.IMPORTANCE_HIGH,
-				jewelery: civitas.IMPORTANCE_HIGH,
-				camels: civitas.IMPORTANCE_MEDIUM,
-				gunpowder: civitas.IMPORTANCE_HIGH,
-				stones: civitas.IMPORTANCE_VITAL,
-				wine: civitas.IMPORTANCE_MEDIUM
-			}
-		},
-		army: {
-			militia: 90,
-			axeman: 90,
-			knight: 1,
-			bowman: 20,
-			crossbowman: 20,
-			pikeman: 30
-		},
-		location: {
-			x: 900,
-			y: 30
-		}
-	},
-	11: {
-		icon: 7,
-		climate: civitas.CLIMATE_TROPICAL,
-		religion: civitas.RELIGION_TAOISM,
-		level: 23,
-		resources: {
-			coins: 1800000,
-			prestige: 1200,
-			espionage: 450
-		},
-		trades: {
-			imports: {
-				furs: civitas.IMPORTANCE_LOW,
-				bread: civitas.IMPORTANCE_VITAL,
-				hides: civitas.IMPORTANCE_MEDIUM,
-				clay: civitas.IMPORTANCE_HIGH,
-				milk: civitas.IMPORTANCE_LOW,
-				fibers: civitas.IMPORTANCE_MEDIUM,
-				tools: civitas.IMPORTANCE_HIGH,
-				goldores: civitas.IMPORTANCE_HIGH,
-				gold: civitas.IMPORTANCE_HIGH,
-				furcoats: civitas.IMPORTANCE_HIGH,
-				leather: civitas.IMPORTANCE_LOW
-			},
-			exports: {
-				spyglasses: civitas.IMPORTANCE_VITAL,
-				wax: civitas.IMPORTANCE_LOW,
-				bottles: civitas.IMPORTANCE_HIGH,
-				armor: civitas.IMPORTANCE_HIGH,
-				candles: civitas.IMPORTANCE_LOW,
-				salt: civitas.IMPORTANCE_MEDIUM,
-				copper: civitas.IMPORTANCE_VITAL,
-				stones: civitas.IMPORTANCE_HIGH,
-				sugarcane: civitas.IMPORTANCE_HIGH
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		navy: {
-			corsair: 2,
-			caravel: 2,
-			galleon: 2,
-			warship: 2
-		},
-		location: {
-			x: 144,
-			y: 290
-		}
-	},
-	12: {
-		icon: 7,
-		climate: civitas.CLIMATE_ARID,
-		religion: civitas.RELIGION_ISLAM,
-		level: 27,
-		resources: {
-			coins: 1800000,
-			prestige: 2300,
-			espionage: 300
-		},
-		trades: {
-			imports: {
-				cider: civitas.IMPORTANCE_LOW,
-				ropes: civitas.IMPORTANCE_LOW,
-				armor: civitas.IMPORTANCE_HIGH,
-				wax: civitas.IMPORTANCE_MEDIUM,
-				sugar: civitas.IMPORTANCE_LOW,
-				bottles: civitas.IMPORTANCE_HIGH,
-				bread: civitas.IMPORTANCE_VITAL,
-				wood: civitas.IMPORTANCE_VITAL,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				stones: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				almonds: civitas.IMPORTANCE_LOW,
-				roses: civitas.IMPORTANCE_HIGH,
-				grapes: civitas.IMPORTANCE_LOW,
-				hemp: civitas.IMPORTANCE_LOW,
-				oil: civitas.IMPORTANCE_HIGH,
-				coffeebeans: civitas.IMPORTANCE_LOW,
-				coffee: civitas.IMPORTANCE_LOW,
-				catapults: civitas.IMPORTANCE_MEDIUM,
-				spices: civitas.IMPORTANCE_MEDIUM
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 300,
-			y: 60
-		}
-	},
-	13: {
-		icon: 4,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_ISLAM,
-		level: 5,
-		resources: {
-			coins: 2000000,
-			prestige: 6210,
-			espionage: 450
-		},
-		trades: {
-			imports: {
-				meat: civitas.IMPORTANCE_LOW,
-				milk: civitas.IMPORTANCE_LOW,
-				copper: civitas.IMPORTANCE_VITAL,
-				weapons: civitas.IMPORTANCE_LOW,
-				roses: civitas.IMPORTANCE_MEDIUM,
-				perfume: civitas.IMPORTANCE_LOW,
-				sugarcane: civitas.IMPORTANCE_HIGH,
-				sulphur: civitas.IMPORTANCE_HIGH,
-				tools: civitas.IMPORTANCE_HIGH,
-				provisions: civitas.IMPORTANCE_HIGH,
-				iron: civitas.IMPORTANCE_VITAL,
-				ironores: civitas.IMPORTANCE_HIGH
-			},
-			exports: {
-				brine: civitas.IMPORTANCE_MEDIUM,
-				clothes: civitas.IMPORTANCE_LOW,
-				armor: civitas.IMPORTANCE_HIGH,
-				glass: civitas.IMPORTANCE_HIGH,
-				wheat: civitas.IMPORTANCE_VITAL,
-				stones: civitas.IMPORTANCE_HIGH,
-				hides: civitas.IMPORTANCE_LOW,
-				pottery: civitas.IMPORTANCE_HIGH,
-				paper: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 120,
-			bowman: 32,
-		},
-		location: {
-			x: 700,
-			y: 400
-		}
-	},
-	14: {
-		icon: 4,
-		climate: civitas.CLIMATE_TROPICAL,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		level: 38,
-		resources: {
-			coins: 2800000,
-			provisions: 100,
-			prestige: 6400,
-			espionage: 580
-		},
-		trades: {
-			imports: {
-				meat: civitas.IMPORTANCE_LOW,
-				milk: civitas.IMPORTANCE_LOW,
-				weapons: civitas.IMPORTANCE_LOW,
-				furs: civitas.IMPORTANCE_VITAL,
-				stones: civitas.IMPORTANCE_HIGH,
-				roses: civitas.IMPORTANCE_MEDIUM,
-				perfume: civitas.IMPORTANCE_LOW,
-				iron: civitas.IMPORTANCE_VITAL,
-				ironores: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				brine: civitas.IMPORTANCE_MEDIUM,
-				clothes: civitas.IMPORTANCE_LOW,
-				glass: civitas.IMPORTANCE_HIGH,
-				wheat: civitas.IMPORTANCE_VITAL,
-				oil: civitas.IMPORTANCE_HIGH,
-				jewelery: civitas.IMPORTANCE_HIGH,
-				hides: civitas.IMPORTANCE_LOW,
-				paper: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			cannon: 10,
-			catapult: 4,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 680,
-			y: 540
-		}
-	},
-	15: {
-		icon: 5,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_JUDAISM,
-		level: 29,
-		resources: {
-			coins: 1100000,
-			prestige: 2180,
-			espionage: 200
-		},
-		trades: {
-			imports: {
-				meat: civitas.IMPORTANCE_LOW,
-				iron: civitas.IMPORTANCE_HIGH,
-				brass: civitas.IMPORTANCE_LOW,
-				cider: civitas.IMPORTANCE_LOW,
-				stones: civitas.IMPORTANCE_HIGH,
-				copper: civitas.IMPORTANCE_VITAL,
-				brine: civitas.IMPORTANCE_MEDIUM,
-				grapes: civitas.IMPORTANCE_LOW,
-				jewelery: civitas.IMPORTANCE_HIGH,
-				pottery: civitas.IMPORTANCE_HIGH,
-				coal: civitas.IMPORTANCE_MEDIUM,
-				woodplanks: civitas.IMPORTANCE_HIGH,
-				ironores: civitas.IMPORTANCE_HIGH
-			},
-			exports: {
-				wine: civitas.IMPORTANCE_HIGH,
-				silk: civitas.IMPORTANCE_LOW,
-				wood: civitas.IMPORTANCE_MEDIUM,
-				armor: civitas.IMPORTANCE_MEDIUM,
-				hemp: civitas.IMPORTANCE_VITAL,
-				tools: civitas.IMPORTANCE_HIGH,
-				cattle: civitas.IMPORTANCE_LOW,
-				statues: civitas.IMPORTANCE_VITAL
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 180,
-			y: 530
-		}
-	},
-	16: {
-		icon: 5,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_JUDAISM,
-		level: 22,
-		resources: {
-			coins: 1000000,
-			prestige: 3640,
-			espionage: 500
-		},
-		trades: {
-			imports: {
-				furs: civitas.IMPORTANCE_LOW,
-				hides: civitas.IMPORTANCE_VITAL,
-				milk: civitas.IMPORTANCE_MEDIUM,
-				gems: civitas.IMPORTANCE_LOW,
-				brass: civitas.IMPORTANCE_VITAL,
-				sugarcane: civitas.IMPORTANCE_HIGH,
-				sulphur: civitas.IMPORTANCE_HIGH,
-				goldores: civitas.IMPORTANCE_HIGH,
-				wheat: civitas.IMPORTANCE_HIGH,
-				stones: civitas.IMPORTANCE_HIGH,
-				catapults: civitas.IMPORTANCE_MEDIUM,
-				clay: civitas.IMPORTANCE_LOW
-			},
-			exports: {
-				silver: civitas.IMPORTANCE_VITAL,
-				wax: civitas.IMPORTANCE_MEDIUM,
-				candles: civitas.IMPORTANCE_LOW,
-				salt: civitas.IMPORTANCE_VITAL,
-				pearls: civitas.IMPORTANCE_MEDIUM,
-				pottery: civitas.IMPORTANCE_MEDIUM,
-				oil: civitas.IMPORTANCE_HIGH,
-				ropes: civitas.IMPORTANCE_MEDIUM
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 400,
-			y: 340
-		}
-	},
-	17: {
-		icon: 7,
-		climate: civitas.CLIMATE_TROPICAL,
-		religion: civitas.RELIGION_ISLAM,
-		level: 26,
-		resources: {
-			coins: 1900000,
-			prestige: 4100,
-			espionage: 500
-		},
-		trades: {
-			imports: {
-				wheat: civitas.IMPORTANCE_VITAL,
-				mosaic: civitas.IMPORTANCE_MEDIUM,
-				wood: civitas.IMPORTANCE_HIGH,
-				furs: civitas.IMPORTANCE_VITAL,
-				fibers: civitas.IMPORTANCE_HIGH,
-				sugar: civitas.IMPORTANCE_MEDIUM,
-				sugarcane: civitas.IMPORTANCE_LOW,
-				clay: civitas.IMPORTANCE_VITAL
-			},
-			exports: {
-				silver: civitas.IMPORTANCE_VITAL,
-				glasses: civitas.IMPORTANCE_LOW,
-				tools: civitas.IMPORTANCE_HIGH,
-				furcoats: civitas.IMPORTANCE_MEDIUM,
-				bottles: civitas.IMPORTANCE_HIGH,
-				camels: civitas.IMPORTANCE_HIGH,
-				indigo: civitas.IMPORTANCE_LOW,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				wheat: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 130,
-			y: 140
-		}
-	},
-	18: {
-		icon: 7,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		level: 29,
-		resources: {
-			coins: 2400000,
-			prestige: 4500,
-			espionage: 800
-		},
-		trades: {
-			imports: {
-				salt: civitas.IMPORTANCE_MEDIUM,
-				stones: civitas.IMPORTANCE_VITAL,
-				armor: civitas.IMPORTANCE_MEDIUM,
-				jewelery: civitas.IMPORTANCE_HIGH,
-				brine: civitas.IMPORTANCE_MEDIUM,
-				gems: civitas.IMPORTANCE_LOW,
-				hides: civitas.IMPORTANCE_VITAL,
-				pottery: civitas.IMPORTANCE_HIGH,
-				pearls: civitas.IMPORTANCE_LOW
-			},
-			exports: {
-				donkeys: civitas.IMPORTANCE_VITAL,
-				sulphur: civitas.IMPORTANCE_VITAL,
-				silk: civitas.IMPORTANCE_MEDIUM,
-				glass: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				sugarcane: civitas.IMPORTANCE_HIGH,
-				sugar: civitas.IMPORTANCE_HIGH,
-				meat: civitas.IMPORTANCE_HIGH,
-				carpets: civitas.IMPORTANCE_LOW,
-				cannons: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 80,
-			axeman: 40,
-			bowman: 10,
-			crossbowman: 30,
-			pikeman: 10
-		},
-		location: {
-			x: 600,
-			y: 200
-		}
-	},
-	19: {
-		icon: 5,
-		climate: civitas.CLIMATE_TEMPERATE,
-		religion: civitas.RELIGION_ISLAM,
-		level: 27,
-		resources: {
-			coins: 2400000,
-			prestige: 2420,
-			espionage: 700
-		},
-		trades: {
-			imports: {
-				gold: civitas.IMPORTANCE_LOW,
-				goldores: civitas.IMPORTANCE_HIGH,
-				weapons: civitas.IMPORTANCE_LOW,
-				hemp: civitas.IMPORTANCE_HIGH,
-				salt: civitas.IMPORTANCE_MEDIUM,
-				bread: civitas.IMPORTANCE_HIGH,
-				woodplanks: civitas.IMPORTANCE_HIGH,
-				stones: civitas.IMPORTANCE_VITAL,
-				gems: civitas.IMPORTANCE_LOW,
-				pearls: civitas.IMPORTANCE_LOW
-			},
-			exports: {
-				donkeys: civitas.IMPORTANCE_VITAL,
-				sulphur: civitas.IMPORTANCE_VITAL,
-				silk: civitas.IMPORTANCE_MEDIUM,
-				glass: civitas.IMPORTANCE_HIGH,
-				bottles: civitas.IMPORTANCE_HIGH,
-				roses: civitas.IMPORTANCE_LOW,
-				cattle: civitas.IMPORTANCE_LOW,
-				bread: civitas.IMPORTANCE_LOW,
-				meat: civitas.IMPORTANCE_MEDIUM,
-				carpets: civitas.IMPORTANCE_LOW,
-				cannons: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 40,
-			axeman: 30,
-			knight: 10,
-			bowman: 20,
-			crossbowman: 10,
-			pikeman: 30
-		},
-		location: {
-			x: 800,
-			y: 200
-		}
-	},
-	20: {
-		icon: 7,
-		climate: civitas.CLIMATE_ARID,
-		religion: civitas.RELIGION_CONFUCIANISM,
-		level: 2,
-		resources: {
-			coins: 3200000,
-			prestige: 4390,
-			espionage: 200
-		},
-		trades: {
-			imports: {
-				gold: civitas.IMPORTANCE_HIGH,
-				goldores: civitas.IMPORTANCE_MEDIUM,
-				fibers: civitas.IMPORTANCE_HIGH,
-				weapons: civitas.IMPORTANCE_LOW,
-				salt: civitas.IMPORTANCE_MEDIUM,
-				woodplanks: civitas.IMPORTANCE_MEDIUM,
-				copper: civitas.IMPORTANCE_VITAL,
-				stones: civitas.IMPORTANCE_VITAL,
-				gems: civitas.IMPORTANCE_LOW,
-				pottery: civitas.IMPORTANCE_HIGH,
-				clay: civitas.IMPORTANCE_HIGH,
-				pearls: civitas.IMPORTANCE_LOW
-			},
-			exports: {
-				donkeys: civitas.IMPORTANCE_VITAL,
-				sulphur: civitas.IMPORTANCE_VITAL,
-				silk: civitas.IMPORTANCE_MEDIUM,
-				glass: civitas.IMPORTANCE_HIGH,
-				roses: civitas.IMPORTANCE_LOW,
-				ropes: civitas.IMPORTANCE_MEDIUM,
-				sugarcane: civitas.IMPORTANCE_HIGH,
-				cattle: civitas.IMPORTANCE_LOW,
-				bread: civitas.IMPORTANCE_LOW,
-				meat: civitas.IMPORTANCE_MEDIUM,
-				carpets: civitas.IMPORTANCE_LOW,
-				cannons: civitas.IMPORTANCE_LOW
-			}
-		},
-		army: {
-			militia: 20,
-			axeman: 20,
-			knight: 20,
-			bowman: 20,
-			crossbowman: 20,
-			pikeman: 20
-		},
-		location: {
-			x: 30,
-			y: 30
-		}
-	},
-	21: {
-		type: civitas.VILLAGE,
-		religion: civitas.RELIGION_HINDUISM,
-		resources: {
-			prestige: 1,
-			coins: 10000,
-			wood: 20,
-			stones: 10,
-			meat: 80
-		},
-		nationality: civitas.NATION_JAPANESE,
-		location: {
-			x: 800,
-			y: 480
-		},
-		population: 1290,
-		army: {
-			militia: 3,
-			bowman: 3
-		}
-	},
-	22: {
-		type: civitas.VILLAGE,
-		religion: civitas.RELIGION_ISLAM,
-		resources: {
-			prestige: 1,
-			coins: 20000,
-			silk: 20,
-			wheat: 10,
-			bread: 20
-		},
-		population: 610,
-		nationality: civitas.NATION_CHINESE,
-		location: {
-			x: 560,
-			y: 100
-		},
-		army: {
-			militia: 3,
-			bowman: 2
-		}
-	},
-	23: {
-		type: civitas.VILLAGE,
-		religion: civitas.RELIGION_ISLAM,
-		resources: {
-			prestige: 1,
-			coins: 20000,
-			silk: 20,
-			wheat: 10,
-			bread: 20
-		},
-		population: 550,
-		nationality: civitas.NATION_KHMER,
-		location: {
-			x: 900,
-			y: 300
-		},
-		army: {
-			militia: 3,
-			bowman: 2
-		}
-	},
-	24: {
-		type: civitas.VILLAGE,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		resources: {
-			prestige: 1,
-			coins: 20000,
-			brass: 20,
-			meat: 10,
-			goldores: 20
-		},
-		population: 820,
-		nationality: civitas.NATION_INDIAN,
-		location: {
-			x: 100,
-			y: 70
-		},
-		army: {
-			militia: 3,
-			bowman: 2
-		}
-	},
-	25: {
-		type: civitas.VILLAGE,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		resources: {
-			prestige: 1,
-			coins: 20000,
-			copper: 20,
-			flour: 10,
-			ironores: 20
-		},
-		population: 1600,
-		nationality: civitas.NATION_PERSAN,
-		location: {
-			x: 380,
-			y: 560
-		},
-		army: {
-			militia: 3,
-			bowman: 2
-		}
-	},
-	26: {
-		type: civitas.VILLAGE,
-		religion: civitas.RELIGION_CHRISTIANITY,
-		resources: {
-			prestige: 1,
-			coins: 2000,
-			silk: 20,
-			wheat: 10,
-			bread: 20,
-			herbs: 10,
-			barrels: 10
-		},
-		population: 600,
-		nationality: civitas.NATION_MONGOLIAN,
-		location: {
-			x: 570,
-			y: 400
-		},
-		army: {
-			militia: 6
-		}
-	}
-};
+civitas.WORLD_SIZE_HEIGHT = 560;
+
+civitas.CITY_AREA = 100;
+
+civitas.VILLAGE_AREA = 50;
+
+/**
+ * Max number of initial settlements on a map.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MAX_INITIAL_SETTLEMENTS = 20;
+
+/**
+ * Max number of settlements on a map.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MAX_SETTLEMENTS = 50;
 
 /**
  * List of possible world rulers.
@@ -5851,134 +4714,122 @@ civitas.RULERS = [
 		name: 'Caesar',
 		title: 'Emperor',
 		avatar: 1,
-		nationality: civitas.NATION_ROMAN,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Cronus',
 		title: 'Ruler',
 		avatar: 3,
-		nationality: civitas.NATION_PHOENICIAN,
 		personality: civitas.PERSONALITY_BALANCED
 	}, {
 		name: 'Dido',
 		title: 'Queen',
 		avatar: 6,
-		nationality: civitas.NATION_CARTHAGINIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}, {
 		name: 'Genghis',
 		title: 'Khan',
 		avatar: 19,
-		nationality: civitas.NATION_MONGOLIAN,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Khufu',
 		title: 'Pharaoh',
 		avatar: 20,
-		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}, {
 		name: 'Musa I',
 		title: 'Mansa',
 		avatar: 30,
-		nationality: civitas.NATION_MALINESE,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Sennacherib',
 		title: 'King',
 		avatar: 2,
-		nationality: civitas.NATION_ASSYRIAN,
 		personality: civitas.PERSONALITY_BALANCED
 	}, {
 		name: 'Pepi',
 		title: 'Pharaoh',
 		avatar: 40,
-		nationality: civitas.NATION_SUDANESE,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}, {
 		name: 'Hatshepsut',
 		title: 'Pharaoh',
 		avatar: 5,
-		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_BALANCED
 	}, {
 		name: 'Clovis',
 		title: 'King',
 		avatar: 13,
-		nationality: civitas.NATION_FRANKS,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}, {
 		name: 'Gilgamesh',
 		title: 'King',
 		avatar: 31,
-		nationality: civitas.NATION_SUMERIAN,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Dalai Lama',
 		title: 'Priest',
 		avatar: 48,
-		nationality: civitas.NATION_TIBETAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	},
 	{
 		name: 'Ashoka',
 		title: 'Emperor',
 		avatar: 28,
-		nationality: civitas.NATION_INDIAN,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}, {
 		name: 'Charlemagne',
 		title: 'King',
 		avatar: 43,
-		nationality: civitas.NATION_FRANKS,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}, {
 		name: 'Darius',
 		title: 'King',
 		avatar: 38,
-		nationality: civitas.NATION_PERSAN,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Ivan III',
 		title: 'Tzar',
 		avatar: 19,
-		nationality: civitas.NATION_RUSSIAN,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Qin Shi Huang',
 		title: 'Emperor',
 		avatar: 45,
-		nationality: civitas.NATION_CHINESE,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}, {
 		name: 'Ozymandias',
 		title: 'Pharaoh',
 		avatar: 33,
-		nationality: civitas.NATION_EGYPTIAN,
 		personality: civitas.PERSONALITY_BALANCED
 	}, {
 		name: 'Timur',
 		title: 'Emperor',
 		avatar: 37,
-		nationality: civitas.NATION_PERSAN,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Pol Pot',
 		title: 'President',
 		avatar: 46,
-		nationality: civitas.NATION_KHMER,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Napoleon',
 		title: 'Emperor',
 		avatar: 47,
-		nationality: civitas.NATION_FRENCH,
 		personality: civitas.PERSONALITY_WARLORD
 	}, {
 		name: 'Hirohito',
 		title: 'Emperor',
 		avatar: 30,
-		nationality: civitas.NATION_JAPANESE,
+		personality: civitas.PERSONALITY_DIPLOMAT
+	}, {
+		name: 'Ivan Sirko',
+		title: 'Otaman',
+		avatar: 41,
+		personality: civitas.PERSONALITY_BALANCED
+	}, {
+		name: 'Peter the Great',
+		title: 'Tsar',
+		avatar: 40,
 		personality: civitas.PERSONALITY_DIPLOMAT
 	}
 ];
@@ -6097,6 +4948,7 @@ civitas.SETTLEMENT_NAMES = [
 	'Isara',
 	'Regium Lepidum',
 	'Aquisgranium',
+	'Saint Petersburg',
 	'Gerasa'
 ];
 
@@ -6118,6 +4970,18 @@ civitas.NAMES = [
 	'Stefanija',
 	'Meera',
 	'Sethunya',
+	'Soupi',
+	/*
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	*/
 	'Qadir',
 	'Lim',
 	'Yami',
@@ -8279,6 +7143,19 @@ civitas.utils = {
 	},
 
 	/**
+	 * Return a random world location.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	get_random_world_location: function() {
+		return {
+			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH),
+			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT)
+		}
+	},
+
+	/**
 	 * Return a random unique array element.
 	 *
 	 * @public
@@ -8620,15 +7497,12 @@ civitas.ui = {
 		mode = (typeof mode === 'undefined' || mode === 'imports') ? 'imports' : 'exports';
 		var out = '';
 		if (trades !== null) {
-			out += '<dl>';
 			var trade = trades[mode];
 			for (var item in trade) {
 				if (trade[item] > 0) {
-					out += '<dt>' + trade[item] + '</dt>' +
-						'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
+					out += civitas.ui.resource_storage_small_el(item, trade[item]);
 				}
 			}
-			out += '</dl>';
 		}
 		return out;
 	},
@@ -8816,7 +7690,19 @@ civitas.objects.settlement = function(params) {
 		population: null,
 		ruler: null,
 		religion: null,
-		player: null
+		player: null,
+		nationality: null
+	};
+
+	/**
+	 * Location of the settlement.
+	 *
+	 * @private
+	 * @type {Object}
+	 */
+	this.location = {
+		x: 0,
+		y: 0
 	};
 
 	/**
@@ -8918,6 +7804,8 @@ civitas.objects.settlement = function(params) {
 			params.properties.climate : civitas.CLIMATE_TEMPERATE;
 		this.properties.religion = (typeof params.properties.religion !== 'undefined') ?
 			params.properties.religion : civitas.RELIGION_NONE;
+		this.properties.nationality = (typeof params.properties.nationality !== 'undefined') ?
+			params.properties.nationality : civitas.NATION_PHOENICIAN;
 		this.properties.ruler = params.properties.ruler;
 		this.properties.icon = (typeof params.properties.icon !== 'undefined') ?
 			params.properties.icon : 1;
@@ -8931,10 +7819,14 @@ civitas.objects.settlement = function(params) {
 		this._status = (typeof params.status !== 'undefined') ? params.status : {};
 		this._heroes = (typeof params.heroes !== 'undefined') ? params.heroes : [];
 		this.resources = this._fill_resources(params.resources);
+		this.location = params.location;
 		if (typeof params.trades !== 'undefined') {
 			this.trades = params.trades;
 		} else {
-			this.reset_trades();
+			this.trades = {
+				'imports': {},
+				'exports': {}
+			};
 		}
 		if (this.is_player() === false) {
 			this.resources.fame = civitas.LEVELS[this.level()];
@@ -8973,7 +7865,8 @@ civitas.objects.settlement = function(params) {
 			navy: this.get_navy(),
 			buildings: this.export_buildings(),
 			mercenary: this.mercenary(),
-			heroes: this.heroes()
+			heroes: this.heroes(),
+			location: this.get_location()
 		};
 		if (this.is_player()) {
 			data.status = this.status();
@@ -9248,8 +8141,8 @@ civitas.objects.settlement = function(params) {
 			this.properties.nationality = value;
 		}
 		return {
-			id: this.properties.ruler.nationality,
-			name: civitas.NATIONS[this.properties.ruler.nationality].capitalize()
+			id: this.properties.nationality,
+			name: civitas.NATIONS[this.properties.nationality].capitalize()
 		};
 	};
 
@@ -9375,6 +8268,28 @@ civitas.objects.settlement = function(params) {
 			this._heroes = value;
 		}
 		return this._heroes;
+	};
+
+	/**
+	 * Get the location of the settlement.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	this.get_location = function() {
+		return this.location;
+	};
+
+	/**
+	 * Set the location of the settlement.
+	 *
+	 * @public
+	 * @param {Object} location
+	 * @returns {civitas.settlement}
+	 */
+	this.set_location = function(location) {
+		this.location = location;
+		return this;
 	};
 
 	// Fire up the constructor
@@ -9850,33 +8765,19 @@ civitas.objects.settlement.prototype.storage = function(value) {
  * @private
  * @returns {Object}
  */
-civitas.objects.settlement.prototype._fill_resources = function(_resources) {
+civitas.objects.settlement.prototype._fill_resources = function(resources) {
 	var difficulty = this.core().difficulty();
-	var _trades = {};
-	if (!this.is_player()) {
-		if (this.is_city() && typeof civitas.SETTLEMENTS[this.id()] !== 'undefined') {
-			_trades = civitas.SETTLEMENTS[this.id()].trades.exports;
-		}
-		for (var item in civitas.RESOURCES) {
-			if (typeof _resources[item] === 'undefined') {
-				if (typeof _trades[item] !== 'undefined') {
-					_resources[item] = civitas.utils.get_random_by_importance(_trades[item]);
-				} else {
-					_resources[item] = 0;
-				}
-			}
-		}
-	} else {
-		if (typeof _resources === 'undefined') {
-			_resources = civitas.START_RESOURCES[difficulty - 1];
-		}
-		for (var item in civitas.RESOURCES) {
-			if (typeof _resources[item] === 'undefined') {
-				_resources[item] = 0;
-			}
+	if (this.is_player()) {
+		if (typeof resources === 'undefined') {
+			resources = civitas.START_RESOURCES[difficulty - 1];
 		}
 	}
-	return _resources;
+	for (var item in civitas.RESOURCES) {
+		if (typeof resources[item] === 'undefined') {
+			resources[item] = 0;
+		}
+	}
+	return resources;
 };
 
 /**
@@ -10999,33 +9900,20 @@ civitas.objects.settlement.prototype.buy_from_settlement = function(settlement, 
  * @returns {Boolean}
  */
 civitas.objects.settlement.prototype.reset_trades = function() {
-	var trades = {
-		'imports': {},
-		'exports': {}
-	};
-	var amount = 0;
-	if (typeof civitas.SETTLEMENTS[this.id()] !== 'undefined') {
-		var _trades = civitas.SETTLEMENTS[this.id()].trades;
-		for (var goods_type in _trades) {
-			for (var item in _trades[goods_type]) {
-				amount = civitas.utils.get_random_by_importance(_trades[goods_type][item])
-				if (goods_type === 'exports') {
-					if (this.resources[item] < amount) {
-						this.resources[item] += amount;
-					}
-					/* else {
-						this.resources[item] = Math.floor(this.resources[item] / 2);
-					}*/
-				}
-				trades[goods_type][item] = amount;
-			}
-		}
-		this.trades = trades;
-		return true;
-	} else {
-		this.trades = trades;
-		return false;
+	var data = this.core.generate_random_resources(false, this.get_type());
+	var new_resources = data.resources;
+	new_resources.coins = this.resources.coins;
+	new_resources.fame = this.resources.fame;
+	new_resources.prestige = this.resources.prestige;
+	new_resources.espionage = this.resources.espionage;
+	new_resources.research = this.resources.research;
+	new_resources.faith = this.resources.faith;
+	this.resources = this._fill_resources(new_resources);
+	if (this.get_type === civitas.CITY) {
+		var new_trades = data.trades;
+		this.trades = new_trades;
 	}
+	return true;
 };
 
 /**
@@ -11238,7 +10126,27 @@ civitas.objects.settlement.prototype.remove_from_imports = function(settlement, 
 civitas.objects.settlement.prototype.get_trades = function() {
 	return this.trades;
 };
-	
+
+/**
+ * Get the exports of this settlement.
+ * 
+ * @public
+ * @returns {Object}
+ */
+civitas.objects.settlement.prototype.get_trades_exports = function() {
+	return this.trades.exports;
+};
+
+/**
+ * Get the imports of this settlement.
+ * 
+ * @public
+ * @returns {Object}
+ */
+civitas.objects.settlement.prototype.get_trades_imports = function() {
+	return this.trades.imports;
+};
+
 /**
  * Set the imports and exports of this settlement.
  * 
@@ -14613,43 +13521,6 @@ civitas.game.prototype._load_settlement = function (data) {
 };
 
 /**
- * Create the player settlement.
- * 
- * @private
- * @param {String} name
- * @param {String} cityname
- * @param {Number} nation
- * @param {Number} climate
- * @param {Number} avatar
- * @returns {civitas.game}
- */
-civitas.game.prototype._create_settlement = function (name, cityname, nation, climate, avatar) {
-	var difficulty = this.difficulty();
-	var my_settlement = new civitas.objects.settlement({
-		properties: {
-			name: cityname,
-			climate: climate,
-			avatar: avatar,
-			id: 0,
-			player: true,
-			ruler: {
-				name: name,
-				title: '',
-				avatar: avatar,
-				nationality: nation,
-				personality: civitas.PERSONALITY_BALANCED
-			}
-		},
-		army: civitas.START_ARMY[difficulty - 1].army,
-		navy: civitas.START_ARMY[difficulty - 1].navy,
-		core: this
-	});
-	this.settlements.push(my_settlement);
-	this.get_settlement()._create_buildings(civitas.START_BUILDINGS);
-	return this;
-};
-
-/**
  * Get the number of all the settlements in game.
  * 
  * @public
@@ -14672,6 +13543,303 @@ civitas.game.prototype.get_settlements = function () {
 /**
  * Create all the other settlements in the world.
  * 
+ * @public
+ * @param {Number} settlement_type
+ * @returns {Object}
+ */
+civitas.game.prototype.get_point_outside_area = function(settlement_type) {
+	var distance = settlement_type === civitas.CITY ? civitas.CITY_AREA : civitas.VILLAGE_AREA;
+	var new_location = civitas.utils.get_random_world_location();
+	var settlement_location;
+	var settlements = this.get_settlements();
+	for (var i = 0; i < settlements.length; i++) {
+		if (typeof settlements[i] !== 'undefined') {
+			settlement_location = settlements[i].get_location();
+			if (civitas.utils.get_distance(settlement_location, new_location) < distance) {
+				return this.get_point_outside_area(settlement_type);
+			}
+		}
+	}
+	return new_location;
+};
+
+/**
+ * Generate random army soldiers.
+ * 
+ * @public
+ * @param {Number} settlement_type
+ * @returns {Object}
+ */
+civitas.game.prototype.generate_random_army = function(settlement_type) {
+	var army = {};
+	for (var item in civitas.SOLDIERS) {
+		if (settlement_type === civitas.CITY) {
+			army[item] = civitas.utils.get_random(0, 20);
+		} else {
+			army[item] = civitas.utils.get_random(0, 5);
+		}
+	}
+	if (settlement_type === civitas.VILLAGE) {
+		army.cannon = 0;
+		army.heavycannon = 0;
+		army.catapult = 0;
+	}
+	return army;
+};
+
+/**
+ * Generate random navy ships.
+ * 
+ * @public
+ * @param {Number} settlement_type
+ * @returns {Object}
+ */
+civitas.game.prototype.generate_random_navy = function(settlement_type) {
+	var navy = {};
+	for (var item in civitas.SHIPS) {
+		if (settlement_type === civitas.CITY) {
+			navy[item] = civitas.utils.get_random(0, 10);
+		} else {
+			navy[item] = civitas.utils.get_random(0, 2);
+		}
+	}
+	return navy;
+};
+
+/**
+ * Generate random resources and trades.
+ * 
+ * @public
+ * @param {Boolean} full
+ * @param {Number} settlement_type
+ * @returns {Object}
+ */
+civitas.game.prototype.generate_random_resources = function(full, settlement) {
+	var resources = {};
+	var num_resources;
+	if (full === true) {
+		if (settlement === civitas.CITY) {
+			resources.coins = civitas.utils.get_random(10000, 1000000);
+			resources.fame = civitas.utils.get_random(50000, 100000);
+			resources.prestige = civitas.utils.get_random(1, civitas.MAX_PRESTIGE_VALUE);
+			resources.espionage = civitas.utils.get_random(1, civitas.MAX_ESPIONAGE_VALUE);
+			resources.research = civitas.utils.get_random(1, civitas.MAX_RESEARCH_VALUE);
+			resources.faith = civitas.utils.get_random(1, civitas.MAX_FAITH_VALUE);
+		} else {
+			resources.coins = civitas.utils.get_random(100, 20000);
+			resources.fame = civitas.utils.get_random(1, 50000);
+			resources.prestige = civitas.utils.get_random(1, 100);
+			resources.espionage = civitas.utils.get_random(1, 2);
+			resources.research = civitas.utils.get_random(1, 2);
+			resources.faith = civitas.utils.get_random(1, civitas.MAX_FAITH_VALUE);
+		}
+	}
+	var trades = {
+		imports: {},
+		exports: {}
+	};
+	if (settlement === civitas.CITY) {
+		num_resources = civitas.utils.get_random(5, 30);
+	} else {
+		num_resources = civitas.utils.get_random(2, 10);
+	}
+	var res_num = 0;
+	for (var item in civitas.RESOURCES) {
+		if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
+			res_num++;
+			resources[item] = civitas.utils.get_random(10, 500);
+			if (settlement === civitas.CITY) {
+				if (resources[item] > 450) {
+					trades.exports[item] = civitas.IMPORTANCE_VITAL;
+				} else if (resources[item] > 300 && resources[item] <= 450) {
+					trades.exports[item] = civitas.IMPORTANCE_HIGH;
+				} else if (resources[item] > 150 && resources[item] <= 250) {
+					trades.exports[item] = civitas.IMPORTANCE_MEDIUM;
+				}
+			}
+		}
+		if (res_num >= num_resources) {
+			break;
+		}
+	}
+	if (settlement === civitas.CITY) {
+		num_resources = civitas.utils.get_random(5, 10);
+		res_num = 0;
+		for (var item in civitas.RESOURCES) {
+			if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
+				res_num++;
+				trades.imports[item] = civitas.utils.get_random(civitas.IMPORTANCE_LOW, civitas.IMPORTANCE_VITAL);
+			}
+			if (res_num >= num_resources) {
+				break;
+			}
+		}
+	}
+	return {
+		resources: resources,
+		trades: trades
+	};
+};
+
+/**
+ * Generate random settlement data.
+ * 
+ * @public
+ * @param {Number} settlement_type
+ * @returns {Object}
+ */
+civitas.game.prototype.generate_random_settlement_data = function(settlement_type) {
+	if (typeof settlement_type === 'undefined') {
+		settlement_type = civitas.utils.get_random(0, 1);
+	}
+	var resources = this.generate_random_resources(true, settlement_type);
+	var settlement = {
+		icon: civitas.utils.get_random(2, 7),
+		type: settlement_type,
+		player: false,
+		name: civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
+		climate: civitas.utils.get_random(1, civitas.CLIMATES.length - 1),
+		religion: civitas.utils.get_random(1, civitas.RELIGIONS.length - 1),
+		nationality: civitas.utils.get_random(1, civitas.NATIONS.length - 1),
+		level: settlement_type === civitas.CITY ?
+			civitas.utils.get_random(1, civitas.MAX_SETTLEMENT_LEVEL) :
+			civitas.utils.get_random(1, 5),
+		resources: resources.resources,
+		army: this.generate_random_army(),
+		navy: this.generate_random_navy()
+	}
+	if (settlement_type === civitas.CITY) {
+		settlement.trades = resources.trades;
+	}
+	return settlement;
+};
+
+/**
+ * Create the player settlement.
+ * 
+ * @private
+ * @param {String} name
+ * @param {String} cityname
+ * @param {Number} nation
+ * @param {Number} climate
+ * @param {Number} avatar
+ * @returns {civitas.game}
+ */
+civitas.game.prototype._create_settlement = function (name, cityname, nation, climate, avatar) {
+	var difficulty = this.difficulty();
+	this.add_settlement({
+		name: cityname,
+		climate: climate,
+		avatar: avatar,
+		nationality: nation,
+		location: civitas['SETTLEMENT_LOCATION_' + civitas.CLIMATES[climate].toUpperCase()],
+		army: civitas.START_ARMY[difficulty - 1].army,
+		navy: civitas.START_ARMY[difficulty - 1].navy,
+		core: this
+	}, 0, {
+		name: name,
+		avatar: avatar
+	});
+	this.get_settlement()._create_buildings(civitas.START_BUILDINGS);
+	return this;
+};
+
+/**
+ * Add a settlement into the world.
+ * 
+ * @public
+ * @param {Object} settlement_data
+ * @param {Number} id
+ * @param {Object} player_data
+ * @returns {civitas.game}
+ */
+civitas.game.prototype.add_settlement = function(settlement_data, id, player_data) {
+	var new_settlement;
+	var ruler;
+	var climate;
+	var climate_buildings;
+	var player = false;
+	if (typeof id === 'undefined') {
+		id = this.get_num_settlements() + 1;
+	}
+	if (typeof player_data !== 'undefined') {
+		player = true;
+	}
+	if (player === false) {
+		settlement_data.type = typeof settlement_data.type === 'undefined' ||
+			settlement_data.type === civitas.CITY ? civitas.CITY : civitas.VILLAGE;
+		if (settlement_data.type === civitas.VILLAGE) {
+			ruler = {
+				title: 'Mayor',
+				avatar: 40,
+				personality: civitas.PERSONALITY_DIPLOMAT,
+				name: civitas.utils.get_random_unique(civitas.NAMES)
+			};
+		} else {
+			ruler = civitas.utils.get_random_unique(civitas.RULERS);
+		}
+	} else {
+		id = 0;
+		ruler = {
+			name: player_data.name,
+			title: '',
+			avatar: player_data.avatar,
+			personality: civitas.PERSONALITY_BALANCED
+		}
+	}
+	new_settlement = new civitas.objects.settlement({
+		core: this,
+		properties: {
+			id: id,
+			type: typeof settlement_data.type !== 'undefined' ? settlement_data.type : civitas.CITY,
+			name: typeof settlement_data.name !== 'undefined' ? settlement_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
+			player: player,
+			level: typeof settlement_data.level !== 'undefined' ? settlement_data.level : 1,
+			religion: typeof settlement_data.religion !== 'undefined' ? settlement_data.religion : civitas.RELIGION_CHRISTIANITY,
+			climate: typeof settlement_data.climate !== 'undefined' ?
+				settlement_data.climate : civitas.CLIMATE_TEMPERATE,
+			ruler: ruler,
+			nationality: settlement_data.nationality,
+			icon: settlement_data.type === civitas.CITY &&
+				typeof settlement_data.icon !== 'undefined' ? settlement_data.icon : 1
+		},
+		resources: typeof settlement_data.resources !== 'undefined' ? settlement_data.resources : {},
+		army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
+		navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
+		trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
+		location: this.get_point_outside_area(settlement_data.type)
+	});
+	if (player === false) {
+		if (settlement_data.type === civitas.CITY) {
+			climate = new_settlement.climate();
+			climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase();
+			new_settlement._create_buildings(civitas[climate_buildings], true);
+		}
+		this.get_settlement().status(id, {
+			influence: 50,
+			status: civitas.DIPLOMACY_TRUCE
+		});
+	}
+	this.settlements.push(new_settlement);
+	return this;
+};
+
+/**
+ * Remove a settlement from the world
+ * 
+ * @public
+ * @param {Number} id
+ * @returns {civitas.game}
+ */
+civitas.game.prototype.disband_city = function(id) {
+	// TODO
+	this.settlements.splice(id, 1);
+	return this;
+};
+
+/**
+ * Create all the other settlements in the world.
+ * 
  * @private
  * @param {Object} data
  * @returns {civitas.game}
@@ -14679,7 +13847,6 @@ civitas.game.prototype.get_settlements = function () {
 civitas.game.prototype._setup_neighbours = function (data) {
 	var new_settlement;
 	var settlement_data;
-	var ruler;
 	var climate;
 	var climate_buildings;
 	if (data !== null) {
@@ -14693,53 +13860,21 @@ civitas.game.prototype._setup_neighbours = function (data) {
 			this.settlements.push(new_settlement);
 		}
 	} else {
-		for (var item in civitas.SETTLEMENTS) {
-			item = parseInt(item);
-			settlement_data = civitas.SETTLEMENTS[item];
-			settlement_data.type = typeof settlement_data.type === 'undefined' ||
-				settlement_data.type === civitas.CITY ? civitas.CITY : civitas.VILLAGE;
-			if (settlement_data.type === civitas.VILLAGE) {
-				ruler = {
-					title: 'Mayor',
-					avatar: 40,
-					personality: civitas.PERSONALITY_DIPLOMAT,
-					name: civitas.utils.get_random_unique(civitas.NAMES),
-					nationality: settlement_data.nationality
-				};
-			} else {
-				ruler = civitas.utils.get_random_unique(civitas.RULERS);
-			}
-			new_settlement = new civitas.objects.settlement({
-				core: this,
-				properties: {
-					id: item,
-					population: settlement_data.population,
-					type: settlement_data.type,
-					name: civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
-					player: false,
-					level: settlement_data.level,
-					religion: settlement_data.religion,
-					climate: settlement_data.type === civitas.CITY ?
-						settlement_data.climate : civitas.CLIMATE_TEMPERATE,
-					ruler: ruler,
-					icon: settlement_data.type === civitas.CITY ? settlement_data.icon : 1
-				},
-				resources: settlement_data.resources,
-				army: settlement_data.army,
-				navy: settlement_data.navy
-			});
-			if (settlement_data.type === civitas.CITY) {
-				climate = new_settlement.climate();
-				climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase();
-				new_settlement._create_buildings(civitas[climate_buildings], true);
-			}
-			this.get_settlement().status(item, {
-				influence: 50,
-				status: civitas.DIPLOMACY_TRUCE
-			});
-			this.settlements.push(new_settlement);
+		for (var i = 0; i < civitas.MAX_INITIAL_SETTLEMENTS; i++) {
+			this.add_random_settlement();
 		}
 	}
+	return this;
+};
+
+/**
+ * Add a random settlement into the world.
+ * 
+ * @public
+ * @returns {civitas.game}
+ */
+civitas.game.prototype.add_random_settlement = function() {
+	this.add_settlement(this.generate_random_settlement_data());
 	return this;
 };
 
@@ -15707,13 +14842,13 @@ civitas.game.prototype.add_to_queue = function(source_settlement, destination_se
 		var s_loc = civitas['SETTLEMENT_LOCATION_' +
 			source_settlement.climate().name.toUpperCase()];
 	} else {
-		var s_loc = civitas.SETTLEMENTS[source_settlement.id()].location;
+		var s_loc = source_settlement.get_location();
 	}
 	if (destination_settlement.id() === this.get_settlement().id()) {
 		var d_loc = civitas['SETTLEMENT_LOCATION_' +
 			destination_settlement.climate().name.toUpperCase()];
 	} else {
-		var d_loc = civitas.SETTLEMENTS[destination_settlement.id()].location;
+		var d_loc = destination_settlement.get_location();
 	}
 	var duration = civitas.utils.get_distance_in_days(s_loc, d_loc);
 	if (mode === civitas.ACTION_CAMPAIGN) {
@@ -16195,9 +15330,9 @@ civitas.PANEL_SETTLEMENT = {
 				my_settlement.get_diplomacy_status(settlement.id()).name + '</dd>' +
 				'<dt>' + civitas.l('Distance') + '</dt><dd>' +
 				civitas.utils.get_distance(location,
-					civitas.SETTLEMENTS[settlement.id()].location) + ' miles (' +
+					settlement.get_location()) + ' miles (' +
 				civitas.utils.get_distance_in_days(location,
-					civitas.SETTLEMENTS[settlement.id()].location) + ' days)</dd>' +
+					settlement.get_location()) + ' days)</dd>' +
 			'</dl>');
 		$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(settlement.get_army()));
 		$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));
@@ -16402,7 +15537,8 @@ civitas.PANEL_DEBUG = {
 					'<a href="#" class="btn iblock eleven">' + civitas.l('random soldiers') + '</a> ' +
 					'<a href="#" class="btn iblock twelve">' + civitas.l('random ships') + '</a> ' +
 					'<a href="#" class="btn iblock fourty">' + civitas.l('defend city') + '</a> ' +
-					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> ' +
+					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> <br /><br />' +
+					'<a href="#" class="btn iblock ninety">' + civitas.l('add city') + '</a> ' +
 				'</div>');
 		$(this.handle + ' #tab-data').empty().append(
 			'<textarea class="storage-data"></textarea>' +
@@ -16505,6 +15641,9 @@ civitas.PANEL_DEBUG = {
 			return false;
 		}).on('click', '.refresh', function() {
 			$(handle + ' .storage-data').val(core.get_storage_data_as_text());
+			return false;
+		}).on('click', '.ninety', function() {
+			core.add_random_settlement();
 			return false;
 		}).on('click', '.load', function() {
 			var save_game = $(handle + ' .storage-data').val();
@@ -16772,23 +15911,26 @@ civitas.PANEL_WORLD = {
 		var settlements = core.get_settlements();
 		var queue_actions = core.queue();
 		var class_name = '';
+		var location = {
+		};
 		var loc = civitas['SETTLEMENT_LOCATION_' + settlement.climate().name.toUpperCase()];
 		var out = '<div data-name="yoursettlement" class="tips settlement c1" title="' +
 			civitas.l('City of') + ' ' + settlement.name() + '" style="left:' + loc.x + 'px;top:' +
 			loc.y + 'px"></div>';
 		for (var i = 1; i < settlements.length; i++) {
+			location = settlements[i].get_location();
 			if (settlements[i].get_type() === civitas.CITY) {
 				out += '<div data-name="' + settlements[i].name() + '" class="tips settlement c' +
-					civitas.SETTLEMENTS[settlements[i].id()].icon + '" title="' +
+					settlements[i].icon() + '" title="' +
 					civitas.l('City of') + ' ' + settlements[i].name() + '" style="left:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.x + 'px;top:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.y + 'px"></div>';
+					location.x + 'px;top:' +
+					location.y + 'px"></div>';
 			} else {
 				out += '<div data-name="' + settlements[i].name() +
 					'" class="tips settlement v1" title="' + civitas.l('Village of') + ' ' +
 					settlements[i].name() + '" style="left:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.x + 'px;top:' +
-					civitas.SETTLEMENTS[settlements[i].id()].location.y + 'px"></div>';
+					location.x + 'px;top:' +
+					location.y + 'px"></div>';
 			}
 		}
 		for (var i = 0; i < queue_actions.length; i++) {
@@ -16915,7 +16057,7 @@ civitas.PANEL_NEW_ARMY = {
 		var settlements = core.get_settlements();
 		var army = my_settlement.get_army();
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
-		var distance = civitas.utils.get_distance_in_days(location, civitas.SETTLEMENTS[settlement.id()].location);
+		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
 		this.assigned_army = {};
 		this.assigned_navy = {};
 		for (var item in army) {
@@ -17089,7 +16231,7 @@ civitas.PANEL_NEW_SPY = {
 		var settlements = core.get_settlements();
 		var espionage = my_settlement.espionage();
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
-		var distance = civitas.utils.get_distance_in_days(location, civitas.SETTLEMENTS[settlement.id()].location);
+		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
 		var _t = '<fieldset>' +
 			'<legend>' + civitas.l('Initial costs') + '</legend>' +
 			'<dl>';
@@ -17217,7 +16359,7 @@ civitas.PANEL_NEW_CARAVAN = {
 		var settlement = params.data;
 		var settlements = core.get_settlements();
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
-		var distance = civitas.utils.get_distance_in_days(location, civitas.SETTLEMENTS[settlement.id()].location);
+		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
 		var _t = '<fieldset>' +
 			'<legend>' + civitas.l('Initial costs') + '</legend>' +
 			'<dl>';

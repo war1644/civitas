@@ -241,13 +241,13 @@ civitas.game.prototype.add_to_queue = function(source_settlement, destination_se
 		var s_loc = civitas['SETTLEMENT_LOCATION_' +
 			source_settlement.climate().name.toUpperCase()];
 	} else {
-		var s_loc = civitas.SETTLEMENTS[source_settlement.id()].location;
+		var s_loc = source_settlement.get_location();
 	}
 	if (destination_settlement.id() === this.get_settlement().id()) {
 		var d_loc = civitas['SETTLEMENT_LOCATION_' +
 			destination_settlement.climate().name.toUpperCase()];
 	} else {
-		var d_loc = civitas.SETTLEMENTS[destination_settlement.id()].location;
+		var d_loc = destination_settlement.get_location();
 	}
 	var duration = civitas.utils.get_distance_in_days(s_loc, d_loc);
 	if (mode === civitas.ACTION_CAMPAIGN) {

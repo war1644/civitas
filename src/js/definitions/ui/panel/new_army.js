@@ -23,7 +23,7 @@ civitas.PANEL_NEW_ARMY = {
 		var settlements = core.get_settlements();
 		var army = my_settlement.get_army();
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
-		var distance = civitas.utils.get_distance_in_days(location, civitas.SETTLEMENTS[settlement.id()].location);
+		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
 		this.assigned_army = {};
 		this.assigned_navy = {};
 		for (var item in army) {

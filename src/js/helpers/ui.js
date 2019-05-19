@@ -263,15 +263,12 @@ civitas.ui = {
 		mode = (typeof mode === 'undefined' || mode === 'imports') ? 'imports' : 'exports';
 		var out = '';
 		if (trades !== null) {
-			out += '<dl>';
 			var trade = trades[mode];
 			for (var item in trade) {
 				if (trade[item] > 0) {
-					out += '<dt>' + trade[item] + '</dt>' +
-						'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
+					out += civitas.ui.resource_storage_small_el(item, trade[item]);
 				}
 			}
-			out += '</dl>';
 		}
 		return out;
 	},

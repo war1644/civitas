@@ -342,6 +342,19 @@ civitas.utils = {
 	},
 
 	/**
+	 * Return a random world location.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	get_random_world_location: function() {
+		return {
+			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH),
+			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT)
+		}
+	},
+
+	/**
 	 * Return a random unique array element.
 	 *
 	 * @public
