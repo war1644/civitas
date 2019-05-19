@@ -128,7 +128,7 @@ civitas.objects.settlement.prototype.reset_trades = function() {
 	new_resources.research = this.resources.research;
 	new_resources.faith = this.resources.faith;
 	this.resources = this._fill_resources(new_resources);
-	if (this.get_type === civitas.CITY) {
+	if (this.get_type === civitas.CITY || this.get_type === civitas.METROPOLIS) {
 		var new_trades = data.trades;
 		this.trades = new_trades;
 	}

@@ -49,6 +49,11 @@ civitas.PANEL_WORLD = {
 					civitas.l('City of') + ' ' + settlements[i].name() + '" style="left:' +
 					location.x + 'px;top:' +
 					location.y + 'px"></div>';
+			} else if (settlements[i].get_type() === civitas.METROPOLIS) {
+				out += '<div data-name="' + settlements[i].name() + '" class="tips settlement m1" title="' +
+					civitas.l('Metropolis of') + ' ' + settlements[i].name() + '" style="left:' +
+					location.x + 'px;top:' +
+					location.y + 'px"></div>';
 			} else {
 				out += '<div data-name="' + settlements[i].name() +
 					'" class="tips settlement v1" title="' + civitas.l('Village of') + ' ' +

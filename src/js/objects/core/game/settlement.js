@@ -104,7 +104,7 @@ civitas.game.prototype.get_settlements = function () {
  * @returns {Object}
  */
 civitas.game.prototype.get_point_outside_area = function(settlement_type) {
-	var distance = settlement_type === civitas.CITY ? civitas.CITY_AREA : civitas.VILLAGE_AREA;
+	var distance = (settlement_type === civitas.CITY) ? civitas.CITY_AREA : civitas.VILLAGE_AREA;
 	var new_location = civitas.utils.get_random_world_location();
 	var settlement_location;
 	var settlements = this.get_settlements();
@@ -131,6 +131,8 @@ civitas.game.prototype.generate_random_army = function(settlement_type) {
 	for (var item in civitas.SOLDIERS) {
 		if (settlement_type === civitas.CITY) {
 			army[item] = civitas.utils.get_random(0, 20);
+		} else if (settlement_type === civitas.METROPOLIS) {
+			army[item] = civitas.utils.get_random(0, 60);
 		} else {
 			army[item] = civitas.utils.get_random(0, 5);
 		}
@@ -155,6 +157,8 @@ civitas.game.prototype.generate_random_navy = function(settlement_type) {
 	for (var item in civitas.SHIPS) {
 		if (settlement_type === civitas.CITY) {
 			navy[item] = civitas.utils.get_random(0, 10);
+		} else if (settlement_type === civitas.METROPOLIS) {
+			navy[item] = civitas.utils.get_random(0, 30);
 		} else {
 			navy[item] = civitas.utils.get_random(0, 2);
 		}
@@ -181,6 +185,13 @@ civitas.game.prototype.generate_random_resources = function(full, settlement) {
 			resources.espionage = civitas.utils.get_random(1, civitas.MAX_ESPIONAGE_VALUE);
 			resources.research = civitas.utils.get_random(1, civitas.MAX_RESEARCH_VALUE);
 			resources.faith = civitas.utils.get_random(1, civitas.MAX_FAITH_VALUE);
+		} else if (settlement === civitas.METROPOLIS) {
+			resources.coins = civitas.utils.get_random(100000, 10000000);
+			resources.fame = civitas.utils.get_random(500000, 1000000);
+			resources.prestige = civitas.utils.get_random(500, civitas.MAX_PRESTIGE_VALUE);
+			resources.espionage = civitas.utils.get_random(500, civitas.MAX_ESPIONAGE_VALUE);
+			resources.research = civitas.utils.get_random(500, civitas.MAX_RESEARCH_VALUE);
+			resources.faith = civitas.utils.get_random(500, civitas.MAX_FAITH_VALUE);
 		} else {
 			resources.coins = civitas.utils.get_random(100, 20000);
 			resources.fame = civitas.utils.get_random(1, 50000);
@@ -196,6 +207,8 @@ civitas.game.prototype.generate_random_resources = function(full, settlement) {
 	};
 	if (settlement === civitas.CITY) {
 		num_resources = civitas.utils.get_random(5, 30);
+	} else if (settlement === civitas.METROPOLIS) {
+		num_resources = civitas.utils.get_random(15, 80);
 	} else {
 		num_resources = civitas.utils.get_random(2, 10);
 	}
@@ -204,7 +217,7 @@ civitas.game.prototype.generate_random_resources = function(full, settlement) {
 		if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
 			res_num++;
 			resources[item] = civitas.utils.get_random(10, 500);
-			if (settlement === civitas.CITY) {
+			if (settlement === civitas.CITY || settlement === civitas.METROPOLIS) {
 				if (resources[item] > 450) {
 					trades.exports[item] = civitas.IMPORTANCE_VITAL;
 				} else if (resources[item] > 300 && resources[item] <= 450) {
@@ -218,7 +231,7 @@ civitas.game.prototype.generate_random_resources = function(full, settlement) {
 			break;
 		}
 	}
-	if (settlement === civitas.CITY) {
+	if (settlement === civitas.CITY || settlement === civitas.METROPOLIS) {
 		num_resources = civitas.utils.get_random(5, 10);
 		res_num = 0;
 		for (var item in civitas.RESOURCES) {
@@ -245,26 +258,33 @@ civitas.game.prototype.generate_random_resources = function(full, settlement) {
  * @returns {Object}
  */
 civitas.game.prototype.generate_random_settlement_data = function(settlement_type) {
+	var settlement_level;
 	if (typeof settlement_type === 'undefined') {
-		settlement_type = civitas.utils.get_random(0, 1);
+		settlement_type = civitas.utils.get_random(0, 2);
 	}
+	console.log(settlement_type);
 	var resources = this.generate_random_resources(true, settlement_type);
+	if (settlement_type === civitas.CITY) {
+		settlement_level = civitas.utils.get_random(10, civitas.MAX_SETTLEMENT_LEVEL);
+	} else if (settlement_type === civitas.METROPOLIS) {
+		settlement_level = civitas.utils.get_random(20, civitas.MAX_SETTLEMENT_LEVEL);
+	} else {
+		settlement_level = civitas.utils.get_random(1, 5);
+	}
 	var settlement = {
-		icon: civitas.utils.get_random(2, 7),
+		icon: civitas.utils.get_random(2, 6),
 		type: settlement_type,
 		player: false,
 		name: civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
 		climate: civitas.utils.get_random(1, civitas.CLIMATES.length - 1),
 		religion: civitas.utils.get_random(1, civitas.RELIGIONS.length - 1),
 		nationality: civitas.utils.get_random(1, civitas.NATIONS.length - 1),
-		level: settlement_type === civitas.CITY ?
-			civitas.utils.get_random(1, civitas.MAX_SETTLEMENT_LEVEL) :
-			civitas.utils.get_random(1, 5),
+		level: settlement_level,
 		resources: resources.resources,
 		army: this.generate_random_army(),
 		navy: this.generate_random_navy()
 	}
-	if (settlement_type === civitas.CITY) {
+	if (settlement_type === civitas.CITY || settlement_type === civitas.METROPOLIS) {
 		settlement.trades = resources.trades;
 	}
 	return settlement;
@@ -287,6 +307,7 @@ civitas.game.prototype._create_settlement = function (name, cityname, nation, cl
 		name: cityname,
 		climate: climate,
 		avatar: avatar,
+		religion: civitas.RELIGION_NONE,
 		nationality: nation,
 		location: civitas['SETTLEMENT_LOCATION_' + civitas.CLIMATES[climate].toUpperCase()],
 		army: civitas.START_ARMY[difficulty - 1].army,
@@ -323,8 +344,7 @@ civitas.game.prototype.add_settlement = function(settlement_data, id, player_dat
 			player = true;
 		}
 		if (player === false) {
-			settlement_data.type = typeof settlement_data.type === 'undefined' ||
-				settlement_data.type === civitas.CITY ? civitas.CITY : civitas.VILLAGE;
+			settlement_data.type = settlement_data.type;
 			ruler = {
 				title: 'Mayor',
 				avatar: civitas.utils.get_random(1, 48),
@@ -363,7 +383,7 @@ civitas.game.prototype.add_settlement = function(settlement_data, id, player_dat
 			location: this.get_point_outside_area(settlement_data.type)
 		});
 		if (player === false) {
-			if (settlement_data.type === civitas.CITY) {
+			if (settlement_data.type === civitas.CITY || settlement_data.type === civitas.METROPOLIS) {
 				climate = new_settlement.climate();
 				climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase();
 				new_settlement._create_buildings(civitas[climate_buildings], true);

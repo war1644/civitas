@@ -24,6 +24,7 @@ civitas.PANEL_NEW_CARAVAN = {
 		var settlements = core.get_settlements();
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
 		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
+		var settlement_type_text;
 		var _t = '<fieldset>' +
 			'<legend>' + civitas.l('Initial costs') + '</legend>' +
 			'<dl>';
@@ -46,7 +47,14 @@ civitas.PANEL_NEW_CARAVAN = {
 			'<select class="caravan-destination">' +
 				'<option value="0">-- ' + civitas.l('select') + ' --</option>';
 		for (var i = 1; i < settlements.length; i++) {
-			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + (settlements[i].is_city() ? civitas.l('City of') + ' ' : civitas.l('Village of') + ' ') + settlements[i].name() + '</option>';
+			if (settlements[i].is_city()) {
+				settlement_type_text = civitas.l('City of') + ' ';
+			} else if (settlements[i].is_metropolis()) {
+				settlement_type_text = civitas.l('Metropolis of') + ' ';
+			} else {
+				settlement_type_text = civitas.l('Village of') + ' '
+			}
+			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlement_type_text + settlements[i].name() + '</option>';
 		}
 		_t += '</select>' +
 		'</fieldset>' +

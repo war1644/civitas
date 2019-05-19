@@ -112,6 +112,10 @@ footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/world/settlement1.png) no-repeat;
 }
 
+.panel .worldmap .settlement.m1 {
+	background: transparent url(../images/assets/ui/world/metropolis1.png) no-repeat;
+}
+
 .panel .worldmap .settlement.c1 {
 	background: transparent url(../images/assets/ui/world/city1.png) no-repeat;
 }
@@ -134,10 +138,6 @@ footer a[data-panel=help] {
 
 .panel .worldmap .settlement.c6 {
 	background: transparent url(../images/assets/ui/world/city6.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c7 {
-	background: transparent url(../images/assets/ui/world/city7.png) no-repeat;
 }
 
 /* World Maps variants */

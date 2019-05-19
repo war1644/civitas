@@ -39,9 +39,16 @@ civitas.PANEL_SETTLEMENT = {
 		var settlement_type = settlement.get_type();
 		this.params_data = params;
 		var trades = settlement.get_trades();
+		var settlement_type_title;
+		if (settlement_type === civitas.CITY) {
+			settlement_type_title = civitas.l('City of') + ' ' + settlement.name();
+		} else if (settlement_type === civitas.METROPOLIS) {
+			settlement_type_title = civitas.l('Metropolis of') + ' ' + settlement.name();
+		} else {
+			settlement_type_title = civitas.l('Village of') + ' ' + settlement.name();
+		}
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
-		$(this.handle + ' header').append((settlement.is_city() ? civitas.l('City of') + ' ' : 
-			civitas.l('Village of') + ' ') + settlement.name());
+		$(this.handle + ' header').append(settlement_type_title);
 		if (settlement.is_city()) {
 			$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), 
 				civitas.l('Army'), civitas.l('Navy'), civitas.l('Resources'), 
@@ -197,7 +204,7 @@ civitas.PANEL_SETTLEMENT = {
 				settlement.personality().name + '</dd>' +
 				'<dt>' + civitas.l('Nationality') + '</dt><dd>' +
 				settlement.nationality().name + '</dd>' +
-				(settlement.is_city() ? 
+				(settlement.is_city() || settlement.is_metropolis() ? 
 				'<dt>' + civitas.l('Level') + '</dt><dd>' + settlement.level() + '</dd>' +
 				'<dt>' + civitas.l('Prestige') + '</dt><dd>' +
 				civitas.ui.progress((settlement.prestige() * 100) /

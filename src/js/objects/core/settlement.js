@@ -165,7 +165,7 @@ civitas.objects.settlement = function(params) {
 		}
 		if (this.is_player() === false) {
 			this.resources.fame = civitas.LEVELS[this.level()];
-			if (this.properties.type === civitas.CITY) {
+			if (this.properties.type === civitas.CITY || this.properties.type === civitas.METROPOLIS) {
 				this._ai = new civitas.modules.ai({
 					core: this,
 					type: this.properties.ruler.personality
@@ -550,6 +550,16 @@ civitas.objects.settlement = function(params) {
 	};
 
 	/**
+	 * Check if this settlement is a metropolis.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
+	this.is_metropolis = function() {
+		return this.properties.type === civitas.METROPOLIS;
+	};
+
+	/**
 	 * Check if this settlement is a village.
 	 *
 	 * @public
@@ -625,6 +635,36 @@ civitas.objects.settlement = function(params) {
 	this.set_location = function(location) {
 		this.location = location;
 		return this;
+	};
+
+	/**
+	 * Change this settlement's type to city.
+	 *
+	 * @public
+	 * @returns {civitas.settlement}
+	 */
+	this.to_city = function() {
+		this.properties.type = civitas.CITY;
+	};
+
+	/**
+	 * Change this settlement's type to village.
+	 *
+	 * @public
+	 * @returns {civitas.settlement}
+	 */
+	this.to_village = function() {
+		this.properties.type = civitas.VILLAGE;
+	};
+
+	/**
+	 * Change this settlement's type to metropolis.
+	 *
+	 * @public
+	 * @returns {civitas.settlement}
+	 */
+	this.to_metropolis = function() {
+		this.properties.type = civitas.METROPOLIS;
 	};
 
 	// Fire up the constructor
