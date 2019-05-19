@@ -215,7 +215,7 @@ civitas.DEBUG = true;
 civitas.STORAGE_KEY = 'civitas';
 
 /**
- * Goods importance, vital means at most 500 stacks of goods will be up
+ * Goods importance, vital means at most 50 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant
@@ -224,7 +224,7 @@ civitas.STORAGE_KEY = 'civitas';
 civitas.IMPORTANCE_VITAL = 50;
 
 /**
- * Goods importance, high means at most 300 stacks of goods will be up
+ * Goods importance, high means at most 30 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant
@@ -233,7 +233,7 @@ civitas.IMPORTANCE_VITAL = 50;
 civitas.IMPORTANCE_HIGH = 30;
 
 /**
- * Goods importance, medium means at most 200 stacks of goods will be up
+ * Goods importance, medium means at most 20 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant
@@ -242,7 +242,7 @@ civitas.IMPORTANCE_HIGH = 30;
 civitas.IMPORTANCE_MEDIUM = 20;
 
 /**
- * Goods importance, low means at most 100 stacks of goods will be up
+ * Goods importance, low means at most 10 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant
@@ -4679,12 +4679,36 @@ civitas.CITY = 0;
  */
 civitas.VILLAGE = 1;
 
+/**
+ * Width of the world in pixels.
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WORLD_SIZE_WIDTH = 960;
 
+/**
+ * Height of the world in pixels.
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.WORLD_SIZE_HEIGHT = 560;
 
+/**
+ * City area of influence, in pixels (another city can't be placed in this area of influence).
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.CITY_AREA = 100;
 
+/**
+ * Village area of influence, in pixels (another village can't be placed in this area of influence).
+ *
+ * @constant
+ * @type {Number}
+ */
 civitas.VILLAGE_AREA = 50;
 
 /**
@@ -4702,137 +4726,6 @@ civitas.MAX_INITIAL_SETTLEMENTS = 20;
  * @type {Number}
  */
 civitas.MAX_SETTLEMENTS = 50;
-
-/**
- * List of possible world rulers.
- *
- * @constant
- * @type {Array}
- */
-civitas.RULERS = [
-	{
-		name: 'Caesar',
-		title: 'Emperor',
-		avatar: 1,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Cronus',
-		title: 'Ruler',
-		avatar: 3,
-		personality: civitas.PERSONALITY_BALANCED
-	}, {
-		name: 'Dido',
-		title: 'Queen',
-		avatar: 6,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Genghis',
-		title: 'Khan',
-		avatar: 19,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Khufu',
-		title: 'Pharaoh',
-		avatar: 20,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Musa I',
-		title: 'Mansa',
-		avatar: 30,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Sennacherib',
-		title: 'King',
-		avatar: 2,
-		personality: civitas.PERSONALITY_BALANCED
-	}, {
-		name: 'Pepi',
-		title: 'Pharaoh',
-		avatar: 40,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Hatshepsut',
-		title: 'Pharaoh',
-		avatar: 5,
-		personality: civitas.PERSONALITY_BALANCED
-	}, {
-		name: 'Clovis',
-		title: 'King',
-		avatar: 13,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Gilgamesh',
-		title: 'King',
-		avatar: 31,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Dalai Lama',
-		title: 'Priest',
-		avatar: 48,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	},
-	{
-		name: 'Ashoka',
-		title: 'Emperor',
-		avatar: 28,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Charlemagne',
-		title: 'King',
-		avatar: 43,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Darius',
-		title: 'King',
-		avatar: 38,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Ivan III',
-		title: 'Tzar',
-		avatar: 19,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Qin Shi Huang',
-		title: 'Emperor',
-		avatar: 45,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Ozymandias',
-		title: 'Pharaoh',
-		avatar: 33,
-		personality: civitas.PERSONALITY_BALANCED
-	}, {
-		name: 'Timur',
-		title: 'Emperor',
-		avatar: 37,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Pol Pot',
-		title: 'President',
-		avatar: 46,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Napoleon',
-		title: 'Emperor',
-		avatar: 47,
-		personality: civitas.PERSONALITY_WARLORD
-	}, {
-		name: 'Hirohito',
-		title: 'Emperor',
-		avatar: 30,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}, {
-		name: 'Ivan Sirko',
-		title: 'Otaman',
-		avatar: 41,
-		personality: civitas.PERSONALITY_BALANCED
-	}, {
-		name: 'Peter the Great',
-		title: 'Tsar',
-		avatar: 40,
-		personality: civitas.PERSONALITY_DIPLOMAT
-	}
-];
 
 /**
  * List of possible world settlement names.
@@ -4949,7 +4842,90 @@ civitas.SETTLEMENT_NAMES = [
 	'Regium Lepidum',
 	'Aquisgranium',
 	'Saint Petersburg',
-	'Gerasa'
+	'Gerasa',
+	'Besontio',
+	'Rhegium',
+	'Argentoratum',
+	'Apamea',
+	'Hadrianopolis',
+	'Byzantium',
+	'Ravenna',
+	'Carnotum',
+	'Podium Aniciense',
+	'Beroe Augusta Trajana',
+	'Dubris',
+	'Avenio',
+	'Luentinum',
+	'Castra Nicia',
+	'Crotona',
+	'Concordia Sagittaria',
+	'Vibo Valentia',
+	'Portus',
+	'Faventia',
+	'Tchidimbo',
+	'Concala',
+	'Berlowa',
+	'Bagangoua',
+	'Bangamo',
+	'Bossemlindao',
+	'Boti',
+	'Bonnamar',
+	'Dilobunda',
+	'Lupugani',
+	'Mimomo',
+	'Nkolabo',
+	'Mindo',
+	'Kindamno',
+	'Kanyesisi',
+	'Mwinirenje',
+	'Tbouleang',
+	'Kamphon',
+	'Jamya',
+	'Yogtar',
+	'Ambu',
+	'Kubak',
+	'Wainlet',
+	'Shwebyu',
+	'Gaguio',
+	'Cartangas',
+	'Surakham',
+	'Kratai',
+	'Sa Pha',
+	'My Tinh',
+	'Neurau',
+	'Hollatrenk',
+	'Woluten',
+	'Forwerpen',
+	'Sarsir',
+	'Pérission',
+	'Alsfeld',
+	'Goldburg',
+	'Thurway',
+	'Watertowel',
+	'Hengeloopen',
+	'Alkningen',
+	'Mornach',
+	'Gorpen',
+	'Novoupa',
+	'Ozyosinsk',
+	'Cheregansk',
+	'Sibanovsk',
+	'Vserodvinsk',
+	'Polelensk',
+	'Novokugadan',
+	'Belgovgrad',
+	'Chelyakala',
+	'Tovodsk',
+	'Kensato',
+	'Kurishiri',
+	'Aridakoshi',
+	'Pingguan',
+	'Zoajiang',
+	'Ulaanteeg',
+	'Nomsai',
+	'Tangye',
+	'Chuncheon',
+	'Ikju'
 ];
 
 /**
@@ -4960,6 +4936,30 @@ civitas.SETTLEMENT_NAMES = [
  * @constant
  */
 civitas.NAMES = [
+	'Caesar',
+	'Cronus',
+	'Dido',
+	'Genghis',
+	'Khufu',
+	'Musa I',
+	'Sennacherib',
+	'Pepi',
+	'Hatshepsut',
+	'Clovis',
+	'Gilgamesh',
+	'Dalai Lama',
+	'Ashoka',
+	'Charlemagne',
+	'Darius',
+	'Ivan III',
+	'Qin Shi Huang',
+	'Ozymandias',
+	'Timur',
+	'Pol Pot',
+	'Napoleon',
+	'Hirohito',
+	'Ivan Sirko',
+	'Peter the Great',
 	'Pan',
 	'Victor',
 	'Lekan',
@@ -4971,17 +4971,64 @@ civitas.NAMES = [
 	'Meera',
 	'Sethunya',
 	'Soupi',
-	/*
-	'',
-	'',
-	'',
-	'',
-	'',
-	'',
-	'',
-	'',
-	'',
-	*/
+	'Vestmar',
+	'Numi',
+	'Marteinn',
+	'Saithor',
+	'Haki',
+	'Ragnar',
+	'Qiao',
+	'Zeng',
+	'Zhan',
+	'Guo',
+	'Yan',
+	'Zarpiya',
+	'Hada',
+	'Kikarnahsu',
+	'Tarhuntapiya',
+	'Karnapaka',
+	'Dambi',
+	'Silalluhi',
+	'Zuwahallati',
+	'Sakkummilla',
+	'Hapu',
+	'Ammalli',
+	'Kawiya',
+	'Nisasar',
+	'Abba',
+	'Rishabha',
+	'Sena',
+	'Kalpana',
+	'Nupur',
+	'Anu',
+	'Parvati',
+	'Rani',
+	'Chandrama',
+	'Dhani',
+	'Gallus',
+	'Flavius',
+	'Decimus',
+	'Titus',
+	'Papia',
+	'Aburia',
+	'Volusia',
+	'Macrinia',
+	'Lucia',
+	'Lucretia',
+	'Dubov',
+	'Filimonov',
+	'Mikhail',
+	'Larissa',
+	'Zenaide',
+	'Lenora',
+	'Natasha',
+	'Muhammet',
+	'Haydar',
+	'Hizir',
+	'Orhan',
+	'Huriye',
+	'Fehime',
+	'Seher',
 	'Qadir',
 	'Lim',
 	'Yami',
@@ -4998,7 +5045,37 @@ civitas.NAMES = [
 	'Soth',
 	'Naoki',
 	'Hachirou',
-	'Irmhild'
+	'Irmhild',
+	'Thiago',
+	'Stefano',
+	'Gerardo',
+	'Alonso',
+	'Mario',
+	'Consuela',
+	'Graciela',
+	'Alicia',
+	'Mariangel',
+	'Qimmiabruk',
+	'Qajak',
+	'Akrittok',
+	'Kuk`uq',
+	'Noahtakmiut',
+	'Kinaktok',
+	'Iluliaq',
+	'Taktuq',
+	'Aquutaq',
+	'Tulugaq',
+	'Uyarak',
+	'Onartok',
+	'Karpok',
+	'Husain',
+	'Farhan',
+	'Umar',
+	'Safiyya',
+	'Yanduza',
+	'Fatimah',
+	'Tasufin',
+	'Hammad'
 ];
 
 /**
@@ -13749,76 +13826,76 @@ civitas.game.prototype._create_settlement = function (name, cityname, nation, cl
  * @param {Object} settlement_data
  * @param {Number} id
  * @param {Object} player_data
- * @returns {civitas.game}
+ * @returns {Mixed}
  */
 civitas.game.prototype.add_settlement = function(settlement_data, id, player_data) {
-	var new_settlement;
-	var ruler;
-	var climate;
-	var climate_buildings;
-	var player = false;
-	if (typeof id === 'undefined') {
-		id = this.get_num_settlements() + 1;
-	}
-	if (typeof player_data !== 'undefined') {
-		player = true;
-	}
-	if (player === false) {
-		settlement_data.type = typeof settlement_data.type === 'undefined' ||
-			settlement_data.type === civitas.CITY ? civitas.CITY : civitas.VILLAGE;
-		if (settlement_data.type === civitas.VILLAGE) {
+	if (this.get_num_settlements() <= civitas.MAX_SETTLEMENTS) {
+		var new_settlement;
+		var ruler;
+		var climate;
+		var climate_buildings;
+		var player = false;
+		if (typeof id === 'undefined') {
+			id = this.get_num_settlements() + 1;
+		}
+		if (typeof player_data !== 'undefined') {
+			player = true;
+		}
+		if (player === false) {
+			settlement_data.type = typeof settlement_data.type === 'undefined' ||
+				settlement_data.type === civitas.CITY ? civitas.CITY : civitas.VILLAGE;
 			ruler = {
 				title: 'Mayor',
-				avatar: 40,
-				personality: civitas.PERSONALITY_DIPLOMAT,
+				avatar: civitas.utils.get_random(1, 48),
+				personality: civitas.utils.get_random(1, 3),
 				name: civitas.utils.get_random_unique(civitas.NAMES)
 			};
 		} else {
-			ruler = civitas.utils.get_random_unique(civitas.RULERS);
+			id = 0;
+			ruler = {
+				name: player_data.name,
+				title: '',
+				avatar: player_data.avatar,
+				personality: civitas.PERSONALITY_BALANCED
+			}
 		}
-	} else {
-		id = 0;
-		ruler = {
-			name: player_data.name,
-			title: '',
-			avatar: player_data.avatar,
-			personality: civitas.PERSONALITY_BALANCED
-		}
-	}
-	new_settlement = new civitas.objects.settlement({
-		core: this,
-		properties: {
-			id: id,
-			type: typeof settlement_data.type !== 'undefined' ? settlement_data.type : civitas.CITY,
-			name: typeof settlement_data.name !== 'undefined' ? settlement_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
-			player: player,
-			level: typeof settlement_data.level !== 'undefined' ? settlement_data.level : 1,
-			religion: typeof settlement_data.religion !== 'undefined' ? settlement_data.religion : civitas.RELIGION_CHRISTIANITY,
-			climate: typeof settlement_data.climate !== 'undefined' ?
-				settlement_data.climate : civitas.CLIMATE_TEMPERATE,
-			ruler: ruler,
-			nationality: settlement_data.nationality,
-			icon: settlement_data.type === civitas.CITY &&
-				typeof settlement_data.icon !== 'undefined' ? settlement_data.icon : 1
-		},
-		resources: typeof settlement_data.resources !== 'undefined' ? settlement_data.resources : {},
-		army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
-		navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
-		trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
-		location: this.get_point_outside_area(settlement_data.type)
-	});
-	if (player === false) {
-		if (settlement_data.type === civitas.CITY) {
-			climate = new_settlement.climate();
-			climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase();
-			new_settlement._create_buildings(civitas[climate_buildings], true);
-		}
-		this.get_settlement().status(id, {
-			influence: 50,
-			status: civitas.DIPLOMACY_TRUCE
+		new_settlement = new civitas.objects.settlement({
+			core: this,
+			properties: {
+				id: id,
+				type: typeof settlement_data.type !== 'undefined' ? settlement_data.type : civitas.CITY,
+				name: typeof settlement_data.name !== 'undefined' ? settlement_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
+				player: player,
+				level: typeof settlement_data.level !== 'undefined' ? settlement_data.level : 1,
+				religion: typeof settlement_data.religion !== 'undefined' ? settlement_data.religion : civitas.RELIGION_CHRISTIANITY,
+				climate: typeof settlement_data.climate !== 'undefined' ?
+					settlement_data.climate : civitas.CLIMATE_TEMPERATE,
+				ruler: ruler,
+				nationality: settlement_data.nationality,
+				icon: settlement_data.type === civitas.CITY &&
+					typeof settlement_data.icon !== 'undefined' ? settlement_data.icon : 1
+			},
+			resources: typeof settlement_data.resources !== 'undefined' ? settlement_data.resources : {},
+			army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
+			navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
+			trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
+			location: this.get_point_outside_area(settlement_data.type)
 		});
+		if (player === false) {
+			if (settlement_data.type === civitas.CITY) {
+				climate = new_settlement.climate();
+				climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase();
+				new_settlement._create_buildings(civitas[climate_buildings], true);
+			}
+			this.get_settlement().status(id, {
+				influence: 50,
+				status: civitas.DIPLOMACY_TRUCE
+			});
+		}
+		this.settlements.push(new_settlement);
+	} else {
+		return false;
 	}
-	this.settlements.push(new_settlement);
 	return this;
 };
 

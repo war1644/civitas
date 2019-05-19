@@ -194,7 +194,7 @@ civitas.DEBUG = true;
 civitas.STORAGE_KEY = 'civitas';
 
 /**
- * Goods importance, vital means at most 500 stacks of goods will be up
+ * Goods importance, vital means at most 50 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant
@@ -203,7 +203,7 @@ civitas.STORAGE_KEY = 'civitas';
 civitas.IMPORTANCE_VITAL = 50;
 
 /**
- * Goods importance, high means at most 300 stacks of goods will be up
+ * Goods importance, high means at most 30 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant
@@ -212,7 +212,7 @@ civitas.IMPORTANCE_VITAL = 50;
 civitas.IMPORTANCE_HIGH = 30;
 
 /**
- * Goods importance, medium means at most 200 stacks of goods will be up
+ * Goods importance, medium means at most 20 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant
@@ -221,7 +221,7 @@ civitas.IMPORTANCE_HIGH = 30;
 civitas.IMPORTANCE_MEDIUM = 20;
 
 /**
- * Goods importance, low means at most 100 stacks of goods will be up
+ * Goods importance, low means at most 10 stacks of goods will be up
  * for importing or exporting.
  *
  * @constant

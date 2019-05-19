@@ -307,76 +307,76 @@ civitas.game.prototype._create_settlement = function (name, cityname, nation, cl
  * @param {Object} settlement_data
  * @param {Number} id
  * @param {Object} player_data
- * @returns {civitas.game}
+ * @returns {Mixed}
  */
 civitas.game.prototype.add_settlement = function(settlement_data, id, player_data) {
-	var new_settlement;
-	var ruler;
-	var climate;
-	var climate_buildings;
-	var player = false;
-	if (typeof id === 'undefined') {
-		id = this.get_num_settlements() + 1;
-	}
-	if (typeof player_data !== 'undefined') {
-		player = true;
-	}
-	if (player === false) {
-		settlement_data.type = typeof settlement_data.type === 'undefined' ||
-			settlement_data.type === civitas.CITY ? civitas.CITY : civitas.VILLAGE;
-		if (settlement_data.type === civitas.VILLAGE) {
+	if (this.get_num_settlements() <= civitas.MAX_SETTLEMENTS) {
+		var new_settlement;
+		var ruler;
+		var climate;
+		var climate_buildings;
+		var player = false;
+		if (typeof id === 'undefined') {
+			id = this.get_num_settlements() + 1;
+		}
+		if (typeof player_data !== 'undefined') {
+			player = true;
+		}
+		if (player === false) {
+			settlement_data.type = typeof settlement_data.type === 'undefined' ||
+				settlement_data.type === civitas.CITY ? civitas.CITY : civitas.VILLAGE;
 			ruler = {
 				title: 'Mayor',
-				avatar: 40,
-				personality: civitas.PERSONALITY_DIPLOMAT,
+				avatar: civitas.utils.get_random(1, 48),
+				personality: civitas.utils.get_random(1, 3),
 				name: civitas.utils.get_random_unique(civitas.NAMES)
 			};
 		} else {
-			ruler = civitas.utils.get_random_unique(civitas.RULERS);
+			id = 0;
+			ruler = {
+				name: player_data.name,
+				title: '',
+				avatar: player_data.avatar,
+				personality: civitas.PERSONALITY_BALANCED
+			}
 		}
-	} else {
-		id = 0;
-		ruler = {
-			name: player_data.name,
-			title: '',
-			avatar: player_data.avatar,
-			personality: civitas.PERSONALITY_BALANCED
-		}
-	}
-	new_settlement = new civitas.objects.settlement({
-		core: this,
-		properties: {
-			id: id,
-			type: typeof settlement_data.type !== 'undefined' ? settlement_data.type : civitas.CITY,
-			name: typeof settlement_data.name !== 'undefined' ? settlement_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
-			player: player,
-			level: typeof settlement_data.level !== 'undefined' ? settlement_data.level : 1,
-			religion: typeof settlement_data.religion !== 'undefined' ? settlement_data.religion : civitas.RELIGION_CHRISTIANITY,
-			climate: typeof settlement_data.climate !== 'undefined' ?
-				settlement_data.climate : civitas.CLIMATE_TEMPERATE,
-			ruler: ruler,
-			nationality: settlement_data.nationality,
-			icon: settlement_data.type === civitas.CITY &&
-				typeof settlement_data.icon !== 'undefined' ? settlement_data.icon : 1
-		},
-		resources: typeof settlement_data.resources !== 'undefined' ? settlement_data.resources : {},
-		army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
-		navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
-		trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
-		location: this.get_point_outside_area(settlement_data.type)
-	});
-	if (player === false) {
-		if (settlement_data.type === civitas.CITY) {
-			climate = new_settlement.climate();
-			climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase();
-			new_settlement._create_buildings(civitas[climate_buildings], true);
-		}
-		this.get_settlement().status(id, {
-			influence: 50,
-			status: civitas.DIPLOMACY_TRUCE
+		new_settlement = new civitas.objects.settlement({
+			core: this,
+			properties: {
+				id: id,
+				type: typeof settlement_data.type !== 'undefined' ? settlement_data.type : civitas.CITY,
+				name: typeof settlement_data.name !== 'undefined' ? settlement_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
+				player: player,
+				level: typeof settlement_data.level !== 'undefined' ? settlement_data.level : 1,
+				religion: typeof settlement_data.religion !== 'undefined' ? settlement_data.religion : civitas.RELIGION_CHRISTIANITY,
+				climate: typeof settlement_data.climate !== 'undefined' ?
+					settlement_data.climate : civitas.CLIMATE_TEMPERATE,
+				ruler: ruler,
+				nationality: settlement_data.nationality,
+				icon: settlement_data.type === civitas.CITY &&
+					typeof settlement_data.icon !== 'undefined' ? settlement_data.icon : 1
+			},
+			resources: typeof settlement_data.resources !== 'undefined' ? settlement_data.resources : {},
+			army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
+			navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
+			trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
+			location: this.get_point_outside_area(settlement_data.type)
 		});
+		if (player === false) {
+			if (settlement_data.type === civitas.CITY) {
+				climate = new_settlement.climate();
+				climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase();
+				new_settlement._create_buildings(civitas[climate_buildings], true);
+			}
+			this.get_settlement().status(id, {
+				influence: 50,
+				status: civitas.DIPLOMACY_TRUCE
+			});
+		}
+		this.settlements.push(new_settlement);
+	} else {
+		return false;
 	}
-	this.settlements.push(new_settlement);
 	return this;
 };
 
