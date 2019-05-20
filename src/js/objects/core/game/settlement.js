@@ -269,7 +269,6 @@ civitas.game.prototype.generate_random_settlement_data = function(settlement_typ
 	if (typeof settlement_type === 'undefined') {
 		settlement_type = civitas.utils.get_random(0, 2);
 	}
-	console.log(settlement_type);
 	var resources = this.generate_random_resources(true, settlement_type);
 	if (settlement_type === civitas.CITY) {
 		settlement_level = civitas.utils.get_random(10, civitas.MAX_SETTLEMENT_LEVEL);

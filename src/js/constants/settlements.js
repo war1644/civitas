@@ -45,7 +45,7 @@ civitas.WORLD_SIZE_HEIGHT = 560;
  * @constant
  * @type {Number}
  */
-civitas.METROPOLIS_AREA = 150;
+civitas.METROPOLIS_AREA = 100;
 
 /**
  * City area of influence, in pixels (another city can't be placed in this area of
@@ -54,7 +54,7 @@ civitas.METROPOLIS_AREA = 150;
  * @constant
  * @type {Number}
  */
-civitas.CITY_AREA = 100;
+civitas.CITY_AREA = 60;
 
 /**
  * Village area of influence, in pixels (another village can't be placed in this area
@@ -63,7 +63,7 @@ civitas.CITY_AREA = 100;
  * @constant
  * @type {Number}
  */
-civitas.VILLAGE_AREA = 50;
+civitas.VILLAGE_AREA = 20;
 
 /**
  * Max number of initial settlements on a map.
@@ -71,7 +71,7 @@ civitas.VILLAGE_AREA = 50;
  * @constant
  * @type {Number}
  */
-civitas.MAX_INITIAL_SETTLEMENTS = 20;
+civitas.MAX_INITIAL_SETTLEMENTS = 25;
 
 /**
  * Max number of settlements on a map.
