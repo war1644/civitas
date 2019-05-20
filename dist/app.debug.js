@@ -7926,7 +7926,7 @@ civitas.objects.settlement = function(params) {
 		}
 		if (this.is_player() === false) {
 			this.resources.fame = civitas.LEVELS[this.level()];
-			if (this.properties.type === civitas.CITY || this.properties.type === civitas.METROPOLIS) {
+			if (this.is_city() || this.is_metropolis()) {
 				this._ai = new civitas.modules.ai({
 					core: this,
 					type: this.properties.ruler.personality
@@ -10043,7 +10043,7 @@ civitas.objects.settlement.prototype.reset_trades = function() {
 	new_resources.research = this.resources.research;
 	new_resources.faith = this.resources.faith;
 	this.resources = this._fill_resources(new_resources);
-	if (this.get_type === civitas.CITY || this.get_type === civitas.METROPOLIS) {
+	if (this.is_city() || this.is_metropolis()) {
 		var new_trades = data.trades;
 		this.trades = new_trades;
 	}
@@ -13359,7 +13359,7 @@ civitas.game = function () {
 		var settlements = this.get_settlements();
 		for (var i = 1; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
-				if (settlements[i].is_city()) {
+				if (settlements[i].is_city() || settlements[i].is_metropolis()) {
 					settlements[i].reset_trades();
 				}
 			}
@@ -13379,7 +13379,7 @@ civitas.game = function () {
 		var settlements = this.get_settlements();
 		for (var i = 1; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
-				if (settlements[i].is_city()) {
+				if (settlements[i].is_city() || settlements[i].is_metropolis()) {
 					if (this.get_settlement().religion().id === settlements[i].religion().id) {
 						this.get_settlement().raise_influence(settlements[i].id(), 
 							civitas.YEARLY_INFLUENCE_GAIN);
@@ -13586,7 +13586,7 @@ $(document).ready(function () {
 civitas.game.prototype._process_settlements = function() {
 	var settlements = this.get_settlements();
 	for (var i = 0; i < settlements.length; i++) {
-		if (typeof settlements[i] !== 'undefined' && settlements[i].is_city()) {
+		if (typeof settlements[i] !== 'undefined' && (settlements[i].is_city() || settlements[i].is_metropolis())) {
 			if (i > 1) {
 				if (settlements[i].ai().process()) {
 					//console.log('AI for ' + settlements[i].name() + ' processed!');
@@ -13682,7 +13682,14 @@ civitas.game.prototype.get_settlements = function () {
  * @returns {Object}
  */
 civitas.game.prototype.get_point_outside_area = function(settlement_type) {
-	var distance = (settlement_type === civitas.CITY) ? civitas.CITY_AREA : civitas.VILLAGE_AREA;
+	var distance;
+	if (settlement_type === civitas.CITY) {
+		distance = civitas.CITY_AREA;
+	} else if (settlement_type === civitas.METROPOLIS) {
+		distance = civitas.METROPOLIS_AREA;
+	} else {
+		distance = civitas.VILLAGE_AREA;
+	}
 	var new_location = civitas.utils.get_random_world_location();
 	var settlement_location;
 	var settlements = this.get_settlements();
@@ -13708,9 +13715,9 @@ civitas.game.prototype.generate_random_army = function(settlement_type) {
 	var army = {};
 	for (var item in civitas.SOLDIERS) {
 		if (settlement_type === civitas.CITY) {
-			army[item] = civitas.utils.get_random(0, 20);
+			army[item] = civitas.utils.get_random(10, 20);
 		} else if (settlement_type === civitas.METROPOLIS) {
-			army[item] = civitas.utils.get_random(0, 60);
+			army[item] = civitas.utils.get_random(30, 60);
 		} else {
 			army[item] = civitas.utils.get_random(0, 5);
 		}
@@ -13734,9 +13741,9 @@ civitas.game.prototype.generate_random_navy = function(settlement_type) {
 	var navy = {};
 	for (var item in civitas.SHIPS) {
 		if (settlement_type === civitas.CITY) {
-			navy[item] = civitas.utils.get_random(0, 10);
+			navy[item] = civitas.utils.get_random(5, 10);
 		} else if (settlement_type === civitas.METROPOLIS) {
-			navy[item] = civitas.utils.get_random(0, 30);
+			navy[item] = civitas.utils.get_random(15, 30);
 		} else {
 			navy[item] = civitas.utils.get_random(0, 2);
 		}
@@ -13859,8 +13866,8 @@ civitas.game.prototype.generate_random_settlement_data = function(settlement_typ
 		nationality: civitas.utils.get_random(1, civitas.NATIONS.length - 1),
 		level: settlement_level,
 		resources: resources.resources,
-		army: this.generate_random_army(),
-		navy: this.generate_random_navy()
+		army: this.generate_random_army(settlement_type),
+		navy: this.generate_random_navy(settlement_type)
 	}
 	if (settlement_type === civitas.CITY || settlement_type === civitas.METROPOLIS) {
 		settlement.trades = resources.trades;
@@ -15308,16 +15315,16 @@ civitas.PANEL_SETTLEMENT = {
 		this.params_data = params;
 		var trades = settlement.get_trades();
 		var settlement_type_title;
-		if (settlement_type === civitas.CITY) {
+		if (settlement.is_city()) {
 			settlement_type_title = civitas.l('City of') + ' ' + settlement.name();
-		} else if (settlement_type === civitas.METROPOLIS) {
+		} else if (settlement.is_metropolis()) {
 			settlement_type_title = civitas.l('Metropolis of') + ' ' + settlement.name();
 		} else {
 			settlement_type_title = civitas.l('Village of') + ' ' + settlement.name();
 		}
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
 		$(this.handle + ' header').append(settlement_type_title);
-		if (settlement.is_city()) {
+		if (settlement.is_city() || settlement.is_metropolis()) {
 			$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), 
 				civitas.l('Army'), civitas.l('Navy'), civitas.l('Resources'), 
 				civitas.l('Imports'), civitas.l('Exports')]));
@@ -15497,7 +15504,7 @@ civitas.PANEL_SETTLEMENT = {
 			'</dl>');
 		$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(settlement.get_army()));
 		$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));
-		if (settlement.is_city()) {
+		if (settlement.is_city() || settlement.is_metropolis()) {
 			$(this.handle + ' #tab-imports').empty().append('' +
 				'<p>' + civitas.l('Below are the goods this city will be buying this year.') +
 				'</p>' +
@@ -15526,7 +15533,7 @@ civitas.PANEL_SETTLEMENT = {
 			$(this.handle + ' .btn.attack, ' + this.handle + ' .btn.spy').show();
 		}
 		if (my_settlement.can_diplomacy()) {
-			if (_status.id === civitas.DIPLOMACY_PACT && settlement_type === civitas.CITY) {
+			if (_status.id === civitas.DIPLOMACY_PACT && (settlement.is_city() || settlement.is_metropolis())) {
 				$(this.handle + ' footer .alliance').show();
 			} else {
 				$(this.handle + ' footer .alliance').hide();
@@ -15655,7 +15662,6 @@ civitas.PANEL_HELP = {
 			'<p>Big thanks to:</p>' +
 			'<ul>' +
 				'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
-				'<li><a target="_blank" href="https://brendaneich.com/">Brendan Eich</a> for Javascript.</li>' +
 				'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
 			'</ul>');
 		$(this.handle + ' #tab-research').empty().append('<h2>Research</h2>' +
@@ -16080,13 +16086,13 @@ civitas.PANEL_WORLD = {
 			loc.y + 'px"></div>';
 		for (var i = 1; i < settlements.length; i++) {
 			location = settlements[i].get_location();
-			if (settlements[i].get_type() === civitas.CITY) {
+			if (settlements[i].is_city()) {
 				out += '<div data-name="' + settlements[i].name() + '" class="tips settlement c' +
 					settlements[i].icon() + '" title="' +
 					civitas.l('City of') + ' ' + settlements[i].name() + '" style="left:' +
 					location.x + 'px;top:' +
 					location.y + 'px"></div>';
-			} else if (settlements[i].get_type() === civitas.METROPOLIS) {
+			} else if (settlements[i].is_metropolis()) {
 				out += '<div data-name="' + settlements[i].name() + '" class="tips settlement m1" title="' +
 					civitas.l('Metropolis of') + ' ' + settlements[i].name() + '" style="left:' +
 					location.x + 'px;top:' +
@@ -16158,7 +16164,7 @@ civitas.PANEL_RANKS = {
 		var ranking_list = [];
 		var settlements = this.core().get_settlements();
 		for (var i = 0; i < settlements.length; i++) {
-			if (settlements[i].get_type() === civitas.CITY || settlements[i].get_type() === civitas.METROPOLIS) {
+			if (settlements[i].is_city() || settlements[i].is_metropolis()) {
 				ranking_list.push({
 					name: settlements[i].name(),
 					data: settlements[i].get_rank()
@@ -17833,6 +17839,7 @@ civitas.PANEL_EMBASSY = {
 		var settlement = core.get_settlement();
 		var settlements = core.get_settlements();
 		var status = settlement.status();
+		var settlement_type_text;
 		var building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
 			var level = building.get_level();
@@ -17846,6 +17853,13 @@ civitas.PANEL_EMBASSY = {
 			for (var i = 1; i < settlements.length; i++) {
 				var _status = settlement.get_diplomacy_status(settlements[i].id());
 				var settlement_type = settlements[i].get_type();
+				if (settlements[i].is_city()) {
+					settlement_type_text = civitas.l('City of') + ' ';
+				} else if (settlements[i].is_metropolis()) {
+					settlement_type_text = civitas.l('Metropolis of') + ' ';
+				} else {
+					settlement_type_text = civitas.l('Village of') + ' '
+				}
 				_t += '<tr>' +
 						'<td class="icon">' +
 							'<a data-id="' + settlements[i].id() + '" title="' + 
@@ -17857,8 +17871,7 @@ civitas.PANEL_EMBASSY = {
 						'</td>' +
 						'<td>' +
 							'<p class="title">' + 
-								(settlements[i].is_city() ? 'City of' : 'Village of') + ' ' + 
-								settlements[i].name() + '</p> ' +
+								settlement_type_text + settlements[i].name() + '</p> ' +
 							'<div data-id="' + settlements[i].id() + '" >' + 
 								civitas.ui.progress(status[settlements[i].id()].influence, 'big') + 
 							'</div>' +

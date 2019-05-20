@@ -40,16 +40,16 @@ civitas.PANEL_SETTLEMENT = {
 		this.params_data = params;
 		var trades = settlement.get_trades();
 		var settlement_type_title;
-		if (settlement_type === civitas.CITY) {
+		if (settlement.is_city()) {
 			settlement_type_title = civitas.l('City of') + ' ' + settlement.name();
-		} else if (settlement_type === civitas.METROPOLIS) {
+		} else if (settlement.is_metropolis()) {
 			settlement_type_title = civitas.l('Metropolis of') + ' ' + settlement.name();
 		} else {
 			settlement_type_title = civitas.l('Village of') + ' ' + settlement.name();
 		}
 		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
 		$(this.handle + ' header').append(settlement_type_title);
-		if (settlement.is_city()) {
+		if (settlement.is_city() || settlement.is_metropolis()) {
 			$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), 
 				civitas.l('Army'), civitas.l('Navy'), civitas.l('Resources'), 
 				civitas.l('Imports'), civitas.l('Exports')]));
@@ -229,7 +229,7 @@ civitas.PANEL_SETTLEMENT = {
 			'</dl>');
 		$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(settlement.get_army()));
 		$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));
-		if (settlement.is_city()) {
+		if (settlement.is_city() || settlement.is_metropolis()) {
 			$(this.handle + ' #tab-imports').empty().append('' +
 				'<p>' + civitas.l('Below are the goods this city will be buying this year.') +
 				'</p>' +
@@ -258,7 +258,7 @@ civitas.PANEL_SETTLEMENT = {
 			$(this.handle + ' .btn.attack, ' + this.handle + ' .btn.spy').show();
 		}
 		if (my_settlement.can_diplomacy()) {
-			if (_status.id === civitas.DIPLOMACY_PACT && settlement_type === civitas.CITY) {
+			if (_status.id === civitas.DIPLOMACY_PACT && (settlement.is_city() || settlement.is_metropolis())) {
 				$(this.handle + ' footer .alliance').show();
 			} else {
 				$(this.handle + ' footer .alliance').hide();

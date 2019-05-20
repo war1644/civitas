@@ -8,7 +8,7 @@
 civitas.game.prototype._process_settlements = function() {
 	var settlements = this.get_settlements();
 	for (var i = 0; i < settlements.length; i++) {
-		if (typeof settlements[i] !== 'undefined' && settlements[i].is_city()) {
+		if (typeof settlements[i] !== 'undefined' && (settlements[i].is_city() || settlements[i].is_metropolis())) {
 			if (i > 1) {
 				if (settlements[i].ai().process()) {
 					//console.log('AI for ' + settlements[i].name() + ' processed!');
@@ -104,7 +104,14 @@ civitas.game.prototype.get_settlements = function () {
  * @returns {Object}
  */
 civitas.game.prototype.get_point_outside_area = function(settlement_type) {
-	var distance = (settlement_type === civitas.CITY) ? civitas.CITY_AREA : civitas.VILLAGE_AREA;
+	var distance;
+	if (settlement_type === civitas.CITY) {
+		distance = civitas.CITY_AREA;
+	} else if (settlement_type === civitas.METROPOLIS) {
+		distance = civitas.METROPOLIS_AREA;
+	} else {
+		distance = civitas.VILLAGE_AREA;
+	}
 	var new_location = civitas.utils.get_random_world_location();
 	var settlement_location;
 	var settlements = this.get_settlements();
@@ -130,9 +137,9 @@ civitas.game.prototype.generate_random_army = function(settlement_type) {
 	var army = {};
 	for (var item in civitas.SOLDIERS) {
 		if (settlement_type === civitas.CITY) {
-			army[item] = civitas.utils.get_random(0, 20);
+			army[item] = civitas.utils.get_random(10, 20);
 		} else if (settlement_type === civitas.METROPOLIS) {
-			army[item] = civitas.utils.get_random(0, 60);
+			army[item] = civitas.utils.get_random(30, 60);
 		} else {
 			army[item] = civitas.utils.get_random(0, 5);
 		}
@@ -156,9 +163,9 @@ civitas.game.prototype.generate_random_navy = function(settlement_type) {
 	var navy = {};
 	for (var item in civitas.SHIPS) {
 		if (settlement_type === civitas.CITY) {
-			navy[item] = civitas.utils.get_random(0, 10);
+			navy[item] = civitas.utils.get_random(5, 10);
 		} else if (settlement_type === civitas.METROPOLIS) {
-			navy[item] = civitas.utils.get_random(0, 30);
+			navy[item] = civitas.utils.get_random(15, 30);
 		} else {
 			navy[item] = civitas.utils.get_random(0, 2);
 		}
@@ -281,8 +288,8 @@ civitas.game.prototype.generate_random_settlement_data = function(settlement_typ
 		nationality: civitas.utils.get_random(1, civitas.NATIONS.length - 1),
 		level: settlement_level,
 		resources: resources.resources,
-		army: this.generate_random_army(),
-		navy: this.generate_random_navy()
+		army: this.generate_random_army(settlement_type),
+		navy: this.generate_random_navy(settlement_type)
 	}
 	if (settlement_type === civitas.CITY || settlement_type === civitas.METROPOLIS) {
 		settlement.trades = resources.trades;

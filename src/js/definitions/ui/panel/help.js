@@ -97,7 +97,6 @@ civitas.PANEL_HELP = {
 			'<p>Big thanks to:</p>' +
 			'<ul>' +
 				'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
-				'<li><a target="_blank" href="https://brendaneich.com/">Brendan Eich</a> for Javascript.</li>' +
 				'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
 			'</ul>');
 		$(this.handle + ' #tab-research').empty().append('<h2>Research</h2>' +

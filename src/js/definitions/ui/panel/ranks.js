@@ -13,7 +13,7 @@ civitas.PANEL_RANKS = {
 		var ranking_list = [];
 		var settlements = this.core().get_settlements();
 		for (var i = 0; i < settlements.length; i++) {
-			if (settlements[i].get_type() === civitas.CITY || settlements[i].get_type() === civitas.METROPOLIS) {
+			if (settlements[i].is_city() || settlements[i].is_metropolis()) {
 				ranking_list.push({
 					name: settlements[i].name(),
 					data: settlements[i].get_rank()

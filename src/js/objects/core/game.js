@@ -484,7 +484,7 @@ civitas.game = function () {
 		var settlements = this.get_settlements();
 		for (var i = 1; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
-				if (settlements[i].is_city()) {
+				if (settlements[i].is_city() || settlements[i].is_metropolis()) {
 					settlements[i].reset_trades();
 				}
 			}
@@ -504,7 +504,7 @@ civitas.game = function () {
 		var settlements = this.get_settlements();
 		for (var i = 1; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
-				if (settlements[i].is_city()) {
+				if (settlements[i].is_city() || settlements[i].is_metropolis()) {
 					if (this.get_settlement().religion().id === settlements[i].religion().id) {
 						this.get_settlement().raise_influence(settlements[i].id(), 
 							civitas.YEARLY_INFLUENCE_GAIN);

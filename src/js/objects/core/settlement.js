@@ -165,7 +165,7 @@ civitas.objects.settlement = function(params) {
 		}
 		if (this.is_player() === false) {
 			this.resources.fame = civitas.LEVELS[this.level()];
-			if (this.properties.type === civitas.CITY || this.properties.type === civitas.METROPOLIS) {
+			if (this.is_city() || this.is_metropolis()) {
 				this._ai = new civitas.modules.ai({
 					core: this,
 					type: this.properties.ruler.personality

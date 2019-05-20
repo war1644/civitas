@@ -43,13 +43,13 @@ civitas.PANEL_WORLD = {
 			loc.y + 'px"></div>';
 		for (var i = 1; i < settlements.length; i++) {
 			location = settlements[i].get_location();
-			if (settlements[i].get_type() === civitas.CITY) {
+			if (settlements[i].is_city()) {
 				out += '<div data-name="' + settlements[i].name() + '" class="tips settlement c' +
 					settlements[i].icon() + '" title="' +
 					civitas.l('City of') + ' ' + settlements[i].name() + '" style="left:' +
 					location.x + 'px;top:' +
 					location.y + 'px"></div>';
-			} else if (settlements[i].get_type() === civitas.METROPOLIS) {
+			} else if (settlements[i].is_metropolis()) {
 				out += '<div data-name="' + settlements[i].name() + '" class="tips settlement m1" title="' +
 					civitas.l('Metropolis of') + ' ' + settlements[i].name() + '" style="left:' +
 					location.x + 'px;top:' +
