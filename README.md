@@ -88,7 +88,7 @@ Releases
 License
 =======
 
-Civitas is written by sizeof(cat) <sizeofcat AT riseup DOT net> and distributed under the [MIT license](LICENSE).
+Civitas is written by sizeof(cat) <sizeofcat AT riseup DOT net> and distributed under the [GPLv3 license](LICENSE).
 
 Contributing
 ============

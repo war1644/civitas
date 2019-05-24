@@ -2,8 +2,8 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.5202019
- * @license MIT
+ * @version 0.2.0.5242019
+ * @license GPLv3
  */ 'use strict';
 
 Array.prototype.findIndexM = function (value) {
@@ -15657,7 +15657,7 @@ civitas.PANEL_HELP = {
 			'<p></p>');
 		$(this.handle + ' #tab-about').empty().append('<h2>About Civitas</h2>' +
 			'<p>Civitas is an empire-building game written in Javascript with the help of the <a target="_blank" href="https://jquery.com">jQuery</a> library. All the development is done over <a target="_blank" href="https://github.com/sizeofcat/civitas">GitHub</a> and everybody can contribute.</p>' +
-			'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>, is free and distributed under the <a target="_blank" href="https://raw.githubusercontent.com/sizeofcat/civitas/master/LICENSE">MIT license</a>.</p>' +
+			'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>, is free and distributed under the <a target="_blank" href="https://raw.githubusercontent.com/sizeofcat/civitas/master/LICENSE">GPLv3 license</a>.</p>' +
 			'<p>Big thanks to:</p>' +
 			'<ul>' +
 				'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
@@ -15821,7 +15821,7 @@ civitas.PANEL_DEBUG = {
 							document.location.reload();
 						}
 					},
-					'Are you sure you want to load a new game? You wll lose all progress ' +
+					'Are you sure you want to load a new game? You will lose all progress ' +
 						'on the current game!',
 					'Civitas'
 				);
@@ -18091,7 +18091,7 @@ civitas.WINDOW_SIGNIN = {
 						document.location.reload();
 					}
 				},
-				'Are you sure you want to restart the game? You wll lose all progress ' +
+				'Are you sure you want to restart the game? You will lose all progress ' +
 					'on the current game!',
 				'Civitas'
 			);
@@ -18382,7 +18382,7 @@ civitas.WINDOW_OPTIONS = {
 						document.location.reload();
 					}
 				},
-				'Are you sure you want to restart the game? You wll lose all progress ' +
+				'Are you sure you want to restart the game? You will lose all progress ' +
 					'on the current game!',
 				'Civitas'
 			);

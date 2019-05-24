@@ -149,7 +149,7 @@ civitas.PANEL_DEBUG = {
 							document.location.reload();
 						}
 					},
-					'Are you sure you want to load a new game? You wll lose all progress ' +
+					'Are you sure you want to load a new game? You will lose all progress ' +
 						'on the current game!',
 					'Civitas'
 				);

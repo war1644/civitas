@@ -65,7 +65,7 @@ civitas.WINDOW_OPTIONS = {
 						document.location.reload();
 					}
 				},
-				'Are you sure you want to restart the game? You wll lose all progress ' +
+				'Are you sure you want to restart the game? You will lose all progress ' +
 					'on the current game!',
 				'Civitas'
 			);
