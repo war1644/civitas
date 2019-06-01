@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.5242019
+ * @version 0.2.0.622019
  * @license GPLv3
  */ 'use strict';
 
@@ -144,29 +144,6 @@ civitas.BLACK_MARKET_DISCOUNT = 80;
  * @type {Number}
  */
 civitas.WORLDMAPS = 9;
-
-/**
- * The resources that will be shown on the toolbar.
- * 
- * @constant
- * @type {Array}
- */
-civitas.TOOLBAR_RESOURCES = [
-	'coins',
-	'wood',
-	'stones',
-	'woodplanks',
-	'bread',
-	'meat',
-	'iron',
-	'weapons',
-	'tools',
-	'gold',
-	'clay',
-	'brass',
-	'salt',
-	'coal'
-];
 
 /**
  * Fame required for each city level.
@@ -5518,6 +5495,29 @@ civitas.MAIN_RESOURCES = [
 	'goldores', 'herbs', 'hides', 'iron', 'ironores', 'meat', 'milk',
 	'ropes', 'salt', 'stones', 'weapons', 'wheat', 'wine', 'wood',
 	'woodplanks'
+];
+
+/**
+ * The resources that will be shown on the toolbar.
+ * 
+ * @constant
+ * @type {Array}
+ */
+civitas.TOOLBAR_RESOURCES = [
+	'coins',
+	'wood',
+	'stones',
+	'clay',
+	'woodplanks',
+	'bread',
+	'meat',
+	'iron',
+	'weapons',
+	'tools',
+	'gold',
+	'brass',
+	'salt',
+	'coal'
 ];
 
 /**
@@ -14315,34 +14315,31 @@ civitas.game.prototype.close_panel = function(id) {
 civitas.game.prototype._build_ui = function() {
 	var out = '<section class="ui">' +
 			'<header>' +
-				'<div title="' + civitas.l('City Council') + '" class="tips cityavatar"></div>' +
-				'<span title="' + civitas.l('City level') + '" class="tips citylevel"></span>' +
-				'<div title="' + civitas.l('City name') + '" class="tips cityname"></div>' +
-					'<span></span>' +
+				'<div class="resource-panel"></div>' +
+				'<div class="top-panel">' +
+					'<span title="' + civitas.l('City name') + '" class="tips cityname"></span>&nbsp;&nbsp;&nbsp;' +
+					'<span title="' + civitas.l('City level') + '" class="tips citylevel"></span>&nbsp;&nbsp;&nbsp;' +
+					'<span title="' + civitas.l('City Council') + '" class="tips cityavatar"></span>' +
 				'</div>' +
-				'<div class="top-panel"></div>' +
 			'</header>' +
 			'<section class="game"></section>' +
 			'<footer>' +
-				'<div class="toolbar">' +
-					'<a href="#" data-action="panel" data-panel="buildings" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="buildings" class="tips" title="' +
 						civitas.l('Buildings') + '"></a>' +
-					'<a href="#" data-action="panel" data-panel="storage" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="storage" class="tips" title="' +
 						civitas.l('Storage Space') + '"></a>' +
-					'<a href="#" data-action="panel" data-panel="trades" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="trades" class="tips" title="' +
 						civitas.l('Trades') + '"></a>' +
-					'<a href="#" data-action="panel" data-panel="council" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="council" class="tips" title="' +
 						civitas.l('City Council') + '"></a>' +
-					'<a href="#" data-action="panel" data-panel="ranks" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="ranks" class="tips" title="' +
 						civitas.l('Ranks') + '"></a>' +
-					'<a href="#" data-action="panel" data-panel="world" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="world" class="tips" title="' +
 						civitas.l('World Map') + '"></a>' +
-					'<a href="#" class="" title=""></a>' +
-					'<a href="#" data-action="panel" data-panel="debug" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="debug" class="tips" title="' +
 						civitas.l('Debug') + '"></a>' +
-					'<a href="#" data-action="panel" data-panel="help" class="tips" title="' +
+				'<a href="#" data-action="panel" data-panel="help" class="tips" title="' +
 						civitas.l('Help') + '"></a>' +
-				'</div>' +
 			'</footer>' +
 		'</section>' +
 		'<audio id="music" loop>' +
@@ -14393,7 +14390,7 @@ civitas.game.prototype.refresh = function() {
 		gravity: $.fn.tipsy.autoNS,
 		html: true
 	});
-	$('.top-panel > span').tipsy({
+	$('.resource-panel > span').tipsy({
 		gravity: 'n'
 	});
 	return this;
@@ -14412,7 +14409,7 @@ civitas.game.prototype.refresh_toolbar = function() {
 		for (var i = 0; i < civitas.TOOLBAR_RESOURCES.length; i++) {
 			var resource = civitas.TOOLBAR_RESOURCES[i];
 			if (typeof resources[resource] !== 'undefined') {
-				$('.top-panel .' + resource).attr('title', resources[resource] + ' ' + 
+				$('.resource-panel .' + resource).attr('title', resources[resource] + ' ' + 
 					civitas.utils.get_resource_name(resource));
 			}
 		}
@@ -14645,7 +14642,7 @@ civitas.game.prototype._setup_ui = function () {
 			'images/assets/resources/' + civitas.TOOLBAR_RESOURCES[i] + 
 			'_small.png) no-repeat"></span>';
 	}
-	$('.top-panel').empty().append(_t);
+	$('.resource-panel').empty().append(_t);
 	$('.ui').on('click', '.cityavatar', function () {
 		self.open_panel(civitas.PANEL_COUNCIL);
 		return false;
@@ -16171,15 +16168,15 @@ civitas.PANEL_RANKS = {
 			}
 		}
 		ranking_list.sort(function(a, b) {
-		    var keyA = new Date(a.data.score);
-		    var keyB = new Date(b.data.score);
-		    if (keyA > keyB) {
-		    	return -1;
-		    }
-		    if (keyA < keyB) {
-		    	return 1;
-		    }
-		    return 0;
+			var keyA = new Date(a.data.score);
+			var keyB = new Date(b.data.score);
+			if (keyA > keyB) {
+				return -1;
+			}
+			if (keyA < keyB) {
+				return 1;
+			}
+			return 0;
 		});
 		var _t = '<table class="normal">';
 		_t += '<thead>' +

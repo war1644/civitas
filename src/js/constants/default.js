@@ -125,29 +125,6 @@ civitas.BLACK_MARKET_DISCOUNT = 80;
 civitas.WORLDMAPS = 9;
 
 /**
- * The resources that will be shown on the toolbar.
- * 
- * @constant
- * @type {Array}
- */
-civitas.TOOLBAR_RESOURCES = [
-	'coins',
-	'wood',
-	'stones',
-	'woodplanks',
-	'bread',
-	'meat',
-	'iron',
-	'weapons',
-	'tools',
-	'gold',
-	'clay',
-	'brass',
-	'salt',
-	'coal'
-];
-
-/**
  * Fame required for each city level.
  * 
  * @constant

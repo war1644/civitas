@@ -12,9 +12,9 @@
 	max-height: 460px;
 	color: #444;
 	padding: 10px;
-	box-shadow: 0 0 50px #000;
-	-webkit-box-shadow: 0 0 50px #000;
-	-moz-box-shadow: 0 0 50px #000;
+	box-shadow: 0 0 10px #000;
+	-webkit-box-shadow: 0 0 10px #000;
+	-moz-box-shadow: 0 0 10px #000;
 }
 
 .ui .panel header {

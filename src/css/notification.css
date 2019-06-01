@@ -2,7 +2,7 @@
 
 .notifications {
 	position: fixed;
-	top: 10px;
+	top: 50px;
 	right: 10px;
 	width: 340px;
 	z-index: 99999;

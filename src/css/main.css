@@ -180,8 +180,9 @@ td.icon {
 /* Header */
 
 .ui > header {
-	width: 218px;
-	height: 81px;
+	background: transparent url(../images/ui/resource-panel.png) repeat-x;
+	width: 100%;
+	height: 44px;
 	left: 0;
 	z-index: 9999;
 	top: 0;
@@ -189,46 +190,44 @@ td.icon {
 }
 
 .ui > header .cityavatar {
-	width: 64px;
-	height: 64px;
+	width: 16px;
+	height: 16px;
 	background-color: transparent;
 	background-repeat: no-repeat;
-	margin: 10px 15px;
+	background-size: 20px;
+	display: inline-block;
 	cursor: pointer;
 }
 
 .ui > header .cityname {
-	position: absolute;
-	top: 2px;
-	font-size: 16px;
-	left: 84px;
-	width: 124px;
 	text-align: center;
-	color: #bbb;
 	text-transform: uppercase;
 }
 
 .ui > header .citylevel {
-	color: #bbb;
-	font-size: 50px;
-	font-weight: bold;
 	text-align: center;
+}
+
+.ui > header .resource-panel {
+	width: 50%;
 	position: absolute;
-	right: 20px;
-	top: 14px;
+	top: 0;
+	left: 0;
+	padding: 10px 0 10px 40px;
 }
 
 .ui > header .top-panel {
-	background: transparent url(../images/ui/top-panel.jpg) no-repeat;
-	width: 406px;
-	height: 24px;
+	width: 30%;
 	position: absolute;
 	top: 0;
-	left: 218px;
-	padding: 10px;
+	right: 0;
+	padding: 10px 40px 10px 0;
+	color: #bbb;
+	font-size: 16px;
+	text-align: right;
 }
 
-.ui > header .top-panel span {
+.ui > header .resource-panel span {
 	height: 24px;
 	width: 24px;
 	display: inline-block;
@@ -242,25 +241,18 @@ td.icon {
 /* Footer */
 
 .ui > footer {
-	width: 584px;
-	height: 100px;
+	background: transparent url(../images/ui/resource-panel.png) repeat-x;
+	width: 400px;
+	height: 50px;
 	position: fixed;
 	bottom: 0;
 	z-index: 9999;
 }
 
-.ui > footer .toolbar {
-	position: absolute;
-	bottom: 16px;
-	left: 60px;
-	height: 40px;
-	width: 480px;
-}
-
-.ui > footer .toolbar > a {
+.ui > footer > a {
 	width: 40px;
 	height: 40px;
-	margin-right: 12.5px;
+	margin: 5px;
 	cursor: pointer;
 	float: left;
 }

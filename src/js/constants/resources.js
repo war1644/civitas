@@ -360,3 +360,26 @@ civitas.MAIN_RESOURCES = [
 	'ropes', 'salt', 'stones', 'weapons', 'wheat', 'wine', 'wood',
 	'woodplanks'
 ];
+
+/**
+ * The resources that will be shown on the toolbar.
+ * 
+ * @constant
+ * @type {Array}
+ */
+civitas.TOOLBAR_RESOURCES = [
+	'coins',
+	'wood',
+	'stones',
+	'clay',
+	'woodplanks',
+	'bread',
+	'meat',
+	'iron',
+	'weapons',
+	'tools',
+	'gold',
+	'brass',
+	'salt',
+	'coal'
+];

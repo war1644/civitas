@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.5242019
+ * @version 0.2.0.622019
  * @license GPLv3
  */ /* Game animations */
 
@@ -428,8 +428,9 @@ td.icon {
 /* Header */
 
 .ui > header {
-	width: 218px;
-	height: 81px;
+	background: transparent url(../images/ui/resource-panel.png) repeat-x;
+	width: 100%;
+	height: 44px;
 	left: 0;
 	z-index: 9999;
 	top: 0;
@@ -437,46 +438,44 @@ td.icon {
 }
 
 .ui > header .cityavatar {
-	width: 64px;
-	height: 64px;
+	width: 16px;
+	height: 16px;
 	background-color: transparent;
 	background-repeat: no-repeat;
-	margin: 10px 15px;
+	background-size: 20px;
+	display: inline-block;
 	cursor: pointer;
 }
 
 .ui > header .cityname {
-	position: absolute;
-	top: 2px;
-	font-size: 16px;
-	left: 84px;
-	width: 124px;
 	text-align: center;
-	color: #bbb;
 	text-transform: uppercase;
 }
 
 .ui > header .citylevel {
-	color: #bbb;
-	font-size: 50px;
-	font-weight: bold;
 	text-align: center;
+}
+
+.ui > header .resource-panel {
+	width: 50%;
 	position: absolute;
-	right: 20px;
-	top: 14px;
+	top: 0;
+	left: 0;
+	padding: 10px 0 10px 40px;
 }
 
 .ui > header .top-panel {
-	background: transparent url(../images/ui/top-panel.jpg) no-repeat;
-	width: 406px;
-	height: 24px;
+	width: 30%;
 	position: absolute;
 	top: 0;
-	left: 218px;
-	padding: 10px;
+	right: 0;
+	padding: 10px 40px 10px 0;
+	color: #bbb;
+	font-size: 16px;
+	text-align: right;
 }
 
-.ui > header .top-panel span {
+.ui > header .resource-panel span {
 	height: 24px;
 	width: 24px;
 	display: inline-block;
@@ -490,25 +489,18 @@ td.icon {
 /* Footer */
 
 .ui > footer {
-	width: 584px;
-	height: 100px;
+	background: transparent url(../images/ui/resource-panel.png) repeat-x;
+	width: 400px;
+	height: 50px;
 	position: fixed;
 	bottom: 0;
 	z-index: 9999;
 }
 
-.ui > footer .toolbar {
-	position: absolute;
-	bottom: 16px;
-	left: 60px;
-	height: 40px;
-	width: 480px;
-}
-
-.ui > footer .toolbar > a {
+.ui > footer > a {
 	width: 40px;
 	height: 40px;
-	margin-right: 12.5px;
+	margin: 5px;
 	cursor: pointer;
 	float: left;
 }
@@ -782,7 +774,7 @@ span.blue {
 
 .notifications {
 	position: fixed;
-	top: 10px;
+	top: 50px;
 	right: 10px;
 	width: 340px;
 	z-index: 99999;
@@ -975,9 +967,9 @@ span.blue {
 	max-height: 460px;
 	color: #444;
 	padding: 10px;
-	box-shadow: 0 0 50px #000;
-	-webkit-box-shadow: 0 0 50px #000;
-	-moz-box-shadow: 0 0 50px #000;
+	box-shadow: 0 0 10px #000;
+	-webkit-box-shadow: 0 0 10px #000;
+	-moz-box-shadow: 0 0 10px #000;
 }
 
 .ui .panel header {
@@ -1793,6 +1785,10 @@ footer a[data-panel=ranks] {
 	background: transparent url(../images/assets/ui/toolbar/ranks.png) no-repeat;
 }
 
+footer a[data-panel=debug] {
+	background: transparent url(../images/assets/ui/toolbar/debug.png) no-repeat;
+}
+
 footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/toolbar/help.png) no-repeat;
 }
@@ -1984,14 +1980,6 @@ footer a[data-panel=help] {
 .notifications .notty .hide,
 .achievements-notifications .notty .hide {
 	background: transparent url(../images/ui/icons/close.png) no-repeat;
-}
-
-.ui > header {
-	background: transparent url(../images/ui/header.png) no-repeat;
-}
-
-.ui > footer {
-	background: transparent url(../images/ui/bottom.png) no-repeat;
 }
 
 .panel ul.advices li {

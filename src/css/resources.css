@@ -24,6 +24,10 @@ footer a[data-panel=ranks] {
 	background: transparent url(../images/assets/ui/toolbar/ranks.png) no-repeat;
 }
 
+footer a[data-panel=debug] {
+	background: transparent url(../images/assets/ui/toolbar/debug.png) no-repeat;
+}
+
 footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/toolbar/help.png) no-repeat;
 }
@@ -215,14 +219,6 @@ footer a[data-panel=help] {
 .notifications .notty .hide,
 .achievements-notifications .notty .hide {
 	background: transparent url(../images/ui/icons/close.png) no-repeat;
-}
-
-.ui > header {
-	background: transparent url(../images/ui/header.png) no-repeat;
-}
-
-.ui > footer {
-	background: transparent url(../images/ui/bottom.png) no-repeat;
 }
 
 .panel ul.advices li {

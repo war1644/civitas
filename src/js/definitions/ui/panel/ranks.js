@@ -21,15 +21,15 @@ civitas.PANEL_RANKS = {
 			}
 		}
 		ranking_list.sort(function(a, b) {
-		    var keyA = new Date(a.data.score);
-		    var keyB = new Date(b.data.score);
-		    if (keyA > keyB) {
-		    	return -1;
-		    }
-		    if (keyA < keyB) {
-		    	return 1;
-		    }
-		    return 0;
+			var keyA = new Date(a.data.score);
+			var keyB = new Date(b.data.score);
+			if (keyA > keyB) {
+				return -1;
+			}
+			if (keyA < keyB) {
+				return 1;
+			}
+			return 0;
 		});
 		var _t = '<table class="normal">';
 		_t += '<thead>' +
