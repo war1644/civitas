@@ -17,10 +17,12 @@ civitas.WINDOW_SIGNUP = {
 						'<dd><input type="text" maxlength="12" title="' +
 						civitas.l('Maximum of 12 characters.') +
 						'" class="tips name text-input" /></dd>' +
+						((civitas.ENCRYPTION === true) ?
 						'<dt class="clearfix">' + civitas.l('Password') + ':</dt>' +
 						'<dd><input type="password" class="password text-input" /></dd>' +
 						'<dt class="clearfix">' + civitas.l('Confirm Password') + ':</dt>' +
-						'<dd><input type="password" class="password2 text-input" /></dd>' +
+						'<dd><input type="password" class="password2 text-input" /></dd>'
+						: '') +
 						'<div class="hr"></div>' +
 						'<dt class="clearfix">' + civitas.l('City Name') + ':</dt>' +
 						'<dd><input type="text" maxlength="12" title="' +
@@ -61,6 +63,8 @@ civitas.WINDOW_SIGNUP = {
 	on_show: function() {
 		var self = this;
 		var avatar = 1;
+		var password = '';
+		var password2 = '';
 		var core = this.core();
 		var handle = this.handle();
 		for (var i = 1; i < civitas.CLIMATES.length; i++) {
@@ -78,8 +82,10 @@ civitas.WINDOW_SIGNUP = {
 				'images/assets/avatars/avatar' + i + '.png" />');
 		}
 		$(handle).on('click', '.do-start', function () {
-			var password = $(handle + ' .password').val();
-			var password2 = $(handle + ' .password2').val();
+			if (civitas.ENCRYPTION === true) {
+				password = $(handle + ' .password').val();
+				password2 = $(handle + ' .password2').val();
+			}
 			var name = $(handle + ' .name').val();
 			var cityname = $(handle + ' .cityname').val();
 			var nation = parseInt($(handle + ' .nation').val());
@@ -101,13 +107,15 @@ civitas.WINDOW_SIGNUP = {
 					'Error', true);
 				return false;
 			}
-			if (password === '') {
-				core.error('Enter a strong password for your city.', 'Error', true);
-				return false;
-			}
-			if (password !== password2) {
-				core.error('Your passwords do not match.', 'Error', true);
-				return false;
+			if (civitas.ENCRYPTION === true) {
+				if (password === '') {
+					core.error('Enter a strong password for your city.', 'Error', true);
+					return false;
+				}
+				if (password !== password2) {
+					core.error('Your passwords do not match.', 'Error', true);
+					return false;
+				}
 			}
 			core.new_game(name, cityname, nation, climate, avatar, difficulty, password);
 			self.destroy();

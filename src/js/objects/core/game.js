@@ -279,7 +279,9 @@ civitas.game = function () {
 		this.show_loader();
 		var data = null;
 		var game_data = this.get_storage_data();
-		this.encryption.key = password;
+		if (civitas.ENCRYPTION === true) {
+			this.encryption.key = password;
+		}
 		this.properties.difficulty = parseInt(difficulty);
 		this.properties.worldmap = civitas.utils.get_random(1, civitas.WORLDMAPS);
 		this._create_settlement(name, cityname, nation, climate, avatar);
