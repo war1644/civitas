@@ -97,17 +97,13 @@ civitas.objects.settlement.prototype.storage = function(value) {
  * @private
  * @returns {Object}
  */
-civitas.objects.settlement.prototype._fill_resources = function(resources) {
-	var difficulty = this.core().difficulty();
-	if (this.is_player()) {
-		resources = civitas.START_RESOURCES[difficulty - 1];
-	}
+civitas.objects.settlement.prototype._fill_resources = function() {
 	for (var item in civitas.RESOURCES) {
-		if (typeof resources[item] === 'undefined') {
+		if (typeof this.resources[item] === 'undefined') {
 			resources[item] = 0;
 		}
 	}
-	return resources;
+	return this;
 };
 
 /**

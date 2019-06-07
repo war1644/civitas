@@ -290,7 +290,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Load a game decrypting it with the specified password.
+	 * Load a game by decrypting it with the specified password.
 	 *
 	 * @public
 	 * @param {String} password

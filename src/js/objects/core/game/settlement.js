@@ -318,6 +318,7 @@ civitas.game.prototype._create_settlement = function (name, cityname, nation, cl
 		location: civitas['SETTLEMENT_LOCATION_' + civitas.CLIMATES[climate].toUpperCase()],
 		army: civitas.START_ARMY[difficulty - 1].army,
 		navy: civitas.START_ARMY[difficulty - 1].navy,
+		resources: civitas.START_RESOURCES[difficulty - 1],
 		core: this
 	}, 0, {
 		name: name,

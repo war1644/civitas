@@ -7914,7 +7914,8 @@ civitas.objects.settlement = function(params) {
 		this._mercenary = (typeof params.mercenary !== 'undefined') ? params.mercenary : [];
 		this._status = (typeof params.status !== 'undefined') ? params.status : {};
 		this._heroes = (typeof params.heroes !== 'undefined') ? params.heroes : [];
-		this.resources = this._fill_resources(params.resources);
+		this.resources = (typeof params.resources !== 'undefined') ? params.resources : {};
+		this._fill_resources(params.resources);
 		this.location = params.location;
 		if (typeof params.trades !== 'undefined') {
 			this.trades = params.trades;
@@ -8901,17 +8902,13 @@ civitas.objects.settlement.prototype.storage = function(value) {
  * @private
  * @returns {Object}
  */
-civitas.objects.settlement.prototype._fill_resources = function(resources) {
-	var difficulty = this.core().difficulty();
-	if (this.is_player()) {
-		resources = civitas.START_RESOURCES[difficulty - 1];
-	}
+civitas.objects.settlement.prototype._fill_resources = function() {
 	for (var item in civitas.RESOURCES) {
-		if (typeof resources[item] === 'undefined') {
+		if (typeof this.resources[item] === 'undefined') {
 			resources[item] = 0;
 		}
 	}
-	return resources;
+	return this;
 };
 
 /**
@@ -13158,7 +13155,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Load a game decrypting it with the specified password.
+	 * Load a game by decrypting it with the specified password.
 	 *
 	 * @public
 	 * @param {String} password
@@ -13891,6 +13888,7 @@ civitas.game.prototype._create_settlement = function (name, cityname, nation, cl
 		location: civitas['SETTLEMENT_LOCATION_' + civitas.CLIMATES[climate].toUpperCase()],
 		army: civitas.START_ARMY[difficulty - 1].army,
 		navy: civitas.START_ARMY[difficulty - 1].navy,
+		resources: civitas.START_RESOURCES[difficulty - 1],
 		core: this
 	}, 0, {
 		name: name,

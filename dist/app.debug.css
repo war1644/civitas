@@ -430,7 +430,7 @@ td.icon {
 .ui > header {
 	background: transparent url(../images/ui/resource-panel.png) repeat-x;
 	width: 100%;
-	height: 44px;
+	height: 48px;
 	left: 0;
 	z-index: 9999;
 	top: 0;
@@ -461,7 +461,7 @@ td.icon {
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: 10px 0 10px 40px;
+	padding: 12px 0 10px 40px;
 }
 
 .ui > header .top-panel {

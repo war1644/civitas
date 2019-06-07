@@ -153,7 +153,8 @@ civitas.objects.settlement = function(params) {
 		this._mercenary = (typeof params.mercenary !== 'undefined') ? params.mercenary : [];
 		this._status = (typeof params.status !== 'undefined') ? params.status : {};
 		this._heroes = (typeof params.heroes !== 'undefined') ? params.heroes : [];
-		this.resources = this._fill_resources(params.resources);
+		this.resources = (typeof params.resources !== 'undefined') ? params.resources : {};
+		this._fill_resources(params.resources);
 		this.location = params.location;
 		if (typeof params.trades !== 'undefined') {
 			this.trades = params.trades;
