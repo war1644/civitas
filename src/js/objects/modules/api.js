@@ -16,14 +16,6 @@ civitas.modules.api = function (params) {
 	this._core = null;
 
 	/**
-	 * Module version.
-	 * 
-	 * @private
-	 * @type {String}
-	 */
-	this._version = '0.2.0';
-
-	/**
 	 * Sign in a visitor using the specified data.
 	 * 
 	 * @param {Object} data
@@ -34,16 +26,6 @@ civitas.modules.api = function (params) {
 			url: 'login',
 			data: data
 		});
-	};
-
-	/**
-	 * Return the module version.
-	 * 
-	 * @public
-	 * @returns {String}
-	 */
-	this.get_version = function () {
-		return this._version;
 	};
 
 	/**

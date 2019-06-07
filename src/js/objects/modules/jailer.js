@@ -16,14 +16,6 @@ civitas.modules.jailer = function (params) {
 	this._core = null;
 
 	/**
-	 * Module version.
-	 * 
-	 * @private
-	 * @type {String}
-	 */
-	this._version = '0.2.0';
-
-	/**
 	 * Object constructor.
 	 * 
 	 * @private
@@ -32,17 +24,8 @@ civitas.modules.jailer = function (params) {
 	 */
 	this.__init = function (params) {
 		this._core = params.core;
+		// Todo
 		return this;
-	};
-
-	/**
-	 * Return the module version.
-	 * 
-	 * @public
-	 * @returns {String}
-	 */
-	this.get_version = function () {
-		return this._version;
 	};
 
 	/**
@@ -52,6 +35,7 @@ civitas.modules.jailer = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.check = function () {
+		// Todo
 		return true;
 	};
 

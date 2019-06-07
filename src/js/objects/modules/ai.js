@@ -33,6 +33,7 @@ civitas.modules.ai = function (params) {
 	this.__init = function (params) {
 		this._core = params.core;
 		this._type = params.type;
+		// Todo
 		return this;
 	};
 
@@ -43,6 +44,7 @@ civitas.modules.ai = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.process = function() {
+		// Todo
 		return true;
 	};
 
