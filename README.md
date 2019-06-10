@@ -1,7 +1,7 @@
 Civitas
 =======
 
-![Main game area](docs/images/screenshots/civitas-screenshot-2.jpg)
+![Main game area](docs/images/civitas-screenshot-2.jpg)
 
 ## Description
 
@@ -104,15 +104,15 @@ The `music/track1.mp3` song is named __Glandula Pinealis__ by [Shantifax](https:
 
 | | | |
 |---|---|---|
-| ![](docs/images/screenshots/civitas-screenshot-1.jpg) | ![](docs/images/screenshots/civitas-screenshot-34.jpg) | ![](docs/images/screenshots/civitas-screenshot-3.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-4.jpg) | ![](docs/images/screenshots/civitas-screenshot-5.jpg) | ![](docs/images/screenshots/civitas-screenshot-6.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-7.jpg) | ![](docs/images/screenshots/civitas-screenshot-8.jpg) | ![](docs/images/screenshots/civitas-screenshot-9.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-10.jpg) | ![](docs/images/screenshots/civitas-screenshot-11.jpg) | ![](docs/images/screenshots/civitas-screenshot-12.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-13.jpg) | ![](docs/images/screenshots/civitas-screenshot-14.jpg) | ![](docs/images/screenshots/civitas-screenshot-15.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-16.jpg) | ![](docs/images/screenshots/civitas-screenshot-17.jpg) | ![](docs/images/screenshots/civitas-screenshot-18.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-19.jpg) | ![](docs/images/screenshots/civitas-screenshot-20.jpg) | ![](docs/images/screenshots/civitas-screenshot-21.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-22.jpg) | ![](docs/images/screenshots/civitas-screenshot-23.jpg) | ![](docs/images/screenshots/civitas-screenshot-24.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-25.jpg) | ![](docs/images/screenshots/civitas-screenshot-26.jpg) | ![](docs/images/screenshots/civitas-screenshot-27.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-28.jpg) | ![](docs/images/screenshots/civitas-screenshot-29.jpg) | ![](docs/images/screenshots/civitas-screenshot-30.jpg) |
-| ![](docs/images/screenshots/civitas-screenshot-31.jpg) | ![](docs/images/screenshots/civitas-screenshot-32.jpg) | ![](docs/images/screenshots/civitas-screenshot-33.jpg) |
+| ![](docs/images/civitas-screenshot-1.jpg) | ![](docs/images/civitas-screenshot-34.jpg) | ![](docs/images/civitas-screenshot-3.jpg) |
+| ![](docs/images/civitas-screenshot-4.jpg) | ![](docs/images/civitas-screenshot-5.jpg) | ![](docs/images/civitas-screenshot-6.jpg) |
+| ![](docs/images/civitas-screenshot-7.jpg) | ![](docs/images/civitas-screenshot-8.jpg) | ![](docs/images/civitas-screenshot-9.jpg) |
+| ![](docs/images/civitas-screenshot-10.jpg) | ![](docs/images/civitas-screenshot-11.jpg) | ![](docs/images/civitas-screenshot-12.jpg) |
+| ![](docs/images/civitas-screenshot-13.jpg) | ![](docs/images/civitas-screenshot-14.jpg) | ![](docs/images/civitas-screenshot-15.jpg) |
+| ![](docs/images/civitas-screenshot-16.jpg) | ![](docs/images/civitas-screenshot-17.jpg) | ![](docs/images/civitas-screenshot-18.jpg) |
+| ![](docs/images/civitas-screenshot-19.jpg) | ![](docs/images/civitas-screenshot-20.jpg) | ![](docs/images/civitas-screenshot-21.jpg) |
+| ![](docs/images/civitas-screenshot-22.jpg) | ![](docs/images/civitas-screenshot-23.jpg) | ![](docs/images/civitas-screenshot-24.jpg) |
+| ![](docs/images/civitas-screenshot-25.jpg) | ![](docs/images/civitas-screenshot-26.jpg) | ![](docs/images/civitas-screenshot-27.jpg) |
+| ![](docs/images/civitas-screenshot-28.jpg) | ![](docs/images/civitas-screenshot-29.jpg) | ![](docs/images/civitas-screenshot-30.jpg) |
+| ![](docs/images/civitas-screenshot-31.jpg) | ![](docs/images/civitas-screenshot-32.jpg) | ![](docs/images/civitas-screenshot-33.jpg) |
 
