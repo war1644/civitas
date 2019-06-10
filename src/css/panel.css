@@ -413,6 +413,11 @@
 
 .ui .panel .storage-item.small img {
 	margin: 10px auto 0 auto;
+	width: 20px;
+}
+
+.ui .panel .storage-item img {
+	width: 32px;
 }
 
 /* City info panel */

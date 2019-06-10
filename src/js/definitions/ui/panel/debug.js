@@ -134,7 +134,7 @@ civitas.PANEL_DEBUG = {
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.refresh', function() {
-			$(handle + ' .storage-data').val(core.get_storage_data_as_text());
+			$(handle + ' .storage-data').val(core.get_storage_data('live', true));
 			return false;
 		}).on('click', '.ninety', function() {
 			core.add_random_settlement();
@@ -160,7 +160,7 @@ civitas.PANEL_DEBUG = {
 		}).on('click', '.save', function() {
 			var save_game = $(handle + ' .storage-data').val();
 			if (save_game == '') {
-				save_game = core.get_storage_data_as_text();
+				save_game = core.get_storage_data('live', true);
 			}
 			var a = document.createElement("a");
 			a.style.display = "none";

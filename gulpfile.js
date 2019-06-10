@@ -73,6 +73,7 @@ gulp.task('app', function() {
 		'src/js/definitions/ui/window/signin.js',
 		'src/js/definitions/ui/window/battle.js',
 		'src/js/definitions/ui/window/signup.js',
+		'src/js/definitions/ui/window/error.js',
 		'src/js/definitions/ui/window/options.js'
   	])
     .pipe(concat('app.debug.js'))

@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.672019
+ * @version 0.2.0.6102019
  * @license GPLv3
  */ 'use strict';
 
@@ -13138,7 +13138,6 @@ civitas.game = function () {
 	this.new_game = function(name, cityname, nation, climate, avatar, difficulty, password) {
 		this.show_loader();
 		var data = null;
-		var game_data = this.get_storage_data();
 		if (civitas.ENCRYPTION === true) {
 			this.encryption.key = password;
 		}
@@ -13162,6 +13161,21 @@ civitas.game = function () {
 			this.encryption.key = password;
 		}
 		var game_data = this.get_storage_data();
+		var hash = CryptoJS.SHA512(JSON.stringify(game_data.data));
+		if (typeof game_data.hash === 'undefined') {
+			this.open_window(civitas.WINDOW_ERROR, {
+				error: 'Missing game signature.',
+				code: '0x01'
+			});
+			return false;
+		}
+		if (hash.toString(CryptoJS.enc.Hex) !== game_data.hash) {
+			this.open_window(civitas.WINDOW_ERROR, {
+				error: 'Invalid game signature.',
+				code: '0x02'
+			});
+			return false;
+		}
 		if (game_data) {
 			this.show_loader();
 			data = this._load_settlement(this.import(game_data.data));
@@ -14289,42 +14303,45 @@ civitas.game = function () {
 		} else {
 			num_resources = civitas.utils.get_random(2, 10);
 		}
-		var res_num = 0;
-		for (var item in civitas.RESOURCES) {
-			if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
-				res_num++;
-				resources[item] = civitas.utils.get_random(10, 500);
-				if (settlement === civitas.CITY || settlement === civitas.METROPOLIS) {
-					if (resources[item] > 450) {
-						trades.exports[item] = civitas.IMPORTANCE_VITAL;
-					} else if (resources[item] > 300 && resources[item] <= 450) {
-						trades.exports[item] = civitas.IMPORTANCE_HIGH;
-					} else if (resources[item] > 150 && resources[item] <= 250) {
-						trades.exports[item] = civitas.IMPORTANCE_MEDIUM;
-					}
+		for (var i = 0; i < num_resources; i++) {
+			var res = this.get_random_resource();
+			resources[res] = civitas.utils.get_random(10, 500);
+			if (settlement === civitas.CITY || settlement === civitas.METROPOLIS) {
+				if (resources[res] > 450) {
+					trades.exports[res] = civitas.IMPORTANCE_VITAL;
+				} else if (resources[res] > 300 && resources[res] <= 450) {
+					trades.exports[res] = civitas.IMPORTANCE_HIGH;
+				} else if (resources[res] > 150 && resources[res] <= 250) {
+					trades.exports[res] = civitas.IMPORTANCE_MEDIUM;
 				}
-			}
-			if (res_num >= num_resources) {
-				break;
 			}
 		}
 		if (settlement === civitas.CITY || settlement === civitas.METROPOLIS) {
-			num_resources = civitas.utils.get_random(5, 10);
-			res_num = 0;
-			for (var item in civitas.RESOURCES) {
-				if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
-					res_num++;
-					trades.imports[item] = civitas.utils.get_random(civitas.IMPORTANCE_LOW, civitas.IMPORTANCE_VITAL);
-				}
-				if (res_num >= num_resources) {
-					break;
-				}
+			for (var i = 0; i < num_resources; i++) {
+				var res = this.get_random_resource();
+				trades.imports[res] = civitas.utils.get_random(civitas.IMPORTANCE_LOW, civitas.IMPORTANCE_VITAL);
 			}
 		}
 		return {
 			resources: resources,
 			trades: trades
 		};
+	};
+
+	/**
+	 * Get a random resource.
+	 *
+	 * @public
+	 * @returns {String}
+	 */
+	this.get_random_resource = function() {
+		var keys = Object.keys(civitas.RESOURCES);
+		var resource = keys[keys.length * Math.random() << 0];
+		if ($.inArray(resource, civitas.NON_RESOURCES) === -1) {
+			return resource;
+		} else {
+			return this.get_random_resource();
+		}
 	};
 
 	/**
@@ -14650,10 +14667,11 @@ civitas.game = function () {
 	 * Retrieve game storage data.
 	 * 
 	 * @param {String} key
+	 * @param {Boolean} as_text
 	 * @public
 	 * @returns {Mixed}
 	 */
-	this.get_storage_data = function (key) {
+	this.get_storage_data = function (key, as_text) {
 		if (typeof key === 'undefined') {
 			key = 'live';
 		}
@@ -14664,31 +14682,11 @@ civitas.game = function () {
 				var decrypted = localStorage.getItem(civitas.STORAGE_KEY + '.' + key);	
 			}
 			if (decrypted !== false) {
-				return JSON.parse(decrypted);
-			}
-		}
-		return false;
-	};
-
-	/**
-	 * Retrieve game storage data as text.
-	 * 
-	 * @param {String} key
-	 * @public
-	 * @returns {Mixed}
-	 */
-	this.get_storage_data_as_text = function (key) {
-		if (typeof key === 'undefined') {
-			key = 'live';
-		}
-		if (this.has_storage_data(key)) {
-			if (civitas.ENCRYPTION === true) {
-				var decrypted = this.decrypt(localStorage.getItem(civitas.STORAGE_KEY + '.' + key));
-			} else {
-				var decrypted = localStorage.getItem(civitas.STORAGE_KEY + '.' + key);	
-			}
-			if (decrypted !== false) {
-				return decrypted;
+				if (as_text === true) {
+					return decrypted;
+				} else {
+					return JSON.parse(decrypted);
+				}
 			}
 		}
 		return false;
@@ -14742,10 +14740,12 @@ civitas.game = function () {
 				version: civitas.VERSION
 			}
 		};
+		var hash = CryptoJS.SHA512(JSON.stringify(data));
 		if (to_local_storage === true) {
 			var new_data = {
 				date: Number(new Date()),
-				data: data
+				data: data,
+				hash: hash.toString(CryptoJS.enc.Hex)
 			}
 			this.set_storage_data('live', new_data);
 			return new_data;
@@ -15121,8 +15121,8 @@ civitas.game = function () {
 			x = e.clientX;
 			y = e.clientY;
 		}
-		$('.ui > footer').css({
-			left: ($(window).width() / 2) - ($('.ui > footer').width() / 2)
+		$(window).bind('resize', function() {
+			self._resize();
 		});
 		var update_scroll_pos = function (e) {
 			$(window).scrollTop($(window).scrollTop() + (clickY - e.pageY));
@@ -15145,7 +15145,14 @@ civitas.game = function () {
 			}
 			return false;
 		});
+		self._resize();
 		return this;
+	};
+
+	this._resize = function() {
+		$('.ui > footer').css({
+			left: ($(window).width() / 2) - ($('.ui > footer').width() / 2)
+		});
 	};
 
 	/**
@@ -15790,7 +15797,7 @@ civitas.PANEL_DEBUG = {
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.refresh', function() {
-			$(handle + ' .storage-data').val(core.get_storage_data_as_text());
+			$(handle + ' .storage-data').val(core.get_storage_data('live', true));
 			return false;
 		}).on('click', '.ninety', function() {
 			core.add_random_settlement();
@@ -15816,7 +15823,7 @@ civitas.PANEL_DEBUG = {
 		}).on('click', '.save', function() {
 			var save_game = $(handle + ' .storage-data').val();
 			if (save_game == '') {
-				save_game = core.get_storage_data_as_text();
+				save_game = core.get_storage_data('live', true);
 			}
 			var a = document.createElement("a");
 			a.style.display = "none";
@@ -18299,6 +18306,52 @@ civitas.WINDOW_SIGNUP = {
 			$(handle + ' .avatar-select').scrollTo('-=' + (64 + avatar) + 'px', 500);
 		}).on('click', '.do-about', function () {
 			$(handle + ' .about-game').slideToggle();
+			return false;
+		});
+	},
+	on_hide: function() {
+		this.core().hide_loader();
+	}
+};
+
+/**
+ * Options window data.
+ *
+ * @type {Object}
+ */
+civitas.WINDOW_ERROR = {
+	id: 'error',
+	template: '' +
+		'<section id="window-{ID}" class="window">' +
+			'<div class="logo">Civitas</div>' +
+			'<fieldset>' +
+				civitas.l('An error has occured in Civitas and the game is unable to resume.') +
+				'<br /><br />' +
+				'<span class="error-message"></span>' +
+				'<br />' +
+				'<span class="error-code"></span>' +
+				'<br /><br />' +
+				'<a href="#" class="do-restart button">' + civitas.l('Restart') + '</a>' +
+			'</fieldset>' +
+		'</section>',
+	on_show: function() {
+		var self = this;
+		var core = this.core();
+		var handle = this.handle();
+		$(handle + ' .error-message').html(civitas.l('Message: ') + this.params_data.error);
+		$(handle + ' .error-code').html(civitas.l('Code: ') + this.params_data.code);
+		$(handle).on('click', '.do-restart', function () {
+			core.open_modal(
+				function(button) {
+					if (button === 'yes') {
+						core.reset_storage_data();
+						document.location.reload();
+					}
+				},
+				'Are you sure you want to restart the game? You will lose all progress ' +
+					'on the current game!',
+				'Civitas'
+			);
 			return false;
 		});
 	},
