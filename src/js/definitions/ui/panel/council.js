@@ -16,6 +16,7 @@ civitas.PANEL_COUNCIL = {
 			_t += '<div data-id="' + i + '" class="achievement">' +
 				'<div class="left">' +
 					'<div class="ach img"></div>' +
+					'<div class="ach points">' + civitas.ACHIEVEMENTS[i].points + '</div>' +
 				'</div>' +
 				'<div class="right">' +
 					'<div class="inner">' +
@@ -160,6 +161,7 @@ civitas.PANEL_COUNCIL = {
 				'<dt>' + civitas.l('Personality') + '</dt><dd>' + settlement.personality().name + '</dd>' +
 				'<dt>' + civitas.l('Nationality') + '</dt><dd>' + settlement.nationality().name + '</dd>' +
 				'<dt>' + civitas.l('Population') + '</dt><dd>' + civitas.utils.nice_numbers(settlement.population()) + '</dd>' +
+				'<dt>' + civitas.l('Achievement Points') + '</dt><dd>' + core.achievement_points() + '</dd>' +
 				'<dt>' + civitas.l('Religion') + '</dt><dd>' + settlement.religion().name + '</dd>' +
 				'<dt>' + civitas.l('Level') + '</dt><dd>' + civitas.ui.progress((settlement.level() * 100) / civitas.MAX_SETTLEMENT_LEVEL, 'small', settlement.level()) + '</dd>' +
 				'<dt>' + civitas.l('Fame') + '</dt><dd>' + civitas.ui.progress((settlement.fame() * 100) / civitas.LEVELS[settlement.level()], 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(civitas.LEVELS[settlement.level()])) + '</dd>' +

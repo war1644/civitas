@@ -34,8 +34,6 @@ table tr:hover td:first-child a {
 }
 
 table tr td:last-child a {
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
 	border-radius: 3px;
 	padding: 4px 10px;
 	color: #fff !important;

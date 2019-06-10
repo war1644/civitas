@@ -31,6 +31,14 @@ civitas.game = function () {
 	this._achievements = [];
 
 	/**
+	 * Total number of achievement points
+	 *
+	 * @private
+	 * @type {Number}
+	 */
+	this._achievement_points = 0;
+
+	/**
 	 * Pointer to the audio subsystem component.
 	 * 
 	 * @private
@@ -251,8 +259,8 @@ civitas.game = function () {
 				seconds++;
 			}
 		}, 1000);
-		$(document).keyup(function(e) {
-			if (e.keyCode == 27 && !civitas.ui.window_exists('#window-options')) {
+		$(document).keyup(function(event) {
+			if (event.keyCode == 27 && !civitas.ui.window_exists('#window-options')) {
 				self.show_loader();
 				self.open_window(civitas.WINDOW_OPTIONS);
 			}
@@ -318,12 +326,29 @@ civitas.game = function () {
 		}
 		if (game_data) {
 			this.show_loader();
-			data = this._load_settlement(this.import(game_data.data));
+			var temp_game_data = this.import(game_data.data);
+			if (temp_game_data !== false) {
+				data = this._load_settlement(temp_game_data);
+				if (data !== false) {
+					this._setup_game(data);
+					return true;
+				} else {
+					this.open_window(civitas.WINDOW_ERROR, {
+					error: 'Unable to process game data.',
+					code: '0x05'
+				});
+				return false;
+				}
+			} else {
+				this.open_window(civitas.WINDOW_ERROR, {
+					error: 'Invalid game data.',
+					code: '0x03'
+				});
+				return false;
+			}
 		} else {
 			return false;
 		}
-		this._setup_game(data);
-		return true;
 	};
 
 	/**
@@ -445,8 +470,7 @@ civitas.game = function () {
 	this._do_monthly = function () {
 		this._date.day_of_month = 1;
 		this._date.month++;
-		if (this._date.month === 3 || this._date.month === 6 || 
-			this._date.month === 9 || this._date.month === 12) {
+		if (this._date.month === 3 || this._date.month === 6 || this._date.month === 9 || this._date.month === 12) {
 			this._do_quarterly();
 		}
 		if (this._date.month === 6 || this._date.month === 12) {
@@ -790,6 +814,12 @@ civitas.game = function () {
 							this.achievement(i);
 						}
 					}
+					if (cond_item === 'religion') {
+						var religion = settlement.religion();
+						if (religion.name === condition) {
+							this.achievement(i);
+						}
+					}
 				}
 			}
 		}
@@ -810,8 +840,9 @@ civitas.game = function () {
 				id: id,
 				date: + new Date()
 			});
+			this._achievement_points += achievement.points;
 			this._notify({
-				title: 'Achievement Completed',
+				title: civitas.l('Achievement Completed'),
 				mode: civitas.NOTIFY_ACHIEVEMENT,
 				content: achievement.description,
 				timeout: false
@@ -848,6 +879,19 @@ civitas.game = function () {
 			this._achievements = value;
 		}
 		return this._achievements;
+	};
+
+	/**
+	 * Set/get the achievement points.
+	 *
+	 * @public
+	 * @returns {Number}
+	 */
+	this.achievement_points = function(value) {
+		if (typeof value !== 'undefined') {
+			this._achievement_points = value;
+		}
+		return this._achievement_points;
 	};
 
 	/**
@@ -1844,11 +1888,12 @@ civitas.game = function () {
 			this.worldmap(data.worldmap);
 			this.queue(data.queue);
 			this.achievements(data.achievements);
+			this.achievement_points(data.achievement_points);
 			this.date(data.date);
 			this.set_black_market(data.black_market);
 			this.set_settings_music(data.settings.music);
 		} else {
-			this.error('There was a problem loading the game data, it is probably corrupted');
+			//this.error('There was a problem loading the game data, it is probably corrupted');
 			return false;
 		}
 		return data;
@@ -1871,6 +1916,7 @@ civitas.game = function () {
 			settlements: settlements_list,
 			difficulty: this.difficulty(),
 			achievements: this.achievements(),
+			achievement_points: this.achievement_points(),
 			black_market: this.get_black_market(),
 			date: this.date(),
 			queue: this.queue(),
@@ -2238,14 +2284,14 @@ civitas.game = function () {
 		var clickY, clickX;
 		var _t = '';
 		$('.game').on({
-			mousemove: function (e) {
-				clicked && update_scroll_pos(e);
-				//handle_mouse(e);
+			mousemove: function (event) {
+				clicked && update_scroll_pos(event);
+				//handle_mouse(event);
 			},
-			mousedown: function (e) {
+			mousedown: function (event) {
 				clicked = true;
-				clickY = e.pageY;
-				clickX = e.pageX;
+				clickY = event.pageY;
+				clickX = event.pageX;
 				$('html').css('cursor', 'grab');
 			},
 			mouseup: function () {
@@ -2254,19 +2300,19 @@ civitas.game = function () {
 			}
 		});
 		var x, y;
-		function handle_mouse(e) {
+		function handle_mouse(event) {
 			if (x && y) {
-				window.scrollBy(e.clientX - x, e.clientY - y);
+				window.scrollBy(event.clientX - x, event.clientY - y);
 			}
-			x = e.clientX;
-			y = e.clientY;
+			x = event.clientX;
+			y = event.clientY;
 		}
 		$(window).bind('resize', function() {
 			self._resize();
 		});
-		var update_scroll_pos = function (e) {
-			$(window).scrollTop($(window).scrollTop() + (clickY - e.pageY));
-			$(window).scrollLeft($(window).scrollLeft() + (clickX - e.pageX));
+		var update_scroll_pos = function (event) {
+			$(window).scrollTop($(window).scrollTop() + (clickY - event.pageY));
+			$(window).scrollLeft($(window).scrollLeft() + (clickX - event.pageX));
 		};
 		for (var i = 0; i < civitas.TOOLBAR_RESOURCES.length; i++) {
 			_t += '<span class="' + civitas.TOOLBAR_RESOURCES[i] + 

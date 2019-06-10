@@ -17,14 +17,10 @@
 
 .tipsy-inner {
 	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
 }
 
 .tipsy-inner {
 	box-shadow: 0 0 5px #ccc;
-	-webkit-box-shadow: 0 0 5px #ccc;
-	-moz-box-shadow: 0 0 5px #ccc;
 }
 
 .tipsy-arrow {
