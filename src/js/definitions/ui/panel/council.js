@@ -47,8 +47,7 @@ civitas.PANEL_COUNCIL = {
 						core.save_and_refresh();
 					}
 				},
-				'Are you sure you want to release this mercenary army? ' +
-					'You won`t be able to use them anymore!'
+				'Are you sure you want to release this mercenary army? You won`t be able to use them anymore!'
 			);
 			return false;
 		}).on('click', '.building-info', function() {
@@ -102,12 +101,8 @@ civitas.PANEL_COUNCIL = {
 			faith: 0
 		}
 		var mercenary = settlement.mercenary();
-		var _t = '<p>' + civitas.l('Mercenary armies are available to hire for a fixed price, ' +
-				'they do not cost additional resources but they are only available for raiding ' +
-				'and campaign missions, they do not participate in the defense of your city.') + 
-			'</p>' +
-			'<p>' + civitas.l('Also, keep in mind that once a mercenary army is hired, they ' +
-				'are at your disposal until the end of the current year.') + '</p>' +
+		var _t = '<p>' + civitas.l('Mercenary armies are available to hire for a fixed price, they do not cost additional resources but they are only available for raiding and campaign missions, they do not participate in the defense of your city.') + '</p>' +
+			'<p>' + civitas.l('Also, keep in mind that once a mercenary army is hired, they are at your disposal until the end of the current year.') + '</p>' +
 			'<div class="hired-mercenaries-list">';
 		if (mercenary.length > 0) {
 			_t += '<table class="normal">';
@@ -140,17 +135,17 @@ civitas.PANEL_COUNCIL = {
 			}
 			_t += '</table>';
 		} else {
-			_t += '<p>' + civitas.l('You have no mercenary armies hired for your city. ' +
-				'Go to the World Market Trades and hire one.') + '</p>';
+			_t += '<p>' + civitas.l('You have no mercenary armies hired for your city. Go to the World Market Trades and hire one.') + '</p>';
 		}
 		_t += '</div>';
 		$(this.handle + ' #tab-mercenary').empty().append(_t);
 		for (var f = 0; f < achievements.length; f++) {
-			$(this.handle + ' .achievement[data-id=' + achievements[f].id + ']').addClass('has');
-			$(this.handle + ' .achievement[data-id=' + achievements[f].id + '] .time')
-				.attr("title", achievements[f].date)
-				.html('<strong>' + civitas.utils.time_since(achievements[f].date) + 
-					'</strong> ago');
+			if (typeof achievements[f] !== 'undefined') {
+				$(this.handle + ' .achievement[data-id=' + achievements[f].id + ']').addClass('has');
+				$(this.handle + ' .achievement[data-id=' + achievements[f].id + '] .time')
+					/*.attr("title", achievements[f].date)*/
+					.html('<strong>' + civitas.utils.time_since(achievements[f].date) + '</strong> ' + civitas.l('ago'));
+			}
 		}
 		_t = '<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + 
 			settlement.ruler().avatar + '.png" />' +

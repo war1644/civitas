@@ -17,8 +17,7 @@ civitas.ui = {
 		}
 		out += civitas.l('Slot') + ': ' + civitas.ITEM_SLOTS_LIST[item.slot] + ' <br />';
 		if (item.type === civitas.ITEM_TYPE_WEAPON) {
-			out += civitas.l('Damage') + ': <span class="red">' + item.stats.damageMin + '-' + item.stats.damageMax + '</span><br />' +
-				civitas.l('Speed') + ': ' + item.stats.speed + '<br />';
+			out += civitas.l('Damage') + ': <span class="red">' + item.stats.damageMin + '-' + item.stats.damageMax + '</span><br />' + civitas.l('Speed') + ': ' + item.stats.speed + '<br />';
 		} else {
 			out += civitas.l('Armor') + ': ' + item.stats.armor + '<br />';
 		}
@@ -50,17 +49,12 @@ civitas.ui = {
 	window_about_section: function() {
 		var out = '<a href="#" class="do-about button">' + civitas.l('About') + '</a>' +
 			'<div class="about-game">' +
-				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas">' +
-				'<img class="tips" title="' + civitas.l('Visit the project page on GitHub') + 
-				'" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
-				'<p>' + civitas.l('Civitas is written by <a target="_blank" ' +
-					'href="https://sizeof.cat">sizeof(cat)</a>.') + '</p>' +
+				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="' + civitas.l('Visit the project page on GitHub') + '" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
+				'<p>' + civitas.l('Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.') + '</p>' +
 				'<p>' + civitas.l('Big thanks to') + ':</p>' +
 				'<ul>' +
-					'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a>' +
-					' for the music (Glandula Pinealis).</li>' +
-					'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno ' +
-					'1404.</li>' +
+					'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
+					'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
 				'</ul>' +
 			'</div>';
 		return out;
@@ -96,13 +90,10 @@ civitas.ui = {
 			'</header>' +
 			'<section></section>' +
 			'<footer>' +
-				'<a class="tips demolish" title="' + civitas.l('Demolish this building') + 
-					'" href="#"></a>' +
+				'<a class="tips demolish" title="' + civitas.l('Demolish this building') + '" href="#"></a>' +
 				'<a class="tips pause start" href="#"></a>' +
-				'<a class="tips upgrade" title="' + civitas.l('Upgrade building') + 
-					'" href="#"></a>' +
-				'<a class="tips downgrade" title="' + civitas.l('Downgrade building') + 
-					'" href="#"></a>' +
+				'<a class="tips upgrade" title="' + civitas.l('Upgrade building') + '" href="#"></a>' +
+				'<a class="tips downgrade" title="' + civitas.l('Downgrade building') + '" href="#"></a>' +
 			'</footer>' +
 		'</div>';
 		return out;
@@ -119,8 +110,7 @@ civitas.ui = {
 		var image = (typeof params.visible_upgrades === 'undefined' || 
 			params.visible_upgrades === false) ? building_image: building_image + params.level;
 		var out = '<div class="column">' +
-			'<img src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + 
-				image + '_large.png" />' +
+			'<img src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '_large.png" />' +
 		'</div>' +
 		'<div class="column">' +
 			'<p>' + params.description + '</p>' +
@@ -142,7 +132,7 @@ civitas.ui = {
 		var out = '<fieldset>' +
 				'<legend>' + section + '</legend>' +
 				contents +
-				'</fieldset>';
+			'</fieldset>';
 		return out;
 	},
 
@@ -157,10 +147,7 @@ civitas.ui = {
 		if (typeof costs !== 'undefined') {
 			out += '<dt>' + civitas.l('Cost') + '</dt>';
 			for (var item in costs) {
-				out += '<dd>' + civitas.utils.nice_numbers(costs[item]) + 
-					civitas.ui.resource_small_img(item) + (typeof levels !== 'undefined' && 
-						level < levels ? ' / ' + civitas.utils.nice_numbers(costs[item] * 
-							(level + 1)) + civitas.ui.resource_small_img(item) : '') + '</dd>';
+				out += '<dd>' + civitas.utils.nice_numbers(costs[item]) + civitas.ui.resource_small_img(item) + (typeof levels !== 'undefined' && level < levels ? ' / ' + civitas.utils.nice_numbers(costs[item] * (level + 1)) + civitas.ui.resource_small_img(item) : '') + '</dd>';
 			}
 		}
 		return out;
@@ -192,26 +179,20 @@ civitas.ui = {
 	},
 
 	navy_img: function (name) {
-		return '<img class="tips" title="' + civitas.SHIPS[name].name + '" src="' + 
-			civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + 
-			'_small.png" />';
+		return '<img class="tips" title="' + civitas.SHIPS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '_small.png" />';
 	},
 
 	army_img: function (name) {
-		return '<img class="tips" title="' + civitas.SOLDIERS[name].name + '" src="' + 
-			civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + 
-			'_small.png" />';
+		return '<img class="tips" title="' + civitas.SOLDIERS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '_small.png" />';
 	},
 
 	army_list: function (army, no_margin) {
 		var out2 = '<p>' + civitas.l('There are no soldiers in this army.') + '</p>';
-		var out = '<dl' + ((typeof no_margin !== 'undefined' && no_margin === true) ? 
-			' class="nomg"' : '') + '>';
+		var out = '<dl' + ((typeof no_margin !== 'undefined' && no_margin === true) ? ' class="nomg"' : '') + '>';
 		var total = 0;
 		for (var soldier in army) {
 			if (army[soldier] > 0) {
-				out += '<dt>' + army[soldier] + '</dt>' +
-						'<dd>' + civitas.ui.army_img(soldier) + '</dd>';
+				out += '<dt>' + army[soldier] + '</dt>' + '<dd>' + civitas.ui.army_img(soldier) + '</dd>';
 				total += army[soldier];
 			}
 		}
@@ -254,9 +235,7 @@ civitas.ui = {
 	},
 
 	panel_btn: function (text, title, handle, class_name, disabled) {
-		return '<a title="' + title + '" data-handle="' + handle + '" class="tips ' + 
-			class_name + (disabled === true ? ' disabled' : '') + '" href="#">' + 
-			text + '</a></td>';
+		return '<a title="' + title + '" data-handle="' + handle + '" class="tips ' + class_name + (disabled === true ? ' disabled' : '') + '" href="#">' + text + '</a></td>';
 	},
 
 	trades_list: function (trades, mode) {
@@ -275,13 +254,11 @@ civitas.ui = {
 
 	navy_list: function (army, no_margin) {
 		var out2 = '<p>' + civitas.l('There are no ships in this navy.') + '</p>';
-		var out = '<dl' + 
-			((typeof no_margin !== 'undefined' && no_margin === true) ? ' class="nomg"' : '') + '>';
+		var out = '<dl' + ((typeof no_margin !== 'undefined' && no_margin === true) ? ' class="nomg"' : '') + '>';
 		var total = 0;
 		for (var ship in army) {
 			if (army[ship] > 0) {
-				out += '<dt>' + army[ship] + '</dt>' +
-						'<dd>' + civitas.ui.navy_img(ship) + '</dd>';
+				out += '<dt>' + army[ship] + '</dt>' + '<dd>' + civitas.ui.navy_img(ship) + '</dd>';
 				total += army[ship];
 			}
 		}
@@ -301,47 +278,27 @@ civitas.ui = {
 		if (params.type.slice(0, 5) === 'house') {
 			building_image = params.type.slice(0, 5);
 		}
-		var image = (typeof params.data.visible_upgrades === 'undefined' || 
-			params.data.visible_upgrades === false) ? 
-			building_image : building_image + params.data.level;
-		return '<div data-type="' + params.type + '" data-level="' + params.data.level + '" ' +
-			'style="background:transparent url(' + civitas.ASSETS_URL + 
-			'images/assets/buildings/' + image + '.png) no-repeat;left:' + 
-			params.data.position.x + 'px;top:' + params.data.position.y + 'px" ' +
-			'title=\'' + params.data.name + '\' ' + 'id="building-' + params.data.handle + '"' +
-			'class="tips building' + (params.data.large === true ? ' large' : '') + 
-			(params.data.extralarge === true ? ' extralarge' : '') + '"></div>';
+		var image = (typeof params.data.visible_upgrades === 'undefined' || params.data.visible_upgrades === false) ? building_image : building_image + params.data.level;
+		return '<div data-type="' + params.type + '" data-level="' + params.data.level + '" ' + 'style="background:transparent url(' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png) no-repeat;left:' + params.data.position.x + 'px;top:' + params.data.position.y + 'px" title=\'' + params.data.name + '\' ' + 'id="building-' + params.data.handle + '"' + 'class="tips building' + (params.data.large === true ? ' large' : '') + (params.data.extralarge === true ? ' extralarge' : '') + '"></div>';
 	},
 
 	resource_storage_small_el: function (resource, amount) {
-		return '<div class="tips storage-item small" title="' + 
-			civitas.utils.get_resource_name(resource) + '">' +
-			'<img src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + 
-			'_small.png" />' +
-			'<span class="amount">' + amount + '</amount>' +
-			'</div>';
+		return '<div class="tips storage-item small" title="' + civitas.utils.get_resource_name(resource) + '"><img src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '_small.png" /><span class="amount">' + amount + '</span></div>';
 	},
 
 	resource_storage_el: function (resource, amount) {
-		return '<div class="storage-item">' +
-				'<span class="title">' + civitas.utils.get_resource_name(resource) + '</span>' +
-				'<img src="' + civitas.ASSETS_URL + 'images/assets/resources/' +  resource + '.png" />' +
-				'<span class="amount">' + amount + '</amount>' +
-			'</div>';
+		return '<div class="storage-item"><span class="title">' + civitas.utils.get_resource_name(resource) + '</span><img src="' + civitas.ASSETS_URL + 'images/assets/resources/' +  resource + '.png" /><span class="amount">' + amount + '</span></div>';
 	},
 
 	tabs: function (data) {
 		var out = '<div class="tabs">' +
 				'<ul>';
 		for (var i = 0; i < data.length; i++) {
-			out += '<li>' +
-					'<a href="#tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' + data[i] + '</a>' +
-				'</li>';
+			out += '<li><a href="#tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' + data[i] + '</a></li>';
 		}
 		out += '</ul>';
 		for (var i = 0; i < data.length; i++) {
-			out += '<div id="tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' +
-					'</div>';
+			out += '<div id="tab-' + data[i].toLowerCase().replace(/ /g, "-") + '"></div>';
 		}
 		out += '</div>';
 		return out;
@@ -363,8 +320,7 @@ civitas.ui = {
 		if (typeof materials !== 'undefined') {
 			out += '<dt>' + civitas.l('Extra materials') + '</dt>';
 			for (var item in materials) {
-				out += '<dd>' + (level * materials[item]).toFixed(4) * 100 + '%' + 
-					civitas.ui.resource_small_img(item) + '</dd>';
+				out += '<dd>' + (level * materials[item]).toFixed(4) * 100 + '%' + civitas.ui.resource_small_img(item) + '</dd>';
 			}
 		}
 		return out;
@@ -375,8 +331,7 @@ civitas.ui = {
 		if (typeof materials !== 'undefined') {
 			out += '<dt>' + civitas.l('Produces') + '</dt>';
 			for (var item in materials) {
-				out += '<dd>' + (level * materials[item]) + 
-					civitas.ui.resource_small_img(item) + '</dd>';
+				out += '<dd>' + (level * materials[item]) + civitas.ui.resource_small_img(item) + '</dd>';
 			}
 		}
 		return out;
@@ -384,8 +339,7 @@ civitas.ui = {
 
 	requires_panel: function (requires) {
 		var out = '';
-		if (typeof requires.buildings !== 'undefined' ||
-				typeof requires.settlement_level !== 'undefined') {
+		if (typeof requires.buildings !== 'undefined' || typeof requires.settlement_level !== 'undefined') {
 			out += '<dt>' + civitas.l('Requires') + '</dt>';
 			out += '<dd>';
 			if (typeof requires.buildings !== 'undefined') {
@@ -415,16 +369,12 @@ civitas.ui = {
 		var out = '';
 		if (typeof storage !== 'undefined') {
 			out += '<dt>' + civitas.l('Storage') + '</dt>';
-			out += '<dd>' + (level * storage) + '<img alt="Storage space" class="tips" title="' + 
-				civitas.l('Storage Space') + '" src="' + civitas.ASSETS_URL + 
-				'images/assets/resources/storage_small.png" /></dd>';
+			out += '<dd>' + (level * storage) + '<img alt="Storage space" class="tips" title="' + civitas.l('Storage Space') + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage_small.png" /></dd>';
 		}
 		return out;
 	},
 
 	resource_small_img: function (resource) {
-		return '<img alt="' + civitas.utils.get_resource_name(resource) + '" class="tips" title="' +
-			civitas.utils.get_resource_name(resource) + '" src="' + civitas.ASSETS_URL + 
-			'images/assets/resources/' + resource + '_small.png" />';
+		return '<img alt="' + civitas.utils.get_resource_name(resource) + '" class="tips" title="' + civitas.utils.get_resource_name(resource) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '_small.png" />';
 	}
 };

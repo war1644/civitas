@@ -32,8 +32,7 @@ civitas.WINDOW_ERROR = {
 						document.location.reload();
 					}
 				},
-				'Are you sure you want to restart the game? You will lose all progress ' +
-					'on the current game!',
+				'Are you sure you want to restart the game? You will lose all progress on the current game!',
 				'Civitas'
 			);
 			return false;

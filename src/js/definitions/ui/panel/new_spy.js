@@ -80,7 +80,7 @@ civitas.PANEL_NEW_SPY = {
 			_t += '<option value="' + i + '">' + civitas.RELIGIONS[i].capitalize() + (i === my_settlement.religion().id ? ' (' + civitas.l('your religion') + ')' : '') + '</option>';
 		}
 		_t += '</select>' +
-		'<p><strong>' + civitas.l('Note') + '!</strong> ' + civitas.l('Attempting to change a settlement`s religion uses up all your accumulated faith.') + '</p>' +
+			'<p><strong>' + civitas.l('Note') + '!</strong> ' + civitas.l('Attempting to change a settlement`s religion uses up all your accumulated faith.') + '</p>' +
 		'</fieldset>';
 		$(this.handle + ' section').empty().append(_t);
 		$(this.handle).on('change', '.espionage-range', function() {

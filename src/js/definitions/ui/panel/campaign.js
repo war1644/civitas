@@ -64,7 +64,7 @@ civitas.PANEL_CAMPAIGN = {
 		} else if (campaign.type === civitas.CAMPAIGN_CARAVAN) {
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>' + civitas.l('This caravan has the the following resources:') + '</p>' +
-				'<dl>';
+					'<dl>';
 				for (var item in campaign.data.resources) {
 					if (campaign.data.resources[item] > 0) {
 						out += '<dt>' + campaign.data.resources[item] + '</dt>' +
@@ -93,7 +93,7 @@ civitas.PANEL_CAMPAIGN = {
 			$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(campaign.data.navy));
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>' + civitas.l('This army is bringing back to its home city the following spoils of war:') + '</p>' +
-				'<dl>';
+					'<dl>';
 				for (var item in campaign.data.resources) {
 					if (campaign.data.resources[item] > 0) {
 						out += '<dt>' + campaign.data.resources[item] + '</dt>' +

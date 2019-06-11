@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.6102019
+ * @version 0.2.0.6112019
  * @license GPLv3
  */ /* Game animations */
 
@@ -652,6 +652,7 @@ span.blue {
 	border-radius: 60px;
 	background-color: #c6c438;
 	background-image: linear-gradient(to bottom, #f5f36b, #c6c438);
+	box-shadow: 0 0 2px #000;
 }
 
 .notifications .notty.error {
@@ -925,12 +926,55 @@ span.blue {
 
 #panel-debug .console p {
 	padding: 2px 5px;
-	background-color: #efefef;
 	margin: 2px 0 0 0;
 }
 
-#panel-debug .console p.error {
-	color: #aa4600;
+#panel-debug .console span {
+	padding: 2px 6px;
+	margin-right: 6px;
+	border-radius: 6px;
+}
+
+#panel-debug .console span.error {
+	background-color: #FF0000;
+	color: #fff;
+}
+
+#panel-debug .console span.error-message {
+	background-color: #aa4600;
+	color: #fff;
+}
+
+#panel-debug .console span.log-message {
+	color: #444;
+	background-color: #efefef;
+}
+
+#panel-debug .console span.date {
+	background-color: #54DBC5;
+}
+
+#panel-debug .console span.namespace {
+	background-color: #D25C70;
+	color: #fff;
+}
+
+#panel-debug .console span.namespace.game-ui {
+	background-color: #BB86FC;
+	color: #000;
+}
+
+#panel-debug .console span.namespace.game-world {
+	background-color: #6638F0;
+}
+
+#panel-debug .console span.namespace.game-achievement {
+	background-color: #7C7951;
+}
+
+#panel-debug .console span.namespace.game-event {
+	background-color: #B0F566;
+	color: #000;
 }
 
 #panel-debug textarea {
@@ -1470,6 +1514,7 @@ a.wikipedia {
 	height: 20px;
 	border: 1px solid #888;
 	background: rgb(168, 168, 168);
+	background: -moz-linear-gradient(top, rgba(168, 168, 168, 1) 0%,rgba(204, 204, 204, 1) 23%);
 	background: linear-gradient(top, rgba(168, 168, 168, 1) 0%,rgba(204, 204, 204, 1) 23%);
 	line-height: 100%;
 	display: inline-block;
@@ -1497,6 +1542,7 @@ a.wikipedia {
 }
 
 .progress .bar {
+	background: -moz-linear-gradient(top, #472e18 0%, #fff 50%, #25140a 100%);
 	background: linear-gradient(top, #472e18 0%, #fff 50%, #25140a 100%);
 	height: 20px;
 	border-right: 1px solid #888; 
@@ -1519,30 +1565,36 @@ a.wikipedia {
 .progress .bar.good {
 	background: #00890b;
 	background: linear-gradient(top, #00890b 0%, #1df432 50%, #00890b 100%);
+	background: -moz-linear-gradient(top, #00890b 0%, #1df432 50%, #00890b 100%);
 }
 
 .progress .bar.bad {
 	background: #e2e200;
 	background: linear-gradient(top, #e2e200 0%, #d39b00 50%, #e2e200 100%);
+	background: -moz-linear-gradient(top, #e2e200 0%, #d39b00 50%, #e2e200 100%);
 }
 
 .progress .bar.vbad {
 	background: #f70000;
 	background: linear-gradient(top, #f70000 0%, #b50000 50%, #f70000 100%);
+	background: -moz-linear-gradient(top, #f70000 0%, #b50000 50%, #f70000 100%);
 }
 
 .progress .bar.ubad {
 	background: linear-gradient(top, #555 0%, #f10000 50%, #8b0000 100%);
+	background: -moz-linear-gradient(top, #555 0%, #f10000 50%, #8b0000 100%);
 }
 
 .progress .bar.vgood {
 	background: #0092af;
 	background: linear-gradient(top, #0092af 0%, #1effe4 50%, #0092af 100%);
+	background: -moz-linear-gradient(top, #0092af 0%, #1effe4 50%, #0092af 100%);
 }
 
 .progress .bar.ugood {
 	background: #0700e2;
 	background: linear-gradient(top, #0700e2 0%, #1c7bef 50%, #0700e2 100%);
+	background: -moz-linear-gradient(top, #0700e2 0%, #1c7bef 50%, #0700e2 100%);
 }
 
 /* Bottom panel with game actions */

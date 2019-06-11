@@ -13,8 +13,7 @@ civitas.PANEL_DEBUG = {
 		var handle = this.handle;
 		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Data'), civitas.l('Console'), civitas.l('Cheats')]));
 		$(this.handle + ' header').append(civitas.l('Debug'));
-		$(this.handle + ' #tab-console').empty().append(
-			'<div class="console"></div>');
+		$(this.handle + ' #tab-console').empty().append('<div class="console"></div>');
 		$(this.handle + ' #tab-cheats').empty().append('' +
 				'<div class="toolbar">' +
 					'<a href="#" class="btn iblock one">' + civitas.l('+1M coins') + '</a> ' +
@@ -149,8 +148,7 @@ civitas.PANEL_DEBUG = {
 							document.location.reload();
 						}
 					},
-					'Are you sure you want to load a new game? You will lose all progress ' +
-						'on the current game!',
+					'Are you sure you want to load a new game? You will lose all progress on the current game!',
 					'Civitas'
 				);
 			} else {

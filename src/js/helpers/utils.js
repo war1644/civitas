@@ -109,8 +109,7 @@ civitas.utils = {
 	 * @returns {Number}
 	 */
 	get_distance: function(source, destination) {
-		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + 
-			Math.pow(destination.y - source.y, 2)));
+		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)));
 	},
 
 	/**
@@ -122,8 +121,7 @@ civitas.utils = {
 	 * @returns {Number}
 	 */
 	get_distance_in_days: function(source, destination) {
-		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + 
-			Math.pow(destination.y - source.y, 2)) / 10);
+		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) / 10);
 	},
 
 	/**

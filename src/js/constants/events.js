@@ -6,11 +6,9 @@
  */
 civitas.EVENTS = [{
 	name: 'Great earthquake',
-	description: '',
+	description: 'A great earthquake sweeps across your city destroying the settlement`s BUILDING in the process.',
 	chance: 0.00001,
-	destroy: {
-		amount: 1
-	}
+	destroy: true
 }, {
 	name: 'Royal marriage',
 	description: 'A marriage was arranged between a member of your family ' +

@@ -78,7 +78,7 @@ civitas.controls.panel = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.__destroy = function () {
-		this.core().console_log('destroying panel with id `' + this.id + '`');
+		this.core().log('ui', 'Destroying panel with id `' + this.id + '`');
 		$(this.handle).remove();
 		var panels = this.core().get_panels();
 		for (var i = 0; i < panels.length; i++) {
@@ -132,7 +132,7 @@ civitas.controls.panel = function (params) {
 		if (civitas.ui.panel_exists(this.handle)) {
 			this.destroy();
 		}
-		this.core().console_log('creating panel with id `' + this.id + '`');
+		this.core().log('ui', 'Creating panel with id `' + this.id + '`');
 		var tpl = params.template.replace(/{ID}/g, params.id);
 		if (typeof this.params_data !== 'undefined' && 
 			typeof this.params_data.name !== 'undefined' &&
@@ -159,11 +159,9 @@ civitas.controls.panel = function (params) {
 				}
 				if (building.is_production_building()) {
 					if (!building.is_stopped()) {
-						$(this.handle + ' .pause').removeClass('start')
-							.attr('title', civitas.l('Stop production'));
+						$(this.handle + ' .pause').removeClass('start').attr('title', civitas.l('Stop production'));
 					} else {
-						$(this.handle + ' .start').removeClass('pause')
-							.attr('title', civitas.l('Start production'));
+						$(this.handle + ' .start').removeClass('pause').attr('title', civitas.l('Start production'));
 					}
 				} else {
 					$(this.handle + ' .start, ' + this.handle + ' .pause').hide();
@@ -204,7 +202,7 @@ civitas.controls.panel = function (params) {
 					self.core().open_modal(
 						function(button) {
 							if (button === 'yes') {
-								if (building.demolish()) {
+								if (building.demolish(true)) {
 									self.destroy();
 									self.core().save_and_refresh();
 								}

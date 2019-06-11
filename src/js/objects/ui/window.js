@@ -70,7 +70,7 @@ civitas.controls.window = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.__destroy = function () {
-		this.core().console_log('destroying window with id `' + this.id() + '`');
+		this.core().log('ui', 'Destroying window with id `' + this.id() + '`');
 		$(this.handle()).remove();
 		$('.tipsy').remove();
 		this.on_hide.call(this);
@@ -112,7 +112,7 @@ civitas.controls.window = function (params) {
 		if (civitas.ui.window_exists(this.handle())) {
 			this.destroy();
 		}
-		this.core().console_log('creating window with id `' + this.id() + '`');
+		this.core().log('ui', 'Creating window with id `' + this.id() + '`');
 		$('body').append(params.template.replace(/{ID}/g, this.id()));
 		this.on_show.call(this);
 		$('.tipsy').remove();

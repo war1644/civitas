@@ -323,8 +323,7 @@ civitas.BUILDINGS_CATEGORIES = {
 civitas.BUILDINGS = [{
 		name: 'Marketplace',
 		handle: 'marketplace',
-		description: 'The Marketplace is the main building of your city and provides a place ' +
-			'for the inhabitants of your settlement to gather. It cannot be demolished.',
+		description: 'The Marketplace is the main building of your city and provides a place for the inhabitants of your settlement to gather. It cannot be demolished.',
 		storage: 100000,
 		extralarge: true,
 		is_production: true,
@@ -348,9 +347,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Warehouse',
 		handle: 'warehouse',
-		description: 'The Warehouse is a trade building that provides market carts that pick up ' +
-			'goods from production buildings. A Warehouse also adds extra storage space for the ' +
-			'materials in your city.',
+		description: 'The Warehouse is a trade building that provides market carts that pick up goods from production buildings. A Warehouse also adds extra storage space for the materials in your city.',
 		storage: 100000,
 		levels: 10,
 		large: true,
@@ -372,9 +369,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Church',
 		handle: 'church',
-		description: 'A Church provides a massive fame boost to your settlement by using coins ' +
-			'and converting them to fame, as well as providing faith for free. Faith allows you ' +
-			'to choose a religion for your settlement.',
+		description: 'A Church provides a massive fame boost to your settlement by using coins and converting them to fame, as well as providing faith for free. Faith allows you to choose a religion for your settlement.',
 		is_municipal: true,
 		is_production: true,
 		production: {
@@ -403,8 +398,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Trading Post',
 		handle: 'tradingpost',
-		description: 'The Trading Post gives you the opportunity to trade resources and send ' +
-			'caravans to other settlements.',
+		description: 'The Trading Post gives you the opportunity to trade resources and send caravans to other settlements.',
 		is_municipal: true,
 		large: true,
 		position: {
@@ -423,8 +417,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Academy',
 		handle: 'academy',
-		description: 'The Academy provides a minor amount of fame each day as well as research ' +
-			'for this settlement at the expense of coins.',
+		description: 'The Academy provides a minor amount of fame each day as well as research for this settlement at the expense of coins.',
 		is_municipal: true,
 		large: true,
 		is_production: true,
@@ -452,8 +445,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Embassy',
 		handle: 'embassy',
-		description: 'An Embassy is required to propose pacts, declare war, send spies to other ' +
-			'settlements.',
+		description: 'An Embassy is required to propose pacts, declare war, send spies to other settlements.',
 		is_municipal: true,
 		is_production: true,
 		large: true,
@@ -481,8 +473,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Provision House',
 		handle: 'provisions',
-		description: 'The Provision House requires various goods to produce provisions for ' +
-			'military units.',
+		description: 'The Provision House requires various goods to produce provisions for military units.',
 		is_production: true,
 		large: true,
 		production: {
@@ -540,9 +531,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Tavern',
 		handle: 'tavern',
-		description: 'The Tavern is the place where heroes of the known (and unknown) world ' +
-			'hang around. If you are looking to recruit Achilles, build a Tavern. He might ' +
-			'show up.',
+		description: 'The Tavern is the place where heroes of the known (and unknown) world hang around. If you are looking to recruit Achilles, build a Tavern. He might show up.',
 		is_municipal: true,
 		is_special: true,
 		/*
@@ -578,8 +567,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Shipyard',
 		handle: 'shipyard',
-		description: 'The Shipyard helps you expand your settlement overseas by housing your ' +
-			'ships and providing you with fish and an ultra-small chance to gather pearls.',
+		description: 'The Shipyard helps you expand your settlement overseas by housing your ships and providing you with fish and an ultra-small chance to gather pearls.',
 		is_production: true,
 		extralarge: true,
 		position: {
@@ -608,8 +596,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Military Camp',
 		handle: 'camp',
-		description: 'The military camp is your main base of defense and attack. If you plan ' +
-			'on going to war, you will need a Military Camp.',
+		description: 'The military camp is your main base of defense and attack. If you plan on going to war, you will need a Military Camp.',
 		position: {
 			x: 360,
 			y: 540
@@ -633,8 +620,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Castle',
 		handle: 'castle',
-		description: 'The Castle is your main base of operations. It houses your ' +
-			'settlement`s soldiers and provides you with prestige and some extra fame.',
+		description: 'The Castle is your main base of operations. It houses your settlement`s soldiers and provides you with prestige and some extra fame.',
 		is_production: true,
 		is_municipal: true,
 		extralarge: true,
@@ -666,8 +652,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Lumberjack',
 		handle: 'lumberjack',
-		description: 'A Lumberjack provides you with wood which you can use for creating ' +
-			'additional buildings, resources or sell to other settlements.',
+		description: 'A Lumberjack provides you with wood which you can use for creating additional buildings, resources or sell to other settlements.',
 		is_production: true,
 		production: {
 			wood: 4
@@ -687,8 +672,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Carpenter',
 		handle: 'carpenter',
-		description: 'The Carpenter processes the wood from the Lumberjack into wood planks ' +
-			'that are required for more advanced buildings.',
+		description: 'The Carpenter processes the wood from the Lumberjack into wood planks that are required for more advanced buildings.',
 		is_production: true,
 		materials: {
 			wood: 2
@@ -712,8 +696,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Stone Quarry',
 		handle: 'stonequarry',
-		description: 'A Stone Quarry produces stone blocks that are the basis of any buildings ' +
-			'you wish to construct.',
+		description: 'A Stone Quarry produces stone blocks that are the basis of any buildings you wish to construct.',
 		is_production: true,
 		large: true,
 		production: {
@@ -737,8 +720,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Gold Mine',
 		handle: 'goldmine',
-		description: 'The Gold Mine extracts gold ores from the mountains you own (provided you ' +
-			'own some). Gold ores can be smelted later into gold bars.',
+		description: 'The Gold Mine extracts gold ores from the mountains you own (provided you own some). Gold ores can be smelted later into gold bars.',
 		is_production: true,
 		large: true,
 		production: {
@@ -763,8 +745,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Tournir Area',
 		handle: 'tournir',
-		description: 'The Tournir Area is providing your city with prestige, a chance to train ' +
-			'your soldiers and has a chance of giving your city free coins.',
+		description: 'The Tournir Area is providing your city with prestige, a chance to train your soldiers and has a chance of giving your city free coins.',
 		extralarge: true,
 		is_municipal: true,
 		is_production: true,
@@ -797,8 +778,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Coal Mine',
 		handle: 'coalmine',
-		description: 'The Coal Mine extracts coal from the mountains you own (provided you own ' +
-			'some).',
+		description: 'The Coal Mine extracts coal from the mountains you own (provided you own some).',
 		is_production: true,
 		large: true,
 		production: {
@@ -823,8 +803,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Iron Mine',
 		handle: 'ironmine',
-		description: 'The Iron Mine extracts iron ores from the mountains you own (provided ' +
-			'you own some). Iron ores can be smelted later into iron bars.',
+		description: 'The Iron Mine extracts iron ores from the mountains you own (provided you own some). Iron ores can be smelted later into iron bars.',
 		is_production: true,
 		large: true,
 		production: {
@@ -849,8 +828,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Salt Mine',
 		handle: 'saltmine',
-		description: 'A Salt Mine extracts brine that can be processed further into salt in ' +
-			'a Salt Works.',
+		description: 'A Salt Mine extracts brine that can be processed further into salt in a Salt Works.',
 		is_production: true,
 		large: true,
 		production: {
@@ -894,8 +872,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Copper Mine',
 		handle: 'coppermine',
-		description: 'The copper mine extracts copper from the mountains you own (provided ' +
-			'you own some). Copper ores can be smelted later into brass.',
+		description: 'The copper mine extracts copper from the mountains you own (provided you own some). Copper ores can be smelted later into brass.',
 		is_production: true,
 		large: true,
 		production: {
@@ -920,8 +897,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Salt Works',
 		handle: 'saltworks',
-		description: 'A Salt Works requires coal and brine for producing salt. Salt is a very ' +
-			'useful resource so make sure your settlement has plenty.',
+		description: 'A Salt Works requires coal and brine for producing salt. Salt is a very useful resource so make sure your settlement has plenty.',
 		is_production: true,
 		production: {
 			salt: 3
@@ -969,8 +945,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Bakery',
 		handle: 'bakery',
-		description: 'The Bakery creates bread from flour, thus providing your settlers ' +
-			'with basic food.',
+		description: 'The Bakery creates bread from flour, thus providing your settlers with basic food.',
 		is_production: true,
 		production: {
 			bread: 4
@@ -994,8 +969,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Pottery Workshop',
 		handle: 'pottery',
-		description: 'The Pottery Workshop uses a high-temperature kiln and clay to ' +
-			'create pottery for the inhabitants of your settlement.',
+		description: 'The Pottery Workshop uses a high-temperature kiln and clay to create pottery for the inhabitants of your settlement.',
 		is_production: true,
 		production: {
 			pottery: 4
@@ -1020,8 +994,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Gunpowder Mill',
 		handle: 'gunpowdermill',
-		description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder ' +
-			'from the sulphur found in your Charcoal Burner`s Hut.',
+		description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder from the sulphur found in your Charcoal Burner`s Hut.',
 		is_production: true,
 		production: {
 			gunpowder: 1
@@ -1047,9 +1020,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Armory',
 		handle: 'armory',
-		description: 'The Armory is a major building that produces weapons and armor for your ' +
-			'soldiers. If you want to conquer other settlements, you will need to build one and ' +
-			'keep it stocked with materials.',
+		description: 'The Armory is a major building that produces weapons and armor for your soldiers. If you want to conquer other settlements, you will need to build one and keep it stocked with materials.',
 		is_production: true,
 		production: {
 			weapons: 1,
@@ -1078,8 +1049,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Butcher',
 		handle: 'butcher',
-		description: 'The Butcher slaughters cattle for meat, providing food that is more nutritious. ' +
-			'Hides will be processed further at the Tannery.',
+		description: 'The Butcher slaughters cattle for meat, providing food that is more nutritious. Hides will be processed further at the Tannery.',
 		is_production: true,
 		production: {
 			meat: 3,
@@ -1105,8 +1075,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Iron smelter',
 		handle: 'ironsmelter',
-		description: 'The Iron Smelter (or foundry) smelts iron ores into iron bars using coal, ' +
-			'ready to be transformed into weapons.',
+		description: 'The Iron Smelter (or foundry) smelts iron ores into iron bars using coal, ready to be transformed into weapons.',
 		is_production: true,
 		production: {
 			iron: 4
@@ -1202,8 +1171,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Furrier`s Workshop',
 		handle: 'furrier',
-		description: 'The furrier uses furs from the Trapper`s Lodge mixed with salt and processes ' +
-			'them into fur coats that will help your settlers during the cold winters.',
+		description: 'The furrier uses furs from the Trapper`s Lodge mixed with salt and processes them into fur coats that will help your settlers during the cold winters.',
 		is_production: true,
 		production: {
 			furcoats: 1
@@ -1228,8 +1196,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Clothing Factory',
 		handle: 'clothingfactory',
-		description: 'The Clothing Factory produces clothes for your settlement. You don`t ' +
-			'want naked citizens, do you?',
+		description: 'The Clothing Factory produces clothes for your settlement. You don`t want naked citizens, do you?',
 		is_production: true,
 		production: {
 			clothes: 1
@@ -1302,8 +1269,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Coffee roaster',
 		handle: 'coffeeroaster',
-		description: 'The Coffee Roaster uses the coffee beans from your Coffee Farm and processes ' +
-			'them into coffee.',
+		description: 'The Coffee Roaster uses the coffee beans from your Coffee Farm and processes them into coffee.',
 		is_production: true,
 		production: {
 			coffee: 1
@@ -1359,8 +1325,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Winery',
 		handle: 'winery',
-		description: 'The Winery uses the grapes from your Grapes Farm and processes them ' +
-			'into wine. You will need to import the bottles from another settlement though.',
+		description: 'The Winery uses the grapes from your Grapes Farm and processes them into wine. You will need to import the bottles from another settlement though.',
 		is_production: true,
 		production: {
 			wine: 2
@@ -1413,8 +1378,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Paper Mill',
 		handle: 'papermill',
-		description: 'The Paper Mill uses wood to produce paper, which is used together with ' +
-			'indigo to produce books at the Printing House.',
+		description: 'The Paper Mill uses wood to produce paper, which is used together with indigo to produce books at the Printing House.',
 		is_production: true,
 		production: {
 			paper: 2
@@ -1465,8 +1429,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Perfumery',
 		handle: 'perfumery',
-		description: 'The Perfumery processes the rose oil into perfume to satisfy the needs of ' +
-			'your settlers.',
+		description: 'The Perfumery processes the rose oil into perfume to satisfy the needs of your settlers.',
 		is_production: true,
 		production: {
 			perfume: 1
@@ -1598,8 +1561,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Marzipan Workshop',
 		handle: 'marzipanworkshop',
-		description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage ' +
-			'to create delicious marzipan. Your settlers will definitely appreciate it.',
+		description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage to create delicious marzipan. Your settlers will definitely appreciate it.',
 		is_production: true,
 		production: {
 			marzipan: 1
@@ -1743,8 +1705,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Brewery',
 		handle: 'brewery',
-		description: 'The Brewery brews beer from wheat. Beer is needed for higher-level ' +
-			'hourses or your city`s navy.',
+		description: 'The Brewery brews beer from wheat. Beer is needed for higher-level hourses or your city`s navy.',
 		is_production: true,
 		production: {
 			beer: 2
@@ -1855,8 +1816,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Charcoal Burner`s Hut',
 		handle: 'charcoalburnerhut',
-		description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which ' +
-			'is needed by all your smelters.',
+		description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which is needed by all your smelters.',
 		is_production: true,
 		production: {
 			coal: 4,
@@ -2356,8 +2316,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Cattle Farm',
 		handle: 'cattlefarm',
-		description: 'A Cattle Farm grows cattle so your settlers can eat food that ' +
-			'is more nutritious than bread.',
+		description: 'A Cattle Farm grows cattle so your settlers can eat food that is more nutritious than bread.',
 		is_production: true,
 		production: {
 			cattle: 1,
@@ -2401,8 +2360,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Pig Farm',
 		handle: 'pigfarm',
-		description: 'A Pig Farm grows pigs so your settlers can eat food that is more ' +
-			'nutritious than bread.',
+		description: 'A Pig Farm grows pigs so your settlers can eat food that is more nutritious than bread.',
 		is_production: true,
 		production: {
 			meat: 1,
@@ -2490,8 +2448,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Grain farm',
 		handle: 'grainfarm',
-		description: 'A Grain Farm cultivates wheat that will be later transformed into bread, ' +
-			'and your settlers will live happily ever after.',
+		description: 'A Grain Farm cultivates wheat that will be later transformed into bread, and your settlers will live happily ever after.',
 		is_production: true,
 		production: {
 			wheat: 2,
@@ -2573,8 +2530,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Coffee farm',
 		handle: 'coffeefarm',
-		description: 'A Coffee Farm cultivates coffee beans in your city, ready to be ' +
-			'processed into coffee.',
+		description: 'A Coffee Farm cultivates coffee beans in your city, ready to be processed into coffee.',
 		is_production: true,
 		production: {
 			coffeebeans: 2,
@@ -2739,8 +2695,7 @@ civitas.BUILDINGS = [{
 		name: 'Indigo farm',
 		handle: 'indigofarm',
 		is_production: true,
-		description: 'The Indigo Farm produces indigo that can be turned to ink and ' +
-			'used to create books.',
+		description: 'The Indigo Farm produces indigo that can be turned to ink and used to create books.',
 		production: {
 			indigo: 1,
 			herbs: 1
@@ -2868,8 +2823,7 @@ civitas.BUILDINGS = [{
 		name: 'Toolmaker Workshop',
 		handle: 'toolmaker',
 		is_production: true,
-		description: 'Tools are needed to construct higher-level buildings, and a ' +
-			'Toolmaker Workshop will create those for your settlement.',
+		description: 'Tools are needed to construct higher-level buildings, and a Toolmaker Workshop will create those for your settlement.',
 		production: {
 			tools: 2
 		},

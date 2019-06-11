@@ -80,6 +80,14 @@ civitas.RELIGION_CONFUCIANISM = 6;
 civitas.RELIGION_TAOISM = 7;
 
 /**
+ * The minimum value settlement faith can have.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MIN_FAITH_VALUE = 1;
+
+/**
  * The maximum value settlement faith can have.
  *
  * @constant

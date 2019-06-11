@@ -163,6 +163,14 @@ civitas.EXPORT_PRESTIGE = 2;
 civitas.IMPORT_PRESTIGE = 1;
 
 /**
+ * The minimum value settlement prestige can have.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MIN_PRESTIGE_VALUE = 1;
+
+/**
  * The maximum value settlement prestige can have.
  *
  * @constant
@@ -171,12 +179,28 @@ civitas.IMPORT_PRESTIGE = 1;
 civitas.MAX_PRESTIGE_VALUE = 10000;
 
 /**
+ * The minimum value settlement research can have.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MIN_RESEARCH_VALUE = 1;
+
+/**
  * The maximum value settlement research can have.
  *
  * @constant
  * @type {Number}
  */
 civitas.MAX_RESEARCH_VALUE = 1000;
+
+/**
+ * The minimum value settlement espionage can have.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MIN_ESPIONAGE_VALUE = 1;
 
 /**
  * The maximum value settlement espionage can have.
@@ -194,6 +218,14 @@ civitas.MAX_ESPIONAGE_VALUE = 1000;
  * @type {Number}
  */
 civitas.MAX_ESPIONAGE_SUCESS_RATE = 100;
+
+/**
+ * The minimum value settlement influence can have.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MIN_INFLUENCE_VALUE = 1;
 
 /**
  * The maximum value settlement influence can have.

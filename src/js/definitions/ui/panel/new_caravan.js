@@ -79,9 +79,9 @@ civitas.PANEL_NEW_CARAVAN = {
 			var _t = '<table class="caravan-resources clearfix">' +
 				'<thead>' +
 				'<tr>' +
-				'<td>' + civitas.l('Amount') + '</td>' +
-				'<td>' + civitas.l('Resource') + '</td>' +
-				'<td></td>' +
+					'<td>' + civitas.l('Amount') + '</td>' +
+					'<td>' + civitas.l('Resource') + '</td>' +
+					'<td></td>' +
 				'</tr>' +
 				'</thead>' +
 				'<tbody>';

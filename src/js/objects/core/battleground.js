@@ -232,8 +232,7 @@ civitas.objects.battleground = function (params) {
 		var city2 = this.core().get_settlement(destination.city);
 		var remaining = 0;
 		if (city && source.moved) {
-			this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + 
-				'</strong> already used up its turn.');
+			this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 			return false;
 		}
 		if (source !== null && destination !== null && city && city2) {
@@ -244,28 +243,20 @@ civitas.objects.battleground = function (params) {
 			}
 			if (is_ranged !== undefined) {
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > is_ranged) {
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + 
-						'</strong> is not close enough for a ranged attack.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> is not close enough for a ranged attack.');
 					return false;
 				}
 				var attack = Math.ceil(source.attack / 2);
 				var defense = destination.defense;
 				if (defense - attack < 0) {
 					this[_a].army[destination.item] = 0;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + 
-						'</strong> attacked ' + city2.name() + '`s <strong>' + 
-						civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + 
-						' damage from range and killed its opponent.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range and killed its opponent.');
 					this._cell_empty(cell);
 				} else {
-					remaining = Math.ceil((defense - attack) /
-						civitas.SOLDIERS[destination.item].defense);
+					remaining = Math.ceil((defense - attack) / civitas.SOLDIERS[destination.item].defense);
 					destination.total = remaining;
 					this[_a].army[destination.item] = remaining;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name +
-						'</strong> attacked ' + city2.name() + '`s <strong>' +
-						civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack +
-						' damage from range.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range.');
 				}
 				this._cell_under_attack(cell);
 				source.moved = true;
@@ -273,28 +264,20 @@ civitas.objects.battleground = function (params) {
 			} else {
 				var can_move = civitas.SOLDIERS[this._grid[sy][sx].item].moves;
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > can_move) {
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name +
-						'</strong> doesn`t have a ranged attack.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> doesn`t have a ranged attack.');
 					return false;
 				}
 				var attack = Math.ceil(source.attack / 2);
 				var defense = destination.defense;
 				if (defense - attack < 0) {
 					this[_a].army[destination.item] = 0;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name +
-						'</strong> attacked ' + city2.name() + '`s <strong>' +
-						civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack +
-						' damage in melee and killed its opponent.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage in melee and killed its opponent.');
 					this._cell_empty(cell);
 				} else {
-					remaining = Math.ceil((defense - attack) /
-						civitas.SOLDIERS[destination.item].defense);
+					remaining = Math.ceil((defense - attack) / civitas.SOLDIERS[destination.item].defense);
 					destination.total = remaining;
 					this[_a].army[destination.item] = remaining;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name +
-						'</strong> attacked ' + city2.name() + '`s <strong>' +
-						civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack +
-						' damage in melee.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage in melee.');
 				}
 				this._cell_under_attack(cell);
 				source.moved = true;
@@ -378,12 +361,8 @@ civitas.objects.battleground = function (params) {
 	 * @returns {Object}
 	 */
 	this.show_stats = function() {
-		$(this._elements.attack).empty()
-			.append(this.core().get_settlement(this._attack.city).name() + ' ' +
-			this._stats.attacking.attack + ' / ' + this._stats.attacking.defense);
-		$(this._elements.defense).empty()
-			.append(this.core().get_settlement(this._defense.city).name() + ' ' +
-			this._stats.defending.attack + ' / ' + this._stats.defending.defense);
+		$(this._elements.attack).empty().append(this.core().get_settlement(this._attack.city).name() + ' ' + this._stats.attacking.attack + ' / ' + this._stats.attacking.defense);
+		$(this._elements.defense).empty().append(this.core().get_settlement(this._defense.city).name() + ' ' + this._stats.defending.attack + ' / ' + this._stats.defending.defense);
 		return {
 			attack: this._attack,
 			defense: this._defense
@@ -416,8 +395,7 @@ civitas.objects.battleground = function (params) {
 			template += '<ol class="' + mode + '">';
 			for (var x = 0; x <= this._properties.width - 1; x++) {
 				this._grid[y][x] = null;
-				template += '<li data-pos="' + x + '-' + y + '" data-x="' + x + '" data-y="' + y +
-					'" class="cell empty"></li>';
+				template += '<li data-pos="' + x + '-' + y + '" data-x="' + x + '" data-y="' + y + '" class="cell empty"></li>';
 			}
 			template += '</ol>';
 			if (mode === 'even') {
@@ -669,8 +647,7 @@ civitas.objects.battleground = function (params) {
 			var destination = this._grid[cell.y][cell.x];
 			var city = this.core().get_settlement(source.city);
 			if (source !== null && source.moved) {
-				this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name +
-					'</strong> already used up its turn.');
+				this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 				return false;
 			}
 			if (source !== null && destination === null && city) {
@@ -680,13 +657,11 @@ civitas.objects.battleground = function (params) {
 					this._cell_empty(this._from);
 					this._from = null;
 					this._grid[cell.y][cell.x].moved = true;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name +
-						'</strong> moved to ' + (cell.x + 1) + 'x' + (cell.y + 1) + '.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> moved to ' + (cell.x + 1) + 'x' + (cell.y + 1) + '.');
 					this.redraw();
 					return true;
 				} else {
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name +
-						'</strong> is unable to move to the specified location.');
+					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> is unable to move to the specified location.');
 					return false;
 				}
 			}
@@ -712,8 +687,7 @@ civitas.objects.battleground = function (params) {
 					if (!source.moved && can_move && (Math.abs(y - sy) +
 						Math.abs(x - sx)) <= can_move) {
 						if (this._grid[y][x] === null) {
-							$(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']')
-								.addClass('canmove');
+							$(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']').addClass('canmove');
 						}
 					}
 				}
@@ -723,8 +697,7 @@ civitas.objects.battleground = function (params) {
 				for (var x = 0; x < this._grid[y].length; x++) {
 					if (!source.moved && (Math.abs(y - sy) + Math.abs(x - sx)) <= is_ranged) {
 						if (this._grid[y][x] === null) {
-							$(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']')
-								.addClass('canattack');
+							$(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']').addClass('canattack');
 						}
 					}
 				}
@@ -741,10 +714,9 @@ civitas.objects.battleground = function (params) {
 	 * @returns {civitas.objects.battleground}
 	 */
 	this._cell_under_attack = function(cell) {
-		$(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']')
-			.addClass('scale').delay(1000).queue(function() {
-				$(this).removeClass('scale').dequeue();
-			});
+		$(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').addClass('scale').delay(1000).queue(function() {
+			$(this).removeClass('scale').dequeue();
+		});
 		return this;
 	};
 
@@ -822,10 +794,7 @@ civitas.objects.battleground = function (params) {
 			.attr('data-soldier', army.item)
 			.removeClass('empty canmove canattack selected')
 			.empty()
-			.append('<span class="moves' + (army.moved === false ? ' has' : '') + '"></span>' +
-				'<img class="tips" title="' + civitas.SOLDIERS[army.item].name + '" src="' +
-				civitas.ASSETS_URL + 'images/assets/army/' + army.item + '.png" />' +
-				'<span class="amount">' + army.total + '</span>');
+			.append('<span class="moves' + (army.moved === false ? ' has' : '') + '"></span><img class="tips" title="' + civitas.SOLDIERS[army.item].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + army.item + '.png" />' + '<span class="amount">' + army.total + '</span>');
 		return this;
 	};
 

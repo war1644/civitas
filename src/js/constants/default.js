@@ -335,3 +335,11 @@ civitas.NOTIFY_NORMAL = 2;
  * @type {Number}
  */
 civitas.NOTIFY_EVENT = 3;
+
+/**
+ * Max numbers of lines to show in the console. Too many will overload the DOM.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MAX_CONSOLE_LINES = 5000;

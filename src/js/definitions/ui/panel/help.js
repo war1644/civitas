@@ -50,8 +50,7 @@ civitas.PANEL_HELP = {
 			'<p>The goods you`re producing need a storage place inside your city, the initial Marketplace provides some storage space (100k <img src="' + civitas.ASSETS_URL + 'images/assets/resources/storage_small.png" /> ), and it can be increased even further with upgrading, but you will need to build Warehouses to store all the goods. If you have no free storage space, the produced goods will be lost.</p>' +
 			'<h3>Coins</h3>' +
 			'<p>Your city can only gain coins through trades and taxes.</p>');
-		$(this.handle + ' #tab-religion').empty().append('<h2>Religion</h2>' +
-			'');
+		$(this.handle + ' #tab-religion').empty().append('<h2>Religion</h2>');
 		$(this.handle + ' #tab-settlements').empty().append('<fieldset>' +
 				'<legend>Table of Contents</legend>' +
 				'<ul>' +
@@ -99,9 +98,7 @@ civitas.PANEL_HELP = {
 				'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
 				'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
 			'</ul>');
-		$(this.handle + ' #tab-research').empty().append('<h2>Research</h2>' +
-			'');
-		$(this.handle + ' #tab-diplomacy').empty().append('<h2>Diplomacy</h2>' +
-			'');
+		$(this.handle + ' #tab-research').empty().append('<h2>Research</h2>');
+		$(this.handle + ' #tab-diplomacy').empty().append('<h2>Diplomacy</h2>');
 	}
 };
