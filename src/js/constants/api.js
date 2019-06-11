@@ -4,7 +4,7 @@
  * @constant
  * @type {String}
  */
-civitas.API_VERSION = '0.2.0';
+civitas.API_VERSION = '0.3.0';
 
 /**
  * URL of the main Game API entry point.

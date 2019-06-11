@@ -154,6 +154,7 @@
 #panel-debug .console p {
 	padding: 2px 5px;
 	margin: 2px 0 0 0;
+	line-height: 26px;
 }
 
 #panel-debug .console span {

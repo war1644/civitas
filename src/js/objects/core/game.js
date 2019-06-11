@@ -734,31 +734,33 @@ civitas.game = function () {
 		var achievement;
 		var condition;
 		var settlement = this.get_settlement();
+		var id;
 		for (var i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
 			achievement = civitas.ACHIEVEMENTS[i];
-			if (!this.has_achievement(i)) {
+			id = achievement.id;
+			if (!this.has_achievement(id)) {
 				for (var cond_item in achievement.conditions) {
 					condition = achievement.conditions[cond_item];
 					if (cond_item === 'settlement_level') {
 						if (settlement.level() === condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'soldiers') {
 						var army = settlement.has_army();
 						if (army >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'ships') {
 						var navy = settlement.has_navy();
 						if (navy >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'population') {
 						if (settlement.population() >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'buildings') {
@@ -770,7 +772,7 @@ civitas.game = function () {
 							}
 						}
 						if (good === true) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'resources') {
@@ -783,32 +785,32 @@ civitas.game = function () {
 							}
 						}
 						if (good === true) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'storage') {
 						if (condition === 0) {
 							var storage = settlement.storage();
 							if (storage.occupied >= storage.all) {
-								this.achievement(i);
+								this.achievement(id);
 							}
 						}
 					}
 					if (cond_item === 'achievements') {
 						if (condition === this._achievements.length) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'mercenary') {
 						var merc = settlement.mercenary();
 						if (merc.length >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'religion') {
 						var religion = settlement.religion();
 						if (religion.name === condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 				}

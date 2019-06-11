@@ -250,9 +250,9 @@ civitas.objects.settlement = function(params) {
 		if (this.is_player()) {
 			this.core().refresh_panels();
 			$('.citylevel').html(this.properties.level);
-			this.core().notify('Your city is now level ' + this.properties.level + '.');
+			this.core().notify('The city of ' + this.name() + ' is now level ' + this.level() + '.');
 		} else {
-			this.core().log('game', 'The city of ' + this.name() + ' is now level ' + this.properties.level + '.');
+			this.core().log('The city of ' + this.name() + ' is now level ' + this.level() + '.');
 		}
 		return this;
 	};
@@ -566,9 +566,11 @@ civitas.objects.settlement = function(params) {
 		if (typeof settlement === 'object' && this.nationality().id === settlement.nationality().id) {
 			return true;
 		} else if (typeof settlement === 'number' || typeof settlement === 'string') {
-			settlement = this.core().get_settlement(settlement);
-			if (this.nationality().id === settlement.nationality().id) {
-				return true;
+			var _settlement = this.core().get_settlement(settlement);
+			if (typeof _settlement !== 'undefined') {
+				if (this.nationality().id === _settlement.nationality().id) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -1325,18 +1327,18 @@ civitas.objects.settlement = function(params) {
 		if (typeof settlement === 'number') {
 			this._status[settlement].status = mode;
 			if (mode === civitas.DIPLOMACY_WAR) {
-				//this.core().achievement(45);
+				this.core().achievement(50);
 				this.reset_influence(settlement);
 			} else if (mode === civitas.DIPLOMACY_ALLIANCE) {
-				//this.core().achievement(53);
+				this.core().achievement(56);
 				this.set_influence(settlement, civitas.MAX_INFLUENCE_VALUE);
 			} else if (mode === civitas.DIPLOMACY_PACT) {
-				//this.core().achievement(54);
+				this.core().achievement(57);
 				this.set_influence(settlement, Math.ceil(civitas.MAX_INFLUENCE_VALUE / 2));
 			} else if (mode === civitas.DIPLOMACY_CEASE_FIRE) {
 				this.set_influence(settlement, Math.ceil(civitas.MAX_INFLUENCE_VALUE / 4));
 			} else if (mode === civitas.DIPLOMACY_VASSAL) {
-				//this.core().achievement(55);
+				this.core().achievement(58);
 				this.set_influence(settlement, civitas.MAX_INFLUENCE_VALUE);
 			}
 			this.core().save_and_refresh();

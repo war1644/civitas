@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.6112019
+ * @version 0.3.0.6112019
  * @license GPLv3
  */ /* Game animations */
 
@@ -927,6 +927,7 @@ span.blue {
 #panel-debug .console p {
 	padding: 2px 5px;
 	margin: 2px 0 0 0;
+	line-height: 26px;
 }
 
 #panel-debug .console span {

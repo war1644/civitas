@@ -364,5 +364,9 @@ civitas.utils = {
 		var element = from[id];
 		from.splice(id, 1);
 		return element;
+	},
+
+	sanitize_string: function(string) {
+		return string.replace(/[^a-z0-9+]-/gi, '-');
 	}
 };

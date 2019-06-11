@@ -59,7 +59,7 @@ civitas.PANEL_SETTLEMENT = {
 							core.error(civitas.l('There was an error proposing an alliance to this settlement, check the data you entered and try again.'));
 							return false;
 						}
-						core.achievement(49);
+						core.achievement(53);
 					}
 				},
 				'Are you sure you want to propose an alliance to this settlement?'
@@ -78,7 +78,7 @@ civitas.PANEL_SETTLEMENT = {
 							core.error(civitas.l('There was an error proposing this settlement to join your city, check the data you entered and try again.'));
 							return false;
 						}
-						core.achievement(47);
+						core.achievement(51);
 					}
 				},
 				'Are you sure you want to propose this this settlement to join you?'
@@ -97,7 +97,7 @@ civitas.PANEL_SETTLEMENT = {
 							core.error(civitas.l('There was an error proposing a pact to this settlement, check the data you entered and try again.'));
 							return false;
 						}
-						core.achievement(48);
+						core.achievement(52);
 					}
 				},
 				'Are you sure you want to propose a pact to this settlement?'

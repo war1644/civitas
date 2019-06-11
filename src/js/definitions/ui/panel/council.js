@@ -13,7 +13,7 @@ civitas.PANEL_COUNCIL = {
 			civitas.l('Municipal'), civitas.l('Mercenary'), civitas.l('Achievements')]));
 		var _t = '<div class="achievements-list">';
 		for (var i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
-			_t += '<div data-id="' + i + '" class="achievement">' +
+			_t += '<div data-id="' + civitas.ACHIEVEMENTS[i].id + '" class="achievement">' +
 				'<div class="left">' +
 					'<div class="ach img"></div>' +
 					'<div class="ach points">' + civitas.ACHIEVEMENTS[i].points + '</div>' +

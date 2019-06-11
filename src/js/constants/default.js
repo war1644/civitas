@@ -148,7 +148,7 @@ civitas.LEVELS = [
  * @constant
  * @type {String}
  */
-civitas.VERSION = '0.2.0.' +
+civitas.VERSION = '0.3.0.' +
 	((new Date()).getMonth() + 1) + '' +
 	(new Date()).getDate() + '' + 
 	(new Date()).getFullYear();

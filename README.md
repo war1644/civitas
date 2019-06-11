@@ -50,6 +50,7 @@ Choose an archive format from below, download and uncompress it. Point your brow
 ## Releases
 
 - bleeding edge version - [.zip](https://github.com/sizeofcat/civitas/archive/master.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/master.tar.gz)
+- 0.3 (June 11, 2019) - [.zip](https://github.com/sizeofcat/civitas/archive/v0.3.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/v0.3.tar.gz)
 - 0.2 (April 30, 2017) - [.zip](https://github.com/sizeofcat/civitas/archive/v0.2.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/v0.2.tar.gz)
 - 0.1 (January 20, 2017) - [.zip](https://github.com/sizeofcat/civitas/archive/v0.1.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/v0.1.tar.gz)
 

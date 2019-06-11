@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.2.0.6112019
+ * @version 0.3.0.6112019
  * @license GPLv3
  */ 'use strict';
 
@@ -169,7 +169,7 @@ civitas.LEVELS = [
  * @constant
  * @type {String}
  */
-civitas.VERSION = '0.2.0.' +
+civitas.VERSION = '0.3.0.' +
 	((new Date()).getMonth() + 1) + '' +
 	(new Date()).getDate() + '' + 
 	(new Date()).getFullYear();
@@ -5528,6 +5528,7 @@ civitas.TOOLBAR_RESOURCES = [
  */
 civitas.ACHIEVEMENTS = [
 	{
+		id: 1,
 		description: 'Develop your settlement to level 10.',
 		name: 'Kiddo',
 		conditions: {
@@ -5535,6 +5536,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 2,
 		description: 'Develop your settlement to level 20.',
 		name: 'Teen',
 		conditions: {
@@ -5542,6 +5544,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 200
 	}, {
+		id: 3,
 		description: 'Develop your settlement to level 30.',
 		name: 'On my own',
 		conditions: {
@@ -5549,6 +5552,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 500
 	}, {
+		id: 4,
 		description: 'Develop your settlement to level 40.',
 		name: 'Fear me',
 		conditions: {
@@ -5556,176 +5560,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 1000
 	}, {
-		description: 'Gather maximum faith.',
-		name: 'Jesus Christ',
-		conditions: {
-			resources: {
-				faith: civitas.MAX_FAITH_VALUE
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather maximum research.',
-		name: 'Albert Einstein',
-		conditions: {
-			resources: {
-				research: civitas.MAX_RESEARCH_VALUE
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 100M coins in your settlement.',
-		name: 'Rottschild',
-		conditions: {
-			resources: {
-				coins: 100000000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 500k coins in your settlement.',
-		name: 'Ba dum tss',
-		conditions: {
-			resources: {
-				coins: 500000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 100k coins in your settlement.',
-		name: 'Gatherer',
-		conditions: {
-			resources: {
-				coins: 100000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 1M coins in your settlement.',
-		name: 'Milionaire',
-		conditions: {
-			resources: {
-				coins: 1000000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 10M coins in your settlement.',
-		name: 'Rockefeller',
-		conditions: {
-			resources: {
-				coins: 10000000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 10k stones in your settlement.',
-		name: 'Stone Age',
-		conditions: {
-			resources: {
-				stones: 10000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 10k wood in your settlement.',
-		name: 'Woody the Woodpecker',
-		conditions: {
-			resources: {
-				wood: 10000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 10k meat in your settlement.',
-		name: 'Animal killer',
-		conditions: {
-			resources: {
-				meat: 10000
-			}
-		},
-		points: 100
-	}, {
-		description: 'Recruit 500 soldiers in your settlement.',
-		name: 'Warfiend',
-		conditions: {
-			soldiers: 500
-		},
-		points: 200
-	}, {
-		description: 'Recruit 100 soldiers in your settlement.',
-		name: 'Armed to the teeth',
-		conditions: {
-			soldiers: 100
-		},
-		points: 100
-	}, {
-		description: 'Recruit 1000 soldiers in your settlement',
-		name: 'Warlord',
-		conditions: {
-			soldiers: 1000
-		},
-		points: 1000
-	}, {
-		description: 'Recruit 10 ships in your settlement.',
-		name: 'Shipwrecked',
-		conditions: {
-			ships: 10
-		},
-		points: 100
-	}, {
-		description: 'Recruit 100 ships in your settlement.',
-		name: 'Captain Ahab',
-		conditions: {
-			ships: 100
-		},
-		points: 1000
-	}, {
-		description: 'Gather 100 prestige.',
-		name: 'Prestigious',
-		conditions: {
-			resources: {
-				prestige: 100
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 500 prestige.',
-		name: 'The God King',
-		conditions: {
-			resources: {
-				prestige: 500
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 10 espionage.',
-		name: 'You got Mossad-ed!',
-		conditions: {
-			resources: {
-				espionage: 10
-			}
-		},
-		points: 10
-	}, {
-		description: 'Gather 100 espionage.',
-		name: 'You got Snowden-ed!',
-		conditions: {
-			resources: {
-				espionage: 100
-			}
-		},
-		points: 100
-	}, {
-		description: 'Gather 500 espionage.',
-		name: 'I spy with my own eye',
-		conditions: {
-			resources: {
-				espionage: 500
-			}
-		},
-		points: 100
-	}, {
+		id: 5,
 		description: 'Gather maximum espionage.',
 		name: 'Anna Chapman',
 		conditions: {
@@ -5735,6 +5570,215 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 6,
+		description: 'Gather maximum faith.',
+		name: 'Jesus Christ',
+		conditions: {
+			resources: {
+				faith: civitas.MAX_FAITH_VALUE
+			}
+		},
+		points: 100
+	}, {
+		id: 7,
+		description: 'Gather maximum prestige.',
+		name: 'Your highness',
+		conditions: {
+			resources: {
+				espionage: civitas.MAX_PRESTIGE_VALUE
+			}
+		},
+		points: 100
+	}, {
+		id: 8,
+		description: 'Gather maximum research.',
+		name: 'Albert Einstein',
+		conditions: {
+			resources: {
+				research: civitas.MAX_RESEARCH_VALUE
+			}
+		},
+		points: 100
+	}, {
+		id: 9,
+		description: 'Gather 100k coins in your settlement.',
+		name: 'Gatherer',
+		conditions: {
+			resources: {
+				coins: 100000
+			}
+		},
+		points: 100
+	}, {
+		id: 10,
+		description: 'Gather 500k coins in your settlement.',
+		name: 'Ba dum tss',
+		conditions: {
+			resources: {
+				coins: 500000
+			}
+		},
+		points: 100
+	}, {
+		id: 11,
+		description: 'Gather 1M coins in your settlement.',
+		name: 'Milionaire',
+		conditions: {
+			resources: {
+				coins: 1000000
+			}
+		},
+		points: 100
+	}, {
+		id: 12,
+		description: 'Gather 10M coins in your settlement.',
+		name: 'Rockefeller',
+		conditions: {
+			resources: {
+				coins: 10000000
+			}
+		},
+		points: 100
+	}, {
+		id: 13,
+		description: 'Gather 100M coins in your settlement.',
+		name: 'Rottschild',
+		conditions: {
+			resources: {
+				coins: 100000000
+			}
+		},
+		points: 100
+	}, {
+		id: 14,
+		description: 'Gather 10k stones in your settlement.',
+		name: 'Stone Age',
+		conditions: {
+			resources: {
+				stones: 10000
+			}
+		},
+		points: 100
+	}, {
+		id: 15,
+		description: 'Gather 10k wood in your settlement.',
+		name: 'Woody the Woodpecker',
+		conditions: {
+			resources: {
+				wood: 10000
+			}
+		},
+		points: 100
+	}, {
+		id: 16,
+		description: 'Gather 10k meat in your settlement.',
+		name: 'Animal killer',
+		conditions: {
+			resources: {
+				meat: 10000
+			}
+		},
+		points: 100
+	}, {
+		id: 17,
+		description: 'Recruit 100 soldiers in your settlement.',
+		name: 'Armed to the teeth',
+		conditions: {
+			soldiers: 100
+		},
+		points: 100
+	}, {
+		id: 18,
+		description: 'Recruit 500 soldiers in your settlement.',
+		name: 'Warfiend',
+		conditions: {
+			soldiers: 500
+		},
+		points: 200
+	}, {
+		id: 19,
+		description: 'Recruit 1000 soldiers in your settlement',
+		name: 'Warlord',
+		conditions: {
+			soldiers: 1000
+		},
+		points: 1000
+	}, {
+		id: 20,
+		description: 'Recruit 10 ships in your settlement.',
+		name: 'Shipwrecked',
+		conditions: {
+			ships: 10
+		},
+		points: 100
+	}, {
+		id: 21,
+		description: 'Recruit 50 ships in your settlement.',
+		name: 'Ship has sailed',
+		conditions: {
+			ships: 50
+		},
+		points: 100
+	}, {
+		id: 22,
+		description: 'Recruit 100 ships in your settlement.',
+		name: 'Captain Ahab',
+		conditions: {
+			ships: 100
+		},
+		points: 1000
+	}, {
+		id: 23,
+		description: 'Gather 100 prestige.',
+		name: 'Prestigious',
+		conditions: {
+			resources: {
+				prestige: 100
+			}
+		},
+		points: 100
+	}, {
+		id: 24,
+		description: 'Gather 500 prestige.',
+		name: 'The God King',
+		conditions: {
+			resources: {
+				prestige: 500
+			}
+		},
+		points: 100
+	}, {
+		id: 25,
+		description: 'Gather 10 espionage.',
+		name: 'You got Mossad-ed!',
+		conditions: {
+			resources: {
+				espionage: 10
+			}
+		},
+		points: 10
+	}, {
+		id: 26,
+		description: 'Gather 100 espionage.',
+		name: 'You got Snowden-ed!',
+		conditions: {
+			resources: {
+				espionage: 100
+			}
+		},
+		points: 100
+	}, {
+		id: 27,
+		description: 'Gather 500 espionage.',
+		name: 'I spy with my own eye',
+		conditions: {
+			resources: {
+				espionage: 500
+			}
+		},
+		points: 100
+	}, {
+		id: 28,
 		description: 'Gather 10 research.',
 		name: 'Initiate',
 		conditions: {
@@ -5744,6 +5788,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 10
 	}, {
+		id: 29,
 		description: 'Gather 100 research.',
 		name: 'Researcher',
 		conditions: {
@@ -5753,6 +5798,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 30,
 		description: 'Gather 500 research.',
 		name: 'Searching',
 		conditions: {
@@ -5762,6 +5808,17 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 31,
+		description: 'Gather 100 faith.',
+		name: 'Faithful',
+		conditions: {
+			resources: {
+				faith: 100
+			}
+		},
+		points: 100
+	}, {
+		id: 32,
 		description: 'Gather 500 faith.',
 		name: 'Disciple',
 		conditions: {
@@ -5771,6 +5828,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 33,
 		description: 'Build a Castle in your settlement.',
 		name: 'Castlevania',
 		conditions: {
@@ -5780,6 +5838,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 400
 	}, {
+		id: 34,
 		description: 'Build a Church in your settlement.',
 		name: 'Winston Churchill, got it?',
 		conditions: {
@@ -5789,6 +5848,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 35,
 		description: 'Build an Academy in your settlement.',
 		name: 'Academician',
 		conditions: {
@@ -5798,6 +5858,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 36,
 		description: 'Build each of the mines (Iron, Gold, Copper and Salt).',
 		name: 'All mine!',
 		conditions: {
@@ -5810,6 +5871,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 200
 	}, {
+		id: 37,
 		description: 'Fill out all your storage space.',
 		name: 'All filled up',
 		conditions: {
@@ -5817,6 +5879,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 500
 	}, {
+		id: 38,
 		description: 'Build 10 catapults in your settlement.',
 		name: 'Cat-a-pulter',
 		conditions: {
@@ -5826,6 +5889,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 200
 	}, {
+		id: 39,
 		description: 'Build an Embassy in your settlement.',
 		name: 'Gandhi',
 		conditions: {
@@ -5835,13 +5899,15 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 40,
 		description: 'Get 100 achievements.',
-		name: 'Achivement? Yes please.',
+		name: 'Sir Achievealot',
 		conditions: {
 			achievements: 100
 		},
 		points: 100
 	}, {
+		id: 41,
 		description: 'Recruit a mercenary army.',
 		name: 'Merc',
 		conditions: {
@@ -5849,6 +5915,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 42,
 		description: 'Reach 10 milion people in your settlement.',
 		name: 'Megalopolis',
 		conditions: {
@@ -5856,6 +5923,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 200
 	}, {
+		id: 43,
 		description: 'Upgrade your settlement`s Academy to level 3.',
 		name: 'Too much research',
 		conditions: {
@@ -5865,6 +5933,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 200
 	}, {
+		id: 44,
 		description: 'Upgrade your settlement`s Castle to level 3.',
 		name: 'Goldilocks',
 		conditions: {
@@ -5874,6 +5943,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 500
 	}, {
+		id: 45,
 		description: 'Upgrade your settlement`s Church to level 3.',
 		name: 'Cathedral',
 		conditions: {
@@ -5883,6 +5953,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 300
 	}, {
+		id: 46,
 		description: 'Build a Tournir Area in your settlement.',
 		name: 'Richard Lionheart',
 		conditions: {
@@ -5892,63 +5963,67 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 1000
 	}, {
+		id: 47,
 		description: 'Send a caravan to another settlement.',
 		name: 'Donkey Lord',
 		points: 100
 	}, {
+		id: 48,
 		description: 'Send a spy to another settlement.',
 		name: 'Bond. James Bond.',
 		points: 100
 	}, {
+		id: 49,
 		description: 'Send an army to another settlement.',
 		name: 'Warrior',
 		points: 100
 	}, {
+		id: 50,
 		description: 'Declare war to another settlement.',
 		name: 'Warlord',
 		points: 100
 	}, {
+		id: 51,
 		description: 'Propose to another settlement to join you.',
 		name: 'The One to Rule Them All',
 		points: 100
 	}, {
+		id: 52,
 		description: 'Propose a pact to another settlement.',
 		name: 'The Friendly',
 		points: 100
 	}, {
+		id: 53,
 		description: 'Propose an alliance to another settlement.',
 		name: 'The Pacifist',
 		points: 100
 	}, {
-		description: 'Gather maximum prestige.',
-		name: 'Your highness',
-		conditions: {
-			resources: {
-				espionage: civitas.MAX_PRESTIGE_VALUE
-			}
-		},
-		points: 100
-	}, {
+		id: 54,
 		description: 'Win a battleground.',
 		name: 'Conqueror',
 		points: 20
 	}, {
+		id: 55,
 		description: 'Lose a battleground.',
 		name: 'Foolish!',
 		points: 10
 	}, {
+		id: 56,
 		description: 'Convince another settlement to accept an alliance.',
 		name: 'I got your back',
 		points: 200
 	}, {
+		id: 57,
 		description: 'Convince another settlement to accept a pact.',
 		name: 'Pactish',
 		points: 200
 	}, {
+		id: 58,
 		description: 'Convince another settlement to join your settlement.',
 		name: 'You are mine!',
 		points: 500
 	}, {
+		id: 59,
 		description: 'Adopt Christianity as the religion of your settlement.',
 		name: 'Church of Nativity',
 		conditions: {
@@ -5956,6 +6031,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 60,
 		description: 'Adopt Islam as the religion of your settlement.',
 		name: 'Kaaba',
 		conditions: {
@@ -5963,6 +6039,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 61,
 		description: 'Adopt Judaism as the religion of your settlement.',
 		name: 'Hanukkah',
 		conditions: {
@@ -5970,6 +6047,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 62,
 		description: 'Adopt Buddhism as the religion of your settlement.',
 		name: 'Bodhisattva',
 		conditions: {
@@ -5977,6 +6055,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 63,
 		description: 'Adopt Hinduism as the religion of your settlement.',
 		name: 'Bhagavad Gita',
 		conditions: {
@@ -5984,6 +6063,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 64,
 		description: 'Adopt Confucianism as the religion of your settlement.',
 		name: 'Tiān',
 		conditions: {
@@ -5991,6 +6071,7 @@ civitas.ACHIEVEMENTS = [
 		},
 		points: 100
 	}, {
+		id: 65,
 		description: 'Adopt Taoism as the religion of your settlement.',
 		name: 'Laozi',
 		conditions: {
@@ -7366,6 +7447,10 @@ civitas.utils = {
 		var element = from[id];
 		from.splice(id, 1);
 		return element;
+	},
+
+	sanitize_string: function(string) {
+		return string.replace(/[^a-z0-9+]-/gi, '-');
 	}
 };
 
@@ -8066,9 +8151,9 @@ civitas.objects.settlement = function(params) {
 		if (this.is_player()) {
 			this.core().refresh_panels();
 			$('.citylevel').html(this.properties.level);
-			this.core().notify('Your city is now level ' + this.properties.level + '.');
+			this.core().notify('The city of ' + this.name() + ' is now level ' + this.level() + '.');
 		} else {
-			this.core().log('game', 'The city of ' + this.name() + ' is now level ' + this.properties.level + '.');
+			this.core().log('The city of ' + this.name() + ' is now level ' + this.level() + '.');
 		}
 		return this;
 	};
@@ -8382,9 +8467,11 @@ civitas.objects.settlement = function(params) {
 		if (typeof settlement === 'object' && this.nationality().id === settlement.nationality().id) {
 			return true;
 		} else if (typeof settlement === 'number' || typeof settlement === 'string') {
-			settlement = this.core().get_settlement(settlement);
-			if (this.nationality().id === settlement.nationality().id) {
-				return true;
+			var _settlement = this.core().get_settlement(settlement);
+			if (typeof _settlement !== 'undefined') {
+				if (this.nationality().id === _settlement.nationality().id) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -9141,18 +9228,18 @@ civitas.objects.settlement = function(params) {
 		if (typeof settlement === 'number') {
 			this._status[settlement].status = mode;
 			if (mode === civitas.DIPLOMACY_WAR) {
-				//this.core().achievement(45);
+				this.core().achievement(50);
 				this.reset_influence(settlement);
 			} else if (mode === civitas.DIPLOMACY_ALLIANCE) {
-				//this.core().achievement(53);
+				this.core().achievement(56);
 				this.set_influence(settlement, civitas.MAX_INFLUENCE_VALUE);
 			} else if (mode === civitas.DIPLOMACY_PACT) {
-				//this.core().achievement(54);
+				this.core().achievement(57);
 				this.set_influence(settlement, Math.ceil(civitas.MAX_INFLUENCE_VALUE / 2));
 			} else if (mode === civitas.DIPLOMACY_CEASE_FIRE) {
 				this.set_influence(settlement, Math.ceil(civitas.MAX_INFLUENCE_VALUE / 4));
 			} else if (mode === civitas.DIPLOMACY_VASSAL) {
-				//this.core().achievement(55);
+				this.core().achievement(58);
 				this.set_influence(settlement, civitas.MAX_INFLUENCE_VALUE);
 			}
 			this.core().save_and_refresh();
@@ -13605,31 +13692,33 @@ civitas.game = function () {
 		var achievement;
 		var condition;
 		var settlement = this.get_settlement();
+		var id;
 		for (var i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
 			achievement = civitas.ACHIEVEMENTS[i];
-			if (!this.has_achievement(i)) {
+			id = achievement.id;
+			if (!this.has_achievement(id)) {
 				for (var cond_item in achievement.conditions) {
 					condition = achievement.conditions[cond_item];
 					if (cond_item === 'settlement_level') {
 						if (settlement.level() === condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'soldiers') {
 						var army = settlement.has_army();
 						if (army >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'ships') {
 						var navy = settlement.has_navy();
 						if (navy >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'population') {
 						if (settlement.population() >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'buildings') {
@@ -13641,7 +13730,7 @@ civitas.game = function () {
 							}
 						}
 						if (good === true) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'resources') {
@@ -13654,32 +13743,32 @@ civitas.game = function () {
 							}
 						}
 						if (good === true) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'storage') {
 						if (condition === 0) {
 							var storage = settlement.storage();
 							if (storage.occupied >= storage.all) {
-								this.achievement(i);
+								this.achievement(id);
 							}
 						}
 					}
 					if (cond_item === 'achievements') {
 						if (condition === this._achievements.length) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'mercenary') {
 						var merc = settlement.mercenary();
 						if (merc.length >= condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 					if (cond_item === 'religion') {
 						var religion = settlement.religion();
 						if (religion.name === condition) {
-							this.achievement(i);
+							this.achievement(id);
 						}
 					}
 				}
@@ -15327,7 +15416,7 @@ civitas.PANEL_SETTLEMENT = {
 							core.error(civitas.l('There was an error proposing an alliance to this settlement, check the data you entered and try again.'));
 							return false;
 						}
-						core.achievement(49);
+						core.achievement(53);
 					}
 				},
 				'Are you sure you want to propose an alliance to this settlement?'
@@ -15346,7 +15435,7 @@ civitas.PANEL_SETTLEMENT = {
 							core.error(civitas.l('There was an error proposing this settlement to join your city, check the data you entered and try again.'));
 							return false;
 						}
-						core.achievement(47);
+						core.achievement(51);
 					}
 				},
 				'Are you sure you want to propose this this settlement to join you?'
@@ -15365,7 +15454,7 @@ civitas.PANEL_SETTLEMENT = {
 							core.error(civitas.l('There was an error proposing a pact to this settlement, check the data you entered and try again.'));
 							return false;
 						}
-						core.achievement(48);
+						core.achievement(52);
 					}
 				},
 				'Are you sure you want to propose a pact to this settlement?'
@@ -16303,7 +16392,7 @@ civitas.PANEL_NEW_ARMY = {
 				army: self.assigned_army,
 				navy: self.assigned_navy
 			})) {
-				core.achievement(45);
+				core.achievement(49);
 				self.destroy();
 			} else {
 				core.error(civitas.l('There was an error creating and dispatching the army, check the data you entered and try again.'));
@@ -16433,7 +16522,7 @@ civitas.PANEL_NEW_SPY = {
 				data.religion = _religion;
 			}
 			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_SPY, data)) {
-				core.achievement(44);
+				core.achievement(48);
 				self.destroy();
 			} else {
 				core.error(civitas.l('There was an error creating and dispatching the spy, check the data you entered and try again.'));
@@ -16589,7 +16678,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_CARAVAN, {
 				resources: self.resources
 			})) {
-				core.achievement(43);
+				core.achievement(47);
 				self.destroy();
 			} else {
 				core.error(civitas.l('There was an error creating and dispatching the caravan, check the data you entered and try again.'));
@@ -16614,7 +16703,7 @@ civitas.PANEL_COUNCIL = {
 			civitas.l('Municipal'), civitas.l('Mercenary'), civitas.l('Achievements')]));
 		var _t = '<div class="achievements-list">';
 		for (var i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
-			_t += '<div data-id="' + i + '" class="achievement">' +
+			_t += '<div data-id="' + civitas.ACHIEVEMENTS[i].id + '" class="achievement">' +
 				'<div class="left">' +
 					'<div class="ach img"></div>' +
 					'<div class="ach points">' + civitas.ACHIEVEMENTS[i].points + '</div>' +
@@ -17931,12 +18020,12 @@ civitas.WINDOW_BATTLE = {
 				navy: this.params_data.destination.navy
 			},
 			on_win: function(winner, loser) {
-				core.achievement(51);
+				core.achievement(54);
 				$(handle + ' .end').hide();
 				$(handle + ' .close').show();
 			},
 			on_lose: function(winner, loser) {
-				core.achievement(52);
+				core.achievement(55);
 				$(handle + ' .end').hide();
 				$(handle + ' .close').show();
 			},
