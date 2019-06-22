@@ -155,13 +155,13 @@ civitas.objects.event = function (params) {
 		}
 		if (core.get_settlement().is_player()) {
 			core._notify({
-				title: 'Event occured: ' + this._name,
+				title: 'Event: ' + this._name,
 				content: description,
 				timeout: false,
 				mode: civitas.NOTIFY_EVENT
 			});
 		}
-		core.log('event', 'Event occured: ' + this._name);
+		core.log('event', this._name);
 		return this;
 	};
 

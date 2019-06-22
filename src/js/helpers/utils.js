@@ -3,6 +3,118 @@
  */
 civitas.utils = {
 
+	create_array: function(d1, d2) {
+		var x = new Array(d1);
+		for (var i = 0; i < d1; i += 1) {
+			x[i] = new Array(d2);
+		}
+		for (var i = 0; i < d1; i += 1) {
+			for (var j = 0; j < d2; j += 1) {
+				x[i][j] = {
+					e: -1,
+					t: 'S',
+					s: null,
+					n: null,
+					m: 0
+				};
+			}
+		}
+		return x;
+	},
+
+	get_cell_neighbours: function(x, y, color, settlement_type) {
+		var neighbours = civitas.utils.get_neighbours(y, x);
+		if (settlement_type !== civitas.VILLAGE) {
+			$('.s-c-g-' + y + '-' + x + ' > .svg-cell').css({
+				fill: color
+			});
+		}
+		if (settlement_type === civitas.CITY) {
+			for (var z = 0; z < neighbours.length; z++) {
+				$('.s-c-g-' + neighbours[z].y + '-' + neighbours[z].x + ' > .svg-cell').css({
+					fill: color
+				});
+			}
+		} else if (settlement_type === civitas.METROPOLIS) {
+			for (var z = 0; z < neighbours.length; z++) {
+				$('.s-c-g-' + neighbours[z].y + '-' + neighbours[z].x + ' > .svg-cell').css({
+					fill: color
+				});
+				var new_neighbours = civitas.utils.get_neighbours(neighbours[z].y, neighbours[z].x);
+				for (var u = 0; u < new_neighbours.length; u++) {
+					$('.s-c-g-' + new_neighbours[u].y + '-' + new_neighbours[u].x + ' > .svg-cell').css({
+						fill: color
+					});
+				}
+			}
+		} else {
+			// Todo
+		}
+	},
+
+	get_neighbours: function(y, x) {
+		if (x % 2 == 0) {
+			return [
+			    {
+			    	x: x+1,
+			    	y: y
+			    }, {
+			    	x: x+1,
+			    	y: y-1
+			    }, {
+			    	x: x,
+			    	y: y-1
+			    }, {
+			    	x: x-1,
+			    	y: y
+			    }, {
+			    	x: x-1,
+			    	y: y-1 // y + 1
+			    }, {
+			    	x: x,
+			    	y: y+1
+			    }
+			]
+		} else {
+			return [
+			    {
+			    	x: x+1,
+			    	y: y
+			    }, {
+			    	x: x+1,
+			    	y: y+1
+			    }, {
+			    	x: x,
+			    	y: y-1
+			    }, {
+			    	x: x-1,
+			    	y: y
+			    }, {
+			    	x: x-1,
+			    	y: y+1
+			    }, {
+			    	x: x,
+			    	y: y+1
+			    }
+			]
+		}
+	},
+
+	get_random_color: function() {
+		var color = (Math.random() * 250) + 1;
+		var colors = Math.random() * 255;
+		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
+	},
+
+	is_virtual_resource: function(resource) {
+		if (typeof civitas.RESOURCES[resource] !== undefined) {
+			if (civitas.RESOURCES[resource].category === 'virtual') {
+ 				return true;
+			}
+		}
+		return false;
+	},
+
 	/**
 	 * Get the total damage points of a hero, modified by the items
 	 * he's using.
@@ -109,7 +221,7 @@ civitas.utils = {
 	 * @returns {Number}
 	 */
 	get_distance: function(source, destination) {
-		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)));
+		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2))) * 100;
 	},
 
 	/**
@@ -121,7 +233,7 @@ civitas.utils = {
 	 * @returns {Number}
 	 */
 	get_distance_in_days: function(source, destination) {
-		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) / 10);
+		return Math.floor((Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100) / 15);
 	},
 
 	/**
@@ -343,12 +455,18 @@ civitas.utils = {
 	 * Return a random world location.
 	 *
 	 * @public
+	 * @params {Array} data
 	 * @returns {Object}
 	 */
-	get_random_world_location: function() {
-		return {
-			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH),
-			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT)
+	get_random_world_location: function(data) {
+		var pos = {
+			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
+			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
+		}
+		if (data[pos.y][pos.x].t !== 'S' && data[pos.y][pos.x].t !== 'O') {
+			return pos;
+		} else {
+			return this.get_random_world_location(data);
 		}
 	},
 
@@ -368,5 +486,9 @@ civitas.utils = {
 
 	sanitize_string: function(string) {
 		return string.replace(/[^a-z0-9+]-/gi, '-');
+	},
+
+	to_point: function(s, dx, dy) {
+		return Math.round(dx + s.x) + ',' + Math.round(dy + s.y);
 	}
 };

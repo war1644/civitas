@@ -4,41 +4,41 @@
  * @type {Object}
  */
 civitas.PANEL_DEBUG = {
-	template: civitas.ui.generic_panel_template(),
+	template: civitas.ui.generic_panel_template('Debug'),
 	id: 'debug',
 	on_show: function(params) {
 		var self = this;
 		var core = this.core();
 		var settlement = core.get_settlement();
 		var handle = this.handle;
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Data'), civitas.l('Console'), civitas.l('Cheats')]));
-		$(this.handle + ' header').append(civitas.l('Debug'));
+		$(this.handle + ' section').append(civitas.ui.tabs([
+			'Data',
+			'Console',
+			'Cheats'
+		]));
 		$(this.handle + ' #tab-console').empty().append('<div class="console"></div>');
-		$(this.handle + ' #tab-cheats').empty().append('' +
-				'<div class="toolbar">' +
-					'<a href="#" class="btn iblock one">' + civitas.l('+1M coins') + '</a> ' +
-					'<a href="#" class="btn iblock two">' + civitas.l('+1000 wood') + '</a> ' +
-					'<a href="#" class="btn iblock three">' + civitas.l('+1000 stones') + '</a> ' +
-					'<a href="#" class="btn iblock thirty">' + civitas.l('+1000 bread') + '</a> ' +
-					'<a href="#" class="btn iblock fifteen">' + civitas.l('+1000 provisions') + '</a> <br /><br />' +
-					'<a href="#" class="btn iblock four">' + civitas.l('+1000 wood planks') + '</a> ' +
-					'<a href="#" class="btn iblock five">' + civitas.l('level up') + '</a> ' +
-					'<a href="#" class="btn iblock fourteen">' + civitas.l('+900 faith') + '</a> ' +
-					'<a href="#" class="btn iblock six">' + civitas.l('+1000 fame') + '</a> ' +
-					'<a href="#" class="btn iblock ten">' + civitas.l('+5000 fame') + '</a> <br /><br />' +
-					'<a href="#" class="btn iblock seven">' + civitas.l('refresh trades') + '</a> ' +
-					'<a href="#" class="btn iblock eleven">' + civitas.l('random soldiers') + '</a> ' +
-					'<a href="#" class="btn iblock twelve">' + civitas.l('random ships') + '</a> ' +
-					'<a href="#" class="btn iblock fourty">' + civitas.l('defend city') + '</a> ' +
-					'<a href="#" class="btn iblock fifty">' + civitas.l('battle-ready') + '</a> <br /><br />' +
-					'<a href="#" class="btn iblock ninety">' + civitas.l('add city') + '</a> ' +
+		$(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' +
+					'<a href="#" class="btn iblock one">+1M coins</a> ' +
+					'<a href="#" class="btn iblock two">+1000 cons. mats</a> ' +
+					'<a href="#" class="btn iblock thirty">+1000 food / wine</a> ' +
+					'<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a> <br /><br />' +
+					'<a href="#" class="btn iblock five">level up</a> ' +
+					'<a href="#" class="btn iblock fourteen">+900 faith</a> ' +
+					'<a href="#" class="btn iblock six">+1000 fame</a> ' +
+					'<a href="#" class="btn iblock ten">+5000 fame</a> ' +
+					'<a href="#" class="btn iblock seven">refresh trades</a> <br /><br />' +
+					'<a href="#" class="btn iblock eleven">random soldiers</a> ' +
+					'<a href="#" class="btn iblock twelve">random ships</a> ' +
+					'<a href="#" class="btn iblock fourty">defend city</a> ' +
+					'<a href="#" class="btn iblock fifty">battle-ready</a> <br /><br />' +
+					'<a href="#" class="btn iblock ninety">add city</a> ' +
 				'</div>');
 		$(this.handle + ' #tab-data').empty().append(
 			'<textarea class="storage-data"></textarea>' +
 			'<div class="toolbar">' +
-				'<a href="#" class="btn iblock refresh">' + civitas.l('Refresh') + '</a> ' +
-				'<a href="#" class="btn iblock load">' + civitas.l('Load') + '</a> ' +
-				'<a href="#" class="btn iblock save">' + civitas.l('Save') + '</a> ' +
+				'<a href="#" class="btn iblock refresh">Refresh</a> ' +
+				'<a href="#" class="btn iblock load">Load</a> ' +
+				'<a href="#" class="btn iblock save">Save</a> ' +
 			'</div>');
 		$(this.handle).on('click', '.fourty', function() {
 			var city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
@@ -50,7 +50,6 @@ civitas.PANEL_DEBUG = {
 					knight: 10,
 					bowman: 20,
 					cannon: 200,
-					heavycannon: 200,
 					catapult: 300,
 					crossbowman: 10,
 					pikeman: 30
@@ -65,13 +64,17 @@ civitas.PANEL_DEBUG = {
 			settlement.add_to_storage('stones', 1000);
 			settlement.add_to_storage('woodplanks', 1000);
 			settlement.add_to_storage('provisions', 1000);
-			settlement.inc_coins(1000000);
+			settlement.add_to_storage('ropes', 50);
+			settlement.add_to_storage('barrels', 50);
+			settlement.add_to_storage('tools', 50);
+			settlement.inc_coins(2000000);
 			var army = settlement.get_army();
 			for (var soldier in army) {
 				army[soldier] = civitas.utils.get_random(1, 100);
 			}
 			settlement.build('provisions');
-			settlement.build('camp');
+			settlement.build('militarycamp');
+			settlement.build('shipyard');
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.eleven', function() {
@@ -98,22 +101,22 @@ civitas.PANEL_DEBUG = {
 			return false;
 		}).on('click', '.fifteen', function() {
 			settlement.add_to_storage('provisions', 1000);
+			settlement.add_to_storage('donkeys', 1000);
+			settlement.add_to_storage('ropes', 1000);
+			settlement.add_to_storage('spyglasses', 1000);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.two', function() {
 			settlement.add_to_storage('wood', 1000);
+			settlement.add_to_storage('stones', 1000);
+			settlement.add_to_storage('woodplanks', 1000);
+			settlement.add_to_storage('clay', 1000);
+			settlement.add_to_storage('bricks', 1000);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.thirty', function() {
 			settlement.add_to_storage('bread', 1000);
-			core.save_and_refresh();
-			return false;
-		}).on('click', '.three', function() {
-			settlement.add_to_storage('stones', 1000);
-			core.save_and_refresh();
-			return false;
-		}).on('click', '.four', function() {
-			settlement.add_to_storage('woodplanks', 1000);
+			settlement.add_to_storage('wine', 1000);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.five', function() {
@@ -152,7 +155,7 @@ civitas.PANEL_DEBUG = {
 					'Civitas'
 				);
 			} else {
-				core.error(civitas.l('Invalid save game.'));
+				core.error('Invalid save game.');
 			}
 			return false;
 		}).on('click', '.save', function() {

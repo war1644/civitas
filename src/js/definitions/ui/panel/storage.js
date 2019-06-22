@@ -4,7 +4,7 @@
  * @type {Object}
  */
 civitas.PANEL_STORAGE = {
-	template: civitas.ui.generic_panel_template(civitas.l('City Storage')),
+	template: civitas.ui.generic_panel_template('City Storage'),
 	expanded: false,
 	id: 'storage',
 	on_show: function(params) {
@@ -12,43 +12,32 @@ civitas.PANEL_STORAGE = {
 		var core = this.core();
 		var settlement = core.get_settlement();
 		var storage_space = settlement.storage();
-		var _t = '<div class="main-storage"></div>' +
-			'<div class="extra-storage hidden"></div>' +
-			'<div class="clearfix"></div>' +
-			'<p>' + civitas.l('Total storage space') + ': <span class="total-storage">' + storage_space.all + '</span>, ' + civitas.l('used') + ': <span class="used-storage">' + storage_space.occupied + '</span></p>' +
-			'<div class="toolbar">' +
-				'<a class="btn iblock toggle-storage" href="#">' + civitas.l('Show More Goods') + '</a>' +
-			'</div>';
-		$(this.handle + ' section').empty().append(_t);
-		$(this.handle).on('click', '.toggle-storage', function () {
-			if ($('.toggle-storage').html() === civitas.l('Show Less Goods')) {
-				self.expanded = false;
-				$('.toggle-storage').html(civitas.l('Show More Goods'));
-			} else {
-				self.expanded = true;
-				$('.toggle-storage').html(civitas.l('Show Less Goods'));
+		var resources = settlement.get_resources();
+		var section;
+		$(this.handle + ' section').append(civitas.ui.tabs(civitas.RESOURCE_CATEGORIES));
+		$(this.handle + ' section').append('<p>Total storage space: <span class="total-storage">' + storage_space.all + '</span>, used: <span class="used-storage">' + storage_space.occupied + '</span></p>');
+		for (var i = 0; i < civitas.RESOURCE_CATEGORIES.length; i++) {
+			section = civitas.RESOURCE_CATEGORIES[i];
+			$(this.handle + ' #tab-' + section).append('<div class="storage-board"></div>');
+		}
+		for (var resource in resources) {
+			if (!civitas.utils.is_virtual_resource(resource)) {
+				section = civitas.RESOURCES[resource].category;
+				$(this.handle + ' #tab-' + section + ' .storage-board').append(civitas.ui.resource_storage_el(resource, resources[resource]));
 			}
-			$('.extra-storage').toggle();
-			return false;
-		});
+		}
 	},
 	on_refresh: function() {
 		var settlement = this.core().get_settlement();
 		var resources = settlement.get_resources();
-		var main_storage = '';
-		var extra_storage = '';
+		var section;
 		var storage_space = settlement.storage();
 		for (var resource in resources) {
-			if ($.inArray(resource, civitas.NON_RESOURCES) === -1) {
-				if ($.inArray(resource, civitas.MAIN_RESOURCES) !== -1) {
-					main_storage += civitas.ui.resource_storage_el(resource, resources[resource]);
-				} else {
-					extra_storage += civitas.ui.resource_storage_el(resource, resources[resource]);
-				}
+			if (!civitas.utils.is_virtual_resource(resource)) {
+				section = civitas.RESOURCES[resource].category;
+				$(this.handle + ' #tab-' + section + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
 			}
 		}
-		$(this.handle + ' .main-storage').empty().append(main_storage);
-		$(this.handle + ' .extra-storage').empty().append(extra_storage);
 		$(this.handle + ' .total-storage').empty().append(storage_space.all);
 		$(this.handle + ' .used-storage').empty().append(storage_space.occupied);
 	}

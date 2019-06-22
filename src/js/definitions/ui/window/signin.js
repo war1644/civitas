@@ -10,14 +10,14 @@ civitas.WINDOW_SIGNIN = {
 			'<div class="logo">Civitas</div>' +
 			'<fieldset>' +
 				'<div class="new-game">' +
-					'<p>' + civitas.l('Enter the city password to decrypt the game data.') + '</p>' +
+					'<p>Enter the city password to decrypt the game data.</p>' +
 					'<dl>' +
-						'<dt class="clearfix">' + civitas.l('Password') + ':</dt>' +
+						'<dt class="clearfix">Password:</dt>' +
 						'<dd><input type="password" class="password text-input" /></dd>' +
 					'</dl>' +
-					'<a href="#" class="do-start highlight button">' + civitas.l('Load Game') + '</a>' +
+					'<a href="#" class="do-start highlight button">Load Game</a>' +
 				'</div>' +
-				'<a href="#" class="do-restart button">' + civitas.l('Restart') + '</a>' +
+				'<a href="#" class="do-restart button">Restart</a>' +
 				civitas.ui.window_about_section() +
 			'</fieldset>' +
 		'</section>',

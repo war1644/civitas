@@ -86,6 +86,7 @@ civitas.controls.panel = function (params) {
 				panels.splice(i, 1);
 			}
 		}
+		$('.ui > .viewport').width($(window).width() - $('.ui > aside').width());
 		$('.tipsy').remove();
 		this.on_hide.call(this);
 		return false;
@@ -138,7 +139,12 @@ civitas.controls.panel = function (params) {
 			typeof this.params_data.name !== 'undefined' &&
 			typeof this.params_data.name !== 'function') {
 			tpl = tpl.replace(/{BUILDING}/g, this.params_data.handle);
-			$('.ui').append(tpl);
+			if (this.params_data.sidebar === true) {
+				$('.ui > aside').empty().append(tpl);
+				$('.ui > .viewport').width($(window).width() - $('.ui > aside').width());
+			} else {
+				$('.ui').append(tpl);
+			}
 			$(this.handle + ' header').append(this.params_data.name);
 		} else {
 			$('.ui').append(tpl);
@@ -159,9 +165,9 @@ civitas.controls.panel = function (params) {
 				}
 				if (building.is_production_building()) {
 					if (!building.is_stopped()) {
-						$(this.handle + ' .pause').removeClass('start').attr('title', civitas.l('Stop production'));
+						$(this.handle + ' .pause').removeClass('start').attr('title', 'Stop production');
 					} else {
-						$(this.handle + ' .start').removeClass('pause').attr('title', civitas.l('Start production'));
+						$(this.handle + ' .start').removeClass('pause').attr('title', 'Start production');
 					}
 				} else {
 					$(this.handle + ' .start, ' + this.handle + ' .pause').hide();
@@ -214,13 +220,13 @@ civitas.controls.panel = function (params) {
 				}).on('click', '.pause', function () {
 					if (building.stop_production()) {
 						$(this).removeClass('pause').addClass('start');
-						$(this).attr('title', civitas.l('Start production'));
+						$(this).attr('title', 'Start production');
 					}
 					return false;
 				}).on('click', '.start', function () {
 					if (building.start_production()) {
 						$(this).removeClass('start').addClass('pause');
-						$(this).attr('title', civitas.l('Stop production'));
+						$(this).attr('title', 'Stop production');
 					}
 					return false;
 				});
@@ -236,20 +242,23 @@ civitas.controls.panel = function (params) {
 		}).on('click', '.close', function () {
 			self.destroy();
 			return false;
-		}).draggable({
-			handle: 'header',
-			containment: 'window',
-			start: function() {
-		        $(this).css({
-		        	height: 'auto'
-		        });
-		    },
-		    stop: function() {
-		        $(this).css({
-		        	height: 'auto'
-		        });
-		    }
 		});
+		if ((typeof this.params_data === 'undefined') || (typeof this.params_data !== 'undefined' && this.params_data.sidebar !== true)) {
+			$(this.handle).draggable({
+				handle: 'header',
+				containment: 'window',
+				start: function() {
+					$(this).css({
+						height: 'auto'
+					});
+				},
+				stop: function() {
+					$(this).css({
+						height: 'auto'
+					});
+				}
+			});
+		}
 		$(this.handle + ' .tabs').tabs();
 		$(this.handle).css({
 			'left': ($(window).width() / 2) - ($(this.handle).width() / 2),

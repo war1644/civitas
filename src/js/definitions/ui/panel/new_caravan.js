@@ -6,12 +6,11 @@
 civitas.PANEL_NEW_CARAVAN = {
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
-			'<header>' + civitas.l('Create caravan') +
-				'<a class="tips close" title="' + civitas.l('Close') + '"></a>' +
+			'<header>Create caravan<a class="tips close" title="Close"></a>' +
 			'</header>' +
 			'<section></section>' +
 			'<div class="toolbar">' +
-				'<a class="btn dispatch" href="#">' + civitas.l('Dispatch') + '</a>' +
+				'<a class="btn dispatch" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
 	id: 'new-caravan',
@@ -22,11 +21,11 @@ civitas.PANEL_NEW_CARAVAN = {
 		var my_settlement = core.get_settlement();
 		var settlement = params.data;
 		var settlements = core.get_settlements();
-		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
+		var location = my_settlement.get_location();
 		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
 		var settlement_type_text;
 		var _t = '<fieldset>' +
-			'<legend>' + civitas.l('Initial costs') + '</legend>' +
+			'<legend>Initial costs</legend>' +
 			'<dl>';
 		for (var item in civitas.CARAVAN_COSTS) {
 			var _cost = 0;
@@ -43,35 +42,35 @@ civitas.PANEL_NEW_CARAVAN = {
 		_t += '</dl>' +
 		'</fieldset>' +
 		'<fieldset>' +
-			'<legend>' + civitas.l('Destination') + '</legend>' +
+			'<legend>Destination</legend>' +
 			'<select class="caravan-destination">' +
-				'<option value="0">-- ' + civitas.l('select') + ' --</option>';
+				'<option value="0">-- select --</option>';
 		for (var i = 1; i < settlements.length; i++) {
 			if (settlements[i].is_city()) {
-				settlement_type_text = civitas.l('City of') + ' ';
+				settlement_type_text = 'City of ';
 			} else if (settlements[i].is_metropolis()) {
-				settlement_type_text = civitas.l('Metropolis of') + ' ';
+				settlement_type_text = 'Metropolis of ';
 			} else {
-				settlement_type_text = civitas.l('Village of') + ' '
+				settlement_type_text = 'Village of '
 			}
 			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlement_type_text + settlements[i].name() + '</option>';
 		}
 		_t += '</select>' +
 		'</fieldset>' +
 		'<fieldset class="select-combo">' +
-			'<legend>' + civitas.l('Resources') + '</legend>' +
+			'<legend>Resources</legend>' +
 			'<select class="caravan-resources-select">' +
-				'<option value="0">-- ' + civitas.l('select') + ' --</option>' +
-				'<option value="coins"> ' + civitas.l('Coins') + '</option>';
+				'<option value="0">-- select --</option>' +
+				'<option value="coins">Coins</option>';
 		var resources = my_settlement.get_resources();
 		for (var item in resources) {
-			if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
+			if (!civitas.utils.is_virtual_resource(item)) {
 				_t += '<option value="' + item + '"> ' + civitas.utils.get_resource_name(item) + '</option>';
 			}
 		}
 		_t += '</select>' +
-			'<input title="' + civitas.l('Add the resources to the list.') + '" type="button" class="tips caravan-resources-add" value="+" />' +
-			'<input title="' + civitas.l('Amount of selected resource to add to the caravan.') + '" type="number" value="1" class="tips caravan-resources-amount" min="1" max="999" />' +
+			'<input title="Add the resources to the list." type="button" class="tips caravan-resources-add" value="+" />' +
+			'<input title="Amount of selected resource to add to the caravan." type="number" value="1" class="tips caravan-resources-amount" min="1" max="999" />' +
 			'<div class="caravan-resources clearfix"></div>' +
 		'</fieldset>';
 		$(this.handle + ' section').empty().append(_t);
@@ -79,8 +78,8 @@ civitas.PANEL_NEW_CARAVAN = {
 			var _t = '<table class="caravan-resources clearfix">' +
 				'<thead>' +
 				'<tr>' +
-					'<td>' + civitas.l('Amount') + '</td>' +
-					'<td>' + civitas.l('Resource') + '</td>' +
+					'<td>Amount</td>' +
+					'<td>Resource</td>' +
 					'<td></td>' +
 				'</tr>' +
 				'</thead>' +
@@ -90,7 +89,7 @@ civitas.PANEL_NEW_CARAVAN = {
 					'<td>' + this.resources[item] + '</td>' +
 					'<td>' + civitas.ui.resource_small_img(item) + '</td>' +
 					'<td>' +
-						'<a title="' + civitas.l('Remove this resource from the caravan.') + '" href="#" data-id="' + item + '" class="tips caravan-resources-delete">-</a>' +
+						'<a title="Remove this resource from the caravan." href="#" data-id="' + item + '" class="tips caravan-resources-delete">-</a>' +
 					'</td>' +
 				'</tr>';
 			}
@@ -124,7 +123,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			return false;
 		}).on('click', '.dispatch', function() {
 			if (!my_settlement.can_trade()) {
-				core.error(civitas.l('You will need to construct a Trading Post before being able to trade resources with other settlements.'));
+				core.error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 				return false;
 			}
 			var destination = parseInt($(self.handle + ' .caravan-destination').val());
@@ -132,16 +131,16 @@ civitas.PANEL_NEW_CARAVAN = {
 				settlement = core.get_settlement(destination);
 			}
 			if (destination === 0 || !settlement || $.isEmptyObject(self.resources)) {
-				core.error(civitas.l('There was an error creating and dispatching the caravan, check the data you entered and try again.'));
+				core.error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
 				return false;
 			}
 			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_CARAVAN, {
 				resources: self.resources
 			})) {
-				core.achievement(47);
+				core.achievement('donkeylord');
 				self.destroy();
 			} else {
-				core.error(civitas.l('There was an error creating and dispatching the caravan, check the data you entered and try again.'));
+				core.error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
 			}
 			return false;
 		});

@@ -15,17 +15,18 @@ gulp.task('app', function() {
 	return gulp.src([
 	  	'src/js/others/functions.js',
 		'src/js/constants/default.js',
-		'src/js/languages/en.js',
 		'src/js/constants/initial.js',
 		/*
 		'src/js/constants/api.js',
 		*/
+		'src/js/constants/timeline.js',
 		'src/js/constants/religion.js',
 		'src/js/constants/diplomacy.js',
 		'src/js/constants/nation.js',
 		'src/js/constants/climate.js',
 		'src/js/constants/personality.js',
 		'src/js/constants/military.js',
+		'src/js/constants/research.js',
 		'src/js/constants/buildings.js',
 		'src/js/constants/settlements.js',
 		'src/js/constants/events.js',
@@ -40,6 +41,7 @@ gulp.task('app', function() {
 		'src/js/objects/modules/jailer.js',
 		*/
 		'src/js/helpers/ui.js',
+		'src/js/objects/core/world.js',
 		'src/js/objects/core/settlement.js',
 		'src/js/objects/core/event.js',
 		'src/js/objects/core/building.js',

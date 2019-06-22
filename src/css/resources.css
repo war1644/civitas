@@ -35,7 +35,7 @@ footer a[data-panel=help] {
 /* Panel footer icons */
 
 .panel header .close {
-	background: transparent url(../images/ui/icons/close.png) no-repeat;
+	background: transparent url(../images/ui/close.png) no-repeat;
 }
 
 .panel footer .attack {
@@ -83,107 +83,11 @@ footer a[data-panel=help] {
 }
 
 .panel footer .upgrade {
-	background: transparent url(../images/assets/ui/icons/up.png) no-repeat;
+	background: transparent url(../images/assets/ui/icons/upgrade.png) no-repeat;
 }
 
 .panel footer .downgrade {
-	background: transparent url(../images/assets/ui/icons/down.png) no-repeat;
-}
-
-/* World map objects */
-
-.panel .worldmap .army {
-	background: transparent url(../images/assets/ui/world/army.png) no-repeat;
-}
-
-.panel .worldmap .army-return {
-	background: transparent url(../images/assets/ui/world/return_army.png) no-repeat;
-}
-
-.panel .worldmap .messenger {
-	background: transparent url(../images/assets/ui/world/diplomacy.png) no-repeat;
-}
-
-.panel .worldmap .caravan {
-	background: transparent url(../images/assets/ui/world/caravan.png) no-repeat;
-}
-
-.panel .worldmap .spy {
-	background: transparent url(../images/assets/ui/world/spy.png) no-repeat;
-}
-
-.panel .worldmap .settlement.v1 {
-	background: transparent url(../images/assets/ui/world/settlement1.png) no-repeat;
-}
-
-.panel .worldmap .settlement.m1 {
-	background: transparent url(../images/assets/ui/world/metropolis1.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c1 {
-	background: transparent url(../images/assets/ui/world/city1.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c2 {
-	background: transparent url(../images/assets/ui/world/city2.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c3 {
-	background: transparent url(../images/assets/ui/world/city3.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c4 {
-	background: transparent url(../images/assets/ui/world/city4.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c5 {
-	background: transparent url(../images/assets/ui/world/city5.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c6 {
-	background: transparent url(../images/assets/ui/world/city6.png) no-repeat;
-}
-
-/* World Maps variants */
-
-.panel .worldmap.w1 {
-	background: transparent url(../images/world/map1.png) no-repeat;
-}
-
-.panel .worldmap.w2 {
-	background: transparent url(../images/world/map2.png) no-repeat;
-}
-
-.panel .worldmap.w3 {
-	background: transparent url(../images/world/map3.png) no-repeat;
-}
-
-.panel .worldmap.w4 {
-	background: transparent url(../images/world/map4.png) no-repeat;
-}
-
-.panel .worldmap.w5 {
-	background: transparent url(../images/world/map5.png) no-repeat;
-}
-
-.panel .worldmap.w6 {
-	background: transparent url(../images/world/map6.png) no-repeat;
-}
-
-.panel .worldmap.w7 {
-	background: transparent url(../images/world/map7.png) no-repeat;
-}
-
-.panel .worldmap.w8 {
-	background: transparent url(../images/world/map8.png) no-repeat;
-}
-
-.panel .worldmap.w9 {
-	background: transparent url(../images/world/map9.png) no-repeat;
-}
-
-.panel .worldmap.w10 {
-	background: transparent url(../images/world/map10.png) no-repeat;
+	background: transparent url(../images/assets/ui/icons/downgrade.png) no-repeat;
 }
 
 /* Others */
@@ -204,21 +108,13 @@ footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/icon_achievement.png) no-repeat;
 }
 
-.scrollbar .up {
-	background: transparent url(../images/ui/up.png) no-repeat;
-}
-
-.scrollbar .down {
-	background: transparent url(../images/ui/down.png) no-repeat;
-}
-
 .loading {
 	background: transparent url(../images/ui/loading.svg) no-repeat;
 }
 
 .notifications .notty .hide,
 .achievements-notifications .notty .hide {
-	background: transparent url(../images/ui/icons/close.png) no-repeat;
+	background: transparent url(../images/ui/close.png) no-repeat;
 }
 
 .panel ul.advices li {
@@ -243,4 +139,8 @@ footer a[data-panel=help] {
 
 #window-battle .battleground {
 	background: #fff url(../images/battle/bg2.png) no-repeat;
+}
+
+.ui > aside {
+	background: #ECD0B7 url(../images/ui/sidebar.png) repeat-y left top;
 }

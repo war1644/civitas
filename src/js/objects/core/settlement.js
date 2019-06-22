@@ -26,7 +26,8 @@ civitas.objects.settlement = function(params) {
 		ruler: null,
 		religion: null,
 		player: null,
-		nationality: null
+		nationality: null,
+		color: null
 	};
 
 	/**
@@ -133,7 +134,6 @@ civitas.objects.settlement = function(params) {
 		this.properties.name = params.properties.name;
 		this.properties.player = (typeof params.properties.player !== 'undefined') ? params.properties.player : false;
 		this.properties.level = (typeof params.properties.level !== 'undefined') ? params.properties.level : 1;
-		this.properties.climate = (typeof params.properties.climate !== 'undefined') ? params.properties.climate : civitas.CLIMATE_TEMPERATE;
 		this.properties.religion = (typeof params.properties.religion !== 'undefined') ? params.properties.religion : civitas.RELIGION_NONE;
 		this.properties.nationality = (typeof params.properties.nationality !== 'undefined') ? params.properties.nationality : civitas.NATION_PHOENICIAN;
 		this.properties.ruler = params.properties.ruler;
@@ -148,6 +148,8 @@ civitas.objects.settlement = function(params) {
 		this.resources = (typeof params.resources !== 'undefined') ? params.resources : {};
 		this._fill_resources();
 		this.location = params.location;
+		this.properties.color = (typeof params.properties.color !== 'undefined') ? params.properties.color : civitas.utils.get_random_color();
+		this.core().world().add_city(this);
 		if (typeof params.trades !== 'undefined') {
 			this.trades = params.trades;
 		} else {
@@ -164,6 +166,26 @@ civitas.objects.settlement = function(params) {
 					type: this.properties.ruler.personality
 				});
 			}
+		}
+		if (this.is_player() === false) {
+			var climate;
+			var terrain = this.core().world().get_hex_terrain(this.location.x, this.location.y);
+			if (terrain === 'I') {
+				climate = 'polar';
+			} else if (terrain === 'D') {
+				climate = 'arid';
+			} else if (terrain === 'W' || terrain === 'J') {
+				climate = 'tropical';
+			} else {
+				climate = 'temperate';
+			}
+			this.properties.climate = civitas['CLIMATE_' + climate.toUpperCase()];
+			if (this.is_city() || this.is_metropolis()) {
+				var climate_buildings = 'SETTLEMENT_BUILDINGS_' + climate.toUpperCase();
+				this._create_buildings(civitas[climate_buildings], true);
+			}
+		} else {
+			this.properties.climate = params.properties.climate;
 		}
 		return this;
 	};
@@ -347,7 +369,7 @@ civitas.objects.settlement = function(params) {
 			advices.push('You have lots of coins, why not invest some in goods?');
 		}
 		for (var item in this.resources) {
-			if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
+			if (!civitas.utils.is_virtual_resource(item)) {
 				if (resources[item] > 1000) {
 					advices.push('You seem to have a surplus of ' + civitas.utils.get_resource_name(item) + '. You can sell some or place it on the Black Market and get coins instead.');
 				}
@@ -604,7 +626,7 @@ civitas.objects.settlement = function(params) {
 	 *
 	 * @public
 	 * @param {Object} location
-	 * @returns {civitas.settlement}
+	 * @returns {civitas.objects.settlement}
 	 */
 	this.set_location = function(location) {
 		this.location = location;
@@ -615,7 +637,7 @@ civitas.objects.settlement = function(params) {
 	 * Change this settlement's type to city.
 	 *
 	 * @public
-	 * @returns {civitas.settlement}
+	 * @returns {civitas.objects.settlement}
 	 */
 	this.to_city = function() {
 		this.properties.type = civitas.CITY;
@@ -625,7 +647,7 @@ civitas.objects.settlement = function(params) {
 	 * Change this settlement's type to village.
 	 *
 	 * @public
-	 * @returns {civitas.settlement}
+	 * @returns {civitas.objects.settlement}
 	 */
 	this.to_village = function() {
 		this.properties.type = civitas.VILLAGE;
@@ -635,7 +657,7 @@ civitas.objects.settlement = function(params) {
 	 * Change this settlement's type to metropolis.
 	 *
 	 * @public
-	 * @returns {civitas.settlement}
+	 * @returns {civitas.objects.settlement}
 	 */
 	this.to_metropolis = function() {
 		this.properties.type = civitas.METROPOLIS;
@@ -710,6 +732,10 @@ civitas.objects.settlement = function(params) {
 			return true;
 		}
 		return false;
+	};
+
+	this.color = function() {
+		return this.properties.color;
 	};
 
 	/**
@@ -894,7 +920,7 @@ civitas.objects.settlement = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.can_recruit_soldiers = function() {
-		return this.is_building_built('camp');
+		return this.is_building_built('militarycamp');
 	};
 
 	/**
@@ -1327,18 +1353,18 @@ civitas.objects.settlement = function(params) {
 		if (typeof settlement === 'number') {
 			this._status[settlement].status = mode;
 			if (mode === civitas.DIPLOMACY_WAR) {
-				this.core().achievement(50);
+				this.core().achievement('declarewar');
 				this.reset_influence(settlement);
 			} else if (mode === civitas.DIPLOMACY_ALLIANCE) {
-				this.core().achievement(56);
+				this.core().achievement('gotyourback');
 				this.set_influence(settlement, civitas.MAX_INFLUENCE_VALUE);
 			} else if (mode === civitas.DIPLOMACY_PACT) {
-				this.core().achievement(57);
+				this.core().achievement('pactish');
 				this.set_influence(settlement, Math.ceil(civitas.MAX_INFLUENCE_VALUE / 2));
 			} else if (mode === civitas.DIPLOMACY_CEASE_FIRE) {
 				this.set_influence(settlement, Math.ceil(civitas.MAX_INFLUENCE_VALUE / 4));
 			} else if (mode === civitas.DIPLOMACY_VASSAL) {
-				this.core().achievement(58);
+				this.core().achievement('youaremine');
 				this.set_influence(settlement, civitas.MAX_INFLUENCE_VALUE);
 			}
 			this.core().save_and_refresh();
@@ -1674,7 +1700,12 @@ civitas.objects.settlement = function(params) {
 			this.reset_faith();
 			this.refresh_heroes();
 			if (this.is_player()) {
-				this.core().notify('Your settlement`s new religion is <strong>' + this.religion().name + '</strong>');
+				this.core()._notify({
+					title: 'Religion Adopted',
+					mode: civitas.NOTIFY_RELIGION,
+					content: 'Your settlement`s new religion is <strong>' + this.religion().name + '</strong>',
+					timeout: false
+				});
 			}
 			this.core().save_and_refresh();
 			return true;
@@ -1843,7 +1874,7 @@ civitas.objects.settlement = function(params) {
 	this.merge_resources = function(resources) {
 		if (typeof resources !== 'undefined') {
 			for (var item in resources) {
-				if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
+				if (!civitas.utils.is_virtual_resource(item)) {
 					this.add_to_storage(item, resources[item]);
 				}
 			}
@@ -1861,10 +1892,12 @@ civitas.objects.settlement = function(params) {
 		while (count < 3) {
 			random_resource = tmp_res[Math.floor(Math.random() * tmp_res.length)];
 			resource = resources[random_resource];
-			if ($.inArray(random_resource, civitas.NON_RESOURCES) === -1 && resource > 0) {
-				if (this.remove_resource(random_resource, resource)) {
-					spoils[random_resource] = resource;
-					count++;
+			if (!civitas.utils.is_virtual_resource(random_resource)) {
+				if (resource > 0) {
+					if (this.remove_resource(random_resource, resource)) {
+						spoils[random_resource] = resource;
+						count++;
+					}
 				}
 			}
 		}
@@ -1923,7 +1956,7 @@ civitas.objects.settlement = function(params) {
 		}
 		var storage = 0;
 		for (var item in this.get_resources()) {
-			if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
+			if (!civitas.utils.is_virtual_resource(item)) {
 				storage += this.get_resources()[item];
 			}
 		}
@@ -2040,12 +2073,13 @@ civitas.objects.settlement = function(params) {
 		var total = 0;
 		if (typeof amount === 'undefined') {
 			for (var item in resources) {
-				if ($.inArray(item, civitas.NON_RESOURCES) === -1) {
+				if (!civitas.utils.is_virtual_resource(item)) {
 					total += resources[item];
 				}
 			}
 		} else {
-			if ($.inArray(resources, civitas.NON_RESOURCES) === -1) {
+			if (!civitas.utils.is_virtual_resource(resources)) {
+			//if ($.inArray(resources, civitas.NON_RESOURCES) === -1) {
 				total += amount;
 			}
 		}
@@ -2054,6 +2088,24 @@ civitas.objects.settlement = function(params) {
 			return false;
 		}
 		return true;
+	};
+
+	/**
+	 * Check if the settlement has any of the specified resources.
+	 *
+	 * @public
+	 * @param {Object} resources
+	 * @returns {Boolean}
+	 */
+	this.has_any_resources = function(resources) {
+		var good = false;
+		for (var item in resources) {
+			good = this.has_resource(item, resources[item]);
+			if (good === true) {
+				return item;
+			}
+		}
+		return false;
 	};
 
 	/**
@@ -2209,7 +2261,7 @@ civitas.objects.settlement = function(params) {
 							' for <strong>' + item_discount_price + '</strong> ' + 
 							civitas.utils.get_resource_name('coins') + 
 							' each, for a total of <strong>' + price + '</strong> ' + 
-							civitas.utils.get_resource_name('coins') + '.', civitas.l('World Market'));
+							civitas.utils.get_resource_name('coins') + '.', 'World Market');
 					}
 					return {
 						buyer: this.name(),
@@ -2309,7 +2361,7 @@ civitas.objects.settlement = function(params) {
 					civitas.utils.get_resource_name(resource) + 
 					' on the Black Market and will receive ' + price + ' ' + 
 					civitas.utils.get_resource_name('coins') + ' next month.', 
-					civitas.l('Black Market'));
+					'Black Market');
 			}
 			return {
 				seller: this.name(),
@@ -2406,7 +2458,7 @@ civitas.objects.settlement = function(params) {
 							' for <strong>' + item_discount_price + '</strong> ' + 
 							civitas.utils.get_resource_name('coins') + 
 							' each, for a total of <strong>' + price + '</strong> ' + 
-							civitas.utils.get_resource_name('coins') + '.', civitas.l('World Market'));
+							civitas.utils.get_resource_name('coins') + '.', 'World Market');
 					}
 					return {
 						seller: this.name(),
@@ -2481,6 +2533,19 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.get_trades_imports = function() {
 		return this.trades.imports;
+	};
+
+	this.nice_name = function() {
+		var settlement_type = this.get_type();
+		if (settlement_type === civitas.METROPOLIS) {
+			return 'Metropolis of ' + this.name();
+		} else if (settlement_type === civitas.CITY) {
+			return 'City of ' + this.name();
+		} else if (settlement_type === civitas.VILLAGE) {
+			return 'Village of ' + this.name();
+		} else {
+			return '';
+		}
 	};
 
 	/**

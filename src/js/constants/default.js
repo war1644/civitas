@@ -18,21 +18,6 @@ if (typeof civitas.modules === 'undefined') {
 }
 
 /**
- * i8n function.
- * 
- * @param {String} value
- * @returns {String}
- */
-civitas.l = function (value) {
-	if (typeof civitas.lang[value] !== 'undefined' &&
-		civitas.lang[value] !== '') {
-		return civitas.lang[value];
-	} else {
-		return value;
-	}
-};
-
-/**
  * Autostart music or not.
  * 
  * @constant
@@ -94,7 +79,7 @@ civitas.SECONDS_TO_DAY = 10;
  * @constant
  * @type {Number}
  */
-civitas.AVATARS = 10;
+civitas.AVATARS = 99;
 
 civitas.TRADES_ADDITION = 10;
 
@@ -115,14 +100,6 @@ civitas.POPULATION_PER_LEVEL = 2300;
  * @type {Number}
  */
 civitas.BLACK_MARKET_DISCOUNT = 80;
-
-/**
- * Total number of world maps.
- *
- * @constant
- * @type {Number}
- */
-civitas.WORLDMAPS = 9;
 
 /**
  * Fame required for each city level.
@@ -335,6 +312,30 @@ civitas.NOTIFY_NORMAL = 2;
  * @type {Number}
  */
 civitas.NOTIFY_EVENT = 3;
+
+/**
+ * Research notification.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.NOTIFY_RESEARCH = 4;
+
+/**
+ * Religion notification.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.NOTIFY_RELIGION = 5;
+
+/**
+ * War notification.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.NOTIFY_WAR = 6;
 
 /**
  * Max numbers of lines to show in the console. Too many will overload the DOM.

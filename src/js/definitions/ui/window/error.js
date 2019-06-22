@@ -9,21 +9,21 @@ civitas.WINDOW_ERROR = {
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
 			'<fieldset>' +
-				civitas.l('An error has occured in Civitas and the game is unable to resume.') +
+				'An error has occured in Civitas and the game is unable to resume.' +
 				'<br /><br />' +
 				'<span class="error-message"></span>' +
 				'<br />' +
 				'<span class="error-code"></span>' +
 				'<br /><br />' +
-				'<a href="#" class="do-restart button">' + civitas.l('Restart') + '</a>' +
+				'<a href="#" class="do-restart button">Restart</a>' +
 			'</fieldset>' +
 		'</section>',
 	on_show: function() {
 		var self = this;
 		var core = this.core();
 		var handle = this.handle();
-		$(handle + ' .error-message').html(civitas.l('Message: ') + this.params_data.error);
-		$(handle + ' .error-code').html(civitas.l('Code: ') + this.params_data.code);
+		$(handle + ' .error-message').html('Message: ' + this.params_data.error);
+		$(handle + ' .error-code').html('Code: ' + this.params_data.code);
 		$(handle).on('click', '.do-restart', function () {
 			core.open_modal(
 				function(button) {

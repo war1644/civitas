@@ -4,16 +4,22 @@
  * @type {Object}
  */
 civitas.PANEL_COUNCIL = {
-	template: civitas.ui.generic_panel_template(civitas.l('City Council')),
+	template: civitas.ui.generic_panel_template('City Council'),
 	id: 'council',
 	on_show: function(params) {
 		var core = this.core();
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), 
-			civitas.l('Tips'), civitas.l('Production'), civitas.l('Housing'), 
-			civitas.l('Municipal'), civitas.l('Mercenary'), civitas.l('Achievements')]));
+		$(this.handle + ' section').append(civitas.ui.tabs([
+			'Info',
+			'Tips',
+			'Production',
+			'Housing',
+			'Municipal',
+			'Mercenary',
+			'Achievements'
+		]));
 		var _t = '<div class="achievements-list">';
 		for (var i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
-			_t += '<div data-id="' + civitas.ACHIEVEMENTS[i].id + '" class="achievement">' +
+			_t += '<div data-handle="' + civitas.ACHIEVEMENTS[i].handle + '" class="achievement">' +
 				'<div class="left">' +
 					'<div class="ach img"></div>' +
 					'<div class="ach points">' + civitas.ACHIEVEMENTS[i].points + '</div>' +
@@ -23,7 +29,7 @@ civitas.PANEL_COUNCIL = {
 						'<h2>' + civitas.ACHIEVEMENTS[i].name + '</h2>' +
 						civitas.ACHIEVEMENTS[i].description +
 					'</div>' +
-					'<div class="time"></div>' +
+					'<div class="time-ago"></div>' +
 				'</div>' +
 			'</div>';
 		}
@@ -58,7 +64,7 @@ civitas.PANEL_COUNCIL = {
 				if (typeof panel !== 'undefined') {
 					core.open_panel(panel, building_data);
 				} else {
-					core.open_panel(civitas.PANEL_BUILDING, building_data);
+					core.open_panel(civitas.PANEL_BUILDING, building_data, true);
 				}
 			}
 			return false;
@@ -67,7 +73,7 @@ civitas.PANEL_COUNCIL = {
 			var building = core.get_settlement().get_building(handle);
 			if (building && building.stop_production()) {
 				$(this).removeClass('pause').addClass('start');
-				$(this).attr('title', civitas.l('Start production'));
+				$(this).attr('title', 'Start production');
 			}
 			return false;
 		}).on('click', '.start', function () {
@@ -75,7 +81,7 @@ civitas.PANEL_COUNCIL = {
 			var building = core.get_settlement().get_building(handle);
 			if (building && building.start_production()) {
 				$(this).removeClass('start').addClass('pause');
-				$(this).attr('title', civitas.l('Stop production'));
+				$(this).attr('title', 'Stop production');
 			}
 			return false;
 		});
@@ -101,8 +107,8 @@ civitas.PANEL_COUNCIL = {
 			faith: 0
 		}
 		var mercenary = settlement.mercenary();
-		var _t = '<p>' + civitas.l('Mercenary armies are available to hire for a fixed price, they do not cost additional resources but they are only available for raiding and campaign missions, they do not participate in the defense of your city.') + '</p>' +
-			'<p>' + civitas.l('Also, keep in mind that once a mercenary army is hired, they are at your disposal until the end of the current year.') + '</p>' +
+		var _t = '<p>Mercenary armies are available to hire for a fixed price, they do not cost additional resources but they are only available for raiding and campaign missions, they do not participate in the defense of your city.</p>' +
+			'<p>Also, keep in mind that once a mercenary army is hired, they are at your disposal until the end of the current year.</p>' +
 			'<div class="hired-mercenaries-list">';
 		if (mercenary.length > 0) {
 			_t += '<table class="normal">';
@@ -118,52 +124,57 @@ civitas.PANEL_COUNCIL = {
 							'<p class="description">' + army_data.description + '</p>' +
 						'</td>' +
 						'<td class="large">' +
-							'<a title="' + civitas.l('View info on this mercenary army.') + 
-							'" data-id="' + mercenary[i].id + 
-							'" class="tips view-merc" href="#">' + civitas.l('view') +
-							'</a> ' +
-							'<a title="' + civitas.l('Send this mercenary army on a raiding ' +
-							'mission towards a specific settlement.') + '" data-id="' + i + 
-							'" class="tips raid-merc" href="#">' + civitas.l('raid') + '</a> ' +
-							'<a title="' + civitas.l('Disband this mercenary army? They will ' +
-							'be available for hire later when you need them.') + '" data-id="' + 
-							i + '" class="tips disband-merc" href="#">' + civitas.l('release') + 
-							'</a>' +
+							'<a title="View info on this mercenary army." data-id="' + mercenary[i].id + '" class="tips view-merc" href="#">view</a> ' +
+							'<a title="Send this mercenary army on a raiding mission towards a specific settlement." data-id="' + i + '" class="tips raid-merc" href="#">raid</a> ' +
+							'<a title="Disband this mercenary army? They will be available for hire later when you need them." data-id="' + i + '" class="tips disband-merc" href="#">release</a>' +
 						'</td>' +
 					'</tr>';
 
 			}
 			_t += '</table>';
 		} else {
-			_t += '<p>' + civitas.l('You have no mercenary armies hired for your city. Go to the World Market Trades and hire one.') + '</p>';
+			_t += '<p>You have no mercenary armies hired for your city. Go to the World Market Trades and hire one.</p>';
 		}
 		_t += '</div>';
 		$(this.handle + ' #tab-mercenary').empty().append(_t);
 		for (var f = 0; f < achievements.length; f++) {
 			if (typeof achievements[f] !== 'undefined') {
-				$(this.handle + ' .achievement[data-id=' + achievements[f].id + ']').addClass('has');
-				$(this.handle + ' .achievement[data-id=' + achievements[f].id + '] .time')
+				$(this.handle + ' .achievement[data-handle=' + achievements[f].handle + ']').addClass('has');
+				$(this.handle + ' .achievement[data-handle=' + achievements[f].handle + '] .time-ago')
 					/*.attr("title", achievements[f].date)*/
-					.html('<strong>' + civitas.utils.time_since(achievements[f].date) + '</strong> ' + civitas.l('ago'));
+					.html(civitas.utils.time_since(achievements[f].date) + ' ago');
 			}
 		}
-		_t = '<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + 
-			settlement.ruler().avatar + '.png" />' +
-				'<dl>' +
-				'<dt>' + civitas.l('Current date') + '</dt><dd class="citydate">' + core.format_date() + '</dd>' +
-				'<dt>' + civitas.l('Ruler') + '</dt><dd>' + settlement.ruler().name + '</dd>' +
-				'<dt>' + civitas.l('Climate') + '</dt><dd>' + settlement.climate().name + '</dd>' +
-				'<dt>' + civitas.l('Personality') + '</dt><dd>' + settlement.personality().name + '</dd>' +
-				'<dt>' + civitas.l('Nationality') + '</dt><dd>' + settlement.nationality().name + '</dd>' +
-				'<dt>' + civitas.l('Population') + '</dt><dd>' + civitas.utils.nice_numbers(settlement.population()) + '</dd>' +
-				'<dt>' + civitas.l('Achievement Points') + '</dt><dd>' + core.achievement_points() + '</dd>' +
-				'<dt>' + civitas.l('Religion') + '</dt><dd>' + settlement.religion().name + '</dd>' +
-				'<dt>' + civitas.l('Level') + '</dt><dd>' + civitas.ui.progress((settlement.level() * 100) / civitas.MAX_SETTLEMENT_LEVEL, 'small', settlement.level()) + '</dd>' +
-				'<dt>' + civitas.l('Fame') + '</dt><dd>' + civitas.ui.progress((settlement.fame() * 100) / civitas.LEVELS[settlement.level()], 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(civitas.LEVELS[settlement.level()])) + '</dd>' +
-				'<dt>' + civitas.l('Prestige') + '</dt><dd>' + civitas.ui.progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' +
-				'<dt>' + civitas.l('Espionage') + '</dt><dd>' + civitas.ui.progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'small', settlement.espionage()) + '</dd>' +
-				'<dt>' + civitas.l('Faith') + '</dt><dd>' + civitas.ui.progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'small', settlement.faith()) + '</dd>' +
-				'<dt>' + civitas.l('Research') + '</dt><dd>' + civitas.ui.progress((settlement.research() * 100) / civitas.MAX_RESEARCH_VALUE, 'small', settlement.research()) + '</dd>' +
+		_t = '<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
+			'<dl>' +
+				'<dt>Current date</dt>' +
+				'<dd class="citydate">' + core.format_date() + '</dd>' +
+				'<dt>Ruler</dt>' +
+				'<dd>' + settlement.ruler().name + '</dd>' +
+				'<dt>Climate</dt>' +
+				'<dd>' + settlement.climate().name + '</dd>' +
+				'<dt>Personality</dt>' +
+				'<dd>' + settlement.personality().name + '</dd>' +
+				'<dt>Nationality</dt>' +
+				'<dd>' + settlement.nationality().name + '</dd>' +
+				'<dt>Population</dt>' +
+				'<dd>' + civitas.utils.nice_numbers(settlement.population()) + '</dd>' +
+				'<dt>Achievement Points</dt>' +
+				'<dd>' + core.achievement_points() + '</dd>' +
+				'<dt>Religion</dt>' +
+				'<dd>' + settlement.religion().name + '</dd>' +
+				'<dt>Level</dt>' +
+				'<dd>' + civitas.ui.progress((settlement.level() * 100) / civitas.MAX_SETTLEMENT_LEVEL, 'small', settlement.level()) + '</dd>' +
+				'<dt>Fame</dt>' +
+				'<dd>' + civitas.ui.progress((settlement.fame() * 100) / civitas.LEVELS[settlement.level()], 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(civitas.LEVELS[settlement.level()])) + '</dd>' +
+				'<dt>Prestige</dt>' +
+				'<dd>' + civitas.ui.progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' +
+				'<dt>Espionage</dt>' +
+				'<dd>' + civitas.ui.progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'small', settlement.espionage()) + '</dd>' +
+				'<dt>Faith</dt>' +
+				'<dd>' + civitas.ui.progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'small', settlement.faith()) + '</dd>' +
+				'<dt>Research</dt>' +
+				'<dd>' + civitas.ui.progress((settlement.research() * 100) / civitas.MAX_RESEARCH_VALUE, 'small', settlement.research()) + '</dd>' +
 			'</dl>';
 		$(this.handle + ' #tab-info').empty().append(_t);
 		_t = '';
@@ -179,10 +190,9 @@ civitas.PANEL_COUNCIL = {
 			'<thead>' +
 				'<tr>' +
 					'<td></td>' +
-					'<td class="tips center" title="' + civitas.l('Current level / Maximum level') +
-					'">' + civitas.l('Level') + '</td>' +
-					'<td>' + civitas.l('Raises') + '</td>' +
-					'<td>' + civitas.l('Uses') + '</td>' +
+					'<td class="tips center" title="Current level / Maximum level">Level</td>' +
+					'<td>Raises</td>' +
+					'<td>Uses</td>' +
 				'</tr>' +
 			'</thead>';
 		for (var l = 0; l < buildings.length; l++) {
@@ -201,9 +211,18 @@ civitas.PANEL_COUNCIL = {
 				_t += '</td>' +
 					'<td>';
 					if (building_data.materials) {
-						for (var item in building_data.materials) {
-							total_costs += (buildings[l].has_problems() === false) ? building_data.materials[item] : 0;
-							_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+						if (Array.isArray(building_data.materials)) {
+							for (var i = 0; i < building_data.materials.length; i++) {
+								for (var y in building_data.materials[i]) {
+									total_costs += (buildings[l].has_problems() === false) ? building_data.materials[i][y] : 0;
+									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
+								}
+							}
+						} else {
+							for (var item in building_data.materials) {
+								total_costs += (buildings[l].has_problems() === false) ? building_data.materials[item] : 0;
+								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+							}
 						}
 					}
 				_t += '</td>' +
@@ -217,7 +236,7 @@ civitas.PANEL_COUNCIL = {
 		}
 		_t += '<tfoot>' +
 					'<tr>' +
-						'<td>' + civitas.l('Total') + '</td>' +
+						'<td>Total</td>' +
 						'<td></td>' +
 						'<td>' + _z + '</td>' +
 						'<td>' + (total_costs > 0 ? '-' : '') + total_costs + ' ' + civitas.ui.resource_small_img('coins') + '</td>' +
@@ -229,9 +248,9 @@ civitas.PANEL_COUNCIL = {
 			'<thead>' +
 				'<tr>' +
 					'<td></td>' +
-					'<td class="tips center" title="' + civitas.l('Current level / Maximum level') + '">' + civitas.l('Level') + '</td>' +
-					'<td>' + civitas.l('Tax') + '</td>' +
-					'<td>' + civitas.l('Materials') + '</td>' +
+					'<td class="tips center" title="Current level / Maximum level">Level</td>' +
+					'<td>Tax</td>' +
+					'<td>Materials</td>' +
 				'</tr>' +
 			'</thead>';
 		for (var l = 0; l < buildings.length; l++) {
@@ -247,9 +266,17 @@ civitas.PANEL_COUNCIL = {
 					}
 				_t += '</td>' +
 					'<td>';
-					if (building_data.materials) {
-						for (var item in building_data.materials) {
-							_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+					if (typeof building_data.materials !== 'undefined') {
+						if (Array.isArray(building_data.materials)) {
+							for (var i = 0; i < building_data.materials.length; i++) {
+								for (var y in building_data.materials[i]) {
+									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
+								}
+							}
+						} else {
+							for (var item in building_data.materials) {
+								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+							}
 						}
 					}
 				_t += '</td>' +
@@ -258,7 +285,7 @@ civitas.PANEL_COUNCIL = {
 		}
 		_t += '<tfoot>' +
 					'<tr>' +
-						'<td>' + civitas.l('Income') + '</td>' +
+						'<td>Income</td>' +
 						'<td></td>' +
 						'<td>+' + total_tax + ' ' + civitas.ui.resource_small_img('coins') + '</td>' +
 						'<td></td>' +
@@ -270,9 +297,9 @@ civitas.PANEL_COUNCIL = {
 			'<thead>' +
 				'<tr>' +
 					'<td></td>' +
-					'<td class="tips center" title="' + civitas.l('Current level / Maximum level') + '">' + civitas.l('Level') + '</td>' +
-					'<td>' + civitas.l('Production') + '</td>' +
-					'<td>' + civitas.l('Materials') + '</td>' +
+					'<td class="tips center" title="Current level / Maximum level">Level</td>' +
+					'<td>Production</td>' +
+					'<td>Materials</td>' +
 					'<td></td>' +
 				'</tr>' +
 			'</thead>';
@@ -291,13 +318,21 @@ civitas.PANEL_COUNCIL = {
 				_t += '</td>' +
 					'<td>';
 					if (building_data.materials) {
-						for (var item in building_data.materials) {
-							_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+						if (Array.isArray(building_data.materials)) {
+							for (var i = 0; i < building_data.materials.length; i++) {
+								for (var y in building_data.materials[i]) {
+									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
+								}
+							}
+						} else {
+							for (var item in building_data.materials) {
+								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+							}
 						}
 					}
 				_t += '</td>' +
 					'<td class="center">' + 
-						'<a title="' + (!buildings[l].is_stopped() ? civitas.l('Stop production') : civitas.l('Start production')) + '" data-handle="' + buildings[l].get_handle() + '" class="tips ' + (!buildings[l].is_stopped() ? 'pause' : 'start') + ' btn" href="#"></a>' +
+						'<a title="' + (!buildings[l].is_stopped() ? 'Stop production' : 'Start production') + '" data-handle="' + buildings[l].get_handle() + '" class="tips ' + (!buildings[l].is_stopped() ? 'pause' : 'start') + ' btn" href="#"></a>' +
 					'</td>' +
 				'</tr>';
 			}
@@ -305,9 +340,9 @@ civitas.PANEL_COUNCIL = {
 		_t += '<tfoot>' +
 					'<tr>' +
 						'<td></td>' +
-						'<td class="center">' + civitas.l('Level') + '</td>' +
-						'<td>' + civitas.l('Production') + '</td>' +
-						'<td>' + civitas.l('Materials') + '</td>' +
+						'<td class="center">Level</td>' +
+						'<td>Production</td>' +
+						'<td>Materials</td>' +
 						'<td></td>' +
 					'</tr>' +
 				'</tfoot>' +

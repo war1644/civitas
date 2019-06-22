@@ -112,7 +112,7 @@ civitas.objects.building = function(params) {
 				if (typeof panel !== 'undefined') {
 					self.core().open_panel(panel, params.data);
 				} else {
-					self.core().open_panel(civitas.PANEL_BUILDING, params.data);
+					self.core().open_panel(civitas.PANEL_BUILDING, params.data, true);
 				}
 				return false;
 			});
@@ -528,20 +528,49 @@ civitas.objects.building = function(params) {
 				var products = building.production;
 				if (this.has_requirements()) {
 					if (typeof materials !== 'undefined') {
-						if (this.get_settlement().has_resources(materials)) {
-							if (this.get_settlement().has_storage_space_for(products)) {
-								this.get_settlement().remove_resources(materials);
-								if (this.produce(products)) {
-									this.log_to_console();
+						if (Array.isArray(materials)) {
+							var all_good = true;
+							var removable = {};
+							for (var i = 0; i < materials.length; i++) {
+								var res = this.get_settlement().has_any_resources(materials[i]);
+								if (res !== false) {
+									removable[res] = materials[i][res];
+								} else {
+									all_good = false;
+								}
+							}
+							if (all_good === true) {
+								if (this.get_settlement().has_storage_space_for(products)) {
+									this.get_settlement().remove_resources(removable);
+									if (this.produce(products)) {
+										this.log_to_console();
+									}
+								} else {
+									this.core().log('game', 'There is no storage space in your city to accomodate the new goods.', true);
+									this.problems = true;
+									return false;
 								}
 							} else {
-								this.core().log('game', 'There is no storage space in your city to accomodate the new goods.', true);
+								this.notify(civitas.NOTIFICATION_MISSING_RESOURCES);
 								this.problems = true;
 								return false;
 							}
 						} else {
-							this.notify(civitas.NOTIFICATION_MISSING_RESOURCES);
-							return false;
+							if (this.get_settlement().has_resources(materials)) {
+								if (this.get_settlement().has_storage_space_for(products)) {
+									this.get_settlement().remove_resources(materials);
+									if (this.produce(products)) {
+										this.log_to_console();
+									}
+								} else {
+									this.core().log('game', 'There is no storage space in your city to accomodate the new goods.', true);
+									this.problems = true;
+									return false;
+								}
+							} else {
+								this.notify(civitas.NOTIFICATION_MISSING_RESOURCES);
+								return false;
+							}
 						}
 					} else {
 						if (this.get_settlement().has_storage_space_for(products)) {
@@ -679,10 +708,24 @@ civitas.objects.building = function(params) {
 			_p = _p.substring(0, _p.length - 2);
 		}
 		if (typeof building.materials !== 'undefined') {
-			for (var item in building.materials) {
-				_m += building.materials[item] + ' ' + item + ', ';
+			if (Array.isArray(building.materials)) {
+				var removable = {};
+				for (var i = 0; i < building.materials.length; i++) {
+					var res = this.get_settlement().has_any_resources(building.materials[i]);
+					if (res !== false) {
+						removable[res] = building.materials[i][res];
+					}
+				}
+				for (var item in removable) {
+					_m += removable[item] + ' ' + item + ', ';
+				}
+				_m = _m.substring(0, _m.length - 2);
+			} else {
+				for (var item in building.materials) {
+					_m += building.materials[item] + ' ' + item + ', ';
+				}
+				_m = _m.substring(0, _m.length - 2);
 			}
-			_m = _m.substring(0, _m.length - 2);
 		}
 		if (typeof building.tax !== 'undefined') {
 			this.core().log('game', this.get_name() + ' used ' + _m + ' and got taxed for ' + (building.tax * this.get_level()) + ' coins.');

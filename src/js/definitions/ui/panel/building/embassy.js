@@ -14,7 +14,11 @@ civitas.PANEL_EMBASSY = {
 		var status = settlement.status();
 		var building = core.get_settlement().get_building(this.params_data.handle);
 		var level = building.get_level();
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), civitas.l('Diplomacy'), civitas.l('Espionage')]));
+		$(this.handle + ' section').append(civitas.ui.tabs([
+			'Info',
+			'Diplomacy',
+			'Espionage'
+		]));
 		$(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
 		$(this.handle).on('click', '.view', function () {
 			var _settlement_id = parseInt($(this).data('id'));
@@ -41,24 +45,24 @@ civitas.PANEL_EMBASSY = {
 				var _status = settlement.get_diplomacy_status(settlements[i].id());
 				var settlement_type = settlements[i].get_type();
 				if (settlements[i].is_city()) {
-					settlement_type_text = civitas.l('City of') + ' ';
+					settlement_type_text = 'City of';
 				} else if (settlements[i].is_metropolis()) {
-					settlement_type_text = civitas.l('Metropolis of') + ' ';
+					settlement_type_text = 'Metropolis of';
 				} else {
-					settlement_type_text = civitas.l('Village of') + ' '
+					settlement_type_text = 'Village of'
 				}
 				_t += '<tr>' +
 						'<td class="icon">' +
-							'<a data-id="' + settlements[i].id() + '" title="' + civitas.l('View info about this settlement.') + '" class="tips view" href="#"><img src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" /></a>' +
+							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#"><img src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" /></a>' +
 						'</td>' +
 						'<td>' +
-							'<p class="title">' + settlement_type_text + settlements[i].name() + '</p> ' +
+							'<p class="title">' + settlement_type_text + ' ' + settlements[i].name() + '</p> ' +
 							'<div data-id="' + settlements[i].id() + '" >' + civitas.ui.progress(status[settlements[i].id()].influence, 'big') + '</div>' +
 						'</td>' +
 						'<td>' +
-							'<p>' + civitas.l('Leader') + ': <strong>' + settlements[i].ruler().name + '</strong>' + '</p>' +
-							'<p>' + civitas.l('Personality') + ': <strong>' + settlements[i].personality().name + '</strong>' + '</p>' +
-							'<p>' + civitas.l('Diplomatic Status') + ': <strong>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</strong>' + '</p>' +
+							'<p>Leader: <strong>' + settlements[i].ruler().name + '</strong>' + '</p>' +
+							'<p>Personality: <strong>' + settlements[i].personality().name + '</strong>' + '</p>' +
+							'<p>Diplomatic Status: <strong>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</strong>' + '</p>' +
 						'</td>' +
 					'</tr>';
 			}

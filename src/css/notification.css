@@ -4,7 +4,7 @@
 	position: fixed;
 	top: 50px;
 	right: 10px;
-	width: 340px;
+	width: 360px;
 	z-index: 99999;
 }
 
@@ -22,11 +22,11 @@
 	margin-bottom: 10px;
 	color: #444;
 	font-size: 12px;
-	background-color: #fff;
-	box-shadow: 0 0 5px #ccc;
+	background-color: #DCDCE6;
+	box-shadow: 0 0 2px #000;
 	position: relative;
 	overflow: hidden;
-	opacity: 0.8;
+	opacity: 0.9;
 }
 
 .achievement.has {
@@ -72,11 +72,19 @@
 }
 
 .notifications .notty.error {
-	background-color: #f5c0c0;
+	background-color: #E194A1;
 }
 
 .notifications .notty.event {
-	background-color: #c0c5f5;
+	background-color: #77BDE5;
+}
+
+.notifications .notty.research {
+	background-color: #7AE3D2;
+}
+
+.notifications .notty.religion {
+	background-color: #C79BFD;
 }
 
 .notifications .notty .hide,
@@ -115,15 +123,15 @@
 	display: block !important;
 }
 
-.notifications .notty .time,
-.achievement .time {
+.notifications .notty .time-ago,
+.achievement .time-ago {
 	font-size: 9px;
 	position: relative;
 	float: right;
 }
 
-.notifications .notty .right .time,
-.achievement .right .time {
+.notifications .notty .right .time-ago,
+.achievement .right .time-ago {
 	margin-right: 10px;
 }
 

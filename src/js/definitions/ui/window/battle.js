@@ -6,18 +6,14 @@
 civitas.WINDOW_BATTLE = {
 	template: '<section id="window-{ID}" class="window">' +
 			'<div class="container">' +
-				'<div title="' + civitas.l('Attack and defense rating for the attacking army.') +
-				'" class="tips attack"></div>' +
-				'<div title="' + civitas.l('Attack and defense rating for the defending army.') +
-				'" class="tips defense"></div>' +
+				'<div title="Attack and defense rating for the attacking army." class="tips attack"></div>' +
+				'<div title="Attack and defense rating for the defending army." class="tips defense"></div>' +
 				'<div class="battleground"></div>' +
-				'<div title="' + civitas.l('Current turn.') + '" class="tips turns">1</div>' +
+				'<div title="Current turn." class="tips turns">1</div>' +
 				'<div class="status"></div>' +	
 				'<div class="toolbar">' +
-					'<a title="' + civitas.l('End current turn.') +
-					'" class="tips button end" href="#">' + civitas.l('End turn') + '</a> ' +
-					'<a title="' + civitas.l('Close the window.') +
-					'" class="tips button close" href="#">' + civitas.l('Close') + '</a>' +
+					'<a title="End current turn." class="tips button end" href="#">End turn</a> ' +
+					'<a title="Close the window." class="tips button close" href="#">Close</a>' +
 				'</div>' +
 			'</div>' +
 		'</section>',
@@ -48,12 +44,12 @@ civitas.WINDOW_BATTLE = {
 				navy: this.params_data.destination.navy
 			},
 			on_win: function(winner, loser) {
-				core.achievement(54);
+				core.achievement('conqueror');
 				$(handle + ' .end').hide();
 				$(handle + ' .close').show();
 			},
 			on_lose: function(winner, loser) {
-				core.achievement(55);
+				core.achievement('foolish');
 				$(handle + ' .end').hide();
 				$(handle + ' .close').show();
 			},

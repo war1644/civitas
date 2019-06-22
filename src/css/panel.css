@@ -36,6 +36,7 @@
 
 .ui .panel .toolbar {
 	margin-top: 10px;
+	clear: both;
 }
 
 .ui .panel a {
@@ -66,7 +67,7 @@
 .ui .panel section .buildings-info.right {
 	display: none;
 	float: left;
-	width: 310px;
+	width: 440px;
 	margin-left: 10px;
 }
 
@@ -96,8 +97,7 @@
 .ui .panel footer a {
 	width: 46px;
 	height: 46px;
-	display: block;
-	float: left;
+	display: inline-block;
 	cursor: pointer;
 	margin-right: 8px;
 }
@@ -124,7 +124,7 @@
 }
 
 #panel-council section dd,
-#panel-camp section dd,
+#panel-militarycamp section dd,
 #panel-shipyard section dd {
 	width: auto;
 }
@@ -246,31 +246,39 @@
 	line-height: 20px;
 }
 
+#panel-help img.help {
+	width: 200px;
+}
+
 /* Worldmap panel */
 
 #panel-world {
-	max-width: 1100px;
-	max-height: 660px;
+	max-width: 1200px;
+	max-height: 700px;
+	width: 1200px;
+	height: 700px;
+	box-sizing: border-box;
 }
 
 #panel-world .worldmap {
-	width: 1024px;
-	height: 600px;
+	width: 1180px;
+	height: 640px;
 	background-size: auto 100%;
 	position: relative;
+	overflow: hidden;
 }
 
 #panel-world .worldmap .settlement,
-#panel-world .worldmap .army,
-#panel-world .worldmap .caravan,
-#panel-world .worldmap .army-return,
-#panel-world .worldmap .spy,
-#panel-world .worldmap .messenger {
-	position: absolute;
+#panel-world .worldmap .troop {
 	width: 32px;
 	height: 32px;
 	cursor: pointer;
 }
+
+#panel-world .w-t-p {
+	opacity: 0.3;
+}
+
 
 /* World Trades panel */
 
@@ -288,7 +296,7 @@
 
 /* City Council panel */
 
-#panel-camp,
+#panel-militarycamp,
 #panel-shipyard {
 	width: 780px;
 	max-width: 780px;
@@ -397,6 +405,17 @@
 	height: auto;
 }
 
+.ui .panel .storage-board {
+	width: 560px;
+	height: 100%;
+	padding: 10px;
+}
+
+#panel-storage .total-storage, 
+#panel-storage .used-storage {
+	font-weight: bold;
+}
+
 .ui .panel .navy-item,
 .ui .panel .army-item,
 .ui .panel .storage-item {
@@ -477,7 +496,7 @@
 /* City Builder panel */
 
 #panel-buildings {
-	max-width: 940px;
+	max-width: 1070px;
 	max-height: 640px;
 	height: auto;
 	width: 510px;
@@ -488,7 +507,7 @@
 }
 
 #panel-buildings.expanded {
-	width: 830px !important;
+	width: 960px !important;
 }
 
 #panel-buildings .building-item .building-info .btn {
@@ -506,7 +525,7 @@
 	text-align: center;
 	margin: 0 10px 10px 0;
 	position: relative;
-	box-shadow: inset 0 0 4px 0 rgba(0, 155, 70, 0.75);
+	box-shadow: inset 0 0 10px 0 rgba(0, 155, 70, 0.75);
 	cursor: pointer;
 	opacity: 0.8;
 }
@@ -532,7 +551,7 @@
 }
 
 #panel-buildings .building-item.disabled {
-	box-shadow: inset 0 0 4px 0 rgba(186, 105, 74, 0.75);
+	box-shadow: inset 0 0 10px 0 rgba(186, 105, 74, 0.75);
 }
 
 #panel-buildings .building-item .title {
@@ -565,6 +584,19 @@
 	float: left;
 }
 
+.ui aside .panel .column {
+	float: none;
+}
+
+.ui .panel .column-small {
+	width: 215px;
+	float: left;
+}
+
+.ui .panel .column-small:nth-child(3) {
+	margin-left: 10px;
+}
+
 .ui .panel .column:last-of-type {
 	margin-left: 10px;
 }
@@ -583,6 +615,47 @@
 	max-height: 600px;
 	max-width: 620px;
 	width: 620px;
+}
+
+#panel-academy .column-left {
+	width: 310px;
+	height: 400px;
+	overflow: auto;
+	margin-top:10px;
+	float: left;
+}
+
+#panel-academy .column-right {
+	width: 298px;
+	float: left;
+	margin-left: 10px;
+}
+
+#panel-academy .technology {
+	cursor: pointer;
+	float: left;
+	margin: 4px;
+	opacity: 0.8;
+}
+
+#panel-academy .technology.selected {
+	opacity: 1;
+}
+
+#panel-academy .technology.selected img {
+	/*box-shadow: inset 0 0 20px 0 rgba(255, 0, 0, 0.75);*/
+}
+
+#panel-academy .technology.has img {
+	box-shadow: inset 0 0 10px 0 rgba(186, 105, 74, 0.75);
+}
+
+#panel-academy .technology img {
+	width: 64px;
+	height: 64px;
+	border-radius: 100%;
+	padding: 15px;
+	box-shadow: inset 0 0 10px 0 rgba(0, 155, 70, 0.75)
 }
 
 #panel-tavern {
@@ -734,4 +807,56 @@ a.wikipedia {
 	height: 20px;
 	background: transparent url(../images/ui/wikipedia.png) no-repeat;
 	display: inline-block;
+}
+
+.ui aside .panel {
+	position: static;
+	top: 0;
+	left: 0;
+	z-index: 99997;
+	background-color: #ECD0B7;
+	color: #444;
+	padding: 10px;
+	box-shadow: 0 0 0 transparent;
+}
+
+.ui aside .panel {
+	width: 310px;
+	max-height: 100%;
+}
+
+.ui aside .panel header {
+	cursor: default;
+}
+
+.ui aside .panel footer {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	position: fixed;
+	bottom: 0;
+}
+
+.ui aside .panel section {
+	overflow: scroll;
+	height: calc(100% - 81px);
+}
+
+.ui aside .panel section p {
+	text-align: justify;
+}
+
+.ui .panel footer a {
+	background-color: #BF9A76;
+	border-radius: 10px;
+	background-size: 32px 32px;
+	background-position: center center;
+}
+
+.ui .panel footer a:hover {
+	background-color: #9F7E5E;
+}
+
+#panel-campaign {
+	min-width: 400px;
 }

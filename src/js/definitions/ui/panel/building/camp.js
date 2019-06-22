@@ -3,14 +3,17 @@
  *
  * @type {Object}
  */
-civitas.PANEL_CAMP = {
+civitas.PANEL_MILITARYCAMP = {
 	template: civitas.ui.building_panel_template(),
-	id: 'camp',
+	id: 'militarycamp',
 	on_show: function(params) {
 		var self = this;
 		var core = this.core();
 		var settlement = core.get_settlement();
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), civitas.l('Army')]));
+		$(this.handle + ' section').append(civitas.ui.tabs([
+			'Info',
+			'Army'
+		]));
 		var _t = '<div class="army-list"></div>' +
 				'<div class="army-recruiter">';
 		for (var item in civitas.SOLDIERS) {
@@ -29,7 +32,7 @@ civitas.PANEL_CAMP = {
 							'<dt>Defense</dt><dd>' + civitas.SOLDIERS[item].defense + '</dd>' +
 						'</dl>' +
 					'</div>' +
-					'<img data-handle="' + item + '" title="' + civitas.l('Recruit') + ' ' + civitas.SOLDIERS[item].name + '" class="tips recruit-soldier" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase() + '.png" />' +
+					'<img data-handle="' + item + '" title="Recruit ' + civitas.SOLDIERS[item].name + '" class="tips recruit-soldier" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase() + '.png" />' +
 				'</fieldset>';
 		}
 		_t += '</div>';
@@ -57,7 +60,7 @@ civitas.PANEL_CAMP = {
 		if (building) {
 			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, building.get_level()));
 			$(this.handle + ' .army-list').empty().append('<fieldset>' +
-					'<legend>' + civitas.l('Current Army') + '</legend>' + civitas.ui.army_list(settlement.get_army(), true) +
+					'<legend>Current Army</legend>' + civitas.ui.army_list(settlement.get_army(), true) +
 				'</fieldset>');
 		} else {
 			this.destroy();

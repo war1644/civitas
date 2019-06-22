@@ -78,7 +78,6 @@ civitas.SOLDIERS = {
 			coins: 700,
 			provisions: 1,
 			iron: 1,
-			leather: 1,
 			weapons: 5,
 			armor: 1
 		}
@@ -92,7 +91,6 @@ civitas.SOLDIERS = {
 		cost: {
 			coins: 1000,
 			provisions: 2,
-			clothes: 1,
 			iron: 1,
 			weapons: 7,
 			armor: 1
@@ -106,7 +104,6 @@ civitas.SOLDIERS = {
 		cost: {
 			coins: 1500,
 			provisions: 3,
-			clothes: 1,
 			iron: 1,
 			weapons: 9,
 			armor: 4
@@ -120,7 +117,6 @@ civitas.SOLDIERS = {
 		cost: {
 			coins: 2500,
 			provisions: 6,
-			leather: 2,
 			iron: 2,
 			weapons: 12,
 			armor: 12
@@ -134,7 +130,6 @@ civitas.SOLDIERS = {
 		cost: {
 			coins: 3000,
 			provisions: 8,
-			leather: 3,
 			iron: 4,
 			weapons: 15,
 			armor: 15
@@ -152,22 +147,8 @@ civitas.SOLDIERS = {
 			provisions: 30,
 			gunpowder: 30,
 			iron: 40,
+			steel: 20,
 			cannons: 1
-		}
-	},
-	heavycannon: {
-		name: 'Heavy Cannon',
-		attack: 25,
-		defense: 1,
-		moves: 0,
-		siege: true,
-		ranged: 20,
-		cost: {
-			coins: 80000,
-			provisions: 80,
-			gunpowder: 80,
-			iron: 100,
-			cannons: 10
 		}
 	},
 	catapult: {
@@ -179,7 +160,7 @@ civitas.SOLDIERS = {
 		moves: 0,
 		cost: {
 			coins: 100000,
-			provisions: 150,
+			provisions: 100,
 			gunpowder: 150,
 			iron: 140,
 			catapults: 1
@@ -371,12 +352,10 @@ civitas.SHIPS = {
 		cost: {
 			coins: 1000,
 			wood: 200,
-			leather: 50,
 			iron: 50,
 			provisions: 50,
-			pottery: 10,
-			clothes: 50,
 			ropes: 10,
+			cottonfabric: 5,
 			cannons: 5,
 			gunpowder: 2
 		}
@@ -388,31 +367,27 @@ civitas.SHIPS = {
 		cost: {
 			coins: 3000,
 			wood: 400,
-			leather: 60,
 			iron: 80,
 			provisions: 60,
-			pottery: 20,
-			clothes: 60,
 			ropes: 30,
+			cottonfabric: 10,
 			cannons: 20,
 			gunpowder: 5,
 			weapons: 10
 		}
 	},
-	frigate: {
-		name: 'Frigate',
+	frigatte: {
+		name: 'Frigatte',
 		attack: 17,
 		defense: 8,
 		cost: {
 			coins: 3000,
 			wood: 400,
-			leather: 60,
 			iron: 80,
 			provisions: 60,
-			pottery: 30,
-			clothes: 60,
 			ropes: 30,
-			cannons: 20,
+			cottonfabric: 20,
+			cannons: 30,
 			gunpowder: 10,
 			weapons: 10
 		}
@@ -423,14 +398,13 @@ civitas.SHIPS = {
 		defense: 15,
 		cost: {
 			coins: 5000,
-			wood: 600,
-			leather: 70,
-			iron: 120,
+			wood: 300,
+			woodplanks: 600,
+			iron: 150,
 			provisions: 100,
-			pottery: 50,
-			clothes: 70,
 			ropes: 80,
-			cannons: 30,
+			cottonfabric: 30,
+			cannons: 20,
 			gunpowder: 15,
 			weapons: 15
 		}
@@ -441,13 +415,13 @@ civitas.SHIPS = {
 		defense: 30,
 		cost: {
 			coins: 10000,
-			wood: 1000,
-			leather: 200,
+			wood: 400,
+			woodplanks: 800,
 			iron: 500,
+			steel: 100,
 			provisions: 200,
-			pottery: 100,
-			clothes: 200,
 			ropes: 100,
+			cottonfabric: 40,
 			cannons: 50,
 			weapons: 20,
 			gunpowder: 20,
@@ -460,15 +434,15 @@ civitas.SHIPS = {
 		defense: 50,
 		cost: {
 			coins: 15000,
-			wood: 2000,
+			wood: 500,
+			woodplanks: 1000,
 			coal: 500,
-			leather: 400,
 			iron: 1500,
+			steel: 400,
 			provisions: 200,
-			pottery: 140,
 			barrels: 100,
-			clothes: 200,
 			ropes: 100,
+			cottonfabric: 50,
 			cannons: 100,
 			gunpowder: 30,
 			weapons: 50

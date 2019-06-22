@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.6112019
+ * @version 0.3.0.6222019
  * @license GPLv3
  */ /* Game animations */
 
@@ -161,7 +161,12 @@ li {
 
 img.avatar {
 	float: right;
-	margin-left: 10px;
+	border-radius: 100%;
+	border: 0;
+	padding: 0;
+	margin: 0 10px 0 0;
+	width: 90px;
+	height: 90px;
 }
 
 p {
@@ -288,11 +293,21 @@ td.icon {
 }
 
 .ui > header .resource-panel {
-	width: 50%;
+	width: 65%;
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: 12px 0 10px 40px;
+	padding: 12px 0 10px 12px;
+}
+
+.ui > header .resource-panel .resource {
+	float: left;
+}
+
+.ui > header .resource-panel .resource .amount {
+	color: #bbb;
+	font-size: 12px;
+	padding: 0 2px 0 4px;
 }
 
 .ui > header .top-panel {
@@ -300,21 +315,20 @@ td.icon {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding: 10px 40px 10px 0;
+	padding: 10px 12px 10px 0;
 	color: #bbb;
 	font-size: 16px;
 	text-align: right;
 }
 
-.ui > header .resource-panel span {
+.ui > header .resource-panel img {
 	height: 24px;
 	width: 24px;
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 24px;
 	text-align: center;
-	margin-right: 4px;
-	cursor: pointer;
+	margin-right: 6px;
 }
 
 /* Footer */
@@ -339,8 +353,8 @@ td.icon {
 /* Main */
 
 .ui {
-	width: 1920px;
-	height: 1080px;
+	width: 100%;
+	height: 100%;
 	position: relative;
 }
 
@@ -349,6 +363,7 @@ td.icon {
 	z-index: 99;
 	width: 1920px;
 	height: 1080px;
+	overflow: hidden;
 }
 
 .ui .game .building {
@@ -356,16 +371,14 @@ td.icon {
 	height: 89px;
 	cursor: pointer;
 	position: absolute;
+	background-size: 100px;
+	background-color: transparent;
 }
 
 .ui .game .building.large {
-	width: 140px;
-	height: 125px;
-}
-
-.ui .game .building.extralarge {
-	width: 300px;
-	height: 270px;
+	width: 200px;
+	height: 180px;
+	background-size: 200px;
 }
 
 .ui .game .building .notification {
@@ -507,23 +520,30 @@ span.blue {
 	color: #11f;
 }
 
-.scrollbar {
-	position: absolute;
-	right:14px;
-	top: 20px;
+img.small {
+	width: 20px;
+	height: 20px;
 }
 
-.scrollbar .up,
-.scrollbar .down {
-	width: 24px;
-	height: 24px;
-	cursor: pointer;
+.ui > aside {
+	position: fixed;
+	top: 48px;
+	right: 0;
+	background-color: #ECD0B7;
+	bottom: 0;
+	z-index: 999;
+	padding-left: 6px;
 }
 
-.scrollbar .up {
-	margin-bottom: 5px;
+.ui > aside:empty {
+	display: none;
 }
 
+.ui .viewport {
+	top: 48px;
+	position: relative;
+	overflow: hidden;
+}
 /* Modal Windows */
 
 .modal {
@@ -588,7 +608,7 @@ span.blue {
 	position: fixed;
 	top: 50px;
 	right: 10px;
-	width: 340px;
+	width: 360px;
 	z-index: 99999;
 }
 
@@ -606,11 +626,11 @@ span.blue {
 	margin-bottom: 10px;
 	color: #444;
 	font-size: 12px;
-	background-color: #fff;
-	box-shadow: 0 0 5px #ccc;
+	background-color: #DCDCE6;
+	box-shadow: 0 0 2px #000;
 	position: relative;
 	overflow: hidden;
-	opacity: 0.8;
+	opacity: 0.9;
 }
 
 .achievement.has {
@@ -656,11 +676,19 @@ span.blue {
 }
 
 .notifications .notty.error {
-	background-color: #f5c0c0;
+	background-color: #E194A1;
 }
 
 .notifications .notty.event {
-	background-color: #c0c5f5;
+	background-color: #77BDE5;
+}
+
+.notifications .notty.research {
+	background-color: #7AE3D2;
+}
+
+.notifications .notty.religion {
+	background-color: #C79BFD;
 }
 
 .notifications .notty .hide,
@@ -699,15 +727,15 @@ span.blue {
 	display: block !important;
 }
 
-.notifications .notty .time,
-.achievement .time {
+.notifications .notty .time-ago,
+.achievement .time-ago {
 	font-size: 9px;
 	position: relative;
 	float: right;
 }
 
-.notifications .notty .right .time,
-.achievement .right .time {
+.notifications .notty .right .time-ago,
+.achievement .right .time-ago {
 	margin-right: 10px;
 }
 
@@ -809,6 +837,7 @@ span.blue {
 
 .ui .panel .toolbar {
 	margin-top: 10px;
+	clear: both;
 }
 
 .ui .panel a {
@@ -839,7 +868,7 @@ span.blue {
 .ui .panel section .buildings-info.right {
 	display: none;
 	float: left;
-	width: 310px;
+	width: 440px;
 	margin-left: 10px;
 }
 
@@ -869,8 +898,7 @@ span.blue {
 .ui .panel footer a {
 	width: 46px;
 	height: 46px;
-	display: block;
-	float: left;
+	display: inline-block;
 	cursor: pointer;
 	margin-right: 8px;
 }
@@ -897,7 +925,7 @@ span.blue {
 }
 
 #panel-council section dd,
-#panel-camp section dd,
+#panel-militarycamp section dd,
 #panel-shipyard section dd {
 	width: auto;
 }
@@ -1019,31 +1047,39 @@ span.blue {
 	line-height: 20px;
 }
 
+#panel-help img.help {
+	width: 200px;
+}
+
 /* Worldmap panel */
 
 #panel-world {
-	max-width: 1100px;
-	max-height: 660px;
+	max-width: 1200px;
+	max-height: 700px;
+	width: 1200px;
+	height: 700px;
+	box-sizing: border-box;
 }
 
 #panel-world .worldmap {
-	width: 1024px;
-	height: 600px;
+	width: 1180px;
+	height: 640px;
 	background-size: auto 100%;
 	position: relative;
+	overflow: hidden;
 }
 
 #panel-world .worldmap .settlement,
-#panel-world .worldmap .army,
-#panel-world .worldmap .caravan,
-#panel-world .worldmap .army-return,
-#panel-world .worldmap .spy,
-#panel-world .worldmap .messenger {
-	position: absolute;
+#panel-world .worldmap .troop {
 	width: 32px;
 	height: 32px;
 	cursor: pointer;
 }
+
+#panel-world .w-t-p {
+	opacity: 0.3;
+}
+
 
 /* World Trades panel */
 
@@ -1061,7 +1097,7 @@ span.blue {
 
 /* City Council panel */
 
-#panel-camp,
+#panel-militarycamp,
 #panel-shipyard {
 	width: 780px;
 	max-width: 780px;
@@ -1170,6 +1206,17 @@ span.blue {
 	height: auto;
 }
 
+.ui .panel .storage-board {
+	width: 560px;
+	height: 100%;
+	padding: 10px;
+}
+
+#panel-storage .total-storage, 
+#panel-storage .used-storage {
+	font-weight: bold;
+}
+
 .ui .panel .navy-item,
 .ui .panel .army-item,
 .ui .panel .storage-item {
@@ -1250,7 +1297,7 @@ span.blue {
 /* City Builder panel */
 
 #panel-buildings {
-	max-width: 940px;
+	max-width: 1070px;
 	max-height: 640px;
 	height: auto;
 	width: 510px;
@@ -1261,7 +1308,7 @@ span.blue {
 }
 
 #panel-buildings.expanded {
-	width: 830px !important;
+	width: 960px !important;
 }
 
 #panel-buildings .building-item .building-info .btn {
@@ -1279,7 +1326,7 @@ span.blue {
 	text-align: center;
 	margin: 0 10px 10px 0;
 	position: relative;
-	box-shadow: inset 0 0 4px 0 rgba(0, 155, 70, 0.75);
+	box-shadow: inset 0 0 10px 0 rgba(0, 155, 70, 0.75);
 	cursor: pointer;
 	opacity: 0.8;
 }
@@ -1305,7 +1352,7 @@ span.blue {
 }
 
 #panel-buildings .building-item.disabled {
-	box-shadow: inset 0 0 4px 0 rgba(186, 105, 74, 0.75);
+	box-shadow: inset 0 0 10px 0 rgba(186, 105, 74, 0.75);
 }
 
 #panel-buildings .building-item .title {
@@ -1338,6 +1385,19 @@ span.blue {
 	float: left;
 }
 
+.ui aside .panel .column {
+	float: none;
+}
+
+.ui .panel .column-small {
+	width: 215px;
+	float: left;
+}
+
+.ui .panel .column-small:nth-child(3) {
+	margin-left: 10px;
+}
+
 .ui .panel .column:last-of-type {
 	margin-left: 10px;
 }
@@ -1356,6 +1416,47 @@ span.blue {
 	max-height: 600px;
 	max-width: 620px;
 	width: 620px;
+}
+
+#panel-academy .column-left {
+	width: 310px;
+	height: 400px;
+	overflow: auto;
+	margin-top:10px;
+	float: left;
+}
+
+#panel-academy .column-right {
+	width: 298px;
+	float: left;
+	margin-left: 10px;
+}
+
+#panel-academy .technology {
+	cursor: pointer;
+	float: left;
+	margin: 4px;
+	opacity: 0.8;
+}
+
+#panel-academy .technology.selected {
+	opacity: 1;
+}
+
+#panel-academy .technology.selected img {
+	/*box-shadow: inset 0 0 20px 0 rgba(255, 0, 0, 0.75);*/
+}
+
+#panel-academy .technology.has img {
+	box-shadow: inset 0 0 10px 0 rgba(186, 105, 74, 0.75);
+}
+
+#panel-academy .technology img {
+	width: 64px;
+	height: 64px;
+	border-radius: 100%;
+	padding: 15px;
+	box-shadow: inset 0 0 10px 0 rgba(0, 155, 70, 0.75)
 }
 
 #panel-tavern {
@@ -1509,6 +1610,58 @@ a.wikipedia {
 	display: inline-block;
 }
 
+.ui aside .panel {
+	position: static;
+	top: 0;
+	left: 0;
+	z-index: 99997;
+	background-color: #ECD0B7;
+	color: #444;
+	padding: 10px;
+	box-shadow: 0 0 0 transparent;
+}
+
+.ui aside .panel {
+	width: 310px;
+	max-height: 100%;
+}
+
+.ui aside .panel header {
+	cursor: default;
+}
+
+.ui aside .panel footer {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	position: fixed;
+	bottom: 0;
+}
+
+.ui aside .panel section {
+	overflow: scroll;
+	height: calc(100% - 81px);
+}
+
+.ui aside .panel section p {
+	text-align: justify;
+}
+
+.ui .panel footer a {
+	background-color: #BF9A76;
+	border-radius: 10px;
+	background-size: 32px 32px;
+	background-position: center center;
+}
+
+.ui .panel footer a:hover {
+	background-color: #9F7E5E;
+}
+
+#panel-campaign {
+	min-width: 400px;
+}
+
 /* Progress bars */
 
 .progress {
@@ -1635,7 +1788,7 @@ footer a[data-panel=help] {
 /* Panel footer icons */
 
 .panel header .close {
-	background: transparent url(../images/ui/icons/close.png) no-repeat;
+	background: transparent url(../images/ui/close.png) no-repeat;
 }
 
 .panel footer .attack {
@@ -1683,107 +1836,11 @@ footer a[data-panel=help] {
 }
 
 .panel footer .upgrade {
-	background: transparent url(../images/assets/ui/icons/up.png) no-repeat;
+	background: transparent url(../images/assets/ui/icons/upgrade.png) no-repeat;
 }
 
 .panel footer .downgrade {
-	background: transparent url(../images/assets/ui/icons/down.png) no-repeat;
-}
-
-/* World map objects */
-
-.panel .worldmap .army {
-	background: transparent url(../images/assets/ui/world/army.png) no-repeat;
-}
-
-.panel .worldmap .army-return {
-	background: transparent url(../images/assets/ui/world/return_army.png) no-repeat;
-}
-
-.panel .worldmap .messenger {
-	background: transparent url(../images/assets/ui/world/diplomacy.png) no-repeat;
-}
-
-.panel .worldmap .caravan {
-	background: transparent url(../images/assets/ui/world/caravan.png) no-repeat;
-}
-
-.panel .worldmap .spy {
-	background: transparent url(../images/assets/ui/world/spy.png) no-repeat;
-}
-
-.panel .worldmap .settlement.v1 {
-	background: transparent url(../images/assets/ui/world/settlement1.png) no-repeat;
-}
-
-.panel .worldmap .settlement.m1 {
-	background: transparent url(../images/assets/ui/world/metropolis1.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c1 {
-	background: transparent url(../images/assets/ui/world/city1.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c2 {
-	background: transparent url(../images/assets/ui/world/city2.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c3 {
-	background: transparent url(../images/assets/ui/world/city3.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c4 {
-	background: transparent url(../images/assets/ui/world/city4.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c5 {
-	background: transparent url(../images/assets/ui/world/city5.png) no-repeat;
-}
-
-.panel .worldmap .settlement.c6 {
-	background: transparent url(../images/assets/ui/world/city6.png) no-repeat;
-}
-
-/* World Maps variants */
-
-.panel .worldmap.w1 {
-	background: transparent url(../images/world/map1.png) no-repeat;
-}
-
-.panel .worldmap.w2 {
-	background: transparent url(../images/world/map2.png) no-repeat;
-}
-
-.panel .worldmap.w3 {
-	background: transparent url(../images/world/map3.png) no-repeat;
-}
-
-.panel .worldmap.w4 {
-	background: transparent url(../images/world/map4.png) no-repeat;
-}
-
-.panel .worldmap.w5 {
-	background: transparent url(../images/world/map5.png) no-repeat;
-}
-
-.panel .worldmap.w6 {
-	background: transparent url(../images/world/map6.png) no-repeat;
-}
-
-.panel .worldmap.w7 {
-	background: transparent url(../images/world/map7.png) no-repeat;
-}
-
-.panel .worldmap.w8 {
-	background: transparent url(../images/world/map8.png) no-repeat;
-}
-
-.panel .worldmap.w9 {
-	background: transparent url(../images/world/map9.png) no-repeat;
-}
-
-.panel .worldmap.w10 {
-	background: transparent url(../images/world/map10.png) no-repeat;
+	background: transparent url(../images/assets/ui/icons/downgrade.png) no-repeat;
 }
 
 /* Others */
@@ -1804,21 +1861,13 @@ footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/icon_achievement.png) no-repeat;
 }
 
-.scrollbar .up {
-	background: transparent url(../images/ui/up.png) no-repeat;
-}
-
-.scrollbar .down {
-	background: transparent url(../images/ui/down.png) no-repeat;
-}
-
 .loading {
 	background: transparent url(../images/ui/loading.svg) no-repeat;
 }
 
 .notifications .notty .hide,
 .achievements-notifications .notty .hide {
-	background: transparent url(../images/ui/icons/close.png) no-repeat;
+	background: transparent url(../images/ui/close.png) no-repeat;
 }
 
 .panel ul.advices li {
@@ -1845,6 +1894,9 @@ footer a[data-panel=help] {
 	background: #fff url(../images/battle/bg2.png) no-repeat;
 }
 
+.ui > aside {
+	background: #ECD0B7 url(../images/ui/sidebar.png) repeat-y left top;
+}
 /* Tables */
 
 table td {
@@ -2240,17 +2292,26 @@ td a.btn {
 }
 
 .window .avatar-select {
-	width: 64px;
-	height: 64px;
-	overflow: hidden;
+	width: 100%;
+	height: 180px;
+	overflow: auto;
 	padding: 0;
 	margin: 0;
 }
 
-.window .avatar-select img {
+.window .avatar-select img.avatar {
+	cursor: pointer;
+	border-radius: 100%;
 	border: 0;
 	padding: 0;
 	margin: 0;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.window .avatar-select img.avatar.selected {
+	box-shadow: inset 0 0 20px 0 rgba(0, 0, 0, 0.75);
 }
 
 .window dt {
@@ -2259,16 +2320,6 @@ td a.btn {
 
 .window dl {
 	width: 360px;
-}
-
-.window .avatar-select-container {
-	position: relative;
-}
-
-.window .avatar-select-container .scrollbar {
-	position: absolute;
-	right:40px;
-	top: 8px;
 }
 
 /* Battleground window */

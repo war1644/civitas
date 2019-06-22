@@ -6,12 +6,10 @@
 civitas.PANEL_NEW_ARMY = {
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
-			'<header>' + civitas.l('Create army') +
-				'<a class="tips close" title="' + civitas.l('Close') + '"></a>' +
-			'</header>' +
+			'<header>Create army<a class="tips close" title="Close"></a></header>' +
 			'<section></section>' +
 			'<div class="toolbar clearfix">' +
-				'<a class="dispatch btn iblock" href="#">' + civitas.l('Dispatch') + '</a>' +
+				'<a class="dispatch btn iblock" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
 	id: 'new-army',
@@ -23,7 +21,7 @@ civitas.PANEL_NEW_ARMY = {
 		var settlements = core.get_settlements();
 		var settlement_type_text;
 		var army = my_settlement.get_army();
-		var location = civitas['SETTLEMENT_LOCATION_' + my_settlement.climate().name.toUpperCase()];
+		var location = my_settlement.get_location();
 		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
 		this.assigned_army = {};
 		this.assigned_navy = {};
@@ -38,7 +36,7 @@ civitas.PANEL_NEW_ARMY = {
 		}
 		var _t = '<div class="column">' +
 			'<fieldset>' +
-				'<legend>' + civitas.l('Initial costs') + '</legend>' +
+				'<legend>Initial costs</legend>' +
 				'<dl>';
 		for (var item in civitas.ARMY_COSTS) {
 			var _cost = 0;
@@ -55,7 +53,7 @@ civitas.PANEL_NEW_ARMY = {
 		_t += '</dl>' +
 			'</fieldset>' +
 			'<fieldset>' +
-				'<legend>' + civitas.l('Soldiers') + '</legend>';
+				'<legend>Soldiers</legend>';
 		for (var item in army) {
 			_t += '<div class="army-item">' +
 					'<a href="#" data-max="' + army[item] + '" data-soldier="' + item + '" class="army-item-inc">+</a>' +
@@ -66,16 +64,16 @@ civitas.PANEL_NEW_ARMY = {
 		}
 		_t += '</fieldset>' +
 		'<fieldset>' +
-			'<legend>' + civitas.l('Destination') + '</legend>' +
+			'<legend>Destination</legend>' +
 			'<select class="army-destination">' +
-				'<option value="0">-- ' + civitas.l('select') + ' --</option>';
+				'<option value="0">-- select --</option>';
 		for (var i = 1; i < settlements.length; i++) {
 			if (settlements[i].is_city()) {
-				settlement_type_text = civitas.l('City of') + ' ';
+				settlement_type_text = 'City of ';
 			} else if (settlements[i].is_metropolis()) {
-				settlement_type_text = civitas.l('Metropolis of') + ' ';
+				settlement_type_text = 'Metropolis of ';
 			} else {
-				settlement_type_text = civitas.l('Village of') + ' '
+				settlement_type_text = 'Village of '
 			}
 			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlement_type_text + settlements[i].name() + '</option>';
 		}
@@ -85,7 +83,7 @@ civitas.PANEL_NEW_ARMY = {
 		'<div class="column">';
 		if (my_settlement.can_build_ships()) {
 			_t += '<fieldset>' +
-					'<legend>' + civitas.l('Ships') + '</legend>';
+					'<legend>Ships</legend>';
 			for (var item in navy) {
 				_t += '<div class="navy-item">' +
 						'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-inc">+</a>' +
@@ -99,12 +97,12 @@ civitas.PANEL_NEW_ARMY = {
 		if (my_settlement.can_recruit_heroes()) {
 			var heroes = my_settlement.heroes();
 			_t += '<fieldset>' +
-				'<legend>' + civitas.l('Hero') + '</legend>' +
+				'<legend>Hero</legend>' +
 				'<select class="army-hero">';
 			if ($.isEmptyObject(heroes)) {
-				_t += '<option value="0">-- ' + civitas.l('no heroes available') + ' --</option>';
+				_t += '<option value="0">-- no heroes available --</option>';
 			} else {
-				_t += '<option value="0">-- ' + civitas.l('select') + ' --</option>';
+				_t += '<option value="0">-- select --</option>';
 				for (var item in heroes) {
 					_t += '<option value="' + item + '">' + heroes[item] + '</option>';
 				}
@@ -112,7 +110,7 @@ civitas.PANEL_NEW_ARMY = {
 			_t += '</select>' +
 			'</fieldset>';
 		} else {
-			_t += '<p><strong>' + civitas.l('Note') + '!</strong> ' + civitas.l('Build a Tavern to be able to recruit powerful heroes and assign them to your armies.') + '</p>';		
+			_t += '<p><strong>Note!</strong> Build a Tavern to be able to recruit powerful heroes and assign them to your armies.</p>';		
 		}
 		_t += '</div>';
 		$(this.handle + ' section').empty().append(_t);
@@ -154,7 +152,7 @@ civitas.PANEL_NEW_ARMY = {
 			return false;
 		}).on('click', '.dispatch', function() {
 			if (!my_settlement.can_recruit_soldiers()) {
-				core.error(civitas.l('You will need to construct a Military Camp before being able to attack other settlements.'));
+				core.error('You will need to construct a Military Camp before being able to attack other settlements.');
 				return false;
 			}
 			var destination = parseInt($(self.handle + ' .army-destination').val());
@@ -163,17 +161,17 @@ civitas.PANEL_NEW_ARMY = {
 			}
 			// TODO there is an error here when there is no shipyard to send navy.
 			if (destination === 0 || !settlement || (my_settlement.has_army(self.assigned_army) === 0 && my_settlement.has_navy(self.assigned_navy) === 0)) {
-				core.error(civitas.l('There was an error creating and dispatching the army, check the data you entered and try again.'));
+				core.error('There was an error creating and dispatching the army, check the data you entered and try again.');
 				return false;
 			}
 			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
 				army: self.assigned_army,
 				navy: self.assigned_navy
 			})) {
-				core.achievement(49);
+				core.achievement('sendarmy');
 				self.destroy();
 			} else {
-				core.error(civitas.l('There was an error creating and dispatching the army, check the data you entered and try again.'));
+				core.error('There was an error creating and dispatching the army, check the data you entered and try again.');
 			}
 			return false;
 		});

@@ -69,7 +69,12 @@ li {
 
 img.avatar {
 	float: right;
-	margin-left: 10px;
+	border-radius: 100%;
+	border: 0;
+	padding: 0;
+	margin: 0 10px 0 0;
+	width: 90px;
+	height: 90px;
 }
 
 p {
@@ -196,11 +201,21 @@ td.icon {
 }
 
 .ui > header .resource-panel {
-	width: 50%;
+	width: 65%;
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: 12px 0 10px 40px;
+	padding: 12px 0 10px 12px;
+}
+
+.ui > header .resource-panel .resource {
+	float: left;
+}
+
+.ui > header .resource-panel .resource .amount {
+	color: #bbb;
+	font-size: 12px;
+	padding: 0 2px 0 4px;
 }
 
 .ui > header .top-panel {
@@ -208,21 +223,20 @@ td.icon {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding: 10px 40px 10px 0;
+	padding: 10px 12px 10px 0;
 	color: #bbb;
 	font-size: 16px;
 	text-align: right;
 }
 
-.ui > header .resource-panel span {
+.ui > header .resource-panel img {
 	height: 24px;
 	width: 24px;
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 24px;
 	text-align: center;
-	margin-right: 4px;
-	cursor: pointer;
+	margin-right: 6px;
 }
 
 /* Footer */
@@ -247,8 +261,8 @@ td.icon {
 /* Main */
 
 .ui {
-	width: 1920px;
-	height: 1080px;
+	width: 100%;
+	height: 100%;
 	position: relative;
 }
 
@@ -257,6 +271,7 @@ td.icon {
 	z-index: 99;
 	width: 1920px;
 	height: 1080px;
+	overflow: hidden;
 }
 
 .ui .game .building {
@@ -264,16 +279,14 @@ td.icon {
 	height: 89px;
 	cursor: pointer;
 	position: absolute;
+	background-size: 100px;
+	background-color: transparent;
 }
 
 .ui .game .building.large {
-	width: 140px;
-	height: 125px;
-}
-
-.ui .game .building.extralarge {
-	width: 300px;
-	height: 270px;
+	width: 200px;
+	height: 180px;
+	background-size: 200px;
 }
 
 .ui .game .building .notification {
@@ -415,19 +428,27 @@ span.blue {
 	color: #11f;
 }
 
-.scrollbar {
-	position: absolute;
-	right:14px;
-	top: 20px;
+img.small {
+	width: 20px;
+	height: 20px;
 }
 
-.scrollbar .up,
-.scrollbar .down {
-	width: 24px;
-	height: 24px;
-	cursor: pointer;
+.ui > aside {
+	position: fixed;
+	top: 48px;
+	right: 0;
+	background-color: #ECD0B7;
+	bottom: 0;
+	z-index: 999;
+	padding-left: 6px;
 }
 
-.scrollbar .up {
-	margin-bottom: 5px;
+.ui > aside:empty {
+	display: none;
+}
+
+.ui .viewport {
+	top: 48px;
+	position: relative;
+	overflow: hidden;
 }

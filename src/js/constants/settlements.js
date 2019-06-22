@@ -28,7 +28,7 @@ civitas.METROPOLIS = 2;
  * @constant
  * @type {Number}
  */
-civitas.WORLD_SIZE_WIDTH = 960;
+civitas.WORLD_SIZE_WIDTH = 64;
 
 /**
  * Height of the world in pixels.
@@ -36,34 +36,7 @@ civitas.WORLD_SIZE_WIDTH = 960;
  * @constant
  * @type {Number}
  */
-civitas.WORLD_SIZE_HEIGHT = 560;
-
-/**
- * Metropolis area of influence, in pixels (another metropolis can't be placed in this
- * area of influence).
- *
- * @constant
- * @type {Number}
- */
-civitas.METROPOLIS_AREA = 100;
-
-/**
- * City area of influence, in pixels (another city can't be placed in this area of
- * influence).
- *
- * @constant
- * @type {Number}
- */
-civitas.CITY_AREA = 60;
-
-/**
- * Village area of influence, in pixels (another village can't be placed in this area
- * of influence).
- *
- * @constant
- * @type {Number}
- */
-civitas.VILLAGE_AREA = 20;
+civitas.WORLD_SIZE_HEIGHT = 64;
 
 /**
  * Max number of initial settlements on a map.

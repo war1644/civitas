@@ -10,7 +10,10 @@ civitas.PANEL_CHURCH = {
 		var self = this;
 		var core = this.core();
 		var settlement = core.get_settlement();
-		$(this.handle + ' section').append(civitas.ui.tabs([civitas.l('Info'), civitas.l('Religion')]));
+		$(this.handle + ' section').append(civitas.ui.tabs([
+			'Info',
+			'Religion'
+		]));
 		$(this.handle).on('click', '.religion', function() {
 			var id = parseInt($(this).data('id'));
 			core.open_modal(

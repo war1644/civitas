@@ -9,13 +9,13 @@ civitas.WINDOW_OPTIONS = {
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
 			'<fieldset>' +
-				'<a href="#" class="do-pause button">' + civitas.l('Pause') + '</a>' +
-				'<a href="#" class="do-restart button">' + civitas.l('Restart') + '</a>' +
-				'<a href="#" class="do-options button">' + civitas.l('Options') + '</a>' +
+				'<a href="#" class="do-pause button">Pause</a>' +
+				'<a href="#" class="do-restart button">Restart</a>' +
+				'<a href="#" class="do-options button">Options</a>' +
 				'<div class="options-game"></div>' +
 				civitas.ui.window_about_section() +
 				'<br />' +
-				'<a href="#" class="do-resume button">' + civitas.l('Resume Playing') + '</a>' +
+				'<a href="#" class="do-resume button">Resume Playing</a>' +
 			'</fieldset>' +
 		'</section>',
 	on_show: function() {
@@ -23,9 +23,9 @@ civitas.WINDOW_OPTIONS = {
 		var self = this;
 		var handle = this.handle();
 		var core = this.core();
-		$(handle + ' .options-game').append(civitas.ui.tabs([civitas.l('Sounds'), civitas.l('UI'), civitas.l('Gameplay')]));
+		$(handle + ' .options-game').append(civitas.ui.tabs(['Sounds', 'UI', 'Gameplay']));
 		$(handle + ' #tab-sounds').append('<div>' +
-			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">' + civitas.l('toggle music') + '</a>' +
+			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">toggle music</a>' +
 			'<input class="music-volume" type="range" min="0" max="1" step="0.1" ' + ((core.get_settings('music') !== true) ? 'disabled' : '') + ' />' +
 			'</div>');
 		$(handle + ' #tab-ui').append('<div>' +
@@ -38,11 +38,11 @@ civitas.WINDOW_OPTIONS = {
 			return false;
 		}).on('click', '.do-pause', function () {
 			if (core.is_paused() === true) {
-				$(this).removeClass('highlight').html(civitas.l('Pause'));
+				$(this).removeClass('highlight').html('Pause');
 				core.show_loader();
 				core.unpause();
 			} else {
-				$(this).addClass('highlight').html(civitas.l('Unpause'));
+				$(this).addClass('highlight').html('Resume');
 				core.hide_loader();
 				core.pause();
 			}

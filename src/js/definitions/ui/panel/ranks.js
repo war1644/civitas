@@ -4,7 +4,7 @@
  * @type {Object}
  */
 civitas.PANEL_RANKS = {
-	template: civitas.ui.generic_panel_template(civitas.l('World Rankings')),
+	template: civitas.ui.generic_panel_template('World Rankings'),
 	id: 'ranks',
 	on_show: function(params) {
 		$(this.handle + ' section').append('<div class="ranks-list"></div>');
@@ -34,9 +34,9 @@ civitas.PANEL_RANKS = {
 		var _t = '<table class="normal">';
 		_t += '<thead>' +
 				'<tr>' +
-					'<td class="center">' + civitas.l('Rank') + '</td>' +
-					'<td>' + civitas.l('City') + '</td>' +
-					'<td class="center">' + civitas.l('Score') + '</td>' +
+					'<td class="center">Rank</td>' +
+					'<td>City</td>' +
+					'<td class="center">Score</td>' +
 				'</tr>' +
 			'</thead>' +
 			'<tbody>';
