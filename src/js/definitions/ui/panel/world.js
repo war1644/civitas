@@ -14,20 +14,37 @@ civitas.PANEL_WORLD = {
 		var world = core.world();
 		var colors = world.colors();
 		var props = world.properties();
+		var settings = core.get_settings();
 		var world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
-		civitas.ui.svg_create_worldmap(props.cell_size, colors);
+		civitas.ui.svg_create_worldmap(civitas.WORLD_HEX_SIZE, colors);
+		for (var row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
+			for (var column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
+				var terrain = world_data[row][column].t;
+				civitas.ui.svg_create_group(terrain, row, column);
+				civitas.ui.svg_create_cell(row, column, colors[terrain], settings.worldmap_grid);
+				if (settings.worldmap_beautify === true) {
+					civitas.ui.svg_apply_terrain(row, column, terrain);
+				}
+			}
+		}
 		for (var row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (var column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
 				var terrain = world_data[row][column].t;
 				var suid = world_data[row][column].s;
-				civitas.ui.svg_create_group(terrain, row, column, props);
-				civitas.ui.svg_create_cell(row, column, colors[terrain], props);
-				if (props.beautify === true) {
-					civitas.ui.svg_apply_terrain(row, column, terrain);
-				}
 				if (suid !== null && typeof settlements[suid] !== 'undefined') {
 					civitas.ui.svg_add_settlement_image(row, column, settlements[suid], settlement);
+				}
+				if (world_data[row][column].l === true) {
+					var lid = world_data[row][column].lid;
+					if (lid !== null) {
+						if (typeof settlements[lid] !== 'undefined') {
+							var col = settlements[lid].color();
+							$('.s-c-g-' + row + '-' + column + ' > .svg-cell').css({
+								fill: col
+							});
+						}
+					}
 				}
 			}
 		}
@@ -69,14 +86,10 @@ civitas.PANEL_WORLD = {
 			}
 			return false;
 		});
-		for (var i = 0; i < core.get_num_settlements(); i++) {
-			if (typeof settlements[i] !== 'undefined') {
-				var pos = settlements[i].get_location();
-				var color = settlements[i].color();
-				civitas.utils.get_cell_neighbours(pos.x, pos.y, color, settlements[i].get_type());
-			}
-		}
-		//civitas.ui.svg_link_cells({x: 21, y: 25}, {x: 24, y: 32}, props);
+		/*
+		civitas.ui.svg_link_cells({x: 21, y: 25}, {x: 24, y: 32});
+		*/
+		civitas.ui.worldmap_scrollto(settlement.get_location());
 	},
 	on_refresh: function() {
 		var self = this;

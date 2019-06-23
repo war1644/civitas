@@ -66,7 +66,7 @@ civitas.PANEL_DEBUG = {
 			settlement.add_to_storage('provisions', 1000);
 			settlement.add_to_storage('ropes', 50);
 			settlement.add_to_storage('barrels', 50);
-			settlement.add_to_storage('tools', 50);
+			settlement.add_to_storage('tools', 100);
 			settlement.inc_coins(2000000);
 			var army = settlement.get_army();
 			for (var soldier in army) {
@@ -112,10 +112,12 @@ civitas.PANEL_DEBUG = {
 			settlement.add_to_storage('woodplanks', 1000);
 			settlement.add_to_storage('clay', 1000);
 			settlement.add_to_storage('bricks', 1000);
+			settlement.add_to_storage('tools', 500);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.thirty', function() {
 			settlement.add_to_storage('bread', 1000);
+			settlement.add_to_storage('meat', 1000);
 			settlement.add_to_storage('wine', 1000);
 			core.save_and_refresh();
 			return false;

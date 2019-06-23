@@ -34,14 +34,6 @@ civitas.AUTOSTART_MUSIC = false;
 civitas.ENCRYPTION = false;
 
 /**
- * Max level a settlement can have.
- * 
- * @constant
- * @type {Number}
- */
-civitas.MAX_SETTLEMENT_LEVEL = 45;
-
-/**
  * URL to the game assets
  * 
  * @constant
@@ -84,6 +76,14 @@ civitas.AVATARS = 99;
 civitas.TRADES_ADDITION = 10;
 
 civitas.TRADES_DISCOUNT = 20;
+
+/**
+ * Max level a settlement can have.
+ * 
+ * @constant
+ * @type {Number}
+ */
+civitas.MAX_SETTLEMENT_LEVEL = 45;
 
 /**
  * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.

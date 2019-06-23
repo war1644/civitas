@@ -860,3 +860,14 @@ a.wikipedia {
 #panel-campaign {
 	min-width: 400px;
 }
+
+.panel footer a.attack,
+.panel footer a.caravan,
+.panel footer a.spy,
+.panel footer a.alliance,
+.panel footer a.pact,
+.panel footer a.join,
+.panel footer a.war,
+.panel footer a.ceasefire {
+	display: none;
+}

@@ -1,4 +1,17 @@
 /**
+ * List of settlement types
+ *
+ * @constant
+ * @type {Array}
+ */
+civitas.SETTLEMENTS = [
+	'city',
+	'village',
+	'metropolis',
+	'camp'
+];
+
+/**
  * City settlement.
  *
  * @constant
@@ -23,28 +36,12 @@ civitas.VILLAGE = 1;
 civitas.METROPOLIS = 2;
 
 /**
- * Width of the world in pixels.
+ * Raider camp settlement.
  *
  * @constant
  * @type {Number}
  */
-civitas.WORLD_SIZE_WIDTH = 64;
-
-/**
- * Height of the world in pixels.
- *
- * @constant
- * @type {Number}
- */
-civitas.WORLD_SIZE_HEIGHT = 64;
-
-/**
- * Max number of initial settlements on a map.
- *
- * @constant
- * @type {Number}
- */
-civitas.MAX_INITIAL_SETTLEMENTS = 25;
+civitas.CAMP = 3;
 
 /**
  * Max number of settlements on a map.
@@ -52,7 +49,7 @@ civitas.MAX_INITIAL_SETTLEMENTS = 25;
  * @constant
  * @type {Number}
  */
-civitas.MAX_SETTLEMENTS = 50;
+civitas.MAX_SETTLEMENTS = 100;
 
 /**
  * List of possible world settlement names.

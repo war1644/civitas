@@ -25,10 +25,12 @@ civitas.WINDOW_OPTIONS = {
 		var core = this.core();
 		$(handle + ' .options-game').append(civitas.ui.tabs(['Sounds', 'UI', 'Gameplay']));
 		$(handle + ' #tab-sounds').append('<div>' +
-			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">toggle music</a>' +
+			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">music</a>' +
 			'<input class="music-volume" type="range" min="0" max="1" step="0.1" ' + ((core.get_settings('music') !== true) ? 'disabled' : '') + ' />' +
 			'</div>');
 		$(handle + ' #tab-ui').append('<div>' +
+			'<a href="#" class="worldmap-grid-control ui-control ' + ((core.get_settings('worldmap_grid') === true) ? 'on' : 'off') + '">worldmap grid</a> ' +
+			'<a href="#" class="worldmap-beautify-control ui-control ' + ((core.get_settings('worldmap_beautify') === true) ? 'on' : 'off') + '">worldmap beautify</a>' +
 			'</div>');
 		$(handle + ' .tabs').tabs();
 		$(handle).on('click', '.do-resume', function () {
@@ -69,11 +71,31 @@ civitas.WINDOW_OPTIONS = {
 			if ($(this).hasClass('on')) {
 				$(this).removeClass('on').addClass('off');
 				$('.music-volume').attr('disabled', true);
-				core.set_settings_music(true);
+				core.set_settings('music', false);
 			} else {
 				$(this).removeClass('off').addClass('on');
 				$('.music-volume').attr('disabled', false);
-				core.set_settings_music(false);
+				core.set_settings('music', true);
+			}
+			core.save();
+			return false;
+		}).on('click', '.worldmap-grid-control', function () {
+			if ($(this).hasClass('on')) {
+				$(this).removeClass('on').addClass('off');
+				core.set_settings('worldmap_grid', false);
+			} else {
+				$(this).removeClass('off').addClass('on');
+				core.set_settings('worldmap_grid', true);
+			}
+			core.save();
+			return false;
+		}).on('click', '.worldmap-beautify-control', function () {
+			if ($(this).hasClass('on')) {
+				$(this).removeClass('on').addClass('off');
+				core.set_settings('worldmap_beautify', false);
+			} else {
+				$(this).removeClass('off').addClass('on');
+				core.set_settings('worldmap_beautify', true);
 			}
 			core.save();
 			return false;

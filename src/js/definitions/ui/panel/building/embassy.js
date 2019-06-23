@@ -34,7 +34,6 @@ civitas.PANEL_EMBASSY = {
 		var settlement = core.get_settlement();
 		var settlements = core.get_settlements();
 		var status = settlement.status();
-		var settlement_type_text;
 		var building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
 			var level = building.get_level();
@@ -43,20 +42,12 @@ civitas.PANEL_EMBASSY = {
 			var _t = '<table class="normal">';
 			for (var i = 1; i < settlements.length; i++) {
 				var _status = settlement.get_diplomacy_status(settlements[i].id());
-				var settlement_type = settlements[i].get_type();
-				if (settlements[i].is_city()) {
-					settlement_type_text = 'City of';
-				} else if (settlements[i].is_metropolis()) {
-					settlement_type_text = 'Metropolis of';
-				} else {
-					settlement_type_text = 'Village of'
-				}
 				_t += '<tr>' +
 						'<td class="icon">' +
 							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#"><img src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" /></a>' +
 						'</td>' +
 						'<td>' +
-							'<p class="title">' + settlement_type_text + ' ' + settlements[i].name() + '</p> ' +
+							'<p class="title">' + settlements[i].nice_name() + '</p> ' +
 							'<div data-id="' + settlements[i].id() + '" >' + civitas.ui.progress(status[settlements[i].id()].influence, 'big') + '</div>' +
 						'</td>' +
 						'<td>' +

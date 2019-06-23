@@ -19,7 +19,6 @@ civitas.PANEL_NEW_ARMY = {
 		var my_settlement = core.get_settlement();
 		var settlement = params.data;
 		var settlements = core.get_settlements();
-		var settlement_type_text;
 		var army = my_settlement.get_army();
 		var location = my_settlement.get_location();
 		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
@@ -68,14 +67,7 @@ civitas.PANEL_NEW_ARMY = {
 			'<select class="army-destination">' +
 				'<option value="0">-- select --</option>';
 		for (var i = 1; i < settlements.length; i++) {
-			if (settlements[i].is_city()) {
-				settlement_type_text = 'City of ';
-			} else if (settlements[i].is_metropolis()) {
-				settlement_type_text = 'Metropolis of ';
-			} else {
-				settlement_type_text = 'Village of '
-			}
-			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlement_type_text + settlements[i].name() + '</option>';
+			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
 		}
 		_t += '</select>' +
 			'</fieldset>' +

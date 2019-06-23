@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.6222019
+ * @version 0.3.0.6232019
  * @license GPLv3
  */ 'use strict';
 
@@ -55,14 +55,6 @@ civitas.AUTOSTART_MUSIC = false;
 civitas.ENCRYPTION = false;
 
 /**
- * Max level a settlement can have.
- * 
- * @constant
- * @type {Number}
- */
-civitas.MAX_SETTLEMENT_LEVEL = 45;
-
-/**
  * URL to the game assets
  * 
  * @constant
@@ -105,6 +97,14 @@ civitas.AVATARS = 99;
 civitas.TRADES_ADDITION = 10;
 
 civitas.TRADES_DISCOUNT = 20;
+
+/**
+ * Max level a settlement can have.
+ * 
+ * @constant
+ * @type {Number}
+ */
+civitas.MAX_SETTLEMENT_LEVEL = 45;
 
 /**
  * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
@@ -366,149 +366,220 @@ civitas.NOTIFY_WAR = 6;
  */
 civitas.MAX_CONSOLE_LINES = 5000;
 
-/**
- * List of soldiers/ships to start with in various difficulty modes.
- *
- * @constant
- * @type {Object}
- */
-civitas.START_ARMY = [
+civitas.INITIAL_SEED = [
 	/* Easy difficulty */
 	{
-		army: {
-			militia: 10,
-			axeman: 2,
-			bowman: 4
+		/* Roughness of the world generator */
+		roughness: 4,
+		/* Number of settlements to build initially */
+		settlements: {
+			/* Cities */
+			0: 8, //5,
+			/* Villages */
+			1: 5,
+			/* Metropolis */
+			2: 6, //1,
+			/* Raider camps */
+			3: 6 //0
 		},
-		navy: {
-			corsair: 2,
-			caravel: 1
-		}
+		/* Number of soldiers and ships to build initially */
+		military: {
+			army: {
+				militia: 10,
+				axeman: 2,
+				bowman: 4
+			},
+			navy: {
+				corsair: 2,
+				caravel: 1
+			}
+		},
+		resources: {
+			coins: 55000,
+			fame: 0,
+			faith: 1,
+			prestige: 1,
+			espionage: 1,
+			research: 1,
+			bread: 300,
+			meat: 100,
+			stones: 100,
+			weapons: 100,
+			wheat: 40,
+			wood: 100,
+			woodplanks: 50,
+			tools: 40
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
 	},
 	/* Medium difficulty */
 	{
-		army: {
-			militia: 5,
-			axeman: 1,
-			bowman: 2
+		roughness: 6,
+		settlements: {
+			0: 5,
+			1: 10,
+			2: 5,
+			3: 3
 		},
-		navy: {
-			corsair: 1,
-			caravel: 1
-		}
+		military: {
+			army: {
+				militia: 5,
+				axeman: 1,
+				bowman: 2
+			},
+			navy: {
+				corsair: 1,
+				caravel: 1
+			}
+		},
+		resources: {
+			coins: 20000,
+			fame: 0,
+			faith: 1,
+			prestige: 1,
+			espionage: 1,
+			research: 1,
+			bread: 300,
+			meat: 100,
+			stones: 100,
+			weapons: 60,
+			wheat: 40,
+			wood: 100,
+			woodplanks: 30,
+			tools: 20
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
 	},
 	/* Hard difficulty */
 	{
-		army: {
-			militia: 3,
-			bowman: 2
+		roughness: 8,
+		settlements: {
+			0: 10,
+			1: 10,
+			2: 6,
+			3: 10
 		},
-		navy: {
-			corsair: 1
-		}
+		military: {
+			army: {
+				militia: 3,
+				bowman: 2
+			},
+			navy: {
+				corsair: 1
+			}
+		},
+		resources: {
+			coins: 10000,
+			fame: 0,
+			faith: 1,
+			prestige: 1,
+			espionage: 1,
+			research: 1,
+			bread: 300,
+			meat: 100,
+			stones: 70,
+			wheat: 40,
+			wood: 70,
+			woodplanks: 20,
+			tools: 10
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
 	},
 	/* Hardcore difficulty */
 	{
-		army: {},
-		navy: {}
-	}
-];
-
-/**
- * Minimal buildings for a city to operate.
- * 
- * @constant
- * @type {Array}
- */
-civitas.START_BUILDINGS = [
-	{
-		handle: 'marketplace',
-		level: 1
-	}, {
-		handle: 'lumberjack',
-		level: 1
-	}, {
-		handle: 'stonequarry',
-		level: 1
-	}, {
-		handle: 'house1',
-		level: 1
-	}, {
-		handle: 'house2',
-		level: 1
-	}
-];
-
-/**
- * List of resources to start with in various difficulty modes.
- *
- * @constant
- * @type {Object}
- */
-civitas.START_RESOURCES = [
-	/* Easy difficulty */
-	{
-		coins: 55000,
-		fame: 0,
-		faith: 1,
-		prestige: 1,
-		espionage: 1,
-		research: 1,
-		bread: 300,
-		meat: 100,
-		stones: 100,
-		weapons: 100,
-		wheat: 40,
-		wood: 100,
-		woodplanks: 50,
-		tools: 40
-	},
-	/* Medium difficulty */
-	{
-		coins: 20000,
-		fame: 0,
-		faith: 1,
-		prestige: 1,
-		espionage: 1,
-		research: 1,
-		bread: 300,
-		meat: 100,
-		stones: 100,
-		weapons: 60,
-		wheat: 40,
-		wood: 100,
-		woodplanks: 30,
-		tools: 20
-	},
-	/* Hard difficulty */
-	{
-		coins: 10000,
-		fame: 0,
-		faith: 1,
-		prestige: 1,
-		espionage: 1,
-		research: 1,
-		bread: 300,
-		meat: 100,
-		stones: 70,
-		wheat: 40,
-		wood: 70,
-		woodplanks: 20,
-		tools: 10
-	},
-	/* Hardcore difficulty */
-	{
-		coins: 5000,
-		fame: 0,
-		faith: 1,
-		prestige: 1,
-		espionage: 1,
-		research: 1,
-		bread: 100,
-		meat: 50,
-		stones: 50,
-		wheat: 40,
-		wood: 50
+		roughness: 1,
+		settlements: {
+			0: 10,
+			1: 20,
+			2: 20,
+			3: 20
+		},
+		military: {
+			army: {},
+			navy: {}
+		},
+		resources: {
+			coins: 5000,
+			fame: 0,
+			faith: 1,
+			prestige: 1,
+			espionage: 1,
+			research: 1,
+			bread: 100,
+			meat: 50,
+			stones: 50,
+			wheat: 40,
+			wood: 50
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
 	}
 ];
 
@@ -4915,6 +4986,67 @@ civitas.BUILDINGS = [{
 	}];
 
 /**
+ * Width of the world in hexes.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.WORLD_SIZE_WIDTH = 64;
+
+/**
+ * Height of the world in hexes.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.WORLD_SIZE_HEIGHT = 64;
+
+/**
+ * Size of a world hex.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.WORLD_HEX_SIZE = 24;
+
+/**
+ * Whether to beautify the worldmap terrain.
+ *
+ * @constant
+ * @type {Boolean}
+ */
+civitas.WORLD_BEAUTIFY = true;
+
+/**
+ * Whether to display the worldmap grid.
+ *
+ * @constant
+ * @type {Boolean}
+ */
+civitas.WORLD_GRID = true;
+
+/**
+ * World generator roughness.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.WORLD_ROUGHNESS = 5;
+
+/**
+ * List of settlement types
+ *
+ * @constant
+ * @type {Array}
+ */
+civitas.SETTLEMENTS = [
+	'city',
+	'village',
+	'metropolis',
+	'camp'
+];
+
+/**
  * City settlement.
  *
  * @constant
@@ -4939,28 +5071,12 @@ civitas.VILLAGE = 1;
 civitas.METROPOLIS = 2;
 
 /**
- * Width of the world in pixels.
+ * Raider camp settlement.
  *
  * @constant
  * @type {Number}
  */
-civitas.WORLD_SIZE_WIDTH = 64;
-
-/**
- * Height of the world in pixels.
- *
- * @constant
- * @type {Number}
- */
-civitas.WORLD_SIZE_HEIGHT = 64;
-
-/**
- * Max number of initial settlements on a map.
- *
- * @constant
- * @type {Number}
- */
-civitas.MAX_INITIAL_SETTLEMENTS = 25;
+civitas.CAMP = 3;
 
 /**
  * Max number of settlements on a map.
@@ -4968,7 +5084,7 @@ civitas.MAX_INITIAL_SETTLEMENTS = 25;
  * @constant
  * @type {Number}
  */
-civitas.MAX_SETTLEMENTS = 50;
+civitas.MAX_SETTLEMENTS = 100;
 
 /**
  * List of possible world settlement names.
@@ -7521,56 +7637,6 @@ civitas.HEROES = {
  * Utils object.
  */
 civitas.utils = {
-
-	create_array: function(d1, d2) {
-		var x = new Array(d1);
-		for (var i = 0; i < d1; i += 1) {
-			x[i] = new Array(d2);
-		}
-		for (var i = 0; i < d1; i += 1) {
-			for (var j = 0; j < d2; j += 1) {
-				x[i][j] = {
-					e: -1,
-					t: 'S',
-					s: null,
-					n: null,
-					m: 0
-				};
-			}
-		}
-		return x;
-	},
-
-	get_cell_neighbours: function(x, y, color, settlement_type) {
-		var neighbours = civitas.utils.get_neighbours(y, x);
-		if (settlement_type !== civitas.VILLAGE) {
-			$('.s-c-g-' + y + '-' + x + ' > .svg-cell').css({
-				fill: color
-			});
-		}
-		if (settlement_type === civitas.CITY) {
-			for (var z = 0; z < neighbours.length; z++) {
-				$('.s-c-g-' + neighbours[z].y + '-' + neighbours[z].x + ' > .svg-cell').css({
-					fill: color
-				});
-			}
-		} else if (settlement_type === civitas.METROPOLIS) {
-			for (var z = 0; z < neighbours.length; z++) {
-				$('.s-c-g-' + neighbours[z].y + '-' + neighbours[z].x + ' > .svg-cell').css({
-					fill: color
-				});
-				var new_neighbours = civitas.utils.get_neighbours(neighbours[z].y, neighbours[z].x);
-				for (var u = 0; u < new_neighbours.length; u++) {
-					$('.s-c-g-' + new_neighbours[u].y + '-' + new_neighbours[u].x + ' > .svg-cell').css({
-						fill: color
-					});
-				}
-			}
-		} else {
-			// Todo
-		}
-	},
-
 	get_neighbours: function(y, x) {
 		if (x % 2 == 0) {
 			return [
@@ -7968,25 +8034,6 @@ civitas.utils = {
 			return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
 		}
 		return num;
-	},
-
-	/**
-	 * Return a random world location.
-	 *
-	 * @public
-	 * @params {Array} data
-	 * @returns {Object}
-	 */
-	get_random_world_location: function(data) {
-		var pos = {
-			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
-			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
-		}
-		if (data[pos.y][pos.x].t !== 'S' && data[pos.y][pos.x].t !== 'O') {
-			return pos;
-		} else {
-			return this.get_random_world_location(data);
-		}
 	},
 
 	/**
@@ -8475,8 +8522,10 @@ civitas.ui = {
 				image = 'metropolis' + settlement.icon();
 			} else if (settlement.is_city()) {
 				image = 'city' + settlement.icon();
-			} else {
+			} else if (settlement.is_village()) {
 				image = 'village' + settlement.icon();
+			} else if (settlement.is_camp()) {
+				image = 'camp';
 			}
 		}
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
@@ -8494,17 +8543,19 @@ civitas.ui = {
 			.appendTo('.s-c-g-' + row + '-' + column);
 		document.getElementById('w-s-i' + row + '-' + column)
 			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png');
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
-			.attr({
-				x: name.length * 2,
-				y: 1
-			})
-			.css({
-				'text-anchor': 'middle',
-				'font-size': (typeof player_settlement !== 'undefined' && name === player_settlement.name()) ? '12px' : '10px'
-			})
-			.text(name)
-			.appendTo('.s-c-g-' + row + '-' + column);
+		if (!settlement.is_camp()) {
+			$(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
+				.attr({
+					x: name.length * 2,
+					y: 1
+				})
+				.css({
+					'text-anchor': 'middle',
+					'font-size': (typeof player_settlement !== 'undefined' && name === player_settlement.name()) ? '12px' : '10px'
+				})
+				.text(name)
+				.appendTo('.s-c-g-' + row + '-' + column);
+		}
 	},
 
 	svg_add_mountain: function(row, column) {
@@ -8640,32 +8691,38 @@ civitas.ui = {
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_create_group: function(terrain, row, column, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
+	svg_create_group: function(terrain, row, column) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'g'))
 			.attr({
 				'data-x': row,
 				'data-terrain': terrain,
 				'data-y': column,
 				'class': 's-c-g s-c-g-' + row + '-' + column,
-				'transform': 'translate(' + Math.round((1.5 * column) * props.cell_size) + ', ' + Math.round(height * (row * 2 + (column % 2))) + ')',
+				'transform': 'translate(' + Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE) + ', ' + Math.round(height * (row * 2 + (column % 2))) + ')',
 			})
 			.appendTo('.svg-grid');
 	},
 
-	svg_get_cell_middle: function(row, column, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
+	svg_get_cell_middle: function(row, column) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		var center = {
-			x: Math.round(props.cell_size), 
+			x: Math.round(civitas.WORLD_HEX_SIZE), 
 			y: Math.round(height)
 		};
 		return center;
 	},
 
-	svg_get_cell_middle_coords: function(row, column, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
+	worldmap_scrollto: function(location) {
+		var coords = civitas.ui.svg_get_cell_middle_coords(location.y, location.x);
+		$('.worldmap').scrollTop(coords.y - (700 / 2));
+		$('.worldmap').scrollLeft(coords.x - (1200 / 2));
+	},
+
+	svg_get_cell_middle_coords: function(row, column) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		return {
-			x: Math.round((1.5 * column) * props.cell_size),
+			x: Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE),
 			y: Math.round(height * (row * 2 + (column % 2)))
 		}
 		
@@ -8690,9 +8747,9 @@ civitas.ui = {
 			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + element_type + '.png');
 	},
 
-	svg_link_cells: function(source, destination, props) {
-		var _source = civitas.ui.svg_get_cell_middle_coords(source.x, source.y, props);
-		var _destination = civitas.ui.svg_get_cell_middle_coords(destination.x, destination.y, props);
+	svg_link_cells: function(source, destination) {
+		var _source = civitas.ui.svg_get_cell_middle_coords(source.x, source.y);
+		var _destination = civitas.ui.svg_get_cell_middle_coords(destination.x, destination.y);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'line'))
 			.attr({
 				'x1': _source.x,
@@ -8707,27 +8764,27 @@ civitas.ui = {
 			.appendTo('.svg-grid');
 	},
 
-	svg_create_cell: function(row, column, color, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
-		var center = civitas.ui.svg_get_cell_middle(row, column, props);
+	svg_create_cell: function(row, column, color, show_grid) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		var center = civitas.ui.svg_get_cell_middle(row, column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'polygon'))
 			.attr({
 				points: [
-					civitas.utils.to_point(center, -1 * props.cell_size / 2, -1 * height),
-					civitas.utils.to_point(center, props.cell_size / 2, -1 * height),
-					civitas.utils.to_point(center, props.cell_size, 0),
-					civitas.utils.to_point(center, props.cell_size / 2, height),
-					civitas.utils.to_point(center, -1 * props.cell_size / 2, height),
-					civitas.utils.to_point(center, -1 * props.cell_size, 0)
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, -1 * height),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, -1 * height),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE, 0),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, height),
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, height),
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE, 0)
 				].join(' '),
 				'class': 'svg-cell'
 			})
 			.css({
 				fill: color,
 				stroke: '#000',
-				'stroke-width': (props.grid === true) ? 0.1 : 0
+				'stroke-width': (show_grid === true) ? 0.1 : 0
 			})
-			.appendTo('.s-c-g-' + (row) + '-' + (column));
+			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
 	svg_create_worldmap: function(cell_size, colors) {
@@ -8820,9 +8877,7 @@ civitas.objects.world = function (params) {
 	 * @type {Object}
 	 */
 	this._properties = {
-		cell_size: 24,
-		beautify: true,
-		grid: true
+		roughness: 5
 	};
 
 	/**
@@ -8842,8 +8897,9 @@ civitas.objects.world = function (params) {
 	 */
 	this.__init = function (params) {
 		this._core = params.core;
+		this._properties.roughness = (typeof params.roughness !== 'undefined') ? params.roughness : civitas.WORLD_ROUGHNESS;
 		if (this._data.length === 0) {
-			this._data = this._generate();
+			this._generate();
 			this._adjust();
 		}
 		return this;
@@ -8925,6 +8981,37 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Lock the specified hex as being inside the borders of a city.
+	 *
+	 * @public
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @returns {String}
+	 */
+	this.lock_hex = function(x, y, lid) {
+		this.set_hex(x, y, 'l', true);
+		this.set_hex(x, y, 'lid', lid);
+	};
+
+	/**
+	 * Check if the specified hex is locked.
+	 *
+	 * @public
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @returns {Boolean}
+	 */
+	this.is_locked_hex = function(x, y) {
+		var hex = this.get_hex(x, y);
+		return hex.l;
+	};
+
+	this.locked_hex_by = function(x, y) {
+		var hex = this.get_hex(x, y);
+		return hex.lid;
+	};
+
+	/**
 	 * Return the moisture data for the specified hex.
 	 *
 	 * @public
@@ -8961,6 +9048,18 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Set the specified hex data.
+	 *
+	 * @public
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @returns {String}
+	 */
+	this.set_hex = function(x, y, key, value) {
+		return this._data[y][x][key] = value;
+	};
+
+	/**
 	 * Add a settlement into the world data.
 	 *
 	 * @public
@@ -8970,6 +9069,8 @@ civitas.objects.world = function (params) {
 	this.add_city = function(settlement) {
 		var location = settlement.get_location();
 		this._data[location.y][location.x].s = settlement.id();
+		this._data[location.y][location.x].l = true;
+		this._data[location.y][location.x].lid = settlement.id();
 		this._data[location.y][location.x].n = settlement.name();
 		//civitas.ui.svg_add_city_image(location.x, location.y, settlement);
 		return this;
@@ -8997,87 +9098,114 @@ civitas.objects.world = function (params) {
 	 * @returns {Array}
 	 */
 	this._generate = function() {
-		var map = civitas.utils.create_array(civitas.WORLD_SIZE_WIDTH + 1, civitas.WORLD_SIZE_WIDTH + 1);
-		start_displacement(map, civitas.WORLD_SIZE_WIDTH);
-		return map;
+		this._data = this.create_map_array(civitas.WORLD_SIZE_WIDTH + 1, civitas.WORLD_SIZE_WIDTH + 1);
+		this._start_displacement(civitas.WORLD_SIZE_WIDTH);
+	};
 
-		function start_displacement(map, size) {
-			var tr, tl, t, br, bl, b, r, l, center;
-			map[0][0].e = Math.random(1.0);
-			tl = map[0][0].e;
-			map[0][size].e = Math.random(1.0);
-			bl = map[0][size].e;
-			map[size][0].e = Math.random(1.0);
-			tr = map[size][0].e;
-			map[size][size].e = Math.random(1.0);
-			br = map[size][size].e;
-			map[size / 2][size / 2].e = map[0][0].e + map[0][size].e + map[size][0].e + map[size][size].e / 4;
-			map[size / 2][size / 2].e = normalize(map[size / 2][size / 2].e);
-			center = map[size / 2][size / 2].e;
-			map[size / 2][size].e = bl + br + center + center / 4;
-			map[size / 2][0].e = tl + tr + center + center / 4;
-			map[size][size / 2].e = tr + br + center + center / 4;
-			map[0][size / 2].e = tl + bl + center + center / 4;
-			midpoint_displacement(size);
+	this.create_map_array = function(d1, d2) {
+		var x = new Array(d1);
+		for (var i = 0; i < d1; i += 1) {
+			x[i] = new Array(d2);
 		}
+		for (var i = 0; i < d1; i += 1) {
+			for (var j = 0; j < d2; j += 1) {
+				x[i][j] = {
+					/* Elevation */
+					e: -1,
+					/* Terrain */
+					t: 'S',
+					/* Settlement id */
+					s: null,
+					/* Settlement name */
+					n: null,
+					/* Locked */
+					l: false,
+					/* Locked to settlement id */
+					lid: null,
+					/* Moisture */
+					m: 0
+				};
+			}
+		}
+		return x;
+	};
 
-		function midpoint_displacement(dimension) {
-			var new_dimension = dimension / 2;
-			var top, tr, tl, bottom, bl, br, right, left, center;
-			if (new_dimension > 1) {
-				for (var i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
-					for (var j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
-						var x = i - (new_dimension / 2);
-						var y = j - (new_dimension / 2);
-						tl = map[i - new_dimension][j - new_dimension].e;
-						tr = map[i][j - new_dimension].e;
-						bl = map[i - new_dimension][j].e;
-						br = map[i][j].e;
-						map[x][y].e = (tl + tr + bl + br) / 4 + displace(dimension);
-						map[x][y].e = normalize(map[x][y].e);
-						center = map[x][y].e;
-						if (j - (new_dimension * 2) + (new_dimension / 2) > 0) {
-							map[x][j - new_dimension].e = (tl + tr + center + map[x][j - dimension + (new_dimension / 2)].e) / 4 + displace(dimension);
-						} else {
-							map[x][j - new_dimension].e = (tl + tr + center) / 3 + displace(dimension);
-						}
-						map[x][j - new_dimension].e = normalize(map[x][j - new_dimension].e);
-						if (j + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-							map[x][j].e = (bl + br + center + map[x][j + (new_dimension / 2)].e) / 4 + displace(dimension);
-						} else {
-							map[x][j].e = (bl + br + center) / 3 + displace(dimension);
-						}
-						map[x][j].e = normalize(map[x][j].e);
-						if (i + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-							map[i][y].e = (tr + br + center + map[i + (new_dimension / 2)][y].e) / 4 + displace(dimension);
-						} else {
-							map[i][y].e = (tr + br + center) / 3 + displace(dimension);
-						}
-						map[i][y].e = normalize(map[i][y].e);
-						if (i - (new_dimension * 2) + (new_dimension / 2) > 0) {
-							map[i - new_dimension][y].e = (tl + bl + center + map[i - dimension + (new_dimension / 2)][y].e) / 4 + displace(dimension);
-						} else {
-							map[i - new_dimension][y].e = (tl + bl + center) / 3 + displace(dimension);
-						}
-						map[i - new_dimension][y].e = normalize(map[i - new_dimension][y].e);
+	this._start_displacement = function(size) {
+		var tr, tl, t, br, bl, b, r, l, center;
+		this._data[0][0].e = Math.random(1.0);
+		tl = this._data[0][0].e;
+		this._data[0][size].e = Math.random(1.0);
+		bl = this._data[0][size].e;
+		this._data[size][0].e = Math.random(1.0);
+		tr = this._data[size][0].e;
+		this._data[size][size].e = Math.random(1.0);
+		br = this._data[size][size].e;
+		this._data[size / 2][size / 2].e = this._data[0][0].e + this._data[0][size].e + this._data[size][0].e + this._data[size][size].e / 4;
+		this._data[size / 2][size / 2].e = this.normalize(this._data[size / 2][size / 2].e);
+		center = this._data[size / 2][size / 2].e;
+		this._data[size / 2][size].e = bl + br + center + center / 4;
+		this._data[size / 2][0].e = tl + tr + center + center / 4;
+		this._data[size][size / 2].e = tr + br + center + center / 4;
+		this._data[0][size / 2].e = tl + bl + center + center / 4;
+		this._midpoint_displacement(size);
+	};
+
+	this._midpoint_displacement = function(dimension) {
+		var new_dimension = dimension / 2;
+		var top, tr, tl, bottom, bl, br, right, left, center;
+		if (new_dimension > 1) {
+			for (var i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
+				for (var j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
+					var x = i - (new_dimension / 2);
+					var y = j - (new_dimension / 2);
+					tl = this._data[i - new_dimension][j - new_dimension].e;
+					tr = this._data[i][j - new_dimension].e;
+					bl = this._data[i - new_dimension][j].e;
+					br = this._data[i][j].e;
+					this._data[x][y].e = (tl + tr + bl + br) / 4 + this._displace(dimension);
+					this._data[x][y].e = this.normalize(this._data[x][y].e);
+					center = this._data[x][y].e;
+					if (j - (new_dimension * 2) + (new_dimension / 2) > 0) {
+						this._data[x][j - new_dimension].e = (tl + tr + center + this._data[x][j - dimension + (new_dimension / 2)].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[x][j - new_dimension].e = (tl + tr + center) / 3 + this._displace(dimension);
 					}
+					this._data[x][j - new_dimension].e = this.normalize(this._data[x][j - new_dimension].e);
+					if (j + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
+						this._data[x][j].e = (bl + br + center + this._data[x][j + (new_dimension / 2)].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[x][j].e = (bl + br + center) / 3 + this._displace(dimension);
+					}
+					this._data[x][j].e = this.normalize(this._data[x][j].e);
+					if (i + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
+						this._data[i][y].e = (tr + br + center + this._data[i + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[i][y].e = (tr + br + center) / 3 + this._displace(dimension);
+					}
+					this._data[i][y].e = this.normalize(this._data[i][y].e);
+					if (i - (new_dimension * 2) + (new_dimension / 2) > 0) {
+						this._data[i - new_dimension][y].e = (tl + bl + center + this._data[i - dimension + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[i - new_dimension][y].e = (tl + bl + center) / 3 + this._displace(dimension);
+					}
+					this._data[i - new_dimension][y].e = this.normalize(this._data[i - new_dimension][y].e);
 				}
-				midpoint_displacement(new_dimension);
 			}
+			this._midpoint_displacement(new_dimension);
 		}
+	};
 
-		function displace(num) {
-			return (Math.random(1.0) - 0.5) * (num / (civitas.WORLD_SIZE_WIDTH + civitas.WORLD_SIZE_WIDTH) * 5);
-		}
+	this._displace = function(num) {
+		return (Math.random(1.0) - 0.5) * (num / (civitas.WORLD_SIZE_WIDTH + civitas.WORLD_SIZE_WIDTH) * this._properties.roughness);
+	};
 
-		function normalize(value) {
-			if (value > 1) {
-				value = 1;
-			} else if (value < -1) {
-				value = -1;
-			}
-			return value;
+	this.normalize = function(value) {
+		if (value > 1) {
+			value = 1;
+		} else if (value < -1) {
+			value = -1;
 		}
+		return value;
 	};
 
 	/**
@@ -9127,7 +9255,8 @@ civitas.objects.settlement = function(params) {
 		religion: null,
 		player: null,
 		nationality: null,
-		color: null
+		color: null,
+		waterside: false
 	};
 
 	/**
@@ -9238,10 +9367,10 @@ civitas.objects.settlement = function(params) {
 		this.properties.nationality = (typeof params.properties.nationality !== 'undefined') ? params.properties.nationality : civitas.NATION_PHOENICIAN;
 		this.properties.ruler = params.properties.ruler;
 		this.properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;
+		this.properties.waterside = (typeof params.properties.waterside !== 'undefined') ? params.properties.waterside : false;
 		this.properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.properties.level * civitas.POPULATION_PER_LEVEL;
 		this.properties.type = (typeof params.properties.type !== 'undefined') ? params.properties.type : civitas.CITY;
 		this.army = this.load_army(params.army);
-		this.navy = this.load_navy(params.navy);
 		this._mercenary = (typeof params.mercenary !== 'undefined') ? params.mercenary : [];
 		this._status = (typeof params.status !== 'undefined') ? params.status : {};
 		this._heroes = (typeof params.heroes !== 'undefined') ? params.heroes : [];
@@ -9250,6 +9379,10 @@ civitas.objects.settlement = function(params) {
 		this.location = params.location;
 		this.properties.color = (typeof params.properties.color !== 'undefined') ? params.properties.color : civitas.utils.get_random_color();
 		this.core().world().add_city(this);
+		this.calc_neighbours();
+		if (this.waterside() === true) {
+			this.navy = this.load_navy(params.navy);
+		}
 		if (typeof params.trades !== 'undefined') {
 			this.trades = params.trades;
 		} else {
@@ -9332,6 +9465,52 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.get_properties = function() {
 		return this.properties;
+	};
+
+	this.get_neighbours = function() {
+		var _neighbours = [];
+		var location = this.get_location();
+		var neighbours = civitas.utils.get_neighbours(location.y, location.x);
+		if (this.get_type() === civitas.CITY) {
+			for (var z = 0; z < neighbours.length; z++) {
+				_neighbours.push(neighbours[z]);
+			}
+		} else if (this.get_type() === civitas.METROPOLIS) {
+			for (var z = 0; z < neighbours.length; z++) {
+				_neighbours.push(neighbours[z]);
+				var new_neighbours = civitas.utils.get_neighbours(neighbours[z].y, neighbours[z].x);
+				for (var u = 0; u < new_neighbours.length; u++) {
+					_neighbours.push(new_neighbours[u]);
+				}
+			}
+		}
+		return _neighbours;
+	};
+
+	this.calc_neighbours = function() {
+		var terrain;
+		var world = this.core().world();
+		var neighbours = this.get_neighbours();
+		for (var i = 0; i < neighbours.length; i++) {
+			terrain = world.get_hex_terrain(neighbours[i].x, neighbours[i].y);
+			world.lock_hex(neighbours[i].x, neighbours[i].y, this.id());
+			if (terrain === 'S' || terrain === 'O') {
+				this.waterside(true);
+			}
+		}
+	};
+
+	/**
+	 * Check if the settlement is waterside (can build ships)
+	 * 
+	 * @public
+	 * @returns {Boolean}
+	 */
+	this.waterside = function(value) {
+		if (typeof value !== 'undefined') {
+			this.properties.waterside = value;
+		}
+		return this.properties.waterside;
 	};
 
 	/**
@@ -9656,6 +9835,16 @@ civitas.objects.settlement = function(params) {
 	};
 
 	/**
+	 * Check if this settlement is a camp.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
+	this.is_camp = function() {
+		return this.properties.type === civitas.CAMP;
+	};
+
+	/**
 	 * Check if this settlement is a village.
 	 *
 	 * @public
@@ -9751,6 +9940,16 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.to_village = function() {
 		this.properties.type = civitas.VILLAGE;
+	};
+
+	/**
+	 * Change this settlement's type to camp.
+	 *
+	 * @public
+	 * @returns {civitas.objects.settlement}
+	 */
+	this.to_camp = function() {
+		this.properties.type = civitas.CAMP;
 	};
 
 	/**
@@ -11643,6 +11842,8 @@ civitas.objects.settlement = function(params) {
 			return 'City of ' + this.name();
 		} else if (settlement_type === civitas.VILLAGE) {
 			return 'Village of ' + this.name();
+		} else if (settlement_type === civitas.CAMP) {
+			return 'Raider Camp ' + this.name();
 		} else {
 			return '';
 		}
@@ -14356,6 +14557,8 @@ civitas.game = function () {
 	 * @private
 	 */
 	this.settings = {
+		worldmap_beautify: civitas.WORLD_BEAUTIFY,
+		worldmap_grid: civitas.WORLD_GRID,
 		music: false
 	};
 
@@ -14403,7 +14606,6 @@ civitas.game = function () {
 	 * @returns {civitas.game}
 	 */
 	this.__init = function () {
-		this._world = new civitas.objects.world(this);
 		this._build_ui();
 		this._setup_audio();
 		this._setup_ui();
@@ -14571,6 +14773,10 @@ civitas.game = function () {
 			this.encryption.key = password;
 		}
 		this.properties.difficulty = parseInt(difficulty);
+		this._world = new civitas.objects.world({
+			core: this,
+			roughness: civitas.INITIAL_SEED[difficulty - 1].roughness
+		});
 		this._create_settlement(name, cityname, nation, climate, avatar);
 		this._setup_game(null);
 		return true;
@@ -14606,6 +14812,9 @@ civitas.game = function () {
 		}
 		if (game_data) {
 			this.show_loader();
+			this._world = new civitas.objects.world({
+				core: this
+			});
 			var temp_game_data = this.import(game_data.data);
 			if (temp_game_data !== false) {
 				data = this._load_settlement(temp_game_data);
@@ -15642,31 +15851,20 @@ civitas.game = function () {
 	 * Create all the other settlements in the world.
 	 * 
 	 * @public
-	 * @param {Number} settlement_type
 	 * @returns {Object}
 	 */
-	this.get_point_outside_area = function(settlement_type) {
-		var new_location = civitas.utils.get_random_world_location(this.world().data());
-		var settlement_location;
-		var settlements = this.get_settlements();
-		for (var i = 0; i < settlements.length; i++) {
-			if (typeof settlements[i] !== 'undefined') {
-				settlement_location = settlements[i].get_location();
-				if ((new_location.x === settlement_location.x) && (new_location.y === settlement_location.y)) {
-					return this.get_point_outside_area(settlement_type);
-				}
-				/*
-				// Todo: check neighbours
-				var neighbours = civitas.utils.get_neighbours(new_location.y, new_location.x);
-				for (var z = 0; z < neighbours.length; z++) {
-					if ((new_location.x === neighbours[z].x) && (new_location.y === neighbours[z].y)) {
-						return this.get_point_outside_area(settlement_type);
-					}
-				}
-				*/
-			}
+	this.get_random_location = function() {
+		var world = this.world();
+		var data = world.data();
+		var pos = {
+			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
+			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
 		}
-		return new_location;
+		if ((data[pos.y][pos.x].t !== 'S' && data[pos.y][pos.x].t !== 'O') && data[pos.y][pos.x].l === false) {
+			return pos;
+		} else {
+			return this.get_random_location();
+		}
 	};
 
 	/**
@@ -15697,6 +15895,12 @@ civitas.game = function () {
 				} else {
 					army[item] = civitas.utils.get_random(0, 2);
 				}
+			} else if (settlement_type === civitas.CAMP) {
+				if (item === 'cannon' || item === 'catapult') {
+					// Todo
+				} else {
+					army[item] = civitas.utils.get_random(3, 8);
+				}
 			}
 		}
 		return army;
@@ -15716,8 +15920,10 @@ civitas.game = function () {
 				navy[item] = civitas.utils.get_random(3, 5);
 			} else if (settlement_type === civitas.METROPOLIS) {
 				navy[item] = civitas.utils.get_random(10, 20);
-			} else {
+			} else if (settlement_type === civitas.VILLAGE) {
 				navy[item] = civitas.utils.get_random(0, 2);
+			} else if (settlement_type === civitas.CAMP) {
+				navy[item] = 0;
 			}
 		}
 		return navy;
@@ -15749,13 +15955,20 @@ civitas.game = function () {
 				resources.espionage = civitas.utils.get_random(500, civitas.MAX_ESPIONAGE_VALUE);
 				resources.research = civitas.utils.get_random(500, civitas.MAX_RESEARCH_VALUE);
 				resources.faith = civitas.utils.get_random(500, civitas.MAX_FAITH_VALUE);
-			} else {
-				resources.coins = civitas.utils.get_random(100, 20000);
+			} else if (settlement === civitas.VILLAGE) {
+				resources.coins = civitas.utils.get_random(10000, 30000);
 				resources.fame = civitas.utils.get_random(1, 50000);
 				resources.prestige = civitas.utils.get_random(1, 100);
 				resources.espionage = civitas.utils.get_random(1, 2);
 				resources.research = civitas.utils.get_random(1, 2);
 				resources.faith = civitas.utils.get_random(1, civitas.MAX_FAITH_VALUE);
+			} else if (settlement === civitas.CAMP) {
+				resources.coins = civitas.utils.get_random(1000, 10000);
+				resources.fame = 1;
+				resources.prestige = 1;
+				resources.espionage = 1;
+				resources.research = 1;
+				resources.faith = 1;
 			}
 		}
 		var trades = {
@@ -15766,8 +15979,10 @@ civitas.game = function () {
 			num_resources = civitas.utils.get_random(5, 30);
 		} else if (settlement === civitas.METROPOLIS) {
 			num_resources = civitas.utils.get_random(15, 80);
-		} else {
+		} else if (settlement === civitas.VILLAGE) {
 			num_resources = civitas.utils.get_random(2, 10);
+		} else if (settlement === civitas.CAMP) {
+			num_resources = civitas.utils.get_random(2, 5);
 		}
 		for (var i = 0; i < num_resources; i++) {
 			var res = this.get_random_resource();
@@ -15818,16 +16033,16 @@ civitas.game = function () {
 	 * @returns {Object}
 	 */
 	this.generate_random_settlement_data = function(settlement_type) {
-		var settlement_level;
+		var settlement_level = 1;
 		if (typeof settlement_type === 'undefined') {
-			settlement_type = civitas.utils.get_random(0, 2);
+			settlement_type = civitas.utils.get_random(0, 3);
 		}
 		var resources = this.generate_random_resources(true, settlement_type);
 		if (settlement_type === civitas.CITY) {
 			settlement_level = civitas.utils.get_random(10, civitas.MAX_SETTLEMENT_LEVEL);
 		} else if (settlement_type === civitas.METROPOLIS) {
 			settlement_level = civitas.utils.get_random(20, civitas.MAX_SETTLEMENT_LEVEL);
-		} else {
+		} else if (settlement_type === civitas.VILLAGE) {
 			settlement_level = civitas.utils.get_random(1, 5);
 		}
 		var settlement = {
@@ -15867,15 +16082,15 @@ civitas.game = function () {
 			avatar: avatar,
 			religion: civitas.RELIGION_NONE,
 			nationality: nation,
-			army: civitas.START_ARMY[difficulty - 1].army,
-			navy: civitas.START_ARMY[difficulty - 1].navy,
-			resources: civitas.START_RESOURCES[difficulty - 1],
+			army: civitas.INITIAL_SEED[difficulty - 1].military.army,
+			navy: civitas.INITIAL_SEED[difficulty - 1].military.navy,
+			resources: civitas.INITIAL_SEED[difficulty - 1].resources,
 			core: this
 		}, 0, {
 			name: name,
 			avatar: avatar
 		});
-		this.get_settlement()._create_buildings(civitas.START_BUILDINGS);
+		this.get_settlement()._create_buildings(civitas.INITIAL_SEED[difficulty - 1].buildings);
 		return this;
 	};
 
@@ -15893,6 +16108,7 @@ civitas.game = function () {
 			var new_settlement;
 			var ruler;
 			var player = false;
+			var location = this.get_random_location();
 			if (typeof id === 'undefined') {
 				id = this.get_num_settlements();
 			}
@@ -15902,9 +16118,9 @@ civitas.game = function () {
 			if (player === false) {
 				settlement_data.type = settlement_data.type;
 				ruler = {
-					title: 'Mayor',
+					title: (settlement_data.type === civitas.CAMP) ? 'Warlord' : 'Mayor',
 					avatar: civitas.utils.get_random(1, civitas.AVATARS),
-					personality: civitas.utils.get_random(1, civitas.PERSONALITIES.length - 1),
+					personality: (settlement_data.type === civitas.CAMP) ? civitas.PERSONALITY_WARLORD : civitas.utils.get_random(1, civitas.PERSONALITIES.length - 1),
 					name: civitas.utils.get_random_unique(civitas.NAMES)
 				};
 			} else {
@@ -15934,12 +16150,12 @@ civitas.game = function () {
 				army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
 				navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
 				trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
-				location: this.get_point_outside_area(settlement_data.type)
+				location: location
 			});
 			if (player === false) {
 				this.get_settlement().status(id, {
-					influence: 50,
-					status: civitas.DIPLOMACY_TRUCE
+					influence: (settlement_data.type === civitas.CAMP) ? 0 : 50,
+					status: (settlement_data.type === civitas.CAMP) ? civitas.DIPLOMACY_WAR : civitas.DIPLOMACY_TRUCE
 				});
 			}
 			this.settlements.push(new_settlement);
@@ -15977,6 +16193,7 @@ civitas.game = function () {
 	this._setup_neighbours = function (data) {
 		var new_settlement;
 		var settlement_data;
+		var difficulty = this.difficulty();
 		if (data !== null) {
 			for (var i = 1; i < data.settlements.length; i++) {
 				settlement_data = data.settlements[i];
@@ -15985,8 +16202,11 @@ civitas.game = function () {
 				this.settlements.push(new_settlement);
 			}
 		} else {
-			for (var i = 0; i < civitas.MAX_INITIAL_SETTLEMENTS; i++) {
-				this.add_random_settlement();
+			for (var i = 0; i < civitas.SETTLEMENTS.length; i++) {
+				var num = civitas.INITIAL_SEED[difficulty - 1].settlements[i];
+				for (var z = 0; z < num; z++) {
+					this.add_random_settlement(i);
+				}
 			}
 		}
 		return this;
@@ -15998,8 +16218,8 @@ civitas.game = function () {
 	 * @public
 	 * @returns {civitas.game}
 	 */
-	this.add_random_settlement = function() {
-		this.add_settlement(this.generate_random_settlement_data());
+	this.add_random_settlement = function(settlement_type) {
+		this.add_settlement(this.generate_random_settlement_data(settlement_type));
 		return this;
 	};
 
@@ -16165,7 +16385,7 @@ civitas.game = function () {
 			this.achievement_points(data.achievement_points);
 			this.date(data.date);
 			this.set_black_market(data.black_market);
-			this.set_settings_music(data.settings.music);
+			this.set_settings(data.settings);
 		} else {
 			return false;
 		}
@@ -16770,13 +16990,19 @@ civitas.PANEL_SETTLEMENT = {
 		if (settlement.is_city() || settlement.is_metropolis()) {
 			tabs.push('Info');
 			if (my_settlement.can_diplomacy()) {
-				tabs.push('Army', 'Navy')
+				tabs.push('Army');
+				if (settlement.waterside() === true) {
+					tabs.push('Navy');
+				}
 			}
 			tabs.push('Resources', 'Imports', 'Exports');
 		} else {
 			tabs.push('Info');
-			if (my_settlement.can_diplomacy()) {
-				tabs.push('Army', 'Navy')
+			if (my_settlement.can_diplomacy() || settlement.is_camp()) {
+				tabs.push('Army');
+				if (settlement.waterside() === true) {
+					tabs.push('Navy');
+				}
 			}
 			tabs.push('Resources');
 		}
@@ -16907,8 +17133,10 @@ civitas.PANEL_SETTLEMENT = {
 			sett_type_text = 'City';
 		} else if (settlement_type === civitas.METROPOLIS) {
 			sett_type_text = 'Metropolis';
-		} else {
+		} else if (settlement_type === civitas.VILLAGE) {
 			sett_type_text = 'Village';
+		} else if (settlement_type === civitas.CAMP) {
+			sett_type_text = 'Raider Camp';
 		}
 		$(this.handle + ' #tab-info').empty().append('' +
 			'<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' +
@@ -16946,9 +17174,11 @@ civitas.PANEL_SETTLEMENT = {
 				'<dt>Distance</dt>' +
 				'<dd>' + civitas.utils.get_distance(location, settlement.get_location()) + ' miles (' + civitas.utils.get_distance_in_days(location, settlement.get_location()) + ' days)</dd>' +
 			'</dl>');
-		if (my_settlement.can_diplomacy()) {
+		if (my_settlement.can_diplomacy() || settlement.is_camp()) {
 			$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(settlement.get_army()));
-			$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));
+			if (settlement.waterside() === true) {
+				$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));
+			}
 		}
 		if (settlement.is_city() || settlement.is_metropolis()) {
 			$(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + civitas.ui.trades_list(trades, 'imports'));
@@ -16970,36 +17200,40 @@ civitas.PANEL_SETTLEMENT = {
 		}
 		$(this.handle + ' #tab-resources').empty().append(_out);
 		if (_status.id === civitas.DIPLOMACY_VASSAL) {
-			$(this.handle + ' .btn.attack, ' + this.handle + ' .btn.spy').hide();
+			$(this.handle + ' footer .attack').css('display','none');
 		} else {
-			$(this.handle + ' .btn.attack, ' + this.handle + ' .btn.spy').show();
+			$(this.handle + ' footer .attack').css('display', 'inline-block');
 		}
 		if (my_settlement.can_diplomacy()) {
+			if (settlement.is_camp()) {
+				$(this.handle + ' footer .caravan, ' + this.handle + ' footer .spy').hide();
+			} else {
+				$(this.handle + ' footer .caravan, ' + this.handle + ' footer .spy').css('display', 'inline-block');
+			}
 			if (_status.id === civitas.DIPLOMACY_PACT && (settlement.is_city() || settlement.is_metropolis())) {
-				$(this.handle + ' footer .alliance').show();
-			} else {
-				$(this.handle + ' footer .alliance').hide();
+				$(this.handle + ' footer .alliance').css('display', 'inline-block');
+			} else if (!settlement.is_camp()) {
+				$(this.handle + ' footer .alliance').css('display','none');
 			}
-			if (_status.id === civitas.DIPLOMACY_TRUCE ||
-				_status.id === civitas.DIPLOMACY_CEASE_FIRE) {
-				$(this.handle + ' footer .pact').show();
+			if ((_status.id === civitas.DIPLOMACY_TRUCE || _status.id === civitas.DIPLOMACY_CEASE_FIRE) && !settlement.is_camp()) {
+				$(this.handle + ' footer .pact').css('display', 'inline-block');
 			} else {
-				$(this.handle + ' footer .pact').hide();
+				$(this.handle + ' footer .pact').css('display','none');
 			}
-			if (_status.id === civitas.DIPLOMACY_WAR) {
-				$(this.handle + ' footer .ceasefire').show();
+			if (_status.id === civitas.DIPLOMACY_WAR && !settlement.is_camp()) {
+				$(this.handle + ' footer .ceasefire').css('display', 'inline-block');
 			} else {
-				$(this.handle + ' footer .ceasefire').hide();
+				$(this.handle + ' footer .ceasefire').css('display','none');
 			}
-			if (_status.id !== civitas.DIPLOMACY_WAR && _status.id !== civitas.DIPLOMACY_VASSAL) {
-				$(this.handle + ' footer .war').show();
+			if ((_status.id !== civitas.DIPLOMACY_WAR && _status.id !== civitas.DIPLOMACY_VASSAL) && !settlement.is_camp()) {
+				$(this.handle + ' footer .war').css('display', 'inline-block');
 			} else {
-				$(this.handle + ' footer .war').hide();
+				$(this.handle + ' footer .war').css('display','none');
 			}
-			if (_status.id === civitas.DIPLOMACY_PACT && settlement_type === civitas.VILLAGE) {
-				$(this.handle + ' footer .join').show();
+			if ((_status.id === civitas.DIPLOMACY_PACT && settlement_type === civitas.VILLAGE) && !settlement.is_camp()) {
+				$(this.handle + ' footer .join').css('display', 'inline-block');
 			} else {
-				$(this.handle + ' footer .join').hide();
+				$(this.handle + ' footer .join').css('display','none');
 			}
 		}
 	}
@@ -17183,7 +17417,7 @@ civitas.PANEL_DEBUG = {
 			settlement.add_to_storage('provisions', 1000);
 			settlement.add_to_storage('ropes', 50);
 			settlement.add_to_storage('barrels', 50);
-			settlement.add_to_storage('tools', 50);
+			settlement.add_to_storage('tools', 100);
 			settlement.inc_coins(2000000);
 			var army = settlement.get_army();
 			for (var soldier in army) {
@@ -17229,10 +17463,12 @@ civitas.PANEL_DEBUG = {
 			settlement.add_to_storage('woodplanks', 1000);
 			settlement.add_to_storage('clay', 1000);
 			settlement.add_to_storage('bricks', 1000);
+			settlement.add_to_storage('tools', 500);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.thirty', function() {
 			settlement.add_to_storage('bread', 1000);
+			settlement.add_to_storage('meat', 1000);
 			settlement.add_to_storage('wine', 1000);
 			core.save_and_refresh();
 			return false;
@@ -17487,20 +17723,37 @@ civitas.PANEL_WORLD = {
 		var world = core.world();
 		var colors = world.colors();
 		var props = world.properties();
+		var settings = core.get_settings();
 		var world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
-		civitas.ui.svg_create_worldmap(props.cell_size, colors);
+		civitas.ui.svg_create_worldmap(civitas.WORLD_HEX_SIZE, colors);
+		for (var row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
+			for (var column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
+				var terrain = world_data[row][column].t;
+				civitas.ui.svg_create_group(terrain, row, column);
+				civitas.ui.svg_create_cell(row, column, colors[terrain], settings.worldmap_grid);
+				if (settings.worldmap_beautify === true) {
+					civitas.ui.svg_apply_terrain(row, column, terrain);
+				}
+			}
+		}
 		for (var row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (var column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
 				var terrain = world_data[row][column].t;
 				var suid = world_data[row][column].s;
-				civitas.ui.svg_create_group(terrain, row, column, props);
-				civitas.ui.svg_create_cell(row, column, colors[terrain], props);
-				if (props.beautify === true) {
-					civitas.ui.svg_apply_terrain(row, column, terrain);
-				}
 				if (suid !== null && typeof settlements[suid] !== 'undefined') {
 					civitas.ui.svg_add_settlement_image(row, column, settlements[suid], settlement);
+				}
+				if (world_data[row][column].l === true) {
+					var lid = world_data[row][column].lid;
+					if (lid !== null) {
+						if (typeof settlements[lid] !== 'undefined') {
+							var col = settlements[lid].color();
+							$('.s-c-g-' + row + '-' + column + ' > .svg-cell').css({
+								fill: col
+							});
+						}
+					}
 				}
 			}
 		}
@@ -17542,14 +17795,10 @@ civitas.PANEL_WORLD = {
 			}
 			return false;
 		});
-		for (var i = 0; i < core.get_num_settlements(); i++) {
-			if (typeof settlements[i] !== 'undefined') {
-				var pos = settlements[i].get_location();
-				var color = settlements[i].color();
-				civitas.utils.get_cell_neighbours(pos.x, pos.y, color, settlements[i].get_type());
-			}
-		}
-		//civitas.ui.svg_link_cells({x: 21, y: 25}, {x: 24, y: 32}, props);
+		/*
+		civitas.ui.svg_link_cells({x: 21, y: 25}, {x: 24, y: 32});
+		*/
+		civitas.ui.worldmap_scrollto(settlement.get_location());
 	},
 	on_refresh: function() {
 		var self = this;
@@ -17674,7 +17923,6 @@ civitas.PANEL_NEW_ARMY = {
 		var my_settlement = core.get_settlement();
 		var settlement = params.data;
 		var settlements = core.get_settlements();
-		var settlement_type_text;
 		var army = my_settlement.get_army();
 		var location = my_settlement.get_location();
 		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
@@ -17723,14 +17971,7 @@ civitas.PANEL_NEW_ARMY = {
 			'<select class="army-destination">' +
 				'<option value="0">-- select --</option>';
 		for (var i = 1; i < settlements.length; i++) {
-			if (settlements[i].is_city()) {
-				settlement_type_text = 'City of ';
-			} else if (settlements[i].is_metropolis()) {
-				settlement_type_text = 'Metropolis of ';
-			} else {
-				settlement_type_text = 'Village of '
-			}
-			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlement_type_text + settlements[i].name() + '</option>';
+			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
 		}
 		_t += '</select>' +
 			'</fieldset>' +
@@ -17859,7 +18100,6 @@ civitas.PANEL_NEW_SPY = {
 		var espionage = my_settlement.espionage();
 		var location = my_settlement.get_location();
 		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
-		var settlement_type_text;
 		var _t = '<fieldset>' +
 			'<legend>Initial costs</legend>' +
 			'<dl>';
@@ -17882,14 +18122,7 @@ civitas.PANEL_NEW_SPY = {
 			'<select class="espionage-destination">' +
 				'<option value="0">-- select --</option>';
 		for (var i = 1; i < settlements.length; i++) {
-			if (settlements[i].is_city()) {
-				settlement_type_text = 'City of ';
-			} else if (settlements[i].is_metropolis()) {
-				settlement_type_text = 'Metropolis of ';
-			} else {
-				settlement_type_text = 'Village of '
-			}
-			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlement_type_text + settlements[i].name() + '</option>';
+			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
 		}
 		_t += '</select>' +
 		'</fieldset>' +
@@ -17994,7 +18227,6 @@ civitas.PANEL_NEW_CARAVAN = {
 		var settlements = core.get_settlements();
 		var location = my_settlement.get_location();
 		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
-		var settlement_type_text;
 		var _t = '<fieldset>' +
 			'<legend>Initial costs</legend>' +
 			'<dl>';
@@ -18017,14 +18249,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			'<select class="caravan-destination">' +
 				'<option value="0">-- select --</option>';
 		for (var i = 1; i < settlements.length; i++) {
-			if (settlements[i].is_city()) {
-				settlement_type_text = 'City of ';
-			} else if (settlements[i].is_metropolis()) {
-				settlement_type_text = 'Metropolis of ';
-			} else {
-				settlement_type_text = 'Village of '
-			}
-			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlement_type_text + settlements[i].name() + '</option>';
+			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
 		}
 		_t += '</select>' +
 		'</fieldset>' +
@@ -19242,7 +19467,6 @@ civitas.PANEL_EMBASSY = {
 		var settlement = core.get_settlement();
 		var settlements = core.get_settlements();
 		var status = settlement.status();
-		var settlement_type_text;
 		var building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
 			var level = building.get_level();
@@ -19251,20 +19475,12 @@ civitas.PANEL_EMBASSY = {
 			var _t = '<table class="normal">';
 			for (var i = 1; i < settlements.length; i++) {
 				var _status = settlement.get_diplomacy_status(settlements[i].id());
-				var settlement_type = settlements[i].get_type();
-				if (settlements[i].is_city()) {
-					settlement_type_text = 'City of';
-				} else if (settlements[i].is_metropolis()) {
-					settlement_type_text = 'Metropolis of';
-				} else {
-					settlement_type_text = 'Village of'
-				}
 				_t += '<tr>' +
 						'<td class="icon">' +
 							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#"><img src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" /></a>' +
 						'</td>' +
 						'<td>' +
-							'<p class="title">' + settlement_type_text + ' ' + settlements[i].name() + '</p> ' +
+							'<p class="title">' + settlements[i].nice_name() + '</p> ' +
 							'<div data-id="' + settlements[i].id() + '" >' + civitas.ui.progress(status[settlements[i].id()].influence, 'big') + '</div>' +
 						'</td>' +
 						'<td>' +
@@ -19790,10 +20006,12 @@ civitas.WINDOW_OPTIONS = {
 		var core = this.core();
 		$(handle + ' .options-game').append(civitas.ui.tabs(['Sounds', 'UI', 'Gameplay']));
 		$(handle + ' #tab-sounds').append('<div>' +
-			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">toggle music</a>' +
+			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">music</a>' +
 			'<input class="music-volume" type="range" min="0" max="1" step="0.1" ' + ((core.get_settings('music') !== true) ? 'disabled' : '') + ' />' +
 			'</div>');
 		$(handle + ' #tab-ui').append('<div>' +
+			'<a href="#" class="worldmap-grid-control ui-control ' + ((core.get_settings('worldmap_grid') === true) ? 'on' : 'off') + '">worldmap grid</a> ' +
+			'<a href="#" class="worldmap-beautify-control ui-control ' + ((core.get_settings('worldmap_beautify') === true) ? 'on' : 'off') + '">worldmap beautify</a>' +
 			'</div>');
 		$(handle + ' .tabs').tabs();
 		$(handle).on('click', '.do-resume', function () {
@@ -19834,11 +20052,31 @@ civitas.WINDOW_OPTIONS = {
 			if ($(this).hasClass('on')) {
 				$(this).removeClass('on').addClass('off');
 				$('.music-volume').attr('disabled', true);
-				core.set_settings_music(true);
+				core.set_settings('music', false);
 			} else {
 				$(this).removeClass('off').addClass('on');
 				$('.music-volume').attr('disabled', false);
-				core.set_settings_music(false);
+				core.set_settings('music', true);
+			}
+			core.save();
+			return false;
+		}).on('click', '.worldmap-grid-control', function () {
+			if ($(this).hasClass('on')) {
+				$(this).removeClass('on').addClass('off');
+				core.set_settings('worldmap_grid', false);
+			} else {
+				$(this).removeClass('off').addClass('on');
+				core.set_settings('worldmap_grid', true);
+			}
+			core.save();
+			return false;
+		}).on('click', '.worldmap-beautify-control', function () {
+			if ($(this).hasClass('on')) {
+				$(this).removeClass('on').addClass('off');
+				core.set_settings('worldmap_beautify', false);
+			} else {
+				$(this).removeClass('off').addClass('on');
+				core.set_settings('worldmap_beautify', true);
 			}
 			core.save();
 			return false;

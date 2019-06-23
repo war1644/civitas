@@ -397,8 +397,10 @@ civitas.ui = {
 				image = 'metropolis' + settlement.icon();
 			} else if (settlement.is_city()) {
 				image = 'city' + settlement.icon();
-			} else {
+			} else if (settlement.is_village()) {
 				image = 'village' + settlement.icon();
+			} else if (settlement.is_camp()) {
+				image = 'camp';
 			}
 		}
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
@@ -416,17 +418,19 @@ civitas.ui = {
 			.appendTo('.s-c-g-' + row + '-' + column);
 		document.getElementById('w-s-i' + row + '-' + column)
 			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png');
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
-			.attr({
-				x: name.length * 2,
-				y: 1
-			})
-			.css({
-				'text-anchor': 'middle',
-				'font-size': (typeof player_settlement !== 'undefined' && name === player_settlement.name()) ? '12px' : '10px'
-			})
-			.text(name)
-			.appendTo('.s-c-g-' + row + '-' + column);
+		if (!settlement.is_camp()) {
+			$(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
+				.attr({
+					x: name.length * 2,
+					y: 1
+				})
+				.css({
+					'text-anchor': 'middle',
+					'font-size': (typeof player_settlement !== 'undefined' && name === player_settlement.name()) ? '12px' : '10px'
+				})
+				.text(name)
+				.appendTo('.s-c-g-' + row + '-' + column);
+		}
 	},
 
 	svg_add_mountain: function(row, column) {
@@ -562,32 +566,38 @@ civitas.ui = {
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_create_group: function(terrain, row, column, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
+	svg_create_group: function(terrain, row, column) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'g'))
 			.attr({
 				'data-x': row,
 				'data-terrain': terrain,
 				'data-y': column,
 				'class': 's-c-g s-c-g-' + row + '-' + column,
-				'transform': 'translate(' + Math.round((1.5 * column) * props.cell_size) + ', ' + Math.round(height * (row * 2 + (column % 2))) + ')',
+				'transform': 'translate(' + Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE) + ', ' + Math.round(height * (row * 2 + (column % 2))) + ')',
 			})
 			.appendTo('.svg-grid');
 	},
 
-	svg_get_cell_middle: function(row, column, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
+	svg_get_cell_middle: function(row, column) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		var center = {
-			x: Math.round(props.cell_size), 
+			x: Math.round(civitas.WORLD_HEX_SIZE), 
 			y: Math.round(height)
 		};
 		return center;
 	},
 
-	svg_get_cell_middle_coords: function(row, column, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
+	worldmap_scrollto: function(location) {
+		var coords = civitas.ui.svg_get_cell_middle_coords(location.y, location.x);
+		$('.worldmap').scrollTop(coords.y - (700 / 2));
+		$('.worldmap').scrollLeft(coords.x - (1200 / 2));
+	},
+
+	svg_get_cell_middle_coords: function(row, column) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		return {
-			x: Math.round((1.5 * column) * props.cell_size),
+			x: Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE),
 			y: Math.round(height * (row * 2 + (column % 2)))
 		}
 		
@@ -612,9 +622,9 @@ civitas.ui = {
 			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + element_type + '.png');
 	},
 
-	svg_link_cells: function(source, destination, props) {
-		var _source = civitas.ui.svg_get_cell_middle_coords(source.x, source.y, props);
-		var _destination = civitas.ui.svg_get_cell_middle_coords(destination.x, destination.y, props);
+	svg_link_cells: function(source, destination) {
+		var _source = civitas.ui.svg_get_cell_middle_coords(source.x, source.y);
+		var _destination = civitas.ui.svg_get_cell_middle_coords(destination.x, destination.y);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'line'))
 			.attr({
 				'x1': _source.x,
@@ -629,27 +639,27 @@ civitas.ui = {
 			.appendTo('.svg-grid');
 	},
 
-	svg_create_cell: function(row, column, color, props) {
-		var height = Math.sqrt(3) / 2 * props.cell_size;
-		var center = civitas.ui.svg_get_cell_middle(row, column, props);
+	svg_create_cell: function(row, column, color, show_grid) {
+		var height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		var center = civitas.ui.svg_get_cell_middle(row, column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'polygon'))
 			.attr({
 				points: [
-					civitas.utils.to_point(center, -1 * props.cell_size / 2, -1 * height),
-					civitas.utils.to_point(center, props.cell_size / 2, -1 * height),
-					civitas.utils.to_point(center, props.cell_size, 0),
-					civitas.utils.to_point(center, props.cell_size / 2, height),
-					civitas.utils.to_point(center, -1 * props.cell_size / 2, height),
-					civitas.utils.to_point(center, -1 * props.cell_size, 0)
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, -1 * height),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, -1 * height),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE, 0),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, height),
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, height),
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE, 0)
 				].join(' '),
 				'class': 'svg-cell'
 			})
 			.css({
 				fill: color,
 				stroke: '#000',
-				'stroke-width': (props.grid === true) ? 0.1 : 0
+				'stroke-width': (show_grid === true) ? 0.1 : 0
 			})
-			.appendTo('.s-c-g-' + (row) + '-' + (column));
+			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
 	svg_create_worldmap: function(cell_size, colors) {

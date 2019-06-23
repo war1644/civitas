@@ -27,7 +27,8 @@ civitas.objects.settlement = function(params) {
 		religion: null,
 		player: null,
 		nationality: null,
-		color: null
+		color: null,
+		waterside: false
 	};
 
 	/**
@@ -138,10 +139,10 @@ civitas.objects.settlement = function(params) {
 		this.properties.nationality = (typeof params.properties.nationality !== 'undefined') ? params.properties.nationality : civitas.NATION_PHOENICIAN;
 		this.properties.ruler = params.properties.ruler;
 		this.properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;
+		this.properties.waterside = (typeof params.properties.waterside !== 'undefined') ? params.properties.waterside : false;
 		this.properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.properties.level * civitas.POPULATION_PER_LEVEL;
 		this.properties.type = (typeof params.properties.type !== 'undefined') ? params.properties.type : civitas.CITY;
 		this.army = this.load_army(params.army);
-		this.navy = this.load_navy(params.navy);
 		this._mercenary = (typeof params.mercenary !== 'undefined') ? params.mercenary : [];
 		this._status = (typeof params.status !== 'undefined') ? params.status : {};
 		this._heroes = (typeof params.heroes !== 'undefined') ? params.heroes : [];
@@ -150,6 +151,10 @@ civitas.objects.settlement = function(params) {
 		this.location = params.location;
 		this.properties.color = (typeof params.properties.color !== 'undefined') ? params.properties.color : civitas.utils.get_random_color();
 		this.core().world().add_city(this);
+		this.calc_neighbours();
+		if (this.waterside() === true) {
+			this.navy = this.load_navy(params.navy);
+		}
 		if (typeof params.trades !== 'undefined') {
 			this.trades = params.trades;
 		} else {
@@ -232,6 +237,52 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.get_properties = function() {
 		return this.properties;
+	};
+
+	this.get_neighbours = function() {
+		var _neighbours = [];
+		var location = this.get_location();
+		var neighbours = civitas.utils.get_neighbours(location.y, location.x);
+		if (this.get_type() === civitas.CITY) {
+			for (var z = 0; z < neighbours.length; z++) {
+				_neighbours.push(neighbours[z]);
+			}
+		} else if (this.get_type() === civitas.METROPOLIS) {
+			for (var z = 0; z < neighbours.length; z++) {
+				_neighbours.push(neighbours[z]);
+				var new_neighbours = civitas.utils.get_neighbours(neighbours[z].y, neighbours[z].x);
+				for (var u = 0; u < new_neighbours.length; u++) {
+					_neighbours.push(new_neighbours[u]);
+				}
+			}
+		}
+		return _neighbours;
+	};
+
+	this.calc_neighbours = function() {
+		var terrain;
+		var world = this.core().world();
+		var neighbours = this.get_neighbours();
+		for (var i = 0; i < neighbours.length; i++) {
+			terrain = world.get_hex_terrain(neighbours[i].x, neighbours[i].y);
+			world.lock_hex(neighbours[i].x, neighbours[i].y, this.id());
+			if (terrain === 'S' || terrain === 'O') {
+				this.waterside(true);
+			}
+		}
+	};
+
+	/**
+	 * Check if the settlement is waterside (can build ships)
+	 * 
+	 * @public
+	 * @returns {Boolean}
+	 */
+	this.waterside = function(value) {
+		if (typeof value !== 'undefined') {
+			this.properties.waterside = value;
+		}
+		return this.properties.waterside;
 	};
 
 	/**
@@ -556,6 +607,16 @@ civitas.objects.settlement = function(params) {
 	};
 
 	/**
+	 * Check if this settlement is a camp.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
+	this.is_camp = function() {
+		return this.properties.type === civitas.CAMP;
+	};
+
+	/**
 	 * Check if this settlement is a village.
 	 *
 	 * @public
@@ -651,6 +712,16 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.to_village = function() {
 		this.properties.type = civitas.VILLAGE;
+	};
+
+	/**
+	 * Change this settlement's type to camp.
+	 *
+	 * @public
+	 * @returns {civitas.objects.settlement}
+	 */
+	this.to_camp = function() {
+		this.properties.type = civitas.CAMP;
 	};
 
 	/**
@@ -2543,6 +2614,8 @@ civitas.objects.settlement = function(params) {
 			return 'City of ' + this.name();
 		} else if (settlement_type === civitas.VILLAGE) {
 			return 'Village of ' + this.name();
+		} else if (settlement_type === civitas.CAMP) {
+			return 'Raider Camp ' + this.name();
 		} else {
 			return '';
 		}

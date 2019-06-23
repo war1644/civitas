@@ -28,6 +28,7 @@ gulp.task('app', function() {
 		'src/js/constants/military.js',
 		'src/js/constants/research.js',
 		'src/js/constants/buildings.js',
+		'src/js/constants/world.js',
 		'src/js/constants/settlements.js',
 		'src/js/constants/events.js',
 		'src/js/constants/resources.js',

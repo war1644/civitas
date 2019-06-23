@@ -53,9 +53,7 @@ civitas.objects.world = function (params) {
 	 * @type {Object}
 	 */
 	this._properties = {
-		cell_size: 24,
-		beautify: true,
-		grid: true
+		roughness: 5
 	};
 
 	/**
@@ -75,8 +73,9 @@ civitas.objects.world = function (params) {
 	 */
 	this.__init = function (params) {
 		this._core = params.core;
+		this._properties.roughness = (typeof params.roughness !== 'undefined') ? params.roughness : civitas.WORLD_ROUGHNESS;
 		if (this._data.length === 0) {
-			this._data = this._generate();
+			this._generate();
 			this._adjust();
 		}
 		return this;
@@ -158,6 +157,37 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Lock the specified hex as being inside the borders of a city.
+	 *
+	 * @public
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @returns {String}
+	 */
+	this.lock_hex = function(x, y, lid) {
+		this.set_hex(x, y, 'l', true);
+		this.set_hex(x, y, 'lid', lid);
+	};
+
+	/**
+	 * Check if the specified hex is locked.
+	 *
+	 * @public
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @returns {Boolean}
+	 */
+	this.is_locked_hex = function(x, y) {
+		var hex = this.get_hex(x, y);
+		return hex.l;
+	};
+
+	this.locked_hex_by = function(x, y) {
+		var hex = this.get_hex(x, y);
+		return hex.lid;
+	};
+
+	/**
 	 * Return the moisture data for the specified hex.
 	 *
 	 * @public
@@ -194,6 +224,18 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Set the specified hex data.
+	 *
+	 * @public
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @returns {String}
+	 */
+	this.set_hex = function(x, y, key, value) {
+		return this._data[y][x][key] = value;
+	};
+
+	/**
 	 * Add a settlement into the world data.
 	 *
 	 * @public
@@ -203,6 +245,8 @@ civitas.objects.world = function (params) {
 	this.add_city = function(settlement) {
 		var location = settlement.get_location();
 		this._data[location.y][location.x].s = settlement.id();
+		this._data[location.y][location.x].l = true;
+		this._data[location.y][location.x].lid = settlement.id();
 		this._data[location.y][location.x].n = settlement.name();
 		//civitas.ui.svg_add_city_image(location.x, location.y, settlement);
 		return this;
@@ -230,87 +274,114 @@ civitas.objects.world = function (params) {
 	 * @returns {Array}
 	 */
 	this._generate = function() {
-		var map = civitas.utils.create_array(civitas.WORLD_SIZE_WIDTH + 1, civitas.WORLD_SIZE_WIDTH + 1);
-		start_displacement(map, civitas.WORLD_SIZE_WIDTH);
-		return map;
+		this._data = this.create_map_array(civitas.WORLD_SIZE_WIDTH + 1, civitas.WORLD_SIZE_WIDTH + 1);
+		this._start_displacement(civitas.WORLD_SIZE_WIDTH);
+	};
 
-		function start_displacement(map, size) {
-			var tr, tl, t, br, bl, b, r, l, center;
-			map[0][0].e = Math.random(1.0);
-			tl = map[0][0].e;
-			map[0][size].e = Math.random(1.0);
-			bl = map[0][size].e;
-			map[size][0].e = Math.random(1.0);
-			tr = map[size][0].e;
-			map[size][size].e = Math.random(1.0);
-			br = map[size][size].e;
-			map[size / 2][size / 2].e = map[0][0].e + map[0][size].e + map[size][0].e + map[size][size].e / 4;
-			map[size / 2][size / 2].e = normalize(map[size / 2][size / 2].e);
-			center = map[size / 2][size / 2].e;
-			map[size / 2][size].e = bl + br + center + center / 4;
-			map[size / 2][0].e = tl + tr + center + center / 4;
-			map[size][size / 2].e = tr + br + center + center / 4;
-			map[0][size / 2].e = tl + bl + center + center / 4;
-			midpoint_displacement(size);
+	this.create_map_array = function(d1, d2) {
+		var x = new Array(d1);
+		for (var i = 0; i < d1; i += 1) {
+			x[i] = new Array(d2);
 		}
+		for (var i = 0; i < d1; i += 1) {
+			for (var j = 0; j < d2; j += 1) {
+				x[i][j] = {
+					/* Elevation */
+					e: -1,
+					/* Terrain */
+					t: 'S',
+					/* Settlement id */
+					s: null,
+					/* Settlement name */
+					n: null,
+					/* Locked */
+					l: false,
+					/* Locked to settlement id */
+					lid: null,
+					/* Moisture */
+					m: 0
+				};
+			}
+		}
+		return x;
+	};
 
-		function midpoint_displacement(dimension) {
-			var new_dimension = dimension / 2;
-			var top, tr, tl, bottom, bl, br, right, left, center;
-			if (new_dimension > 1) {
-				for (var i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
-					for (var j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
-						var x = i - (new_dimension / 2);
-						var y = j - (new_dimension / 2);
-						tl = map[i - new_dimension][j - new_dimension].e;
-						tr = map[i][j - new_dimension].e;
-						bl = map[i - new_dimension][j].e;
-						br = map[i][j].e;
-						map[x][y].e = (tl + tr + bl + br) / 4 + displace(dimension);
-						map[x][y].e = normalize(map[x][y].e);
-						center = map[x][y].e;
-						if (j - (new_dimension * 2) + (new_dimension / 2) > 0) {
-							map[x][j - new_dimension].e = (tl + tr + center + map[x][j - dimension + (new_dimension / 2)].e) / 4 + displace(dimension);
-						} else {
-							map[x][j - new_dimension].e = (tl + tr + center) / 3 + displace(dimension);
-						}
-						map[x][j - new_dimension].e = normalize(map[x][j - new_dimension].e);
-						if (j + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-							map[x][j].e = (bl + br + center + map[x][j + (new_dimension / 2)].e) / 4 + displace(dimension);
-						} else {
-							map[x][j].e = (bl + br + center) / 3 + displace(dimension);
-						}
-						map[x][j].e = normalize(map[x][j].e);
-						if (i + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-							map[i][y].e = (tr + br + center + map[i + (new_dimension / 2)][y].e) / 4 + displace(dimension);
-						} else {
-							map[i][y].e = (tr + br + center) / 3 + displace(dimension);
-						}
-						map[i][y].e = normalize(map[i][y].e);
-						if (i - (new_dimension * 2) + (new_dimension / 2) > 0) {
-							map[i - new_dimension][y].e = (tl + bl + center + map[i - dimension + (new_dimension / 2)][y].e) / 4 + displace(dimension);
-						} else {
-							map[i - new_dimension][y].e = (tl + bl + center) / 3 + displace(dimension);
-						}
-						map[i - new_dimension][y].e = normalize(map[i - new_dimension][y].e);
+	this._start_displacement = function(size) {
+		var tr, tl, t, br, bl, b, r, l, center;
+		this._data[0][0].e = Math.random(1.0);
+		tl = this._data[0][0].e;
+		this._data[0][size].e = Math.random(1.0);
+		bl = this._data[0][size].e;
+		this._data[size][0].e = Math.random(1.0);
+		tr = this._data[size][0].e;
+		this._data[size][size].e = Math.random(1.0);
+		br = this._data[size][size].e;
+		this._data[size / 2][size / 2].e = this._data[0][0].e + this._data[0][size].e + this._data[size][0].e + this._data[size][size].e / 4;
+		this._data[size / 2][size / 2].e = this.normalize(this._data[size / 2][size / 2].e);
+		center = this._data[size / 2][size / 2].e;
+		this._data[size / 2][size].e = bl + br + center + center / 4;
+		this._data[size / 2][0].e = tl + tr + center + center / 4;
+		this._data[size][size / 2].e = tr + br + center + center / 4;
+		this._data[0][size / 2].e = tl + bl + center + center / 4;
+		this._midpoint_displacement(size);
+	};
+
+	this._midpoint_displacement = function(dimension) {
+		var new_dimension = dimension / 2;
+		var top, tr, tl, bottom, bl, br, right, left, center;
+		if (new_dimension > 1) {
+			for (var i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
+				for (var j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
+					var x = i - (new_dimension / 2);
+					var y = j - (new_dimension / 2);
+					tl = this._data[i - new_dimension][j - new_dimension].e;
+					tr = this._data[i][j - new_dimension].e;
+					bl = this._data[i - new_dimension][j].e;
+					br = this._data[i][j].e;
+					this._data[x][y].e = (tl + tr + bl + br) / 4 + this._displace(dimension);
+					this._data[x][y].e = this.normalize(this._data[x][y].e);
+					center = this._data[x][y].e;
+					if (j - (new_dimension * 2) + (new_dimension / 2) > 0) {
+						this._data[x][j - new_dimension].e = (tl + tr + center + this._data[x][j - dimension + (new_dimension / 2)].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[x][j - new_dimension].e = (tl + tr + center) / 3 + this._displace(dimension);
 					}
+					this._data[x][j - new_dimension].e = this.normalize(this._data[x][j - new_dimension].e);
+					if (j + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
+						this._data[x][j].e = (bl + br + center + this._data[x][j + (new_dimension / 2)].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[x][j].e = (bl + br + center) / 3 + this._displace(dimension);
+					}
+					this._data[x][j].e = this.normalize(this._data[x][j].e);
+					if (i + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
+						this._data[i][y].e = (tr + br + center + this._data[i + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[i][y].e = (tr + br + center) / 3 + this._displace(dimension);
+					}
+					this._data[i][y].e = this.normalize(this._data[i][y].e);
+					if (i - (new_dimension * 2) + (new_dimension / 2) > 0) {
+						this._data[i - new_dimension][y].e = (tl + bl + center + this._data[i - dimension + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
+					} else {
+						this._data[i - new_dimension][y].e = (tl + bl + center) / 3 + this._displace(dimension);
+					}
+					this._data[i - new_dimension][y].e = this.normalize(this._data[i - new_dimension][y].e);
 				}
-				midpoint_displacement(new_dimension);
 			}
+			this._midpoint_displacement(new_dimension);
 		}
+	};
 
-		function displace(num) {
-			return (Math.random(1.0) - 0.5) * (num / (civitas.WORLD_SIZE_WIDTH + civitas.WORLD_SIZE_WIDTH) * 5);
-		}
+	this._displace = function(num) {
+		return (Math.random(1.0) - 0.5) * (num / (civitas.WORLD_SIZE_WIDTH + civitas.WORLD_SIZE_WIDTH) * this._properties.roughness);
+	};
 
-		function normalize(value) {
-			if (value > 1) {
-				value = 1;
-			} else if (value < -1) {
-				value = -1;
-			}
-			return value;
+	this.normalize = function(value) {
+		if (value > 1) {
+			value = 1;
+		} else if (value < -1) {
+			value = -1;
 		}
+		return value;
 	};
 
 	/**
