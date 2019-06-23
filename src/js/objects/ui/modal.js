@@ -2,6 +2,7 @@
  * Main modal object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.controls.modal
  * @returns {civitas.controls.modal}
  */

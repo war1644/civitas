@@ -42,7 +42,6 @@
         "wrap": false,
         "typedefs": true,
         "navLevel": 10,
-        "private": true,
         "scripts": [],
         "menu": {
             "sizeof(cat)": {

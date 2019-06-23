@@ -15,6 +15,7 @@ gulp.task('app', function() {
     ]);
 	return gulp.src([
 	  	'src/js/others/functions.js',
+	  	'src/js/bootstrap.js',
 		'src/js/constants/default.js',
 		'src/js/constants/initial.js',
 		/*

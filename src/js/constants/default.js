@@ -1,21 +1,3 @@
-
-/**
- * Civitas game.
- *
- * @mixin civitas
- */
-let civitas = {
-	objects: {
-
-	},
-	controls: {
-
-	},
-	modules: {
-
-	}
-};
-
 /**
  * Autostart music or not.
  * 

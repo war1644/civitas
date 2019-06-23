@@ -1,7 +1,8 @@
 /**
- * Main Game core object.
+ * Main Game core object, responsible with the game events.
  * 
  * @class civitas.game
+ * @license GPLv3
  * @returns {civitas.game}
  */
 civitas.game = function () {

@@ -2,6 +2,7 @@
  * Main Game event object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.event
  * @returns {civitas.objects.event}
  */

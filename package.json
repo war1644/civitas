@@ -19,7 +19,7 @@
 		"email": "sizeofcat@riseup.net",
 		"url": "https://sizeof.cat"
 	},
-	"license": "MIT",
+	"license": "GPLv3",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/sizeofcat/civitas.git"

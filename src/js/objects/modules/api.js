@@ -2,6 +2,7 @@
  * Main Game API object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.modules.api
  * @returns {civitas.modules.api}
  */

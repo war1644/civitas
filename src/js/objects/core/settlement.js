@@ -2,6 +2,7 @@
  * Main Game settlement object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.settlement
  * @returns {civitas.objects.settlement}
  */

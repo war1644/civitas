@@ -2,6 +2,7 @@
  * Game jailer (enforcing security) object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.modules.jailer
  * @returns {civitas.modules.jailer}
  */

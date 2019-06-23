@@ -2,6 +2,7 @@
  * Main Game panel object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.controls.panel
  * @returns {civitas.controls.panel}
  */

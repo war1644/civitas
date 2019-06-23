@@ -1,5 +1,6 @@
 /**
  * Utils object.
+ * @license GPLv3
  * @mixin
  */
 civitas.utils = {

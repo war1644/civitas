@@ -2,6 +2,7 @@
  * Main Game AI (Artificial Intelligence) object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.modules.ai
  * @returns {civitas.modules.ai}
  */

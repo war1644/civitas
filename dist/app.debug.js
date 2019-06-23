@@ -32,21 +32,24 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
-
 /**
- * Civitas game.
+ * This is the main object of the Civitas game. Everything gets injected into
+ * the `civitas` namespace.
  *
  * @mixin civitas
+ * @license GPLv3
+ * @author sizeof(cat) <sizeofcat@riseup.net>
+ * @version 0.3.0
  */
 let civitas = {
 	objects: {
-
+		// Todo
 	},
 	controls: {
-
+		// Todo
 	},
 	modules: {
-
+		// Todo
 	}
 };
 
@@ -7795,6 +7798,7 @@ civitas.HEROES = {
 
 /**
  * Utils object.
+ * @license GPLv3
  * @mixin
  */
 civitas.utils = {
@@ -8207,6 +8211,7 @@ civitas.utils = {
  * Main Game AI (Artificial Intelligence) object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.modules.ai
  * @returns {civitas.modules.ai}
  */
@@ -8270,6 +8275,7 @@ civitas.modules.ai = function (params) {
 
 /**
  * Main Game UI interface.
+ * @license GPLv3
  * @mixin
  */
 civitas.ui = {
@@ -9049,6 +9055,7 @@ civitas.ui = {
  * World object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.world
  * @returns {civitas.objects.world}
  */
@@ -9454,6 +9461,7 @@ civitas.objects.world = function (params) {
  * Main Game settlement object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.settlement
  * @returns {civitas.objects.settlement}
  */
@@ -12114,6 +12122,7 @@ civitas.objects.settlement = function(params) {
  * Main Game event object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.event
  * @returns {civitas.objects.event}
  */
@@ -12296,6 +12305,7 @@ civitas.objects.event = function (params) {
  * Main Game building object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.building
  * @returns {civitas.objects.building}
  */
@@ -13082,6 +13092,7 @@ civitas.objects.building = function(params) {
  * Battleground object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.battleground
  * @returns {civitas.objects.battleground}
  */
@@ -14040,6 +14051,7 @@ civitas.objects.battleground = function (params) {
  * Hero object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.hero
  * @returns {civitas.objects.hero}
  */
@@ -14102,6 +14114,7 @@ civitas.objects.hero = function (params) {
  * Main Game window object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.controls.window
  * @returns {civitas.controls.window}
  */
@@ -14262,6 +14275,7 @@ civitas.controls.window = function (params) {
  * Main modal object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.controls.modal
  * @returns {civitas.controls.modal}
  */
@@ -14434,6 +14448,7 @@ civitas.controls.modal = function (params) {
  * Main Game panel object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.controls.panel
  * @returns {civitas.controls.panel}
  */
@@ -14720,9 +14735,10 @@ civitas.controls.panel = function (params) {
 };
 
 /**
- * Main Game core object.
+ * Main Game core object, responsible with the game events.
  * 
  * @class civitas.game
+ * @license GPLv3
  * @returns {civitas.game}
  */
 civitas.game = function () {

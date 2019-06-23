@@ -2,6 +2,7 @@
  * Main Game window object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.controls.window
  * @returns {civitas.controls.window}
  */

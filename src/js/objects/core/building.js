@@ -2,6 +2,7 @@
  * Main Game building object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.building
  * @returns {civitas.objects.building}
  */

@@ -2,6 +2,7 @@
  * Battleground object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.battleground
  * @returns {civitas.objects.battleground}
  */

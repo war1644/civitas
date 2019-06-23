@@ -1,5 +1,6 @@
 /**
  * Main Game UI interface.
+ * @license GPLv3
  * @mixin
  */
 civitas.ui = {

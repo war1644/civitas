@@ -2,6 +2,7 @@
  * Hero object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.hero
  * @returns {civitas.objects.hero}
  */

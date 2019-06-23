@@ -2,6 +2,7 @@
  * World object.
  * 
  * @param {Object} params
+ * @license GPLv3
  * @class civitas.objects.world
  * @returns {civitas.objects.world}
  */
