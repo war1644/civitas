@@ -2,10 +2,31 @@
  * Tavern panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_TAVERN = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'tavern',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = self.core();
@@ -89,6 +110,13 @@ civitas.PANEL_TAVERN = {
 			self.destroy();
 		}
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		// TODO
 	}

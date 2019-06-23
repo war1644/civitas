@@ -7,6 +7,7 @@ var del = require('del');
 var pkg = require('./package.json');
 var fs = require('fs');
 var replace = require('gulp-replace');
+var jsdoc = require('gulp-jsdoc3');
 
 gulp.task('app', function() {
 	del([
@@ -163,11 +164,22 @@ gulp.task('minify', gulp.series(gulp.parallel(['app_minify', 'lib_minify', 'css_
 }));
 
 gulp.task('watch', function () {
-	gulp.watch("src/**/*.js", gulp.parallel('app'));
+	gulp.watch("src/**/*.js", gulp.series(['app', 'doc']));
 	gulp.watch("src/**/*.css", gulp.parallel('css'));
 	gulp.watch("vendor/**/*.js", gulp.parallel('lib'));
 });
 
-gulp.task('build', gulp.series(gulp.parallel('css', 'app', 'lib')));
+gulp.task('doc', function (cb) {
+	del([
+		'docs/*.html'
+    ]);
+	let config = require('./jsdoc');
+	gulp.src(['README.md', './src/**/*.js'], {
+		read: false
+	})
+	.pipe(jsdoc(config, cb));
+});
+
+gulp.task('build', gulp.series(gulp.series('css', 'app', 'lib', 'doc')));
 
 gulp.task('default', gulp.series(gulp.parallel('watch', 'build')));

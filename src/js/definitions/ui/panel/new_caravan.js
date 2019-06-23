@@ -2,8 +2,14 @@
  * Create a new caravan panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_NEW_CARAVAN = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>Create caravan<a class="tips close" title="Close"></a>' +
@@ -13,7 +19,22 @@ civitas.PANEL_NEW_CARAVAN = {
 				'<a class="btn dispatch" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'new-caravan',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		this.resources = {};
 		let self = this;

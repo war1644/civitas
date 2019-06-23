@@ -2,8 +2,14 @@
  * Settlement panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_SETTLEMENT = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>' +
@@ -22,7 +28,22 @@ civitas.PANEL_SETTLEMENT = {
 			'</footer>' +
 		'</div>',
 	params_data: null,
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'settlement',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -164,6 +185,13 @@ civitas.PANEL_SETTLEMENT = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let self = this;
 		let core = this.core();

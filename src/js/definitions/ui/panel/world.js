@@ -2,10 +2,31 @@
  * World panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_WORLD = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('World Map'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'world',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -91,6 +112,13 @@ civitas.PANEL_WORLD = {
 		*/
 		civitas.ui.worldmap_scrollto(settlement.location());
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let self = this;
 		let core = this.core();

@@ -2,9 +2,14 @@
  * Sign Up window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_SIGNUP = {
-	id: 'signup',
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
@@ -47,6 +52,22 @@ civitas.WINDOW_SIGNUP = {
 				civitas.ui.window_about_section() +
 			'</fieldset>' +
 		'</section>',
+
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
+	id: 'signup',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function() {
 		let self = this;
 		let avatar = 1;
@@ -113,6 +134,13 @@ civitas.WINDOW_SIGNUP = {
 			return false;
 		});
 	},
+
+	/**
+	 * Callback function for hiding the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_hide: function() {
 		civitas.ui.hide_loader();
 	}

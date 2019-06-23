@@ -2,6 +2,7 @@
  * The attacking side (left) in a battleground.
  *
  * @type {Number}
+ * @default
  * @constant
  */
 civitas.BATTLEGROUND_ATTACK = 1;
@@ -10,6 +11,7 @@ civitas.BATTLEGROUND_ATTACK = 1;
  * The defending side (right) in a battleground.
  *
  * @type {Number}
+ * @default
  * @constant
  */
 civitas.BATTLEGROUND_DEFENSE = 2;

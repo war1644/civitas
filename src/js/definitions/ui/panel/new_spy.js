@@ -2,8 +2,14 @@
  * Create a new spy panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_NEW_SPY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>Create spy' +
@@ -14,7 +20,22 @@ civitas.PANEL_NEW_SPY = {
 				'<a class="btn dispatch" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'new-spy',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -118,6 +139,7 @@ civitas.PANEL_NEW_SPY = {
 			return false;
 		});
 	},
+	
 	on_refresh: function() {
 		let core = this.core();
 		let my_settlement = core.get_settlement();

@@ -2,7 +2,7 @@
  * Main Game API object.
  * 
  * @param {Object} params
- * @class {civitas.modules.api}
+ * @class civitas.modules.api
  * @returns {civitas.modules.api}
  */
 civitas.modules.api = function (params) {
@@ -143,6 +143,7 @@ civitas.modules.api = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.modules.api}
 	 * @param {Object} params
 	 */

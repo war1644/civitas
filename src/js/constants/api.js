@@ -3,6 +3,7 @@
  *
  * @constant
  * @type {String}
+ * @default
  */
 civitas.API_VERSION = '0.3.0';
 
@@ -10,6 +11,7 @@ civitas.API_VERSION = '0.3.0';
  * URL of the main Game API entry point.
  * 
  * @constant
+ * @default
  * @type {String}
  */
 civitas.API_ENTRY_POINT = 'https://civitas.test/';

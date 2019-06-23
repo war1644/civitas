@@ -2,11 +2,33 @@
  * Campaign panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_CAMPAIGN = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template(),
+
 	params_data: null,
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'campaign',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -32,6 +54,13 @@ civitas.PANEL_CAMPAIGN = {
 			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Army', 'Navy', 'Resources']));
 		}
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let self = this;
 		let core = this.core();

@@ -2,7 +2,7 @@
  * Main Game event object.
  * 
  * @param {Object} params
- * @class {civitas.objects.event}
+ * @class civitas.objects.event
  * @returns {civitas.objects.event}
  */
 civitas.objects.event = function (params) {
@@ -83,6 +83,7 @@ civitas.objects.event = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.event}
 	 * @param {Object} params
 	 */

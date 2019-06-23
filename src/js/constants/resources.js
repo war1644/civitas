@@ -3,6 +3,7 @@
  * List of resource categories.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.RESOURCE_CATEGORIES = [

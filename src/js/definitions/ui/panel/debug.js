@@ -2,10 +2,31 @@
  * Debug panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_DEBUG = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('Debug'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'debug',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();

@@ -2,7 +2,7 @@
  * Game jailer (enforcing security) object.
  * 
  * @param {Object} params
- * @class {civitas.modules.jailer}
+ * @class civitas.modules.jailer
  * @returns {civitas.modules.jailer}
  */
 civitas.modules.jailer = function (params) {
@@ -19,6 +19,7 @@ civitas.modules.jailer = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.modules.jailer}
 	 * @param {Object} params
 	 */

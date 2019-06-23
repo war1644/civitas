@@ -2,6 +2,7 @@
  * List of the possible climate types.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.CLIMATES = [
@@ -16,6 +17,7 @@ civitas.CLIMATES = [
  * Temperate climate, all balanced.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_TEMPERATE = 1;
@@ -24,6 +26,7 @@ civitas.CLIMATE_TEMPERATE = 1;
  * Tropical climate, favoring farms and exotic goods.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_TROPICAL = 2;
@@ -32,6 +35,7 @@ civitas.CLIMATE_TROPICAL = 2;
  * Arid climate, favoring ore mines.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_ARID = 3;
@@ -40,6 +44,7 @@ civitas.CLIMATE_ARID = 3;
  * Polar climate, very extreme.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_POLAR = 4;

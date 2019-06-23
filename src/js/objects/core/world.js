@@ -2,7 +2,7 @@
  * World object.
  * 
  * @param {Object} params
- * @class {civitas.objects.world}
+ * @class civitas.objects.world
  * @returns {civitas.objects.world}
  */
 civitas.objects.world = function (params) {
@@ -68,6 +68,7 @@ civitas.objects.world = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.world}
 	 * @param {Object} params
 	 */

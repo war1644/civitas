@@ -2,7 +2,7 @@
  * Main Game window object.
  * 
  * @param {Object} params
- * @class {civitas.controls.window}
+ * @class civitas.controls.window
  * @returns {civitas.controls.window}
  */
 civitas.controls.window = function (params) {
@@ -91,6 +91,7 @@ civitas.controls.window = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.controls.window}
 	 * @param {Object} params
 	 */

@@ -2,9 +2,14 @@
  * Options window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_ERROR = {
-	id: 'error',
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
@@ -18,6 +23,22 @@ civitas.WINDOW_ERROR = {
 				'<a href="#" class="do-restart button">Restart</a>' +
 			'</fieldset>' +
 		'</section>',
+
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
+	id: 'error',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function() {
 		let self = this;
 		let core = this.core();
@@ -38,6 +59,13 @@ civitas.WINDOW_ERROR = {
 			return false;
 		});
 	},
+
+	/**
+	 * Callback function for hiding the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_hide: function() {
 		civitas.ui.hide_loader();
 	}

@@ -2,10 +2,31 @@
  * Shipyard panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_SHIPYARD = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'shipyard',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -53,6 +74,13 @@ civitas.PANEL_SHIPYARD = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();

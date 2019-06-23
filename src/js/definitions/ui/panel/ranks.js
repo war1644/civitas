@@ -2,13 +2,41 @@
  * Ranks panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_RANKS = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('World Rankings'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'ranks',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		$(this.handle + ' section').append('<div class="ranks-list"></div>');
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let ranking_list = [];
 		let settlements = this.core().get_settlements();

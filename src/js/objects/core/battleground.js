@@ -2,7 +2,7 @@
  * Battleground object.
  * 
  * @param {Object} params
- * @class {civitas.objects.battleground}
+ * @class civitas.objects.battleground
  * @returns {civitas.objects.battleground}
  */
 civitas.objects.battleground = function (params) {
@@ -42,7 +42,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user wins.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_win = function() {};
@@ -50,7 +49,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user loses.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_lose = function() {};
@@ -58,7 +56,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user selects a cell.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_select = function() {};
@@ -66,7 +63,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user moves a cell.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_move = function() {};
@@ -74,7 +70,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user attacks another cell.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_attack = function() {};
@@ -82,7 +77,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the turn ends.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_end_turn = function() {};
@@ -172,6 +166,7 @@ civitas.objects.battleground = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.battleground}
 	 * @param {Object} params
 	 */

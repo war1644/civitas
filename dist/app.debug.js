@@ -6,6 +6,13 @@
  * @license GPLv3
  */ 'use strict';
 
+/**
+ * Find index by handle into an array.
+ *
+ * @function findIndexM
+ * @param {String} value
+ * @returns {Object|Boolean}
+ */
 Array.prototype.findIndexM = function (value) {
     for (let i = 0; i < this.length; i++) {
         if (this[i].handle === value) {
@@ -15,33 +22,39 @@ Array.prototype.findIndexM = function (value) {
     return false;
 };
 
+/**
+ * Capitalize first letter of a string.
+ *
+ * @function capitalize
+ * @returns {String}
+ */
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
-/*
- * Check for undefined stuff.
+
+/**
+ * Civitas game.
+ *
+ * @mixin civitas
  */
-if (typeof civitas === 'undefined') {
-	var civitas = {};
-}
+let civitas = {
+	objects: {
 
-if (typeof civitas.objects === 'undefined') {
-	civitas.objects = {};
-}
+	},
+	controls: {
 
-if (typeof civitas.controls === 'undefined') {
-	civitas.controls = {};
-}
+	},
+	modules: {
 
-if (typeof civitas.modules === 'undefined') {
-	civitas.modules = {};
-}
+	}
+};
 
 /**
  * Autostart music or not.
  * 
  * @constant
+ * @default
  * @type {Boolean}
  */
 civitas.AUTOSTART_MUSIC = false;
@@ -50,6 +63,7 @@ civitas.AUTOSTART_MUSIC = false;
  * Enable encryption or not.
  * 
  * @constant
+ * @default
  * @type {Boolean}
  */
 civitas.ENCRYPTION = false;
@@ -58,6 +72,7 @@ civitas.ENCRYPTION = false;
  * URL to the game assets
  * 
  * @constant
+ * @default
  * @type {String}
  */
 civitas.ASSETS_URL = './';
@@ -66,6 +81,7 @@ civitas.ASSETS_URL = './';
  * Amount of influence your settlement loses each year.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.YEARLY_INFLUENCE_LOSS = 2;
@@ -74,6 +90,7 @@ civitas.YEARLY_INFLUENCE_LOSS = 2;
  * Amount of influence your settlement gains each year.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.YEARLY_INFLUENCE_GAIN = 2;
@@ -82,6 +99,7 @@ civitas.YEARLY_INFLUENCE_GAIN = 2;
  * How many real seconds has a game day.
  *
  * constant
+ * @default
  * @type {Number}
  */
 civitas.SECONDS_TO_DAY = 10;
@@ -90,6 +108,7 @@ civitas.SECONDS_TO_DAY = 10;
  * Number of city ruler avatars available to choose.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.AVATARS = 99;
@@ -102,6 +121,7 @@ civitas.TRADES_DISCOUNT = 20;
  * Max level a settlement can have.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_SETTLEMENT_LEVEL = 45;
@@ -110,6 +130,7 @@ civitas.MAX_SETTLEMENT_LEVEL = 45;
  * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.POPULATION_PER_LEVEL = 2300;
@@ -118,6 +139,7 @@ civitas.POPULATION_PER_LEVEL = 2300;
  * The black market discount.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.BLACK_MARKET_DISCOUNT = 80;
@@ -126,6 +148,7 @@ civitas.BLACK_MARKET_DISCOUNT = 80;
  * Fame required for each city level.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.LEVELS = [
@@ -154,7 +177,7 @@ civitas.VERSION = '0.3.0.' +
 /**
  * Whether the application is in debug mode.
  * 
- * @default false
+ * @default
  * @constant
  * @type {Boolean}
  */
@@ -164,6 +187,7 @@ civitas.DEBUG = true;
  * Browser localStorage key to store game data into.
  *
  * @constant
+ * @default
  * @type {String}
  */
 civitas.STORAGE_KEY = 'civitas';
@@ -173,6 +197,7 @@ civitas.STORAGE_KEY = 'civitas';
  * for importing or exporting.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORTANCE_VITAL = 50;
@@ -182,6 +207,7 @@ civitas.IMPORTANCE_VITAL = 50;
  * for importing or exporting.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORTANCE_HIGH = 30;
@@ -191,6 +217,7 @@ civitas.IMPORTANCE_HIGH = 30;
  * for importing or exporting.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORTANCE_MEDIUM = 20;
@@ -200,6 +227,7 @@ civitas.IMPORTANCE_MEDIUM = 20;
  * for importing or exporting.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORTANCE_LOW = 10;
@@ -208,6 +236,7 @@ civitas.IMPORTANCE_LOW = 10;
  * Difficulty level of the game is easy.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIFFICULTY_EASY = 1;
@@ -216,6 +245,7 @@ civitas.DIFFICULTY_EASY = 1;
  * Difficulty level of the game is medium.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIFFICULTY_MEDIUM = 2;
@@ -224,6 +254,7 @@ civitas.DIFFICULTY_MEDIUM = 2;
  * Difficulty level of the game is hard.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIFFICULTY_HARD = 3;
@@ -232,6 +263,7 @@ civitas.DIFFICULTY_HARD = 3;
  * Difficulty level of the game is hardcore.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIFFICULTY_HARDCORE = 4;
@@ -241,6 +273,7 @@ civitas.DIFFICULTY_HARDCORE = 4;
  * building, not the player).
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFICATION_MISSING_RESOURCES = 1;
@@ -250,6 +283,7 @@ civitas.NOTIFICATION_MISSING_RESOURCES = 1;
  * manually by the player.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFICATION_PRODUCTION_PAUSED = 2;
@@ -258,6 +292,7 @@ civitas.NOTIFICATION_PRODUCTION_PAUSED = 2;
  * When a building is notifying the player it is missing its requirements.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFICATION_MISSING_REQUIREMENTS = 3;
@@ -266,6 +301,7 @@ civitas.NOTIFICATION_MISSING_REQUIREMENTS = 3;
  * When a building is notifying the player the level of the city is too low.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFICATION_SETTLEMENT_LOW_LEVEL = 4;
@@ -274,6 +310,7 @@ civitas.NOTIFICATION_SETTLEMENT_LOW_LEVEL = 4;
  * Game type as single player (campaign, local).
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MODE_SINGLEPLAYER = 0;
@@ -282,6 +319,7 @@ civitas.MODE_SINGLEPLAYER = 0;
  * Game type as multi player (networked).
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MODE_MULTIPLAYER = 1;
@@ -290,6 +328,7 @@ civitas.MODE_MULTIPLAYER = 1;
  * Diplomacy proposal action.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.ACTION_DIPLOMACY = 0;
@@ -298,6 +337,7 @@ civitas.ACTION_DIPLOMACY = 0;
  * Campaign action.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.ACTION_CAMPAIGN = 1;
@@ -306,6 +346,7 @@ civitas.ACTION_CAMPAIGN = 1;
  * Error notification
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFY_ERROR = 0;
@@ -314,6 +355,7 @@ civitas.NOTIFY_ERROR = 0;
  * Achievement notification
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFY_ACHIEVEMENT = 1;
@@ -322,6 +364,7 @@ civitas.NOTIFY_ACHIEVEMENT = 1;
  * Normal notification
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFY_NORMAL = 2;
@@ -330,6 +373,7 @@ civitas.NOTIFY_NORMAL = 2;
  * Event notification.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFY_EVENT = 3;
@@ -338,6 +382,7 @@ civitas.NOTIFY_EVENT = 3;
  * Research notification.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFY_RESEARCH = 4;
@@ -346,6 +391,7 @@ civitas.NOTIFY_RESEARCH = 4;
  * Religion notification.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFY_RELIGION = 5;
@@ -354,6 +400,7 @@ civitas.NOTIFY_RELIGION = 5;
  * War notification.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NOTIFY_WAR = 6;
@@ -362,6 +409,7 @@ civitas.NOTIFY_WAR = 6;
  * Max numbers of lines to show in the console. Too many will overload the DOM.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_CONSOLE_LINES = 5000;
@@ -596,6 +644,7 @@ civitas.ERA_4 = 4;
  * List of the possible religion types.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.RELIGIONS = [
@@ -613,6 +662,7 @@ civitas.RELIGIONS = [
  * No religion
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_NONE = 0;
@@ -621,6 +671,7 @@ civitas.RELIGION_NONE = 0;
  * Christianity
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_CHRISTIANITY = 1;
@@ -629,6 +680,7 @@ civitas.RELIGION_CHRISTIANITY = 1;
  * Islam
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_ISLAM = 2;
@@ -637,6 +689,7 @@ civitas.RELIGION_ISLAM = 2;
  * Judaism
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_JUDAISM = 3;
@@ -645,6 +698,7 @@ civitas.RELIGION_JUDAISM = 3;
  * Buddhism
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_BUDDHISM = 4;
@@ -653,6 +707,7 @@ civitas.RELIGION_BUDDHISM = 4;
  * Hinduism
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_HINDUISM = 5;
@@ -661,6 +716,7 @@ civitas.RELIGION_HINDUISM = 5;
  * Confucianism
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_CONFUCIANISM = 6;
@@ -669,6 +725,7 @@ civitas.RELIGION_CONFUCIANISM = 6;
  * Taoism
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.RELIGION_TAOISM = 7;
@@ -677,6 +734,7 @@ civitas.RELIGION_TAOISM = 7;
  * The minimum value settlement faith can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_FAITH_VALUE = 1;
@@ -685,6 +743,7 @@ civitas.MIN_FAITH_VALUE = 1;
  * The maximum value settlement faith can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_FAITH_VALUE = 1000;
@@ -693,6 +752,7 @@ civitas.MAX_FAITH_VALUE = 1000;
  * List of game diplomacy options.
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.DIPLOMACIES = [
@@ -712,6 +772,7 @@ civitas.DIPLOMACIES = [
  * The campaign is an army.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_ARMY = 1;
@@ -720,6 +781,7 @@ civitas.CAMPAIGN_ARMY = 1;
  * The campaign is a caravan.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_CARAVAN = 2;
@@ -728,6 +790,7 @@ civitas.CAMPAIGN_CARAVAN = 2;
  * The campaign is a spy.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_SPY = 3;
@@ -736,6 +799,7 @@ civitas.CAMPAIGN_SPY = 3;
  * The campaign is an army returning home with spoils of war.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_ARMY_RETURN = 4;
@@ -744,6 +808,7 @@ civitas.CAMPAIGN_ARMY_RETURN = 4;
  * Just met, temporary truce, can declare war, can trade.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_TRUCE = 0;
@@ -752,6 +817,7 @@ civitas.DIPLOMACY_TRUCE = 0;
  * At war, no trades possible.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_WAR = 1;
@@ -760,6 +826,7 @@ civitas.DIPLOMACY_WAR = 1;
  * In a pact, can declare war, can trade.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PACT = 2;
@@ -769,6 +836,7 @@ civitas.DIPLOMACY_PACT = 2;
  * can share armies.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_ALLIANCE = 3;
@@ -777,6 +845,7 @@ civitas.DIPLOMACY_ALLIANCE = 3;
  * A cease fire means a temporary peace.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_CEASE_FIRE = 4;
@@ -785,6 +854,7 @@ civitas.DIPLOMACY_CEASE_FIRE = 4;
  * Propose pact.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_PACT = 5;
@@ -793,6 +863,7 @@ civitas.DIPLOMACY_PROPOSE_PACT = 5;
  * Propose alliance.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_ALLIANCE = 6;
@@ -801,6 +872,7 @@ civitas.DIPLOMACY_PROPOSE_ALLIANCE = 6;
  * Propose cease fire.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
@@ -809,6 +881,7 @@ civitas.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
  * Propose to join your settlement.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_JOIN = 8;
@@ -817,6 +890,7 @@ civitas.DIPLOMACY_PROPOSE_JOIN = 8;
  * Vassal villages count as part of your empire.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_VASSAL = 9;
@@ -825,6 +899,7 @@ civitas.DIPLOMACY_VASSAL = 9;
  * Influence gained when selling goods to a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.EXPORT_INFLUENCE = 2;
@@ -833,6 +908,7 @@ civitas.EXPORT_INFLUENCE = 2;
  * Influence gained when buying goods from a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORT_INFLUENCE = 1;
@@ -841,6 +917,7 @@ civitas.IMPORT_INFLUENCE = 1;
  * Prestige gained when selling goods to a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.EXPORT_PRESTIGE = 2;
@@ -849,6 +926,7 @@ civitas.EXPORT_PRESTIGE = 2;
  * Prestige gained when buying goods from a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORT_PRESTIGE = 1;
@@ -857,6 +935,7 @@ civitas.IMPORT_PRESTIGE = 1;
  * The minimum value settlement prestige can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_PRESTIGE_VALUE = 1;
@@ -865,6 +944,7 @@ civitas.MIN_PRESTIGE_VALUE = 1;
  * The maximum value settlement prestige can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_PRESTIGE_VALUE = 10000;
@@ -873,6 +953,7 @@ civitas.MAX_PRESTIGE_VALUE = 10000;
  * The minimum value settlement research can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_RESEARCH_VALUE = 1;
@@ -881,6 +962,7 @@ civitas.MIN_RESEARCH_VALUE = 1;
  * The maximum value settlement research can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_RESEARCH_VALUE = 1000;
@@ -889,6 +971,7 @@ civitas.MAX_RESEARCH_VALUE = 1000;
  * The minimum value settlement espionage can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_ESPIONAGE_VALUE = 1;
@@ -897,6 +980,7 @@ civitas.MIN_ESPIONAGE_VALUE = 1;
  * The maximum value settlement espionage can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_ESPIONAGE_VALUE = 1000;
@@ -906,6 +990,7 @@ civitas.MAX_ESPIONAGE_VALUE = 1000;
  * assigned to the mission divided by this value.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_ESPIONAGE_SUCESS_RATE = 100;
@@ -914,6 +999,7 @@ civitas.MAX_ESPIONAGE_SUCESS_RATE = 100;
  * The minimum value settlement influence can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_INFLUENCE_VALUE = 1;
@@ -922,6 +1008,7 @@ civitas.MIN_INFLUENCE_VALUE = 1;
  * The maximum value settlement influence can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_INFLUENCE_VALUE = 100;
@@ -930,6 +1017,7 @@ civitas.MAX_INFLUENCE_VALUE = 100;
  * List of game diplomacy options.
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.SPY_MISSIONS = [
@@ -945,6 +1033,7 @@ civitas.SPY_MISSIONS = [
  * maybe get noticed?).
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_NONE = 0;
@@ -954,6 +1043,7 @@ civitas.SPY_MISSION_NONE = 0;
  * as the spy home city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_RELIGION = 1;
@@ -963,6 +1053,7 @@ civitas.SPY_MISSION_RELIGION = 1;
  * target city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_INFLUENCE = 2;
@@ -971,6 +1062,7 @@ civitas.SPY_MISSION_INFLUENCE = 2;
  * Spy mission to steal resources from the target city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_STEAL_RESOURCES = 3;
@@ -979,6 +1071,7 @@ civitas.SPY_MISSION_STEAL_RESOURCES = 3;
  * Spy mission to instigate turmoil in the target city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_INSTIGATE = 4;
@@ -987,6 +1080,7 @@ civitas.SPY_MISSION_INSTIGATE = 4;
  * Initial resource costs for sending a caravan.
  *
  * @constant
+ * @default
  * @type {Object}
  */
 civitas.CARAVAN_COSTS = {
@@ -1001,6 +1095,7 @@ civitas.CARAVAN_COSTS = {
  * Initial resource costs for sending a spy mission.
  *
  * @constant
+ * @default
  * @type {Object}
  */
 civitas.SPY_COSTS = {
@@ -1014,6 +1109,7 @@ civitas.SPY_COSTS = {
  * Initial resource costs for sending an army.
  *
  * @constant
+ * @default
  * @type {Object}
  */
 civitas.ARMY_COSTS = {
@@ -1026,6 +1122,7 @@ civitas.ARMY_COSTS = {
  * to another settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CARAVAN_INFLUENCE = 5;
@@ -1034,6 +1131,7 @@ civitas.CARAVAN_INFLUENCE = 5;
  * List of the possible nation types.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.NATIONS = [
@@ -1066,6 +1164,7 @@ civitas.NATIONS = [
  * Phoenicians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_PHOENICIAN = 1;
@@ -1074,6 +1173,7 @@ civitas.NATION_PHOENICIAN = 1;
  * Carthaginans
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_CARTHAGINIAN = 2;
@@ -1082,6 +1182,7 @@ civitas.NATION_CARTHAGINIAN = 2;
  * Greeks
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_GREEK = 3;
@@ -1090,6 +1191,7 @@ civitas.NATION_GREEK = 3;
  * Egyptians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_EGYPTIAN = 4;
@@ -1098,6 +1200,7 @@ civitas.NATION_EGYPTIAN = 4;
  * Assyrians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_ASSYRIAN = 5;
@@ -1106,6 +1209,7 @@ civitas.NATION_ASSYRIAN = 5;
  * Romans
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_ROMAN = 6;
@@ -1114,6 +1218,7 @@ civitas.NATION_ROMAN = 6;
  * Thracians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_THRACIAN = 7;
@@ -1122,6 +1227,7 @@ civitas.NATION_THRACIAN = 7;
  * Sudanese
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_SUDANESE = 8;
@@ -1130,6 +1236,7 @@ civitas.NATION_SUDANESE = 8;
  * Spanish
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_SPANISH = 9;
@@ -1138,6 +1245,7 @@ civitas.NATION_SPANISH = 9;
  * Sumerians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_SUMERIAN = 10;
@@ -1146,6 +1254,7 @@ civitas.NATION_SUMERIAN = 10;
  * Chinese
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_CHINESE = 11;
@@ -1154,6 +1263,7 @@ civitas.NATION_CHINESE = 11;
  * Indian
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_INDIAN = 12;
@@ -1162,6 +1272,7 @@ civitas.NATION_INDIAN = 12;
  * Franks
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_FRANKS = 13;
@@ -1170,6 +1281,7 @@ civitas.NATION_FRANKS = 13;
  * Russians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_RUSSIAN = 14;
@@ -1178,6 +1290,7 @@ civitas.NATION_RUSSIAN = 14;
  * Nigerians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_NIGERIAN = 15;
@@ -1186,6 +1299,7 @@ civitas.NATION_NIGERIAN = 15;
  * Malinese
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_MALINESE = 16;
@@ -1194,6 +1308,7 @@ civitas.NATION_MALINESE = 16;
  * Mongolians
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_MONGOLIAN = 17;
@@ -1202,6 +1317,7 @@ civitas.NATION_MONGOLIAN = 17;
  * Tibetans
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_TIBETAN = 18;
@@ -1210,6 +1326,7 @@ civitas.NATION_TIBETAN = 18;
  * Persans
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_PERSAN = 19;
@@ -1218,6 +1335,7 @@ civitas.NATION_PERSAN = 19;
  * Khmer
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_KHMER = 20;
@@ -1226,6 +1344,7 @@ civitas.NATION_KHMER = 20;
  * Japanese
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_JAPANESE = 21;
@@ -1234,6 +1353,7 @@ civitas.NATION_JAPANESE = 21;
  * French
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.NATION_FRENCH = 22;
@@ -1242,6 +1362,7 @@ civitas.NATION_FRENCH = 22;
  * List of the possible climate types.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.CLIMATES = [
@@ -1256,6 +1377,7 @@ civitas.CLIMATES = [
  * Temperate climate, all balanced.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_TEMPERATE = 1;
@@ -1264,6 +1386,7 @@ civitas.CLIMATE_TEMPERATE = 1;
  * Tropical climate, favoring farms and exotic goods.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_TROPICAL = 2;
@@ -1272,6 +1395,7 @@ civitas.CLIMATE_TROPICAL = 2;
  * Arid climate, favoring ore mines.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_ARID = 3;
@@ -1280,6 +1404,7 @@ civitas.CLIMATE_ARID = 3;
  * Polar climate, very extreme.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CLIMATE_POLAR = 4;
@@ -1288,6 +1413,7 @@ civitas.CLIMATE_POLAR = 4;
  * List of the possible ruler personality types.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.PERSONALITIES = [
@@ -1302,6 +1428,7 @@ civitas.PERSONALITIES = [
  * whether to go to war or let diplomacy win.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.PERSONALITY_BALANCED = 1;
@@ -1310,6 +1437,7 @@ civitas.PERSONALITY_BALANCED = 1;
  * The ruler will always consider diplomacy before going to war.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.PERSONALITY_DIPLOMAT = 2;
@@ -1318,6 +1446,7 @@ civitas.PERSONALITY_DIPLOMAT = 2;
  * If you upset this ruler, he will go to war and give you hell.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.PERSONALITY_WARLORD = 3;
@@ -1326,6 +1455,7 @@ civitas.PERSONALITY_WARLORD = 3;
  * The attacking side (left) in a battleground.
  *
  * @type {Number}
+ * @default
  * @constant
  */
 civitas.BATTLEGROUND_ATTACK = 1;
@@ -1334,6 +1464,7 @@ civitas.BATTLEGROUND_ATTACK = 1;
  * The defending side (right) in a battleground.
  *
  * @type {Number}
+ * @default
  * @constant
  */
 civitas.BATTLEGROUND_DEFENSE = 2;
@@ -4989,6 +5120,7 @@ civitas.BUILDINGS = [{
  * Width of the world in hexes.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.WORLD_SIZE_WIDTH = 64;
@@ -4997,6 +5129,7 @@ civitas.WORLD_SIZE_WIDTH = 64;
  * Height of the world in hexes.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.WORLD_SIZE_HEIGHT = 64;
@@ -5005,6 +5138,7 @@ civitas.WORLD_SIZE_HEIGHT = 64;
  * Size of a world hex.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.WORLD_HEX_SIZE = 24;
@@ -5013,6 +5147,7 @@ civitas.WORLD_HEX_SIZE = 24;
  * Whether to beautify the worldmap terrain.
  *
  * @constant
+ * @default
  * @type {Boolean}
  */
 civitas.WORLD_BEAUTIFY = true;
@@ -5021,6 +5156,7 @@ civitas.WORLD_BEAUTIFY = true;
  * Whether to display the worldmap grid.
  *
  * @constant
+ * @default
  * @type {Boolean}
  */
 civitas.WORLD_GRID = true;
@@ -5029,6 +5165,7 @@ civitas.WORLD_GRID = true;
  * World generator roughness.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.WORLD_ROUGHNESS = 5;
@@ -5037,6 +5174,7 @@ civitas.WORLD_ROUGHNESS = 5;
  * List of settlement types
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.SETTLEMENTS = [
@@ -5050,6 +5188,7 @@ civitas.SETTLEMENTS = [
  * City settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CITY = 0;
@@ -5058,6 +5197,7 @@ civitas.CITY = 0;
  * Village settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.VILLAGE = 1;
@@ -5066,6 +5206,7 @@ civitas.VILLAGE = 1;
  * Metropolis settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.METROPOLIS = 2;
@@ -5074,6 +5215,7 @@ civitas.METROPOLIS = 2;
  * Raider camp settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMP = 3;
@@ -5082,6 +5224,7 @@ civitas.CAMP = 3;
  * Max number of settlements on a map.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_SETTLEMENTS = 100;
@@ -5090,6 +5233,7 @@ civitas.MAX_SETTLEMENTS = 100;
  * Max number of settlement icons.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_SETTLEMENT_ICONS = 3;
@@ -5508,6 +5652,7 @@ civitas.EVENTS = [{
  * List of resource categories.
  * 
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.RESOURCE_CATEGORIES = [
@@ -7455,6 +7600,7 @@ civitas.ITEM_GAUNTLETS_OF_GHASTLY_GLARE = {
  * Warrior class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_WARRIOR = 1;
@@ -7463,6 +7609,7 @@ civitas.HERO_CLASS_WARRIOR = 1;
  * Mage class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_MAGE = 2;
@@ -7471,6 +7618,7 @@ civitas.HERO_CLASS_MAGE = 2;
  * Druid class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_DRUID = 3;
@@ -7479,6 +7627,7 @@ civitas.HERO_CLASS_DRUID = 3;
  * Priest class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_PRIEST = 4;
@@ -7487,6 +7636,7 @@ civitas.HERO_CLASS_PRIEST = 4;
  * Rogue class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_ROGUE = 5;
@@ -7495,6 +7645,7 @@ civitas.HERO_CLASS_ROGUE = 5;
  * Shaman class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_SHAMAN = 6;
@@ -7503,6 +7654,7 @@ civitas.HERO_CLASS_SHAMAN = 6;
  * List of names for hero classes
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.HERO_CLASS_LIST = [
@@ -7643,6 +7795,7 @@ civitas.HEROES = {
 
 /**
  * Utils object.
+ * @mixin
  */
 civitas.utils = {
 	get_neighbours: function(y, x) {
@@ -7712,7 +7865,6 @@ civitas.utils = {
 	 * Get the total damage points of a hero, modified by the items
 	 * he's using.
 	 *
-	 * @public
 	 * @param {Object} hero
 	 * @returns {Object}
 	 */
@@ -7747,7 +7899,6 @@ civitas.utils = {
 	 * Get the total mana points of a hero, modified by the items
 	 * he's using.
 	 *
-	 * @public
 	 * @param {Object} hero
 	 * @returns {Number}
 	 */
@@ -7770,7 +7921,6 @@ civitas.utils = {
 	 * Get the total health points of a hero, modified by the items
 	 * he's using.
 	 *
-	 * @public
 	 * @param {Object} hero
 	 * @returns {Number}
 	 */
@@ -7792,7 +7942,6 @@ civitas.utils = {
 	/**
 	 * Check if resource exists.
 	 *
-	 * @public
 	 * @param {String} resource
 	 * @returns {Boolean}
 	 */
@@ -7808,7 +7957,6 @@ civitas.utils = {
 	/**
 	 * Get the distance between two points.
 	 *
-	 * @public
 	 * @param {Number} source
 	 * @param {Number} destination
 	 * @returns {Number}
@@ -7820,7 +7968,6 @@ civitas.utils = {
 	/**
 	 * Get the distance between two points in days
 	 *
-	 * @public
 	 * @param {Number} source
 	 * @param {Number} destination
 	 * @returns {Number}
@@ -7832,7 +7979,6 @@ civitas.utils = {
 	/**
 	 * Format a timestamp to a more human form (x ago).
 	 *
-	 * @public
 	 * @param {Number} time
 	 * @returns {Number}
 	 */
@@ -7926,7 +8072,6 @@ civitas.utils = {
 	/**
 	 * Round the number to nearest 10.
 	 *
-	 * @public
 	 * @param {Number} value
 	 * @returns {Number}
 	 */
@@ -7937,7 +8082,6 @@ civitas.utils = {
 	/**
 	 * Return a random number between min and max.
 	 *
-	 * @public
 	 * @param {Number} min
 	 * @param {Number} max
 	 * @returns {Number}
@@ -7949,7 +8093,6 @@ civitas.utils = {
 	/**
 	 * Return a random number based on importance.
 	 *
-	 * @public
 	 * @param {Number} importance
 	 * @returns {Number}
 	 */
@@ -7965,7 +8108,6 @@ civitas.utils = {
 	/**
 	 * Return the resource name by handle.
 	 *
-	 * @public
 	 * @param {String} handle
 	 * @returns {String}
 	 */
@@ -7980,7 +8122,6 @@ civitas.utils = {
 	 * @param {String} resource
 	 * @param {Number} discount
 	 * @returns {Number}
-	 * @public
 	 */
 	calc_price_minus_discount: function (amount, resource, discount) {
 		return Math.ceil(Math.ceil(civitas.RESOURCES[resource].price - discount) * amount);
@@ -7992,7 +8133,6 @@ civitas.utils = {
 	 * @param {Number} amount
 	 * @param {String} resource
 	 * @returns {Number}
-	 * @public
 	 */
 	calc_price: function (amount, resource) {
 		return Math.ceil(amount * (civitas.RESOURCES[resource].price));
@@ -8005,7 +8145,6 @@ civitas.utils = {
 	 * @param {String} resource
 	 * @param {Number} discount
 	 * @returns {Number}
-	 * @public
 	 */
 	calc_price_plus_discount: function (amount, resource, discount) {
 		return Math.ceil(Math.ceil(civitas.RESOURCES[resource].price + discount) * amount);
@@ -8015,7 +8154,6 @@ civitas.utils = {
 	 * Format the current time.
 	 * 
 	 * @returns {String}
-	 * @public
 	 */
 	get_now: function () {
 		let today = new Date();
@@ -8029,7 +8167,6 @@ civitas.utils = {
 	 * Format a number so that it's more user-friendly.
 	 *
 	 * @returns {String}
-	 * @public
 	 */
 	nice_numbers: function(num) {
 		if (num >= 1000000000) {
@@ -8047,9 +8184,8 @@ civitas.utils = {
 	/**
 	 * Return a random unique array element.
 	 *
-	 * @public
 	 * @param {Array} from
-	 * @returns {Mixed}
+	 * @returns {String|Number}
 	 */
 	get_random_unique: function(from) {
 		let id = civitas.utils.get_random(0, from.length - 1);
@@ -8071,7 +8207,7 @@ civitas.utils = {
  * Main Game AI (Artificial Intelligence) object.
  * 
  * @param {Object} params
- * @class {civitas.modules.ai}
+ * @class civitas.modules.ai
  * @returns {civitas.modules.ai}
  */
 civitas.modules.ai = function (params) {
@@ -8096,6 +8232,7 @@ civitas.modules.ai = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.modules.ai}
 	 * @param {Object} params
 	 */
@@ -8133,15 +8270,23 @@ civitas.modules.ai = function (params) {
 
 /**
  * Main Game UI interface.
+ * @mixin
  */
 civitas.ui = {
-
+	/**
+	 * Show the application loading indicator.
+	 *
+	 */
 	show_loader: function() {
 		$('.loading').show().tipsy({
 			gravity: 'e'
 		});
 	},
 
+	/**
+	 * Hide the application loading indicator.
+	 *
+	 */
 	hide_loader: function() {
 		$('.loading').hide();
 	},
@@ -8214,7 +8359,6 @@ civitas.ui = {
 	/**
 	 * Create an item tooltip.
 	 *
-	 * @public
 	 * @param {Object} item
 	 * @returns {String}
 	 */
@@ -8251,7 +8395,6 @@ civitas.ui = {
 	/**
 	 * Build the About section of the UI.
 	 *
-	 * @public
 	 * @returns {String}
 	 */
 	window_about_section: function() {
@@ -8271,7 +8414,6 @@ civitas.ui = {
 	/**
 	 * Generate a generic panel template.
 	 *
-	 * @public
 	 * @param {String} title
 	 * @returns {String}
 	 */
@@ -8418,7 +8560,6 @@ civitas.ui = {
 	 * Check if a window exists and is opened.
 	 * 
 	 * @param {String} id
-	 * @public
 	 * @returns {Boolean}
 	 */
 	window_exists: function (id) {
@@ -8432,7 +8573,6 @@ civitas.ui = {
 	 * Check if a panel exists and is opened.
 	 * 
 	 * @param {String} id
-	 * @public
 	 * @returns {Boolean}
 	 */
 	panel_exists: function (id) {
@@ -8909,7 +9049,7 @@ civitas.ui = {
  * World object.
  * 
  * @param {Object} params
- * @class {civitas.objects.world}
+ * @class civitas.objects.world
  * @returns {civitas.objects.world}
  */
 civitas.objects.world = function (params) {
@@ -8975,6 +9115,7 @@ civitas.objects.world = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.world}
 	 * @param {Object} params
 	 */
@@ -9312,8 +9453,8 @@ civitas.objects.world = function (params) {
 /**
  * Main Game settlement object.
  * 
- * @param {type} params
- * @class {civitas.objects.settlement}
+ * @param {Object} params
+ * @class civitas.objects.settlement
  * @returns {civitas.objects.settlement}
  */
 civitas.objects.settlement = function(params) {
@@ -9437,6 +9578,7 @@ civitas.objects.settlement = function(params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.settlement}
 	 * @param {Object} params
 	 */
@@ -10761,7 +10903,7 @@ civitas.objects.settlement = function(params) {
 	 * @public
 	 * @param {Number} settlement
 	 * @param {Number} value
-	 * @returns {Mixed}
+	 * @returns {Number}
 	 */
 	this.status = function(settlement, value) {
 		if (typeof value !== 'undefined') {
@@ -11972,7 +12114,7 @@ civitas.objects.settlement = function(params) {
  * Main Game event object.
  * 
  * @param {Object} params
- * @class {civitas.objects.event}
+ * @class civitas.objects.event
  * @returns {civitas.objects.event}
  */
 civitas.objects.event = function (params) {
@@ -12053,6 +12195,7 @@ civitas.objects.event = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.event}
 	 * @param {Object} params
 	 */
@@ -12153,7 +12296,7 @@ civitas.objects.event = function (params) {
  * Main Game building object.
  * 
  * @param {Object} params
- * @class {civitas.objects.building}
+ * @class civitas.objects.building
  * @returns {civitas.objects.building}
  */
 civitas.objects.building = function(params) {
@@ -12242,6 +12385,7 @@ civitas.objects.building = function(params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.building}
 	 * @param {Object} params
 	 */
@@ -12938,7 +13082,7 @@ civitas.objects.building = function(params) {
  * Battleground object.
  * 
  * @param {Object} params
- * @class {civitas.objects.battleground}
+ * @class civitas.objects.battleground
  * @returns {civitas.objects.battleground}
  */
 civitas.objects.battleground = function (params) {
@@ -12978,7 +13122,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user wins.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_win = function() {};
@@ -12986,7 +13129,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user loses.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_lose = function() {};
@@ -12994,7 +13136,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user selects a cell.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_select = function() {};
@@ -13002,7 +13143,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user moves a cell.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_move = function() {};
@@ -13010,7 +13150,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the user attacks another cell.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_attack = function() {};
@@ -13018,7 +13157,6 @@ civitas.objects.battleground = function (params) {
 	/**
 	 * Callback when the turn ends.
 	 *
-	 * @type {Function}
 	 * public
 	 */
 	this.on_end_turn = function() {};
@@ -13108,6 +13246,7 @@ civitas.objects.battleground = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.battleground}
 	 * @param {Object} params
 	 */
@@ -13901,7 +14040,7 @@ civitas.objects.battleground = function (params) {
  * Hero object.
  * 
  * @param {Object} params
- * @class {civitas.objects.hero}
+ * @class civitas.objects.hero
  * @returns {civitas.objects.hero}
  */
 civitas.objects.hero = function (params) {
@@ -13934,6 +14073,7 @@ civitas.objects.hero = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.hero}
 	 * @param {Object} params
 	 */
@@ -13962,7 +14102,7 @@ civitas.objects.hero = function (params) {
  * Main Game window object.
  * 
  * @param {Object} params
- * @class {civitas.controls.window}
+ * @class civitas.controls.window
  * @returns {civitas.controls.window}
  */
 civitas.controls.window = function (params) {
@@ -14051,6 +14191,7 @@ civitas.controls.window = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.controls.window}
 	 * @param {Object} params
 	 */
@@ -14121,7 +14262,7 @@ civitas.controls.window = function (params) {
  * Main modal object.
  * 
  * @param {Object} params
- * @class {civitas.controls.modal}
+ * @class civitas.controls.modal
  * @returns {civitas.controls.modal}
  */
 civitas.controls.modal = function (params) {
@@ -14152,6 +14293,7 @@ civitas.controls.modal = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.controls.modal}
 	 * @param {Object} params
 	 */
@@ -14292,7 +14434,7 @@ civitas.controls.modal = function (params) {
  * Main Game panel object.
  * 
  * @param {Object} params
- * @class {civitas.controls.panel}
+ * @class civitas.controls.panel
  * @returns {civitas.controls.panel}
  */
 civitas.controls.panel = function (params) {
@@ -14396,6 +14538,7 @@ civitas.controls.panel = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.controls.panel}
 	 * @param {Object} params
 	 */
@@ -14579,7 +14722,7 @@ civitas.controls.panel = function (params) {
 /**
  * Main Game core object.
  * 
- * @class {civitas.game}
+ * @class civitas.game
  * @returns {civitas.game}
  */
 civitas.game = function () {
@@ -14712,6 +14855,7 @@ civitas.game = function () {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.game}
 	 */
 	this.__init = function () {
@@ -14754,7 +14898,7 @@ civitas.game = function () {
 	 * Set game settings.
 	 * 
 	 * @param {String} key
-	 * @param {Mixed} value
+	 * @param {String|Number} value
 	 * @public
 	 * @returns {civitas.game}
 	 */
@@ -16257,7 +16401,7 @@ civitas.game = function () {
 	 * @param {Object} settlement_data
 	 * @param {Number} id
 	 * @param {Object} player_data
-	 * @returns {Mixed}
+	 * @returns {civitas.objects.settlement|Boolean}
 	 */
 	this.add_settlement = function(settlement_data, id, player_data) {
 		if (this.get_num_settlements() <= civitas.MAX_SETTLEMENTS) {
@@ -16453,7 +16597,7 @@ civitas.game = function () {
 	 * Set game storage data.
 	 * 
 	 * @param {String} key
-	 * @param {Mixed} value
+	 * @param {String|Number} value
 	 * @param {Boolean} as_text
 	 * @public
 	 * @returns {civitas.game}
@@ -16479,7 +16623,7 @@ civitas.game = function () {
 	 * @param {String} key
 	 * @param {Boolean} as_text
 	 * @public
-	 * @returns {Mixed}
+	 * @returns {String|Number}
 	 */
 	this.get_storage_data = function (key, as_text) {
 		let decrypted;
@@ -16526,7 +16670,7 @@ civitas.game = function () {
 	 *
 	 * @public
 	 * @param {Object} data
-	 * @returns {Mixed}
+	 * @returns {Object}
 	 */
 	this.import = function(data) {
 		if (data === false) {
@@ -17007,8 +17151,14 @@ $(document).ready(function () {
  * Settlement panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_SETTLEMENT = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>' +
@@ -17027,7 +17177,22 @@ civitas.PANEL_SETTLEMENT = {
 			'</footer>' +
 		'</div>',
 	params_data: null,
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'settlement',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -17169,6 +17334,13 @@ civitas.PANEL_SETTLEMENT = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let self = this;
 		let core = this.core();
@@ -17292,10 +17464,31 @@ civitas.PANEL_SETTLEMENT = {
  * Help panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_HELP = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('Help'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'help',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -17402,10 +17595,31 @@ civitas.PANEL_HELP = {
  * Debug panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_DEBUG = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('Debug'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'debug',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -17586,10 +17800,31 @@ civitas.PANEL_DEBUG = {
  * Building panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_BUILDING = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'building',
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let building = this.core().get_settlement().get_building(this.params_data.handle);
 		if (building) {
@@ -17604,11 +17839,33 @@ civitas.PANEL_BUILDING = {
  * Campaign panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_CAMPAIGN = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template(),
+
 	params_data: null,
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'campaign',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -17634,6 +17891,13 @@ civitas.PANEL_CAMPAIGN = {
 			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Army', 'Navy', 'Resources']));
 		}
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let self = this;
 		let core = this.core();
@@ -17715,11 +17979,33 @@ civitas.PANEL_CAMPAIGN = {
  * Storage panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_STORAGE = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('City Storage'),
+
 	expanded: false,
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'storage',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -17737,6 +18023,13 @@ civitas.PANEL_STORAGE = {
 			}
 		}
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let settlement = this.core().get_settlement();
 		let resources = settlement.get_resources();
@@ -17757,10 +18050,31 @@ civitas.PANEL_STORAGE = {
  * World panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_WORLD = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('World Map'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'world',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -17846,6 +18160,13 @@ civitas.PANEL_WORLD = {
 		*/
 		civitas.ui.worldmap_scrollto(settlement.location());
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let self = this;
 		let core = this.core();
@@ -17897,13 +18218,41 @@ civitas.PANEL_WORLD = {
  * Ranks panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_RANKS = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('World Rankings'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'ranks',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		$(this.handle + ' section').append('<div class="ranks-list"></div>');
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let ranking_list = [];
 		let settlements = this.core().get_settlements();
@@ -17952,8 +18301,14 @@ civitas.PANEL_RANKS = {
  * Create a new army panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_NEW_ARMY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>Create army<a class="tips close" title="Close"></a></header>' +
@@ -17962,7 +18317,22 @@ civitas.PANEL_NEW_ARMY = {
 				'<a class="dispatch btn iblock" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'new-army',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -18124,8 +18494,14 @@ civitas.PANEL_NEW_ARMY = {
  * Create a new spy panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_NEW_SPY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>Create spy' +
@@ -18136,7 +18512,22 @@ civitas.PANEL_NEW_SPY = {
 				'<a class="btn dispatch" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'new-spy',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -18240,6 +18631,7 @@ civitas.PANEL_NEW_SPY = {
 			return false;
 		});
 	},
+	
 	on_refresh: function() {
 		let core = this.core();
 		let my_settlement = core.get_settlement();
@@ -18252,8 +18644,14 @@ civitas.PANEL_NEW_SPY = {
  * Create a new caravan panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_NEW_CARAVAN = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>Create caravan<a class="tips close" title="Close"></a>' +
@@ -18263,7 +18661,22 @@ civitas.PANEL_NEW_CARAVAN = {
 				'<a class="btn dispatch" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'new-caravan',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		this.resources = {};
 		let self = this;
@@ -18393,10 +18806,31 @@ civitas.PANEL_NEW_CARAVAN = {
  * City Council panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_COUNCIL = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('City Council'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'council',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let core = this.core();
 		$(this.handle + ' section').append(civitas.ui.tabs([
@@ -18477,6 +18911,13 @@ civitas.PANEL_COUNCIL = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -18746,10 +19187,31 @@ civitas.PANEL_COUNCIL = {
  * Army panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_ARMY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'army',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let army = params.data;
 		$(this.handle + ' header').append(army.name);
@@ -18768,10 +19230,31 @@ civitas.PANEL_ARMY = {
  * Buildings panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_BUILDINGS = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('City Buildings'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'buildings',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -18992,10 +19475,31 @@ civitas.PANEL_BUILDINGS = {
  * Trades panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_TRADES = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('World Market'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'trades',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -19100,6 +19604,13 @@ civitas.PANEL_TRADES = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let my_settlement = core.get_settlement();
@@ -19291,10 +19802,31 @@ civitas.PANEL_TRADES = {
  * Military Camp panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_MILITARYCAMP = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'militarycamp',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -19342,6 +19874,13 @@ civitas.PANEL_MILITARYCAMP = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -19361,10 +19900,31 @@ civitas.PANEL_MILITARYCAMP = {
  * Shipyard panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_SHIPYARD = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'shipyard',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -19412,6 +19972,13 @@ civitas.PANEL_SHIPYARD = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -19432,10 +19999,31 @@ civitas.PANEL_SHIPYARD = {
  * Church panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_CHURCH = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'church',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -19457,6 +20045,13 @@ civitas.PANEL_CHURCH = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -19481,10 +20076,31 @@ civitas.PANEL_CHURCH = {
  * Embassy panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_EMBASSY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'embassy',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -19508,6 +20124,13 @@ civitas.PANEL_EMBASSY = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -19548,10 +20171,31 @@ civitas.PANEL_EMBASSY = {
  * Tavern panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_TAVERN = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'tavern',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = self.core();
@@ -19635,6 +20279,13 @@ civitas.PANEL_TAVERN = {
 			self.destroy();
 		}
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		// TODO
 	}
@@ -19644,10 +20295,31 @@ civitas.PANEL_TAVERN = {
  * Academy panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_ACADEMY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.building_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'academy',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let _t = '';
 		let self = this;
@@ -19706,6 +20378,13 @@ civitas.PANEL_ACADEMY = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
@@ -19731,9 +20410,14 @@ civitas.PANEL_ACADEMY = {
  * Login window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_SIGNIN = {
-	id: 'signin',
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
@@ -19750,6 +20434,22 @@ civitas.WINDOW_SIGNIN = {
 				civitas.ui.window_about_section() +
 			'</fieldset>' +
 		'</section>',
+
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
+	id: 'signin',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function() {
 		let self = this;
 		let handle = this.handle();
@@ -19784,6 +20484,13 @@ civitas.WINDOW_SIGNIN = {
 			return false;
 		});
 	},
+
+	/**
+	 * Callback function for hiding the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_hide: function() {
 		civitas.ui.hide_loader();
 	}
@@ -19793,8 +20500,14 @@ civitas.WINDOW_SIGNIN = {
  * Battle window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_BATTLE = {
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '<section id="window-{ID}" class="window">' +
 			'<div class="container">' +
 				'<div title="Attack and defense rating for the attacking army." class="tips attack"></div>' +
@@ -19808,7 +20521,21 @@ civitas.WINDOW_BATTLE = {
 				'</div>' +
 			'</div>' +
 		'</section>',
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'battle',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -19864,9 +20591,14 @@ civitas.WINDOW_BATTLE = {
  * Sign Up window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_SIGNUP = {
-	id: 'signup',
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
@@ -19909,6 +20641,22 @@ civitas.WINDOW_SIGNUP = {
 				civitas.ui.window_about_section() +
 			'</fieldset>' +
 		'</section>',
+
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
+	id: 'signup',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function() {
 		let self = this;
 		let avatar = 1;
@@ -19975,6 +20723,13 @@ civitas.WINDOW_SIGNUP = {
 			return false;
 		});
 	},
+
+	/**
+	 * Callback function for hiding the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_hide: function() {
 		civitas.ui.hide_loader();
 	}
@@ -19984,9 +20739,14 @@ civitas.WINDOW_SIGNUP = {
  * Options window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_ERROR = {
-	id: 'error',
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
@@ -20000,6 +20760,22 @@ civitas.WINDOW_ERROR = {
 				'<a href="#" class="do-restart button">Restart</a>' +
 			'</fieldset>' +
 		'</section>',
+
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
+	id: 'error',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function() {
 		let self = this;
 		let core = this.core();
@@ -20020,6 +20796,13 @@ civitas.WINDOW_ERROR = {
 			return false;
 		});
 	},
+
+	/**
+	 * Callback function for hiding the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_hide: function() {
 		civitas.ui.hide_loader();
 	}
@@ -20029,9 +20812,14 @@ civitas.WINDOW_ERROR = {
  * Options window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_OPTIONS = {
-	id: 'options',
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
@@ -20045,6 +20833,22 @@ civitas.WINDOW_OPTIONS = {
 				'<a href="#" class="do-resume button">Resume Playing</a>' +
 			'</fieldset>' +
 		'</section>',
+
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
+	id: 'options',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function() {
 		let _game_data = null;
 		let self = this;
@@ -20133,6 +20937,13 @@ civitas.WINDOW_OPTIONS = {
 			return false;
 		});
 	},
+
+	/**
+	 * Callback function for hiding the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_hide: function() {
 		civitas.ui.hide_loader();
 	}

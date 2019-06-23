@@ -1,8 +1,8 @@
 /**
  * Main Game settlement object.
  * 
- * @param {type} params
- * @class {civitas.objects.settlement}
+ * @param {Object} params
+ * @class civitas.objects.settlement
  * @returns {civitas.objects.settlement}
  */
 civitas.objects.settlement = function(params) {
@@ -126,6 +126,7 @@ civitas.objects.settlement = function(params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.settlement}
 	 * @param {Object} params
 	 */
@@ -1450,7 +1451,7 @@ civitas.objects.settlement = function(params) {
 	 * @public
 	 * @param {Number} settlement
 	 * @param {Number} value
-	 * @returns {Mixed}
+	 * @returns {Number}
 	 */
 	this.status = function(settlement, value) {
 		if (typeof value !== 'undefined') {

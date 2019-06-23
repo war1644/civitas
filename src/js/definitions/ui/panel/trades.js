@@ -2,10 +2,31 @@
  * Trades panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_TRADES = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('World Market'),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'trades',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -110,6 +131,13 @@ civitas.PANEL_TRADES = {
 			return false;
 		});
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let my_settlement = core.get_settlement();

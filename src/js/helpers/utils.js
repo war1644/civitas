@@ -1,5 +1,6 @@
 /**
  * Utils object.
+ * @mixin
  */
 civitas.utils = {
 	get_neighbours: function(y, x) {
@@ -69,7 +70,6 @@ civitas.utils = {
 	 * Get the total damage points of a hero, modified by the items
 	 * he's using.
 	 *
-	 * @public
 	 * @param {Object} hero
 	 * @returns {Object}
 	 */
@@ -104,7 +104,6 @@ civitas.utils = {
 	 * Get the total mana points of a hero, modified by the items
 	 * he's using.
 	 *
-	 * @public
 	 * @param {Object} hero
 	 * @returns {Number}
 	 */
@@ -127,7 +126,6 @@ civitas.utils = {
 	 * Get the total health points of a hero, modified by the items
 	 * he's using.
 	 *
-	 * @public
 	 * @param {Object} hero
 	 * @returns {Number}
 	 */
@@ -149,7 +147,6 @@ civitas.utils = {
 	/**
 	 * Check if resource exists.
 	 *
-	 * @public
 	 * @param {String} resource
 	 * @returns {Boolean}
 	 */
@@ -165,7 +162,6 @@ civitas.utils = {
 	/**
 	 * Get the distance between two points.
 	 *
-	 * @public
 	 * @param {Number} source
 	 * @param {Number} destination
 	 * @returns {Number}
@@ -177,7 +173,6 @@ civitas.utils = {
 	/**
 	 * Get the distance between two points in days
 	 *
-	 * @public
 	 * @param {Number} source
 	 * @param {Number} destination
 	 * @returns {Number}
@@ -189,7 +184,6 @@ civitas.utils = {
 	/**
 	 * Format a timestamp to a more human form (x ago).
 	 *
-	 * @public
 	 * @param {Number} time
 	 * @returns {Number}
 	 */
@@ -283,7 +277,6 @@ civitas.utils = {
 	/**
 	 * Round the number to nearest 10.
 	 *
-	 * @public
 	 * @param {Number} value
 	 * @returns {Number}
 	 */
@@ -294,7 +287,6 @@ civitas.utils = {
 	/**
 	 * Return a random number between min and max.
 	 *
-	 * @public
 	 * @param {Number} min
 	 * @param {Number} max
 	 * @returns {Number}
@@ -306,7 +298,6 @@ civitas.utils = {
 	/**
 	 * Return a random number based on importance.
 	 *
-	 * @public
 	 * @param {Number} importance
 	 * @returns {Number}
 	 */
@@ -322,7 +313,6 @@ civitas.utils = {
 	/**
 	 * Return the resource name by handle.
 	 *
-	 * @public
 	 * @param {String} handle
 	 * @returns {String}
 	 */
@@ -337,7 +327,6 @@ civitas.utils = {
 	 * @param {String} resource
 	 * @param {Number} discount
 	 * @returns {Number}
-	 * @public
 	 */
 	calc_price_minus_discount: function (amount, resource, discount) {
 		return Math.ceil(Math.ceil(civitas.RESOURCES[resource].price - discount) * amount);
@@ -349,7 +338,6 @@ civitas.utils = {
 	 * @param {Number} amount
 	 * @param {String} resource
 	 * @returns {Number}
-	 * @public
 	 */
 	calc_price: function (amount, resource) {
 		return Math.ceil(amount * (civitas.RESOURCES[resource].price));
@@ -362,7 +350,6 @@ civitas.utils = {
 	 * @param {String} resource
 	 * @param {Number} discount
 	 * @returns {Number}
-	 * @public
 	 */
 	calc_price_plus_discount: function (amount, resource, discount) {
 		return Math.ceil(Math.ceil(civitas.RESOURCES[resource].price + discount) * amount);
@@ -372,7 +359,6 @@ civitas.utils = {
 	 * Format the current time.
 	 * 
 	 * @returns {String}
-	 * @public
 	 */
 	get_now: function () {
 		let today = new Date();
@@ -386,7 +372,6 @@ civitas.utils = {
 	 * Format a number so that it's more user-friendly.
 	 *
 	 * @returns {String}
-	 * @public
 	 */
 	nice_numbers: function(num) {
 		if (num >= 1000000000) {
@@ -404,9 +389,8 @@ civitas.utils = {
 	/**
 	 * Return a random unique array element.
 	 *
-	 * @public
 	 * @param {Array} from
-	 * @returns {Mixed}
+	 * @returns {String|Number}
 	 */
 	get_random_unique: function(from) {
 		let id = civitas.utils.get_random(0, from.length - 1);

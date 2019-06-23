@@ -2,6 +2,7 @@
  * Warrior class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_WARRIOR = 1;
@@ -10,6 +11,7 @@ civitas.HERO_CLASS_WARRIOR = 1;
  * Mage class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_MAGE = 2;
@@ -18,6 +20,7 @@ civitas.HERO_CLASS_MAGE = 2;
  * Druid class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_DRUID = 3;
@@ -26,6 +29,7 @@ civitas.HERO_CLASS_DRUID = 3;
  * Priest class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_PRIEST = 4;
@@ -34,6 +38,7 @@ civitas.HERO_CLASS_PRIEST = 4;
  * Rogue class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_ROGUE = 5;
@@ -42,6 +47,7 @@ civitas.HERO_CLASS_ROGUE = 5;
  * Shaman class
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.HERO_CLASS_SHAMAN = 6;
@@ -50,6 +56,7 @@ civitas.HERO_CLASS_SHAMAN = 6;
  * List of names for hero classes
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.HERO_CLASS_LIST = [

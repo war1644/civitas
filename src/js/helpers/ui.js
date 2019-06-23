@@ -1,14 +1,22 @@
 /**
  * Main Game UI interface.
+ * @mixin
  */
 civitas.ui = {
-
+	/**
+	 * Show the application loading indicator.
+	 *
+	 */
 	show_loader: function() {
 		$('.loading').show().tipsy({
 			gravity: 'e'
 		});
 	},
 
+	/**
+	 * Hide the application loading indicator.
+	 *
+	 */
 	hide_loader: function() {
 		$('.loading').hide();
 	},
@@ -81,7 +89,6 @@ civitas.ui = {
 	/**
 	 * Create an item tooltip.
 	 *
-	 * @public
 	 * @param {Object} item
 	 * @returns {String}
 	 */
@@ -118,7 +125,6 @@ civitas.ui = {
 	/**
 	 * Build the About section of the UI.
 	 *
-	 * @public
 	 * @returns {String}
 	 */
 	window_about_section: function() {
@@ -138,7 +144,6 @@ civitas.ui = {
 	/**
 	 * Generate a generic panel template.
 	 *
-	 * @public
 	 * @param {String} title
 	 * @returns {String}
 	 */
@@ -285,7 +290,6 @@ civitas.ui = {
 	 * Check if a window exists and is opened.
 	 * 
 	 * @param {String} id
-	 * @public
 	 * @returns {Boolean}
 	 */
 	window_exists: function (id) {
@@ -299,7 +303,6 @@ civitas.ui = {
 	 * Check if a panel exists and is opened.
 	 * 
 	 * @param {String} id
-	 * @public
 	 * @returns {Boolean}
 	 */
 	panel_exists: function (id) {

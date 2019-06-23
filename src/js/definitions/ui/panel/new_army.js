@@ -2,8 +2,14 @@
  * Create a new army panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_NEW_ARMY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
 			'<header>Create army<a class="tips close" title="Close"></a></header>' +
@@ -12,7 +18,22 @@ civitas.PANEL_NEW_ARMY = {
 				'<a class="dispatch btn iblock" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'new-army',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();

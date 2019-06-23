@@ -2,6 +2,7 @@
  * List of settlement types
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.SETTLEMENTS = [
@@ -15,6 +16,7 @@ civitas.SETTLEMENTS = [
  * City settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CITY = 0;
@@ -23,6 +25,7 @@ civitas.CITY = 0;
  * Village settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.VILLAGE = 1;
@@ -31,6 +34,7 @@ civitas.VILLAGE = 1;
  * Metropolis settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.METROPOLIS = 2;
@@ -39,6 +43,7 @@ civitas.METROPOLIS = 2;
  * Raider camp settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMP = 3;
@@ -47,6 +52,7 @@ civitas.CAMP = 3;
  * Max number of settlements on a map.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_SETTLEMENTS = 100;
@@ -55,6 +61,7 @@ civitas.MAX_SETTLEMENTS = 100;
  * Max number of settlement icons.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_SETTLEMENT_ICONS = 3;

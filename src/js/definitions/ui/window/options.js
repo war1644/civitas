@@ -2,9 +2,14 @@
  * Options window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_OPTIONS = {
-	id: 'options',
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '' +
 		'<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
@@ -18,6 +23,22 @@ civitas.WINDOW_OPTIONS = {
 				'<a href="#" class="do-resume button">Resume Playing</a>' +
 			'</fieldset>' +
 		'</section>',
+
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
+	id: 'options',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function() {
 		let _game_data = null;
 		let self = this;
@@ -106,6 +127,13 @@ civitas.WINDOW_OPTIONS = {
 			return false;
 		});
 	},
+
+	/**
+	 * Callback function for hiding the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_hide: function() {
 		civitas.ui.hide_loader();
 	}

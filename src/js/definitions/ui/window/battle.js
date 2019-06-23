@@ -2,8 +2,14 @@
  * Battle window data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.WINDOW_BATTLE = {
+	/**
+	 * Template of the window.
+	 *
+	 * @type {String}
+	 */
 	template: '<section id="window-{ID}" class="window">' +
 			'<div class="container">' +
 				'<div title="Attack and defense rating for the attacking army." class="tips attack"></div>' +
@@ -17,7 +23,21 @@ civitas.WINDOW_BATTLE = {
 				'</div>' +
 			'</div>' +
 		'</section>',
+	/**
+	 * Internal id of the window.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'battle',
+
+	/**
+	 * Callback function for showing the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();

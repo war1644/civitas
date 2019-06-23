@@ -2,11 +2,33 @@
  * Storage panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_STORAGE = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template('City Storage'),
+
 	expanded: false,
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'storage',
+
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let self = this;
 		let core = this.core();
@@ -24,6 +46,13 @@ civitas.PANEL_STORAGE = {
 			}
 		}
 	},
+	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let settlement = this.core().get_settlement();
 		let resources = settlement.get_resources();

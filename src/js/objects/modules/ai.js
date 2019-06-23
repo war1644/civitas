@@ -2,7 +2,7 @@
  * Main Game AI (Artificial Intelligence) object.
  * 
  * @param {Object} params
- * @class {civitas.modules.ai}
+ * @class civitas.modules.ai
  * @returns {civitas.modules.ai}
  */
 civitas.modules.ai = function (params) {
@@ -27,6 +27,7 @@ civitas.modules.ai = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.modules.ai}
 	 * @param {Object} params
 	 */

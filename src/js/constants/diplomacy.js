@@ -2,6 +2,7 @@
  * List of game diplomacy options.
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.DIPLOMACIES = [
@@ -21,6 +22,7 @@ civitas.DIPLOMACIES = [
  * The campaign is an army.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_ARMY = 1;
@@ -29,6 +31,7 @@ civitas.CAMPAIGN_ARMY = 1;
  * The campaign is a caravan.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_CARAVAN = 2;
@@ -37,6 +40,7 @@ civitas.CAMPAIGN_CARAVAN = 2;
  * The campaign is a spy.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_SPY = 3;
@@ -45,6 +49,7 @@ civitas.CAMPAIGN_SPY = 3;
  * The campaign is an army returning home with spoils of war.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CAMPAIGN_ARMY_RETURN = 4;
@@ -53,6 +58,7 @@ civitas.CAMPAIGN_ARMY_RETURN = 4;
  * Just met, temporary truce, can declare war, can trade.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_TRUCE = 0;
@@ -61,6 +67,7 @@ civitas.DIPLOMACY_TRUCE = 0;
  * At war, no trades possible.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_WAR = 1;
@@ -69,6 +76,7 @@ civitas.DIPLOMACY_WAR = 1;
  * In a pact, can declare war, can trade.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PACT = 2;
@@ -78,6 +86,7 @@ civitas.DIPLOMACY_PACT = 2;
  * can share armies.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_ALLIANCE = 3;
@@ -86,6 +95,7 @@ civitas.DIPLOMACY_ALLIANCE = 3;
  * A cease fire means a temporary peace.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_CEASE_FIRE = 4;
@@ -94,6 +104,7 @@ civitas.DIPLOMACY_CEASE_FIRE = 4;
  * Propose pact.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_PACT = 5;
@@ -102,6 +113,7 @@ civitas.DIPLOMACY_PROPOSE_PACT = 5;
  * Propose alliance.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_ALLIANCE = 6;
@@ -110,6 +122,7 @@ civitas.DIPLOMACY_PROPOSE_ALLIANCE = 6;
  * Propose cease fire.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
@@ -118,6 +131,7 @@ civitas.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
  * Propose to join your settlement.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_PROPOSE_JOIN = 8;
@@ -126,6 +140,7 @@ civitas.DIPLOMACY_PROPOSE_JOIN = 8;
  * Vassal villages count as part of your empire.
  * 
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.DIPLOMACY_VASSAL = 9;
@@ -134,6 +149,7 @@ civitas.DIPLOMACY_VASSAL = 9;
  * Influence gained when selling goods to a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.EXPORT_INFLUENCE = 2;
@@ -142,6 +158,7 @@ civitas.EXPORT_INFLUENCE = 2;
  * Influence gained when buying goods from a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORT_INFLUENCE = 1;
@@ -150,6 +167,7 @@ civitas.IMPORT_INFLUENCE = 1;
  * Prestige gained when selling goods to a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.EXPORT_PRESTIGE = 2;
@@ -158,6 +176,7 @@ civitas.EXPORT_PRESTIGE = 2;
  * Prestige gained when buying goods from a settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.IMPORT_PRESTIGE = 1;
@@ -166,6 +185,7 @@ civitas.IMPORT_PRESTIGE = 1;
  * The minimum value settlement prestige can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_PRESTIGE_VALUE = 1;
@@ -174,6 +194,7 @@ civitas.MIN_PRESTIGE_VALUE = 1;
  * The maximum value settlement prestige can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_PRESTIGE_VALUE = 10000;
@@ -182,6 +203,7 @@ civitas.MAX_PRESTIGE_VALUE = 10000;
  * The minimum value settlement research can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_RESEARCH_VALUE = 1;
@@ -190,6 +212,7 @@ civitas.MIN_RESEARCH_VALUE = 1;
  * The maximum value settlement research can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_RESEARCH_VALUE = 1000;
@@ -198,6 +221,7 @@ civitas.MAX_RESEARCH_VALUE = 1000;
  * The minimum value settlement espionage can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_ESPIONAGE_VALUE = 1;
@@ -206,6 +230,7 @@ civitas.MIN_ESPIONAGE_VALUE = 1;
  * The maximum value settlement espionage can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_ESPIONAGE_VALUE = 1000;
@@ -215,6 +240,7 @@ civitas.MAX_ESPIONAGE_VALUE = 1000;
  * assigned to the mission divided by this value.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_ESPIONAGE_SUCESS_RATE = 100;
@@ -223,6 +249,7 @@ civitas.MAX_ESPIONAGE_SUCESS_RATE = 100;
  * The minimum value settlement influence can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MIN_INFLUENCE_VALUE = 1;
@@ -231,6 +258,7 @@ civitas.MIN_INFLUENCE_VALUE = 1;
  * The maximum value settlement influence can have.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.MAX_INFLUENCE_VALUE = 100;
@@ -239,6 +267,7 @@ civitas.MAX_INFLUENCE_VALUE = 100;
  * List of game diplomacy options.
  *
  * @constant
+ * @default
  * @type {Array}
  */
 civitas.SPY_MISSIONS = [
@@ -254,6 +283,7 @@ civitas.SPY_MISSIONS = [
  * maybe get noticed?).
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_NONE = 0;
@@ -263,6 +293,7 @@ civitas.SPY_MISSION_NONE = 0;
  * as the spy home city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_RELIGION = 1;
@@ -272,6 +303,7 @@ civitas.SPY_MISSION_RELIGION = 1;
  * target city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_INFLUENCE = 2;
@@ -280,6 +312,7 @@ civitas.SPY_MISSION_INFLUENCE = 2;
  * Spy mission to steal resources from the target city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_STEAL_RESOURCES = 3;
@@ -288,6 +321,7 @@ civitas.SPY_MISSION_STEAL_RESOURCES = 3;
  * Spy mission to instigate turmoil in the target city.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.SPY_MISSION_INSTIGATE = 4;
@@ -296,6 +330,7 @@ civitas.SPY_MISSION_INSTIGATE = 4;
  * Initial resource costs for sending a caravan.
  *
  * @constant
+ * @default
  * @type {Object}
  */
 civitas.CARAVAN_COSTS = {
@@ -310,6 +345,7 @@ civitas.CARAVAN_COSTS = {
  * Initial resource costs for sending a spy mission.
  *
  * @constant
+ * @default
  * @type {Object}
  */
 civitas.SPY_COSTS = {
@@ -323,6 +359,7 @@ civitas.SPY_COSTS = {
  * Initial resource costs for sending an army.
  *
  * @constant
+ * @default
  * @type {Object}
  */
 civitas.ARMY_COSTS = {
@@ -335,6 +372,7 @@ civitas.ARMY_COSTS = {
  * to another settlement.
  *
  * @constant
+ * @default
  * @type {Number}
  */
 civitas.CARAVAN_INFLUENCE = 5;

@@ -2,7 +2,7 @@
  * Main Game building object.
  * 
  * @param {Object} params
- * @class {civitas.objects.building}
+ * @class civitas.objects.building
  * @returns {civitas.objects.building}
  */
 civitas.objects.building = function(params) {
@@ -91,6 +91,7 @@ civitas.objects.building = function(params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.building}
 	 * @param {Object} params
 	 */

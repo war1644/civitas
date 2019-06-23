@@ -2,7 +2,7 @@
  * Main modal object.
  * 
  * @param {Object} params
- * @class {civitas.controls.modal}
+ * @class civitas.controls.modal
  * @returns {civitas.controls.modal}
  */
 civitas.controls.modal = function (params) {
@@ -33,6 +33,7 @@ civitas.controls.modal = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.controls.modal}
 	 * @param {Object} params
 	 */

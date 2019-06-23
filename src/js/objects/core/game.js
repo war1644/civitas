@@ -1,7 +1,7 @@
 /**
  * Main Game core object.
  * 
- * @class {civitas.game}
+ * @class civitas.game
  * @returns {civitas.game}
  */
 civitas.game = function () {
@@ -134,6 +134,7 @@ civitas.game = function () {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.game}
 	 */
 	this.__init = function () {
@@ -176,7 +177,7 @@ civitas.game = function () {
 	 * Set game settings.
 	 * 
 	 * @param {String} key
-	 * @param {Mixed} value
+	 * @param {String|Number} value
 	 * @public
 	 * @returns {civitas.game}
 	 */
@@ -1679,7 +1680,7 @@ civitas.game = function () {
 	 * @param {Object} settlement_data
 	 * @param {Number} id
 	 * @param {Object} player_data
-	 * @returns {Mixed}
+	 * @returns {civitas.objects.settlement|Boolean}
 	 */
 	this.add_settlement = function(settlement_data, id, player_data) {
 		if (this.get_num_settlements() <= civitas.MAX_SETTLEMENTS) {
@@ -1875,7 +1876,7 @@ civitas.game = function () {
 	 * Set game storage data.
 	 * 
 	 * @param {String} key
-	 * @param {Mixed} value
+	 * @param {String|Number} value
 	 * @param {Boolean} as_text
 	 * @public
 	 * @returns {civitas.game}
@@ -1901,7 +1902,7 @@ civitas.game = function () {
 	 * @param {String} key
 	 * @param {Boolean} as_text
 	 * @public
-	 * @returns {Mixed}
+	 * @returns {String|Number}
 	 */
 	this.get_storage_data = function (key, as_text) {
 		let decrypted;
@@ -1948,7 +1949,7 @@ civitas.game = function () {
 	 *
 	 * @public
 	 * @param {Object} data
-	 * @returns {Mixed}
+	 * @returns {Object}
 	 */
 	this.import = function(data) {
 		if (data === false) {

@@ -2,10 +2,31 @@
  * Army panel data.
  *
  * @type {Object}
+ * @mixin
  */
 civitas.PANEL_ARMY = {
+	/**
+	 * Template of the panel.
+	 *
+	 * @type {String}
+	 */
 	template: civitas.ui.generic_panel_template(),
+
+	/**
+	 * Internal id of the panel.
+	 *
+	 * @type {String}
+	 * @constant
+	 * @default
+	 */
 	id: 'army',
+	
+	/**
+	 * Callback function for showing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_show: function(params) {
 		let army = params.data;
 		$(this.handle + ' header').append(army.name);

@@ -2,7 +2,7 @@
  * Hero object.
  * 
  * @param {Object} params
- * @class {civitas.objects.hero}
+ * @class civitas.objects.hero
  * @returns {civitas.objects.hero}
  */
 civitas.objects.hero = function (params) {
@@ -35,6 +35,7 @@ civitas.objects.hero = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.objects.hero}
 	 * @param {Object} params
 	 */

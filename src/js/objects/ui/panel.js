@@ -2,7 +2,7 @@
  * Main Game panel object.
  * 
  * @param {Object} params
- * @class {civitas.controls.panel}
+ * @class civitas.controls.panel
  * @returns {civitas.controls.panel}
  */
 civitas.controls.panel = function (params) {
@@ -106,6 +106,7 @@ civitas.controls.panel = function (params) {
 	 * Object constructor.
 	 * 
 	 * @private
+	 * @constructor
 	 * @returns {civitas.controls.panel}
 	 * @param {Object} params
 	 */
