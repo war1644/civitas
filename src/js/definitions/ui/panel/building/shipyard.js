@@ -7,20 +7,20 @@ civitas.PANEL_SHIPYARD = {
 	template: civitas.ui.building_panel_template(),
 	id: 'shipyard',
 	on_show: function(params) {
-		var core = this.core();
-		var settlement = core.get_settlement();
+		let core = this.core();
+		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(civitas.ui.tabs([
 			'Info',
 			'Navy'
 		]));
-		var _t = '<div class="navy-list"></div>' +
+		let _t = '<div class="navy-list"></div>' +
 				'<div class="navy-recruiter">';
-		for (var item in civitas.SHIPS) {
+		for (let item in civitas.SHIPS) {
 			_t += '<fieldset>' +
 					'<legend>' + civitas.SHIPS[item].name + '</legend>' +
 					'<div class="cost">' +
 						'<dl class="nomg">';
-			for (var res in civitas.SHIPS[item].cost) {
+			for (let res in civitas.SHIPS[item].cost) {
 				_t += '<dt>' + civitas.utils.nice_numbers(civitas.SHIPS[item].cost[res]) + 
 					'</dt><dd>' + civitas.ui.resource_small_img(res) + '</dd>';
 			}
@@ -38,8 +38,8 @@ civitas.PANEL_SHIPYARD = {
 		_t += '</div>';
 		$(this.handle + ' #tab-navy').empty().append(_t);
 		$(this.handle).on('click', '.recruit-ship', function () {
-			var ship = $(this).data('handle');
-			var costs = civitas.SHIPS[ship].cost;
+			let ship = $(this).data('handle');
+			let costs = civitas.SHIPS[ship].cost;
 			if (settlement.has_resources(costs)) {
 				if (settlement.remove_resources(costs)) {
 					if (settlement.recruit_ship(ship)) {
@@ -54,11 +54,11 @@ civitas.PANEL_SHIPYARD = {
 		});
 	},
 	on_refresh: function() {
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var building = settlement.get_building(this.params_data.handle);
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let building = settlement.get_building(this.params_data.handle);
 		if (building) {
-			var level = building.get_level();
+			let level = building.get_level();
 			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, level));
 			$(this.handle + ' .navy-list').empty().append('<fieldset>' +
 					'<legend>Current Navy</legend>' + civitas.ui.navy_list(settlement.get_navy(), true) +

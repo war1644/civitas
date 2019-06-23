@@ -51,8 +51,8 @@ civitas.utils = {
 	},
 
 	get_random_color: function() {
-		var color = (Math.random() * 250) + 1;
-		var colors = Math.random() * 255;
+		let color = (Math.random() * 250) + 1;
+		let colors = Math.random() * 255;
 		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
 	},
 
@@ -74,10 +74,10 @@ civitas.utils = {
 	 * @returns {Object}
 	 */
 	get_damage_points: function(hero) {
-		var damage_val = (hero.stats.strength * 2) + hero.stats.agility;
-		var damage_min = 0;
-		var damage_max = 0;
-		for (var i = 0; i < hero.items.length; i++) {
+		let damage_val = (hero.stats.strength * 2) + hero.stats.agility;
+		let damage_min = 0;
+		let damage_max = 0;
+		for (let i = 0; i < hero.items.length; i++) {
 			if (hero.items[i]) {
 				if (hero.items[i].stats.strength) {
 					damage_val += hero.items[i].stats.strength * 2;
@@ -87,7 +87,7 @@ civitas.utils = {
 				}
 			}
 		}
-		for (var i = 0; i < hero.items.length; i++) {
+		for (let i = 0; i < hero.items.length; i++) {
 			if (hero.items[i].type === civitas.ITEM_TYPE_WEAPON) {
 				damage_min += hero.items[i].stats.damageMin + damage_val;
 				damage_max += hero.items[i].stats.damageMax + damage_val;
@@ -109,8 +109,8 @@ civitas.utils = {
 	 * @returns {Number}
 	 */
 	get_mana_points: function(hero) {
-		var mana = hero.stats.intellect * 50 + hero.stats.spirit * 10;
-		for (var i = 0; i < hero.items.length; i++) {
+		let mana = hero.stats.intellect * 50 + hero.stats.spirit * 10;
+		for (let i = 0; i < hero.items.length; i++) {
 			if (hero.items[i]) {
 				if (hero.items[i].stats.intellect) {
 					mana += hero.items[i].stats.intellect * 50;
@@ -132,8 +132,8 @@ civitas.utils = {
 	 * @returns {Number}
 	 */
 	get_health_points: function(hero) {
-		var health = hero.stats.stamina * 30 + hero.stats.strength * 5;
-		for (var i = 0; i < hero.items.length; i++) {
+		let health = hero.stats.stamina * 30 + hero.stats.strength * 5;
+		for (let i = 0; i < hero.items.length; i++) {
 			if (hero.items[i]) {
 				if (hero.items[i].stats.stamina) {
 					health += hero.items[i].stats.stamina * 30;
@@ -154,7 +154,7 @@ civitas.utils = {
 	 * @returns {Boolean}
 	 */
 	resource_exists: function(resource) {
-		for (var item in civitas.RESOURCES) {
+		for (let item in civitas.RESOURCES) {
 			if (item === resource) {
 				return true;
 			}
@@ -194,7 +194,7 @@ civitas.utils = {
 	 * @returns {Number}
 	 */
 	time_since: function(time) {
-		var time_formats = [
+		let time_formats = [
 			[
 				2, 
 				"One second", 
@@ -261,13 +261,13 @@ civitas.utils = {
 				2903040000
 			]
 		];
-		var seconds = (new Date - time) / 1000;
-		var list_choice = 1;
+		let seconds = (new Date - time) / 1000;
+		let list_choice = 1;
 		if (seconds < 0) {
 			seconds = Math.abs(seconds);
 			list_choice = 1;
 		}
-		var i = 0, format;
+		let i = 0, format;
 		while (format = time_formats[i++]) {
 			if (seconds < format[0]) {
 				if (typeof format[2] === "string") {
@@ -375,10 +375,10 @@ civitas.utils = {
 	 * @public
 	 */
 	get_now: function () {
-		var today = new Date();
-		var hh = today.getHours();
-		var mm = today.getMinutes();
-		var ss = today.getSeconds();
+		let today = new Date();
+		let hh = today.getHours();
+		let mm = today.getMinutes();
+		let ss = today.getSeconds();
 		return hh + ':' + mm + ':' + ss;
 	},
 
@@ -409,8 +409,8 @@ civitas.utils = {
 	 * @returns {Mixed}
 	 */
 	get_random_unique: function(from) {
-		var id = civitas.utils.get_random(0, from.length - 1);
-		var element = from[id];
+		let id = civitas.utils.get_random(0, from.length - 1);
+		let element = from[id];
 		from.splice(id, 1);
 		return element;
 	},

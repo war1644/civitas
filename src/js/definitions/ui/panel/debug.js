@@ -7,10 +7,10 @@ civitas.PANEL_DEBUG = {
 	template: civitas.ui.generic_panel_template('Debug'),
 	id: 'debug',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var handle = this.handle;
+		let self = this;
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let handle = this.handle;
 		$(this.handle + ' section').append(civitas.ui.tabs([
 			'Data',
 			'Console',
@@ -41,8 +41,8 @@ civitas.PANEL_DEBUG = {
 				'<a href="#" class="btn iblock save">Save</a> ' +
 			'</div>');
 		$(this.handle).on('click', '.fourty', function() {
-			var city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
-			var _settlement = core.get_settlement(city_index);
+			let city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
+			let _settlement = core.get_settlement(city_index);
 			core.add_to_queue(_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
 				army: {
 					militia: 40,
@@ -57,8 +57,8 @@ civitas.PANEL_DEBUG = {
 			});
 			return false;
 		}).on('click', '.fifty', function() {
-			for (var i = 0; i < 9; i++) {
-				settlement.level_up();
+			for (let i = 0; i < 9; i++) {
+				core.level_up();
 			}
 			settlement.add_to_storage('wood', 1000);
 			settlement.add_to_storage('stones', 1000);
@@ -68,8 +68,8 @@ civitas.PANEL_DEBUG = {
 			settlement.add_to_storage('barrels', 50);
 			settlement.add_to_storage('tools', 100);
 			settlement.inc_coins(2000000);
-			var army = settlement.get_army();
-			for (var soldier in army) {
+			let army = settlement.get_army();
+			for (let soldier in army) {
 				army[soldier] = civitas.utils.get_random(1, 100);
 			}
 			settlement.build('provisions');
@@ -78,15 +78,15 @@ civitas.PANEL_DEBUG = {
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.eleven', function() {
-			var army = settlement.get_army();
-			for (var soldier in army) {
+			let army = settlement.get_army();
+			for (let soldier in army) {
 				army[soldier] = civitas.utils.get_random(1, 100);
 			}
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.twelve', function() {
-			var navy = settlement.get_navy();
-			for (var ship in navy) {
+			let navy = settlement.get_navy();
+			for (let ship in navy) {
 				navy[ship] = civitas.utils.get_random(1, 10);
 			}
 			core.save_and_refresh();
@@ -122,7 +122,7 @@ civitas.PANEL_DEBUG = {
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.five', function() {
-			settlement.level_up();
+			core.level_up();
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.ten', function() {
@@ -144,12 +144,12 @@ civitas.PANEL_DEBUG = {
 			core.add_random_settlement();
 			return false;
 		}).on('click', '.load', function() {
-			var save_game = $(handle + ' .storage-data').val();
+			let save_game = $(handle + ' .storage-data').val();
 			if (save_game != '') {
 				core.open_modal(
 					function(button) {
 						if (button === 'yes') {
-							core.set_storage_data_as_text('live', save_game);
+							core.set_storage_data('live', save_game, true);
 							document.location.reload();
 						}
 					},
@@ -161,11 +161,11 @@ civitas.PANEL_DEBUG = {
 			}
 			return false;
 		}).on('click', '.save', function() {
-			var save_game = $(handle + ' .storage-data').val();
+			let save_game = $(handle + ' .storage-data').val();
 			if (save_game == '') {
 				save_game = core.get_storage_data('live', true);
 			}
-			var a = document.createElement("a");
+			let a = document.createElement("a");
 			a.style.display = "none";
 			document.body.appendChild(a);
 			a.href = window.URL.createObjectURL(

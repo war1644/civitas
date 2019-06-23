@@ -7,13 +7,13 @@ civitas.PANEL_EMBASSY = {
 	template: civitas.ui.building_panel_template(),
 	id: 'embassy',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var settlements = core.get_settlements();
-		var status = settlement.status();
-		var building = core.get_settlement().get_building(this.params_data.handle);
-		var level = building.get_level();
+		let self = this;
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let settlements = core.get_settlements();
+		let status = settlement.status();
+		let building = core.get_settlement().get_building(this.params_data.handle);
+		let level = building.get_level();
 		$(this.handle + ' section').append(civitas.ui.tabs([
 			'Info',
 			'Diplomacy',
@@ -21,8 +21,8 @@ civitas.PANEL_EMBASSY = {
 		]));
 		$(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
 		$(this.handle).on('click', '.view', function () {
-			var _settlement_id = parseInt($(this).data('id'));
-			var _settlement = core.get_settlement(_settlement_id);
+			let _settlement_id = parseInt($(this).data('id'));
+			let _settlement = core.get_settlement(_settlement_id);
 			if (_settlement) {
 				core.open_panel(civitas.PANEL_SETTLEMENT, _settlement);
 			}
@@ -30,18 +30,18 @@ civitas.PANEL_EMBASSY = {
 		});
 	},
 	on_refresh: function() {
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var settlements = core.get_settlements();
-		var status = settlement.status();
-		var building = core.get_settlement().get_building(this.params_data.handle);
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let settlements = core.get_settlements();
+		let status = settlement.status();
+		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
-			var level = building.get_level();
+			let level = building.get_level();
 			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, level));
 			$(this.handle + ' #tab-espionage').empty().append('<div class="section">' + civitas.ui.progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage()) + '</div>');
-			var _t = '<table class="normal">';
-			for (var i = 1; i < settlements.length; i++) {
-				var _status = settlement.get_diplomacy_status(settlements[i].id());
+			let _t = '<table class="normal">';
+			for (let i = 1; i < settlements.length; i++) {
+				let _status = settlement.get_diplomacy_status(settlements[i].id());
 				_t += '<tr>' +
 						'<td class="icon">' +
 							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#"><img src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" /></a>' +

@@ -7,9 +7,9 @@ civitas.PANEL_HELP = {
 	template: civitas.ui.generic_panel_template('Help'),
 	id: 'help',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var settlement = core.get_settlement();
+		let self = this;
+		let core = this.core();
+		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(civitas.ui.tabs([
 			'About',
 			'Buildings',

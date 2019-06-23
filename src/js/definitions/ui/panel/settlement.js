@@ -24,16 +24,15 @@ civitas.PANEL_SETTLEMENT = {
 	params_data: null,
 	id: 'settlement',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var settlement = params.data;
-		var settlement_type = settlement.get_type();
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let settlement = params.data;
 		this.params_data = params;
-		var trades = settlement.get_trades();
+		let trades = settlement.get_trades();
 		$(this.handle + ' header').append(settlement.name());
-		var tabs = [];
-		if (settlement.is_city() || settlement.is_metropolis()) {
+		let tabs = [];
+		if (settlement.is_urban()) {
 			tabs.push('Info');
 			if (my_settlement.can_diplomacy()) {
 				tabs.push('Army');
@@ -166,22 +165,21 @@ civitas.PANEL_SETTLEMENT = {
 		});
 	},
 	on_refresh: function() {
-		var self = this;
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var settlement = this.params_data.data;
-		var settlement_type = settlement.get_type();
-		var trades = settlement.get_trades();
-		var _status = my_settlement.get_diplomacy_status(settlement.id());
-		var sett_type_text = '';
-		var location = my_settlement.get_location();
-		if (settlement_type === civitas.CITY) {
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let settlement = this.params_data.data;
+		let trades = settlement.get_trades();
+		let _status = my_settlement.get_diplomacy_status(settlement.id());
+		let sett_type_text = '';
+		let location = my_settlement.location();
+		if (settlement.is_city()) {
 			sett_type_text = 'City';
-		} else if (settlement_type === civitas.METROPOLIS) {
+		} else if (settlement.is_metropolis()) {
 			sett_type_text = 'Metropolis';
-		} else if (settlement_type === civitas.VILLAGE) {
+		} else if (settlement.is_village()) {
 			sett_type_text = 'Village';
-		} else if (settlement_type === civitas.CAMP) {
+		} else if (settlement.is_camp()) {
 			sett_type_text = 'Raider Camp';
 		}
 		$(this.handle + ' #tab-info').empty().append('' +
@@ -199,7 +197,7 @@ civitas.PANEL_SETTLEMENT = {
 				: '') +
 				'<dt>Nationality</dt>' +
 				'<dd>' + settlement.nationality().name + '</dd>' +
-				(my_settlement.can_diplomacy() && (settlement.is_city() || settlement.is_metropolis()) ? 
+				(my_settlement.can_diplomacy() && (settlement.is_urban()) ? 
 				'<dt>Level</dt>' +
 				'<dd>' + settlement.level() + '</dd>' +
 				'<dt>Prestige</dt>' +
@@ -218,7 +216,7 @@ civitas.PANEL_SETTLEMENT = {
 				'<dd>' + my_settlement.get_diplomacy_status(settlement.id()).name + '</dd>'
 				: '') + 
 				'<dt>Distance</dt>' +
-				'<dd>' + civitas.utils.get_distance(location, settlement.get_location()) + ' miles (' + civitas.utils.get_distance_in_days(location, settlement.get_location()) + ' days)</dd>' +
+				'<dd>' + civitas.utils.get_distance(location, settlement.location()) + ' miles (' + civitas.utils.get_distance_in_days(location, settlement.location()) + ' days)</dd>' +
 			'</dl>');
 		if (my_settlement.can_diplomacy() || settlement.is_camp()) {
 			$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(settlement.get_army()));
@@ -226,13 +224,13 @@ civitas.PANEL_SETTLEMENT = {
 				$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));
 			}
 		}
-		if (settlement.is_city() || settlement.is_metropolis()) {
+		if (settlement.is_urban()) {
 			$(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + civitas.ui.trades_list(trades, 'imports'));
 			$(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this city will be selling this year.</p>' + civitas.ui.trades_list(trades, 'exports'));
 		}
-		var out = '';
-		var _out = '<p>This settlement has the the following resources:</p>';
-		for (var item in settlement.get_resources()) {
+		let out = '';
+		let _out = '<p>This settlement has the the following resources:</p>';
+		for (let item in settlement.get_resources()) {
 			if (!civitas.utils.is_virtual_resource(item)) {
 				if (settlement.resources[item] > 0) {
 					out += civitas.ui.resource_storage_small_el(item, settlement.resources[item]);
@@ -256,7 +254,7 @@ civitas.PANEL_SETTLEMENT = {
 			} else {
 				$(this.handle + ' footer .caravan, ' + this.handle + ' footer .spy').css('display', 'inline-block');
 			}
-			if (_status.id === civitas.DIPLOMACY_PACT && (settlement.is_city() || settlement.is_metropolis())) {
+			if (_status.id === civitas.DIPLOMACY_PACT && (settlement.is_urban())) {
 				$(this.handle + ' footer .alliance').css('display', 'inline-block');
 			} else if (!settlement.is_camp()) {
 				$(this.handle + ' footer .alliance').css('display','none');
@@ -276,7 +274,7 @@ civitas.PANEL_SETTLEMENT = {
 			} else {
 				$(this.handle + ' footer .war').css('display','none');
 			}
-			if ((_status.id === civitas.DIPLOMACY_PACT && settlement_type === civitas.VILLAGE) && !settlement.is_camp()) {
+			if ((_status.id === civitas.DIPLOMACY_PACT && settlement.is_village()) && !settlement.is_camp()) {
 				$(this.handle + ' footer .join').css('display', 'inline-block');
 			} else {
 				$(this.handle + ' footer .join').css('display','none');

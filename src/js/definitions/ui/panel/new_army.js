@@ -14,31 +14,31 @@ civitas.PANEL_NEW_ARMY = {
 		'</div>',
 	id: 'new-army',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var settlement = params.data;
-		var settlements = core.get_settlements();
-		var army = my_settlement.get_army();
-		var location = my_settlement.get_location();
-		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let settlement = params.data;
+		let settlements = core.get_settlements();
+		let army = my_settlement.get_army();
+		let location = my_settlement.location();
+		let distance = civitas.utils.get_distance_in_days(location, settlement.location());
 		this.assigned_army = {};
 		this.assigned_navy = {};
-		for (var item in army) {
+		for (let item in army) {
 			this.assigned_army[item] = army[item];
 		}
 		if (my_settlement.can_build_ships()) {
-			var navy = my_settlement.get_navy();
-			for (var item in navy) {
+			let navy = my_settlement.get_navy();
+			for (let item in navy) {
 				this.assigned_navy[item] = navy[item];
 			}
 		}
-		var _t = '<div class="column">' +
+		let _t = '<div class="column">' +
 			'<fieldset>' +
 				'<legend>Initial costs</legend>' +
 				'<dl>';
-		for (var item in civitas.ARMY_COSTS) {
-			var _cost = 0;
+		for (let item in civitas.ARMY_COSTS) {
+			let _cost = 0;
 			if (item === 'coins') {
 				_cost = civitas.ARMY_COSTS[item] * distance;
 			} else if (item === 'provisions') {
@@ -53,7 +53,7 @@ civitas.PANEL_NEW_ARMY = {
 			'</fieldset>' +
 			'<fieldset>' +
 				'<legend>Soldiers</legend>';
-		for (var item in army) {
+		for (let item in army) {
 			_t += '<div class="army-item">' +
 					'<a href="#" data-max="' + army[item] + '" data-soldier="' + item + '" class="army-item-inc">+</a>' +
 					'<a href="#" data-max="' + army[item] + '" data-soldier="' + item + '" class="army-item-dec">-</a>' +
@@ -66,7 +66,7 @@ civitas.PANEL_NEW_ARMY = {
 			'<legend>Destination</legend>' +
 			'<select class="army-destination">' +
 				'<option value="0">-- select --</option>';
-		for (var i = 1; i < settlements.length; i++) {
+		for (let i = 1; i < settlements.length; i++) {
 			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
 		}
 		_t += '</select>' +
@@ -76,7 +76,7 @@ civitas.PANEL_NEW_ARMY = {
 		if (my_settlement.can_build_ships()) {
 			_t += '<fieldset>' +
 					'<legend>Ships</legend>';
-			for (var item in navy) {
+			for (let item in navy) {
 				_t += '<div class="navy-item">' +
 						'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-inc">+</a>' +
 						'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-dec">-</a>' +
@@ -87,7 +87,7 @@ civitas.PANEL_NEW_ARMY = {
 			_t += '</fieldset>';
 		}
 		if (my_settlement.can_recruit_heroes()) {
-			var heroes = my_settlement.heroes();
+			let heroes = my_settlement.heroes();
 			_t += '<fieldset>' +
 				'<legend>Hero</legend>' +
 				'<select class="army-hero">';
@@ -95,7 +95,7 @@ civitas.PANEL_NEW_ARMY = {
 				_t += '<option value="0">-- no heroes available --</option>';
 			} else {
 				_t += '<option value="0">-- select --</option>';
-				for (var item in heroes) {
+				for (let item in heroes) {
 					_t += '<option value="' + item + '">' + heroes[item] + '</option>';
 				}
 			}
@@ -107,36 +107,36 @@ civitas.PANEL_NEW_ARMY = {
 		_t += '</div>';
 		$(this.handle + ' section').empty().append(_t);
 		$(this.handle).on('click', '.navy-item-inc', function() {
-			var max = parseInt($(this).data('max'));
-			var ship = $(this).data('ship');
-			var current = parseInt($(this).parent().children('.amount').html());
+			let max = parseInt($(this).data('max'));
+			let ship = $(this).data('ship');
+			let current = parseInt($(this).parent().children('.amount').html());
 			if (current + 1 <= max) {
 				self.assigned_navy[ship] = current + 1;
 				$(this).parent().children('.amount').html(current + 1);
 			}
 			return false;
 		}).on('click', '.navy-item-dec', function() {
-			var max = parseInt($(this).data('max'));
-			var ship = $(this).data('ship');
-			var current = parseInt($(this).parent().children('.amount').html());
+			let max = parseInt($(this).data('max'));
+			let ship = $(this).data('ship');
+			let current = parseInt($(this).parent().children('.amount').html());
 			if (current - 1 >= 0) {
 				self.assigned_navy[ship] = current - 1;
 				$(this).parent().children('.amount').html(current - 1);
 			}
 			return false;
 		}).on('click', '.army-item-inc', function() {
-			var max = parseInt($(this).data('max'));
-			var soldier = $(this).data('soldier');
-			var current = parseInt($(this).parent().children('.amount').html());
+			let max = parseInt($(this).data('max'));
+			let soldier = $(this).data('soldier');
+			let current = parseInt($(this).parent().children('.amount').html());
 			if (current + 1 <= max) {
 				self.assigned_army[soldier] = current + 1;
 				$(this).parent().children('.amount').html(current + 1);
 			}
 			return false;
 		}).on('click', '.army-item-dec', function() {
-			var max = parseInt($(this).data('max'));
-			var soldier = $(this).data('soldier');
-			var current = parseInt($(this).parent().children('.amount').html());
+			let max = parseInt($(this).data('max'));
+			let soldier = $(this).data('soldier');
+			let current = parseInt($(this).parent().children('.amount').html());
 			if (current - 1 >= 0) {
 				self.assigned_army[soldier] = current - 1;
 				$(this).parent().children('.amount').html(current - 1);
@@ -147,12 +147,12 @@ civitas.PANEL_NEW_ARMY = {
 				core.error('You will need to construct a Military Camp before being able to attack other settlements.');
 				return false;
 			}
-			var destination = parseInt($(self.handle + ' .army-destination').val());
+			let destination = parseInt($(self.handle + ' .army-destination').val());
 			if ((settlement && settlement.id() !== destination) || !settlement) {
 				settlement = core.get_settlement(destination);
 			}
 			// TODO there is an error here when there is no shipyard to send navy.
-			if (destination === 0 || !settlement || (my_settlement.has_army(self.assigned_army) === 0 && my_settlement.has_navy(self.assigned_navy) === 0)) {
+			if (destination === 0 || !settlement || (my_settlement.num_soldiers(self.assigned_army) === 0 && my_settlement.num_ships(self.assigned_navy) === 0)) {
 				core.error('There was an error creating and dispatching the army, check the data you entered and try again.');
 				return false;
 			}

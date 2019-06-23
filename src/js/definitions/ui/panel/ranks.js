@@ -10,10 +10,10 @@ civitas.PANEL_RANKS = {
 		$(this.handle + ' section').append('<div class="ranks-list"></div>');
 	},
 	on_refresh: function() {
-		var ranking_list = [];
-		var settlements = this.core().get_settlements();
-		for (var i = 0; i < settlements.length; i++) {
-			if (settlements[i].is_city() || settlements[i].is_metropolis()) {
+		let ranking_list = [];
+		let settlements = this.core().get_settlements();
+		for (let i = 0; i < settlements.length; i++) {
+			if (settlements[i].is_urban()) {
 				ranking_list.push({
 					name: settlements[i].name(),
 					data: settlements[i].get_rank()
@@ -21,8 +21,8 @@ civitas.PANEL_RANKS = {
 			}
 		}
 		ranking_list.sort(function(a, b) {
-			var keyA = new Date(a.data.score);
-			var keyB = new Date(b.data.score);
+			let keyA = new Date(a.data.score);
+			let keyB = new Date(b.data.score);
 			if (keyA > keyB) {
 				return -1;
 			}
@@ -31,7 +31,7 @@ civitas.PANEL_RANKS = {
 			}
 			return 0;
 		});
-		var _t = '<table class="normal">';
+		let _t = '<table class="normal">';
 		_t += '<thead>' +
 				'<tr>' +
 					'<td class="center">Rank</td>' +
@@ -40,7 +40,7 @@ civitas.PANEL_RANKS = {
 				'</tr>' +
 			'</thead>' +
 			'<tbody>';
-		for (var i = 0; i < ranking_list.length; i++) {
+		for (let i = 0; i < ranking_list.length; i++) {
 			_t += '<tr>' +
 				'<td class="center">' + (i + 1) + '</td>' +
 				'<td>' + ranking_list[i].name + '</td>' +

@@ -1,7 +1,7 @@
 'use strict';
 
 Array.prototype.findIndexM = function (value) {
-    for (var i = 0; i < this.length; i++) {
+    for (let i = 0; i < this.length; i++) {
         if (this[i].handle === value) {
             return i;
         }

@@ -19,10 +19,10 @@ civitas.WINDOW_OPTIONS = {
 			'</fieldset>' +
 		'</section>',
 	on_show: function() {
-		var _game_data = null;
-		var self = this;
-		var handle = this.handle();
-		var core = this.core();
+		let _game_data = null;
+		let self = this;
+		let handle = this.handle();
+		let core = this.core();
 		$(handle + ' .options-game').append(civitas.ui.tabs(['Sounds', 'UI', 'Gameplay']));
 		$(handle + ' #tab-sounds').append('<div>' +
 			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">music</a>' +
@@ -34,18 +34,18 @@ civitas.WINDOW_OPTIONS = {
 			'</div>');
 		$(handle + ' .tabs').tabs();
 		$(handle).on('click', '.do-resume', function () {
-			core.hide_loader();
+			civitas.ui.hide_loader();
 			core.unpause();
 			self.destroy();
 			return false;
 		}).on('click', '.do-pause', function () {
 			if (core.is_paused() === true) {
 				$(this).removeClass('highlight').html('Pause');
-				core.show_loader();
+				civitas.ui.show_loader();
 				core.unpause();
 			} else {
 				$(this).addClass('highlight').html('Resume');
-				core.hide_loader();
+				civitas.ui.hide_loader();
 				core.pause();
 			}
 			return false;
@@ -100,13 +100,13 @@ civitas.WINDOW_OPTIONS = {
 			core.save();
 			return false;
 		}).on('change', '.music-volume', function () {
-			var value = $(this).val();
+			let value = parseInt($(this).val());
 			core.music.volume = value;
 			core.save();
 			return false;
 		});
 	},
 	on_hide: function() {
-		this.core().hide_loader();
+		civitas.ui.hide_loader();
 	}
 };

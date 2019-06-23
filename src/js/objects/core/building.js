@@ -95,7 +95,7 @@ civitas.objects.building = function(params) {
 	 * @param {Object} params
 	 */
 	this.__init = function(params) {
-		var self = this;
+		let self = this;
 		this.settlement = params.settlement;
 		this.type = params.type;
 		this.name = params.data.name;
@@ -108,7 +108,7 @@ civitas.objects.building = function(params) {
 		params.data.level = this.get_level();
 		if (params.hidden !== true && this.settlement.is_player()) {
 			$('section.game').append(civitas.ui.building_element(params)).on('click', '#building-' + this.get_handle(), function() {
-				var panel = civitas['PANEL_' + self.get_handle().toUpperCase()];
+				let panel = civitas['PANEL_' + self.get_handle().toUpperCase()];
 				if (typeof panel !== 'undefined') {
 					self.core().open_panel(panel, params.data);
 				} else {
@@ -123,7 +123,7 @@ civitas.objects.building = function(params) {
 			}
 			this.core().refresh();
 		}
-		var building = this.get_building_data();
+		let building = this.get_building_data();
 		switch (this.get_type()) {
 			case 'marketplace':
 			case 'warehouse':
@@ -140,7 +140,7 @@ civitas.objects.building = function(params) {
 	 * @public
 	 */
 	this.is_upgradable = function() {
-		var building = this.get_building_data();
+		let building = this.get_building_data();
 		if (this.get_level() < building.levels) {
 			return true;
 		}
@@ -154,7 +154,7 @@ civitas.objects.building = function(params) {
 	 * @public
 	 */
 	this.is_downgradable = function() {
-		var building = this.get_building_data();
+		let building = this.get_building_data();
 		if (this.get_level() > 1) {
 			return true;
 		}
@@ -169,10 +169,10 @@ civitas.objects.building = function(params) {
 	 */
 	this.get_upgrade_costs = function() {
 		if (this.is_upgradable()) {
-			var next_level = this.get_level() + 1;
-			var costs = {};
-			var data = this.get_building_data(this.get_type());
-			for (var item in data.cost) {
+			let next_level = this.get_level() + 1;
+			let costs = {};
+			let data = this.get_building_data(this.get_type());
+			for (let item in data.cost) {
 				costs[item] = data.cost[item] * next_level;
 			}
 			return costs;
@@ -187,13 +187,13 @@ civitas.objects.building = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.upgrade = function() {
-		var core = this.core();
-		var settlement = this.get_settlement();
-		var resources = settlement.get_resources();
-		var next_level = this.get_level() + 1;
-		var data = this.get_building_data(this.get_type());
-		var building_image = this.get_type();
-		var costs = this.get_upgrade_costs();
+		let core = this.core();
+		let settlement = this.get_settlement();
+		let resources = settlement.get_resources();
+		let next_level = this.get_level() + 1;
+		let data = this.get_building_data(this.get_type());
+		let building_image = this.get_type();
+		let costs = this.get_upgrade_costs();
 		if (data && this.is_upgradable() && settlement.is_building_built(this.get_type())) {
 			if (costs && this.get_settlement().has_resources(costs)) {
 				this.get_settlement().remove_resources(costs);
@@ -231,10 +231,10 @@ civitas.objects.building = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.downgrade = function() {
-		var settlement = this.get_settlement();
-		var data = this.get_building_data(this.get_type());
-		var building_image = this.get_type();
-		var next_level = this.get_level() - 1;
+		let settlement = this.get_settlement();
+		let data = this.get_building_data(this.get_type());
+		let building_image = this.get_type();
+		let next_level = this.get_level() - 1;
 		if (data && this.is_downgradable() && settlement.is_building_built(this.get_type())) {
 			this.set_level(next_level);
 			if (settlement.is_player()) {
@@ -344,9 +344,9 @@ civitas.objects.building = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.demolish = function(notify) {
-		var settlement = this.get_settlement();
+		let settlement = this.get_settlement();
 		if (this.get_type() !== 'marketplace') {
-			for (var i = 0; i < settlement.buildings.length; i++) {
+			for (let i = 0; i < settlement.buildings.length; i++) {
 				if (settlement.buildings[i].get_type() === this.get_type()) {
 					settlement.buildings.splice(i, 1);
 				}
@@ -398,12 +398,12 @@ civitas.objects.building = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.has_building_requirements = function() {
-		var good = true;
-		var parent;
-		var building = this.get_building_data();
+		let good = true;
+		let parent;
+		let building = this.get_building_data();
 		if (typeof building.requires.buildings !== 'undefined') {
-			var required = building.requires.buildings;
-			for (var item in required) {
+			let required = building.requires.buildings;
+			for (let item in required) {
 				if (this.get_settlement().is_building_built(item, required[item])) {
 					parent = this.get_settlement().get_building(item);
 					if (parent && !parent.is_stopped()) {
@@ -427,7 +427,7 @@ civitas.objects.building = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.has_settlement_requirements = function() {
-		var building = this.get_building_data();
+		let building = this.get_building_data();
 		if (typeof building.requires.settlement_level !== 'undefined') {
 			if (building.requires.settlement_level > this.get_settlement().level()) {
 				return false;
@@ -470,12 +470,12 @@ civitas.objects.building = function(params) {
 		if (!this.get_settlement().has_storage_space_for(materials)) {
 			return false;
 		}
-		var settlement = this.get_settlement();
-		var chance;
-		var amount;
-		var building = this.get_building_data();
-		var random_amount;
-		for (var item in materials) {
+		let settlement = this.get_settlement();
+		let chance;
+		let amount;
+		let building = this.get_building_data();
+		let random_amount;
+		for (let item in materials) {
 			amount = materials[item] * this.get_level();
 			if (item === 'faith') {
 				settlement.raise_faith(amount);
@@ -490,7 +490,7 @@ civitas.objects.building = function(params) {
 			} else {
 				settlement.add_to_storage(item, amount);
 				if (typeof building.chance !== 'undefined') {
-					for (var itemo in building.chance) {
+					for (let itemo in building.chance) {
 						chance = Math.random();
 						if ((chance * this.get_level()) < building.chance[itemo]) {
 							random_amount = civitas.utils.get_random(1, 5);
@@ -510,8 +510,8 @@ civitas.objects.building = function(params) {
 	 * @returns {civitas.objects.building}
 	 */
 	this.process = function() {
-		var building = this.get_building_data();
-		var materials = building.materials;
+		let building = this.get_building_data();
+		let materials = building.materials;
 		if (building.is_housing === true) {
 			if (typeof materials !== 'undefined') {
 				if (this.get_settlement().has_resources(materials)) {
@@ -525,14 +525,14 @@ civitas.objects.building = function(params) {
 			}
 		} else if (building.is_production === true) {
 			if (!this.is_stopped()) {
-				var products = building.production;
+				let products = building.production;
 				if (this.has_requirements()) {
 					if (typeof materials !== 'undefined') {
 						if (Array.isArray(materials)) {
-							var all_good = true;
-							var removable = {};
-							for (var i = 0; i < materials.length; i++) {
-								var res = this.get_settlement().has_any_resources(materials[i]);
+							let all_good = true;
+							let removable = {};
+							for (let i = 0; i < materials.length; i++) {
+								let res = this.get_settlement().has_any_resources(materials[i]);
 								if (res !== false) {
 									removable[res] = materials[i][res];
 								} else {
@@ -698,30 +698,30 @@ civitas.objects.building = function(params) {
 	 */
 	this.log_to_console = function() {
 		this.notify();
-		var building = this.get_building_data();
-		var _p = '';
-		var _m = '';
+		let building = this.get_building_data();
+		let _p = '';
+		let _m = '';
 		if (typeof building.production !== 'undefined') {
-			for (var item in building.production) {
+			for (let item in building.production) {
 				_p += (building.production[item] * this.get_level()) + ' ' + item + ', ';
 			}
 			_p = _p.substring(0, _p.length - 2);
 		}
 		if (typeof building.materials !== 'undefined') {
 			if (Array.isArray(building.materials)) {
-				var removable = {};
-				for (var i = 0; i < building.materials.length; i++) {
-					var res = this.get_settlement().has_any_resources(building.materials[i]);
+				let removable = {};
+				for (let i = 0; i < building.materials.length; i++) {
+					let res = this.get_settlement().has_any_resources(building.materials[i]);
 					if (res !== false) {
 						removable[res] = building.materials[i][res];
 					}
 				}
-				for (var item in removable) {
+				for (let item in removable) {
 					_m += removable[item] + ' ' + item + ', ';
 				}
 				_m = _m.substring(0, _m.length - 2);
 			} else {
-				for (var item in building.materials) {
+				for (let item in building.materials) {
 					_m += building.materials[item] + ' ' + item + ', ';
 				}
 				_m = _m.substring(0, _m.length - 2);
@@ -749,7 +749,7 @@ civitas.objects.building = function(params) {
 		if (typeof notification_type !== 'undefined') {
 			this.problems = true;
 			if (this.get_settlement().is_player()) {
-				var handle = $('section.game > #building-' + this.get_handle());
+				let handle = $('section.game > #building-' + this.get_handle());
 				switch (notification_type) {
 					case civitas.NOTIFICATION_MISSING_REQUIREMENTS:
 						this.core().log('game', this.get_name() + ' doesn`t have one of the buildings required to be operational.', true);

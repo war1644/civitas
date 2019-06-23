@@ -7,31 +7,31 @@ civitas.PANEL_BUILDINGS = {
 	template: civitas.ui.generic_panel_template('City Buildings'),
 	id: 'buildings',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var resources = settlement.get_resources();
-		var el = this.handle;
-		var _t = '<div class="left buildings">';
-		var available_buildings = civitas['SETTLEMENT_BUILDINGS_' + settlement.climate().name.toUpperCase()];
+		let self = this;
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let resources = settlement.get_resources();
+		let el = this.handle;
+		let _t = '<div class="left buildings">';
+		let available_buildings = civitas['SETTLEMENT_BUILDINGS_' + settlement.climate().name.toUpperCase()];
 		_t += '<div class="tabs">' +
 				'<ul>';
-		for (var category in civitas.BUILDINGS_CATEGORIES) {
+		for (let category in civitas.BUILDINGS_CATEGORIES) {
 			_t += '<li><a href="#tab-' + category.toLowerCase() + '">' + category + '</a></li>';
 		}
 		_t += '</ul>';
-		for (var category in civitas.BUILDINGS_CATEGORIES) {
+		for (let category in civitas.BUILDINGS_CATEGORIES) {
 			_t += '<div id="tab-' + category.toLowerCase() + '" class="bldg-tabs">';
-			for (var i = 0; i < civitas.BUILDINGS_CATEGORIES[category].length; i++) {
-				var building = civitas.BUILDINGS_CATEGORIES[category][i];
+			for (let i = 0; i < civitas.BUILDINGS_CATEGORIES[category].length; i++) {
+				let building = civitas.BUILDINGS_CATEGORIES[category][i];
 				if ($.inArray(building, available_buildings) !== -1) {
-					var building_data = civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(building)];
-					var _i = settlement.is_building_built(building_data.handle);
-					var building_image = building_data.handle;
+					let building_data = civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(building)];
+					let _i = settlement.is_building_built(building_data.handle);
+					let building_image = building_data.handle;
 					if (building_data.handle.slice(0, 5) === 'house') {
 						building_image = building_data.handle.slice(0, 5);
 					}
-					var _image = (typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false) ? building_image : building_image + building_data.level;
+					let _image = (typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false) ? building_image : building_image + building_data.level;
 					_t += '<div data-handle="' + building_data.handle + '" class="building-item' + ((_i === true) ? ' disabled' : '') + '">' +
 							'<span class="title">' + building_data.name + '</span>' +
 							'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + _image + '.png" />' +
@@ -88,12 +88,12 @@ civitas.PANEL_BUILDINGS = {
 			$(el + ' .building-item').removeClass('active');
 			$(this).addClass('active');
 			$(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
-			var handle = $(this).data('handle');
-			var building = civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(handle)];
+			let handle = $(this).data('handle');
+			let building = civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(handle)];
 			$(el + ' header span').empty().html('City Buildings - ' + building.name);
 			$(el + ' .b-desc').html(building.description);
-			var _z = '<dl class="nomg">';
-			for (var y in building.cost) {
+			let _z = '<dl class="nomg">';
+			for (let y in building.cost) {
 				_z += '<dt>' + civitas.utils.nice_numbers(building.cost[y]) + '</dt>' +
 					'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 			}
@@ -111,7 +111,7 @@ civitas.PANEL_BUILDINGS = {
 			if (typeof building.requires !== 'undefined') {
 				_z = '<dl class="nomg">';
 				if (typeof building.requires.buildings !== 'undefined') {
-					for (var item in building.requires.buildings) {
+					for (let item in building.requires.buildings) {
 						_z += '<dt>Building</dt>' +
 							'<dd>' + core.get_building_config_data(item).name + ' (' + building.requires.buildings[item] + ')</dd>';
 					}
@@ -123,7 +123,7 @@ civitas.PANEL_BUILDINGS = {
 			}
 			if (typeof building.chance !== 'undefined') {
 				_z = '<dl class="nomg">';
-				for (var chance in building.chance) {
+				for (let chance in building.chance) {
 					_z += '<dt>' + building.chance[chance] * 100 + '%</dt>' +
 						'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(chance) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + chance + '.png" /></dd>';
 				}
@@ -136,7 +136,7 @@ civitas.PANEL_BUILDINGS = {
 			if (building.is_production === true) {
 				if (typeof building.production !== 'undefined') {
 					_z = '<dl class="nomg">';
-					for (var y in building.production) {
+					for (let y in building.production) {
 						_z += '<dt>' + building.production[y] + '</dt>' +
 							'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 					}
@@ -149,14 +149,14 @@ civitas.PANEL_BUILDINGS = {
 				if (typeof building.materials !== 'undefined') {
 					_z = '<dl class="nomg">';
 					if (Array.isArray(building.materials)) {
-						for (var i = 0; i < building.materials.length; i++) {
-							for (var y in building.materials[i]) {
+						for (let i = 0; i < building.materials.length; i++) {
+							for (let y in building.materials[i]) {
 								_z += '<dt>' + building.materials[i][y] + '</dt>' +
 									'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 							}
 						}
 					} else {
-						for (var y in building.materials) {
+						for (let y in building.materials) {
 							_z += '<dt>' + building.materials[y] + '</dt>' +
 								'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 						}
@@ -173,7 +173,7 @@ civitas.PANEL_BUILDINGS = {
 			if (building.is_housing === true) {
 				if (typeof building.materials !== 'undefined') {
 					_z = '<dl class="nomg">';
-					for (var y in building.materials) {
+					for (let y in building.materials) {
 						_z += '<dt>' + building.materials[y] + '</dt>' +
 							'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 					}
@@ -203,7 +203,7 @@ civitas.PANEL_BUILDINGS = {
 			} else {
 				$('fieldset.storage').hide();
 			}
-			var _i = settlement.is_building_built(building.handle);
+			let _i = settlement.is_building_built(building.handle);
 			if (_i !== true) {
 				$(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
 			} else {
@@ -212,7 +212,7 @@ civitas.PANEL_BUILDINGS = {
 			$(el + ' .right').show();
 			return false;
 		}).on('click', '.btn.build', function () {
-			var handle = $(this).data('handle');
+			let handle = $(this).data('handle');
 			if (settlement.build(handle) !== false) {
 				$(el + ' .building-item[data-handle=' + handle + ']').addClass('disabled');
 				$(el + ' .toolbar').empty().append('You already constructed this building.');

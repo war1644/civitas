@@ -52,6 +52,14 @@ civitas.CAMP = 3;
 civitas.MAX_SETTLEMENTS = 100;
 
 /**
+ * Max number of settlement icons.
+ *
+ * @constant
+ * @type {Number}
+ */
+civitas.MAX_SETTLEMENT_ICONS = 3;
+
+/**
  * List of possible world settlement names.
  *
  * @constant

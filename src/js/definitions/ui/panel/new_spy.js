@@ -16,19 +16,19 @@ civitas.PANEL_NEW_SPY = {
 		'</div>',
 	id: 'new-spy',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var settlement = params.data;
-		var settlements = core.get_settlements();
-		var espionage = my_settlement.espionage();
-		var location = my_settlement.get_location();
-		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
-		var _t = '<fieldset>' +
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let settlement = params.data;
+		let settlements = core.get_settlements();
+		let espionage = my_settlement.espionage();
+		let location = my_settlement.location();
+		let distance = civitas.utils.get_distance_in_days(location, settlement.location());
+		let _t = '<fieldset>' +
 			'<legend>Initial costs</legend>' +
 			'<dl>';
-		for (var item in civitas.SPY_COSTS) {
-			var _cost = 0;
+		for (let item in civitas.SPY_COSTS) {
+			let _cost = 0;
 			if (item === 'coins') {
 				_cost = civitas.SPY_COSTS[item] * distance;
 			} else if (item === 'provisions') {
@@ -45,7 +45,7 @@ civitas.PANEL_NEW_SPY = {
 			'<legend>Destination</legend>' +
 			'<select class="espionage-destination">' +
 				'<option value="0">-- select --</option>';
-		for (var i = 1; i < settlements.length; i++) {
+		for (let i = 1; i < settlements.length; i++) {
 			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
 		}
 		_t += '</select>' +
@@ -60,7 +60,7 @@ civitas.PANEL_NEW_SPY = {
 			'<legend>Mission</legend>' +
 			'<select class="espionage-mission">' +
 				'<option value="0">-- select --</option>';
-		for (var i = 1; i < civitas.SPY_MISSIONS.length; i++) {
+		for (let i = 1; i < civitas.SPY_MISSIONS.length; i++) {
 			_t += '<option value="' + i + '">' + civitas.SPY_MISSIONS[i].capitalize() + '</option>';
 		}
 		_t += '</select>' +
@@ -68,7 +68,7 @@ civitas.PANEL_NEW_SPY = {
 		'<fieldset class="espionage-rel">' +
 			'<legend>Religion' + (settlement ? ' (currently ' + settlement.religion().name + ')': '') + '</legend>' +
 			'<select class="espionage-religion">';
-		for (var i = 0; i < civitas.RELIGIONS.length; i++) {
+		for (let i = 0; i < civitas.RELIGIONS.length; i++) {
 			_t += '<option value="' + i + '">' + civitas.RELIGIONS[i].capitalize() + (i === my_settlement.religion().id ? ' (your religion)' : '') + '</option>';
 		}
 		_t += '</select>' +
@@ -76,11 +76,11 @@ civitas.PANEL_NEW_SPY = {
 		'</fieldset>';
 		$(this.handle + ' section').empty().append(_t);
 		$(this.handle).on('change', '.espionage-range', function() {
-			var value = parseInt($(this).val());
+			let value = parseInt($(this).val());
 			$(self.handle + ' .espionage-value').val(value);
 			$(self.handle + ' .espionage-chance').val(Math.ceil(value / 100) + '%');
 		}).on('change', '.espionage-mission', function() {
-			var value = parseInt($(this).val());
+			let value = parseInt($(this).val());
 			if (value === civitas.SPY_MISSION_RELIGION) {
 				$(self.handle + ' .espionage-rel').show();
 			} else {
@@ -91,9 +91,9 @@ civitas.PANEL_NEW_SPY = {
 				core.error('You will need to construct an Embassy before being able to send spies to other settlements.');
 				return false;
 			}
-			var _espionage = parseInt($(self.handle + ' .espionage-value').val());
-			var destination = parseInt($(self.handle + ' .espionage-destination').val());
-			var mission = parseInt($(self.handle + ' .espionage-mission').val());
+			let _espionage = parseInt($(self.handle + ' .espionage-value').val());
+			let destination = parseInt($(self.handle + ' .espionage-destination').val());
+			let mission = parseInt($(self.handle + ' .espionage-mission').val());
 			if ((settlement && settlement.id() !== destination) || !settlement) {
 				settlement = core.get_settlement(destination);
 			}
@@ -101,12 +101,12 @@ civitas.PANEL_NEW_SPY = {
 				core.error('There was an error creating and dispatching the spy, check the data you entered and try again.');
 				return false;
 			}
-			var data = {
+			let data = {
 				espionage: _espionage,
 				mission: mission
 			};
 			if (mission === civitas.SPY_MISSION_RELIGION) {
-				var _religion = parseInt($(self.handle + ' .espionage-religion').val());
+				let _religion = parseInt($(self.handle + ' .espionage-religion').val());
 				data.religion = _religion;
 			}
 			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_SPY, data)) {
@@ -119,9 +119,9 @@ civitas.PANEL_NEW_SPY = {
 		});
 	},
 	on_refresh: function() {
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var espionage = my_settlement.espionage();
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let espionage = my_settlement.espionage();
 		$(this.handle + ' .espionage-range').attr('max', espionage);
 	}
 };

@@ -38,7 +38,7 @@ civitas.controls.modal = function (params) {
 	 */
 	this.__init = function(params) {
 		this._core = params.core;
-		var self = this;
+		let self = this;
 		$('body').append(this._template);
 		$(window).bind('resize', function() {
 			self._resize();
@@ -54,15 +54,15 @@ civitas.controls.modal = function (params) {
 	 * @returns {civitas.objects.modal}
 	 */
 	this.alert = function(options) {
-		var self = this;
-		var settlement = false;
+		let self = this;
+		let settlement = false;
 		if (this.core().settlements.length > 0) {
 			settlement = this.core().get_settlement();
 		}
 		if (this._is_open()) {
 			return false;
 		}
-		this.core().show_loader();
+		civitas.ui.show_loader();
 		$('.modal').css({
 			width: '400px'
 		});
@@ -100,7 +100,7 @@ civitas.controls.modal = function (params) {
 	this._clear = function() {
 		$('.modal-overlay').remove();
 		// $('body').append(this._template);
-		this.core().hide_loader();
+		civitas.ui.hide_loader();
 		// this._resize();
 		return true;
 	};
@@ -124,9 +124,9 @@ civitas.controls.modal = function (params) {
 	 * @returns {civitas.objects.modal}
 	 */
 	this._resize = function() {
-		var lbox = $('.modal');
-		var height = parseInt((lbox.css('height')).replace('px', ''));
-		var width = parseInt((lbox.css('width')).replace('px', ''));
+		let lbox = $('.modal');
+		let height = parseInt((lbox.css('height')).replace('px', ''));
+		let width = parseInt((lbox.css('width')).replace('px', ''));
 		lbox.css({
 			top: ($(window).height() / 2) - 100 + 'px',
 			left: ($(window).width() - width) / 2 + 'px'

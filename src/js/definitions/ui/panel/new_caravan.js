@@ -16,18 +16,18 @@ civitas.PANEL_NEW_CARAVAN = {
 	id: 'new-caravan',
 	on_show: function(params) {
 		this.resources = {};
-		var self = this;
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var settlement = params.data;
-		var settlements = core.get_settlements();
-		var location = my_settlement.get_location();
-		var distance = civitas.utils.get_distance_in_days(location, settlement.get_location());
-		var _t = '<fieldset>' +
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let settlement = params.data;
+		let settlements = core.get_settlements();
+		let location = my_settlement.location();
+		let distance = civitas.utils.get_distance_in_days(location, settlement.location());
+		let _t = '<fieldset>' +
 			'<legend>Initial costs</legend>' +
 			'<dl>';
-		for (var item in civitas.CARAVAN_COSTS) {
-			var _cost = 0;
+		for (let item in civitas.CARAVAN_COSTS) {
+			let _cost = 0;
 			if (item === 'coins') {
 				_cost = civitas.CARAVAN_COSTS[item] * distance;
 			} else if (item === 'provisions') {
@@ -44,7 +44,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			'<legend>Destination</legend>' +
 			'<select class="caravan-destination">' +
 				'<option value="0">-- select --</option>';
-		for (var i = 1; i < settlements.length; i++) {
+		for (let i = 1; i < settlements.length; i++) {
 			_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
 		}
 		_t += '</select>' +
@@ -54,8 +54,8 @@ civitas.PANEL_NEW_CARAVAN = {
 			'<select class="caravan-resources-select">' +
 				'<option value="0">-- select --</option>' +
 				'<option value="coins">Coins</option>';
-		var resources = my_settlement.get_resources();
-		for (var item in resources) {
+		let resources = my_settlement.get_resources();
+		for (let item in resources) {
 			if (!civitas.utils.is_virtual_resource(item)) {
 				_t += '<option value="' + item + '"> ' + civitas.utils.get_resource_name(item) + '</option>';
 			}
@@ -67,7 +67,7 @@ civitas.PANEL_NEW_CARAVAN = {
 		'</fieldset>';
 		$(this.handle + ' section').empty().append(_t);
 		this.generate_table_data = function() {
-			var _t = '<table class="caravan-resources clearfix">' +
+			let _t = '<table class="caravan-resources clearfix">' +
 				'<thead>' +
 				'<tr>' +
 					'<td>Amount</td>' +
@@ -76,7 +76,7 @@ civitas.PANEL_NEW_CARAVAN = {
 				'</tr>' +
 				'</thead>' +
 				'<tbody>';
-			for (var item in this.resources) {
+			for (let item in this.resources) {
 				_t += '<tr>' +
 					'<td>' + this.resources[item] + '</td>' +
 					'<td>' + civitas.ui.resource_small_img(item) + '</td>' +
@@ -90,8 +90,8 @@ civitas.PANEL_NEW_CARAVAN = {
 			$(this.handle + ' .caravan-resources').empty().append(_t);
 		};
 		$(this.handle).on('click', '.caravan-resources-add', function() {
-			var amount = parseInt($(self.handle + ' .caravan-resources-amount').val());
-			var resource = $(self.handle + ' .caravan-resources-select').val();
+			let amount = parseInt($(self.handle + ' .caravan-resources-amount').val());
+			let resource = $(self.handle + ' .caravan-resources-select').val();
 			if (resource !== '0') {
 				if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
 					core.error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
@@ -109,7 +109,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			}
 			return false;
 		}).on('click', '.caravan-resources-delete', function() {
-			var resource = $(this).data('id');
+			let resource = $(this).data('id');
 			delete self.resources[resource];
 			self.generate_table_data();
 			return false;
@@ -118,7 +118,7 @@ civitas.PANEL_NEW_CARAVAN = {
 				core.error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 				return false;
 			}
-			var destination = parseInt($(self.handle + ' .caravan-destination').val());
+			let destination = parseInt($(self.handle + ' .caravan-destination').val());
 			if ((settlement && settlement.id() !== destination) || !settlement) {
 				settlement = core.get_settlement(destination);
 			}

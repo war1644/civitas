@@ -48,19 +48,19 @@ civitas.WINDOW_SIGNUP = {
 			'</fieldset>' +
 		'</section>',
 	on_show: function() {
-		var self = this;
-		var avatar = 1;
-		var password = '';
-		var password2 = '';
-		var core = this.core();
-		var handle = this.handle();
-		for (var i = 1; i < civitas.CLIMATES.length; i++) {
+		let self = this;
+		let avatar = 1;
+		let password = '';
+		let password2 = '';
+		let core = this.core();
+		let handle = this.handle();
+		for (let i = 1; i < civitas.CLIMATES.length; i++) {
 			$(handle + ' .climate').append('<option value="' + civitas['CLIMATE_' + civitas.CLIMATES[i].toUpperCase()] + '">' + civitas.CLIMATES[i].capitalize() + '</option>');
 		}
-		for (var i = 1; i < civitas.NATIONS.length; i++) {
+		for (let i = 1; i < civitas.NATIONS.length; i++) {
 			$(handle + ' .nation').append('<option value="' + civitas['NATION_' + civitas.NATIONS[i].toUpperCase()] + '">' + civitas.NATIONS[i].capitalize() + '</option>');
 		}
-		for (var i = 1; i <= civitas.AVATARS; i++) {
+		for (let i = 1; i <= civitas.AVATARS; i++) {
 			$(handle + ' .avatar-select').append('<img class="avatar' + (i === avatar ? ' selected' : '') + '" data-avatar="' + i + '" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + i + '.png" />');
 		}
 		$(handle).on('click', '.do-start', function () {
@@ -68,11 +68,11 @@ civitas.WINDOW_SIGNUP = {
 				password = $(handle + ' .password').val();
 				password2 = $(handle + ' .password2').val();
 			}
-			var name = $(handle + ' .name').val();
-			var cityname = $(handle + ' .cityname').val();
-			var nation = parseInt($(handle + ' .nation').val());
-			var climate = parseInt($(handle + ' .climate').val());
-			var difficulty = parseInt($(handle + ' .difficulty').val());
+			let name = $(handle + ' .name').val();
+			let cityname = $(handle + ' .cityname').val();
+			let nation = parseInt($(handle + ' .nation').val());
+			let climate = parseInt($(handle + ' .climate').val());
+			let difficulty = parseInt($(handle + ' .difficulty').val());
 			if (name.length > 12) {
 				name = name.substring(0, 12);
 			}
@@ -103,7 +103,7 @@ civitas.WINDOW_SIGNUP = {
 		}).on('click', '.avatar', function () {
 			$(handle + ' img.avatar').removeClass('selected');
 			$(this).addClass('selected');
-			var new_avatar = parseInt($(this).data('avatar'));
+			let new_avatar = parseInt($(this).data('avatar'));
 			if (new_avatar >= 1 && new_avatar <= civitas.AVATARS) {
 				avatar = new_avatar;
 			}
@@ -114,6 +114,6 @@ civitas.WINDOW_SIGNUP = {
 		});
 	},
 	on_hide: function() {
-		this.core().hide_loader();
+		civitas.ui.hide_loader();
 	}
 };

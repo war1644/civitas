@@ -7,7 +7,7 @@ civitas.PANEL_COUNCIL = {
 	template: civitas.ui.generic_panel_template('City Council'),
 	id: 'council',
 	on_show: function(params) {
-		var core = this.core();
+		let core = this.core();
 		$(this.handle + ' section').append(civitas.ui.tabs([
 			'Info',
 			'Tips',
@@ -17,8 +17,8 @@ civitas.PANEL_COUNCIL = {
 			'Mercenary',
 			'Achievements'
 		]));
-		var _t = '<div class="achievements-list">';
-		for (var i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
+		let _t = '<div class="achievements-list">';
+		for (let i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
 			_t += '<div data-handle="' + civitas.ACHIEVEMENTS[i].handle + '" class="achievement">' +
 				'<div class="left">' +
 					'<div class="ach img"></div>' +
@@ -36,19 +36,19 @@ civitas.PANEL_COUNCIL = {
 		_t += '</div>';
 		$(this.handle + ' #tab-achievements').empty().append(_t);
 		$(this.handle).on('click', '.view-merc', function () {
-			var _army = parseInt($(this).data('id'));
-			var data = civitas.MERCENARIES[_army];
+			let _army = parseInt($(this).data('id'));
+			let data = civitas.MERCENARIES[_army];
 			core.open_panel(civitas.PANEL_ARMY, data);
 			return false;
 		}).on('click', '.raid-merc', function () {
-			var _army = parseInt($(this).data('id'));
+			let _army = parseInt($(this).data('id'));
 			core.error('Not implemented yet.');
 			return false;
 		}).on('click', '.disband-merc', function () {
 			core.open_modal(
 				function(button) {
 					if (button === 'yes') {
-						var _army = parseInt($(this).data('id'));
+						let _army = parseInt($(this).data('id'));
 						core.get_settlement().release_mercenary(_army);
 						core.save_and_refresh();
 					}
@@ -57,9 +57,9 @@ civitas.PANEL_COUNCIL = {
 			);
 			return false;
 		}).on('click', '.building-info', function() {
-			var handle = $(this).data('handle');
-			var panel = civitas['PANEL_' + handle.toUpperCase()];
-			var building_data = core.get_building_config_data(handle);
+			let handle = $(this).data('handle');
+			let panel = civitas['PANEL_' + handle.toUpperCase()];
+			let building_data = core.get_building_config_data(handle);
 			if (handle && building_data) {
 				if (typeof panel !== 'undefined') {
 					core.open_panel(panel, building_data);
@@ -69,16 +69,16 @@ civitas.PANEL_COUNCIL = {
 			}
 			return false;
 		}).on('click', '.pause', function () {
-			var handle = $(this).data('handle');
-			var building = core.get_settlement().get_building(handle);
+			let handle = $(this).data('handle');
+			let building = core.get_settlement().get_building(handle);
 			if (building && building.stop_production()) {
 				$(this).removeClass('pause').addClass('start');
 				$(this).attr('title', 'Start production');
 			}
 			return false;
 		}).on('click', '.start', function () {
-			var handle = $(this).data('handle');
-			var building = core.get_settlement().get_building(handle);
+			let handle = $(this).data('handle');
+			let building = core.get_settlement().get_building(handle);
 			if (building && building.start_production()) {
 				$(this).removeClass('start').addClass('pause');
 				$(this).attr('title', 'Stop production');
@@ -87,32 +87,32 @@ civitas.PANEL_COUNCIL = {
 		});
 	},
 	on_refresh: function() {
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var settlements = core.get_settlements();
-		var buildings = settlement.get_buildings();
-		var resources = settlement.get_resources();
-		var achievements = core.achievements();
-		var advices = settlement.city_council();
-		var total_costs = 0;
-		var total_tax = 0;
-		var army_data;
-		var achievement_data;
-		var building_data;
-		var _z = '';
-		var total_benefits = {
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let settlements = core.get_settlements();
+		let buildings = settlement.get_buildings();
+		let resources = settlement.get_resources();
+		let achievements = core.achievements();
+		let advices = settlement.city_council();
+		let total_costs = 0;
+		let total_tax = 0;
+		let army_data;
+		let achievement_data;
+		let building_data;
+		let _z = '';
+		let total_benefits = {
 			fame: 0,
 			espionage: 0,
 			research: 0,
 			faith: 0
 		}
-		var mercenary = settlement.mercenary();
-		var _t = '<p>Mercenary armies are available to hire for a fixed price, they do not cost additional resources but they are only available for raiding and campaign missions, they do not participate in the defense of your city.</p>' +
+		let mercenary = settlement.mercenary();
+		let _t = '<p>Mercenary armies are available to hire for a fixed price, they do not cost additional resources but they are only available for raiding and campaign missions, they do not participate in the defense of your city.</p>' +
 			'<p>Also, keep in mind that once a mercenary army is hired, they are at your disposal until the end of the current year.</p>' +
 			'<div class="hired-mercenaries-list">';
 		if (mercenary.length > 0) {
 			_t += '<table class="normal">';
-			for (var i = 0; i < mercenary.length; i++) {
+			for (let i = 0; i < mercenary.length; i++) {
 				army_data = civitas.MERCENARIES[mercenary[i].id];
 				_t += '<tr>' +
 						'<td class="icon">' +
@@ -137,7 +137,7 @@ civitas.PANEL_COUNCIL = {
 		}
 		_t += '</div>';
 		$(this.handle + ' #tab-mercenary').empty().append(_t);
-		for (var f = 0; f < achievements.length; f++) {
+		for (let f = 0; f < achievements.length; f++) {
 			if (typeof achievements[f] !== 'undefined') {
 				$(this.handle + ' .achievement[data-handle=' + achievements[f].handle + ']').addClass('has');
 				$(this.handle + ' .achievement[data-handle=' + achievements[f].handle + '] .time-ago')
@@ -180,7 +180,7 @@ civitas.PANEL_COUNCIL = {
 		_t = '';
 		if (advices.length > 0) {
 			_t += '<ul class="advices">';
-			for (var z = 0; z < advices.length; z++) {
+			for (let z = 0; z < advices.length; z++) {
 				_t += '<li>' + advices[z] + '</li>';
 			}
 			_t += '</ul>';
@@ -195,7 +195,7 @@ civitas.PANEL_COUNCIL = {
 					'<td>Uses</td>' +
 				'</tr>' +
 			'</thead>';
-		for (var l = 0; l < buildings.length; l++) {
+		for (let l = 0; l < buildings.length; l++) {
 			if (buildings[l].is_municipal_building()) {
 				building_data = buildings[l].get_building_data();
 				_t += '<tr' + ((buildings[l].has_problems() === false) ? '' : ' class="notify"') +'>' +
@@ -203,7 +203,7 @@ civitas.PANEL_COUNCIL = {
 					'<td class="center">' + buildings[l].get_level() + ' / ' + (typeof building_data.levels !== 'undefined' ? building_data.levels : 1) + '</td>' +
 					'<td>';
 					if (building_data.production) {
-						for (var item in building_data.production) {
+						for (let item in building_data.production) {
 							total_benefits[item] += (buildings[l].has_problems() === false) ? buildings[l].get_level() * building_data.production[item] : 0;
 							_t += ' +' + buildings[l].get_level() * building_data.production[item] + ' ' + civitas.ui.resource_small_img(item);
 						}
@@ -212,14 +212,14 @@ civitas.PANEL_COUNCIL = {
 					'<td>';
 					if (building_data.materials) {
 						if (Array.isArray(building_data.materials)) {
-							for (var i = 0; i < building_data.materials.length; i++) {
-								for (var y in building_data.materials[i]) {
+							for (let i = 0; i < building_data.materials.length; i++) {
+								for (let y in building_data.materials[i]) {
 									total_costs += (buildings[l].has_problems() === false) ? building_data.materials[i][y] : 0;
 									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
 								}
 							}
 						} else {
-							for (var item in building_data.materials) {
+							for (let item in building_data.materials) {
 								total_costs += (buildings[l].has_problems() === false) ? building_data.materials[item] : 0;
 								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
 							}
@@ -229,7 +229,7 @@ civitas.PANEL_COUNCIL = {
 				'</tr>';
 			}
 		}
-		for (var item in total_benefits) {
+		for (let item in total_benefits) {
 			if (total_benefits[item] > 0) {
 				_z += ' +' + total_benefits[item] + ' ' + civitas.ui.resource_small_img(item);
 			}
@@ -253,7 +253,7 @@ civitas.PANEL_COUNCIL = {
 					'<td>Materials</td>' +
 				'</tr>' +
 			'</thead>';
-		for (var l = 0; l < buildings.length; l++) {
+		for (let l = 0; l < buildings.length; l++) {
 			if (buildings[l].is_housing_building()) {
 				building_data = buildings[l].get_building_data();
 				_t += '<tr' + ((buildings[l].has_problems() === false) ? '' : ' class="notify"') +'>' +
@@ -268,13 +268,13 @@ civitas.PANEL_COUNCIL = {
 					'<td>';
 					if (typeof building_data.materials !== 'undefined') {
 						if (Array.isArray(building_data.materials)) {
-							for (var i = 0; i < building_data.materials.length; i++) {
-								for (var y in building_data.materials[i]) {
+							for (let i = 0; i < building_data.materials.length; i++) {
+								for (let y in building_data.materials[i]) {
 									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
 								}
 							}
 						} else {
-							for (var item in building_data.materials) {
+							for (let item in building_data.materials) {
 								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
 							}
 						}
@@ -303,7 +303,7 @@ civitas.PANEL_COUNCIL = {
 					'<td></td>' +
 				'</tr>' +
 			'</thead>';
-		for (var l = 0; l < buildings.length; l++) {
+		for (let l = 0; l < buildings.length; l++) {
 			if (buildings[l].is_production_building() && buildings[l].is_municipal_building() === false) {
 				building_data = buildings[l].get_building_data();
 				_t += '<tr' + ((buildings[l].has_problems() === false) ? '' : ' class="notify"') +'>' +
@@ -311,7 +311,7 @@ civitas.PANEL_COUNCIL = {
 					'<td class="center">' + buildings[l].get_level() + ' / ' + (typeof building_data.levels !== 'undefined' ? building_data.levels : 1) + '</td>' +
 					'<td>';
 					if (building_data.production) {
-						for (var item in building_data.production) {
+						for (let item in building_data.production) {
 							_t += ' +' + buildings[l].get_level() * building_data.production[item] + ' ' + civitas.ui.resource_small_img(item);
 						}
 					}
@@ -319,13 +319,13 @@ civitas.PANEL_COUNCIL = {
 					'<td>';
 					if (building_data.materials) {
 						if (Array.isArray(building_data.materials)) {
-							for (var i = 0; i < building_data.materials.length; i++) {
-								for (var y in building_data.materials[i]) {
+							for (let i = 0; i < building_data.materials.length; i++) {
+								for (let y in building_data.materials[i]) {
 									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
 								}
 							}
 						} else {
-							for (var item in building_data.materials) {
+							for (let item in building_data.materials) {
 								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
 							}
 						}

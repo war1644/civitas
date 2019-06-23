@@ -19,9 +19,9 @@ civitas.WINDOW_BATTLE = {
 		'</section>',
 	id: 'battle',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var handle = this.handle();
+		let self = this;
+		let core = this.core();
+		let handle = this.handle();
 		core.pause();
 		this.battleground = new civitas.objects.battleground({
 			core: core,

@@ -22,11 +22,11 @@ civitas.WINDOW_SIGNIN = {
 			'</fieldset>' +
 		'</section>',
 	on_show: function() {
-		var self = this;
-		var handle = this.handle();
-		var core = this.core();
+		let self = this;
+		let handle = this.handle();
+		let core = this.core();
 		$(handle).on('click', '.do-start', function () {
-			var password = $(handle + ' .password').val();
+			let password = $(handle + ' .password').val();
 			if (password === '') {
 				core.error('Enter your city password.', 'Error', true);
 				return false;
@@ -56,6 +56,6 @@ civitas.WINDOW_SIGNIN = {
 		});
 	},
 	on_hide: function() {
-		this.core().hide_loader();
+		civitas.ui.hide_loader();
 	}
 };

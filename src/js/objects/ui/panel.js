@@ -80,8 +80,8 @@ civitas.controls.panel = function (params) {
 	this.__destroy = function () {
 		this.core().log('ui', 'Destroying panel with id `' + this.id + '`');
 		$(this.handle).remove();
-		var panels = this.core().get_panels();
-		for (var i = 0; i < panels.length; i++) {
+		let panels = this.core().get_panels();
+		for (let i = 0; i < panels.length; i++) {
 			if (panels[i].id === this.id) {
 				panels.splice(i, 1);
 			}
@@ -110,7 +110,7 @@ civitas.controls.panel = function (params) {
 	 * @param {Object} params
 	 */
 	this.__init = function (params) {
-		var self = this;
+		let self = this;
 		this._core = params.core;
 		this.id = params.id;
 		this.handle = '#panel-' + this.id;
@@ -134,7 +134,7 @@ civitas.controls.panel = function (params) {
 			this.destroy();
 		}
 		this.core().log('ui', 'Creating panel with id `' + this.id + '`');
-		var tpl = params.template.replace(/{ID}/g, params.id);
+		let tpl = params.template.replace(/{ID}/g, params.id);
 		if (typeof this.params_data !== 'undefined' && 
 			typeof this.params_data.name !== 'undefined' &&
 			typeof this.params_data.name !== 'function') {
@@ -152,7 +152,7 @@ civitas.controls.panel = function (params) {
 		this.on_show.call(this, params);
 		this.on_refresh.call(this, params);
 		if (typeof params.data !== 'undefined') {
-			var building = this.core().get_settlement().get_building(params.data.handle);
+			let building = this.core().get_settlement().get_building(params.data.handle);
 			if (building !== false) {
 				if (!building.is_upgradable()) {
 					$(this.handle + ' footer .upgrade').hide();

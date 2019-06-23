@@ -8,11 +8,11 @@ civitas.PANEL_CAMPAIGN = {
 	params_data: null,
 	id: 'campaign',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var campaign = params.data;
-		var class_name = '';
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let campaign = params.data;
+		let class_name = '';
 		this.params_data = params;
 		if (campaign.type === civitas.CAMPAIGN_ARMY || campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
 			class_name = 'army';
@@ -33,15 +33,15 @@ civitas.PANEL_CAMPAIGN = {
 		}
 	},
 	on_refresh: function() {
-		var self = this;
-		var core = this.core();
-		var my_settlement = core.get_settlement();
-		var campaign = this.params_data.data;
-		var out = '';
-		var source = core.get_settlement(campaign.source.id);
-		var destination = core.get_settlement(campaign.destination.id);
-		var distance = civitas.utils.get_distance(campaign.source, campaign.destination);
-		var action = '';
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
+		let campaign = this.params_data.data;
+		let out = '';
+		let source = core.get_settlement(campaign.source.id);
+		let destination = core.get_settlement(campaign.destination.id);
+		let distance = civitas.utils.get_distance(campaign.source, campaign.destination);
+		let action = '';
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
 			action = 'Attacking';
 		} else if (campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
@@ -65,7 +65,7 @@ civitas.PANEL_CAMPAIGN = {
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>This caravan has the the following resources:</p>' +
 					'<dl>';
-				for (var item in campaign.data.resources) {
+				for (let item in campaign.data.resources) {
 					if (campaign.data.resources[item] > 0) {
 						out += '<dt>' + campaign.data.resources[item] + '</dt>' +
 							'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
@@ -94,7 +94,7 @@ civitas.PANEL_CAMPAIGN = {
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>This army is bringing back to its home city the following spoils of war:</p>' +
 					'<dl>';
-				for (var item in campaign.data.resources) {
+				for (let item in campaign.data.resources) {
 					if (campaign.data.resources[item] > 0) {
 						out += '<dt>' + campaign.data.resources[item] + '</dt>' +
 							'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';

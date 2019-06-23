@@ -19,9 +19,9 @@ civitas.WINDOW_ERROR = {
 			'</fieldset>' +
 		'</section>',
 	on_show: function() {
-		var self = this;
-		var core = this.core();
-		var handle = this.handle();
+		let self = this;
+		let core = this.core();
+		let handle = this.handle();
 		$(handle + ' .error-message').html('Message: ' + this.params_data.error);
 		$(handle + ' .error-code').html('Code: ' + this.params_data.code);
 		$(handle).on('click', '.do-restart', function () {
@@ -39,6 +39,6 @@ civitas.WINDOW_ERROR = {
 		});
 	},
 	on_hide: function() {
-		this.core().hide_loader();
+		civitas.ui.hide_loader();
 	}
 };

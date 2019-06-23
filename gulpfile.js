@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var uglify = require('gulp-uglify');
+var terser = require('gulp-terser');
 var concat = require('gulp-concat');
 var cleanCSS = require('gulp-clean-css');
 var header = require('gulp-header');
@@ -92,7 +92,7 @@ gulp.task('app_minify', gulp.series(gulp.parallel('app'), function() {
 		'dist/app.debug.js'
   	])
     .pipe(concat('app.min.js'))
-    .pipe(uglify())
+    .pipe(terser())
     .pipe(header(fs.readFileSync('HEADER', 'utf8'), { pkg: pkg } ))
     .pipe(replace('__VERSION_NUMBER__', pkg.version +
     	'.' + ((new Date()).getMonth() + 1) + '' +
@@ -120,7 +120,7 @@ gulp.task('lib_minify', gulp.series(gulp.parallel('lib'), function() {
 		'dist/libs.debug.js'
   	])
     .pipe(concat('libs.min.js'))
-    .pipe(uglify())
+    .pipe(terser())
     .pipe(gulp.dest('dist/'))
 }));
 

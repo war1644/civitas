@@ -7,7 +7,7 @@ civitas.PANEL_ARMY = {
 	template: civitas.ui.generic_panel_template(),
 	id: 'army',
 	on_show: function(params) {
-		var army = params.data;
+		let army = params.data;
 		$(this.handle + ' header').append(army.name);
 		$(this.handle + ' section').append(civitas.ui.tabs([
 			'Info',

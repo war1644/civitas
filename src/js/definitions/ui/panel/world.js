@@ -7,20 +7,20 @@ civitas.PANEL_WORLD = {
 	template: civitas.ui.generic_panel_template('World Map'),
 	id: 'world',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var settlements = core.get_settlements();
-		var world = core.world();
-		var colors = world.colors();
-		var props = world.properties();
-		var settings = core.get_settings();
-		var world_data = world.data();
+		let self = this;
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let settlements = core.get_settlements();
+		let world = core.world();
+		let colors = world.colors();
+		let props = world.properties();
+		let settings = core.get_settings();
+		let world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
 		civitas.ui.svg_create_worldmap(civitas.WORLD_HEX_SIZE, colors);
-		for (var row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
-			for (var column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				var terrain = world_data[row][column].t;
+		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
+			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
+				let terrain = world_data[row][column].t;
 				civitas.ui.svg_create_group(terrain, row, column);
 				civitas.ui.svg_create_cell(row, column, colors[terrain], settings.worldmap_grid);
 				if (settings.worldmap_beautify === true) {
@@ -28,18 +28,18 @@ civitas.PANEL_WORLD = {
 				}
 			}
 		}
-		for (var row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
-			for (var column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				var terrain = world_data[row][column].t;
-				var suid = world_data[row][column].s;
+		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
+			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
+				let terrain = world_data[row][column].t;
+				let suid = world_data[row][column].s;
 				if (suid !== null && typeof settlements[suid] !== 'undefined') {
 					civitas.ui.svg_add_settlement_image(row, column, settlements[suid], settlement);
 				}
 				if (world_data[row][column].l === true) {
-					var lid = world_data[row][column].lid;
+					let lid = world_data[row][column].lid;
 					if (lid !== null) {
 						if (typeof settlements[lid] !== 'undefined') {
-							var col = settlements[lid].color();
+							let col = settlements[lid].color();
 							$('.s-c-g-' + row + '-' + column + ' > .svg-cell').css({
 								fill: col
 							});
@@ -48,8 +48,8 @@ civitas.PANEL_WORLD = {
 				}
 			}
 		}
-		var clicked = false;
-		var clickY, clickX;
+		let clicked = false;
+		let clickY, clickX;
 		$('.worldmap').on({
 			mousemove: function (event) {
 				clicked && update_scroll_pos(event);
@@ -65,14 +65,14 @@ civitas.PANEL_WORLD = {
 				$('html').css('cursor', 'auto');
 			}
 		});
-		var update_scroll_pos = function (event) {
+		let update_scroll_pos = function (event) {
 			$('.worldmap').scrollTop($('.worldmap').scrollTop() + (clickY - event.pageY));
 			$('.worldmap').scrollLeft($('.worldmap').scrollLeft() + (clickX - event.pageX));
 			clickY = event.pageY;
 			clickX = event.pageX;
 		};
 		$(this.handle).on('click', '.settlement', function () {
-			var _settlement_name = $(this).data('name');
+			let _settlement_name = $(this).data('name');
 			if (_settlement_name === settlement.name()) {
 				core.open_panel(civitas.PANEL_COUNCIL);
 			} else {
@@ -80,7 +80,7 @@ civitas.PANEL_WORLD = {
 			}
 			return false;
 		}).on('click', '.troop', function () {
-			var _action_id = parseInt($(this).data('id'));
+			let _action_id = parseInt($(this).data('id'));
 			if (core._queue[_action_id].mode === civitas.ACTION_CAMPAIGN) {
 				core.open_panel(civitas.PANEL_CAMPAIGN, core._queue[_action_id]);
 			}
@@ -89,32 +89,32 @@ civitas.PANEL_WORLD = {
 		/*
 		civitas.ui.svg_link_cells({x: 21, y: 25}, {x: 24, y: 32});
 		*/
-		civitas.ui.worldmap_scrollto(settlement.get_location());
+		civitas.ui.worldmap_scrollto(settlement.location());
 	},
 	on_refresh: function() {
-		var self = this;
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var settlements = core.get_settlements();
-		var queue_actions = core.queue();
-		var class_name = '';
+		let self = this;
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let settlements = core.get_settlements();
+		let queue_actions = core.queue();
+		let class_name = '';
 		$('.troop').remove();
-		for (var i = 0; i < queue_actions.length; i++) {
-			var action = queue_actions[i];
-			var source = action.source;
-			var destination = action.destination;
-			var distance_in_days = civitas.utils.get_distance_in_days(source, destination);
+		for (let i = 0; i < queue_actions.length; i++) {
+			let action = queue_actions[i];
+			let source = action.source;
+			let destination = action.destination;
+			let distance_in_days = civitas.utils.get_distance_in_days(source, destination);
 			if (action.mode === civitas.ACTION_DIPLOMACY) {
 				distance_in_days = distance_in_days / 2;
 			}
-			var title = '';
-			var troop_type = 'troop';
-			var _source = core.get_settlement(source.id);
-			var _destination = core.get_settlement(destination.id)
-			var x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
-			var y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
-			var prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
-			var prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
+			let title = '';
+			let troop_type = 'troop';
+			let _source = core.get_settlement(source.id);
+			let _destination = core.get_settlement(destination.id)
+			let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
+			let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
+			let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
+			let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
 			if (action.mode === civitas.ACTION_CAMPAIGN) {
 				if (action.type === civitas.CAMPAIGN_CARAVAN) {
 					troop_type = 'troop_caravan';

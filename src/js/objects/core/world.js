@@ -88,8 +88,8 @@ civitas.objects.world = function (params) {
 	 * @returns {civitas.objects.world}
 	 */
 	this._adjust = function() {
-		for (var x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
-			for (var y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
+		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
+			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
 				if (this._data[y][x].e < 0) {
 					this._data[y][x].t = 'O';
 				} else if (this._data[y][x].e >= 0 && this._data[y][x].e <= 0.3) {
@@ -178,12 +178,12 @@ civitas.objects.world = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.is_locked_hex = function(x, y) {
-		var hex = this.get_hex(x, y);
+		let hex = this.get_hex(x, y);
 		return hex.l;
 	};
 
 	this.locked_hex_by = function(x, y) {
-		var hex = this.get_hex(x, y);
+		let hex = this.get_hex(x, y);
 		return hex.lid;
 	};
 
@@ -243,7 +243,7 @@ civitas.objects.world = function (params) {
 	 * @returns {civitas.objects.world}
 	 */
 	this.add_city = function(settlement) {
-		var location = settlement.get_location();
+		let location = settlement.location();
 		this._data[location.y][location.x].s = settlement.id();
 		this._data[location.y][location.x].l = true;
 		this._data[location.y][location.x].lid = settlement.id();
@@ -260,7 +260,7 @@ civitas.objects.world = function (params) {
 	 * @returns {civitas.objects.world}
 	 */
 	this.remove_city = function(settlement) {
-		var location = settlement.get_location();
+		let location = settlement.location();
 		this._data[location.y][location.x].s = null;
 		this._data[location.y][location.x].n = null;
 		$('#worldmap-city-image' + location.y + '-' + location.x).remove();
@@ -279,12 +279,12 @@ civitas.objects.world = function (params) {
 	};
 
 	this.create_map_array = function(d1, d2) {
-		var x = new Array(d1);
-		for (var i = 0; i < d1; i += 1) {
+		let x = new Array(d1);
+		for (let i = 0; i < d1; i += 1) {
 			x[i] = new Array(d2);
 		}
-		for (var i = 0; i < d1; i += 1) {
-			for (var j = 0; j < d2; j += 1) {
+		for (let i = 0; i < d1; i += 1) {
+			for (let j = 0; j < d2; j += 1) {
 				x[i][j] = {
 					/* Elevation */
 					e: -1,
@@ -307,7 +307,7 @@ civitas.objects.world = function (params) {
 	};
 
 	this._start_displacement = function(size) {
-		var tr, tl, t, br, bl, b, r, l, center;
+		let tr, tl, t, br, bl, b, r, l, center;
 		this._data[0][0].e = Math.random(1.0);
 		tl = this._data[0][0].e;
 		this._data[0][size].e = Math.random(1.0);
@@ -327,13 +327,13 @@ civitas.objects.world = function (params) {
 	};
 
 	this._midpoint_displacement = function(dimension) {
-		var new_dimension = dimension / 2;
-		var top, tr, tl, bottom, bl, br, right, left, center;
+		let new_dimension = dimension / 2;
+		let top, tr, tl, bottom, bl, br, right, left, center;
 		if (new_dimension > 1) {
-			for (var i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
-				for (var j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
-					var x = i - (new_dimension / 2);
-					var y = j - (new_dimension / 2);
+			for (let i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
+				for (let j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
+					let x = i - (new_dimension / 2);
+					let y = j - (new_dimension / 2);
 					tl = this._data[i - new_dimension][j - new_dimension].e;
 					tr = this._data[i][j - new_dimension].e;
 					bl = this._data[i - new_dimension][j].e;

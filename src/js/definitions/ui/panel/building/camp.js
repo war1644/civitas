@@ -7,21 +7,21 @@ civitas.PANEL_MILITARYCAMP = {
 	template: civitas.ui.building_panel_template(),
 	id: 'militarycamp',
 	on_show: function(params) {
-		var self = this;
-		var core = this.core();
-		var settlement = core.get_settlement();
+		let self = this;
+		let core = this.core();
+		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(civitas.ui.tabs([
 			'Info',
 			'Army'
 		]));
-		var _t = '<div class="army-list"></div>' +
+		let _t = '<div class="army-list"></div>' +
 				'<div class="army-recruiter">';
-		for (var item in civitas.SOLDIERS) {
+		for (let item in civitas.SOLDIERS) {
 			_t += '<fieldset>' +
 					'<legend>' + civitas.SOLDIERS[item].name + '</legend>' +
 					'<div class="cost">' +
 						'<dl class="nomg">';
-			for (var res in civitas.SOLDIERS[item].cost) {
+			for (let res in civitas.SOLDIERS[item].cost) {
 				_t += '<dt>' + civitas.utils.nice_numbers(civitas.SOLDIERS[item].cost[res]) + '</dt><dd>' + civitas.ui.resource_small_img(res) + '</dd>';
 			}
 			_t += '</dl>' +
@@ -38,8 +38,8 @@ civitas.PANEL_MILITARYCAMP = {
 		_t += '</div>';
 		$(this.handle + ' #tab-army').empty().append(_t);
 		$(this.handle).on('click', '.recruit-soldier', function () {
-			var soldier = $(this).data('handle');
-			var costs = civitas.SOLDIERS[soldier].cost;
+			let soldier = $(this).data('handle');
+			let costs = civitas.SOLDIERS[soldier].cost;
 			if (settlement.has_resources(costs)) {
 				if (settlement.remove_resources(costs)) {
 					if (settlement.recruit_soldier(soldier)) {
@@ -54,9 +54,9 @@ civitas.PANEL_MILITARYCAMP = {
 		});
 	},
 	on_refresh: function() {
-		var core = this.core();
-		var settlement = core.get_settlement();
-		var building = core.get_settlement().get_building(this.params_data.handle);
+		let core = this.core();
+		let settlement = core.get_settlement();
+		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
 			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, building.get_level()));
 			$(this.handle + ' .army-list').empty().append('<fieldset>' +
