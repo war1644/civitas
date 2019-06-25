@@ -34,6 +34,7 @@ civitas.PANEL_WORLD = {
 		let settlements = core.get_settlements();
 		let world = core.world();
 		let colors = world.colors();
+		let color;
 		let props = world.properties();
 		let settings = core.get_settings();
 		let world_data = world.data();
@@ -42,30 +43,27 @@ civitas.PANEL_WORLD = {
 		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
 				let terrain = world_data[row][column].t;
+				color = colors[terrain].bg;
 				civitas.ui.svg_create_group(terrain, row, column);
-				civitas.ui.svg_create_cell(row, column, colors[terrain], settings.worldmap_grid);
+				if (world_data[row][column].l === true) {
+					let lid = world_data[row][column].lid;
+					if (lid !== null) {
+						if (typeof settlements[lid] !== 'undefined') {
+							color = settlements[lid].color();
+						}
+					}
+				}
+				civitas.ui.svg_create_cell(row, column, color, settings.worldmap_grid);
 				if (settings.worldmap_beautify === true) {
-					civitas.ui.svg_apply_terrain(row, column, terrain);
+					civitas.ui.svg_apply_terrain(row, column, colors[terrain].fg, terrain);
 				}
 			}
 		}
 		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				let terrain = world_data[row][column].t;
 				let suid = world_data[row][column].s;
 				if (suid !== null && typeof settlements[suid] !== 'undefined') {
 					civitas.ui.svg_add_settlement_image(row, column, settlements[suid], settlement);
-				}
-				if (world_data[row][column].l === true) {
-					let lid = world_data[row][column].lid;
-					if (lid !== null) {
-						if (typeof settlements[lid] !== 'undefined') {
-							let col = settlements[lid].color();
-							$('.s-c-g-' + row + '-' + column + ' > .svg-cell').css({
-								fill: col
-							});
-						}
-					}
 				}
 			}
 		}

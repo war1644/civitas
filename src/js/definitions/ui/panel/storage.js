@@ -12,8 +12,6 @@ civitas.PANEL_STORAGE = {
 	 */
 	template: civitas.ui.generic_panel_template('City Storage'),
 
-	expanded: false,
-
 	/**
 	 * Internal id of the panel.
 	 *
@@ -56,12 +54,10 @@ civitas.PANEL_STORAGE = {
 	on_refresh: function() {
 		let settlement = this.core().get_settlement();
 		let resources = settlement.get_resources();
-		let section;
 		let storage_space = settlement.storage();
 		for (let resource in resources) {
 			if (!civitas.utils.is_virtual_resource(resource)) {
-				section = civitas.RESOURCES[resource].category;
-				$(this.handle + ' #tab-' + section + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
+				$(this.handle + ' #tab-' + civitas.RESOURCES[resource].category + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
 			}
 		}
 		$(this.handle + ' .total-storage').empty().append(storage_space.all);

@@ -210,21 +210,21 @@ civitas.game = function () {
 	 * Reset the Black Market goods.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {Number}
 	 */
 	this.reset_black_market = function () {
-		let total = 0;
+		let t_coins = 0;
 		for (let item in this.black_market) {
 			this.get_settlement().inc_coins(this.black_market[item].price);
-			total += this.black_market[item].price;
+			t_coins += this.black_market[item].price;
 		}
 		this.black_market = {};
 		this.refresh();
 		$('#tab-blackmarket > .contents > table > tbody').empty();
-		if (total > 0) {
-			this.notify(this.get_settlement().name() + ' received <strong>' + total + '</strong> ' + civitas.utils.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
+		if (t_coins > 0) {
+			this.notify(this.get_settlement().name() + ' received <strong>' + t_coins + '</strong> ' + civitas.utils.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
 		}
-		return this;
+		return t_coins;
 	};
 
 	/**
@@ -293,7 +293,7 @@ civitas.game = function () {
 	 *
 	 * @public
 	 * @param {String} name
-	 * @param {String} cityname
+	 * @param {String} s_name
 	 * @param {Number} nation
 	 * @param {Number} climate
 	 * @param {Number} avatar
@@ -301,7 +301,7 @@ civitas.game = function () {
 	 * @param {String} password
 	 * @returns {Boolean}
 	 */
-	this.new_game = function(name, cityname, nation, climate, avatar, difficulty, password) {
+	this.new_game = function(name, s_name, nation, climate, avatar, difficulty, password) {
 		let data = null;
 		civitas.ui.show_loader();
 		if (civitas.ENCRYPTION === true) {
@@ -312,7 +312,7 @@ civitas.game = function () {
 			core: this,
 			roughness: civitas.INITIAL_SEED[difficulty - 1].roughness
 		});
-		this._create_settlement(name, cityname, nation, climate, avatar);
+		this._create_settlement(name, s_name, nation, climate, avatar);
 		this._setup_game(null);
 		return true;
 	};
@@ -643,7 +643,7 @@ civitas.game = function () {
 	 * @public
 	 * @returns {String}
 	 */
-	this.get_version = function() {
+	this.version = function() {
 		return civitas.VERSION;
 	};
 	
@@ -838,7 +838,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Perform an research notification in the game.
+	 * Perform a research and trigger a notification in the game.
 	 * 
 	 * @public
 	 * @param {String} handle
@@ -867,7 +867,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Perform an achievement notification in the game.
+	 * Trigger an achievement notification in the game.
 	 * 
 	 * @public
 	 * @param {String} handle
@@ -897,7 +897,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Check if the current player has the research specified by its id.
+	 * Check if the current player has the research specified by its handle.
 	 *
 	 * @public
 	 * @param {String} handle
@@ -915,7 +915,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Check if the current player has the achievement specified by its id.
+	 * Check if the current player has the achievement specified by its handle.
 	 *
 	 * @public
 	 * @param {String} handle
@@ -1050,15 +1050,13 @@ civitas.game = function () {
 					if (typeof campaign.data.espionage !== 'undefined') {
 						switch (campaign.data.mission) {
 							case civitas.SPY_MISSION_RELIGION:
-								if (random <= Math.ceil(campaign.data.espionage / 
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (campaign.source.id === settlement.id()) {
 										destination_settlement.religion(campaign.data.religion);
 										let religion = destination_settlement.religion();
 										this.notify('The spy you sent ' + campaign.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and managed to convince the settlement council to change the religion to ' + religion.name + '.');
 									} else if (campaign.destination.id === settlement.id()) {
-										destination_settlement =
-											this.get_settlement(campaign.source.id);
+										destination_settlement = this.get_settlement(campaign.source.id);
 										settlement.religion(campaign.data.religio);
 										let religion = settlement.religion();
 										this.notify('The spy sent from ' + destination_settlement.name() + ' ' + campaign.duration + ' days ago to our city reached its destination and managed to convince your city council to change the religion to ' + religion.name + '.');
@@ -1067,31 +1065,27 @@ civitas.game = function () {
 								}
 								break;
 							case civitas.SPY_MISSION_INFLUENCE:
-								if (random <= Math.ceil(campaign.data.espionage / 
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (campaign.source.id === settlement.id()) {
 										settlement.raise_influence(campaign.destination.id, amount);
 										this.notify('The spy you sent ' + campaign.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and increased your influence over this settlement.');
 									} else if (campaign.destination.id === settlement.id()) {
 										destination_settlement = this.get_settlement(campaign.source.id);
 										// TODO
-										// destination_settlement.raise_influence(
-										//	campaign.destination.id, amount);
+										// destination_settlement.raise_influence(campaign.destination.id, amount);
 										this.notify('The spy sent from ' + destination_settlement.name() + ' ' + campaign.duration + ' days ago to our city reached its destination and lowered your influence over this settlement.');
 									}
 									failed = false;
 								}
 								break;
 							case civitas.SPY_MISSION_STEAL_RESOURCES:
-								if (random <= Math.ceil(campaign.data.espionage /
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									// TODO
 									failed = false;
 								}
 								break;
 							case civitas.SPY_MISSION_INSTIGATE:
-								if (random <= Math.ceil(campaign.data.espionage /
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (campaign.source.id === settlement.id()) {
 										destination_settlement.lower_prestige(amount);
 										this.notify('The spy you sent ' + campaign.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and incited the population to revolt, therefore lowering the prestige of the city.');
@@ -1327,7 +1321,7 @@ civitas.game = function () {
 	 * Get a pointer to the player's settlement.
 	 * 
 	 * @public
-	 * @param {String} name
+	 * @param {String|Number} name
 	 * @returns {civitas.settlement|Boolean}
 	 */
 	this.get_settlement = function (name) {
@@ -1356,20 +1350,20 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Load the player settlement from localStorage data.
+	 * Load the player settlement from specified data.
 	 * 
 	 * @private
 	 * @param {Object} data
 	 * @returns {Object|Boolean}
 	 */
 	this._load_settlement = function (data) {
-		let player_settlement_data = data.settlements[0];
+		let player_s_data = data.settlements[0];
 		let new_settlement;
-		if (player_settlement_data) {
-			player_settlement_data.core = this;
-			new_settlement = new civitas.objects.settlement(player_settlement_data);
+		if (player_s_data) {
+			player_s_data.core = this;
+			new_settlement = new civitas.objects.settlement(player_s_data);
 			this.settlements.push(new_settlement);
-			new_settlement.setup_initial_buildings(player_settlement_data.buildings);
+			new_settlement.setup_initial_buildings(player_s_data.buildings);
 			return data;
 		}
 		return false;
@@ -1396,54 +1390,34 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Create all the other settlements in the world.
-	 * 
-	 * @public
-	 * @returns {Object}
-	 */
-	this.get_random_location = function() {
-		let world = this.world();
-		let data = world.data();
-		let pos = {
-			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
-			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
-		}
-		if ((data[pos.y][pos.x].t !== 'S' && data[pos.y][pos.x].t !== 'O') && data[pos.y][pos.x].l === false) {
-			return pos;
-		} else {
-			return this.get_random_location();
-		}
-	};
-
-	/**
 	 * Generate random army soldiers.
 	 * 
 	 * @public
-	 * @param {Number} settlement_type
+	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_army = function(settlement_type) {
+	this.generate_random_army = function(s_type) {
 		let army = {};
 		for (let item in civitas.SOLDIERS) {
-			if (settlement_type === civitas.CITY) {
+			if (s_type === civitas.CITY) {
 				if (item === 'cannon' || item === 'catapult') {
 					army[item] = civitas.utils.get_random(1, 2);
 				} else {
 					army[item] = civitas.utils.get_random(5, 10);
 				}
-			} else if (settlement_type === civitas.METROPOLIS) {
+			} else if (s_type === civitas.METROPOLIS) {
 				if (item === 'cannon' || item === 'catapult') {
 					army[item] = civitas.utils.get_random(3, 5);
 				} else {
 					army[item] = civitas.utils.get_random(20, 30);
 				}
-			} else if (settlement_type === civitas.VILLAGE) {
+			} else if (s_type === civitas.VILLAGE) {
 				if (item === 'cannon' || item === 'catapult') {
 					// Todo
 				} else {
 					army[item] = civitas.utils.get_random(0, 2);
 				}
-			} else if (settlement_type === civitas.CAMP) {
+			} else if (s_type === civitas.CAMP) {
 				if (item === 'cannon' || item === 'catapult') {
 					// Todo
 				} else {
@@ -1458,19 +1432,19 @@ civitas.game = function () {
 	 * Generate random navy ships.
 	 * 
 	 * @public
-	 * @param {Number} settlement_type
+	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_navy = function(settlement_type) {
+	this.generate_random_navy = function(s_type) {
 		let navy = {};
 		for (let item in civitas.SHIPS) {
-			if (settlement_type === civitas.CITY) {
+			if (s_type === civitas.CITY) {
 				navy[item] = civitas.utils.get_random(3, 5);
-			} else if (settlement_type === civitas.METROPOLIS) {
+			} else if (s_type === civitas.METROPOLIS) {
 				navy[item] = civitas.utils.get_random(10, 20);
-			} else if (settlement_type === civitas.VILLAGE) {
+			} else if (s_type === civitas.VILLAGE) {
 				navy[item] = civitas.utils.get_random(0, 2);
-			} else if (settlement_type === civitas.CAMP) {
+			} else if (s_type === civitas.CAMP) {
 				navy[item] = 0;
 			}
 		}
@@ -1578,37 +1552,37 @@ civitas.game = function () {
 	 * Generate random settlement data.
 	 * 
 	 * @public
-	 * @param {Number} settlement_type
+	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_settlement_data = function(settlement_type) {
+	this.generate_random_settlement_data = function(s_type) {
 		let level;
-		if (typeof settlement_type === 'undefined') {
-			settlement_type = civitas.utils.get_random(0, civitas.SETTLEMENTS.length - 1);
+		if (typeof s_type === 'undefined') {
+			s_type = civitas.utils.get_random(0, civitas.SETTLEMENTS.length - 1);
 		}
-		let resources = this.generate_random_resources(true, settlement_type);
-		if (settlement_type === civitas.CITY) {
+		let resources = this.generate_random_resources(true, s_type);
+		if (s_type === civitas.CITY) {
 			level = civitas.utils.get_random(10, civitas.MAX_SETTLEMENT_LEVEL);
-		} else if (settlement_type === civitas.METROPOLIS) {
+		} else if (s_type === civitas.METROPOLIS) {
 			level = civitas.utils.get_random(20, civitas.MAX_SETTLEMENT_LEVEL);
-		} else if (settlement_type === civitas.VILLAGE) {
+		} else if (s_type === civitas.VILLAGE) {
 			level = civitas.utils.get_random(1, 5);
 		} else {
 			level = 1;
 		}
 		let settlement = {
 			icon: civitas.utils.get_random(1, civitas.MAX_SETTLEMENT_ICONS),
-			type: settlement_type,
+			type: s_type,
 			player: false,
 			name: civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
 			religion: this.get_random_religion(),
 			nationality: this.get_random_nationality(),
 			level: level,
 			resources: resources.resources,
-			army: this.generate_random_army(settlement_type),
-			navy: this.generate_random_navy(settlement_type)
+			army: this.generate_random_army(s_type),
+			navy: this.generate_random_navy(s_type)
 		}
-		if (settlement_type === civitas.CITY || settlement_type === civitas.METROPOLIS) {
+		if (s_type === civitas.CITY || s_type === civitas.METROPOLIS) {
 			settlement.trades = resources.trades;
 		}
 		return settlement;
@@ -1678,36 +1652,44 @@ civitas.game = function () {
 	 * Add a settlement into the world.
 	 * 
 	 * @public
-	 * @param {Object} settlement_data
+	 * @param {Object} s_data
 	 * @param {Number} id
-	 * @param {Object} player_data
+	 * @param {Object} p_data
 	 * @returns {civitas.objects.settlement|Boolean}
 	 */
-	this.add_settlement = function(settlement_data, id, player_data) {
+	this.add_settlement = function(s_data, id, p_data) {
 		if (this.get_num_settlements() <= civitas.MAX_SETTLEMENTS) {
+			let climate;
 			let new_settlement;
 			let ruler;
+			let location;
 			let player = false;
-			let location = this.get_random_location();
 			if (typeof id === 'undefined') {
 				id = this.get_num_settlements();
 			}
-			if (typeof player_data !== 'undefined') {
+			if (typeof p_data !== 'undefined') {
 				player = true;
 			}
+			if (typeof s_data.climate !== 'undefined') {
+				climate = s_data.climate;
+			} else {
+				climate = civitas.CLIMATE_TEMPERATE;
+			}
 			if (player === false) {
+				location = this.world().get_random_location(this.world().get_terrain_from_climate());
 				ruler = {
-					title: (settlement_data.type === civitas.CAMP) ? 'Warlord' : 'Mayor',
+					title: (s_data.type === civitas.CAMP) ? 'Warlord' : 'Mayor',
 					avatar: civitas.utils.get_random(1, civitas.AVATARS),
-					personality: (settlement_data.type === civitas.CAMP) ? civitas.PERSONALITY_WARLORD : this.get_random_personality(),
+					personality: (s_data.type === civitas.CAMP) ? civitas.PERSONALITY_WARLORD : this.get_random_personality(),
 					name: civitas.utils.get_random_unique(civitas.NAMES)
 				};
 			} else {
+				location = this.world().get_random_location(this.world().get_terrain_from_climate(climate));
 				id = 0;
 				ruler = {
-					name: player_data.name,
+					name: p_data.name,
 					title: '',
-					avatar: player_data.avatar,
+					avatar: p_data.avatar,
 					personality: civitas.PERSONALITY_BALANCED
 				}
 			}
@@ -1715,26 +1697,26 @@ civitas.game = function () {
 				core: this,
 				properties: {
 					id: id,
-					type: typeof settlement_data.type !== 'undefined' ? settlement_data.type : civitas.CITY,
-					name: typeof settlement_data.name !== 'undefined' ? settlement_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
+					type: typeof s_data.type !== 'undefined' ? s_data.type : civitas.CITY,
+					name: typeof s_data.name !== 'undefined' ? s_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
 					player: player,
-					level: typeof settlement_data.level !== 'undefined' ? settlement_data.level : 1,
-					climate: typeof settlement_data.climate !== 'undefined' ? settlement_data.climate : civitas.CLIMATE_TEMPERATE,
-					religion: typeof settlement_data.religion !== 'undefined' ? settlement_data.religion : civitas.RELIGION_CHRISTIANITY,
+					level: typeof s_data.level !== 'undefined' ? s_data.level : 1,
+					climate: climate,
+					religion: typeof s_data.religion !== 'undefined' ? s_data.religion : civitas.RELIGION_CHRISTIANITY,
 					ruler: ruler,
-					nationality: settlement_data.nationality,
-					icon: typeof settlement_data.icon !== 'undefined' ? settlement_data.icon : 1
+					nationality: s_data.nationality,
+					icon: typeof s_data.icon !== 'undefined' ? s_data.icon : 1
 				},
-				resources: typeof settlement_data.resources !== 'undefined' ? settlement_data.resources : {},
-				army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
-				navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
-				trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
+				resources: typeof s_data.resources !== 'undefined' ? s_data.resources : {},
+				army: typeof s_data.army !== 'undefined' ? s_data.army : {},
+				navy: typeof s_data.navy !== 'undefined' ? s_data.navy : {},
+				trades: typeof s_data.trades !== 'undefined' ? s_data.trades : {},
 				location: location
 			});
 			if (player === false) {
 				this.get_settlement().status(id, {
-					influence: (settlement_data.type === civitas.CAMP) ? civitas.MIN_INFLUENCE_VALUE : Math.floor(civitas.MAX_INFLUENCE_VALUE / 2),
-					status: (settlement_data.type === civitas.CAMP) ? civitas.DIPLOMACY_WAR : civitas.DIPLOMACY_TRUCE
+					influence: (s_data.type === civitas.CAMP) ? civitas.MIN_INFLUENCE_VALUE : Math.floor(civitas.MAX_INFLUENCE_VALUE / 2),
+					status: (s_data.type === civitas.CAMP) ? civitas.DIPLOMACY_WAR : civitas.DIPLOMACY_TRUCE
 				});
 			}
 			this.settlements.push(new_settlement);
@@ -1774,14 +1756,14 @@ civitas.game = function () {
 	 */
 	this._setup_neighbours = function (data) {
 		let new_settlement;
-		let settlement_data;
+		let s_data;
 		let difficulty = this.difficulty();
 		let num;
 		if (data !== null) {
 			for (let i = 1; i < data.settlements.length; i++) {
-				settlement_data = data.settlements[i];
-				settlement_data.core = this;
-				new_settlement = new civitas.objects.settlement(settlement_data);
+				s_data = data.settlements[i];
+				s_data.core = this;
+				new_settlement = new civitas.objects.settlement(s_data);
 				this.settlements.push(new_settlement);
 			}
 		} else {

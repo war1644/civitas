@@ -119,6 +119,7 @@ civitas.PANEL_NEW_SPY = {
 				settlement = core.get_settlement(destination);
 			}
 			if (destination === 0 || _espionage > espionage || !settlement || mission <= 0) {
+				console.log(1);
 				core.error('There was an error creating and dispatching the spy, check the data you entered and try again.');
 				return false;
 			}
@@ -127,19 +128,25 @@ civitas.PANEL_NEW_SPY = {
 				mission: mission
 			};
 			if (mission === civitas.SPY_MISSION_RELIGION) {
-				let _religion = parseInt($(self.handle + ' .espionage-religion').val());
-				data.religion = _religion;
+				data.religion = parseInt($(self.handle + ' .espionage-religion').val());
 			}
 			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_SPY, data)) {
 				core.achievement('jamesbond');
 				self.destroy();
 			} else {
+				console.log(2);
 				core.error('There was an error creating and dispatching the spy, check the data you entered and try again.');
 			}
 			return false;
 		});
 	},
 	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let my_settlement = core.get_settlement();

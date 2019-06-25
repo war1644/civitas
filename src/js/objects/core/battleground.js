@@ -227,15 +227,16 @@ civitas.objects.battleground = function (params) {
 		let city = this.core().get_settlement(source.city);
 		let city2 = this.core().get_settlement(destination.city);
 		let remaining = 0;
+		let _a;
 		if (city && source.moved) {
 			this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 			return false;
 		}
 		if (source !== null && destination !== null && city && city2) {
 			if (destination.side === civitas.BATTLEGROUND_DEFENSE) {
-				let _a = '_defense';
+				_a = '_defense';
 			} else {
-				let _a = '_attack';
+				_a = '_attack';
 			}
 			if (is_ranged !== undefined) {
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > is_ranged) {

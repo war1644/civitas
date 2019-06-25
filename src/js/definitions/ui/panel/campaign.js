@@ -35,6 +35,7 @@ civitas.PANEL_CAMPAIGN = {
 		let my_settlement = core.get_settlement();
 		let campaign = params.data;
 		let class_name = '';
+		let tabs = ['Info'];
 		this.params_data = params;
 		if (campaign.type === civitas.CAMPAIGN_ARMY || campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
 			class_name = 'army';
@@ -45,14 +46,26 @@ civitas.PANEL_CAMPAIGN = {
 		}
 		$(this.handle + ' header').append(class_name.capitalize() + ' mission');
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Army', 'Navy']));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				tabs.push('Soldiers');
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				tabs.push('Ships');
+			}
 		} else if (campaign.type === civitas.CAMPAIGN_CARAVAN) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Resources']));
+			tabs.push('Resources');
 		} else if (campaign.type === civitas.CAMPAIGN_SPY) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Spy']));
+			tabs.push('Spy');
 		} else if (campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Army', 'Navy', 'Resources']));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				tabs.push('Soldiers');
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				tabs.push('Ships');
+			}
+			tabs.push('Resources');
 		}
+		$(this.handle + ' section').append(civitas.ui.tabs(tabs));
 	},
 	
 	/**
@@ -88,8 +101,12 @@ civitas.PANEL_CAMPAIGN = {
 				'<dt>Remaining</dt><dd>' + (10 * (campaign.duration - campaign.passed)) + ' miles (' + (campaign.duration - campaign.passed) + ' days)</dd>' +
 			'</dl>');
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
-			$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(campaign.data.army));
-			$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				$(this.handle + ' #tab-soldiers').empty().append(civitas.ui.army_list(campaign.data.army));
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				$(this.handle + ' #tab-ships').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			}
 		} else if (campaign.type === civitas.CAMPAIGN_CARAVAN) {
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>This caravan has the the following resources:</p>' +
@@ -118,8 +135,12 @@ civitas.PANEL_CAMPAIGN = {
 			'</dl>';
 			$(this.handle + ' #tab-spy').empty().append(out);
 		} else if (campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
-			$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(campaign.data.army));
-			$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				$(this.handle + ' #tab-soldiers').empty().append(civitas.ui.army_list(campaign.data.army));
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				$(this.handle + ' #tab-ships').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			}
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>This army is bringing back to its home city the following spoils of war:</p>' +
 					'<dl>';

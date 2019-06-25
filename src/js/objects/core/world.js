@@ -24,27 +24,60 @@ civitas.objects.world = function (params) {
 	 */
 	this._colors = {
 		// Sea
-		S: '#64B4E1',
+		S: {
+			bg: '#64B4E1',
+			fg: ''
+		},
 		// Ocean
-		O: '#509FCC',
+		O: {
+			bg: '#509FCC',
+			fg: ''
+		},
 		// Grass
-		G: '#E6F59A',
+		G: {
+			bg: '#E6F59A',
+			fg: '#527B2A'
+		},
 		// Jungle
-		J: '#549D65',
+		J: {
+			bg: '#549D65',
+			fg: '#205b45'
+		},
 		// Plains
-		P: '#96C764',
+		P: {
+			bg: '#96C764',
+			fg: '#264b0e'
+		},
 		// Hills
-		H: '#E1C859',
+		H: {
+			bg: '#E1C859',
+			fg: '#6F5D0D'
+		},
 		// Swamp
-		W: '#82C995',
+		W: {
+			bg: '#82C995',
+			fg: '#349253'
+		},
 		// Mountains
-		M: '#B37D1A',
+		M: {
+			bg: '#B37D1A',
+			fg: '#33381D'
+		},
 		// Desert
-		D: '#F2CD63',
+		D: {
+			bg: '#F2CD63',
+			fg: '#c0b23c'
+		},
 		// Ice
-		I: '#DCDCE6',
+		I: {
+			bg: '#FFFFFF',
+			fg: ''
+		},
 		// Borders
-		X: '#64B4E1'
+		X: {
+			bg: '#64B4E1',
+			fg: ''
+		}
 	}
 	
 	/**
@@ -111,9 +144,93 @@ civitas.objects.world = function (params) {
 				} else if (this._data[y][x].e > 0.95 && this._data[y][x].e <= 1) {
 					this._data[y][x].t = 'M';
 				}
+				if ((y === 0 || y === civitas.WORLD_SIZE_HEIGHT - 1) && (this._data[y][x].t !== 'O' && this._data[y][x].t !== 'S')) {
+					this._data[y][x].t = 'I';
+				}
 			}
 		}
 		return this;
+	};
+
+	/**
+	 * Convert a terrain type into climate type.
+	 *
+	 * @param {String} terrain
+	 * @public
+	 * @returns {Boolean|Object}
+	 */
+	this.get_climate_from_terrain = function(terrain) {
+		if (terrain === 'W' || terrain === 'J') {
+			return {
+				id: civitas.CLIMATE_TROPICAL,
+				name: civitas.CLIMATES[civitas.CLIMATE_TROPICAL]
+			};
+		} else if (terrain === 'D') {
+			return {
+				id: civitas.CLIMATE_ARID,
+				name: civitas.CLIMATES[civitas.CLIMATE_ARID]
+			};
+		} else if (terrain === 'I') {
+			return {
+				id: civitas.CLIMATE_POLAR,
+				name: civitas.CLIMATES[civitas.CLIMATE_POLAR]
+			};
+		} else if (terrain === 'G' || terrain === 'P' || terrain === 'H' || terrain === 'M') {
+			return {
+				id: civitas.CLIMATE_TEMPERATE,
+				name: civitas.CLIMATES[civitas.CLIMATE_TEMPERATE]
+			};
+		} else {
+			return false;
+		}
+	};
+
+	/**
+	 * Convert a climate type into terrain type.
+	 *
+	 * @param {Number} climate
+	 * @public
+	 * @returns {Boolean|Array}
+	 */
+	this.get_terrain_from_climate = function(climate) {
+		if (climate === civitas.CLIMATE_TROPICAL) {
+			return ['W', 'J'];
+		} else if (climate === civitas.CLIMATE_ARID) {
+			return ['D'];
+		} else if (climate === civitas.CLIMATE_POLAR) {
+			return ['I'];
+		} else if (climate === civitas.CLIMATE_TEMPERATE) {
+			return ['G', 'P', 'H', 'M'];
+		} else {
+			return false;
+		}
+	};
+
+	/**
+	 * Get a random world location
+	 * 
+	 * @public
+	 * @param {String} terrain
+	 * @returns {Object}
+	 */
+	this.get_random_location = function(terrain) {
+		let pos = {
+			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
+			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
+		}
+		if (typeof terrain !== 'undefined') {
+			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
+				//if ($.inArray(data[pos.y][pos.x].t, terrain) !== -1) {
+					return pos;
+				//}
+			}
+			return this.get_random_location(terrain);
+		} else {
+			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
+				return pos;
+			}
+			return this.get_random_location(terrain);
+		}
 	};
 
 	/**
@@ -147,6 +264,21 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Check if the specified hex is sea or ocean.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {Boolean}
+	 */
+	this.hex_is_water = function(hex) {
+		let data = this.data();
+		if (data[hex.y][hex.x].t === 'S' || data[hex.y][hex.x].t === 'O') {
+			return true;
+		}
+		return false;
+	};
+
+	/**
 	 * Return the terrain data for the specified hex.
 	 *
 	 * @public
@@ -175,42 +307,44 @@ civitas.objects.world = function (params) {
 	 * Check if the specified hex is locked.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
+	 * @param {Object} hex
 	 * @returns {Boolean}
 	 */
-	this.is_locked_hex = function(x, y) {
-		let hex = this.get_hex(x, y);
-		return hex.l;
+	this.hex_is_locked = function(hex) {
+		return this.get_hex(hex.x, hex.y).l;
 	};
 
-	this.locked_hex_by = function(x, y) {
-		let hex = this.get_hex(x, y);
-		return hex.lid;
+	/**
+	 * Lock the specified hex by the settlement id.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {Object}
+	 */
+	this.hex_locked_by = function(hex) {
+		return this.get_hex(hex.x, hex.y).lid;
 	};
 
 	/**
 	 * Return the moisture data for the specified hex.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
+	 * @param {Object} hex
 	 * @returns {String}
 	 */
-	this.get_hex_moisture = function(x, y) {
-		return this.get_hex(x, y).m;
+	this.get_hex_moisture = function(hex) {
+		return this.get_hex(hex.x, hex.y).m;
 	};
 
 	/**
 	 * Return the elevation data for the specified hex.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @returns {String}
+	 * @param {Object} hex
+	 * @returns {Number}
 	 */
-	this.get_hex_elevation = function(x, y) {
-		return this.get_hex(x, y).e;
+	this.get_hex_elevation = function(hex) {
+		return this.get_hex(hex.x, hex.y).e;
 	};
 
 	/**
@@ -263,8 +397,17 @@ civitas.objects.world = function (params) {
 	 */
 	this.remove_city = function(settlement) {
 		let location = settlement.location();
+		let id = settlement.id();
 		this._data[location.y][location.x].s = null;
 		this._data[location.y][location.x].n = null;
+		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
+			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
+				if (this._data[y][x].lid === id) {
+					this._data[y][x].lid = null;
+					this._data[y][x].l = false;
+				}
+			}
+		}
 		$('#worldmap-city-image' + location.y + '-' + location.x).remove();
 		return this;
 	}

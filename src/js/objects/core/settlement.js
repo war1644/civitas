@@ -173,20 +173,11 @@ civitas.objects.settlement = function(params) {
 			});
 		}
 		if (this.is_player() === false) {
-			let climate;
 			let terrain = this.core().world().get_hex_terrain(this._location.x, this._location.y);
-			if (terrain === 'I') {
-				climate = 'polar';
-			} else if (terrain === 'D') {
-				climate = 'arid';
-			} else if (terrain === 'W' || terrain === 'J') {
-				climate = 'tropical';
-			} else {
-				climate = 'temperate';
-			}
-			this.properties.climate = civitas['CLIMATE_' + climate.toUpperCase()];
+			let climate = this.core().world().get_climate_from_terrain(terrain);
+			this.properties.climate = civitas['CLIMATE_' + climate.name.toUpperCase()];
 			if (this.is_urban()) {
-				this.setup_initial_buildings(civitas['SETTLEMENT_BUILDINGS_' + climate.toUpperCase()], true);
+				this.setup_initial_buildings(civitas['SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase()], true);
 			}
 		} else {
 			this.properties.climate = params.properties.climate;
@@ -1560,12 +1551,12 @@ civitas.objects.settlement = function(params) {
 	/**
 	 * Reset the influence of this settlement.
 	 * 
-	 * @param {Number} settlement_id
+	 * @param {Number} s_id
 	 * @returns {civitas.objects.settlement}
 	 * @public
 	 */
-	this.reset_influence = function(settlement_id) {
-		this.set_influence(settlement_id, civitas.MIN_INFLUENCE_VALUE);
+	this.reset_influence = function(s_id) {
+		this.set_influence(s_id, civitas.MIN_INFLUENCE_VALUE);
 		return this;
 	};
 		
@@ -2334,7 +2325,7 @@ civitas.objects.settlement = function(params) {
 					}
 					let discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
 					let price = civitas.utils.calc_price_plus_discount(amount, item, discount);
-					let settlement_price = civitas.utils.calc_price(amount, item);
+					let s_price = civitas.utils.calc_price(amount, item);
 					let item_discount_price = Math.ceil(civitas.RESOURCES[item].price + discount);
 					if (!this.has_storage_space_for(amount)) {
 						this.core().error(this.name() + ' does not have enough storage space for ' +
@@ -2351,7 +2342,7 @@ civitas.objects.settlement = function(params) {
 					if (!_settlement.remove_resource(item, amount)) {
 						return false;
 					}
-					_settlement.inc_coins(settlement_price);
+					_settlement.inc_coins(s_price);
 					this.add_to_storage(item, amount);
 					this.remove_from_exports(_settlement, item, amount);
 					this.raise_influence(_settlement.id(), (is_double ? civitas.IMPORT_INFLUENCE * 2 : 
@@ -2523,7 +2514,7 @@ civitas.objects.settlement = function(params) {
 					}
 					let discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_DISCOUNT) / 100);
 					let price = civitas.utils.calc_price_minus_discount(amount, item, discount);
-					let settlement_price = civitas.utils.calc_price(amount, item);
+					let s_price = civitas.utils.calc_price(amount, item);
 					let item_discount_price = Math.ceil(civitas.RESOURCES[item].price - discount);
 					if (!this.has_resource(item, amount)) {
 						this.core().error(this.name() + ' does not have enough ' + civitas.utils.get_resource_name(item) + ' to sell.');
@@ -2533,7 +2524,7 @@ civitas.objects.settlement = function(params) {
 						return false;
 					}
 					this.inc_coins(price);
-					if (!_settlement.dec_coins(settlement_price)) {
+					if (!_settlement.dec_coins(s_price)) {
 						if (this.is_player()) {
 							this.core().error(settlement + ' does not have enough ' + civitas.utils.get_resource_name('coins') + '.');
 						}

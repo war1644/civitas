@@ -2,7 +2,7 @@ civitas.INITIAL_SEED = [
 	/* Easy difficulty */
 	{
 		/* Roughness of the world generator */
-		roughness: 4,
+		roughness: 5,
 		/* Number of settlements to build initially */
 		settlements: {
 			/* Cities */

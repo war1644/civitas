@@ -109,8 +109,8 @@ civitas.objects.event = function (params) {
 	 */
 	this.process = function () {
 		let core = this.core();
-		let random_settlement_id = civitas.utils.get_random(1, core.settlements.length);
-		let with_settlement = core.get_settlement(random_settlement_id);
+		let random_s_id = civitas.utils.get_random(1, core.settlements.length);
+		let with_settlement = core.get_settlement(random_s_id);
 		if (typeof with_settlement !== 'undefined') {
 			let description = this._description.replace(/SETTLEMENT/g, with_settlement.name());
 			if (this._raise !== null) {

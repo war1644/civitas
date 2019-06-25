@@ -71,19 +71,21 @@ civitas.PANEL_NEW_ARMY = {
 				'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
 		}
 		_t += '</dl>' +
-			'</fieldset>' +
-			'<fieldset>' +
+			'</fieldset>';
+		if (typeof army !== 'undefined') {
+			_t += '<fieldset>' +
 				'<legend>Soldiers</legend>';
-		for (let item in army) {
-			_t += '<div class="army-item">' +
+			for (let item in army) {
+				_t += '<div class="army-item">' +
 					'<a href="#" data-max="' + army[item] + '" data-soldier="' + item + '" class="army-item-inc">+</a>' +
 					'<a href="#" data-max="' + army[item] + '" data-soldier="' + item + '" class="army-item-dec">-</a>' +
 					'<img class="tips" title="' + civitas.SOLDIERS[item].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g,"_") + '.png" />' +
 					'<span class="amount">' + army[item] + '</span>' +
 				'</div>';
+			}
+			_t += '</fieldset>';
 		}
-		_t += '</fieldset>' +
-		'<fieldset>' +
+		_t += '<fieldset>' +
 			'<legend>Destination</legend>' +
 			'<select class="army-destination">' +
 				'<option value="0">-- select --</option>';
@@ -95,17 +97,19 @@ civitas.PANEL_NEW_ARMY = {
 		'</div>' +
 		'<div class="column">';
 		if (my_settlement.can_build_ships()) {
-			_t += '<fieldset>' +
+			if (typeof navy !== 'undefined') {
+				_t += '<fieldset>' +
 					'<legend>Ships</legend>';
-			for (let item in navy) {
-				_t += '<div class="navy-item">' +
-						'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-inc">+</a>' +
-						'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-dec">-</a>' +
-						'<img class="tips" title="' + item + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g,"_") + '.png" />' +
-						'<span class="amount">' + navy[item] + '</span>' +
-					'</div>';
+				for (let item in navy) {
+					_t += '<div class="navy-item">' +
+							'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-inc">+</a>' +
+							'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-dec">-</a>' +
+							'<img class="tips" title="' + item + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g,"_") + '.png" />' +
+							'<span class="amount">' + navy[item] + '</span>' +
+						'</div>';
+				}
+				_t += '</fieldset>';
 			}
-			_t += '</fieldset>';
 		}
 		if (my_settlement.can_recruit_heroes()) {
 			let heroes = my_settlement.heroes();

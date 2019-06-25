@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.6232019
+ * @version 0.3.0.6252019
  * @license GPLv3
  */ 'use strict';
 
@@ -421,7 +421,7 @@ civitas.INITIAL_SEED = [
 	/* Easy difficulty */
 	{
 		/* Roughness of the world generator */
-		roughness: 4,
+		roughness: 5,
 		/* Number of settlements to build initially */
 		settlements: {
 			/* Cities */
@@ -8765,9 +8765,9 @@ civitas.ui = {
 				'width': 42,
 				'x': "2px",
 				'y': "0",
-				'class': 'settlement tips',
-				'data-name': name,
-				'title': settlement.nice_name()
+				'class': 'settlement',
+				'data-name': name
+				//'title': settlement.nice_name()
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		document.getElementById('w-s-i' + row + '-' + column)
@@ -8787,134 +8787,134 @@ civitas.ui = {
 		}
 	},
 
-	svg_add_mountain: function(row, column) {
+	svg_add_mountain: function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M10.6,24.6l-7.1-5.5c5.4-3,9.5-7.4,13.3-12.3c1.5,1.6,2.9,3.3,4.5,4.8c1,1,2.2,2,3.3,2.8c0.5,0.3,1.2,0.3,1.8,0.5c0.2,1,0,1.6-0.7,1.8c-0.2,0.1-0.5,0.1-0.6,0c-1-0.6-2.1-1.1-3-1.9c-1.6-1.4-3.1-3-4.6-4.6c-0.1-0.1-0.2-0.2-0.5-0.4c-0.7,2.7-0.6,5.4-1.8,7.9S12.5,22.4,10.6,24.6z',
-				fill: '#33381D',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M23.2,18.6l7,7.9l-1.2,1L24,21.9l-0.3,0c-0.5,4.3-2.5,8-4.4,11.9L8.2,29.1c1.7-1,3.3-2,4.9-2.9c1.4-0.8,2.8-1.7,4.2-2.4c2.1-1,3.7-2.6,5.2-4.2C22.7,19.3,22.9,19,23.2,18.6z',
-				fill: '#33381D',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M33,25.4c-1.7-0.2-3.1-0.7-4.2-2.2c-0.5-0.8-1.3-1.4-1.9-2.1c-0.7-0.8-0.6-2.3,0.3-2.9c1.5-1.1,3.1-2.2,3.9-4c0.6-1.3,1.1-2.6,1.6-4c0.2-0.5,0.4-0.9,0.6-1.3c2.4,6,7.2,10,11.4,14.6l-1.2,1.1c-0.9-0.9-1.9-1.8-2.8-2.7c-0.8-0.7-1.5-1.5-2.3-2.1c-1.8-1.4-3.2-3.3-4-5.4c-0.1-0.2-0.2-0.4-0.3-0.5c-0.1-0.1-0.2-0.2-0.4-0.3c-0.3,1.2-0.8,2.3-0.9,3.4c-0.1,2.4,0.1,4.8,0.1,7.2C33,24.6,33,25,33,25.4z',
-				fill: '#33381D',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M27.6,33.3c1.6-0.7,3.2-1.2,3.9-3l3,3.2l-0.8,0.8l-2.1-1.9l-2.1,3.3L27.6,33.3z',
-				fill: '#33381D',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_add_hill: function(row, column) {
+	svg_add_hill: function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M13.2,26.2L8,21.6c1.8-0.5,3.4-1,5-1.4c1.4-0.3,2.8-0.8,4-1.7c0.7-0.5,1.6-0.9,2.3-1.5c0.9-0.7,1.8-0.7,2.8-0.5c2.4,0.3,4.5,1.6,6.7,2.4c2.6,1,5.1,2.1,7.6,3.2c0.7,0.3,1.3,0.5,2,0.6c0.6,0.1,1,0.4,1.2,1c0.1,0.3,0.2,0.6,0.3,0.9c-1.6-0.1-3.1,0.2-4.7-0.4c-3.9-1.5-7.8-2.9-11.7-4.3c-0.9-0.3-1.8-0.3-2.7-0.4c-0.2,0-0.4,0.2-0.6,0.4c-2.2,1.9-4.4,3.8-6.5,5.7C13.6,25.9,13.4,26,13.2,26.2z',
-				fill: '#6F5D0D',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M38,32.5c-1.9,0-3.7,0-5.5,0c-0.2,0-0.4-0.1-0.5-0.2c-2.3-1.1-4.6-2.2-6.9-3.3c-0.9-0.4-1.8-0.5-2.7,0.3c-1.9,1.7-3.8,3.3-5.7,5c-0.3,0.3-0.5,0.3-0.9,0.1c-1.5-1-3-1.9-4.4-2.9c-0.1-0.1-0.2-0.2-0.4-0.3c1.2-0.2,2.4-0.5,3.5-0.6c0.9-0.1,1.7-0.4,2.4-0.9c1.8-1.3,3.6-2.5,5.4-3.7c0.3-0.2,0.7-0.2,1-0.2c2,0.1,3.8,1.2,5.6,1.9c2.8,1.2,5.5,2.6,8.5,3.3c0.2,0,0.4,0.3,0.5,0.5C37.8,31.7,37.9,32.1,38,32.5z',
-				fill: '#6F5D0D',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M15,16.7l-4.6-4.6c0.7-0.2,1.5-0.5,2.3-0.7c2.3-0.6,4.6-1.4,6.5-2.8c1.5-1,3.1-1.3,4.8-1.1c0.3,0,0.5,0.1,0.8,0.3c1.9,1,3.8,2,5.7,3.1c1.3,0.8,2.7,1.1,4.2,1.2c0.4,0,0.9,0,1.2,0.2c0.4,0.3,0.7,0.8,1.1,1.2l-0.1,0.2c-0.6,0-1.2-0.1-1.8,0c-2.3,0.3-4.4-0.3-6.3-1.5c-1.4-0.9-2.9-1.5-4.2-2.3c-0.8-0.4-1.5-0.2-2.2-0.1c-0.1,0-0.2,0.1-0.2,0.1c-1.7,0.6-2.9,1.7-4,3.2C17,14.4,16,15.5,15,16.7z',
-				fill: '#6F5D0D',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_add_desert: function(row, column) {
+	svg_add_desert: function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M39.5,18.7h-1c-0.6-2.1-2.3-2.8-4.1-3.3c-3-0.7-5.8-0.6-8.6,0.7C25,16.5,24.3,17,24,17.8c1,0.8,2.1,0.3,3.2,0.2c3.5-0.2,6.9,0.2,10,1.9c1.6,0.8,2.9,1.9,3.3,3.8c0,0.3,0.1,0.6,0.1,0.9h-1c-0.5-2.1-2.2-2.8-4.1-3.2c-2.9-0.8-5.8-0.6-8.5,0.6c-0.2,0.1-0.3,0.2-0.5,0.2c-0.2,0.1-0.3,0.2-0.5,0.4c3,1.1,6.2,2,6.8,6h-1.1c-0.4-1.9-2-2.7-3.7-3.2c-2.7-0.8-5.6-0.7-8.3,0.3c-1.4,0.5-2.5,1.3-2.8,2.9H8.9c-0.2-1.8,0.9-3.3,3.9-5h-7c-0.1-1,0.2-1.9,0.8-2.7c1.3-1.7,3-2.6,5-3.1c1.3-0.4,2.7-0.5,4.1-0.8c0.2,0,0.5-0.1,0.6-0.3c1.2-2,3-3,5.1-3.6c4.9-1.6,9.8-1.5,14.5,0.7c1.1,0.5,2.1,1.4,3,2.3C39.3,16.7,39.6,17.6,39.5,18.7z M19.8,19.8c-2.3,0.4-4.8,0.6-6.2,3.3c1.3-0.3,2.4-0.6,3.4-0.9c0.2-0.1,0.3-0.1,0.4-0.3C18.3,21.3,19,20.5,19.8,19.8L19.8,19.8z',
-				fill: '#c0b23c',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_add_grass: function(row, column) {
+	svg_add_grass: function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M33.1,13.7l0.8,8l1.4-0.1v-7l0.3,0c0.1,0.7,0.3,1.5,0.4,2.2c0.1,1.3,0.1,2.7,0.2,4c0,0.2,0.4,0.5,0.5,0.7c0.2-0.3,0.5-0.5,0.5-0.8c0-1.4,0-2.9,0-4.3c0-0.3,0-0.6,0.1-0.9l0.3,0c0.1,0.4,0.1,0.7,0.2,1c0.1,1.5,0.2,3,0.4,4.6c0,0.2,0.3,0.4,0.5,0.6c0.1-0.2,0.3-0.4,0.3-0.6c0-1.2,0-2.5,0.2-3.8c0.1,0.3,0.3,0.5,0.3,0.8c0.1,0.8,0.2,1.5,0.2,2.3c0,0.8,0.3,1.5,1.4,1.4l0.2-3l0.3,0c0.1,0.5,0.2,1.1,0.3,1.6c0.2,1.7,0.4,1.8,2.1,1.7c0.4,0,0.7,0,1.1,0c-7.2,0.8-14.4,0.7-21.7,0.4l0-0.3h3.6v-3.6l0.4,0l0.6,3.3l0.3,0v-4.4l0.3,0l0.7,4.5h0.3v-6l0.3,0c0.2,1.8,0.4,3.7,0.6,5.5c0,0.3,0.3,0.5,0.5,0.7c0.2-0.3,0.4-0.5,0.4-0.8c0-2.4-0.1-4.9-0.1-7.3c0-0.2,0.1-0.5,0.2-0.6c0.1,0.9,0.3,1.9,0.4,2.8c0.2,1.7,0.3,3.5,0.5,5.2c0,0.2,0.2,0.3,0.4,0.5c0.1-0.2,0.4-0.4,0.4-0.5c0-0.6-0.1-1.2-0.1-1.9c0-1.8,0-3.5,0-5.3c0-0.1,0.1-0.3,0.1-0.4L33.1,13.7z',
-				fill: '#527B2A',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M26.4,30.1c0,0.5,0,1,0,1.4c0,1.4,0,2.8,0,4.1c0,0.2,0.3,0.4,0.4,0.6c0.1-0.2,0.4-0.4,0.4-0.6c0.2-1.2,0.3-2.5,0.5-3.7l0.2,0c0,0.5,0.1,1.1,0.1,1.6c0,0.6-0.1,1.3,0,1.9c0.1,0.4,0.4,0.6,0.7,0.8c0.5,0.1,0.6-0.3,0.7-0.8c0.1-0.7,0.2-1.5,0.4-2.2h0.3c0,0.6,0.1,1.3,0.1,1.9c-0.1,0.8-0.1,1.5,1.1,1.3c0.8-0.1,1.7,0.1,2.5,0.2c-7.2,0.8-14.4,0.6-21.7,0.1c0.2,0,0.3-0.1,0.5-0.1c0.5,0,1.1,0.1,1.6,0c0.7,0,1.1-0.4,1.1-1.1c0-0.7,0.1-1.4,0.2-2.1c0-0.1,0.1-0.3,0.2-0.4l0.3,0v3.4h0.3c1-1.4,0.4-3.1,0.8-4.6h0.2v4.4l0.4,0l0.7-6.1l0.3,0c0,1.3,0,2.5,0,3.8c0,0.6,0,1.2,0,1.8c0,0.2,0.3,0.5,0.4,0.7c0.2-0.2,0.6-0.4,0.6-0.7c0.2-1.4,0.2-2.8,0.3-4.2c0.1-1.2,0.2-2.5,0.4-3.7l0.2,0c0,0.9,0,1.7,0,2.6c0,1.7-0.1,3.4-0.1,5.2c0,0.3,0.2,0.5,0.3,0.8c0.2-0.3,0.5-0.5,0.5-0.8c0.2-2.3,0.4-4.5,0.6-6.8c0-0.3,0.2-0.5,0.4-0.6c0,0.9,0,1.9,0,2.8c0,1.5-0.1,3.1-0.1,4.6c0,0.2,0.3,0.7,0.4,0.7c0.4-0.1,0.9-0.2,1-0.5c0.2-0.3,0.1-0.8,0.1-1.2c0.2-1.8,0.4-3.6,0.7-5.4c0.5,2.3,0,4.6,0.1,6.8c0.7,0.2,1,0,1-0.8c0.1-1.5,0.3-3.1,0.5-4.6c0-0.2,0.1-0.4,0.1-0.7L26.4,30.1z',
-				fill: '#527B2A',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M17.6,12.5c1.4,0.1,1.4,0.1,1.5-1.2c0.2-1.9,0.4-3.8,0.7-5.7c0.5,2.2,0,4.4,0.1,6.6c0.7,0.2,1,0.1,1-0.7c0.1-1.5,0.3-2.9,0.4-4.4c0-0.2,0.1-0.5,0.1-0.7l0.3,0c0,0.4,0,0.9,0,1.3c0,1.4,0,2.7,0,4.1c0,0.2,0.3,0.4,0.4,0.6c0.1-0.2,0.4-0.4,0.4-0.7c0.2-1.1,0.3-2.3,0.6-3.5c0.1,0.2,0.1,0.5,0.2,0.8c0,0.7,0,1.5-0.1,2.2c0,1.1,0.1,1.2,1.3,1.1c0.1-0.5,0.2-1,0.3-1.5c0.1-0.4,0.2-0.9,0.3-1.3l0.4,0c0,0.7,0.1,1.4,0,2.1c-0.1,0.6,0.2,0.9,0.7,0.9c0.6,0,1.2,0.1,1.8,0.1c0.2,0,0.5,0,0.7,0.1c-7.2,0.8-14.4,0.7-21.7,0.4l0-0.2c0.3,0,0.6,0,1,0c2.2,0.2,2.4-0.1,2.7-2.2c0.1-0.4,0.1-0.9,0.2-1.3h0.3c0,0.5,0.1,1,0.1,1.6c0,0.5,0,1,0.1,1.5c1.2-1.3,0.4-2.9,1.1-4.3l0.2,4.2l0.2,0l0.7-5.9l0.3,0c0,1.7,0,3.4,0,5.1c0,0.4-0.2,0.9,0.5,0.9c0.7,0,0.6-0.5,0.6-0.9c0.2-2.3,0.4-4.7,0.6-7c0-0.2,0.1-0.4,0.3-0.5c0,0.9,0,1.7,0,2.6c0,1.6,0,3.3,0,4.9c0,0.3,0.2,0.6,0.4,0.8c0.2-0.3,0.4-0.5,0.4-0.8c0.2-2.2,0.4-4.3,0.6-6.5c0-0.3,0.2-0.5,0.4-0.6L17.6,12.5L17.6,12.5z',
-				fill: '#527B2A',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_add_plains: function(row, column) {
+	svg_add_plains: function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M24.53,39.05a1.93,1.93,0,0,1-.33,0L21.93,39c0.09-.78.16-1.52,0.26-2.26s-0.14-.94-0.87-0.91c-1.64.06-3.29,0-4.94,0h-0.9a21.05,21.05,0,0,1,.59-2.48A22.84,22.84,0,0,1,17.26,31l-1.86-.12c0-1.52,0-3,0-4.44a0.57,0.57,0,0,0-.58-0.63c-0.91-.21-1.82-0.42-2.71-0.69A3.8,3.8,0,0,1,11,24.49c-0.8-.57-0.92-1-0.6-2.17-0.23-.07-0.46-0.12-0.69-0.2a10.11,10.11,0,0,1-1.13-.43A2,2,0,0,1,7.28,20a1.93,1.93,0,0,1,1.28-1.73c0.39-.21.81-0.37,1.29-0.58l-0.48-.53a2.49,2.49,0,0,1,0-3.72,4.61,4.61,0,0,1,2.79-1.23,1.9,1.9,0,0,0,1-.45,5.91,5.91,0,0,1,7.35-.32,3.67,3.67,0,0,1,1.31,3.09,7,7,0,0,0,.74-2.17,2.5,2.5,0,0,1,1-2,1.31,1.31,0,0,0,.59-1.73,0.91,0.91,0,0,1,.18-0.69c1-1.52,2-3,3.08-4.62C28.84,4.78,30.24,6.1,30.77,8c0.13,0.48.4,0.92,0.52,1.41s0,0.76,0,1.14a1.86,1.86,0,0,0,.34.87c0.53,0.63,1.45.94,1.53,2a1.17,1.17,0,0,0,.61.32,15.89,15.89,0,0,1,2.45.91,2.73,2.73,0,0,1,1.4,2.82,1,1,0,0,0,.4.64,12.62,12.62,0,0,1,2.12,1.76,3.25,3.25,0,0,1-.86,4.57c-0.34.26-.71,0.47-1.06,0.7,0.69,1.31.5,2.1-.88,2.68a16.76,16.76,0,0,1-3.5.92,0.67,0.67,0,0,0-.72.79c0,1.36,0,2.72,0,4.14H31.46c0-1.41,0-2.79,0-4.17a0.65,0.65,0,0,0-.72-0.8,17.53,17.53,0,0,1-1.81-.33c-0.32.81,0.94,1.9-.52,2.52a13.68,13.68,0,0,1,1.52,2.2,14.37,14.37,0,0,1,.62,2.67c-0.38,0-.65,0-0.91,0H24.85c-0.87,0-.9,0-0.75.92S24.38,38.25,24.53,39.05Zm8.53-14.51c-0.71,1.18-.45,2.08.78,2.45a4.31,4.31,0,0,0,2,.08c1.42-.29,1.78-1.31,1-2.52a0.56,0.56,0,0,1,0-.2c0.26-.09.55-0.18,0.82-0.28a2.64,2.64,0,0,0,1.77-2.49,2.69,2.69,0,0,0-1.81-2.39A2.65,2.65,0,0,0,37,19c-0.46,0-.6-0.2-0.46-0.69a2.22,2.22,0,0,0-1.17-2.73,2.38,2.38,0,0,0-2.87.67,2.18,2.18,0,0,0,.17,2.9,2.31,2.31,0,0,1,.15.24C30.82,21.65,30.84,22.1,33.06,24.54ZM17,21.45c-0.61,1-.63,1.43-0.06,2a2.59,2.59,0,0,0,2.23.72,0.66,0.66,0,0,0,.6-1,1.77,1.77,0,0,1,0-.87,14.87,14.87,0,0,1,.44-1.58c0.28-.88.55-1.77,0.89-2.63,0.24-.6.58-1.16,0.85-1.69a0.7,0.7,0,0,0-.1-0.15l-0.2-.1c-0.68-.3-1.36-0.48-1-1.59a2.09,2.09,0,0,0-1.44-2.39,2.46,2.46,0,0,0-2.85.83,2.17,2.17,0,0,0,.08,2.73c0.1,0.14.2,0.28,0.29,0.41C14.74,18.58,14.76,19,17,21.45Zm8.29,1.88a8.7,8.7,0,0,0-.83-1.22,3.58,3.58,0,0,0-.9-0.51,3.48,3.48,0,0,0-.21.86c0,2.65.16,5.31,0.09,8A9.79,9.79,0,0,0,23.84,33a2.14,2.14,0,0,0,2.48,2,20,20,0,0,1,2.57.16,5.71,5.71,0,0,0-3.53-5.18l0.17-.2h2.33a8.1,8.1,0,0,0-.39-0.85c-0.62-1-.79-2.36-2.18-2.75a0.35,0.35,0,0,1-.18-0.23c-0.19-.78-0.37-1.56-0.55-2.36ZM28,6.21l-0.15.09c0.13,2.93.25,5.85,0.39,8.78,0,0.49.48,0.61,0.93,0.27l2.29-1.69a2.2,2.2,0,0,0-1.26-1.6,1,1,0,0,1-.55-0.46c-0.22-.74-0.37-1.51-0.54-2.29l0.76-.24ZM17.18,28.43l0.32,0.09c0.21-.75.45-1.49,0.62-2.25a0.62,0.62,0,0,0-.44-0.4,0.63,0.63,0,0,0-.48.39C17.15,27,17.18,27.7,17.18,28.43Z',
-				fill: '#264b0e',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_add_swamp: function(row, column) {
+	svg_add_swamp: function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M22.33,2.5c0.91-.81,1-0.78,1.5.23a1.26,1.26,0,0,0,1.95.41A1.64,1.64,0,0,1,28.17,3a4.23,4.23,0,0,0,1.52.49A17.93,17.93,0,0,1,32,3.77a6.28,6.28,0,0,1,1.35,1c1.19,0.81,1.18,2,1,3.13l-1.48.36-1-1.84c-0.82,1.49-.64,2.32.58,3a2.55,2.55,0,0,0,2.23.47,0.92,0.92,0,0,1,.79.2A23,23,0,0,1,37.23,12c0.65,0.79.48,2.95-.38,4L35.49,14.2a0.91,0.91,0,0,0-.88,1.09,8.59,8.59,0,0,1,0,1.67,3.86,3.86,0,0,1-.5,1l-0.36-.1c0-.83,0-1.66,0-2.49a2.18,2.18,0,0,0-.1-1,2.69,2.69,0,0,0-.88-0.6,2.7,2.7,0,0,0-.27.76c0,0.88,0,1.76,0,2.64,0,1.63,0,1.68-1.77,1.93-0.21-.7,0-1.8-1.27-1.71-0.37,1,.1,2.24-0.83,3l-0.39,0c0-1,0-1.95,0-2.91a2.5,2.5,0,0,0-.82-2c-0.53-.53-1-0.76-1.52-0.1a0.79,0.79,0,0,1-.3.13l-0.26-.13c0.16-.37.33-0.74,0.47-1.11a2,2,0,0,0,.32-1.07A1.48,1.48,0,0,0,25,12.51a48.68,48.68,0,0,0-5.53.7A3,3,0,0,0,16.88,16a2.05,2.05,0,0,0,1.56,1.84,21.8,21.8,0,0,1,2.23.6c1.6,0.54,1.86,2,2.1,3.35a8.54,8.54,0,0,1,0,1.47c-1.41,0-1.65-.25-1.67-1.54a3.11,3.11,0,0,0-1.88-2.12,1,1,0,0,0-.72.29A1.47,1.47,0,0,0,18.77,21a2.24,2.24,0,0,1,1,2l-1.6.53c-0.2-.87-0.38-1.66-0.57-2.44-0.26-1.08-.53-1.25-1.87-1.15a5.2,5.2,0,0,1,.7,3.79,2.21,2.21,0,0,1-.45.58l-0.74-2.93c-1.23.84-.42,2-0.84,2.95a0.75,0.75,0,0,1-.81-0.79c-0.07-.93-0.5-1.88.32-2.74a0.94,0.94,0,0,0-.22-0.86,1.33,1.33,0,0,0-1.52.82c-0.05.64,0,1.3-.06,1.93a1,1,0,0,1-.52.68c-0.5.14-.54-0.29-0.53-0.66,0-.58.08-1.17,0.08-1.75A2.76,2.76,0,0,0,11,20.26l-0.34,0a15.53,15.53,0,0,0-.47,1.94c-0.16,1.33-.21,1.39-1.78,1,0.41-1.47.82-2.94,1.24-4.41a1,1,0,0,1,1.14-.71c2.44,0,2.56,0,3.16-2.35a5.63,5.63,0,0,1,2.75-3.61A1.29,1.29,0,0,0,17.08,10a7.61,7.61,0,0,0-1.39-1.44,1,1,0,0,0-1.61.69,1.76,1.76,0,0,1-.43.84,4,4,0,0,0-.26-1,3.54,3.54,0,0,0-.69-0.7,2.38,2.38,0,0,0-.52.79,7.38,7.38,0,0,0,0,1.67,0.8,0.8,0,0,1-.84,1c0-.3,0-0.57-0.06-0.85a1.16,1.16,0,0,0-.07-0.59c-1.33-.66-0.53-2-0.94-2.94a4.57,4.57,0,0,1-.17-1.2,1.36,1.36,0,0,1,.53-1.54,2.72,2.72,0,0,0,.61-0.9c0.28-.47.53-0.94,1.21-0.49,0.4,0.26.77,0.16,0.78-.4,0-.9.64-0.85,1.23-0.8,1.13,0.09,2.26.24,3.39,0.33a2.85,2.85,0,0,0,2-.53A3.25,3.25,0,0,1,21.67,2,2,2,0,0,1,22.33,2.5ZM20.55,7l-0.3-.13a3.52,3.52,0,0,0-.58,1,0.89,0.89,0,0,1-.84.92,0.77,0.77,0,0,0-.37.62,1.75,1.75,0,0,0,.31,1,3.62,3.62,0,0,0,1.92-.17A12.74,12.74,0,0,0,22.61,8.7,1.48,1.48,0,0,0,23,7a2.05,2.05,0,0,0-.6-0.65,3.93,3.93,0,0,0-.39.76c-0.16.6-.27,1.22-0.4,1.83l-0.37,0Zm2.21,3.75c1.14,0.29,2.81-.23,3.17-1a1.56,1.56,0,0,0-.16-1.17A2.63,2.63,0,0,0,24.89,8ZM17.64,8c0.25-1.39-.1-2.08-1.09-2.2a2.82,2.82,0,0,0-1,.28A2.49,2.49,0,0,0,16,7.15,9.07,9.07,0,0,0,17.64,8Z',
-				fill: '#349253',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M20.8,30c0.2,2.14.39,4.28,0.59,6.42,0.11,1.16.12,1.16,1.46,0.86V31l0.26,0c0.11,0.65.26,1.29,0.31,1.95,0.09,1.22.09,2.44,0.2,3.66a0.88,0.88,0,0,0,.51.64c0.51,0.12.54-.3,0.54-0.69,0-1.61,0-3.21,0-4.82l0.25,0C25,32.13,25,32.55,25.07,33c0.12,1.32.22,2.63,0.37,3.95a1.5,1.5,0,0,0,.45.55,1.71,1.71,0,0,0,.31-0.58,27.2,27.2,0,0,1,.33-3.31c0.07,0.43.15,0.87,0.19,1.3s0,0.94.07,1.41a1.1,1.1,0,0,0,1.35,1.24l0.26-2.82,0.21,0c0.09,0.56.19,1.12,0.26,1.68,0.16,1.25.26,1.35,1.55,1.38,0.4,0,.81,0,1.21,0a105.11,105.11,0,0,1-19.83.11h3L15,34.46h0.17l0.55,3.25c1-1.51.31-3,.58-4.34L17,37.55H17.3V31.88l0.16,0c0.2,1.69.4,3.39,0.59,5.08,0,0.38.06,0.81,0.57,0.67A0.93,0.93,0,0,0,19,36.91c0-2.43,0-4.86,0-7.52,0.11,1.15.2,2.08,0.3,3,0.17,1.59.35,3.17,0.55,4.75a1.12,1.12,0,0,0,.42.39,1.16,1.16,0,0,0,.35-0.46c0-.75-0.06-1.5-0.06-2.24,0-1.59,0-3.19,0-4.78Z',
-				fill: '#349253',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M35.06,22q0,2.8,0,5.59c0,0.36-.22.81,0.4,0.88s0.72-.3.76-0.81c0.12-1.43.26-2.86,0.41-4.28A0.89,0.89,0,0,1,37,22.73c0,0.44-.06.87-0.06,1.31,0,1.31,0,2.63,0,3.94a1.75,1.75,0,0,0,.39.66A1.91,1.91,0,0,0,37.83,28c0.2-1.11.32-2.23,0.63-3.37,0,1,0,2,0,3,0,0.6.11,1.11,0.83,1a0.93,0.93,0,0,0,.65-0.55c0.2-.71.28-1.45,0.41-2.17l0.26,0c0,0.71,0,1.42,0,2.13a0.59,0.59,0,0,0,.62.75c0.78,0,1.57.11,2.38,0.17a121.48,121.48,0,0,1-20.91.17C23.47,29.09,24.25,29,25,29s0.86-.4.9-1c0.06-.8.16-1.59,0.24-2.39h0.31v3.08h0.34c1.1-1.23.35-2.85,0.9-4.23l0.2,4.21h0.33l0.64-5.63,0.21,0c0,1.66,0,3.33,0,5,0,0.41,0,.87.53,0.76a1,1,0,0,0,.61-0.74c0.23-2.33.39-4.66,0.58-7,0-.22.07-0.44,0.16-0.91,0,1.27,0,2.28,0,3.28,0,1.6,0,3.2,0,4.8a1.16,1.16,0,0,0,.42.44,1.55,1.55,0,0,0,.5-0.58c0.11-1.2.12-2.4,0.23-3.6a25.7,25.7,0,0,1,.57-3.6c0,2.22,0,4.44,0,6.66,0,0.41-.35,1,0.46,1.07a0.89,0.89,0,0,0,1.13-.95c0.14-1.91.41-3.82,0.63-5.72h0.1Z',
-				fill: '#349253',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 	},
 
-	svg_add_jungle: function(row, column) {
+	svg_add_jungle: function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M22.46,17.67l-1.17-.41a3,3,0,0,0,.09,2.45,5.7,5.7,0,0,1-1.08,6.79,6.79,6.79,0,0,0-1.7-4.19,14.23,14.23,0,0,0-2.37-1.91c-0.71-.46-0.92-0.29-0.92.59q0,7.69,0,15.39c0,0.29,0,.58,0,0.92H13.26L14.66,21l-0.22-.06a8.13,8.13,0,0,0-1.57,4.21c-0.22,1.54-.29,3.11-0.43,4.68A1.39,1.39,0,0,1,10.57,29a8.25,8.25,0,0,1,.05-8.25c0.12-.21.26-0.4,0.4-0.62-1.23-.08-2.17.65-5.51,4.28L4.4,23.74c0.52-1.1,1-2.19,1.55-3.25a1.62,1.62,0,0,0,.27-1.17c-0.35-1.89,1.17-3.7,3.36-4.13a3.13,3.13,0,0,1,1.12-.14A1.11,1.11,0,0,0,12.12,14a2.59,2.59,0,0,1,.26-0.59,5.91,5.91,0,0,0,1-3.44c-0.15-2.15,2.12-3.9,4.71-4.15a6.55,6.55,0,0,1,4.92,1.4,6.79,6.79,0,0,1,8-1.4c1.35,0.7,1.89,1.8,1.4,2.85a0.74,0.74,0,0,1-.16.14,6.12,6.12,0,0,0-3.91-.52,6.07,6.07,0,0,0,.5.42,6.59,6.59,0,0,1,2.89,6.87,0.84,0.84,0,0,0,.58,1.21,6.08,6.08,0,0,1,1,.62c1.36-2.1,5.26-2.3,7.26-.93a1.65,1.65,0,0,1,.71,2.32,5.1,5.1,0,0,0-3.49-.44A5.61,5.61,0,0,1,41,23.44a5.66,5.66,0,0,1-1.69,4.25c-0.1-.54-0.16-1-0.28-1.46a7.08,7.08,0,0,0-3.64-4.62c-1-.52-1.12-0.42-1.11.64q0,7.61,0,15.22c0,0.29,0,.59,0,0.94H32.22l1.39-16.33-0.28,0c-1.76,2.71-1.81,5.81-1.85,8.93a1.68,1.68,0,0,1-2-.89,8.32,8.32,0,0,1,.11-8.25c0.11-.2.24-0.4,0.36-0.6L29.84,21a10.41,10.41,0,0,0-2.06,1.11C26.76,23,25.89,24,24.94,25c-0.23.23-.5,0.42-0.84,0.71v6.07H21.66l1.65-19.22a4.44,4.44,0,0,0-1.51,2.62,1,1,0,0,0,.37.57A1.55,1.55,0,0,1,22.46,17.67Zm6.6-1.44a7.87,7.87,0,0,0-4.26-4.38c-0.61-.17-0.75.12-0.75,0.67,0,3.27,0,6.53,0,9.8a3.2,3.2,0,0,0,.08.43c0.52-.94,1.26-1.57,1-2.71A2.53,2.53,0,0,1,26,17.77,5.16,5.16,0,0,1,29.07,16.23Zm-10-4.75a10,10,0,0,0-5.49,4.21l0.92,0.63A3.67,3.67,0,0,1,17,14.68a1.23,1.23,0,0,0,.74-0.38C18.19,13.4,18.61,12.45,19.08,11.48Z',
-				fill: '#205b45',
+				fill: color,
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
@@ -8922,13 +8922,12 @@ civitas.ui = {
 
 	svg_create_group: function(terrain, row, column) {
 		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		let t_x = Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE);
+		let t_y = Math.round(height * (row * 2 + (column % 2)));
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'g'))
 			.attr({
-				'data-x': row,
-				'data-terrain': terrain,
-				'data-y': column,
-				'class': 's-c-g s-c-g-' + row + '-' + column,
-				'transform': 'translate(' + Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE) + ', ' + Math.round(height * (row * 2 + (column % 2))) + ')',
+				'class': 's-c-g-' + row + '-' + column,
+				'transform': 'translate(' + t_x + ', ' + t_y + ')',
 			})
 			.appendTo('.svg-grid');
 	},
@@ -8942,10 +8941,15 @@ civitas.ui = {
 		return center;
 	},
 
+	/**
+	 * Scroll the world map to the specified location.
+	 *
+	 * @param {Object} location
+	 */
 	worldmap_scrollto: function(location) {
 		let coords = civitas.ui.svg_get_cell_middle_coords(location.y, location.x);
 		$('.worldmap').scrollTop(coords.y - (700 / 2));
-		$('.worldmap').scrollLeft(coords.x - (1200 / 2));
+		$('.worldmap').scrollLeft(coords.x - (1164 / 2));
 	},
 
 	svg_get_cell_middle_coords: function(row, column) {
@@ -8966,10 +8970,10 @@ civitas.ui = {
 				'width': 42,
 				'x': "2px",
 				'y': "2px",
-				'class': 'troop tips',
+				'class': 'troop',
 				'data-name': element_type,
-				'data-id': id,
-				'title': title
+				'data-id': id
+				//'title': title
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
 		document.getElementById('w-t-i' + row + '-' + column)
@@ -9028,25 +9032,25 @@ civitas.ui = {
 			.css({
 				width: (1.5 * civitas.WORLD_SIZE_WIDTH  +  0.5) * cell_size,
 				height: (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height,
-				'background-color': colors.X
+				'background-color': colors.X.bg
 			});
 	},
 
-	svg_apply_terrain: function(row, column, terrain) {
+	svg_apply_terrain: function(row, column, color, terrain) {
 		if (terrain === 'M') {
-			civitas.ui.svg_add_mountain(row, column);
+			civitas.ui.svg_add_mountain(row, column, color);
 		} else if (terrain === 'H') {
-			civitas.ui.svg_add_hill(row, column);
+			civitas.ui.svg_add_hill(row, column, color);
 		} else if (terrain === 'D') {
-			civitas.ui.svg_add_desert(row, column);
+			civitas.ui.svg_add_desert(row, column, color);
 		} else if (terrain === 'G') {
-			civitas.ui.svg_add_grass(row, column);
+			civitas.ui.svg_add_grass(row, column, color);
 		} else if (terrain === 'P') {
-			civitas.ui.svg_add_plains(row, column);
+			civitas.ui.svg_add_plains(row, column, color);
 		} else if (terrain === 'J') {
-			civitas.ui.svg_add_jungle(row, column);
+			civitas.ui.svg_add_jungle(row, column, color);
 		} else if (terrain === 'W') {
-			civitas.ui.svg_add_swamp(row, column);
+			civitas.ui.svg_add_swamp(row, column, color);
 		}
 	}
 };
@@ -9077,27 +9081,60 @@ civitas.objects.world = function (params) {
 	 */
 	this._colors = {
 		// Sea
-		S: '#64B4E1',
+		S: {
+			bg: '#64B4E1',
+			fg: ''
+		},
 		// Ocean
-		O: '#509FCC',
+		O: {
+			bg: '#509FCC',
+			fg: ''
+		},
 		// Grass
-		G: '#E6F59A',
+		G: {
+			bg: '#E6F59A',
+			fg: '#527B2A'
+		},
 		// Jungle
-		J: '#549D65',
+		J: {
+			bg: '#549D65',
+			fg: '#205b45'
+		},
 		// Plains
-		P: '#96C764',
+		P: {
+			bg: '#96C764',
+			fg: '#264b0e'
+		},
 		// Hills
-		H: '#E1C859',
+		H: {
+			bg: '#E1C859',
+			fg: '#6F5D0D'
+		},
 		// Swamp
-		W: '#82C995',
+		W: {
+			bg: '#82C995',
+			fg: '#349253'
+		},
 		// Mountains
-		M: '#B37D1A',
+		M: {
+			bg: '#B37D1A',
+			fg: '#33381D'
+		},
 		// Desert
-		D: '#F2CD63',
+		D: {
+			bg: '#F2CD63',
+			fg: '#c0b23c'
+		},
 		// Ice
-		I: '#DCDCE6',
+		I: {
+			bg: '#FFFFFF',
+			fg: ''
+		},
 		// Borders
-		X: '#64B4E1'
+		X: {
+			bg: '#64B4E1',
+			fg: ''
+		}
 	}
 	
 	/**
@@ -9164,9 +9201,93 @@ civitas.objects.world = function (params) {
 				} else if (this._data[y][x].e > 0.95 && this._data[y][x].e <= 1) {
 					this._data[y][x].t = 'M';
 				}
+				if ((y === 0 || y === civitas.WORLD_SIZE_HEIGHT - 1) && (this._data[y][x].t !== 'O' && this._data[y][x].t !== 'S')) {
+					this._data[y][x].t = 'I';
+				}
 			}
 		}
 		return this;
+	};
+
+	/**
+	 * Convert a terrain type into climate type.
+	 *
+	 * @param {String} terrain
+	 * @public
+	 * @returns {Boolean|Object}
+	 */
+	this.get_climate_from_terrain = function(terrain) {
+		if (terrain === 'W' || terrain === 'J') {
+			return {
+				id: civitas.CLIMATE_TROPICAL,
+				name: civitas.CLIMATES[civitas.CLIMATE_TROPICAL]
+			};
+		} else if (terrain === 'D') {
+			return {
+				id: civitas.CLIMATE_ARID,
+				name: civitas.CLIMATES[civitas.CLIMATE_ARID]
+			};
+		} else if (terrain === 'I') {
+			return {
+				id: civitas.CLIMATE_POLAR,
+				name: civitas.CLIMATES[civitas.CLIMATE_POLAR]
+			};
+		} else if (terrain === 'G' || terrain === 'P' || terrain === 'H' || terrain === 'M') {
+			return {
+				id: civitas.CLIMATE_TEMPERATE,
+				name: civitas.CLIMATES[civitas.CLIMATE_TEMPERATE]
+			};
+		} else {
+			return false;
+		}
+	};
+
+	/**
+	 * Convert a climate type into terrain type.
+	 *
+	 * @param {Number} climate
+	 * @public
+	 * @returns {Boolean|Array}
+	 */
+	this.get_terrain_from_climate = function(climate) {
+		if (climate === civitas.CLIMATE_TROPICAL) {
+			return ['W', 'J'];
+		} else if (climate === civitas.CLIMATE_ARID) {
+			return ['D'];
+		} else if (climate === civitas.CLIMATE_POLAR) {
+			return ['I'];
+		} else if (climate === civitas.CLIMATE_TEMPERATE) {
+			return ['G', 'P', 'H', 'M'];
+		} else {
+			return false;
+		}
+	};
+
+	/**
+	 * Get a random world location
+	 * 
+	 * @public
+	 * @param {String} terrain
+	 * @returns {Object}
+	 */
+	this.get_random_location = function(terrain) {
+		let pos = {
+			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
+			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
+		}
+		if (typeof terrain !== 'undefined') {
+			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
+				//if ($.inArray(data[pos.y][pos.x].t, terrain) !== -1) {
+					return pos;
+				//}
+			}
+			return this.get_random_location(terrain);
+		} else {
+			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
+				return pos;
+			}
+			return this.get_random_location(terrain);
+		}
 	};
 
 	/**
@@ -9200,6 +9321,21 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Check if the specified hex is sea or ocean.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {Boolean}
+	 */
+	this.hex_is_water = function(hex) {
+		let data = this.data();
+		if (data[hex.y][hex.x].t === 'S' || data[hex.y][hex.x].t === 'O') {
+			return true;
+		}
+		return false;
+	};
+
+	/**
 	 * Return the terrain data for the specified hex.
 	 *
 	 * @public
@@ -9228,42 +9364,44 @@ civitas.objects.world = function (params) {
 	 * Check if the specified hex is locked.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
+	 * @param {Object} hex
 	 * @returns {Boolean}
 	 */
-	this.is_locked_hex = function(x, y) {
-		let hex = this.get_hex(x, y);
-		return hex.l;
+	this.hex_is_locked = function(hex) {
+		return this.get_hex(hex.x, hex.y).l;
 	};
 
-	this.locked_hex_by = function(x, y) {
-		let hex = this.get_hex(x, y);
-		return hex.lid;
+	/**
+	 * Lock the specified hex by the settlement id.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {Object}
+	 */
+	this.hex_locked_by = function(hex) {
+		return this.get_hex(hex.x, hex.y).lid;
 	};
 
 	/**
 	 * Return the moisture data for the specified hex.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
+	 * @param {Object} hex
 	 * @returns {String}
 	 */
-	this.get_hex_moisture = function(x, y) {
-		return this.get_hex(x, y).m;
+	this.get_hex_moisture = function(hex) {
+		return this.get_hex(hex.x, hex.y).m;
 	};
 
 	/**
 	 * Return the elevation data for the specified hex.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @returns {String}
+	 * @param {Object} hex
+	 * @returns {Number}
 	 */
-	this.get_hex_elevation = function(x, y) {
-		return this.get_hex(x, y).e;
+	this.get_hex_elevation = function(hex) {
+		return this.get_hex(hex.x, hex.y).e;
 	};
 
 	/**
@@ -9316,8 +9454,17 @@ civitas.objects.world = function (params) {
 	 */
 	this.remove_city = function(settlement) {
 		let location = settlement.location();
+		let id = settlement.id();
 		this._data[location.y][location.x].s = null;
 		this._data[location.y][location.x].n = null;
+		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
+			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
+				if (this._data[y][x].lid === id) {
+					this._data[y][x].lid = null;
+					this._data[y][x].l = false;
+				}
+			}
+		}
 		$('#worldmap-city-image' + location.y + '-' + location.x).remove();
 		return this;
 	}
@@ -9632,20 +9779,11 @@ civitas.objects.settlement = function(params) {
 			});
 		}
 		if (this.is_player() === false) {
-			let climate;
 			let terrain = this.core().world().get_hex_terrain(this._location.x, this._location.y);
-			if (terrain === 'I') {
-				climate = 'polar';
-			} else if (terrain === 'D') {
-				climate = 'arid';
-			} else if (terrain === 'W' || terrain === 'J') {
-				climate = 'tropical';
-			} else {
-				climate = 'temperate';
-			}
-			this.properties.climate = civitas['CLIMATE_' + climate.toUpperCase()];
+			let climate = this.core().world().get_climate_from_terrain(terrain);
+			this.properties.climate = civitas['CLIMATE_' + climate.name.toUpperCase()];
 			if (this.is_urban()) {
-				this.setup_initial_buildings(civitas['SETTLEMENT_BUILDINGS_' + climate.toUpperCase()], true);
+				this.setup_initial_buildings(civitas['SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase()], true);
 			}
 		} else {
 			this.properties.climate = params.properties.climate;
@@ -11019,12 +11157,12 @@ civitas.objects.settlement = function(params) {
 	/**
 	 * Reset the influence of this settlement.
 	 * 
-	 * @param {Number} settlement_id
+	 * @param {Number} s_id
 	 * @returns {civitas.objects.settlement}
 	 * @public
 	 */
-	this.reset_influence = function(settlement_id) {
-		this.set_influence(settlement_id, civitas.MIN_INFLUENCE_VALUE);
+	this.reset_influence = function(s_id) {
+		this.set_influence(s_id, civitas.MIN_INFLUENCE_VALUE);
 		return this;
 	};
 		
@@ -11793,7 +11931,7 @@ civitas.objects.settlement = function(params) {
 					}
 					let discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
 					let price = civitas.utils.calc_price_plus_discount(amount, item, discount);
-					let settlement_price = civitas.utils.calc_price(amount, item);
+					let s_price = civitas.utils.calc_price(amount, item);
 					let item_discount_price = Math.ceil(civitas.RESOURCES[item].price + discount);
 					if (!this.has_storage_space_for(amount)) {
 						this.core().error(this.name() + ' does not have enough storage space for ' +
@@ -11810,7 +11948,7 @@ civitas.objects.settlement = function(params) {
 					if (!_settlement.remove_resource(item, amount)) {
 						return false;
 					}
-					_settlement.inc_coins(settlement_price);
+					_settlement.inc_coins(s_price);
 					this.add_to_storage(item, amount);
 					this.remove_from_exports(_settlement, item, amount);
 					this.raise_influence(_settlement.id(), (is_double ? civitas.IMPORT_INFLUENCE * 2 : 
@@ -11982,7 +12120,7 @@ civitas.objects.settlement = function(params) {
 					}
 					let discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_DISCOUNT) / 100);
 					let price = civitas.utils.calc_price_minus_discount(amount, item, discount);
-					let settlement_price = civitas.utils.calc_price(amount, item);
+					let s_price = civitas.utils.calc_price(amount, item);
 					let item_discount_price = Math.ceil(civitas.RESOURCES[item].price - discount);
 					if (!this.has_resource(item, amount)) {
 						this.core().error(this.name() + ' does not have enough ' + civitas.utils.get_resource_name(item) + ' to sell.');
@@ -11992,7 +12130,7 @@ civitas.objects.settlement = function(params) {
 						return false;
 					}
 					this.inc_coins(price);
-					if (!_settlement.dec_coins(settlement_price)) {
+					if (!_settlement.dec_coins(s_price)) {
 						if (this.is_player()) {
 							this.core().error(settlement + ' does not have enough ' + civitas.utils.get_resource_name('coins') + '.');
 						}
@@ -12229,8 +12367,8 @@ civitas.objects.event = function (params) {
 	 */
 	this.process = function () {
 		let core = this.core();
-		let random_settlement_id = civitas.utils.get_random(1, core.settlements.length);
-		let with_settlement = core.get_settlement(random_settlement_id);
+		let random_s_id = civitas.utils.get_random(1, core.settlements.length);
+		let with_settlement = core.get_settlement(random_s_id);
 		if (typeof with_settlement !== 'undefined') {
 			let description = this._description.replace(/SETTLEMENT/g, with_settlement.name());
 			if (this._raise !== null) {
@@ -13317,15 +13455,16 @@ civitas.objects.battleground = function (params) {
 		let city = this.core().get_settlement(source.city);
 		let city2 = this.core().get_settlement(destination.city);
 		let remaining = 0;
+		let _a;
 		if (city && source.moved) {
 			this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 			return false;
 		}
 		if (source !== null && destination !== null && city && city2) {
 			if (destination.side === civitas.BATTLEGROUND_DEFENSE) {
-				let _a = '_defense';
+				_a = '_defense';
 			} else {
-				let _a = '_attack';
+				_a = '_attack';
 			}
 			if (is_ranged !== undefined) {
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > is_ranged) {
@@ -14946,21 +15085,21 @@ civitas.game = function () {
 	 * Reset the Black Market goods.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {Number}
 	 */
 	this.reset_black_market = function () {
-		let total = 0;
+		let t_coins = 0;
 		for (let item in this.black_market) {
 			this.get_settlement().inc_coins(this.black_market[item].price);
-			total += this.black_market[item].price;
+			t_coins += this.black_market[item].price;
 		}
 		this.black_market = {};
 		this.refresh();
 		$('#tab-blackmarket > .contents > table > tbody').empty();
-		if (total > 0) {
-			this.notify(this.get_settlement().name() + ' received <strong>' + total + '</strong> ' + civitas.utils.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
+		if (t_coins > 0) {
+			this.notify(this.get_settlement().name() + ' received <strong>' + t_coins + '</strong> ' + civitas.utils.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
 		}
-		return this;
+		return t_coins;
 	};
 
 	/**
@@ -15029,7 +15168,7 @@ civitas.game = function () {
 	 *
 	 * @public
 	 * @param {String} name
-	 * @param {String} cityname
+	 * @param {String} s_name
 	 * @param {Number} nation
 	 * @param {Number} climate
 	 * @param {Number} avatar
@@ -15037,7 +15176,7 @@ civitas.game = function () {
 	 * @param {String} password
 	 * @returns {Boolean}
 	 */
-	this.new_game = function(name, cityname, nation, climate, avatar, difficulty, password) {
+	this.new_game = function(name, s_name, nation, climate, avatar, difficulty, password) {
 		let data = null;
 		civitas.ui.show_loader();
 		if (civitas.ENCRYPTION === true) {
@@ -15048,7 +15187,7 @@ civitas.game = function () {
 			core: this,
 			roughness: civitas.INITIAL_SEED[difficulty - 1].roughness
 		});
-		this._create_settlement(name, cityname, nation, climate, avatar);
+		this._create_settlement(name, s_name, nation, climate, avatar);
 		this._setup_game(null);
 		return true;
 	};
@@ -15379,7 +15518,7 @@ civitas.game = function () {
 	 * @public
 	 * @returns {String}
 	 */
-	this.get_version = function() {
+	this.version = function() {
 		return civitas.VERSION;
 	};
 	
@@ -15574,7 +15713,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Perform an research notification in the game.
+	 * Perform a research and trigger a notification in the game.
 	 * 
 	 * @public
 	 * @param {String} handle
@@ -15603,7 +15742,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Perform an achievement notification in the game.
+	 * Trigger an achievement notification in the game.
 	 * 
 	 * @public
 	 * @param {String} handle
@@ -15633,7 +15772,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Check if the current player has the research specified by its id.
+	 * Check if the current player has the research specified by its handle.
 	 *
 	 * @public
 	 * @param {String} handle
@@ -15651,7 +15790,7 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Check if the current player has the achievement specified by its id.
+	 * Check if the current player has the achievement specified by its handle.
 	 *
 	 * @public
 	 * @param {String} handle
@@ -15786,15 +15925,13 @@ civitas.game = function () {
 					if (typeof campaign.data.espionage !== 'undefined') {
 						switch (campaign.data.mission) {
 							case civitas.SPY_MISSION_RELIGION:
-								if (random <= Math.ceil(campaign.data.espionage / 
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (campaign.source.id === settlement.id()) {
 										destination_settlement.religion(campaign.data.religion);
 										let religion = destination_settlement.religion();
 										this.notify('The spy you sent ' + campaign.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and managed to convince the settlement council to change the religion to ' + religion.name + '.');
 									} else if (campaign.destination.id === settlement.id()) {
-										destination_settlement =
-											this.get_settlement(campaign.source.id);
+										destination_settlement = this.get_settlement(campaign.source.id);
 										settlement.religion(campaign.data.religio);
 										let religion = settlement.religion();
 										this.notify('The spy sent from ' + destination_settlement.name() + ' ' + campaign.duration + ' days ago to our city reached its destination and managed to convince your city council to change the religion to ' + religion.name + '.');
@@ -15803,31 +15940,27 @@ civitas.game = function () {
 								}
 								break;
 							case civitas.SPY_MISSION_INFLUENCE:
-								if (random <= Math.ceil(campaign.data.espionage / 
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (campaign.source.id === settlement.id()) {
 										settlement.raise_influence(campaign.destination.id, amount);
 										this.notify('The spy you sent ' + campaign.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and increased your influence over this settlement.');
 									} else if (campaign.destination.id === settlement.id()) {
 										destination_settlement = this.get_settlement(campaign.source.id);
 										// TODO
-										// destination_settlement.raise_influence(
-										//	campaign.destination.id, amount);
+										// destination_settlement.raise_influence(campaign.destination.id, amount);
 										this.notify('The spy sent from ' + destination_settlement.name() + ' ' + campaign.duration + ' days ago to our city reached its destination and lowered your influence over this settlement.');
 									}
 									failed = false;
 								}
 								break;
 							case civitas.SPY_MISSION_STEAL_RESOURCES:
-								if (random <= Math.ceil(campaign.data.espionage /
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									// TODO
 									failed = false;
 								}
 								break;
 							case civitas.SPY_MISSION_INSTIGATE:
-								if (random <= Math.ceil(campaign.data.espionage /
-									civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+								if (random <= Math.ceil(campaign.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (campaign.source.id === settlement.id()) {
 										destination_settlement.lower_prestige(amount);
 										this.notify('The spy you sent ' + campaign.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and incited the population to revolt, therefore lowering the prestige of the city.');
@@ -16063,7 +16196,7 @@ civitas.game = function () {
 	 * Get a pointer to the player's settlement.
 	 * 
 	 * @public
-	 * @param {String} name
+	 * @param {String|Number} name
 	 * @returns {civitas.settlement|Boolean}
 	 */
 	this.get_settlement = function (name) {
@@ -16092,20 +16225,20 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Load the player settlement from localStorage data.
+	 * Load the player settlement from specified data.
 	 * 
 	 * @private
 	 * @param {Object} data
 	 * @returns {Object|Boolean}
 	 */
 	this._load_settlement = function (data) {
-		let player_settlement_data = data.settlements[0];
+		let player_s_data = data.settlements[0];
 		let new_settlement;
-		if (player_settlement_data) {
-			player_settlement_data.core = this;
-			new_settlement = new civitas.objects.settlement(player_settlement_data);
+		if (player_s_data) {
+			player_s_data.core = this;
+			new_settlement = new civitas.objects.settlement(player_s_data);
 			this.settlements.push(new_settlement);
-			new_settlement.setup_initial_buildings(player_settlement_data.buildings);
+			new_settlement.setup_initial_buildings(player_s_data.buildings);
 			return data;
 		}
 		return false;
@@ -16132,54 +16265,34 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Create all the other settlements in the world.
-	 * 
-	 * @public
-	 * @returns {Object}
-	 */
-	this.get_random_location = function() {
-		let world = this.world();
-		let data = world.data();
-		let pos = {
-			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
-			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
-		}
-		if ((data[pos.y][pos.x].t !== 'S' && data[pos.y][pos.x].t !== 'O') && data[pos.y][pos.x].l === false) {
-			return pos;
-		} else {
-			return this.get_random_location();
-		}
-	};
-
-	/**
 	 * Generate random army soldiers.
 	 * 
 	 * @public
-	 * @param {Number} settlement_type
+	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_army = function(settlement_type) {
+	this.generate_random_army = function(s_type) {
 		let army = {};
 		for (let item in civitas.SOLDIERS) {
-			if (settlement_type === civitas.CITY) {
+			if (s_type === civitas.CITY) {
 				if (item === 'cannon' || item === 'catapult') {
 					army[item] = civitas.utils.get_random(1, 2);
 				} else {
 					army[item] = civitas.utils.get_random(5, 10);
 				}
-			} else if (settlement_type === civitas.METROPOLIS) {
+			} else if (s_type === civitas.METROPOLIS) {
 				if (item === 'cannon' || item === 'catapult') {
 					army[item] = civitas.utils.get_random(3, 5);
 				} else {
 					army[item] = civitas.utils.get_random(20, 30);
 				}
-			} else if (settlement_type === civitas.VILLAGE) {
+			} else if (s_type === civitas.VILLAGE) {
 				if (item === 'cannon' || item === 'catapult') {
 					// Todo
 				} else {
 					army[item] = civitas.utils.get_random(0, 2);
 				}
-			} else if (settlement_type === civitas.CAMP) {
+			} else if (s_type === civitas.CAMP) {
 				if (item === 'cannon' || item === 'catapult') {
 					// Todo
 				} else {
@@ -16194,19 +16307,19 @@ civitas.game = function () {
 	 * Generate random navy ships.
 	 * 
 	 * @public
-	 * @param {Number} settlement_type
+	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_navy = function(settlement_type) {
+	this.generate_random_navy = function(s_type) {
 		let navy = {};
 		for (let item in civitas.SHIPS) {
-			if (settlement_type === civitas.CITY) {
+			if (s_type === civitas.CITY) {
 				navy[item] = civitas.utils.get_random(3, 5);
-			} else if (settlement_type === civitas.METROPOLIS) {
+			} else if (s_type === civitas.METROPOLIS) {
 				navy[item] = civitas.utils.get_random(10, 20);
-			} else if (settlement_type === civitas.VILLAGE) {
+			} else if (s_type === civitas.VILLAGE) {
 				navy[item] = civitas.utils.get_random(0, 2);
-			} else if (settlement_type === civitas.CAMP) {
+			} else if (s_type === civitas.CAMP) {
 				navy[item] = 0;
 			}
 		}
@@ -16314,37 +16427,37 @@ civitas.game = function () {
 	 * Generate random settlement data.
 	 * 
 	 * @public
-	 * @param {Number} settlement_type
+	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_settlement_data = function(settlement_type) {
+	this.generate_random_settlement_data = function(s_type) {
 		let level;
-		if (typeof settlement_type === 'undefined') {
-			settlement_type = civitas.utils.get_random(0, civitas.SETTLEMENTS.length - 1);
+		if (typeof s_type === 'undefined') {
+			s_type = civitas.utils.get_random(0, civitas.SETTLEMENTS.length - 1);
 		}
-		let resources = this.generate_random_resources(true, settlement_type);
-		if (settlement_type === civitas.CITY) {
+		let resources = this.generate_random_resources(true, s_type);
+		if (s_type === civitas.CITY) {
 			level = civitas.utils.get_random(10, civitas.MAX_SETTLEMENT_LEVEL);
-		} else if (settlement_type === civitas.METROPOLIS) {
+		} else if (s_type === civitas.METROPOLIS) {
 			level = civitas.utils.get_random(20, civitas.MAX_SETTLEMENT_LEVEL);
-		} else if (settlement_type === civitas.VILLAGE) {
+		} else if (s_type === civitas.VILLAGE) {
 			level = civitas.utils.get_random(1, 5);
 		} else {
 			level = 1;
 		}
 		let settlement = {
 			icon: civitas.utils.get_random(1, civitas.MAX_SETTLEMENT_ICONS),
-			type: settlement_type,
+			type: s_type,
 			player: false,
 			name: civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
 			religion: this.get_random_religion(),
 			nationality: this.get_random_nationality(),
 			level: level,
 			resources: resources.resources,
-			army: this.generate_random_army(settlement_type),
-			navy: this.generate_random_navy(settlement_type)
+			army: this.generate_random_army(s_type),
+			navy: this.generate_random_navy(s_type)
 		}
-		if (settlement_type === civitas.CITY || settlement_type === civitas.METROPOLIS) {
+		if (s_type === civitas.CITY || s_type === civitas.METROPOLIS) {
 			settlement.trades = resources.trades;
 		}
 		return settlement;
@@ -16414,36 +16527,44 @@ civitas.game = function () {
 	 * Add a settlement into the world.
 	 * 
 	 * @public
-	 * @param {Object} settlement_data
+	 * @param {Object} s_data
 	 * @param {Number} id
-	 * @param {Object} player_data
+	 * @param {Object} p_data
 	 * @returns {civitas.objects.settlement|Boolean}
 	 */
-	this.add_settlement = function(settlement_data, id, player_data) {
+	this.add_settlement = function(s_data, id, p_data) {
 		if (this.get_num_settlements() <= civitas.MAX_SETTLEMENTS) {
+			let climate;
 			let new_settlement;
 			let ruler;
+			let location;
 			let player = false;
-			let location = this.get_random_location();
 			if (typeof id === 'undefined') {
 				id = this.get_num_settlements();
 			}
-			if (typeof player_data !== 'undefined') {
+			if (typeof p_data !== 'undefined') {
 				player = true;
 			}
+			if (typeof s_data.climate !== 'undefined') {
+				climate = s_data.climate;
+			} else {
+				climate = civitas.CLIMATE_TEMPERATE;
+			}
 			if (player === false) {
+				location = this.world().get_random_location(this.world().get_terrain_from_climate());
 				ruler = {
-					title: (settlement_data.type === civitas.CAMP) ? 'Warlord' : 'Mayor',
+					title: (s_data.type === civitas.CAMP) ? 'Warlord' : 'Mayor',
 					avatar: civitas.utils.get_random(1, civitas.AVATARS),
-					personality: (settlement_data.type === civitas.CAMP) ? civitas.PERSONALITY_WARLORD : this.get_random_personality(),
+					personality: (s_data.type === civitas.CAMP) ? civitas.PERSONALITY_WARLORD : this.get_random_personality(),
 					name: civitas.utils.get_random_unique(civitas.NAMES)
 				};
 			} else {
+				location = this.world().get_random_location(this.world().get_terrain_from_climate(climate));
 				id = 0;
 				ruler = {
-					name: player_data.name,
+					name: p_data.name,
 					title: '',
-					avatar: player_data.avatar,
+					avatar: p_data.avatar,
 					personality: civitas.PERSONALITY_BALANCED
 				}
 			}
@@ -16451,26 +16572,26 @@ civitas.game = function () {
 				core: this,
 				properties: {
 					id: id,
-					type: typeof settlement_data.type !== 'undefined' ? settlement_data.type : civitas.CITY,
-					name: typeof settlement_data.name !== 'undefined' ? settlement_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
+					type: typeof s_data.type !== 'undefined' ? s_data.type : civitas.CITY,
+					name: typeof s_data.name !== 'undefined' ? s_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
 					player: player,
-					level: typeof settlement_data.level !== 'undefined' ? settlement_data.level : 1,
-					climate: typeof settlement_data.climate !== 'undefined' ? settlement_data.climate : civitas.CLIMATE_TEMPERATE,
-					religion: typeof settlement_data.religion !== 'undefined' ? settlement_data.religion : civitas.RELIGION_CHRISTIANITY,
+					level: typeof s_data.level !== 'undefined' ? s_data.level : 1,
+					climate: climate,
+					religion: typeof s_data.religion !== 'undefined' ? s_data.religion : civitas.RELIGION_CHRISTIANITY,
 					ruler: ruler,
-					nationality: settlement_data.nationality,
-					icon: typeof settlement_data.icon !== 'undefined' ? settlement_data.icon : 1
+					nationality: s_data.nationality,
+					icon: typeof s_data.icon !== 'undefined' ? s_data.icon : 1
 				},
-				resources: typeof settlement_data.resources !== 'undefined' ? settlement_data.resources : {},
-				army: typeof settlement_data.army !== 'undefined' ? settlement_data.army : {},
-				navy: typeof settlement_data.navy !== 'undefined' ? settlement_data.navy : {},
-				trades: typeof settlement_data.trades !== 'undefined' ? settlement_data.trades : {},
+				resources: typeof s_data.resources !== 'undefined' ? s_data.resources : {},
+				army: typeof s_data.army !== 'undefined' ? s_data.army : {},
+				navy: typeof s_data.navy !== 'undefined' ? s_data.navy : {},
+				trades: typeof s_data.trades !== 'undefined' ? s_data.trades : {},
 				location: location
 			});
 			if (player === false) {
 				this.get_settlement().status(id, {
-					influence: (settlement_data.type === civitas.CAMP) ? civitas.MIN_INFLUENCE_VALUE : Math.floor(civitas.MAX_INFLUENCE_VALUE / 2),
-					status: (settlement_data.type === civitas.CAMP) ? civitas.DIPLOMACY_WAR : civitas.DIPLOMACY_TRUCE
+					influence: (s_data.type === civitas.CAMP) ? civitas.MIN_INFLUENCE_VALUE : Math.floor(civitas.MAX_INFLUENCE_VALUE / 2),
+					status: (s_data.type === civitas.CAMP) ? civitas.DIPLOMACY_WAR : civitas.DIPLOMACY_TRUCE
 				});
 			}
 			this.settlements.push(new_settlement);
@@ -16510,14 +16631,14 @@ civitas.game = function () {
 	 */
 	this._setup_neighbours = function (data) {
 		let new_settlement;
-		let settlement_data;
+		let s_data;
 		let difficulty = this.difficulty();
 		let num;
 		if (data !== null) {
 			for (let i = 1; i < data.settlements.length; i++) {
-				settlement_data = data.settlements[i];
-				settlement_data.core = this;
-				new_settlement = new civitas.objects.settlement(settlement_data);
+				s_data = data.settlements[i];
+				s_data.core = this;
+				new_settlement = new civitas.objects.settlement(s_data);
 				this.settlements.push(new_settlement);
 			}
 		} else {
@@ -17376,8 +17497,7 @@ civitas.PANEL_SETTLEMENT = {
 			sett_type_text = 'Raider Camp';
 		}
 		$(this.handle + ' #tab-info').empty().append('' +
-			'<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' +
-			settlement.ruler().avatar + '.png" />' +
+			'<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
 			'<dl>' +
 				'<dt>' + settlement.ruler().title + '</dt><dd>' + settlement.ruler().name + '</dd>' +
 				'<dt>Settlement Type</dt>' +
@@ -17888,6 +18008,7 @@ civitas.PANEL_CAMPAIGN = {
 		let my_settlement = core.get_settlement();
 		let campaign = params.data;
 		let class_name = '';
+		let tabs = ['Info'];
 		this.params_data = params;
 		if (campaign.type === civitas.CAMPAIGN_ARMY || campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
 			class_name = 'army';
@@ -17898,14 +18019,26 @@ civitas.PANEL_CAMPAIGN = {
 		}
 		$(this.handle + ' header').append(class_name.capitalize() + ' mission');
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Army', 'Navy']));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				tabs.push('Soldiers');
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				tabs.push('Ships');
+			}
 		} else if (campaign.type === civitas.CAMPAIGN_CARAVAN) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Resources']));
+			tabs.push('Resources');
 		} else if (campaign.type === civitas.CAMPAIGN_SPY) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Spy']));
+			tabs.push('Spy');
 		} else if (campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
-			$(this.handle + ' section').append(civitas.ui.tabs(['Info', 'Army', 'Navy', 'Resources']));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				tabs.push('Soldiers');
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				tabs.push('Ships');
+			}
+			tabs.push('Resources');
 		}
+		$(this.handle + ' section').append(civitas.ui.tabs(tabs));
 	},
 	
 	/**
@@ -17941,8 +18074,12 @@ civitas.PANEL_CAMPAIGN = {
 				'<dt>Remaining</dt><dd>' + (10 * (campaign.duration - campaign.passed)) + ' miles (' + (campaign.duration - campaign.passed) + ' days)</dd>' +
 			'</dl>');
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
-			$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(campaign.data.army));
-			$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				$(this.handle + ' #tab-soldiers').empty().append(civitas.ui.army_list(campaign.data.army));
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				$(this.handle + ' #tab-ships').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			}
 		} else if (campaign.type === civitas.CAMPAIGN_CARAVAN) {
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>This caravan has the the following resources:</p>' +
@@ -17971,8 +18108,12 @@ civitas.PANEL_CAMPAIGN = {
 			'</dl>';
 			$(this.handle + ' #tab-spy').empty().append(out);
 		} else if (campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
-			$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(campaign.data.army));
-			$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
+				$(this.handle + ' #tab-soldiers').empty().append(civitas.ui.army_list(campaign.data.army));
+			}
+			if (my_settlement.num_ships(campaign.data.navy) > 0) {
+				$(this.handle + ' #tab-ships').empty().append(civitas.ui.navy_list(campaign.data.navy));
+			}
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>This army is bringing back to its home city the following spoils of war:</p>' +
 					'<dl>';
@@ -18004,8 +18145,6 @@ civitas.PANEL_STORAGE = {
 	 * @type {String}
 	 */
 	template: civitas.ui.generic_panel_template('City Storage'),
-
-	expanded: false,
 
 	/**
 	 * Internal id of the panel.
@@ -18049,12 +18188,10 @@ civitas.PANEL_STORAGE = {
 	on_refresh: function() {
 		let settlement = this.core().get_settlement();
 		let resources = settlement.get_resources();
-		let section;
 		let storage_space = settlement.storage();
 		for (let resource in resources) {
 			if (!civitas.utils.is_virtual_resource(resource)) {
-				section = civitas.RESOURCES[resource].category;
-				$(this.handle + ' #tab-' + section + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
+				$(this.handle + ' #tab-' + civitas.RESOURCES[resource].category + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
 			}
 		}
 		$(this.handle + ' .total-storage').empty().append(storage_space.all);
@@ -18098,6 +18235,7 @@ civitas.PANEL_WORLD = {
 		let settlements = core.get_settlements();
 		let world = core.world();
 		let colors = world.colors();
+		let color;
 		let props = world.properties();
 		let settings = core.get_settings();
 		let world_data = world.data();
@@ -18106,30 +18244,27 @@ civitas.PANEL_WORLD = {
 		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
 				let terrain = world_data[row][column].t;
+				color = colors[terrain].bg;
 				civitas.ui.svg_create_group(terrain, row, column);
-				civitas.ui.svg_create_cell(row, column, colors[terrain], settings.worldmap_grid);
+				if (world_data[row][column].l === true) {
+					let lid = world_data[row][column].lid;
+					if (lid !== null) {
+						if (typeof settlements[lid] !== 'undefined') {
+							color = settlements[lid].color();
+						}
+					}
+				}
+				civitas.ui.svg_create_cell(row, column, color, settings.worldmap_grid);
 				if (settings.worldmap_beautify === true) {
-					civitas.ui.svg_apply_terrain(row, column, terrain);
+					civitas.ui.svg_apply_terrain(row, column, colors[terrain].fg, terrain);
 				}
 			}
 		}
 		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				let terrain = world_data[row][column].t;
 				let suid = world_data[row][column].s;
 				if (suid !== null && typeof settlements[suid] !== 'undefined') {
 					civitas.ui.svg_add_settlement_image(row, column, settlements[suid], settlement);
-				}
-				if (world_data[row][column].l === true) {
-					let lid = world_data[row][column].lid;
-					if (lid !== null) {
-						if (typeof settlements[lid] !== 'undefined') {
-							let col = settlements[lid].color();
-							$('.s-c-g-' + row + '-' + column + ' > .svg-cell').css({
-								fill: col
-							});
-						}
-					}
 				}
 			}
 		}
@@ -18386,19 +18521,21 @@ civitas.PANEL_NEW_ARMY = {
 				'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
 		}
 		_t += '</dl>' +
-			'</fieldset>' +
-			'<fieldset>' +
+			'</fieldset>';
+		if (typeof army !== 'undefined') {
+			_t += '<fieldset>' +
 				'<legend>Soldiers</legend>';
-		for (let item in army) {
-			_t += '<div class="army-item">' +
+			for (let item in army) {
+				_t += '<div class="army-item">' +
 					'<a href="#" data-max="' + army[item] + '" data-soldier="' + item + '" class="army-item-inc">+</a>' +
 					'<a href="#" data-max="' + army[item] + '" data-soldier="' + item + '" class="army-item-dec">-</a>' +
 					'<img class="tips" title="' + civitas.SOLDIERS[item].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g,"_") + '.png" />' +
 					'<span class="amount">' + army[item] + '</span>' +
 				'</div>';
+			}
+			_t += '</fieldset>';
 		}
-		_t += '</fieldset>' +
-		'<fieldset>' +
+		_t += '<fieldset>' +
 			'<legend>Destination</legend>' +
 			'<select class="army-destination">' +
 				'<option value="0">-- select --</option>';
@@ -18410,17 +18547,19 @@ civitas.PANEL_NEW_ARMY = {
 		'</div>' +
 		'<div class="column">';
 		if (my_settlement.can_build_ships()) {
-			_t += '<fieldset>' +
+			if (typeof navy !== 'undefined') {
+				_t += '<fieldset>' +
 					'<legend>Ships</legend>';
-			for (let item in navy) {
-				_t += '<div class="navy-item">' +
-						'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-inc">+</a>' +
-						'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-dec">-</a>' +
-						'<img class="tips" title="' + item + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g,"_") + '.png" />' +
-						'<span class="amount">' + navy[item] + '</span>' +
-					'</div>';
+				for (let item in navy) {
+					_t += '<div class="navy-item">' +
+							'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-inc">+</a>' +
+							'<a href="#" data-max="' + navy[item] + '" data-ship="' + item + '" class="navy-item-dec">-</a>' +
+							'<img class="tips" title="' + item + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g,"_") + '.png" />' +
+							'<span class="amount">' + navy[item] + '</span>' +
+						'</div>';
+				}
+				_t += '</fieldset>';
 			}
-			_t += '</fieldset>';
 		}
 		if (my_settlement.can_recruit_heroes()) {
 			let heroes = my_settlement.heroes();
@@ -18627,6 +18766,7 @@ civitas.PANEL_NEW_SPY = {
 				settlement = core.get_settlement(destination);
 			}
 			if (destination === 0 || _espionage > espionage || !settlement || mission <= 0) {
+				console.log(1);
 				core.error('There was an error creating and dispatching the spy, check the data you entered and try again.');
 				return false;
 			}
@@ -18635,19 +18775,25 @@ civitas.PANEL_NEW_SPY = {
 				mission: mission
 			};
 			if (mission === civitas.SPY_MISSION_RELIGION) {
-				let _religion = parseInt($(self.handle + ' .espionage-religion').val());
-				data.religion = _religion;
+				data.religion = parseInt($(self.handle + ' .espionage-religion').val());
 			}
 			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_SPY, data)) {
 				core.achievement('jamesbond');
 				self.destroy();
 			} else {
+				console.log(2);
 				core.error('There was an error creating and dispatching the spy, check the data you entered and try again.');
 			}
 			return false;
 		});
 	},
 	
+	/**
+	 * Callback function for refreshing the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
 	on_refresh: function() {
 		let core = this.core();
 		let my_settlement = core.get_settlement();
@@ -19229,16 +19375,26 @@ civitas.PANEL_ARMY = {
 	 * @public
 	 */
 	on_show: function(params) {
+		let self = this;
+		let core = this.core();
+		let my_settlement = core.get_settlement();
 		let army = params.data;
 		$(this.handle + ' header').append(army.name);
-		$(this.handle + ' section').append(civitas.ui.tabs([
-			'Info',
-			'Soldiers',
-			'Ships'
-		]));
+		let tabs = ['Info'];
+		if (my_settlement.num_soldiers(army.army) > 0) {
+			tabs.push('Soldiers');
+		}
+		if (my_settlement.num_ships(army.navy) > 0) {
+			tabs.push('Ships');
+		}
+		$(this.handle + ' section').append(civitas.ui.tabs(tabs));
 		$(this.handle + ' #tab-info').append('<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/emblems/' + ((typeof army.icon !== 'undefined') ? army.icon : '22') + '.png" />' + '<p>' + army.description + '</p>');
-		$(this.handle + ' #tab-soldiers').append(civitas.ui.army_list(army.army));
-		$(this.handle + ' #tab-ships').append(civitas.ui.navy_list(army.navy));
+		if (my_settlement.num_soldiers(army.army) > 0) {
+			$(this.handle + ' #tab-soldiers').append(civitas.ui.army_list(army.army));
+		}
+		if (my_settlement.num_ships(army.navy) > 0) {
+			$(this.handle + ' #tab-ships').append(civitas.ui.navy_list(army.navy));
+		}
 	}
 };
 

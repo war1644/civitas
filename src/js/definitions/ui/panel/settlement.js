@@ -211,8 +211,7 @@ civitas.PANEL_SETTLEMENT = {
 			sett_type_text = 'Raider Camp';
 		}
 		$(this.handle + ' #tab-info').empty().append('' +
-			'<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' +
-			settlement.ruler().avatar + '.png" />' +
+			'<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
 			'<dl>' +
 				'<dt>' + settlement.ruler().title + '</dt><dd>' + settlement.ruler().name + '</dd>' +
 				'<dt>Settlement Type</dt>' +

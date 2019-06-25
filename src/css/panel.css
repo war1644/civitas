@@ -253,15 +253,15 @@
 /* Worldmap panel */
 
 #panel-world {
-	max-width: 1200px;
+	max-width: 1184px;
 	max-height: 700px;
-	width: 1200px;
+	width: 1184px;
 	height: 700px;
 	box-sizing: border-box;
 }
 
 #panel-world .worldmap {
-	width: 1180px;
+	width: 1164px;
 	height: 640px;
 	background-size: auto 100%;
 	position: relative;
