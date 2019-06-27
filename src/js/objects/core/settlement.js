@@ -425,11 +425,13 @@ civitas.objects.settlement = function(params) {
 			}
 		}
 		for (let i = 0; i < this.core()._queue.length; i++) {
-			if (this.core()._queue[i].destination.id === this.id()) {
-				advices.push('There is an army from ' + this.core().get_settlement(this.core()._queue[i].source.id).name() + ' marching towards your city!');
-			}
-			if (this.core()._queue[i].source.id === this.id()) {
-				advices.push('Your army is marching towards ' + this.core().get_settlement(this.core()._queue[i].destination.id).name() + '!');
+			if (this.core()._queue[i].mode === civitas.ACTION_CAMPAIGN) {
+				if (this.core()._queue[i].destination.id === this.id()) {
+					advices.push('There is an army from ' + this.core().get_settlement(this.core()._queue[i].source.id).name() + ' marching towards your city!');
+				}
+				if (this.core()._queue[i].source.id === this.id()) {
+					advices.push('Your army is marching towards ' + this.core().get_settlement(this.core()._queue[i].destination.id).name() + '!');
+				}
 			}
 		}
 		let buildings = this.get_buildings();
@@ -1320,10 +1322,15 @@ civitas.objects.settlement = function(params) {
 	this.build = function(building_type) {
 		let building_data = false;
 		if (building_data = this.get_building_data(building_type)) {
-			if ((typeof building_data.requires.settlement_level !== 'undefined') && 
-				(this.properties.level < building_data.requires.settlement_level)) {
+			if ((typeof building_data.requires.settlement_level !== 'undefined') && (this.properties.level < building_data.requires.settlement_level)) {
 				if (this.is_player()) {
 					this.core().error('Your city level is too low to construct this building.');
+				}
+				return false;
+			}
+			if ((typeof building_data.requires.research !== 'undefined') && (!this.core().has_research(building_data.requires.research))) {
+				if (this.is_player()) {
+					this.core().error('Your city is missing the `' + this.core().get_research_config_data(building_data.requires.research).name + '` research needed to construct this building.');
 				}
 				return false;
 			}
@@ -1331,10 +1338,11 @@ civitas.objects.settlement = function(params) {
 				let required = building_data.requires.buildings;
 				for (let item in required) {
 					if (!this.is_building_built(item, required[item])) {
-						let _z = civitas.BUILDINGS.findIndexM(item);
-						_z = civitas.BUILDINGS[_z];
-						if (this.is_player()) {
-							this.core().error('You don`t have the required level ' + required[item] + ' ' + _z.name + '.');
+						let _z = this.core().get_building_config_data(item);
+						if (_z) {
+							if (this.is_player()) {
+								this.core().error('You don`t have the required level ' + required[item] + ' ' + _z.name + '.');
+							}
 						}
 						return false;
 					}

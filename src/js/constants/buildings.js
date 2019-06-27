@@ -2612,6 +2612,7 @@ civitas.BUILDINGS = [{
 			stones: 20
 		},
 		requires: {
+			research: 'agriculture',
 			settlement_level: 10,
 			buildings: {
 				cottonfield: 1
@@ -2631,6 +2632,7 @@ civitas.BUILDINGS = [{
 			clay: 20
 		},
 		requires: {
+			research: 'agriculture',
 			settlement_level: 10
 		}
 	}, {
@@ -2652,6 +2654,7 @@ civitas.BUILDINGS = [{
 			stones: 20
 		},
 		requires: {
+			research: 'agriculture',
 			settlement_level: 28,
 			buildings: {
 				silkfield: 1
@@ -2671,6 +2674,7 @@ civitas.BUILDINGS = [{
 			clay: 100
 		},
 		requires: {
+			research: 'agriculture',
 			settlement_level: 28
 		}
 	}, {
@@ -2826,6 +2830,7 @@ civitas.BUILDINGS = [{
 			clay: 50
 		},
 		requires: {
+			research: 'agriculture',
 			settlement_level: 26,
 			buildings: {
 				academy: 1,
@@ -2846,6 +2851,7 @@ civitas.BUILDINGS = [{
 			clay: 100
 		},
 		requires: {
+			research: 'agriculture',
 			settlement_level: 26
 		}
 	}, {

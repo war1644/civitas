@@ -9,7 +9,7 @@ civitas.RESEARCH = [{
 		name: 'Agriculture',
 		handle: 'agriculture',
 		description: 'The development of agriculture enables the human population to grow many times larger than could be sustained by hunting and gathering.',
-		duration: 20,
+		duration: 80,
 		cost: {
 			research: 500,
 			coins: 500000,
@@ -18,6 +18,31 @@ civitas.RESEARCH = [{
 			tools: 10
 		},
 		effect: {
+			buildings: {
+				cottonfarm: 1,
+				grainfarm: 1,
+				grapesfarm: 1,
+				rosenursery: 1,
+				tobaccofarm: 1
+			}
+		}
+	}, {
+		name: 'Animal Enclosures',
+		handle: 'animalenclosure',
+		description: '',
+		duration: 70,
+		cost: {
+			research: 400,
+			coins: 500000,
+			woodplanks: 100,
+			iron: 100
+		},
+		effect: {
+			buildings: {
+				cattlefarm: 1,
+				pigfarm: 1,
+				goatfarm: 1
+			}
 		}
 	}, {
 		name: 'Antibiotics',
@@ -43,6 +68,9 @@ civitas.RESEARCH = [{
 			meals: 100
 		},
 		effect: {
+			buildings: {
+				cookhouse: 1
+			}
 		}
 	}, {
 		name: 'Circular Saw',
@@ -56,6 +84,26 @@ civitas.RESEARCH = [{
 			woodplanks: 100
 		},
 		effect: {
+			buildings: {
+				carpenter: 2,
+				lumberjack: 2
+			}
+		}
+	}, {
+		name: 'Diplomacy',
+		handle: 'diplomacy',
+		description: '',
+		duration: 160,
+		cost: {
+			research: 1000,
+			coins: 100000,
+			soap: 100,
+			jewelery: 100
+		},
+		effect: {
+			buildings: {
+				embassy: 10
+			}
 		}
 	}, {
 		name: 'Fertilisers',
@@ -85,7 +133,7 @@ civitas.RESEARCH = [{
 		name: 'Minerals',
 		handle: 'minerals',
 		description: '',
-		duration: 3,
+		duration: 60,
 		cost: {
 			research: 100,
 			coins: 100000,
@@ -93,6 +141,12 @@ civitas.RESEARCH = [{
 			glass: 1000
 		},
 		effect: {
+			buildings: {
+				ironmine: 1,
+				coppermine: 1,
+				goldmine: 1,
+				uraniummine: 1
+			}
 		}
 	}, {
 		name: 'Paved streets',
@@ -145,6 +199,18 @@ civitas.RESEARCH = [{
 			glass: 1000
 		},
 		effect: {
+		}
+	}, {
+		name: 'Taxation',
+		handle: 'taxation',
+		description: '',
+		duration: 100,
+		cost: {
+			research: 900,
+			coins: 1000000
+		},
+		effect: {
+			tax: 100
 		}
 	}
 ];

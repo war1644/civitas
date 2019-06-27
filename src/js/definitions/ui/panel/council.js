@@ -220,6 +220,7 @@ civitas.PANEL_COUNCIL = {
 					'<td></td>' +
 					'<td class="tips center" title="Current level / Maximum level">Level</td>' +
 					'<td>Raises</td>' +
+					'<td>Research</td>' +
 					'<td>Uses</td>' +
 				'</tr>' +
 			'</thead>';
@@ -232,8 +233,17 @@ civitas.PANEL_COUNCIL = {
 					'<td>';
 					if (building_data.production) {
 						for (let item in building_data.production) {
-							total_benefits[item] += (buildings[l].has_problems() === false) ? buildings[l].get_level() * building_data.production[item] : 0;
+							total_benefits[item] += (buildings[l].has_problems() === false) ? (buildings[l].get_level() * building_data.production[item] + core.get_prod_modifier(building_data)) : 0;
 							_t += ' +' + buildings[l].get_level() * building_data.production[item] + ' ' + civitas.ui.resource_small_img(item);
+						}
+					}
+				_t += '</td>' +
+					'<td>';
+					if (building_data.production) {
+						for (let item in building_data.production) {
+							if (core.get_prod_modifier(building_data) > 0) {
+								_t += ' +' + core.get_prod_modifier(building_data) + ' ' + civitas.ui.resource_small_img(item);
+							}
 						}
 					}
 				_t += '</td>' +
@@ -266,7 +276,7 @@ civitas.PANEL_COUNCIL = {
 					'<tr>' +
 						'<td>Total</td>' +
 						'<td></td>' +
-						'<td>' + _z + '</td>' +
+						'<td colspan="2">' + _z + '</td>' +
 						'<td>' + (total_costs > 0 ? '-' : '') + total_costs + ' ' + civitas.ui.resource_small_img('coins') + '</td>' +
 					'</tr>' +
 				'</tfoot>' +
@@ -278,6 +288,7 @@ civitas.PANEL_COUNCIL = {
 					'<td></td>' +
 					'<td class="tips center" title="Current level / Maximum level">Level</td>' +
 					'<td>Tax</td>' +
+					'<td>Research</td>' +
 					'<td>Materials</td>' +
 				'</tr>' +
 			'</thead>';
@@ -289,8 +300,15 @@ civitas.PANEL_COUNCIL = {
 					'<td class="center">' + buildings[l].get_level() + ' / ' + (typeof building_data.levels !== 'undefined' ? building_data.levels : 1) + '</td>' +
 					'<td>';
 					if (building_data.tax) {
-						total_tax += (buildings[l].has_problems() === false) ? buildings[l].get_level() * building_data.tax : 0;
+						total_tax += (buildings[l].has_problems() === false) ? buildings[l].get_tax_amount(building_data.tax) : 0;
 						_t += ' +' + buildings[l].get_level() * building_data.tax + ' ' + civitas.ui.resource_small_img('coins');
+					}
+				_t += '</td>' +
+					'<td>';
+					if (building_data.tax) {
+						if (core.get_tax_modifier(building_data) > 0) {
+							_t += ' +' + core.get_tax_modifier(building_data) + ' ' + civitas.ui.resource_small_img('coins');
+						}
 					}
 				_t += '</td>' +
 					'<td>';
@@ -315,7 +333,7 @@ civitas.PANEL_COUNCIL = {
 					'<tr>' +
 						'<td>Income</td>' +
 						'<td></td>' +
-						'<td>+' + total_tax + ' ' + civitas.ui.resource_small_img('coins') + '</td>' +
+						'<td colspan="2">+' + total_tax + ' ' + civitas.ui.resource_small_img('coins') + '</td>' +
 						'<td></td>' +
 					'</tr>' +
 				'</tfoot>' +
@@ -327,6 +345,7 @@ civitas.PANEL_COUNCIL = {
 					'<td></td>' +
 					'<td class="tips center" title="Current level / Maximum level">Level</td>' +
 					'<td>Production</td>' +
+					'<td>Research</td>' +
 					'<td>Materials</td>' +
 					'<td></td>' +
 				'</tr>' +
@@ -340,7 +359,16 @@ civitas.PANEL_COUNCIL = {
 					'<td>';
 					if (building_data.production) {
 						for (let item in building_data.production) {
-							_t += ' +' + buildings[l].get_level() * building_data.production[item] + ' ' + civitas.ui.resource_small_img(item);
+							_t += ' +' + (buildings[l].get_level() * building_data.production[item]) + ' ' + civitas.ui.resource_small_img(item);
+						}
+					}
+				_t += '</td>' +
+					'<td>';
+					if (building_data.production) {
+						for (let item in building_data.production) {
+							if (core.get_prod_modifier(building_data) > 0) {
+								_t += ' +' + core.get_prod_modifier(building_data) + ' ' + civitas.ui.resource_small_img(item);
+							}
 						}
 					}
 				_t += '</td>' +
@@ -370,6 +398,7 @@ civitas.PANEL_COUNCIL = {
 						'<td></td>' +
 						'<td class="center">Level</td>' +
 						'<td>Production</td>' +
+						'<td>Research</td>' +
 						'<td>Materials</td>' +
 						'<td></td>' +
 					'</tr>' +

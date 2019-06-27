@@ -612,14 +612,14 @@
 }
 
 #panel-academy {
-	max-height: 600px;
+	max-height: 700px;
 	max-width: 620px;
 	width: 620px;
 }
 
 #panel-academy .column-left {
 	width: 310px;
-	height: 400px;
+	max-height: 400px;
 	overflow: auto;
 	margin-top:10px;
 	float: left;

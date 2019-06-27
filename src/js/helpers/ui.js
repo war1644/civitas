@@ -219,7 +219,7 @@ civitas.ui = {
 
 	level_panel: function (level, new_level, max_level) {
 		let out = '<dt>Level</dt>' +
-			'<dd>' + new_level + ' / ' + max_level + ' </dd>';
+			'<dd><span title="Current building level" class="tips">' + new_level + '</span> / <span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '</span> </dd>';
 		return out;
 	},
 
@@ -435,8 +435,12 @@ civitas.ui = {
 					out += b.name + ' level ' + requires.buildings[item] + '<br />'
 				}
 			}
+			if (typeof requires.research !== 'undefined') {
+				let r = civitas.RESEARCH[civitas.RESEARCH.findIndexM(requires.research)];
+				out += 'Research: ' + r.name + '<br />';
+			}
 			if (typeof requires.settlement_level !== 'undefined') {
-				out += 'City level ' + requires.settlement_level;
+				out += 'Setlement: level ' + requires.settlement_level;
 			}
 			out += '</dd>';
 		}

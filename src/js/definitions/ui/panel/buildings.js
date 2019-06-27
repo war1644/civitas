@@ -46,17 +46,19 @@ civitas.PANEL_BUILDINGS = {
 			for (let i = 0; i < civitas.BUILDINGS_CATEGORIES[category].length; i++) {
 				let building = civitas.BUILDINGS_CATEGORIES[category][i];
 				if ($.inArray(building, available_buildings) !== -1) {
-					let building_data = civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(building)];
-					let _i = settlement.is_building_built(building_data.handle);
-					let building_image = building_data.handle;
-					if (building_data.handle.slice(0, 5) === 'house') {
-						building_image = building_data.handle.slice(0, 5);
+					let building_data = core.get_building_config_data(building);
+					if (building_data) {
+						let _i = settlement.is_building_built(building_data.handle);
+						let building_image = building_data.handle;
+						if (building_data.handle.slice(0, 5) === 'house') {
+							building_image = building_data.handle.slice(0, 5);
+						}
+						let _image = (typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false) ? building_image : building_image + building_data.level;
+						_t += '<div data-handle="' + building_data.handle + '" class="building-item' + ((_i === true) ? ' disabled' : '') + '">' +
+								'<span class="title">' + building_data.name + '</span>' +
+								'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + _image + '.png" />' +
+							'</div>';
 					}
-					let _image = (typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false) ? building_image : building_image + building_data.level;
-					_t += '<div data-handle="' + building_data.handle + '" class="building-item' + ((_i === true) ? ' disabled' : '') + '">' +
-							'<span class="title">' + building_data.name + '</span>' +
-							'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + _image + '.png" />' +
-						'</div>';
 				}
 			}
 			_t += '</div>';
@@ -110,127 +112,133 @@ civitas.PANEL_BUILDINGS = {
 			$(this).addClass('active');
 			$(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
 			let handle = $(this).data('handle');
-			let building = civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(handle)];
-			$(el + ' header span').empty().html('City Buildings - ' + building.name);
-			$(el + ' .b-desc').html(building.description);
-			let _z = '<dl class="nomg">';
-			for (let y in building.cost) {
-				_z += '<dt>' + civitas.utils.nice_numbers(building.cost[y]) + '</dt>' +
-					'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
-			}
-			_z += '</dl>';
-			$(el + ' .b-cost').append(_z);
-			if (typeof building.levels !== 'undefined') {
-				$(el + ' .b-levels').empty().append('<dl class="nomg">' +
-					'<dt>Upgrades</dt>' +
-						'<dd>' + building.levels + '</dd>' +
-				'</dl>');
-				$('fieldset.levels').show();
-			} else {
-				$('fieldset.levels').hide();
-			}
-			if (typeof building.requires !== 'undefined') {
-				_z = '<dl class="nomg">';
-				if (typeof building.requires.buildings !== 'undefined') {
-					for (let item in building.requires.buildings) {
-						_z += '<dt>Building</dt>' +
-							'<dd>' + core.get_building_config_data(item).name + ' (' + building.requires.buildings[item] + ')</dd>';
-					}
-				}
-				_z += '<dt>City level</dt>' +
-					'<dd>' + building.requires.settlement_level + '</dd>' +
-				'</dl>';
-				$(el + ' .b-req').append(_z);
-			}
-			if (typeof building.chance !== 'undefined') {
-				_z = '<dl class="nomg">';
-				for (let chance in building.chance) {
-					_z += '<dt>' + building.chance[chance] * 100 + '%</dt>' +
-						'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(chance) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + chance + '.png" /></dd>';
+			let building = core.get_building_config_data(handle);
+			if (building) {
+				$(el + ' header span').empty().html('City Buildings - ' + building.name);
+				$(el + ' .b-desc').html(building.description);
+				let _z = '<dl class="nomg">';
+				for (let y in building.cost) {
+					_z += '<dt>' + civitas.utils.nice_numbers(building.cost[y]) + '</dt>' +
+						'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 				}
 				_z += '</dl>';
-				$(el + ' .b-chance').append(_z);
-				$('fieldset.extra').show();
-			} else {
-				$('fieldset.extra').hide();
-			}
-			if (building.is_production === true) {
-				if (typeof building.production !== 'undefined') {
+				$(el + ' .b-cost').append(_z);
+				if (typeof building.levels !== 'undefined') {
+					$(el + ' .b-levels').empty().append('<dl class="nomg">' +
+						'<dt>Upgrades</dt>' +
+							'<dd>' + building.levels + '</dd>' +
+					'</dl>');
+					$('fieldset.levels').show();
+				} else {
+					$('fieldset.levels').hide();
+				}
+				if (typeof building.requires !== 'undefined') {
 					_z = '<dl class="nomg">';
-					for (let y in building.production) {
-						_z += '<dt>' + building.production[y] + '</dt>' +
-							'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
+					if (typeof building.requires.buildings !== 'undefined') {
+						for (let item in building.requires.buildings) {
+							_z += '<dt>Building</dt>' +
+								'<dd>' + core.get_building_config_data(item).name + ' (' + building.requires.buildings[item] + ')</dd>';
+						}
+					}
+					if (typeof building.requires.research !== 'undefined') {
+						_z += '<dt>Research</dt>' +
+							'<dd>' + core.get_research_config_data(building.requires.research).name + '</dd>';
+					}
+					_z += '<dt>City level</dt>' +
+						'<dd>' + building.requires.settlement_level + '</dd>' +
+					'</dl>';
+					$(el + ' .b-req').append(_z);
+				}
+				if (typeof building.chance !== 'undefined') {
+					_z = '<dl class="nomg">';
+					for (let chance in building.chance) {
+						_z += '<dt>' + building.chance[chance] * 100 + '%</dt>' +
+							'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(chance) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + chance + '.png" /></dd>';
 					}
 					_z += '</dl>';
-					$(el + ' .b-prod').append(_z);
-					$('fieldset.production').show();
+					$(el + ' .b-chance').append(_z);
+					$('fieldset.extra').show();
 				} else {
-					$('fieldset.production').hide();
+					$('fieldset.extra').hide();
 				}
-				if (typeof building.materials !== 'undefined') {
-					_z = '<dl class="nomg">';
-					if (Array.isArray(building.materials)) {
-						for (let i = 0; i < building.materials.length; i++) {
-							for (let y in building.materials[i]) {
-								_z += '<dt>' + building.materials[i][y] + '</dt>' +
+				if (building.is_production === true) {
+					if (typeof building.production !== 'undefined') {
+						_z = '<dl class="nomg">';
+						for (let y in building.production) {
+							_z += '<dt>' + building.production[y] + '</dt>' +
+								'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
+						}
+						_z += '</dl>';
+						$(el + ' .b-prod').append(_z);
+						$('fieldset.production').show();
+					} else {
+						$('fieldset.production').hide();
+					}
+					if (typeof building.materials !== 'undefined') {
+						_z = '<dl class="nomg">';
+						if (Array.isArray(building.materials)) {
+							for (let i = 0; i < building.materials.length; i++) {
+								for (let y in building.materials[i]) {
+									_z += '<dt>' + building.materials[i][y] + '</dt>' +
+										'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
+								}
+							}
+						} else {
+							for (let y in building.materials) {
+								_z += '<dt>' + building.materials[y] + '</dt>' +
 									'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 							}
 						}
+						_z += '</dl>';
+						$(el + ' .b-mats').append(_z);
+						$('fieldset.materials').show();
 					} else {
+						$('fieldset.materials').hide();
+					}
+				} else {
+					$('fieldset.production, fieldset.materials').hide();
+				}
+				if (building.is_housing === true) {
+					if (typeof building.materials !== 'undefined') {
+						_z = '<dl class="nomg">';
 						for (let y in building.materials) {
 							_z += '<dt>' + building.materials[y] + '</dt>' +
 								'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 						}
+						_z += '</dl>';
+						$(el + ' .b-mats').append(_z);
+						$('fieldset.materials').show();
 					}
-					_z += '</dl>';
-					$(el + ' .b-mats').append(_z);
-					$('fieldset.materials').show();
+					if (typeof building.tax !== 'undefined') {
+						_z = '<dl class="nomg">' +
+								'<dt>Tax</dt>' +
+								'<dd>' + building.tax + '<img class="small tips" title="Coins" src="' + civitas.ASSETS_URL + 'images/assets/resources/coins.png" /></dd>' +
+							'</dl>';
+						$(el + ' .b-tax').append(_z);
+						$('fieldset.taxes').show();
+					}
 				} else {
-					$('fieldset.materials').hide();
+					$('fieldset.taxes').hide();
 				}
-			} else {
-				$('fieldset.production, fieldset.materials').hide();
-			}
-			if (building.is_housing === true) {
-				if (typeof building.materials !== 'undefined') {
-					_z = '<dl class="nomg">';
-					for (let y in building.materials) {
-						_z += '<dt>' + building.materials[y] + '</dt>' +
-							'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
-					}
-					_z += '</dl>';
-					$(el + ' .b-mats').append(_z);
-					$('fieldset.materials').show();
-				}
-				if (typeof building.tax !== 'undefined') {
+				if (typeof building.storage !== 'undefined') {
+					$('fieldset.taxes, fieldset.materials').hide();
 					_z = '<dl class="nomg">' +
-							'<dt>Tax</dt>' +
-							'<dd>' + building.tax + '<img class="small tips" title="Coins" src="' + civitas.ASSETS_URL + 'images/assets/resources/coins.png" /></dd>' +
+							'<dt>' + building.storage + '</dt>' +
+							'<dd><img class="small tips" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" /></dd>' +
 						'</dl>';
-					$(el + ' .b-tax').append(_z);
-					$('fieldset.taxes').show();
+					$(el + ' .b-store').append(_z);
+					$('fieldset.storage').show();
+				} else {
+					$('fieldset.storage').hide();
 				}
-			} else {
-				$('fieldset.taxes').hide();
+				let _i = settlement.is_building_built(building.handle);
+				if (_i !== true) {
+					$(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
+				} else {
+					$(el + ' .toolbar').append('You already constructed this building.');
+				}
+				$(el + ' .right').show();
 			}
-			if (typeof building.storage !== 'undefined') {
-				$('fieldset.taxes, fieldset.materials').hide();
-				_z = '<dl class="nomg">' +
-						'<dt>' + building.storage + '</dt>' +
-						'<dd><img class="small tips" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" /></dd>' +
-					'</dl>';
-				$(el + ' .b-store').append(_z);
-				$('fieldset.storage').show();
-			} else {
-				$('fieldset.storage').hide();
-			}
-			let _i = settlement.is_building_built(building.handle);
-			if (_i !== true) {
-				$(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
-			} else {
-				$(el + ' .toolbar').append('You already constructed this building.');
-			}
-			$(el + ' .right').show();
 			return false;
 		}).on('click', '.btn.build', function () {
 			let handle = $(this).data('handle');

@@ -380,7 +380,8 @@ civitas.objects.building = function(params) {
 		if (typeof type === 'undefined') {
 			type = this.type;
 		}
-		return civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(type)];
+		return this.core().get_building_config_data(type);
+		//return civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(type)];
 	};
 
 	/**
@@ -423,6 +424,22 @@ civitas.objects.building = function(params) {
 	};
 
 	/**
+	 * Check if this building has all the research requirements.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
+	this.has_research_requirements = function() {
+		let building = this.get_building_data();
+		if (typeof building.requires.research !== 'undefined') {
+			if (!this.core().has_research(building.requires.research)) {
+				return false;
+			}
+		}
+		return true;
+	};
+
+	/**
 	 * Check if this building has all the settlement level requirements.
 	 *
 	 * @public
@@ -445,7 +462,7 @@ civitas.objects.building = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.has_requirements = function() {
-		return this.has_building_requirements() && this.has_settlement_requirements();
+		return this.has_building_requirements() && this.has_settlement_requirements() && this.has_research_requirements();
 	};
 
 	/**
@@ -456,9 +473,20 @@ civitas.objects.building = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.tax = function(amount) {
-		amount = amount * this.get_level();
-		this.get_settlement().inc_coins(amount);
+		let _amount = this.get_tax_amount(amount);
+		this.get_settlement().inc_coins(_amount);
 		return this;
+	};
+
+	/**
+	 * Return the amount of taxation based on the settlement research.
+	 *
+	 * @public
+	 * @param {Number}
+	 * @returns {Number}
+	 */
+	this.get_tax_amount = function(amount) {
+		return amount * this.get_level() + this.core().get_tax_modifier(this.get_handle());
 	};
 
 	/**
@@ -490,6 +518,7 @@ civitas.objects.building = function(params) {
 			} else if (item === 'prestige') {
 				settlement.raise_prestige(amount);
 			} else {
+				amount += this.core().get_prod_modifier(building);
 				settlement.add_to_storage(item, amount);
 				if (typeof building.chance !== 'undefined') {
 					for (let itemo in building.chance) {
@@ -705,7 +734,7 @@ civitas.objects.building = function(params) {
 		let _m = '';
 		if (typeof building.production !== 'undefined') {
 			for (let item in building.production) {
-				_p += (building.production[item] * this.get_level()) + ' ' + item + ', ';
+				_p += (building.production[item] * this.get_level() + this.core().get_prod_modifier(building)) + ' ' + item + ', ';
 			}
 			_p = _p.substring(0, _p.length - 2);
 		}
@@ -730,9 +759,8 @@ civitas.objects.building = function(params) {
 			}
 		}
 		if (typeof building.tax !== 'undefined') {
-			this.core().log('game', this.get_name() + ' used ' + _m + ' and got taxed for ' + (building.tax * this.get_level()) + ' coins.');
-		} else if (typeof building.production !== 'undefined' &&
-			typeof building.materials === 'undefined') {
+			this.core().log('game', this.get_name() + ' used ' + _m + ' and got taxed for ' + this.get_tax_amount(building.tax) + ' coins.');
+		} else if (typeof building.production !== 'undefined' && typeof building.materials === 'undefined') {
 			this.core().log('game', this.get_name() + ' produced ' + _p + '.');
 		} else {
 			this.core().log('game', this.get_name() + ' used ' + _m + ' and produced ' + _p + '.');

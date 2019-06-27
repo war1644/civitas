@@ -291,6 +291,15 @@ civitas.ACTION_DIPLOMACY = 0;
 civitas.ACTION_CAMPAIGN = 1;
 
 /**
+ * Research action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.ACTION_RESEARCH = 2;
+
+/**
  * Error notification
  *
  * @constant
