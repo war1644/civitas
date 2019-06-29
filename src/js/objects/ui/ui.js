@@ -968,7 +968,7 @@ civitas.objects.ui = function (core) {
 		const settlement = this.core().get_settlement();
 		if (typeof settlement !== 'undefined') {
 			$('.citylevel').html(settlement.level());
-			if (settlement.fame() >= civitas.LEVELS[settlement.level()]) {
+			if (settlement.fame() >= this.core().level_to_fame(settlement.level())) {
 				this.core().level_up();
 			}
 		}

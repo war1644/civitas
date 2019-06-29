@@ -142,7 +142,6 @@ civitas.objects.settlement = function(params) {
 		this.properties.ruler = params.properties.ruler;
 		this.properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;
 		this.properties.waterside = (typeof params.properties.waterside !== 'undefined') ? params.properties.waterside : false;
-		this.properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.properties.level * civitas.POPULATION_PER_LEVEL;
 		this.properties.type = (typeof params.properties.type !== 'undefined') ? params.properties.type : civitas.CITY;
 		this.army = this.load_army(params.army);
 		this._mercenary = (typeof params.mercenary !== 'undefined') ? params.mercenary : [];
@@ -166,7 +165,7 @@ civitas.objects.settlement = function(params) {
 			};
 		}
 		if (this.is_player() === false) {
-			this.resources.fame = civitas.LEVELS[this.level()];
+			this.resources.fame = this.core().level_to_fame(this.level());
 			this._ai = new civitas.modules.ai({
 				core: this,
 				type: this.properties.ruler.personality
@@ -182,6 +181,7 @@ civitas.objects.settlement = function(params) {
 		} else {
 			this.properties.climate = params.properties.climate;
 		}
+		this.properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.level() * civitas.POPULATION_PER_LEVEL;
 		return this;
 	};
 
@@ -320,9 +320,9 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.level_up = function() {
 		const level = this.level();
-		this.fame(civitas.LEVELS[level]);
+		this.fame(this.core().level_to_fame(level));
 		this.properties.level++;
-		this.properties.population = this.properties.level * civitas.POPULATION_PER_LEVEL;
+		this.properties.population = this.level() * civitas.POPULATION_PER_LEVEL;
 		this.core().ui().log('The city of ' + this.name() + ' is now level ' + this.level() + '.');
 		return this;
 	};
@@ -582,7 +582,10 @@ civitas.objects.settlement = function(params) {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.population = function() {
+	this.population = function(value) {
+		if (typeof value !== 'undefined') {
+			this.properties.population = value;
+		}
 		return this.properties.population;
 	};
 
@@ -1679,10 +1682,8 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.fame = function(value) {
 		if (typeof value !== 'undefined') {
-			if (this.resources.fame >= civitas.LEVELS[civitas.MAX_SETTLEMENT_LEVEL - 1]) {
-				this.resources.fame = civitas.LEVELS[civitas.MAX_SETTLEMENT_LEVEL - 1];
-			} else if (value < 0 || this.resources.fame < 0) {
-				this.resources.fame = 0;
+			if (value < civitas.MIN_FAME_VALUE || this.resources.fame < civitas.MIN_FAME_VALUE) {
+				this.resources.fame = civitas.MIN_FAME_VALUE;
 			} else {
 				this.resources.fame = value;
 			}
@@ -1699,7 +1700,7 @@ civitas.objects.settlement = function(params) {
 	 * @public
 	 */
 	this.reset_fame = function() {
-		return this.fame(0);
+		return this.fame(civitas.MIN_FAME_VALUE);
 	};
 
 	/**

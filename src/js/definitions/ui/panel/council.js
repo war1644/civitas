@@ -196,9 +196,9 @@ civitas.PANEL_COUNCIL = {
 				'<dt>Religion</dt>' +
 				'<dd>' + settlement.religion().name + '</dd>' +
 				'<dt>Level</dt>' +
-				'<dd>' + core.ui().progress((settlement.level() * 100) / civitas.MAX_SETTLEMENT_LEVEL, 'small', settlement.level()) + '</dd>' +
+				'<dd>' + settlement.level() + '</dd>' +
 				'<dt>Fame</dt>' +
-				'<dd>' + core.ui().progress((settlement.fame() * 100) / civitas.LEVELS[settlement.level()], 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(civitas.LEVELS[settlement.level()])) + '</dd>' +
+				'<dd>' + core.ui().progress(settlement.fame() * 100 / core.level_to_fame(settlement.level()), 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(core.level_to_fame(settlement.level()))) + '</dd>' +
 				'<dt>Prestige</dt>' +
 				'<dd>' + core.ui().progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' +
 				'<dt>Espionage</dt>' +

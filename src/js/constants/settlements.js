@@ -424,7 +424,7 @@ civitas.NAMES = [
  * @default
  * @type {Number}
  */
-civitas.MAX_SETTLEMENT_LEVEL = 45;
+civitas.MAX_SETTLEMENT_LEVEL = 99;
 
 /**
  * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
@@ -436,20 +436,10 @@ civitas.MAX_SETTLEMENT_LEVEL = 45;
 civitas.POPULATION_PER_LEVEL = 2300;
 
 /**
- * Fame required for each city level.
- * 
+ * The minimum value settlement fame can have.
+ *
  * @constant
  * @default
- * @type {Array}
+ * @type {Number}
  */
-civitas.LEVELS = [
-	0, 100, 500, 1000, 3000,
-	6500, 12000, 20000, 30000, 45000,
-	60000, 85000, 100000, 140000, 180000,
-	220000, 290000, 350000, 400000, 500000,
-	610000, 730000, 800000, 930000, 1100000,
-	1300000, 1500000, 1800000, 2500000, 3000000, 
-	4000000, 5500000, 6500000, 8000000, 9000000, 
-	10000000, 12000000, 16000000, 20000000, 50000000,
-	60000000, 70000000, 80000000, 90000000, 100000000
-];
+civitas.MIN_FAME_VALUE = 1;

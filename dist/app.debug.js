@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.6292019
+ * @version 0.3.0.6302019
  * @license GPLv3
  */ 'use strict';
 
@@ -297,223 +297,6 @@ civitas.NOTIFY_WAR = 6;
  * @type {Number}
  */
 civitas.MAX_CONSOLE_LINES = 5000;
-
-civitas.INITIAL_SEED = [
-	/* Easy difficulty */
-	{
-		/* Roughness of the world generator */
-		roughness: 5,
-		/* Number of settlements to build initially */
-		settlements: {
-			/* Cities */
-			0: 8, //5,
-			/* Villages */
-			1: 5,
-			/* Metropolis */
-			2: 6, //1,
-			/* Raider camps */
-			3: 6 //0
-		},
-		/* Number of soldiers and ships to build initially */
-		military: {
-			army: {
-				militia: 10,
-				axeman: 2,
-				bowman: 4
-			},
-			navy: {
-				corsair: 2,
-				caravel: 1
-			}
-		},
-		resources: {
-			coins: 55000,
-			fame: 0,
-			faith: 1,
-			prestige: 1,
-			espionage: 1,
-			research: 1,
-			bread: 300,
-			meat: 100,
-			stones: 100,
-			weapons: 100,
-			wheat: 40,
-			wood: 100,
-			woodplanks: 50,
-			tools: 40
-		},
-		buildings: [
-			{
-				handle: 'marketplace',
-				level: 1
-			}, {
-				handle: 'lumberjack',
-				level: 1
-			}, {
-				handle: 'stonequarry',
-				level: 1
-			}, {
-				handle: 'house1',
-				level: 1
-			}, {
-				handle: 'house2',
-				level: 1
-			}
-		]
-	},
-	/* Medium difficulty */
-	{
-		roughness: 6,
-		settlements: {
-			0: 5,
-			1: 10,
-			2: 5,
-			3: 3
-		},
-		military: {
-			army: {
-				militia: 5,
-				axeman: 1,
-				bowman: 2
-			},
-			navy: {
-				corsair: 1,
-				caravel: 1
-			}
-		},
-		resources: {
-			coins: 20000,
-			fame: 0,
-			faith: 1,
-			prestige: 1,
-			espionage: 1,
-			research: 1,
-			bread: 300,
-			meat: 100,
-			stones: 100,
-			weapons: 60,
-			wheat: 40,
-			wood: 100,
-			woodplanks: 30,
-			tools: 20
-		},
-		buildings: [
-			{
-				handle: 'marketplace',
-				level: 1
-			}, {
-				handle: 'lumberjack',
-				level: 1
-			}, {
-				handle: 'stonequarry',
-				level: 1
-			}, {
-				handle: 'house1',
-				level: 1
-			}, {
-				handle: 'house2',
-				level: 1
-			}
-		]
-	},
-	/* Hard difficulty */
-	{
-		roughness: 8,
-		settlements: {
-			0: 10,
-			1: 10,
-			2: 6,
-			3: 10
-		},
-		military: {
-			army: {
-				militia: 3,
-				bowman: 2
-			},
-			navy: {
-				corsair: 1
-			}
-		},
-		resources: {
-			coins: 10000,
-			fame: 0,
-			faith: 1,
-			prestige: 1,
-			espionage: 1,
-			research: 1,
-			bread: 300,
-			meat: 100,
-			stones: 70,
-			wheat: 40,
-			wood: 70,
-			woodplanks: 20,
-			tools: 10
-		},
-		buildings: [
-			{
-				handle: 'marketplace',
-				level: 1
-			}, {
-				handle: 'lumberjack',
-				level: 1
-			}, {
-				handle: 'stonequarry',
-				level: 1
-			}, {
-				handle: 'house1',
-				level: 1
-			}, {
-				handle: 'house2',
-				level: 1
-			}
-		]
-	},
-	/* Hardcore difficulty */
-	{
-		roughness: 1,
-		settlements: {
-			0: 10,
-			1: 20,
-			2: 20,
-			3: 20
-		},
-		military: {
-			army: {},
-			navy: {}
-		},
-		resources: {
-			coins: 5000,
-			fame: 0,
-			faith: 1,
-			prestige: 1,
-			espionage: 1,
-			research: 1,
-			bread: 100,
-			meat: 50,
-			stones: 50,
-			wheat: 40,
-			wood: 50
-		},
-		buildings: [
-			{
-				handle: 'marketplace',
-				level: 1
-			}, {
-				handle: 'lumberjack',
-				level: 1
-			}, {
-				handle: 'stonequarry',
-				level: 1
-			}, {
-				handle: 'house1',
-				level: 1
-			}, {
-				handle: 'house2',
-				level: 1
-			}
-		]
-	}
-];
 
 
 civitas.ERA_1 = 1;
@@ -5653,7 +5436,7 @@ civitas.NAMES = [
  * @default
  * @type {Number}
  */
-civitas.MAX_SETTLEMENT_LEVEL = 45;
+civitas.MAX_SETTLEMENT_LEVEL = 99;
 
 /**
  * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
@@ -5665,23 +5448,13 @@ civitas.MAX_SETTLEMENT_LEVEL = 45;
 civitas.POPULATION_PER_LEVEL = 2300;
 
 /**
- * Fame required for each city level.
- * 
+ * The minimum value settlement fame can have.
+ *
  * @constant
  * @default
- * @type {Array}
+ * @type {Number}
  */
-civitas.LEVELS = [
-	0, 100, 500, 1000, 3000,
-	6500, 12000, 20000, 30000, 45000,
-	60000, 85000, 100000, 140000, 180000,
-	220000, 290000, 350000, 400000, 500000,
-	610000, 730000, 800000, 930000, 1100000,
-	1300000, 1500000, 1800000, 2500000, 3000000, 
-	4000000, 5500000, 6500000, 8000000, 9000000, 
-	10000000, 12000000, 16000000, 20000000, 50000000,
-	60000000, 70000000, 80000000, 90000000, 100000000
-];
+civitas.MIN_FAME_VALUE = 1;
 
 /**
  * List of all available in-game events.
@@ -7875,6 +7648,223 @@ civitas.HEROES = [
 	}
 ];
 
+civitas.INITIAL_SEED = [
+	/* Easy difficulty */
+	{
+		/* Roughness of the world generator */
+		roughness: 5,
+		/* Number of settlements to build initially */
+		settlements: {
+			/* Cities */
+			0: 8, //5,
+			/* Villages */
+			1: 5,
+			/* Metropolis */
+			2: 6, //1,
+			/* Raider camps */
+			3: 6 //0
+		},
+		/* Number of soldiers and ships to build initially */
+		military: {
+			army: {
+				militia: 10,
+				axeman: 2,
+				bowman: 4
+			},
+			navy: {
+				corsair: 2,
+				caravel: 1
+			}
+		},
+		resources: {
+			coins: 55000,
+			fame: civitas.MIN_FAME_VALUE,
+			faith: civitas.MIN_FAITH_VALUE,
+			prestige: civitas.MIN_PRESTIGE_VALUE,
+			espionage: civitas.MIN_ESPIONAGE_VALUE,
+			research: civitas.MIN_RESEARCH_VALUE,
+			bread: 300,
+			meat: 100,
+			stones: 100,
+			weapons: 100,
+			wheat: 40,
+			wood: 100,
+			woodplanks: 50,
+			tools: 40
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
+	},
+	/* Medium difficulty */
+	{
+		roughness: 6,
+		settlements: {
+			0: 5,
+			1: 10,
+			2: 5,
+			3: 3
+		},
+		military: {
+			army: {
+				militia: 5,
+				axeman: 1,
+				bowman: 2
+			},
+			navy: {
+				corsair: 1,
+				caravel: 1
+			}
+		},
+		resources: {
+			coins: 20000,
+			fame: civitas.MIN_FAME_VALUE,
+			faith: civitas.MIN_FAITH_VALUE,
+			prestige: civitas.MIN_PRESTIGE_VALUE,
+			espionage: civitas.MIN_ESPIONAGE_VALUE,
+			research: civitas.MIN_RESEARCH_VALUE,
+			bread: 300,
+			meat: 100,
+			stones: 100,
+			weapons: 60,
+			wheat: 40,
+			wood: 100,
+			woodplanks: 30,
+			tools: 20
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
+	},
+	/* Hard difficulty */
+	{
+		roughness: 8,
+		settlements: {
+			0: 10,
+			1: 10,
+			2: 6,
+			3: 10
+		},
+		military: {
+			army: {
+				militia: 3,
+				bowman: 2
+			},
+			navy: {
+				corsair: 1
+			}
+		},
+		resources: {
+			coins: 10000,
+			fame: civitas.MIN_FAME_VALUE,
+			faith: civitas.MIN_FAITH_VALUE,
+			prestige: civitas.MIN_PRESTIGE_VALUE,
+			espionage: civitas.MIN_ESPIONAGE_VALUE,
+			research: civitas.MIN_RESEARCH_VALUE,
+			bread: 300,
+			meat: 100,
+			stones: 70,
+			wheat: 40,
+			wood: 70,
+			woodplanks: 20,
+			tools: 10
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
+	},
+	/* Hardcore difficulty */
+	{
+		roughness: 1,
+		settlements: {
+			0: 10,
+			1: 20,
+			2: 20,
+			3: 20
+		},
+		military: {
+			army: {},
+			navy: {}
+		},
+		resources: {
+			coins: 5000,
+			fame: civitas.MIN_FAME_VALUE,
+			faith: civitas.MIN_FAITH_VALUE,
+			prestige: civitas.MIN_PRESTIGE_VALUE,
+			espionage: civitas.MIN_ESPIONAGE_VALUE,
+			research: civitas.MIN_RESEARCH_VALUE,
+			bread: 100,
+			meat: 50,
+			stones: 50,
+			wheat: 40,
+			wood: 50
+		},
+		buildings: [
+			{
+				handle: 'marketplace',
+				level: 1
+			}, {
+				handle: 'lumberjack',
+				level: 1
+			}, {
+				handle: 'stonequarry',
+				level: 1
+			}, {
+				handle: 'house1',
+				level: 1
+			}, {
+				handle: 'house2',
+				level: 1
+			}
+		]
+	}
+];
+
 /**
  * Main Game AI (Artificial Intelligence) object.
  * 
@@ -8704,7 +8694,6 @@ civitas.objects.settlement = function(params) {
 		this.properties.ruler = params.properties.ruler;
 		this.properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;
 		this.properties.waterside = (typeof params.properties.waterside !== 'undefined') ? params.properties.waterside : false;
-		this.properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.properties.level * civitas.POPULATION_PER_LEVEL;
 		this.properties.type = (typeof params.properties.type !== 'undefined') ? params.properties.type : civitas.CITY;
 		this.army = this.load_army(params.army);
 		this._mercenary = (typeof params.mercenary !== 'undefined') ? params.mercenary : [];
@@ -8728,7 +8717,7 @@ civitas.objects.settlement = function(params) {
 			};
 		}
 		if (this.is_player() === false) {
-			this.resources.fame = civitas.LEVELS[this.level()];
+			this.resources.fame = this.core().level_to_fame(this.level());
 			this._ai = new civitas.modules.ai({
 				core: this,
 				type: this.properties.ruler.personality
@@ -8744,6 +8733,7 @@ civitas.objects.settlement = function(params) {
 		} else {
 			this.properties.climate = params.properties.climate;
 		}
+		this.properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.level() * civitas.POPULATION_PER_LEVEL;
 		return this;
 	};
 
@@ -8882,9 +8872,9 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.level_up = function() {
 		const level = this.level();
-		this.fame(civitas.LEVELS[level]);
+		this.fame(this.core().level_to_fame(level));
 		this.properties.level++;
-		this.properties.population = this.properties.level * civitas.POPULATION_PER_LEVEL;
+		this.properties.population = this.level() * civitas.POPULATION_PER_LEVEL;
 		this.core().ui().log('The city of ' + this.name() + ' is now level ' + this.level() + '.');
 		return this;
 	};
@@ -9144,7 +9134,10 @@ civitas.objects.settlement = function(params) {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.population = function() {
+	this.population = function(value) {
+		if (typeof value !== 'undefined') {
+			this.properties.population = value;
+		}
 		return this.properties.population;
 	};
 
@@ -10241,10 +10234,8 @@ civitas.objects.settlement = function(params) {
 	 */
 	this.fame = function(value) {
 		if (typeof value !== 'undefined') {
-			if (this.resources.fame >= civitas.LEVELS[civitas.MAX_SETTLEMENT_LEVEL - 1]) {
-				this.resources.fame = civitas.LEVELS[civitas.MAX_SETTLEMENT_LEVEL - 1];
-			} else if (value < 0 || this.resources.fame < 0) {
-				this.resources.fame = 0;
+			if (value < civitas.MIN_FAME_VALUE || this.resources.fame < civitas.MIN_FAME_VALUE) {
+				this.resources.fame = civitas.MIN_FAME_VALUE;
 			} else {
 				this.resources.fame = value;
 			}
@@ -10261,7 +10252,7 @@ civitas.objects.settlement = function(params) {
 	 * @public
 	 */
 	this.reset_fame = function() {
-		return this.fame(0);
+		return this.fame(civitas.MIN_FAME_VALUE);
 	};
 
 	/**
@@ -14863,7 +14854,7 @@ civitas.objects.ui = function (core) {
 		const settlement = this.core().get_settlement();
 		if (typeof settlement !== 'undefined') {
 			$('.citylevel').html(settlement.level());
-			if (settlement.fame() >= civitas.LEVELS[settlement.level()]) {
+			if (settlement.fame() >= this.core().level_to_fame(settlement.level())) {
 				this.core().level_up();
 			}
 		}
@@ -16705,7 +16696,7 @@ civitas.game = function () {
 				resources.faith = civitas.utils.get_random(civitas.MIN_FAITH_VALUE, civitas.MAX_FAITH_VALUE);
 			} else if (settlement === civitas.CAMP) {
 				resources.coins = civitas.utils.get_random(1000, 10000);
-				resources.fame = 1;
+				resources.fame = civitas.MIN_FAME_VALUE;
 				resources.prestige = civitas.MIN_PRESTIGE_VALUE;
 				resources.espionage = civitas.MIN_ESPIONAGE_VALUE;
 				resources.research = civitas.MIN_RESEARCH_VALUE;
@@ -16776,9 +16767,9 @@ civitas.game = function () {
 		}
 		const resources = this.generate_random_resources(true, s_type);
 		if (s_type === civitas.CITY) {
-			level = civitas.utils.get_random(10, civitas.MAX_SETTLEMENT_LEVEL);
+			level = civitas.utils.get_random(10, 30);
 		} else if (s_type === civitas.METROPOLIS) {
-			level = civitas.utils.get_random(20, civitas.MAX_SETTLEMENT_LEVEL);
+			level = civitas.utils.get_random(30, civitas.MAX_SETTLEMENT_LEVEL);
 		} else if (s_type === civitas.VILLAGE) {
 			level = civitas.utils.get_random(1, 5);
 		} else {
@@ -17502,6 +17493,45 @@ civitas.game = function () {
 	 */
 	this.world = function() {
 		return this._world;
+	};
+
+	/**
+	 * Method to calculate exponential fame required for the specified level.
+	 *
+	 * @public
+	 * @param {Number} level
+	 * @returns {Number}
+	 */
+	this.level_to_fame = function (level) {
+		const base_fame = 100;
+		let exp = 0.2;
+		if (level <= 5) {
+			exp = 1.2;
+		} else if (level > 5 && level <= 10) {
+			exp = 0.45;
+		} else if (level > 10 && level <= 15) {
+			exp = 0.31;
+		} else if (level > 15 && level <= 20) {
+			exp = 0.2;
+		} else if (level > 20 && level <= 25) {
+			exp = 0.2;
+		} else if (level > 25 && level <= 30) {
+			exp = 0.2;
+		} else if (level > 30 && level <= 35) {
+			exp = 0.24;
+		} else if (level > 35 && level <= 40) {
+			exp = 0.4;
+		} else if (level > 40 && level <= 45) {
+			exp = 0.5;
+		} else if (level > 45 && level <= 50) {
+			exp = 0.6;
+		}
+		if (level === 1) {
+			return base_fame;
+		} else {
+			let prev = this.level_to_fame(level - 1);
+			return Math.floor(prev + prev * exp);
+		}
 	};
 
 	// Fire up the constructor
@@ -18263,7 +18293,6 @@ civitas.PANEL_HELP = {
 			'<h3>Fame and levels</h3>' +
 			'<p>Each time you reach a specific fame level, your city gets a new level, thus you never lose your initial fame. There are several ways of getting extra fame (besides your initial Marketplace), there are several municipal buildings that add a small amount of fame to your city each day (this amount can be increased by upgrading the buildings).</p>' +
 			'<p>There is no fixed way in which you can lose fame, except the random events that occur from time to time, or if another city manages to incite your population to revolt.</p>' +
-			'<p>The current maximum level a settlement can reach is <strong>' + civitas.MAX_SETTLEMENT_LEVEL + '</strong> and to reach that level your city will need <strong>' + civitas.utils.nice_numbers(civitas.LEVELS[civitas.MAX_SETTLEMENT_LEVEL - 1]) + '</strong> ' + core.ui().resource_small_img('fame') + '. There is no fixed date (in game or real days) to reach that level, it all depends on your decisions, buildings, diplomacy, etc.</p>' +
 			'<h3>Influence</h3>' +
 			'<p>All settlements in the game world have an influence rating with each of the other settlements. The influence drops over time (yearly) and needs to be kept above a certain level, else the other cities might attack your city.</p>' +
 			'<p>Maximum influence a settlement can have is <strong>' + civitas.MAX_INFLUENCE_VALUE + '</strong>.</p>' +
@@ -19749,9 +19778,9 @@ civitas.PANEL_COUNCIL = {
 				'<dt>Religion</dt>' +
 				'<dd>' + settlement.religion().name + '</dd>' +
 				'<dt>Level</dt>' +
-				'<dd>' + core.ui().progress((settlement.level() * 100) / civitas.MAX_SETTLEMENT_LEVEL, 'small', settlement.level()) + '</dd>' +
+				'<dd>' + settlement.level() + '</dd>' +
 				'<dt>Fame</dt>' +
-				'<dd>' + core.ui().progress((settlement.fame() * 100) / civitas.LEVELS[settlement.level()], 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(civitas.LEVELS[settlement.level()])) + '</dd>' +
+				'<dd>' + core.ui().progress(settlement.fame() * 100 / core.level_to_fame(settlement.level()), 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(core.level_to_fame(settlement.level()))) + '</dd>' +
 				'<dt>Prestige</dt>' +
 				'<dd>' + core.ui().progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' +
 				'<dt>Espionage</dt>' +

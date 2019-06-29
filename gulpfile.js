@@ -17,7 +17,6 @@ gulp.task('app', function() {
 	  	'src/js/others/functions.js',
 	  	'src/js/bootstrap.js',
 		'src/js/constants/default.js',
-		'src/js/constants/initial.js',
 		/*
 		'src/js/constants/api.js',
 		*/
@@ -38,6 +37,7 @@ gulp.task('app', function() {
 		'src/js/constants/achievements.js',
 		'src/js/constants/items.js',
 		'src/js/constants/hero.js',
+		'src/js/constants/initial.js',
 		'src/js/objects/modules/ai.js',
 		/*
 		'src/js/objects/modules/api.js',

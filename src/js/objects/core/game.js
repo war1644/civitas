@@ -1358,7 +1358,7 @@ civitas.game = function () {
 				resources.faith = civitas.utils.get_random(civitas.MIN_FAITH_VALUE, civitas.MAX_FAITH_VALUE);
 			} else if (settlement === civitas.CAMP) {
 				resources.coins = civitas.utils.get_random(1000, 10000);
-				resources.fame = 1;
+				resources.fame = civitas.MIN_FAME_VALUE;
 				resources.prestige = civitas.MIN_PRESTIGE_VALUE;
 				resources.espionage = civitas.MIN_ESPIONAGE_VALUE;
 				resources.research = civitas.MIN_RESEARCH_VALUE;
@@ -1429,9 +1429,9 @@ civitas.game = function () {
 		}
 		const resources = this.generate_random_resources(true, s_type);
 		if (s_type === civitas.CITY) {
-			level = civitas.utils.get_random(10, civitas.MAX_SETTLEMENT_LEVEL);
+			level = civitas.utils.get_random(10, 30);
 		} else if (s_type === civitas.METROPOLIS) {
-			level = civitas.utils.get_random(20, civitas.MAX_SETTLEMENT_LEVEL);
+			level = civitas.utils.get_random(30, civitas.MAX_SETTLEMENT_LEVEL);
 		} else if (s_type === civitas.VILLAGE) {
 			level = civitas.utils.get_random(1, 5);
 		} else {
@@ -2155,6 +2155,45 @@ civitas.game = function () {
 	 */
 	this.world = function() {
 		return this._world;
+	};
+
+	/**
+	 * Method to calculate exponential fame required for the specified level.
+	 *
+	 * @public
+	 * @param {Number} level
+	 * @returns {Number}
+	 */
+	this.level_to_fame = function (level) {
+		const base_fame = 100;
+		let exp = 0.2;
+		if (level <= 5) {
+			exp = 1.2;
+		} else if (level > 5 && level <= 10) {
+			exp = 0.45;
+		} else if (level > 10 && level <= 15) {
+			exp = 0.31;
+		} else if (level > 15 && level <= 20) {
+			exp = 0.2;
+		} else if (level > 20 && level <= 25) {
+			exp = 0.2;
+		} else if (level > 25 && level <= 30) {
+			exp = 0.2;
+		} else if (level > 30 && level <= 35) {
+			exp = 0.24;
+		} else if (level > 35 && level <= 40) {
+			exp = 0.4;
+		} else if (level > 40 && level <= 45) {
+			exp = 0.5;
+		} else if (level > 45 && level <= 50) {
+			exp = 0.6;
+		}
+		if (level === 1) {
+			return base_fame;
+		} else {
+			let prev = this.level_to_fame(level - 1);
+			return Math.floor(prev + prev * exp);
+		}
 	};
 
 	// Fire up the constructor
