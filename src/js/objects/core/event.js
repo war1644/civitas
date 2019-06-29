@@ -108,11 +108,12 @@ civitas.objects.event = function (params) {
 	 * @returns {civitas.objects.event}
 	 */
 	this.process = function () {
-		let core = this.core();
-		let random_s_id = civitas.utils.get_random(1, core.settlements.length);
-		let with_settlement = core.get_settlement(random_s_id);
-		if (typeof with_settlement !== 'undefined') {
-			let description = this._description.replace(/SETTLEMENT/g, with_settlement.name());
+		const core = this.core();
+		const random_s_id = civitas.utils.get_random(1, core.settlements.length);
+		const with_settlement = core.get_settlement(random_s_id);
+		let description = '';
+		if (with_settlement !== false) {
+			description = this._description.replace(/SETTLEMENT/g, with_settlement.name());
 			if (this._raise !== null) {
 				for (let item in this._raise) {
 					if (item === 'influence') {
@@ -140,30 +141,25 @@ civitas.objects.event = function (params) {
 		}
 		if (this._destroy !== null) {
 			let buildings = core.get_settlement().get_buildings();
-			let building = civitas.utils.get_random(1, buildings.length);
-			let _building = buildings[building];
+			const building = civitas.utils.get_random(1, buildings.length);
+			const _building = buildings[building];
 			if (typeof _building !== 'undefined') {
-				let name = _building.get_name();
+				const name = _building.get_name();
 				buildings[building].demolish();
 				let replace = new RegExp('BUILDING', 'g');
 				description = description.replace(replace, name);
 			}
 		}
 		if (this._build !== null) {
-			let buildings = core.get_settlement().get_buildings();
+			const buildings = core.get_settlement().get_buildings();
 			// Todo
 			let replace = new RegExp('BUILDING', 'g');
 			description = description.replace(replace, name);
 		}
 		if (core.get_settlement().is_player()) {
-			core._notify({
-				title: 'Event: ' + this._name,
-				content: description,
-				timeout: false,
-				mode: civitas.NOTIFY_EVENT
-			});
+			core.ui().notify(description, 'Event: ' + this._name, false, civitas.NOTIFY_EVENT);
 		}
-		core.log('event', this._name);
+		core.ui().log('event', this._name);
 		return this;
 	};
 

@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>objects/ui/ui.js - Civitas game</title>
+    
+    <meta name="description" content="Civitas is an empire-building game written in Javascript with the help of the jQuery library." />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://sizeof.cat" target="_blank" class="menu-item" id="site_link" >sizeof(cat)</a></h2><h2><a href="https://github.com/sizeofcat/civitas" target="_blank" class="menu-item" id="github_link" >GitHub</a></h2><h3>Classes</h3><ul><li><a href="civitas.controls.modal.html">modal</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.controls.modal.html#alert">alert</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.modal.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.modal.html#on_click">on_click</a></li></ul></li><li><a href="civitas.controls.panel.html">panel</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.controls.panel.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.panel.html#destroy">destroy</a></li></ul></li><li><a href="civitas.controls.window.html">window</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#destroy">destroy</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#handle">handle</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#id">id</a></li></ul></li><li><a href="civitas.game.html">game</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.game.html#achievement_points">achievement_points</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#achievements">achievements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#add_random_settlement">add_random_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#add_settlement">add_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#check_achievements">check_achievements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#date">date</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#decrypt">decrypt</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#difficulty">difficulty</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#disband_city">disband_city</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#do_achievement">do_achievement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#do_research">do_research</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#encrypt">encrypt</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#export">export</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#format_date">format_date</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_army">generate_random_army</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_navy">generate_random_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_resources">generate_random_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_settlement_data">generate_random_settlement_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_achievement_config_data">get_achievement_config_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_black_market">get_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_building_config_data">get_building_config_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_num_settlements">get_num_settlements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_prod_modifier">get_prod_modifier</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_nationality">get_random_nationality</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_personality">get_random_personality</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_religion">get_random_religion</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_resource">get_random_resource</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_research_config_data">get_research_config_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_settings">get_settings</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_settlement">get_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_settlements">get_settlements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_storage_data">get_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_tax_modifier">get_tax_modifier</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#has_achievement">has_achievement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#has_research">has_research</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#has_storage_data">has_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#import">import</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#in_queue">in_queue</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_autumn">is_autumn</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_paused">is_paused</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_spring">is_spring</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_summer">is_summer</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_winter">is_winter</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#level_up">level_up</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#load_game_data">load_game_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#mode">mode</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#new_game">new_game</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#pause">pause</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue">queue</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue_add">queue_add</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue_process_action">queue_process_action</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue_remove_action">queue_remove_action</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#refresh_trades">refresh_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#research">research</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#reset_black_market">reset_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#reset_storage_data">reset_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#save">save</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#save_and_refresh">save_and_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#set_black_market">set_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#set_settings">set_settings</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#set_storage_data">set_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#ui">ui</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#unpause">unpause</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#version">version</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#world">world</a></li></ul></li><li><a href="civitas.modules.ai.html">ai</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.modules.ai.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.ai.html#process">process</a></li></ul></li><li><a href="civitas.modules.api.html">api</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#_request">_request</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#api_version">api_version</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#city_info">city_info</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#do_export">do_export</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#do_import">do_import</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#heartbeat">heartbeat</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#login">login</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#logout">logout</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#register">register</a></li></ul></li><li><a href="civitas.modules.jailer.html">jailer</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.modules.jailer.html#check">check</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.jailer.html#core">core</a></li></ul></li><li><a href="civitas.objects.battleground.html">battleground</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#add">add</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#attack">attack</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#distance">distance</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#end_turn">end_turn</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#grid">grid</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#highlight_cells">highlight_cells</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#log">log</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#move">move</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#num_turns">num_turns</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_attack">on_attack</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_end_turn">on_end_turn</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_lose">on_lose</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_move">on_move</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_select">on_select</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_win">on_win</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#properties">properties</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#redraw">redraw</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#show_stats">show_stats</a></li></ul></li><li><a href="civitas.objects.building.html">building</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#demolish">demolish</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#downgrade">downgrade</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_building_data">get_building_data</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_handle">get_handle</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_level">get_level</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_name">get_name</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_settlement">get_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_settlement_resources">get_settlement_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_tax_amount">get_tax_amount</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_type">get_type</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_upgrade_costs">get_upgrade_costs</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_building_requirements">has_building_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_problems">has_problems</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_requirements">has_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_research_requirements">has_research_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_settlement_requirements">has_settlement_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_downgradable">is_downgradable</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_housing_building">is_housing_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_marketplace">is_marketplace</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_municipal_building">is_municipal_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_production_building">is_production_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_stopped">is_stopped</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_upgradable">is_upgradable</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#log_to_console">log_to_console</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#notify">notify</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#process">process</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#produce">produce</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#set_level">set_level</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#start_production">start_production</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#stop_production">stop_production</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#tax">tax</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#upgrade">upgrade</a></li></ul></li><li><a href="civitas.objects.event.html">event</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.event.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.event.html#process">process</a></li></ul></li><li><a href="civitas.objects.hero.html">hero</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.hero.html#core">core</a></li></ul></li><li><a href="civitas.objects.settlement.html">settlement</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#add_to_black_market">add_to_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#add_to_storage">add_to_storage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#adjust_campaign_cost">adjust_campaign_cost</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#ai">ai</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#build">build</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#buy_from_settlement">buy_from_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#calc_neighbours">calc_neighbours</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_build_ships">can_build_ships</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_diplomacy">can_diplomacy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_recruit_heroes">can_recruit_heroes</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_recruit_soldiers">can_recruit_soldiers</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_research">can_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_trade">can_trade</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#change_religion">change_religion</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#city_council">city_council</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#climate">climate</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#coins">coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#color">color</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#dec_coins">dec_coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#diplomacy">diplomacy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#disband_ship">disband_ship</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#disband_soldier">disband_soldier</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#espionage">espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#export">export</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#export_buildings">export_buildings</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#faith">faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#fame">fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_army">get_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_building">get_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_building_data">get_building_data</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_buildings">get_buildings</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_diplomacy_status">get_diplomacy_status</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_influence_with_settlement">get_influence_with_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_navy">get_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_neighbours">get_neighbours</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_properties">get_properties</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_rank">get_rank</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_resources">get_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_spoils">get_spoils</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_trades">get_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_trades_exports">get_trades_exports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_trades_imports">get_trades_imports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_type">get_type</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_any_resources">has_any_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_coins">has_coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_resource">has_resource</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_resources">has_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_same_nationality">has_same_nationality</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_ships">has_ships</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_soldiers">has_soldiers</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_storage_space_for">has_storage_space_for</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#heroes">heroes</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#icon">icon</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#id">id</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#inc_coins">inc_coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_building_built">is_building_built</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_camp">is_camp</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_city">is_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_mercenary_recruited">is_mercenary_recruited</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_metropolis">is_metropolis</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_player">is_player</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_urban">is_urban</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_village">is_village</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#level">level</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#level_up">level_up</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#load_army">load_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#location">location</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_espionage">lower_espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_faith">lower_faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_fame">lower_fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_influence">lower_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_prestige">lower_prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_research">lower_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#mercenary">mercenary</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#merge_army">merge_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#merge_navy">merge_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#merge_resources">merge_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#name">name</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#nationality">nationality</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#nice_name">nice_name</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#num_ships">num_ships</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#num_soldiers">num_soldiers</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#personality">personality</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#population">population</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#prestige">prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_espionage">raise_espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_faith">raise_faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_fame">raise_fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_influence">raise_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_prestige">raise_prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_research">raise_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#recruit_mercenary_army">recruit_mercenary_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#recruit_ship">recruit_ship</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#recruit_soldier">recruit_soldier</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#refresh_heroes">refresh_heroes</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#release_mercenaries">release_mercenaries</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#release_mercenary">release_mercenary</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#religion">religion</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_from_exports">remove_from_exports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_from_imports">remove_from_imports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_resource">remove_resource</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_resources">remove_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#rename">rename</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#research">research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_espionage">reset_espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_faith">reset_faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_fame">reset_fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_influence">reset_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_prestige">reset_prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_research">reset_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_trades">reset_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#ruler">ruler</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#sell_to_settlement">sell_to_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_army">set_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_influence">set_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_navy">set_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_resources">set_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_trades">set_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#setup_initial_buildings">setup_initial_buildings</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#split_army">split_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#split_navy">split_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#status">status</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#storage">storage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_camp">to_camp</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_city">to_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_metropolis">to_metropolis</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_village">to_village</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#waterside">waterside</a></li></ul></li><li><a href="civitas.objects.ui.html">ui</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#army_img">army_img</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#army_list">army_list</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#build_main">build_main</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#building_element">building_element</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#building_panel">building_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#building_panel_template">building_panel_template</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#chance_panel">chance_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#check_storage">check_storage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#close_panel">close_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#cost_panel">cost_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#error">error</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#generic_panel_template">generic_panel_template</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_cell_middle">get_cell_middle</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_cell_middle_coords">get_cell_middle_coords</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_panel">get_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_panels">get_panels</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_random_color">get_random_color</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#hide_loader">hide_loader</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#item_tooltip">item_tooltip</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#level_panel">level_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#log">log</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#materials_panel">materials_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#navy_img">navy_img</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#navy_list">navy_list</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#normal_panel">normal_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#notify">notify</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#open_modal">open_modal</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#open_panel">open_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#open_window">open_window</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#panel_btn">panel_btn</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#panel_exists">panel_exists</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#production_panel">production_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#progress">progress</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh">refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh_panels">refresh_panels</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh_toolbar">refresh_toolbar</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh_ui">refresh_ui</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#requires_panel">requires_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resize">resize</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resource_small_img">resource_small_img</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resource_storage_el">resource_storage_el</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resource_storage_small_el">resource_storage_small_el</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#show_loader">show_loader</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#storage_panel">storage_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#tabs">tabs</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#tax_panel">tax_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#trades_list">trades_list</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#window_about_section">window_about_section</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#window_exists">window_exists</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#worldmap_scrollto">worldmap_scrollto</a></li></ul></li><li><a href="civitas.objects.world.html">world</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#add_city">add_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#colors">colors</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#data">data</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_climate_from_terrain">get_climate_from_terrain</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_distance">get_distance</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_distance_in_days">get_distance_in_days</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex">get_hex</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex_elevation">get_hex_elevation</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex_moisture">get_hex_moisture</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex_terrain">get_hex_terrain</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_random_location">get_random_location</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_terrain_from_climate">get_terrain_from_climate</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#hex_is_locked">hex_is_locked</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#hex_is_water">hex_is_water</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#hex_locked_by">hex_locked_by</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#lock_hex">lock_hex</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#properties">properties</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#remove_city">remove_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#set_hex">set_hex</a></li></ul></li></ul><h3>Mixins</h3><ul><li><a href="civitas.html">civitas</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.html#.ACHIEVEMENTS">ACHIEVEMENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ACTION_CAMPAIGN">ACTION_CAMPAIGN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ACTION_DIPLOMACY">ACTION_DIPLOMACY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ACTION_RESEARCH">ACTION_RESEARCH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.API_ENTRY_POINT">API_ENTRY_POINT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.API_URL">API_URL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.API_VERSION">API_VERSION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_CLOTH">ARMOR_TYPE_CLOTH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_LEATHER">ARMOR_TYPE_LEATHER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_MAIL">ARMOR_TYPE_MAIL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_PLATE">ARMOR_TYPE_PLATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMY_COSTS">ARMY_COSTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ASSETS_URL">ASSETS_URL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.AUTOSTART_MUSIC">AUTOSTART_MUSIC</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.AVATARS">AVATARS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BATTLEGROUND_ATTACK">BATTLEGROUND_ATTACK</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BATTLEGROUND_DEFENSE">BATTLEGROUND_DEFENSE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BLACK_MARKET_DISCOUNT">BLACK_MARKET_DISCOUNT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BUILDINGS">BUILDINGS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BUILDINGS_ALL">BUILDINGS_ALL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BUILDINGS_CATEGORIES">BUILDINGS_CATEGORIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMP">CAMP</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_ARMY">CAMPAIGN_ARMY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_ARMY_RETURN">CAMPAIGN_ARMY_RETURN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_CARAVAN">CAMPAIGN_CARAVAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_SPY">CAMPAIGN_SPY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CARAVAN_COSTS">CARAVAN_COSTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CARAVAN_INFLUENCE">CARAVAN_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CITY">CITY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_ARID">CLIMATE_ARID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_POLAR">CLIMATE_POLAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_TEMPERATE">CLIMATE_TEMPERATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_TROPICAL">CLIMATE_TROPICAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATES">CLIMATES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DEBUG">DEBUG</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_EASY">DIFFICULTY_EASY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_HARD">DIFFICULTY_HARD</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_HARDCORE">DIFFICULTY_HARDCORE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_MEDIUM">DIFFICULTY_MEDIUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACIES">DIPLOMACIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_ALLIANCE">DIPLOMACY_ALLIANCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_CEASE_FIRE">DIPLOMACY_CEASE_FIRE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PACT">DIPLOMACY_PACT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_ALLIANCE">DIPLOMACY_PROPOSE_ALLIANCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_CEASE_FIRE">DIPLOMACY_PROPOSE_CEASE_FIRE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_JOIN">DIPLOMACY_PROPOSE_JOIN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_PACT">DIPLOMACY_PROPOSE_PACT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_TRUCE">DIPLOMACY_TRUCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_VASSAL">DIPLOMACY_VASSAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_WAR">DIPLOMACY_WAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ENCRYPTION">ENCRYPTION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.EVENTS">EVENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.EXPORT_INFLUENCE">EXPORT_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.EXPORT_PRESTIGE">EXPORT_PRESTIGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_DRUID">HERO_CLASS_DRUID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_LIST">HERO_CLASS_LIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_MAGE">HERO_CLASS_MAGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_PRIEST">HERO_CLASS_PRIEST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_ROGUE">HERO_CLASS_ROGUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_SHAMAN">HERO_CLASS_SHAMAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_WARRIOR">HERO_CLASS_WARRIOR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HEROES">HEROES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORT_INFLUENCE">IMPORT_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORT_PRESTIGE">IMPORT_PRESTIGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_HIGH">IMPORTANCE_HIGH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_LOW">IMPORTANCE_LOW</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_MEDIUM">IMPORTANCE_MEDIUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_VITAL">IMPORTANCE_VITAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_BACKPACK_NUM">ITEM_BACKPACK_NUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_COLORS">ITEM_QUALITY_COLORS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_COMMON">ITEM_QUALITY_COMMON</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_EPIC">ITEM_QUALITY_EPIC</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_LEGENDARY">ITEM_QUALITY_LEGENDARY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_LIST">ITEM_QUALITY_LIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_RARE">ITEM_QUALITY_RARE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_ANY_HAND">ITEM_SLOT_ANY_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_CHEST">ITEM_SLOT_CHEST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_FEET">ITEM_SLOT_FEET</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_HANDS">ITEM_SLOT_HANDS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_HEAD">ITEM_SLOT_HEAD</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_LEGS">ITEM_SLOT_LEGS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_MAIN_HAND">ITEM_SLOT_MAIN_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_NECK">ITEM_SLOT_NECK</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_NONE">ITEM_SLOT_NONE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_OFF_HAND">ITEM_SLOT_OFF_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_RING">ITEM_SLOT_RING</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_SHOULDER">ITEM_SLOT_SHOULDER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_WAIST">ITEM_SLOT_WAIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOTS_LIST">ITEM_SLOTS_LIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOTS_NUM">ITEM_SLOTS_NUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_TYPE_ARMOR">ITEM_TYPE_ARMOR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_TYPE_OTHER">ITEM_TYPE_OTHER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_TYPE_WEAPON">ITEM_TYPE_WEAPON</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_WEAPON_DAGGER_WICKED">ITEM_WEAPON_DAGGER_WICKED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.LEVELS">LEVELS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_CONSOLE_LINES">MAX_CONSOLE_LINES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_ESPIONAGE_SUCESS_RATE">MAX_ESPIONAGE_SUCESS_RATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_ESPIONAGE_VALUE">MAX_ESPIONAGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_FAITH_VALUE">MAX_FAITH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_INFLUENCE_VALUE">MAX_INFLUENCE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_PRESTIGE_VALUE">MAX_PRESTIGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_RESEARCH_VALUE">MAX_RESEARCH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_SETTLEMENT_ICONS">MAX_SETTLEMENT_ICONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_SETTLEMENT_LEVEL">MAX_SETTLEMENT_LEVEL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_SETTLEMENTS">MAX_SETTLEMENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MERCENARIES">MERCENARIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.METROPOLIS">METROPOLIS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_ESPIONAGE_VALUE">MIN_ESPIONAGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_FAITH_VALUE">MIN_FAITH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_INFLUENCE_VALUE">MIN_INFLUENCE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_PRESTIGE_VALUE">MIN_PRESTIGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_RESEARCH_VALUE">MIN_RESEARCH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MODE_MULTIPLAYER">MODE_MULTIPLAYER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MODE_SINGLEPLAYER">MODE_SINGLEPLAYER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NAMES">NAMES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_ASSYRIAN">NATION_ASSYRIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_CARTHAGINIAN">NATION_CARTHAGINIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_CHINESE">NATION_CHINESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_EGYPTIAN">NATION_EGYPTIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_FRANKS">NATION_FRANKS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_FRENCH">NATION_FRENCH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_GREEK">NATION_GREEK</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_INDIAN">NATION_INDIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_JAPANESE">NATION_JAPANESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_KHMER">NATION_KHMER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_MALINESE">NATION_MALINESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_MONGOLIAN">NATION_MONGOLIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_NIGERIAN">NATION_NIGERIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_PERSAN">NATION_PERSAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_PHOENICIAN">NATION_PHOENICIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_ROMAN">NATION_ROMAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_RUSSIAN">NATION_RUSSIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_SPANISH">NATION_SPANISH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_SUDANESE">NATION_SUDANESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_SUMERIAN">NATION_SUMERIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_THRACIAN">NATION_THRACIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_TIBETAN">NATION_TIBETAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATIONS">NATIONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_MISSING_REQ">NOTIFICATION_MISSING_REQ</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_MISSING_RES">NOTIFICATION_MISSING_RES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_PAUSED">NOTIFICATION_PAUSED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_SETTLEMENT_LOW_LEVEL">NOTIFICATION_SETTLEMENT_LOW_LEVEL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_ACHIEVEMENT">NOTIFY_ACHIEVEMENT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_ERROR">NOTIFY_ERROR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_EVENT">NOTIFY_EVENT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_NORMAL">NOTIFY_NORMAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_RELIGION">NOTIFY_RELIGION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_RESEARCH">NOTIFY_RESEARCH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_WAR">NOTIFY_WAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITIES">PERSONALITIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITY_BALANCED">PERSONALITY_BALANCED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITY_DIPLOMAT">PERSONALITY_DIPLOMAT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITY_WARLORD">PERSONALITY_WARLORD</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.POPULATION_PER_LEVEL">POPULATION_PER_LEVEL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RANDOM_UNCOMMON">RANDOM_UNCOMMON</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_BUDDHISM">RELIGION_BUDDHISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_CHRISTIANITY">RELIGION_CHRISTIANITY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_CONFUCIANISM">RELIGION_CONFUCIANISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_HINDUISM">RELIGION_HINDUISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_ISLAM">RELIGION_ISLAM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_JUDAISM">RELIGION_JUDAISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_NONE">RELIGION_NONE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_TAOISM">RELIGION_TAOISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGIONS">RELIGIONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RESOURCE_CATEGORIES">RESOURCE_CATEGORIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RESOURCES">RESOURCES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SECONDS_TO_DAY">SECONDS_TO_DAY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_ARID">SETTLEMENT_BUILDINGS_ARID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_POLAR">SETTLEMENT_BUILDINGS_POLAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_TEMPERATE">SETTLEMENT_BUILDINGS_TEMPERATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_TROPICAL">SETTLEMENT_BUILDINGS_TROPICAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_NAMES">SETTLEMENT_NAMES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENTS">SETTLEMENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SHIPS">SHIPS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SOLDIERS">SOLDIERS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_COSTS">SPY_COSTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_INFLUENCE">SPY_MISSION_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_INSTIGATE">SPY_MISSION_INSTIGATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_NONE">SPY_MISSION_NONE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_RELIGION">SPY_MISSION_RELIGION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_STEAL_RESOURCES">SPY_MISSION_STEAL_RESOURCES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSIONS">SPY_MISSIONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.STORAGE_KEY">STORAGE_KEY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.TECHNOLOGIES">TECHNOLOGIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.VERSION">VERSION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.VILLAGE">VILLAGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE">WEAPON_TYPE_MELEE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_AXE_ONE_HAND">WEAPON_TYPE_MELEE_AXE_ONE_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_AXE_TWO_HAND">WEAPON_TYPE_MELEE_AXE_TWO_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_DAGGER">WEAPON_TYPE_MELEE_DAGGER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_FIST">WEAPON_TYPE_MELEE_FIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_MACE_ONE_HAND">WEAPON_TYPE_MELEE_MACE_ONE_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_MACE_TWO_HAND">WEAPON_TYPE_MELEE_MACE_TWO_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_POLEARM">WEAPON_TYPE_MELEE_POLEARM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_STAFF">WEAPON_TYPE_MELEE_STAFF</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_SWORD_ONE_HAND">WEAPON_TYPE_MELEE_SWORD_ONE_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_SWORD_TWO_HAND">WEAPON_TYPE_MELEE_SWORD_TWO_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED">WEAPON_TYPE_RANGED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_BOW">WEAPON_TYPE_RANGED_BOW</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_CROSSBOW">WEAPON_TYPE_RANGED_CROSSBOW</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_GUN">WEAPON_TYPE_RANGED_GUN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_THROWN">WEAPON_TYPE_RANGED_THROWN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_BEAUTIFY">WORLD_BEAUTIFY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_GRID">WORLD_GRID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_HEX_SIZE">WORLD_HEX_SIZE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_ROUGHNESS">WORLD_ROUGHNESS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_SIZE_HEIGHT">WORLD_SIZE_HEIGHT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_SIZE_WIDTH">WORLD_SIZE_WIDTH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.YEARLY_INFLUENCE_GAIN">YEARLY_INFLUENCE_GAIN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.YEARLY_INFLUENCE_LOSS">YEARLY_INFLUENCE_LOSS</a></li></ul></li><li><a href="civitas.PANEL_ACADEMY.html">PANEL_ACADEMY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_ARMY.html">PANEL_ARMY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_ARMY.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_ARMY.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_ARMY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_BUILDING.html">PANEL_BUILDING</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_BUILDING.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDING.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDING.html#.on_refresh">on_refresh</a></li></ul></li><li><a href="civitas.PANEL_BUILDINGS.html">PANEL_BUILDINGS</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_BUILDINGS.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDINGS.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDINGS.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_CAMPAIGN.html">PANEL_CAMPAIGN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_CHURCH.html">PANEL_CHURCH</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_COUNCIL.html">PANEL_COUNCIL</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_DEBUG.html">PANEL_DEBUG</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_DEBUG.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_DEBUG.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_DEBUG.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_EMBASSY.html">PANEL_EMBASSY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_HELP.html">PANEL_HELP</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_HELP.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_HELP.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_HELP.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_MILITARYCAMP.html">PANEL_MILITARYCAMP</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_NEW_ARMY.html">PANEL_NEW_ARMY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_ARMY.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_ARMY.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_ARMY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_NEW_CARAVAN.html">PANEL_NEW_CARAVAN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_CARAVAN.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_CARAVAN.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_CARAVAN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_NEW_SPY.html">PANEL_NEW_SPY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_RANKS.html">PANEL_RANKS</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_RANKS.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_RANKS.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_RANKS.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_RANKS.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_SETTLEMENT.html">PANEL_SETTLEMENT</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_SHIPYARD.html">PANEL_SHIPYARD</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_STORAGE.html">PANEL_STORAGE</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_TAVERN.html">PANEL_TAVERN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_TRADES.html">PANEL_TRADES</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_TRADES.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_TRADES.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TRADES.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TRADES.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_WORLD.html">PANEL_WORLD</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_WORLD.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_WORLD.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_WORLD.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_WORLD.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.utils.html">utils</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.utils.html#.calc_price">calc_price</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.calc_price_minus_discount">calc_price_minus_discount</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.calc_price_plus_discount">calc_price_plus_discount</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_damage_points">get_damage_points</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_health_points">get_health_points</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_mana_points">get_mana_points</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_now">get_now</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_random">get_random</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_random_by_importance">get_random_by_importance</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_random_unique">get_random_unique</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_resource_name">get_resource_name</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_up_number">get_up_number</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.nice_numbers">nice_numbers</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.resource_exists">resource_exists</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.time_since">time_since</a></li></ul></li><li><a href="civitas.WINDOW_BATTLE.html">WINDOW_BATTLE</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_BATTLE.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.WINDOW_BATTLE.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_BATTLE.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_ERROR.html">WINDOW_ERROR</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_OPTIONS.html">WINDOW_OPTIONS</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_SIGNIN.html">WINDOW_SIGNIN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_SIGNUP.html">WINDOW_SIGNUP</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.on_show">on_show</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#findIndexByHandle">findIndexByHandle</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">objects/ui/ui.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Main Game UI object.
+ * 
+ * @param {Object} core
+ * @license GPLv3
+ * @class civitas.objects.ui
+ * @returns {civitas.objects.ui}
+ */
+civitas.objects.ui = function (core) {
+
+	/**
+	 * Array containing the list of all open panels.
+	 *
+	 * @type {Array}
+	 * @private
+	 */
+	this.panels = [];
+
+	/**
+	 * Reference to the core object.
+	 *
+	 * @private
+	 * @type {civitas.game}
+	 */
+	this._core = null;
+
+	/**
+	 * Object constructor.
+	 * 
+	 * @private
+	 * @constructor
+	 * @returns {civitas.objects.ui}
+	 * @param {Object} core
+	 */
+	this.__init = function (core) {
+		this._core = core;
+		return this;
+	};
+
+	/**
+	 * Show the application loading indicator.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.show_loader = function() {
+		$('.loading').show().tipsy({
+			gravity: 'e'
+		});
+		return this;
+	};
+
+	/**
+	 * Hide the application loading indicator.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.hide_loader = function() {
+		$('.loading').hide();
+		return this;
+	};
+
+	/**
+	 * Build the main DOM UI of the game.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.build_main = function() {
+		let _t = '';
+		let clicked = false;
+		let clickY, clickX;
+		let out = '&lt;section class="ui">' +
+				'&lt;header>' +
+					'&lt;div class="resource-panel">&lt;/div>' +
+					'&lt;div class="top-panel">' +
+						'&lt;span title="City level" class="tips citylevel">&lt;/span>&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
+						'&lt;span title="City Council" class="tips cityavatar">&lt;/span>&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
+						'&lt;span class="cityname">&lt;/span>' +
+					'&lt;/div>' +
+				'&lt;/header>' +
+				'&lt;aside>&lt;/aside>' +
+				'&lt;div class="viewport">' +
+					'&lt;section class="game">&lt;/section>' +
+				'&lt;/div>' +
+				'&lt;footer>' +
+					'&lt;a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings">&lt;/a>' +
+					'&lt;a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space">&lt;/a>' +
+					'&lt;a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades">&lt;/a>' +
+					'&lt;a href="#" data-action="panel" data-panel="council" class="tips" title="City Council">&lt;/a>' +
+					'&lt;a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks">&lt;/a>' +
+					'&lt;a href="#" data-action="panel" data-panel="world" class="tips" title="World Map">&lt;/a>' +
+					'&lt;a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug">&lt;/a>' +
+					'&lt;a href="#" data-action="panel" data-panel="help" class="tips" title="Help">&lt;/a>' +
+				'&lt;/footer>' +
+			'&lt;/section>' +
+			'&lt;audio id="music" loop>' +
+				'&lt;source src="music/track1.mp3" type="audio/mpeg">' +
+			'&lt;/audio>' +
+			'&lt;div title="Game is doing stuff in the background." class="loading">&lt;/div>';
+		$('body').empty().append(out);
+		for (let item in civitas.RESOURCES) {
+			if (civitas.RESOURCES[item].toolbar === true) {
+				_t += '&lt;div class="resource ' + item + '">' +
+					'&lt;span class="amount">0&lt;/span>' +
+					'&lt;img title="' + civitas.RESOURCES[item].name + '" class="tips small" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' +
+				'&lt;/div>';
+			}
+		}
+		$('.resource-panel').append(_t);
+		$('.game').on({
+			mousemove: function (event) {
+				clicked &amp;&amp; update_scroll_pos(event);
+			},
+			mousedown: function (event) {
+				clicked = true;
+				clickY = event.pageY;
+				clickX = event.pageX;
+				$('html').css('cursor', 'grab');
+			},
+			mouseup: function () {
+				clicked = false;
+				$('html').css('cursor', 'auto');
+			}
+		});
+		let update_scroll_pos = function (event) {
+			$('.viewport').scrollTop($('.viewport').scrollTop() + (clickY - event.pageY));
+			$('.viewport').scrollLeft($('.viewport').scrollLeft() + (clickX - event.pageX));
+			clickY = event.pageY;
+			clickX = event.pageX;
+		};
+		return this;
+	};
+
+	/**
+	 * Create an item tooltip.
+	 *
+	 * @public
+	 * @param {Object} item
+	 * @returns {String}
+	 */
+	this.item_tooltip = function(item) {
+		let out = '&lt;h4 style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + item.name + '&lt;/h4>';
+		if (item.flavour) {
+			out += '&lt;span class="flavour">"' + item.flavour + '"&lt;/span>' + ' &lt;br />';
+		}
+		out += 'Slot: ' + civitas.ITEM_SLOTS_LIST[item.slot] + ' &lt;br />';
+		if (item.type === civitas.ITEM_TYPE_WEAPON) {
+			out += 'Damage: &lt;span class="red">' + item.stats.damageMin + '-' + item.stats.damageMax + '&lt;/span>&lt;br />Speed: ' + item.stats.speed + '&lt;br />';
+		} else {
+			out += 'Armor: ' + item.stats.armor + '&lt;br />';
+		}
+		if (item.stats.strength) {
+			out += 'Strength: &lt;span class="green">+' + item.stats.strength + '&lt;/span>&lt;br />';
+		}
+		if (item.stats.stamina) {
+			out += 'Stamina: &lt;span class="green">+' + item.stats.stamina + '&lt;/span>&lt;br />';
+		}
+		if (item.stats.agility) {
+			out += 'Agility: &lt;span class="green">+' + item.stats.agility + '&lt;/span>&lt;br />';
+		}
+		if (item.stats.intellect) {
+			out += 'Intellect: &lt;span class="green">+' + item.stats.intellect + '&lt;/span>&lt;br />';
+		}
+		if (item.stats.spirit) {
+			out += 'Spirit: &lt;span class="green">+' + item.stats.spirit + '&lt;/span>&lt;br />';
+		}
+		out += 'Type: &lt;span style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + civitas.ITEM_QUALITY_LIST[item.quality] + '&lt;/span>';
+		return out;
+	};
+
+	/**
+	 * Build the About section of the UI.
+	 *
+	 * @public
+	 * @returns {String}
+	 */
+	this.window_about_section = function() {
+		let out = '&lt;a href="#" class="do-about button">About&lt;/a>' +
+			'&lt;div class="about-game">' +
+				'&lt;a class="github" target="_blank" href="https://github.com/sizeofcat/civitas">&lt;img class="tips" title="Visit the project page on GitHub" src="' + civitas.ASSETS_URL + '/images/ui/github.png" />&lt;/a>' +
+				'&lt;p>Civitas is written by &lt;a target="_blank" href="https://sizeof.cat">sizeof(cat)&lt;/a>.&lt;/p>' +
+				'&lt;p>Big thanks to:&lt;/p>' +
+				'&lt;ul>' +
+					'&lt;li>&lt;a target="_blank" href="https://soundcloud.com/shantifax">Shantifax&lt;/a> for the music (Glandula Pinealis).&lt;/li>' +
+					'&lt;li>&lt;a target="_blank" href="http://bluebyte.com">Blue Byte&lt;/a> for Anno 1404.&lt;/li>' +
+				'&lt;/ul>' +
+			'&lt;/div>';
+		return out;
+	};
+
+	/**
+	 * Generate a generic panel template.
+	 *
+	 * @public
+	 * @param {String} title
+	 * @returns {String}
+	 */
+	this.generic_panel_template = function(title) {
+		if (typeof title === 'undefined') {
+			title = '';
+		}
+		let out = '&lt;div id="panel-{ID}" class="panel">' +
+			'&lt;header>' + title +
+				'&lt;a class="tips close" title="Close">&lt;/a>' +
+			'&lt;/header>' +
+			'&lt;section>&lt;/section>' +
+		'&lt;/div>';
+		return out;
+	};
+
+	/**
+	 * Generate a building panel template.
+	 *
+	 * @public
+	 * @param {String} title
+	 * @returns {String}
+	 */
+	this.building_panel_template = function(title) {
+		if (typeof title === 'undefined') {
+			title = '';
+		}
+		let out = '&lt;div id="panel-{ID}" class="panel">' +
+			'&lt;header>' + title +
+				'&lt;a class="tips close" title="Close">&lt;/a>' +
+			'&lt;/header>' +
+			'&lt;section>&lt;/section>' +
+			'&lt;footer>' +
+				'&lt;a class="tips demolish" title="Demolish this building" href="#">&lt;/a>' +
+				'&lt;a class="tips pause start" href="#">&lt;/a>' +
+				'&lt;a class="tips upgrade" title="Upgrade building" href="#">&lt;/a>' +
+				'&lt;a class="tips downgrade" title="Downgrade building" href="#">&lt;/a>' +
+			'&lt;/footer>' +
+		'&lt;/div>';
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} params
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.building_panel = function (params, level) {
+		if (typeof params.levels === 'undefined') {
+			params.levels = 1;
+		}
+		let building_image = params.handle;
+		if (params.handle.slice(0, 5) === 'house') {
+			building_image = params.handle.slice(0, 5);
+		}
+		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
+		let out = '&lt;div class="column">' +
+			'&lt;img src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
+		'&lt;/div>' +
+		'&lt;div class="column">' +
+			'&lt;p>' + params.description + '&lt;/p>' +
+			'&lt;dl>' +
+				this.level_panel(params.level, level, params.levels) +
+				this.cost_panel(params.cost, level, params.levels) +
+				this.materials_panel(params.materials) +
+				this.production_panel(params.production, level) +
+				this.requires_panel(params.requires) +
+				this.chance_panel(params.chance, level) +
+				this.tax_panel(params.tax, level) +
+				this.storage_panel(params.storage, level) +
+			'&lt;/dl>' +
+		'&lt;/div>'; 
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} section
+	 * @param {String} contents
+	 * @returns {String}
+	 */
+	this.normal_panel = function (section, contents) {
+		let out = '&lt;fieldset>' +
+				'&lt;legend>' + section + '&lt;/legend>' +
+				contents +
+			'&lt;/fieldset>';
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} level
+	 * @param {Number} new_level
+	 * @param {Number} max_level
+	 * @returns {String}
+	 */
+	this.level_panel = function (level, new_level, max_level) {
+		let out = '&lt;dt>Level&lt;/dt>' +
+			'&lt;dd>&lt;span title="Current building level" class="tips">' + new_level + '&lt;/span> / &lt;span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '&lt;/span> &lt;/dd>';
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} conts
+	 * @param {Number} level
+	 * @param {Number} levels
+	 * @returns {String}
+	 */
+	this.cost_panel = function (costs, level, levels) {
+		let out = '';
+		if (typeof costs !== 'undefined') {
+			out += '&lt;dt>Cost&lt;/dt>';
+			for (let item in costs) {
+				out += '&lt;dd>' + civitas.utils.nice_numbers(costs[item]) + this.resource_small_img(item) + (typeof levels !== 'undefined' &amp;&amp; level &lt; levels ? ' / ' + civitas.utils.nice_numbers(costs[item] * (level + 1)) + this.resource_small_img(item) : '') + '&lt;/dd>';
+			}
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} value
+	 * @param {String} progress_type
+	 * @param {Boolean} show_value
+	 * @returns {String}
+	 */
+	this.progress = function(value, progress_type, show_value) {
+		if (typeof progress_type === 'undefined') {
+			progress_type = 'small';
+		}
+		let _e = '';
+		if (value &lt; 10) {
+			_e = ' ubad';
+		} else if (value >= 10 &amp;&amp; value &lt; 30) {
+			_e = ' vbad';
+		} else if (value >= 30 &amp;&amp; value &lt; 40) {
+			_e = ' bad';
+		} else if (value >= 40 &amp;&amp; value &lt; 60) {
+			_e = ' good';
+		} else if (value >= 60 &amp;&amp; value &lt; 90) {
+			_e = ' vgood';
+		} else if (value >= 90) {
+			_e = ' ugood';
+		}
+		return '&lt;div class="progress ' + progress_type + '">' +
+			'&lt;div class="bar' + _e + '" style="width:' + value + '%">' +
+				'&lt;p>' + (typeof show_value !== 'undefined' ? show_value : value) + '&lt;/p>' +
+			'&lt;/div>' +
+		'&lt;/div>';
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} name
+	 * @returns {String}
+	 */
+	this.navy_img = function (name) {
+		return '&lt;img class="tips small" title="' + civitas.SHIPS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} name
+	 * @returns {String}
+	 */
+	this.army_img = function (name) {
+		return '&lt;img class="tips small" title="' + civitas.SOLDIERS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} army
+	 * @param {Boolean} no_margin
+	 * @returns {String}
+	 */
+	this.army_list = function (army, no_margin) {
+		let out2 = '&lt;p>There are no soldiers in this army.&lt;/p>';
+		let out = '&lt;dl' + ((typeof no_margin !== 'undefined' &amp;&amp; no_margin === true) ? ' class="nomg"' : '') + '>';
+		let total = 0;
+		for (let soldier in army) {
+			if (army[soldier] > 0) {
+				out += '&lt;dt>' + army[soldier] + '&lt;/dt>' + '&lt;dd>' + this.army_img(soldier) + '&lt;/dd>';
+				total += army[soldier];
+			}
+		}
+		out += '&lt;dt>' + total + '&lt;/dt>' +
+				'&lt;dd>Total&lt;/dd>' +
+			'&lt;/dl>';
+		if (total > 0) {
+			return out;
+		} else {
+			return out2;
+		}
+	};
+
+	/**
+	 * Check if a window exists and is opened.
+	 * 
+	 * @param {String} id
+	 * @returns {Boolean}
+	 */
+	this.window_exists = function (id) {
+		if ($(id).length == 0) {
+			return false;
+		}
+		return true;
+	};
+
+	/**
+	 * Check if a panel exists and is opened.
+	 * 
+	 * @param {String} id
+	 * @returns {Boolean}
+	 */
+	this.panel_exists = function (id) {
+		if ($(id).length == 0) {
+			return false;
+		}
+		return true;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} text
+	 * @param {String} title
+	 * @param {String} handle
+	 * @param {String} class_name
+	 * @param {Boolean} disabled
+	 * @returns {String}
+	 */
+	this.panel_btn = function (text, title, handle, class_name, disabled) {
+		return '&lt;a title="' + title + '" data-handle="' + handle + '" class="tips ' + class_name + (disabled === true ? ' disabled' : '') + '" href="#">' + text + '&lt;/a>&lt;/td>';
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} trades
+	 * @param {String} mode
+	 * @returns {String}
+	 */
+	this.trades_list = function (trades, mode) {
+		mode = (typeof mode === 'undefined' || mode === 'imports') ? 'imports' : 'exports';
+		let out = '';
+		if (trades !== null) {
+			let trade = trades[mode];
+			for (let item in trade) {
+				if (trade[item] > 0) {
+					out += this.resource_storage_small_el(item, trade[item]);
+				}
+			}
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} army
+	 * @param {Boolean} no_margin
+	 * @returns {String}
+	 */
+	this.navy_list = function (army, no_margin) {
+		let out2 = '&lt;p>There are no ships in this navy.&lt;/p>';
+		let out = '&lt;dl' + ((typeof no_margin !== 'undefined' &amp;&amp; no_margin === true) ? ' class="nomg"' : '') + '>';
+		let total = 0;
+		for (let ship in army) {
+			if (army[ship] > 0) {
+				out += '&lt;dt>' + army[ship] + '&lt;/dt>' + '&lt;dd>' + this.navy_img(ship) + '&lt;/dd>';
+				total += army[ship];
+			}
+		}
+		out += '&lt;dt>' + total + '&lt;/dt>' +
+				'&lt;dd>Total&lt;/dd>' +
+			'&lt;/dl>';
+		if (total > 0) {
+			return out;
+		} else {
+			return out2;
+		}
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} params
+	 * @returns {String}
+	 */
+	this.building_element = function (params) {
+		let building_image = params.type;
+		let description = '&lt;br />&lt;span class="smalldesc">' + params.data.description + '&lt;/span>';
+		if (params.type.slice(0, 5) === 'house') {
+			building_image = params.type.slice(0, 5);
+		}
+		let image = (typeof params.data.visible_upgrades === 'undefined' || params.data.visible_upgrades === false) ? building_image : building_image + params.data.level;
+		return '&lt;div data-type="' + params.type + '" data-level="' + params.data.level + '" ' + 'style="background-image:url(' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png);left:' + params.data.position.x + 'px;top:' + params.data.position.y + 'px" title=\'' + params.data.name + '\' ' + 'id="building-' + params.data.handle + '"' + 'class="tips building' + (params.data.large === true ? ' large' : '') + '">&lt;/div>';
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @param {Number} amount
+	 * @returns {String}
+	 */
+	this.resource_storage_small_el = function (resource, amount) {
+		return '&lt;div class="tips storage-item small" title="' + civitas.utils.get_resource_name(resource) + '">&lt;img class="small" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '.png" />&lt;span class="amount">' + amount + '&lt;/span>&lt;/div>';
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @param {Number} amount
+	 * @returns {String}
+	 */
+	this.resource_storage_el = function (resource, amount) {
+		return '&lt;div class="storage-item" data-resource="' + resource + '">&lt;span class="title">' + civitas.utils.get_resource_name(resource) + '&lt;/span>&lt;img src="' + civitas.ASSETS_URL + 'images/assets/resources/' +  resource + '.png" />&lt;span class="amount">' + amount + '&lt;/span>&lt;/div>';
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Array} data
+	 * @returns {String}
+	 */
+	this.tabs = function (data) {
+		let out = '&lt;div class="tabs">' +
+				'&lt;ul>';
+		for (let i = 0; i &lt; data.length; i++) {
+			out += '&lt;li>&lt;a href="#tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">' + data[i].capitalize() + '&lt;/a>&lt;/li>';
+		}
+		out += '&lt;/ul>';
+		for (let i = 0; i &lt; data.length; i++) {
+			out += '&lt;div id="tab-' + data[i].toLowerCase().replace(/ /g, "-") + '">&lt;/div>';
+		}
+		out += '&lt;/div>';
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object| Array} materials
+	 * @returns {String}
+	 */
+	this.materials_panel = function (materials) {
+		let out = '';
+		if (typeof materials !== 'undefined') {
+			out += '&lt;dt>Uses&lt;/dt>';
+			if (Array.isArray(materials)) {
+				for (let i = 0; i &lt; materials.length; i++) {
+					for (let y in materials[i]) {
+						out += '&lt;dd>' + materials[i][y] + this.resource_small_img(y) + '&lt;/dd>';
+					}
+				}
+			} else {
+				for (let item in materials) {
+					out += '&lt;dd>' + materials[item] + this.resource_small_img(item) + '&lt;/dd>';
+				}
+			}
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} materials
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.chance_panel = function (materials, level) {
+		let out = '';
+		if (typeof materials !== 'undefined') {
+			out += '&lt;dt>Extra materials&lt;/dt>';
+			for (let item in materials) {
+				out += '&lt;dd>' + (level * materials[item]).toFixed(4) * 100 + '%' + this.resource_small_img(item) + '&lt;/dd>';
+			}
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} materials
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.production_panel = function (materials, level) {
+		let out = '';
+		if (typeof materials !== 'undefined') {
+			out += '&lt;dt>Produces&lt;/dt>';
+			for (let item in materials) {
+				out += '&lt;dd>' + (level * materials[item]) + this.resource_small_img(item) + '&lt;/dd>';
+			}
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} requires
+	 * @returns {String}
+	 */
+	this.requires_panel = function (requires) {
+		let out = '';
+		if (typeof requires.buildings !== 'undefined' || typeof requires.settlement_level !== 'undefined') {
+			out += '&lt;dt>Requires&lt;/dt>';
+			out += '&lt;dd>';
+			if (typeof requires.buildings !== 'undefined') {
+				for (let item in requires.buildings) {
+					let b = this.core().get_building_config_data(item);
+					out += b.name + ' level ' + requires.buildings[item] + '&lt;br />'
+				}
+			}
+			if (typeof requires.research !== 'undefined') {
+				let r = civitas.TECHNOLOGIES[civitas.TECHNOLOGIES.findIndexByHandle(requires.research)];
+				out += 'Research: ' + r.name + '&lt;br />';
+			}
+			if (typeof requires.settlement_level !== 'undefined') {
+				out += 'Setlement: level ' + requires.settlement_level;
+			}
+			out += '&lt;/dd>';
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} tax
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.tax_panel = function (tax, level) {
+		let out = '';
+		if (typeof tax !== 'undefined') {
+			out += '&lt;dt>Tax&lt;/dt>';
+			out += '&lt;dd>' + (level * tax) + this.resource_small_img('coins') + '&lt;/dd>';
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} storage
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.storage_panel = function (storage, level) {
+		let out = '';
+		if (typeof storage !== 'undefined') {
+			out += '&lt;dt>Storage&lt;/dt>';
+			out += '&lt;dd>' + (level * storage) + '&lt;img alt="Storage space" class="tips small" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" />&lt;/dd>';
+		}
+		return out;
+	};
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @returns {String}
+	 */
+	this.resource_small_img = function (resource) {
+		return '&lt;img alt="' + civitas.utils.get_resource_name(resource) + '" class="tips small" title="' + civitas.utils.get_resource_name(resource) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '.png" />';
+	};
+
+	/**
+	 * Return a pointer to the game core.
+	 * 
+	 * @public
+	 * @returns {civitas.game}
+	 */
+	this.core = function() {
+		return this._core;
+	};
+
+	/**
+	 * Perform a normal notification in the game.
+	 * 
+	 * @public
+	 * @param {String} message
+	 * @param {String} title
+	 * @param {Number} timeout
+	 * @returns {civitas.objects.ui}
+	 */
+	this.notify = function (message, title, timeout, mode) {
+		this._notify({
+			title: (typeof title !== 'undefined') ? title : 'City Council',
+			content: message,
+			timeout: typeof timeout !== 'undefined' ? timeout : 15000,
+			mode: typeof mode !== 'undefined' ? mode : civitas.NOTIFY_NORMAL
+		});
+		this.log('game', message);
+		return this;
+	};
+
+	/**
+	 * Internal function for performing an UI notification.
+	 * 
+	 * @param {Object} settings
+	 * @returns {civitas.objects.ui}
+	 * @private
+	 */
+	this._notify = function (settings) {
+		let container, notty, hide, image, right, left, inner, _container;
+		let notty_type = 'normal';
+		settings = $.extend({
+			title: undefined,
+			content: undefined,
+			timeout: 15000,
+			img: undefined,
+			mode: civitas.NOTIFY_NORMAL
+		}, settings);
+		if (settings.mode === civitas.NOTIFY_ACHIEVEMENT) {
+			_container = 'achievements-notifications';
+		} else {
+			_container = 'notifications';
+		}
+		container = $('.' + _container);
+		if (!container.length) {
+			container = $("&lt;div>", {
+				'class': _container
+			}).appendTo(document.body);
+		}
+		$('.achievements-notifications').css({
+			left: ($(window).width() / 2) - (container.width() / 2)
+		});
+		notty = $('&lt;div>');
+		notty.addClass('notty');
+		hide = $("&lt;div>", {
+			click: function () {
+				$(this).parent().delay(300).queue(function () {
+					$(this).clearQueue();
+					$(this).remove();
+				});
+			},
+			touchstart: function () {
+				$(this).parent().delay(300).queue(function () {
+					$(this).clearQueue();
+					$(this).remove();
+				});
+			}
+		});
+		hide.addClass('hide');
+		if (settings.mode === civitas.NOTIFY_ERROR) {
+			notty_type = 'error';
+		} else if (settings.mode === civitas.NOTIFY_RESEARCH) {
+			notty_type = 'research';
+		} else if (settings.mode === civitas.NOTIFY_EVENT) {
+			notty_type = 'event';
+		} else if (settings.mode === civitas.NOTIFY_ACHIEVEMENT) {
+			notty_type = 'achievement';
+		} else if (settings.mode === civitas.NOTIFY_RELIGION) {
+			notty_type = 'religion';
+		} else if (settings.mode === civitas.NOTIFY_WAR) {
+			notty_type = 'war';
+		}
+		notty.addClass(notty_type);
+		settings.img = civitas.ASSETS_URL + 'images/assets/ui/icon_' + notty_type + '.png';
+		image = $('&lt;div>', {
+			style: "background: url('" + settings.img + "')"
+		});
+		image.addClass('img');
+		left = $("&lt;div class='left'>");
+		right = $("&lt;div class='right'>");
+		inner = $('&lt;div>', {
+			html: '&lt;h2>' + settings.title + '&lt;/h2>' + settings.content
+		});
+		inner.addClass("inner");
+		inner.appendTo(right);
+		image.appendTo(left);
+		left.appendTo(notty);
+		right.appendTo(notty);
+		hide.appendTo(notty);
+		if (settings.mode !== civitas.NOTIFY_ACHIEVEMENT) {
+			let timestamp = Number(new Date());
+			let timeHTML = $('&lt;div>', {
+				html: civitas.utils.time_since(timestamp) + ' ago'
+			});
+			timeHTML.addClass('time-ago').attr('title', timestamp);
+			timeHTML.appendTo(right);
+			setInterval(function () {
+				$('.time-ago').each(function () {
+					let timing = $(this).attr('title');
+					if (timing) {
+						$(this).html(civitas.utils.time_since(timing) + ' ago');
+					}
+				});
+			}, 4000);
+		}
+		notty.hover(function () {
+			hide.show();
+		}, function () {
+			hide.hide();
+		});
+		notty.prependTo(container);
+		notty.show();
+		if (settings.timeout) {
+			setTimeout(function () {
+				notty.delay(300).queue(function () {
+					$(this).clearQueue();
+					$(this).remove();
+				});
+			}, settings.timeout);
+		}
+		return this;
+	};
+
+	/**
+	 * Perform an error notification in the game.
+	 * 
+	 * @public
+	 * @param {String} message
+	 * @param {String} title
+	 * @param {Boolean} no_console
+	 * @returns {civitas.objects.ui}
+	 */
+	this.error = function (message, title, no_console) {
+		this._notify({
+			title: (typeof title !== 'undefined') ? title : 'City Council',
+			mode: civitas.NOTIFY_ERROR,
+			content: message
+		});
+		if (typeof no_console === 'undefined' || no_console === false) {
+			this.log('game', message, true);
+		}
+		return this;
+	};
+
+	/**
+	 * Resize the UI.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.resize = function() {
+		const window_width = $(window).width();
+		const window_height = $(window).height();
+		const header_height = $('.ui > header').height();
+		const sidebar_width = $('.ui > aside').width();
+		const footer_width = $('.ui > footer').width();
+		$('.ui > footer').css({
+			left: (window_width / 2) - (footer_width / 2)
+		});
+		$('.ui > .viewport').width(window_width - sidebar_width);
+		$('.ui > .viewport').height(window_height - header_height);
+		return this;
+	};
+
+	/**
+	 * Log data to the console.
+	 * 
+	 * @public
+	 * @param {String} namespace
+	 * @param {String} message
+	 * @param {Boolean} error
+	 * @returns {civitas.objects.ui}
+	 */
+	this.log = function (namespace, message, error) {
+		if ($('#panel-debug .console p').length > civitas.MAX_CONSOLE_LINES) {
+			$('#panel-debug .console').empty();
+		}
+		$('#panel-debug .console').prepend('&lt;p>&lt;span class="date">' + civitas.utils.get_now() + '&lt;/span>&lt;span class="namespace game-' + namespace + '">' + namespace.toUpperCase() + '&lt;/span>' + (error === true ? '&lt;span class="error">ERROR&lt;/span>' : '') + '&lt;span' + (error === true ? ' class="error-message"' : ' class="log-message"') + '>' + message + '&lt;/span>&lt;/p>');
+		return this;
+	};
+
+	/**
+	 * Open a UI panel.
+	 *
+	 * @public
+	 * @param {Object} panel_data
+	 * @param {Object} extra_data
+	 * @param {Boolean} sidebar
+	 * @returns {civitas.controls.panel}
+	 */
+	this.open_panel = function(panel_data, extra_data, sidebar) {
+		panel_data.core = this.core();
+		if (typeof extra_data !== 'undefined') {
+			panel_data.data = extra_data;
+		}
+		if (typeof sidebar !== 'undefined') {
+			panel_data.data.sidebar = sidebar;
+		}
+		const panel = new civitas.controls.panel(panel_data);
+		this.panels.push(panel);
+		return panel;
+	};
+
+	/**
+	 * Open a UI window.
+	 *
+	 * @public
+	 * @param {Object} window_data
+	 * @param {Object} extra_data
+	 * @returns {civitas.controls.window}
+	 */
+	this.open_window = function(window_data, extra_data) {
+		window_data.core = this.core();
+		if (typeof extra_data !== 'undefined') {
+			window_data.data = extra_data;
+		}
+		return new civitas.controls.window(window_data);
+	};
+
+	/**
+	 * Open a modal window (usually to ask for confirmations).
+	 *
+	 * @public
+	 * @param {Function} callback
+	 * @param {String} text
+	 * @param {String} title
+	 * @returns {civitas.objects.ui}
+	 */
+	this.open_modal = function(callback, text, title) {
+		const modal = new civitas.controls.modal({
+			core: this.core()
+		});
+		modal.alert({
+			title: typeof title !== 'undefined' ? title : 'City Council',
+			text: text,
+			on_click: callback
+		});
+		return this;
+	};
+
+	/**
+	 * Refresh all the UI information after a property change.
+	 * 
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh_ui = function () {
+		const settlement = this.core().get_settlement();
+		if (typeof settlement !== 'undefined') {
+			$('.citylevel').html(settlement.level());
+			if (settlement.fame() >= civitas.LEVELS[settlement.level()]) {
+				this.core().level_up();
+			}
+		}
+		return this;
+	};
+
+	/**
+	 * Calculate and return the total and free storage space in the main settlement.
+	 * 
+	 * @public
+	 * @returns {Object}
+	 */
+	this.check_storage = function () {
+		const storage = this.core().get_settlement().storage();
+		if (storage.occupied >= storage.all) {
+			this.error('You ran out of storage space and all goods produced will be lost. Upgrade your warehouse or marketplace.', 'No storage space');
+		} else if ((storage.all - storage.occupied) &lt; 100) {
+			this.error('You will soon run out of storage space and all goods produced will be lost. Upgrade your warehouse or marketplace.', 'Storage nearly full');
+		}
+		return storage;
+	};
+
+	/**
+	 * Refresh the UI and panels.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh = function() {
+		this.refresh_panels();
+		this.refresh_toolbar();
+		this.refresh_ui();
+		$('.tipsy').remove();
+		$('.tips').tipsy({
+			gravity: $.fn.tipsy.autoNS,
+			html: true
+		});
+		return this;
+	};
+
+	/**
+	 * Get the panels open in the game.
+	 * 
+	 * @public
+	 * @returns {Array}
+	 */
+	this.get_panels = function() {
+		return this.panels;
+	};
+
+	/**
+	 * Refresh the resources toolbar.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh_toolbar = function() {
+		const settlement = this.core().get_settlement();
+		if (typeof settlement !== 'undefined') {
+			const resources = settlement.get_resources();
+			for (let item in civitas.RESOURCES) {
+				if (civitas.RESOURCES[item].toolbar === true) {
+					if (typeof resources[item] !== 'undefined') {
+						if (resources[item] === 0) {
+							$('.resource-panel .resource.' + item).hide();
+						} else {
+							$('.resource-panel .resource.' + item).show();
+						}
+						$('.resource-panel .resource.' + item + ' span').html(resources[item]);
+					}
+				}
+			}
+		}
+		return this;
+	};
+
+	/**
+	 * Return the UI panel specified by its id.
+	 *
+	 * @public
+	 * @param {String} id
+	 * @returns {civitas.controls.panel|Boolean}
+	 */
+	this.get_panel = function(id) {
+		const panels = this.get_panels();
+		for (let i = 0; i &lt; panels.length; i++) {
+			if (typeof panels[i] !== 'undefined') {
+				if (panels[i].id === id) {
+					return panels[i];
+				}
+			}
+		}
+		return false;
+	};
+
+	/**
+	 * Close the UI panel specified by its id.
+	 *
+	 * @public
+	 * @param {String} id
+	 * @returns {Boolean}
+	 */
+	this.close_panel = function(id) {
+		const panels = this.get_panels();
+		for (let i = 0; i &lt; panels.length; i++) {
+			if (typeof panels[i] !== 'undefined') {
+				if (panels[i].id === id) {
+					panels.splice(i, 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	};
+
+	/**
+	 * Force refresh of the UI panels open.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh_panels = function() {
+		const panels = this.get_panels();
+		for (let i = 0; i &lt; panels.length; i++) {
+			if (typeof panels[i] !== 'undefined') {
+				panels[i].on_refresh();
+			}
+		}
+		return this;
+	};
+
+	this.svg_add_settlement_image = function(row, column, settlement, player_settlement) {
+		let image = 'village';
+		let color = settlement.color();
+		let name = settlement.name();
+		if (typeof player_settlement !== 'undefined' &amp;&amp; name === player_settlement.name()) {
+			image = 'settlement';
+		} else {
+			if (settlement.is_metropolis()) {
+				image = 'metropolis' + settlement.icon();
+			} else if (settlement.is_city()) {
+				image = 'city' + settlement.icon();
+			} else if (settlement.is_village()) {
+				image = 'village' + settlement.icon();
+			} else if (settlement.is_camp()) {
+				image = 'camp';
+			}
+		}
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
+			.attr({
+				'id': 'w-s-i' + row + '-' + column,
+				'xlink:href': '',
+				'height': 42,
+				'width': 42,
+				'x': "2px",
+				'y': "0",
+				'class': 'settlement',
+				'data-name': name
+				//'title': settlement.nice_name()
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		document.getElementById('w-s-i' + row + '-' + column)
+			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png');
+		if (!settlement.is_camp()) {
+			$(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
+				.attr({
+					x: name.length * 2,
+					y: 1
+				})
+				.css({
+					'text-anchor': 'middle',
+					'font-size': (typeof player_settlement !== 'undefined' &amp;&amp; name === player_settlement.name()) ? '12px' : '10px'
+				})
+				.text(name)
+				.appendTo('.s-c-g-' + row + '-' + column);
+		}
+	};
+
+	this.svg_add_mountain = function(row, column, color) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M10.6,24.6l-7.1-5.5c5.4-3,9.5-7.4,13.3-12.3c1.5,1.6,2.9,3.3,4.5,4.8c1,1,2.2,2,3.3,2.8c0.5,0.3,1.2,0.3,1.8,0.5c0.2,1,0,1.6-0.7,1.8c-0.2,0.1-0.5,0.1-0.6,0c-1-0.6-2.1-1.1-3-1.9c-1.6-1.4-3.1-3-4.6-4.6c-0.1-0.1-0.2-0.2-0.5-0.4c-0.7,2.7-0.6,5.4-1.8,7.9S12.5,22.4,10.6,24.6z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M23.2,18.6l7,7.9l-1.2,1L24,21.9l-0.3,0c-0.5,4.3-2.5,8-4.4,11.9L8.2,29.1c1.7-1,3.3-2,4.9-2.9c1.4-0.8,2.8-1.7,4.2-2.4c2.1-1,3.7-2.6,5.2-4.2C22.7,19.3,22.9,19,23.2,18.6z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M33,25.4c-1.7-0.2-3.1-0.7-4.2-2.2c-0.5-0.8-1.3-1.4-1.9-2.1c-0.7-0.8-0.6-2.3,0.3-2.9c1.5-1.1,3.1-2.2,3.9-4c0.6-1.3,1.1-2.6,1.6-4c0.2-0.5,0.4-0.9,0.6-1.3c2.4,6,7.2,10,11.4,14.6l-1.2,1.1c-0.9-0.9-1.9-1.8-2.8-2.7c-0.8-0.7-1.5-1.5-2.3-2.1c-1.8-1.4-3.2-3.3-4-5.4c-0.1-0.2-0.2-0.4-0.3-0.5c-0.1-0.1-0.2-0.2-0.4-0.3c-0.3,1.2-0.8,2.3-0.9,3.4c-0.1,2.4,0.1,4.8,0.1,7.2C33,24.6,33,25,33,25.4z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M27.6,33.3c1.6-0.7,3.2-1.2,3.9-3l3,3.2l-0.8,0.8l-2.1-1.9l-2.1,3.3L27.6,33.3z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_add_hill = function(row, column, color) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M13.2,26.2L8,21.6c1.8-0.5,3.4-1,5-1.4c1.4-0.3,2.8-0.8,4-1.7c0.7-0.5,1.6-0.9,2.3-1.5c0.9-0.7,1.8-0.7,2.8-0.5c2.4,0.3,4.5,1.6,6.7,2.4c2.6,1,5.1,2.1,7.6,3.2c0.7,0.3,1.3,0.5,2,0.6c0.6,0.1,1,0.4,1.2,1c0.1,0.3,0.2,0.6,0.3,0.9c-1.6-0.1-3.1,0.2-4.7-0.4c-3.9-1.5-7.8-2.9-11.7-4.3c-0.9-0.3-1.8-0.3-2.7-0.4c-0.2,0-0.4,0.2-0.6,0.4c-2.2,1.9-4.4,3.8-6.5,5.7C13.6,25.9,13.4,26,13.2,26.2z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M38,32.5c-1.9,0-3.7,0-5.5,0c-0.2,0-0.4-0.1-0.5-0.2c-2.3-1.1-4.6-2.2-6.9-3.3c-0.9-0.4-1.8-0.5-2.7,0.3c-1.9,1.7-3.8,3.3-5.7,5c-0.3,0.3-0.5,0.3-0.9,0.1c-1.5-1-3-1.9-4.4-2.9c-0.1-0.1-0.2-0.2-0.4-0.3c1.2-0.2,2.4-0.5,3.5-0.6c0.9-0.1,1.7-0.4,2.4-0.9c1.8-1.3,3.6-2.5,5.4-3.7c0.3-0.2,0.7-0.2,1-0.2c2,0.1,3.8,1.2,5.6,1.9c2.8,1.2,5.5,2.6,8.5,3.3c0.2,0,0.4,0.3,0.5,0.5C37.8,31.7,37.9,32.1,38,32.5z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M15,16.7l-4.6-4.6c0.7-0.2,1.5-0.5,2.3-0.7c2.3-0.6,4.6-1.4,6.5-2.8c1.5-1,3.1-1.3,4.8-1.1c0.3,0,0.5,0.1,0.8,0.3c1.9,1,3.8,2,5.7,3.1c1.3,0.8,2.7,1.1,4.2,1.2c0.4,0,0.9,0,1.2,0.2c0.4,0.3,0.7,0.8,1.1,1.2l-0.1,0.2c-0.6,0-1.2-0.1-1.8,0c-2.3,0.3-4.4-0.3-6.3-1.5c-1.4-0.9-2.9-1.5-4.2-2.3c-0.8-0.4-1.5-0.2-2.2-0.1c-0.1,0-0.2,0.1-0.2,0.1c-1.7,0.6-2.9,1.7-4,3.2C17,14.4,16,15.5,15,16.7z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_add_desert = function(row, column, color) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M39.5,18.7h-1c-0.6-2.1-2.3-2.8-4.1-3.3c-3-0.7-5.8-0.6-8.6,0.7C25,16.5,24.3,17,24,17.8c1,0.8,2.1,0.3,3.2,0.2c3.5-0.2,6.9,0.2,10,1.9c1.6,0.8,2.9,1.9,3.3,3.8c0,0.3,0.1,0.6,0.1,0.9h-1c-0.5-2.1-2.2-2.8-4.1-3.2c-2.9-0.8-5.8-0.6-8.5,0.6c-0.2,0.1-0.3,0.2-0.5,0.2c-0.2,0.1-0.3,0.2-0.5,0.4c3,1.1,6.2,2,6.8,6h-1.1c-0.4-1.9-2-2.7-3.7-3.2c-2.7-0.8-5.6-0.7-8.3,0.3c-1.4,0.5-2.5,1.3-2.8,2.9H8.9c-0.2-1.8,0.9-3.3,3.9-5h-7c-0.1-1,0.2-1.9,0.8-2.7c1.3-1.7,3-2.6,5-3.1c1.3-0.4,2.7-0.5,4.1-0.8c0.2,0,0.5-0.1,0.6-0.3c1.2-2,3-3,5.1-3.6c4.9-1.6,9.8-1.5,14.5,0.7c1.1,0.5,2.1,1.4,3,2.3C39.3,16.7,39.6,17.6,39.5,18.7z M19.8,19.8c-2.3,0.4-4.8,0.6-6.2,3.3c1.3-0.3,2.4-0.6,3.4-0.9c0.2-0.1,0.3-0.1,0.4-0.3C18.3,21.3,19,20.5,19.8,19.8L19.8,19.8z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_add_grass = function(row, column, color) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M33.1,13.7l0.8,8l1.4-0.1v-7l0.3,0c0.1,0.7,0.3,1.5,0.4,2.2c0.1,1.3,0.1,2.7,0.2,4c0,0.2,0.4,0.5,0.5,0.7c0.2-0.3,0.5-0.5,0.5-0.8c0-1.4,0-2.9,0-4.3c0-0.3,0-0.6,0.1-0.9l0.3,0c0.1,0.4,0.1,0.7,0.2,1c0.1,1.5,0.2,3,0.4,4.6c0,0.2,0.3,0.4,0.5,0.6c0.1-0.2,0.3-0.4,0.3-0.6c0-1.2,0-2.5,0.2-3.8c0.1,0.3,0.3,0.5,0.3,0.8c0.1,0.8,0.2,1.5,0.2,2.3c0,0.8,0.3,1.5,1.4,1.4l0.2-3l0.3,0c0.1,0.5,0.2,1.1,0.3,1.6c0.2,1.7,0.4,1.8,2.1,1.7c0.4,0,0.7,0,1.1,0c-7.2,0.8-14.4,0.7-21.7,0.4l0-0.3h3.6v-3.6l0.4,0l0.6,3.3l0.3,0v-4.4l0.3,0l0.7,4.5h0.3v-6l0.3,0c0.2,1.8,0.4,3.7,0.6,5.5c0,0.3,0.3,0.5,0.5,0.7c0.2-0.3,0.4-0.5,0.4-0.8c0-2.4-0.1-4.9-0.1-7.3c0-0.2,0.1-0.5,0.2-0.6c0.1,0.9,0.3,1.9,0.4,2.8c0.2,1.7,0.3,3.5,0.5,5.2c0,0.2,0.2,0.3,0.4,0.5c0.1-0.2,0.4-0.4,0.4-0.5c0-0.6-0.1-1.2-0.1-1.9c0-1.8,0-3.5,0-5.3c0-0.1,0.1-0.3,0.1-0.4L33.1,13.7z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M26.4,30.1c0,0.5,0,1,0,1.4c0,1.4,0,2.8,0,4.1c0,0.2,0.3,0.4,0.4,0.6c0.1-0.2,0.4-0.4,0.4-0.6c0.2-1.2,0.3-2.5,0.5-3.7l0.2,0c0,0.5,0.1,1.1,0.1,1.6c0,0.6-0.1,1.3,0,1.9c0.1,0.4,0.4,0.6,0.7,0.8c0.5,0.1,0.6-0.3,0.7-0.8c0.1-0.7,0.2-1.5,0.4-2.2h0.3c0,0.6,0.1,1.3,0.1,1.9c-0.1,0.8-0.1,1.5,1.1,1.3c0.8-0.1,1.7,0.1,2.5,0.2c-7.2,0.8-14.4,0.6-21.7,0.1c0.2,0,0.3-0.1,0.5-0.1c0.5,0,1.1,0.1,1.6,0c0.7,0,1.1-0.4,1.1-1.1c0-0.7,0.1-1.4,0.2-2.1c0-0.1,0.1-0.3,0.2-0.4l0.3,0v3.4h0.3c1-1.4,0.4-3.1,0.8-4.6h0.2v4.4l0.4,0l0.7-6.1l0.3,0c0,1.3,0,2.5,0,3.8c0,0.6,0,1.2,0,1.8c0,0.2,0.3,0.5,0.4,0.7c0.2-0.2,0.6-0.4,0.6-0.7c0.2-1.4,0.2-2.8,0.3-4.2c0.1-1.2,0.2-2.5,0.4-3.7l0.2,0c0,0.9,0,1.7,0,2.6c0,1.7-0.1,3.4-0.1,5.2c0,0.3,0.2,0.5,0.3,0.8c0.2-0.3,0.5-0.5,0.5-0.8c0.2-2.3,0.4-4.5,0.6-6.8c0-0.3,0.2-0.5,0.4-0.6c0,0.9,0,1.9,0,2.8c0,1.5-0.1,3.1-0.1,4.6c0,0.2,0.3,0.7,0.4,0.7c0.4-0.1,0.9-0.2,1-0.5c0.2-0.3,0.1-0.8,0.1-1.2c0.2-1.8,0.4-3.6,0.7-5.4c0.5,2.3,0,4.6,0.1,6.8c0.7,0.2,1,0,1-0.8c0.1-1.5,0.3-3.1,0.5-4.6c0-0.2,0.1-0.4,0.1-0.7L26.4,30.1z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M17.6,12.5c1.4,0.1,1.4,0.1,1.5-1.2c0.2-1.9,0.4-3.8,0.7-5.7c0.5,2.2,0,4.4,0.1,6.6c0.7,0.2,1,0.1,1-0.7c0.1-1.5,0.3-2.9,0.4-4.4c0-0.2,0.1-0.5,0.1-0.7l0.3,0c0,0.4,0,0.9,0,1.3c0,1.4,0,2.7,0,4.1c0,0.2,0.3,0.4,0.4,0.6c0.1-0.2,0.4-0.4,0.4-0.7c0.2-1.1,0.3-2.3,0.6-3.5c0.1,0.2,0.1,0.5,0.2,0.8c0,0.7,0,1.5-0.1,2.2c0,1.1,0.1,1.2,1.3,1.1c0.1-0.5,0.2-1,0.3-1.5c0.1-0.4,0.2-0.9,0.3-1.3l0.4,0c0,0.7,0.1,1.4,0,2.1c-0.1,0.6,0.2,0.9,0.7,0.9c0.6,0,1.2,0.1,1.8,0.1c0.2,0,0.5,0,0.7,0.1c-7.2,0.8-14.4,0.7-21.7,0.4l0-0.2c0.3,0,0.6,0,1,0c2.2,0.2,2.4-0.1,2.7-2.2c0.1-0.4,0.1-0.9,0.2-1.3h0.3c0,0.5,0.1,1,0.1,1.6c0,0.5,0,1,0.1,1.5c1.2-1.3,0.4-2.9,1.1-4.3l0.2,4.2l0.2,0l0.7-5.9l0.3,0c0,1.7,0,3.4,0,5.1c0,0.4-0.2,0.9,0.5,0.9c0.7,0,0.6-0.5,0.6-0.9c0.2-2.3,0.4-4.7,0.6-7c0-0.2,0.1-0.4,0.3-0.5c0,0.9,0,1.7,0,2.6c0,1.6,0,3.3,0,4.9c0,0.3,0.2,0.6,0.4,0.8c0.2-0.3,0.4-0.5,0.4-0.8c0.2-2.2,0.4-4.3,0.6-6.5c0-0.3,0.2-0.5,0.4-0.6L17.6,12.5L17.6,12.5z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_add_plains = function(row, column, color) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M24.53,39.05a1.93,1.93,0,0,1-.33,0L21.93,39c0.09-.78.16-1.52,0.26-2.26s-0.14-.94-0.87-0.91c-1.64.06-3.29,0-4.94,0h-0.9a21.05,21.05,0,0,1,.59-2.48A22.84,22.84,0,0,1,17.26,31l-1.86-.12c0-1.52,0-3,0-4.44a0.57,0.57,0,0,0-.58-0.63c-0.91-.21-1.82-0.42-2.71-0.69A3.8,3.8,0,0,1,11,24.49c-0.8-.57-0.92-1-0.6-2.17-0.23-.07-0.46-0.12-0.69-0.2a10.11,10.11,0,0,1-1.13-.43A2,2,0,0,1,7.28,20a1.93,1.93,0,0,1,1.28-1.73c0.39-.21.81-0.37,1.29-0.58l-0.48-.53a2.49,2.49,0,0,1,0-3.72,4.61,4.61,0,0,1,2.79-1.23,1.9,1.9,0,0,0,1-.45,5.91,5.91,0,0,1,7.35-.32,3.67,3.67,0,0,1,1.31,3.09,7,7,0,0,0,.74-2.17,2.5,2.5,0,0,1,1-2,1.31,1.31,0,0,0,.59-1.73,0.91,0.91,0,0,1,.18-0.69c1-1.52,2-3,3.08-4.62C28.84,4.78,30.24,6.1,30.77,8c0.13,0.48.4,0.92,0.52,1.41s0,0.76,0,1.14a1.86,1.86,0,0,0,.34.87c0.53,0.63,1.45.94,1.53,2a1.17,1.17,0,0,0,.61.32,15.89,15.89,0,0,1,2.45.91,2.73,2.73,0,0,1,1.4,2.82,1,1,0,0,0,.4.64,12.62,12.62,0,0,1,2.12,1.76,3.25,3.25,0,0,1-.86,4.57c-0.34.26-.71,0.47-1.06,0.7,0.69,1.31.5,2.1-.88,2.68a16.76,16.76,0,0,1-3.5.92,0.67,0.67,0,0,0-.72.79c0,1.36,0,2.72,0,4.14H31.46c0-1.41,0-2.79,0-4.17a0.65,0.65,0,0,0-.72-0.8,17.53,17.53,0,0,1-1.81-.33c-0.32.81,0.94,1.9-.52,2.52a13.68,13.68,0,0,1,1.52,2.2,14.37,14.37,0,0,1,.62,2.67c-0.38,0-.65,0-0.91,0H24.85c-0.87,0-.9,0-0.75.92S24.38,38.25,24.53,39.05Zm8.53-14.51c-0.71,1.18-.45,2.08.78,2.45a4.31,4.31,0,0,0,2,.08c1.42-.29,1.78-1.31,1-2.52a0.56,0.56,0,0,1,0-.2c0.26-.09.55-0.18,0.82-0.28a2.64,2.64,0,0,0,1.77-2.49,2.69,2.69,0,0,0-1.81-2.39A2.65,2.65,0,0,0,37,19c-0.46,0-.6-0.2-0.46-0.69a2.22,2.22,0,0,0-1.17-2.73,2.38,2.38,0,0,0-2.87.67,2.18,2.18,0,0,0,.17,2.9,2.31,2.31,0,0,1,.15.24C30.82,21.65,30.84,22.1,33.06,24.54ZM17,21.45c-0.61,1-.63,1.43-0.06,2a2.59,2.59,0,0,0,2.23.72,0.66,0.66,0,0,0,.6-1,1.77,1.77,0,0,1,0-.87,14.87,14.87,0,0,1,.44-1.58c0.28-.88.55-1.77,0.89-2.63,0.24-.6.58-1.16,0.85-1.69a0.7,0.7,0,0,0-.1-0.15l-0.2-.1c-0.68-.3-1.36-0.48-1-1.59a2.09,2.09,0,0,0-1.44-2.39,2.46,2.46,0,0,0-2.85.83,2.17,2.17,0,0,0,.08,2.73c0.1,0.14.2,0.28,0.29,0.41C14.74,18.58,14.76,19,17,21.45Zm8.29,1.88a8.7,8.7,0,0,0-.83-1.22,3.58,3.58,0,0,0-.9-0.51,3.48,3.48,0,0,0-.21.86c0,2.65.16,5.31,0.09,8A9.79,9.79,0,0,0,23.84,33a2.14,2.14,0,0,0,2.48,2,20,20,0,0,1,2.57.16,5.71,5.71,0,0,0-3.53-5.18l0.17-.2h2.33a8.1,8.1,0,0,0-.39-0.85c-0.62-1-.79-2.36-2.18-2.75a0.35,0.35,0,0,1-.18-0.23c-0.19-.78-0.37-1.56-0.55-2.36ZM28,6.21l-0.15.09c0.13,2.93.25,5.85,0.39,8.78,0,0.49.48,0.61,0.93,0.27l2.29-1.69a2.2,2.2,0,0,0-1.26-1.6,1,1,0,0,1-.55-0.46c-0.22-.74-0.37-1.51-0.54-2.29l0.76-.24ZM17.18,28.43l0.32,0.09c0.21-.75.45-1.49,0.62-2.25a0.62,0.62,0,0,0-.44-0.4,0.63,0.63,0,0,0-.48.39C17.15,27,17.18,27.7,17.18,28.43Z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_add_swamp = function(row, column, color) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M22.33,2.5c0.91-.81,1-0.78,1.5.23a1.26,1.26,0,0,0,1.95.41A1.64,1.64,0,0,1,28.17,3a4.23,4.23,0,0,0,1.52.49A17.93,17.93,0,0,1,32,3.77a6.28,6.28,0,0,1,1.35,1c1.19,0.81,1.18,2,1,3.13l-1.48.36-1-1.84c-0.82,1.49-.64,2.32.58,3a2.55,2.55,0,0,0,2.23.47,0.92,0.92,0,0,1,.79.2A23,23,0,0,1,37.23,12c0.65,0.79.48,2.95-.38,4L35.49,14.2a0.91,0.91,0,0,0-.88,1.09,8.59,8.59,0,0,1,0,1.67,3.86,3.86,0,0,1-.5,1l-0.36-.1c0-.83,0-1.66,0-2.49a2.18,2.18,0,0,0-.1-1,2.69,2.69,0,0,0-.88-0.6,2.7,2.7,0,0,0-.27.76c0,0.88,0,1.76,0,2.64,0,1.63,0,1.68-1.77,1.93-0.21-.7,0-1.8-1.27-1.71-0.37,1,.1,2.24-0.83,3l-0.39,0c0-1,0-1.95,0-2.91a2.5,2.5,0,0,0-.82-2c-0.53-.53-1-0.76-1.52-0.1a0.79,0.79,0,0,1-.3.13l-0.26-.13c0.16-.37.33-0.74,0.47-1.11a2,2,0,0,0,.32-1.07A1.48,1.48,0,0,0,25,12.51a48.68,48.68,0,0,0-5.53.7A3,3,0,0,0,16.88,16a2.05,2.05,0,0,0,1.56,1.84,21.8,21.8,0,0,1,2.23.6c1.6,0.54,1.86,2,2.1,3.35a8.54,8.54,0,0,1,0,1.47c-1.41,0-1.65-.25-1.67-1.54a3.11,3.11,0,0,0-1.88-2.12,1,1,0,0,0-.72.29A1.47,1.47,0,0,0,18.77,21a2.24,2.24,0,0,1,1,2l-1.6.53c-0.2-.87-0.38-1.66-0.57-2.44-0.26-1.08-.53-1.25-1.87-1.15a5.2,5.2,0,0,1,.7,3.79,2.21,2.21,0,0,1-.45.58l-0.74-2.93c-1.23.84-.42,2-0.84,2.95a0.75,0.75,0,0,1-.81-0.79c-0.07-.93-0.5-1.88.32-2.74a0.94,0.94,0,0,0-.22-0.86,1.33,1.33,0,0,0-1.52.82c-0.05.64,0,1.3-.06,1.93a1,1,0,0,1-.52.68c-0.5.14-.54-0.29-0.53-0.66,0-.58.08-1.17,0.08-1.75A2.76,2.76,0,0,0,11,20.26l-0.34,0a15.53,15.53,0,0,0-.47,1.94c-0.16,1.33-.21,1.39-1.78,1,0.41-1.47.82-2.94,1.24-4.41a1,1,0,0,1,1.14-.71c2.44,0,2.56,0,3.16-2.35a5.63,5.63,0,0,1,2.75-3.61A1.29,1.29,0,0,0,17.08,10a7.61,7.61,0,0,0-1.39-1.44,1,1,0,0,0-1.61.69,1.76,1.76,0,0,1-.43.84,4,4,0,0,0-.26-1,3.54,3.54,0,0,0-.69-0.7,2.38,2.38,0,0,0-.52.79,7.38,7.38,0,0,0,0,1.67,0.8,0.8,0,0,1-.84,1c0-.3,0-0.57-0.06-0.85a1.16,1.16,0,0,0-.07-0.59c-1.33-.66-0.53-2-0.94-2.94a4.57,4.57,0,0,1-.17-1.2,1.36,1.36,0,0,1,.53-1.54,2.72,2.72,0,0,0,.61-0.9c0.28-.47.53-0.94,1.21-0.49,0.4,0.26.77,0.16,0.78-.4,0-.9.64-0.85,1.23-0.8,1.13,0.09,2.26.24,3.39,0.33a2.85,2.85,0,0,0,2-.53A3.25,3.25,0,0,1,21.67,2,2,2,0,0,1,22.33,2.5ZM20.55,7l-0.3-.13a3.52,3.52,0,0,0-.58,1,0.89,0.89,0,0,1-.84.92,0.77,0.77,0,0,0-.37.62,1.75,1.75,0,0,0,.31,1,3.62,3.62,0,0,0,1.92-.17A12.74,12.74,0,0,0,22.61,8.7,1.48,1.48,0,0,0,23,7a2.05,2.05,0,0,0-.6-0.65,3.93,3.93,0,0,0-.39.76c-0.16.6-.27,1.22-0.4,1.83l-0.37,0Zm2.21,3.75c1.14,0.29,2.81-.23,3.17-1a1.56,1.56,0,0,0-.16-1.17A2.63,2.63,0,0,0,24.89,8ZM17.64,8c0.25-1.39-.1-2.08-1.09-2.2a2.82,2.82,0,0,0-1,.28A2.49,2.49,0,0,0,16,7.15,9.07,9.07,0,0,0,17.64,8Z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M20.8,30c0.2,2.14.39,4.28,0.59,6.42,0.11,1.16.12,1.16,1.46,0.86V31l0.26,0c0.11,0.65.26,1.29,0.31,1.95,0.09,1.22.09,2.44,0.2,3.66a0.88,0.88,0,0,0,.51.64c0.51,0.12.54-.3,0.54-0.69,0-1.61,0-3.21,0-4.82l0.25,0C25,32.13,25,32.55,25.07,33c0.12,1.32.22,2.63,0.37,3.95a1.5,1.5,0,0,0,.45.55,1.71,1.71,0,0,0,.31-0.58,27.2,27.2,0,0,1,.33-3.31c0.07,0.43.15,0.87,0.19,1.3s0,0.94.07,1.41a1.1,1.1,0,0,0,1.35,1.24l0.26-2.82,0.21,0c0.09,0.56.19,1.12,0.26,1.68,0.16,1.25.26,1.35,1.55,1.38,0.4,0,.81,0,1.21,0a105.11,105.11,0,0,1-19.83.11h3L15,34.46h0.17l0.55,3.25c1-1.51.31-3,.58-4.34L17,37.55H17.3V31.88l0.16,0c0.2,1.69.4,3.39,0.59,5.08,0,0.38.06,0.81,0.57,0.67A0.93,0.93,0,0,0,19,36.91c0-2.43,0-4.86,0-7.52,0.11,1.15.2,2.08,0.3,3,0.17,1.59.35,3.17,0.55,4.75a1.12,1.12,0,0,0,.42.39,1.16,1.16,0,0,0,.35-0.46c0-.75-0.06-1.5-0.06-2.24,0-1.59,0-3.19,0-4.78Z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M35.06,22q0,2.8,0,5.59c0,0.36-.22.81,0.4,0.88s0.72-.3.76-0.81c0.12-1.43.26-2.86,0.41-4.28A0.89,0.89,0,0,1,37,22.73c0,0.44-.06.87-0.06,1.31,0,1.31,0,2.63,0,3.94a1.75,1.75,0,0,0,.39.66A1.91,1.91,0,0,0,37.83,28c0.2-1.11.32-2.23,0.63-3.37,0,1,0,2,0,3,0,0.6.11,1.11,0.83,1a0.93,0.93,0,0,0,.65-0.55c0.2-.71.28-1.45,0.41-2.17l0.26,0c0,0.71,0,1.42,0,2.13a0.59,0.59,0,0,0,.62.75c0.78,0,1.57.11,2.38,0.17a121.48,121.48,0,0,1-20.91.17C23.47,29.09,24.25,29,25,29s0.86-.4.9-1c0.06-.8.16-1.59,0.24-2.39h0.31v3.08h0.34c1.1-1.23.35-2.85,0.9-4.23l0.2,4.21h0.33l0.64-5.63,0.21,0c0,1.66,0,3.33,0,5,0,0.41,0,.87.53,0.76a1,1,0,0,0,.61-0.74c0.23-2.33.39-4.66,0.58-7,0-.22.07-0.44,0.16-0.91,0,1.27,0,2.28,0,3.28,0,1.6,0,3.2,0,4.8a1.16,1.16,0,0,0,.42.44,1.55,1.55,0,0,0,.5-0.58c0.11-1.2.12-2.4,0.23-3.6a25.7,25.7,0,0,1,.57-3.6c0,2.22,0,4.44,0,6.66,0,0.41-.35,1,0.46,1.07a0.89,0.89,0,0,0,1.13-.95c0.14-1.91.41-3.82,0.63-5.72h0.1Z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_add_jungle = function(row, column, color) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+			.attr({
+				d: 'M22.46,17.67l-1.17-.41a3,3,0,0,0,.09,2.45,5.7,5.7,0,0,1-1.08,6.79,6.79,6.79,0,0,0-1.7-4.19,14.23,14.23,0,0,0-2.37-1.91c-0.71-.46-0.92-0.29-0.92.59q0,7.69,0,15.39c0,0.29,0,.58,0,0.92H13.26L14.66,21l-0.22-.06a8.13,8.13,0,0,0-1.57,4.21c-0.22,1.54-.29,3.11-0.43,4.68A1.39,1.39,0,0,1,10.57,29a8.25,8.25,0,0,1,.05-8.25c0.12-.21.26-0.4,0.4-0.62-1.23-.08-2.17.65-5.51,4.28L4.4,23.74c0.52-1.1,1-2.19,1.55-3.25a1.62,1.62,0,0,0,.27-1.17c-0.35-1.89,1.17-3.7,3.36-4.13a3.13,3.13,0,0,1,1.12-.14A1.11,1.11,0,0,0,12.12,14a2.59,2.59,0,0,1,.26-0.59,5.91,5.91,0,0,0,1-3.44c-0.15-2.15,2.12-3.9,4.71-4.15a6.55,6.55,0,0,1,4.92,1.4,6.79,6.79,0,0,1,8-1.4c1.35,0.7,1.89,1.8,1.4,2.85a0.74,0.74,0,0,1-.16.14,6.12,6.12,0,0,0-3.91-.52,6.07,6.07,0,0,0,.5.42,6.59,6.59,0,0,1,2.89,6.87,0.84,0.84,0,0,0,.58,1.21,6.08,6.08,0,0,1,1,.62c1.36-2.1,5.26-2.3,7.26-.93a1.65,1.65,0,0,1,.71,2.32,5.1,5.1,0,0,0-3.49-.44A5.61,5.61,0,0,1,41,23.44a5.66,5.66,0,0,1-1.69,4.25c-0.1-.54-0.16-1-0.28-1.46a7.08,7.08,0,0,0-3.64-4.62c-1-.52-1.12-0.42-1.11.64q0,7.61,0,15.22c0,0.29,0,.59,0,0.94H32.22l1.39-16.33-0.28,0c-1.76,2.71-1.81,5.81-1.85,8.93a1.68,1.68,0,0,1-2-.89,8.32,8.32,0,0,1,.11-8.25c0.11-.2.24-0.4,0.36-0.6L29.84,21a10.41,10.41,0,0,0-2.06,1.11C26.76,23,25.89,24,24.94,25c-0.23.23-.5,0.42-0.84,0.71v6.07H21.66l1.65-19.22a4.44,4.44,0,0,0-1.51,2.62,1,1,0,0,0,.37.57A1.55,1.55,0,0,1,22.46,17.67Zm6.6-1.44a7.87,7.87,0,0,0-4.26-4.38c-0.61-.17-0.75.12-0.75,0.67,0,3.27,0,6.53,0,9.8a3.2,3.2,0,0,0,.08.43c0.52-.94,1.26-1.57,1-2.71A2.53,2.53,0,0,1,26,17.77,5.16,5.16,0,0,1,29.07,16.23Zm-10-4.75a10,10,0,0,0-5.49,4.21l0.92,0.63A3.67,3.67,0,0,1,17,14.68a1.23,1.23,0,0,0,.74-0.38C18.19,13.4,18.61,12.45,19.08,11.48Z',
+				fill: color,
+				'class': 'w-t-p'
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_create_group = function(terrain, row, column) {
+		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		let t_x = Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE);
+		let t_y = Math.round(height * (row * 2 + (column % 2)));
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'g'))
+			.attr({
+				'class': 's-c-g-' + row + '-' + column,
+				'transform': 'translate(' + t_x + ', ' + t_y + ')',
+			})
+			.appendTo('.svg-grid');
+	};
+
+	this.svg_map_element = function(row, column, prev_row, prev_column, element_type, id, title) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
+			.attr({
+				'id': 'w-t-i' + row + '-' + column,
+				'xlink:href': '',
+				'height': 42,
+				'width': 42,
+				'x': "2px",
+				'y': "2px",
+				'class': 'troop',
+				'data-name': element_type,
+				'data-id': id
+				//'title': title
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		document.getElementById('w-t-i' + row + '-' + column)
+			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + element_type + '.png');
+	};
+
+	/*
+	this.svg_link_cells = function(source, destination) {
+		let _source = this.get_cell_middle_coords(source.x, source.y);
+		let _destination = this.get_cell_middle_coords(destination.x, destination.y);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'line'))
+			.attr({
+				'x1': _source.x,
+				'y1': _source.y,
+				'x2': _destination.x,
+				'y2': _destination.y
+			})
+			.css({
+				'stroke': '#ff0000',
+				'stroke-width': 2
+			})
+			.appendTo('.svg-grid');
+	}
+	*/
+
+	this.svg_create_cell = function(row, column, color, show_grid) {
+		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		let center = this.get_cell_middle(row, column);
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'polygon'))
+			.attr({
+				points: [
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, -1 * height),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, -1 * height),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE, 0),
+					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, height),
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, height),
+					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE, 0)
+				].join(' '),
+				'class': 'svg-cell'
+			})
+			.css({
+				fill: color,
+				stroke: '#000',
+				'stroke-width': (show_grid === true) ? 0.1 : 0
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+	};
+
+	this.svg_create_worldmap = function(cell_size, colors) {
+		let height = Math.sqrt(3) / 2 * cell_size;
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
+			.attr({
+				'xmlns': 'http://www.w3.org/2000/svg',
+				'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+				'class': 'svg-grid'
+			})
+			.appendTo('.worldmap')
+			.css({
+				width: (1.5 * civitas.WORLD_SIZE_WIDTH  +  0.5) * cell_size,
+				height: (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height,
+				'background-color': colors.X.bg
+			});
+	};
+
+	this.svg_apply_terrain = function(row, column, color, terrain) {
+		if (terrain === 'M') {
+			this.svg_add_mountain(row, column, color);
+		} else if (terrain === 'H') {
+			this.svg_add_hill(row, column, color);
+		} else if (terrain === 'D') {
+			this.svg_add_desert(row, column, color);
+		} else if (terrain === 'G') {
+			this.svg_add_grass(row, column, color);
+		} else if (terrain === 'P') {
+			this.svg_add_plains(row, column, color);
+		} else if (terrain === 'J') {
+			this.svg_add_jungle(row, column, color);
+		} else if (terrain === 'W') {
+			this.svg_add_swamp(row, column, color);
+		}
+	};
+
+	/**
+	 * Get the middle of a hex cell.
+	 *
+	 * @public
+	 * @param {Number} row
+	 * @param {Number} column
+	 * @returns {Number}
+	 */
+	this.get_cell_middle = function(row, column) {
+		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		let center = {
+			x: Math.round(civitas.WORLD_HEX_SIZE), 
+			y: Math.round(height)
+		};
+		return center;
+	};
+
+	/**
+	 * Scroll the world map to the specified location.
+	 *
+	 * @param {Object} location
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.worldmap_scrollto = function(location) {
+		const coords = this.get_cell_middle_coords(location.y, location.x);
+		$('.worldmap').scrollTop(coords.y - (700 / 2));
+		$('.worldmap').scrollLeft(coords.x - (1164 / 2));
+		return this;
+	};
+
+	/**
+	 * Get the middle coordonates of a hex cell.
+	 *
+	 * @public
+	 * @param {Number} row
+	 * @param {Number} column
+	 * @returns {Object}
+	 */
+	this.get_cell_middle_coords = function(row, column) {
+		const height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		return {
+			x: Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE),
+			y: Math.round(height * (row * 2 + (column % 2)))
+		}
+	};
+
+	/**
+	 * Get a random HSL color.
+	 *
+	 * @public
+	 * @returns {String}
+	 */
+	this.get_random_color = function() {
+		let color = (Math.random() * 250) + 1;
+		let colors = Math.random() * 255;
+		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
+	};
+
+	// Fire up the constructor
+	return this.__init(core);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Sat Jun 29 2019 20:34:19 GMT+0300 (Eastern European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

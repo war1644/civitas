@@ -26,24 +26,6 @@ civitas.ENCRYPTION = false;
 civitas.ASSETS_URL = './';
 
 /**
- * Amount of influence your settlement loses each year.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-civitas.YEARLY_INFLUENCE_LOSS = 2;
-
-/**
- * Amount of influence your settlement gains each year.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-civitas.YEARLY_INFLUENCE_GAIN = 2;
-
-/**
  * How many real seconds has a game day.
  *
  * constant
@@ -61,66 +43,13 @@ civitas.SECONDS_TO_DAY = 10;
  */
 civitas.AVATARS = 99;
 
-civitas.TRADES_ADDITION = 10;
-
-civitas.TRADES_DISCOUNT = 20;
-
-/**
- * Max level a settlement can have.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-civitas.MAX_SETTLEMENT_LEVEL = 45;
-
-/**
- * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.POPULATION_PER_LEVEL = 2300;
-
-/**
- * The black market discount.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-civitas.BLACK_MARKET_DISCOUNT = 80;
-
-/**
- * Fame required for each city level.
- * 
- * @constant
- * @default
- * @type {Array}
- */
-civitas.LEVELS = [
-	0, 100, 500, 1000, 3000,
-	6500, 12000, 20000, 30000, 45000,
-	60000, 85000, 100000, 140000, 180000,
-	220000, 290000, 350000, 400000, 500000,
-	610000, 730000, 800000, 930000, 1100000,
-	1300000, 1500000, 1800000, 2500000, 3000000, 
-	4000000, 5500000, 6500000, 8000000, 9000000, 
-	10000000, 12000000, 16000000, 20000000, 50000000,
-	60000000, 70000000, 80000000, 90000000, 100000000
-];
-
 /**
  * Application version.
  * 
  * @constant
  * @type {String}
  */
-civitas.VERSION = '0.3.0.' +
-	((new Date()).getMonth() + 1) + '' +
-	(new Date()).getDate() + '' + 
-	(new Date()).getFullYear();
+civitas.VERSION = '0.3.0.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + (new Date()).getFullYear();
 
 /**
  * Whether the application is in debug mode.
@@ -139,46 +68,6 @@ civitas.DEBUG = true;
  * @type {String}
  */
 civitas.STORAGE_KEY = 'civitas';
-
-/**
- * Goods importance, vital means at most 50 stacks of goods will be up
- * for importing or exporting.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.IMPORTANCE_VITAL = 50;
-
-/**
- * Goods importance, high means at most 30 stacks of goods will be up
- * for importing or exporting.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.IMPORTANCE_HIGH = 30;
-
-/**
- * Goods importance, medium means at most 20 stacks of goods will be up
- * for importing or exporting.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.IMPORTANCE_MEDIUM = 20;
-
-/**
- * Goods importance, low means at most 10 stacks of goods will be up
- * for importing or exporting.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.IMPORTANCE_LOW = 10;
 
 /**
  * Difficulty level of the game is easy.
@@ -224,7 +113,7 @@ civitas.DIFFICULTY_HARDCORE = 4;
  * @default
  * @type {Number}
  */
-civitas.NOTIFICATION_MISSING_RESOURCES = 1;
+civitas.NOTIFICATION_MISSING_RES = 1;
 
 /**
  * When a building is notifying the player its production is paused
@@ -234,7 +123,7 @@ civitas.NOTIFICATION_MISSING_RESOURCES = 1;
  * @default
  * @type {Number}
  */
-civitas.NOTIFICATION_PRODUCTION_PAUSED = 2;
+civitas.NOTIFICATION_PAUSED = 2;
 
 /**
  * When a building is notifying the player it is missing its requirements.
@@ -243,7 +132,7 @@ civitas.NOTIFICATION_PRODUCTION_PAUSED = 2;
  * @default
  * @type {Number}
  */
-civitas.NOTIFICATION_MISSING_REQUIREMENTS = 3;
+civitas.NOTIFICATION_MISSING_REQ = 3;
 
 /**
  * When a building is notifying the player the level of the city is too low.
@@ -261,43 +150,16 @@ civitas.NOTIFICATION_SETTLEMENT_LOW_LEVEL = 4;
  * @default
  * @type {Number}
  */
-civitas.MODE_SINGLEPLAYER = 0;
+civitas.MODE_SINGLEPLAYER = 1;
 
 /**
- * Game type as multi player (networked).
+ * Game type as multi player (sandbox, networked).
  *
  * @constant
  * @default
  * @type {Number}
  */
-civitas.MODE_MULTIPLAYER = 1;
-
-/**
- * Diplomacy proposal action.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.ACTION_DIPLOMACY = 0;
-
-/**
- * Campaign action.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.ACTION_CAMPAIGN = 1;
-
-/**
- * Research action.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.ACTION_RESEARCH = 2;
+civitas.MODE_MULTIPLAYER = 2;
 
 /**
  * Error notification

@@ -9,6 +9,14 @@
 civitas.controls.window = function (params) {
 
 	/**
+	 * DOM template of this window.
+	 *
+	 * @private
+	 * @type {String}
+	 */
+	this.template = null;
+
+	/**
 	 * DOM handle of this window.
 	 *
 	 * @private
@@ -49,7 +57,15 @@ civitas.controls.window = function (params) {
 	this.title = null;
 
 	/**
-	 * Callback function when the window is shown (created).
+	 * Callback function when the window is created.
+	 *
+	 * @public
+	 * @type {Function}
+	 */
+	this.on_create = null;
+
+	/**
+	 * Callback function when the window is shown.
 	 *
 	 * @public
 	 * @type {Function}
@@ -71,7 +87,7 @@ civitas.controls.window = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.__destroy = function () {
-		this.core().log('ui', 'Destroying window with id `' + this.id() + '`');
+		this.core().ui().log('ui', 'Destroying window with id `' + this.id() + '`');
 		$(this.handle()).remove();
 		$('.tipsy').remove();
 		this.on_hide.call(this);
@@ -101,6 +117,12 @@ civitas.controls.window = function (params) {
 		this._id = params.id;
 		this._handle = '#window-' + this.id();
 		this.params_data = params.data;
+		this.template = typeof params.template !== 'undefined' ? params.template : '';
+		if (params.on_create instanceof Function) {
+			this.on_create = params.on_create;
+		} else {
+			this.on_create = function() {};
+		}
 		if (params.on_show instanceof Function) {
 			this.on_show = params.on_show;
 		} else {
@@ -111,11 +133,12 @@ civitas.controls.window = function (params) {
 		} else {
 			this.on_hide = function() {};
 		}
-		if (civitas.ui.window_exists(this.handle())) {
+		if (this.core().ui().window_exists(this.handle())) {
 			this.destroy();
 		}
-		this.core().log('ui', 'Creating window with id `' + this.id() + '`');
-		$('body').append(params.template.replace(/{ID}/g, this.id()));
+		this.core().ui().log('ui', 'Creating window with id `' + this.id() + '`');
+		this.on_create.call(this, params);
+		$('body').append(this.template.replace(/{ID}/g, this.id()));
 		this.on_show.call(this);
 		$('.tipsy').remove();
 		$('.tips').tipsy({

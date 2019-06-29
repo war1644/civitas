@@ -5,13 +5,24 @@
  * @mixin
  */
 civitas.WINDOW_SIGNUP = {
+
 	/**
-	 * Template of the window.
+	 * Internal id of the window.
 	 *
 	 * @type {String}
+	 * @constant
+	 * @default
 	 */
-	template: '' +
-		'<section id="window-{ID}" class="window">' +
+	id: 'signup',
+
+	/**
+	 * Callback function for creating the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = '<section id="window-{ID}" class="window">' +
 			'<div class="logo">Civitas</div>' +
 			'<fieldset>' +
 				'<div class="new-game">' +
@@ -49,18 +60,10 @@ civitas.WINDOW_SIGNUP = {
 					'</dl>' +
 					'<a href="#" class="do-start highlight button">Start Playing</a>' +
 				'</div>' +
-				civitas.ui.window_about_section() +
+				this.core().ui().window_about_section() +
 			'</fieldset>' +
-		'</section>',
-
-	/**
-	 * Internal id of the window.
-	 *
-	 * @type {String}
-	 * @constant
-	 * @default
-	 */
-	id: 'signup',
+		'</section>';
+	},
 
 	/**
 	 * Callback function for showing the window.
@@ -101,20 +104,20 @@ civitas.WINDOW_SIGNUP = {
 				cityname = cityname.substring(0, 12);
 			}
 			if (name === '') {
-				core.error('Enter your ruler name, for example <strong>Ramses</strong>.', 'Error', true);
+				core.ui().error('Enter your ruler name, for example <strong>Ramses</strong>.', 'Error', true);
 				return false;
 			}
 			if (cityname === '') {
-				core.error('Enter your city name, for example <strong>Alexandria</strong>.', 'Error', true);
+				core.ui().error('Enter your city name, for example <strong>Alexandria</strong>.', 'Error', true);
 				return false;
 			}
 			if (civitas.ENCRYPTION === true) {
 				if (password === '') {
-					core.error('Enter a strong password for your city.', 'Error', true);
+					core.ui().error('Enter a strong password for your city.', 'Error', true);
 					return false;
 				}
 				if (password !== password2) {
-					core.error('Your passwords do not match.', 'Error', true);
+					core.ui().error('Your passwords do not match.', 'Error', true);
 					return false;
 				}
 			}
@@ -142,6 +145,6 @@ civitas.WINDOW_SIGNUP = {
 	 * @public
 	 */
 	on_hide: function() {
-		civitas.ui.hide_loader();
+		this.core().ui().hide_loader();
 	}
 };

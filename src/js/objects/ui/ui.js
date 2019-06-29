@@ -1,28 +1,73 @@
 /**
- * Main Game UI interface.
+ * Main Game UI object.
+ * 
+ * @param {Object} core
  * @license GPLv3
- * @mixin
+ * @class civitas.objects.ui
+ * @returns {civitas.objects.ui}
  */
-civitas.ui = {
+civitas.objects.ui = function (core) {
+
+	/**
+	 * Array containing the list of all open panels.
+	 *
+	 * @type {Array}
+	 * @private
+	 */
+	this.panels = [];
+
+	/**
+	 * Reference to the core object.
+	 *
+	 * @private
+	 * @type {civitas.game}
+	 */
+	this._core = null;
+
+	/**
+	 * Object constructor.
+	 * 
+	 * @private
+	 * @constructor
+	 * @returns {civitas.objects.ui}
+	 * @param {Object} core
+	 */
+	this.__init = function (core) {
+		this._core = core;
+		return this;
+	};
+
 	/**
 	 * Show the application loading indicator.
 	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
 	 */
-	show_loader: function() {
+	this.show_loader = function() {
 		$('.loading').show().tipsy({
 			gravity: 'e'
 		});
-	},
+		return this;
+	};
 
 	/**
 	 * Hide the application loading indicator.
 	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
 	 */
-	hide_loader: function() {
+	this.hide_loader = function() {
 		$('.loading').hide();
-	},
+		return this;
+	};
 
-	build_main: function() {
+	/**
+	 * Build the main DOM UI of the game.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.build_main = function() {
 		let _t = '';
 		let clicked = false;
 		let clickY, clickX;
@@ -85,15 +130,17 @@ civitas.ui = {
 			clickY = event.pageY;
 			clickX = event.pageX;
 		};
-	},
+		return this;
+	};
 
 	/**
 	 * Create an item tooltip.
 	 *
+	 * @public
 	 * @param {Object} item
 	 * @returns {String}
 	 */
-	item_tooltip: function(item) {
+	this.item_tooltip = function(item) {
 		let out = '<h4 style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + item.name + '</h4>';
 		if (item.flavour) {
 			out += '<span class="flavour">"' + item.flavour + '"</span>' + ' <br />';
@@ -121,14 +168,15 @@ civitas.ui = {
 		}
 		out += 'Type: <span style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + civitas.ITEM_QUALITY_LIST[item.quality] + '</span>';
 		return out;
-	},
+	};
 
 	/**
 	 * Build the About section of the UI.
 	 *
+	 * @public
 	 * @returns {String}
 	 */
-	window_about_section: function() {
+	this.window_about_section = function() {
 		let out = '<a href="#" class="do-about button">About</a>' +
 			'<div class="about-game">' +
 				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
@@ -140,15 +188,16 @@ civitas.ui = {
 				'</ul>' +
 			'</div>';
 		return out;
-	},
+	};
 
 	/**
 	 * Generate a generic panel template.
 	 *
+	 * @public
 	 * @param {String} title
 	 * @returns {String}
 	 */
-	generic_panel_template: function(title) {
+	this.generic_panel_template = function(title) {
 		if (typeof title === 'undefined') {
 			title = '';
 		}
@@ -159,9 +208,16 @@ civitas.ui = {
 			'<section></section>' +
 		'</div>';
 		return out;
-	},
+	};
 
-	building_panel_template: function(title) {
+	/**
+	 * Generate a building panel template.
+	 *
+	 * @public
+	 * @param {String} title
+	 * @returns {String}
+	 */
+	this.building_panel_template = function(title) {
 		if (typeof title === 'undefined') {
 			title = '';
 		}
@@ -178,9 +234,17 @@ civitas.ui = {
 			'</footer>' +
 		'</div>';
 		return out;
-	},
+	};
 
-	building_panel: function (params, level) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} params
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.building_panel = function (params, level) {
 		if (typeof params.levels === 'undefined') {
 			params.levels = 1;
 		}
@@ -188,53 +252,87 @@ civitas.ui = {
 		if (params.handle.slice(0, 5) === 'house') {
 			building_image = params.handle.slice(0, 5);
 		}
-		let image = (typeof params.visible_upgrades === 'undefined' || 
-			params.visible_upgrades === false) ? building_image: building_image + params.level;
+		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
 		let out = '<div class="column">' +
 			'<img src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
 		'</div>' +
 		'<div class="column">' +
 			'<p>' + params.description + '</p>' +
 			'<dl>' +
-				civitas.ui.level_panel(params.level, level, params.levels) +
-				civitas.ui.cost_panel(params.cost, level, params.levels) +
-				civitas.ui.materials_panel(params.materials) +
-				civitas.ui.production_panel(params.production, level) +
-				civitas.ui.requires_panel(params.requires) +
-				civitas.ui.chance_panel(params.chance, level) +
-				civitas.ui.tax_panel(params.tax, level) +
-				civitas.ui.storage_panel(params.storage, level) +
+				this.level_panel(params.level, level, params.levels) +
+				this.cost_panel(params.cost, level, params.levels) +
+				this.materials_panel(params.materials) +
+				this.production_panel(params.production, level) +
+				this.requires_panel(params.requires) +
+				this.chance_panel(params.chance, level) +
+				this.tax_panel(params.tax, level) +
+				this.storage_panel(params.storage, level) +
 			'</dl>' +
 		'</div>'; 
 		return out;
-	},
+	};
 
-	normal_panel: function (section, contents) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} section
+	 * @param {String} contents
+	 * @returns {String}
+	 */
+	this.normal_panel = function (section, contents) {
 		let out = '<fieldset>' +
 				'<legend>' + section + '</legend>' +
 				contents +
 			'</fieldset>';
 		return out;
-	},
+	};
 
-	level_panel: function (level, new_level, max_level) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} level
+	 * @param {Number} new_level
+	 * @param {Number} max_level
+	 * @returns {String}
+	 */
+	this.level_panel = function (level, new_level, max_level) {
 		let out = '<dt>Level</dt>' +
 			'<dd><span title="Current building level" class="tips">' + new_level + '</span> / <span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '</span> </dd>';
 		return out;
-	},
+	};
 
-	cost_panel: function (costs, level, levels) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} conts
+	 * @param {Number} level
+	 * @param {Number} levels
+	 * @returns {String}
+	 */
+	this.cost_panel = function (costs, level, levels) {
 		let out = '';
 		if (typeof costs !== 'undefined') {
 			out += '<dt>Cost</dt>';
 			for (let item in costs) {
-				out += '<dd>' + civitas.utils.nice_numbers(costs[item]) + civitas.ui.resource_small_img(item) + (typeof levels !== 'undefined' && level < levels ? ' / ' + civitas.utils.nice_numbers(costs[item] * (level + 1)) + civitas.ui.resource_small_img(item) : '') + '</dd>';
+				out += '<dd>' + civitas.utils.nice_numbers(costs[item]) + this.resource_small_img(item) + (typeof levels !== 'undefined' && level < levels ? ' / ' + civitas.utils.nice_numbers(costs[item] * (level + 1)) + this.resource_small_img(item) : '') + '</dd>';
 			}
 		}
 		return out;
-	},
+	};
 
-	progress: function(value, progress_type, show_value) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} value
+	 * @param {String} progress_type
+	 * @param {Boolean} show_value
+	 * @returns {String}
+	 */
+	this.progress = function(value, progress_type, show_value) {
 		if (typeof progress_type === 'undefined') {
 			progress_type = 'small';
 		}
@@ -257,23 +355,45 @@ civitas.ui = {
 				'<p>' + (typeof show_value !== 'undefined' ? show_value : value) + '</p>' +
 			'</div>' +
 		'</div>';
-	},
+	};
 
-	navy_img: function (name) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} name
+	 * @returns {String}
+	 */
+	this.navy_img = function (name) {
 		return '<img class="tips small" title="' + civitas.SHIPS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
-	},
+	};
 
-	army_img: function (name) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} name
+	 * @returns {String}
+	 */
+	this.army_img = function (name) {
 		return '<img class="tips small" title="' + civitas.SOLDIERS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
-	},
+	};
 
-	army_list: function (army, no_margin) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} army
+	 * @param {Boolean} no_margin
+	 * @returns {String}
+	 */
+	this.army_list = function (army, no_margin) {
 		let out2 = '<p>There are no soldiers in this army.</p>';
 		let out = '<dl' + ((typeof no_margin !== 'undefined' && no_margin === true) ? ' class="nomg"' : '') + '>';
 		let total = 0;
 		for (let soldier in army) {
 			if (army[soldier] > 0) {
-				out += '<dt>' + army[soldier] + '</dt>' + '<dd>' + civitas.ui.army_img(soldier) + '</dd>';
+				out += '<dt>' + army[soldier] + '</dt>' + '<dd>' + this.army_img(soldier) + '</dd>';
 				total += army[soldier];
 			}
 		}
@@ -285,7 +405,7 @@ civitas.ui = {
 		} else {
 			return out2;
 		}
-	},
+	};
 
 	/**
 	 * Check if a window exists and is opened.
@@ -293,12 +413,12 @@ civitas.ui = {
 	 * @param {String} id
 	 * @returns {Boolean}
 	 */
-	window_exists: function (id) {
+	this.window_exists = function (id) {
 		if ($(id).length == 0) {
 			return false;
 		}
 		return true;
-	},
+	};
 
 	/**
 	 * Check if a panel exists and is opened.
@@ -306,38 +426,65 @@ civitas.ui = {
 	 * @param {String} id
 	 * @returns {Boolean}
 	 */
-	panel_exists: function (id) {
+	this.panel_exists = function (id) {
 		if ($(id).length == 0) {
 			return false;
 		}
 		return true;
-	},
+	};
 
-	panel_btn: function (text, title, handle, class_name, disabled) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} text
+	 * @param {String} title
+	 * @param {String} handle
+	 * @param {String} class_name
+	 * @param {Boolean} disabled
+	 * @returns {String}
+	 */
+	this.panel_btn = function (text, title, handle, class_name, disabled) {
 		return '<a title="' + title + '" data-handle="' + handle + '" class="tips ' + class_name + (disabled === true ? ' disabled' : '') + '" href="#">' + text + '</a></td>';
-	},
+	};
 
-	trades_list: function (trades, mode) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} trades
+	 * @param {String} mode
+	 * @returns {String}
+	 */
+	this.trades_list = function (trades, mode) {
 		mode = (typeof mode === 'undefined' || mode === 'imports') ? 'imports' : 'exports';
 		let out = '';
 		if (trades !== null) {
 			let trade = trades[mode];
 			for (let item in trade) {
 				if (trade[item] > 0) {
-					out += civitas.ui.resource_storage_small_el(item, trade[item]);
+					out += this.resource_storage_small_el(item, trade[item]);
 				}
 			}
 		}
 		return out;
-	},
+	};
 
-	navy_list: function (army, no_margin) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} army
+	 * @param {Boolean} no_margin
+	 * @returns {String}
+	 */
+	this.navy_list = function (army, no_margin) {
 		let out2 = '<p>There are no ships in this navy.</p>';
 		let out = '<dl' + ((typeof no_margin !== 'undefined' && no_margin === true) ? ' class="nomg"' : '') + '>';
 		let total = 0;
 		for (let ship in army) {
 			if (army[ship] > 0) {
-				out += '<dt>' + army[ship] + '</dt>' + '<dd>' + civitas.ui.navy_img(ship) + '</dd>';
+				out += '<dt>' + army[ship] + '</dt>' + '<dd>' + this.navy_img(ship) + '</dd>';
 				total += army[ship];
 			}
 		}
@@ -349,9 +496,16 @@ civitas.ui = {
 		} else {
 			return out2;
 		}
-	},
+	};
 
-	building_element: function (params) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} params
+	 * @returns {String}
+	 */
+	this.building_element = function (params) {
 		let building_image = params.type;
 		let description = '<br /><span class="smalldesc">' + params.data.description + '</span>';
 		if (params.type.slice(0, 5) === 'house') {
@@ -359,17 +513,40 @@ civitas.ui = {
 		}
 		let image = (typeof params.data.visible_upgrades === 'undefined' || params.data.visible_upgrades === false) ? building_image : building_image + params.data.level;
 		return '<div data-type="' + params.type + '" data-level="' + params.data.level + '" ' + 'style="background-image:url(' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png);left:' + params.data.position.x + 'px;top:' + params.data.position.y + 'px" title=\'' + params.data.name + '\' ' + 'id="building-' + params.data.handle + '"' + 'class="tips building' + (params.data.large === true ? ' large' : '') + '"></div>';
-	},
+	};
 
-	resource_storage_small_el: function (resource, amount) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @param {Number} amount
+	 * @returns {String}
+	 */
+	this.resource_storage_small_el = function (resource, amount) {
 		return '<div class="tips storage-item small" title="' + civitas.utils.get_resource_name(resource) + '"><img class="small" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></div>';
-	},
+	};
 
-	resource_storage_el: function (resource, amount) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @param {Number} amount
+	 * @returns {String}
+	 */
+	this.resource_storage_el = function (resource, amount) {
 		return '<div class="storage-item" data-resource="' + resource + '"><span class="title">' + civitas.utils.get_resource_name(resource) + '</span><img src="' + civitas.ASSETS_URL + 'images/assets/resources/' +  resource + '.png" /><span class="amount">' + amount + '</span></div>';
-	},
+	};
 
-	tabs: function (data) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Array} data
+	 * @returns {String}
+	 */
+	this.tabs = function (data) {
 		let out = '<div class="tabs">' +
 				'<ul>';
 		for (let i = 0; i < data.length; i++) {
@@ -381,62 +558,92 @@ civitas.ui = {
 		}
 		out += '</div>';
 		return out;
-	},
+	};
 
-	materials_panel: function (materials) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object| Array} materials
+	 * @returns {String}
+	 */
+	this.materials_panel = function (materials) {
 		let out = '';
 		if (typeof materials !== 'undefined') {
 			out += '<dt>Uses</dt>';
 			if (Array.isArray(materials)) {
 				for (let i = 0; i < materials.length; i++) {
 					for (let y in materials[i]) {
-						out += '<dd>' + materials[i][y] + civitas.ui.resource_small_img(y) + '</dd>';
+						out += '<dd>' + materials[i][y] + this.resource_small_img(y) + '</dd>';
 					}
 				}
 			} else {
 				for (let item in materials) {
-					out += '<dd>' + materials[item] + civitas.ui.resource_small_img(item) + '</dd>';
+					out += '<dd>' + materials[item] + this.resource_small_img(item) + '</dd>';
 				}
 			}
 		}
 		return out;
-	},
+	};
 
-	chance_panel: function (materials, level) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} materials
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.chance_panel = function (materials, level) {
 		let out = '';
 		if (typeof materials !== 'undefined') {
 			out += '<dt>Extra materials</dt>';
 			for (let item in materials) {
-				out += '<dd>' + (level * materials[item]).toFixed(4) * 100 + '%' + civitas.ui.resource_small_img(item) + '</dd>';
+				out += '<dd>' + (level * materials[item]).toFixed(4) * 100 + '%' + this.resource_small_img(item) + '</dd>';
 			}
 		}
 		return out;
-	},
+	};
 
-	production_panel: function (materials, level) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} materials
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.production_panel = function (materials, level) {
 		let out = '';
 		if (typeof materials !== 'undefined') {
 			out += '<dt>Produces</dt>';
 			for (let item in materials) {
-				out += '<dd>' + (level * materials[item]) + civitas.ui.resource_small_img(item) + '</dd>';
+				out += '<dd>' + (level * materials[item]) + this.resource_small_img(item) + '</dd>';
 			}
 		}
 		return out;
-	},
+	};
 
-	requires_panel: function (requires) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} requires
+	 * @returns {String}
+	 */
+	this.requires_panel = function (requires) {
 		let out = '';
 		if (typeof requires.buildings !== 'undefined' || typeof requires.settlement_level !== 'undefined') {
 			out += '<dt>Requires</dt>';
 			out += '<dd>';
 			if (typeof requires.buildings !== 'undefined') {
 				for (let item in requires.buildings) {
-					let b = civitas.BUILDINGS[civitas.BUILDINGS.findIndexM(item)];
+					let b = this.core().get_building_config_data(item);
 					out += b.name + ' level ' + requires.buildings[item] + '<br />'
 				}
 			}
 			if (typeof requires.research !== 'undefined') {
-				let r = civitas.RESEARCH[civitas.RESEARCH.findIndexM(requires.research)];
+				let r = civitas.TECHNOLOGIES[civitas.TECHNOLOGIES.findIndexByHandle(requires.research)];
 				out += 'Research: ' + r.name + '<br />';
 			}
 			if (typeof requires.settlement_level !== 'undefined') {
@@ -445,31 +652,455 @@ civitas.ui = {
 			out += '</dd>';
 		}
 		return out;
-	},
+	};
 
-	tax_panel: function (tax, level) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} tax
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.tax_panel = function (tax, level) {
 		let out = '';
 		if (typeof tax !== 'undefined') {
 			out += '<dt>Tax</dt>';
-			out += '<dd>' + (level * tax) + civitas.ui.resource_small_img('coins') + '</dd>';
+			out += '<dd>' + (level * tax) + this.resource_small_img('coins') + '</dd>';
 		}
 		return out;
-	},
+	};
 
-	storage_panel: function (storage, level) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Number} storage
+	 * @param {Number} level
+	 * @returns {String}
+	 */
+	this.storage_panel = function (storage, level) {
 		let out = '';
 		if (typeof storage !== 'undefined') {
 			out += '<dt>Storage</dt>';
 			out += '<dd>' + (level * storage) + '<img alt="Storage space" class="tips small" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" /></dd>';
 		}
 		return out;
-	},
+	};
 
-	resource_small_img: function (resource) {
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {String} resource
+	 * @returns {String}
+	 */
+	this.resource_small_img = function (resource) {
 		return '<img alt="' + civitas.utils.get_resource_name(resource) + '" class="tips small" title="' + civitas.utils.get_resource_name(resource) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '.png" />';
-	},
+	};
 
-	svg_add_settlement_image: function(row, column, settlement, player_settlement) {
+	/**
+	 * Return a pointer to the game core.
+	 * 
+	 * @public
+	 * @returns {civitas.game}
+	 */
+	this.core = function() {
+		return this._core;
+	};
+
+	/**
+	 * Perform a normal notification in the game.
+	 * 
+	 * @public
+	 * @param {String} message
+	 * @param {String} title
+	 * @param {Number} timeout
+	 * @returns {civitas.objects.ui}
+	 */
+	this.notify = function (message, title, timeout, mode) {
+		this._notify({
+			title: (typeof title !== 'undefined') ? title : 'City Council',
+			content: message,
+			timeout: typeof timeout !== 'undefined' ? timeout : 15000,
+			mode: typeof mode !== 'undefined' ? mode : civitas.NOTIFY_NORMAL
+		});
+		this.log('game', message);
+		return this;
+	};
+
+	/**
+	 * Internal function for performing an UI notification.
+	 * 
+	 * @param {Object} settings
+	 * @returns {civitas.objects.ui}
+	 * @private
+	 */
+	this._notify = function (settings) {
+		let container, notty, hide, image, right, left, inner, _container;
+		let notty_type = 'normal';
+		settings = $.extend({
+			title: undefined,
+			content: undefined,
+			timeout: 15000,
+			img: undefined,
+			mode: civitas.NOTIFY_NORMAL
+		}, settings);
+		if (settings.mode === civitas.NOTIFY_ACHIEVEMENT) {
+			_container = 'achievements-notifications';
+		} else {
+			_container = 'notifications';
+		}
+		container = $('.' + _container);
+		if (!container.length) {
+			container = $("<div>", {
+				'class': _container
+			}).appendTo(document.body);
+		}
+		$('.achievements-notifications').css({
+			left: ($(window).width() / 2) - (container.width() / 2)
+		});
+		notty = $('<div>');
+		notty.addClass('notty');
+		hide = $("<div>", {
+			click: function () {
+				$(this).parent().delay(300).queue(function () {
+					$(this).clearQueue();
+					$(this).remove();
+				});
+			},
+			touchstart: function () {
+				$(this).parent().delay(300).queue(function () {
+					$(this).clearQueue();
+					$(this).remove();
+				});
+			}
+		});
+		hide.addClass('hide');
+		if (settings.mode === civitas.NOTIFY_ERROR) {
+			notty_type = 'error';
+		} else if (settings.mode === civitas.NOTIFY_RESEARCH) {
+			notty_type = 'research';
+		} else if (settings.mode === civitas.NOTIFY_EVENT) {
+			notty_type = 'event';
+		} else if (settings.mode === civitas.NOTIFY_ACHIEVEMENT) {
+			notty_type = 'achievement';
+		} else if (settings.mode === civitas.NOTIFY_RELIGION) {
+			notty_type = 'religion';
+		} else if (settings.mode === civitas.NOTIFY_WAR) {
+			notty_type = 'war';
+		}
+		notty.addClass(notty_type);
+		settings.img = civitas.ASSETS_URL + 'images/assets/ui/icon_' + notty_type + '.png';
+		image = $('<div>', {
+			style: "background: url('" + settings.img + "')"
+		});
+		image.addClass('img');
+		left = $("<div class='left'>");
+		right = $("<div class='right'>");
+		inner = $('<div>', {
+			html: '<h2>' + settings.title + '</h2>' + settings.content
+		});
+		inner.addClass("inner");
+		inner.appendTo(right);
+		image.appendTo(left);
+		left.appendTo(notty);
+		right.appendTo(notty);
+		hide.appendTo(notty);
+		if (settings.mode !== civitas.NOTIFY_ACHIEVEMENT) {
+			let timestamp = Number(new Date());
+			let timeHTML = $('<div>', {
+				html: civitas.utils.time_since(timestamp) + ' ago'
+			});
+			timeHTML.addClass('time-ago').attr('title', timestamp);
+			timeHTML.appendTo(right);
+			setInterval(function () {
+				$('.time-ago').each(function () {
+					let timing = $(this).attr('title');
+					if (timing) {
+						$(this).html(civitas.utils.time_since(timing) + ' ago');
+					}
+				});
+			}, 4000);
+		}
+		notty.hover(function () {
+			hide.show();
+		}, function () {
+			hide.hide();
+		});
+		notty.prependTo(container);
+		notty.show();
+		if (settings.timeout) {
+			setTimeout(function () {
+				notty.delay(300).queue(function () {
+					$(this).clearQueue();
+					$(this).remove();
+				});
+			}, settings.timeout);
+		}
+		return this;
+	};
+
+	/**
+	 * Perform an error notification in the game.
+	 * 
+	 * @public
+	 * @param {String} message
+	 * @param {String} title
+	 * @param {Boolean} no_console
+	 * @returns {civitas.objects.ui}
+	 */
+	this.error = function (message, title, no_console) {
+		this._notify({
+			title: (typeof title !== 'undefined') ? title : 'City Council',
+			mode: civitas.NOTIFY_ERROR,
+			content: message
+		});
+		if (typeof no_console === 'undefined' || no_console === false) {
+			this.log('game', message, true);
+		}
+		return this;
+	};
+
+	/**
+	 * Resize the UI.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.resize = function() {
+		const window_width = $(window).width();
+		const window_height = $(window).height();
+		const header_height = $('.ui > header').height();
+		const sidebar_width = $('.ui > aside').width();
+		const footer_width = $('.ui > footer').width();
+		$('.ui > footer').css({
+			left: (window_width / 2) - (footer_width / 2)
+		});
+		$('.ui > .viewport').width(window_width - sidebar_width);
+		$('.ui > .viewport').height(window_height - header_height);
+		return this;
+	};
+
+	/**
+	 * Log data to the console.
+	 * 
+	 * @public
+	 * @param {String} namespace
+	 * @param {String} message
+	 * @param {Boolean} error
+	 * @returns {civitas.objects.ui}
+	 */
+	this.log = function (namespace, message, error) {
+		if ($('#panel-debug .console p').length > civitas.MAX_CONSOLE_LINES) {
+			$('#panel-debug .console').empty();
+		}
+		$('#panel-debug .console').prepend('<p><span class="date">' + civitas.utils.get_now() + '</span><span class="namespace game-' + namespace + '">' + namespace.toUpperCase() + '</span>' + (error === true ? '<span class="error">ERROR</span>' : '') + '<span' + (error === true ? ' class="error-message"' : ' class="log-message"') + '>' + message + '</span></p>');
+		return this;
+	};
+
+	/**
+	 * Open a UI panel.
+	 *
+	 * @public
+	 * @param {Object} panel_data
+	 * @param {Object} extra_data
+	 * @param {Boolean} sidebar
+	 * @returns {civitas.controls.panel}
+	 */
+	this.open_panel = function(panel_data, extra_data, sidebar) {
+		panel_data.core = this.core();
+		if (typeof extra_data !== 'undefined') {
+			panel_data.data = extra_data;
+		}
+		if (typeof sidebar !== 'undefined') {
+			panel_data.data.sidebar = sidebar;
+		}
+		const panel = new civitas.controls.panel(panel_data);
+		this.panels.push(panel);
+		return panel;
+	};
+
+	/**
+	 * Open a UI window.
+	 *
+	 * @public
+	 * @param {Object} window_data
+	 * @param {Object} extra_data
+	 * @returns {civitas.controls.window}
+	 */
+	this.open_window = function(window_data, extra_data) {
+		window_data.core = this.core();
+		if (typeof extra_data !== 'undefined') {
+			window_data.data = extra_data;
+		}
+		return new civitas.controls.window(window_data);
+	};
+
+	/**
+	 * Open a modal window (usually to ask for confirmations).
+	 *
+	 * @public
+	 * @param {Function} callback
+	 * @param {String} text
+	 * @param {String} title
+	 * @returns {civitas.objects.ui}
+	 */
+	this.open_modal = function(callback, text, title) {
+		const modal = new civitas.controls.modal({
+			core: this.core()
+		});
+		modal.alert({
+			title: typeof title !== 'undefined' ? title : 'City Council',
+			text: text,
+			on_click: callback
+		});
+		return this;
+	};
+
+	/**
+	 * Refresh all the UI information after a property change.
+	 * 
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh_ui = function () {
+		const settlement = this.core().get_settlement();
+		if (typeof settlement !== 'undefined') {
+			$('.citylevel').html(settlement.level());
+			if (settlement.fame() >= civitas.LEVELS[settlement.level()]) {
+				this.core().level_up();
+			}
+		}
+		return this;
+	};
+
+	/**
+	 * Calculate and return the total and free storage space in the main settlement.
+	 * 
+	 * @public
+	 * @returns {Object}
+	 */
+	this.check_storage = function () {
+		const storage = this.core().get_settlement().storage();
+		if (storage.occupied >= storage.all) {
+			this.error('You ran out of storage space and all goods produced will be lost. Upgrade your warehouse or marketplace.', 'No storage space');
+		} else if ((storage.all - storage.occupied) < 100) {
+			this.error('You will soon run out of storage space and all goods produced will be lost. Upgrade your warehouse or marketplace.', 'Storage nearly full');
+		}
+		return storage;
+	};
+
+	/**
+	 * Refresh the UI and panels.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh = function() {
+		this.refresh_panels();
+		this.refresh_toolbar();
+		this.refresh_ui();
+		$('.tipsy').remove();
+		$('.tips').tipsy({
+			gravity: $.fn.tipsy.autoNS,
+			html: true
+		});
+		return this;
+	};
+
+	/**
+	 * Get the panels open in the game.
+	 * 
+	 * @public
+	 * @returns {Array}
+	 */
+	this.get_panels = function() {
+		return this.panels;
+	};
+
+	/**
+	 * Refresh the resources toolbar.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh_toolbar = function() {
+		const settlement = this.core().get_settlement();
+		if (typeof settlement !== 'undefined') {
+			const resources = settlement.get_resources();
+			for (let item in civitas.RESOURCES) {
+				if (civitas.RESOURCES[item].toolbar === true) {
+					if (typeof resources[item] !== 'undefined') {
+						if (resources[item] === 0) {
+							$('.resource-panel .resource.' + item).hide();
+						} else {
+							$('.resource-panel .resource.' + item).show();
+						}
+						$('.resource-panel .resource.' + item + ' span').html(resources[item]);
+					}
+				}
+			}
+		}
+		return this;
+	};
+
+	/**
+	 * Return the UI panel specified by its id.
+	 *
+	 * @public
+	 * @param {String} id
+	 * @returns {civitas.controls.panel|Boolean}
+	 */
+	this.get_panel = function(id) {
+		const panels = this.get_panels();
+		for (let i = 0; i < panels.length; i++) {
+			if (typeof panels[i] !== 'undefined') {
+				if (panels[i].id === id) {
+					return panels[i];
+				}
+			}
+		}
+		return false;
+	};
+
+	/**
+	 * Close the UI panel specified by its id.
+	 *
+	 * @public
+	 * @param {String} id
+	 * @returns {Boolean}
+	 */
+	this.close_panel = function(id) {
+		const panels = this.get_panels();
+		for (let i = 0; i < panels.length; i++) {
+			if (typeof panels[i] !== 'undefined') {
+				if (panels[i].id === id) {
+					panels.splice(i, 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	};
+
+	/**
+	 * Force refresh of the UI panels open.
+	 *
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.refresh_panels = function() {
+		const panels = this.get_panels();
+		for (let i = 0; i < panels.length; i++) {
+			if (typeof panels[i] !== 'undefined') {
+				panels[i].on_refresh();
+			}
+		}
+		return this;
+	};
+
+	this.svg_add_settlement_image = function(row, column, settlement, player_settlement) {
 		let image = 'village';
 		let color = settlement.color();
 		let name = settlement.name();
@@ -514,9 +1145,9 @@ civitas.ui = {
 				.text(name)
 				.appendTo('.s-c-g-' + row + '-' + column);
 		}
-	},
+	};
 
-	svg_add_mountain: function(row, column, color) {
+	this.svg_add_mountain = function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M10.6,24.6l-7.1-5.5c5.4-3,9.5-7.4,13.3-12.3c1.5,1.6,2.9,3.3,4.5,4.8c1,1,2.2,2,3.3,2.8c0.5,0.3,1.2,0.3,1.8,0.5c0.2,1,0,1.6-0.7,1.8c-0.2,0.1-0.5,0.1-0.6,0c-1-0.6-2.1-1.1-3-1.9c-1.6-1.4-3.1-3-4.6-4.6c-0.1-0.1-0.2-0.2-0.5-0.4c-0.7,2.7-0.6,5.4-1.8,7.9S12.5,22.4,10.6,24.6z',
@@ -545,9 +1176,9 @@ civitas.ui = {
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_add_hill: function(row, column, color) {
+	this.svg_add_hill = function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M13.2,26.2L8,21.6c1.8-0.5,3.4-1,5-1.4c1.4-0.3,2.8-0.8,4-1.7c0.7-0.5,1.6-0.9,2.3-1.5c0.9-0.7,1.8-0.7,2.8-0.5c2.4,0.3,4.5,1.6,6.7,2.4c2.6,1,5.1,2.1,7.6,3.2c0.7,0.3,1.3,0.5,2,0.6c0.6,0.1,1,0.4,1.2,1c0.1,0.3,0.2,0.6,0.3,0.9c-1.6-0.1-3.1,0.2-4.7-0.4c-3.9-1.5-7.8-2.9-11.7-4.3c-0.9-0.3-1.8-0.3-2.7-0.4c-0.2,0-0.4,0.2-0.6,0.4c-2.2,1.9-4.4,3.8-6.5,5.7C13.6,25.9,13.4,26,13.2,26.2z',
@@ -569,9 +1200,9 @@ civitas.ui = {
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_add_desert: function(row, column, color) {
+	this.svg_add_desert = function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M39.5,18.7h-1c-0.6-2.1-2.3-2.8-4.1-3.3c-3-0.7-5.8-0.6-8.6,0.7C25,16.5,24.3,17,24,17.8c1,0.8,2.1,0.3,3.2,0.2c3.5-0.2,6.9,0.2,10,1.9c1.6,0.8,2.9,1.9,3.3,3.8c0,0.3,0.1,0.6,0.1,0.9h-1c-0.5-2.1-2.2-2.8-4.1-3.2c-2.9-0.8-5.8-0.6-8.5,0.6c-0.2,0.1-0.3,0.2-0.5,0.2c-0.2,0.1-0.3,0.2-0.5,0.4c3,1.1,6.2,2,6.8,6h-1.1c-0.4-1.9-2-2.7-3.7-3.2c-2.7-0.8-5.6-0.7-8.3,0.3c-1.4,0.5-2.5,1.3-2.8,2.9H8.9c-0.2-1.8,0.9-3.3,3.9-5h-7c-0.1-1,0.2-1.9,0.8-2.7c1.3-1.7,3-2.6,5-3.1c1.3-0.4,2.7-0.5,4.1-0.8c0.2,0,0.5-0.1,0.6-0.3c1.2-2,3-3,5.1-3.6c4.9-1.6,9.8-1.5,14.5,0.7c1.1,0.5,2.1,1.4,3,2.3C39.3,16.7,39.6,17.6,39.5,18.7z M19.8,19.8c-2.3,0.4-4.8,0.6-6.2,3.3c1.3-0.3,2.4-0.6,3.4-0.9c0.2-0.1,0.3-0.1,0.4-0.3C18.3,21.3,19,20.5,19.8,19.8L19.8,19.8z',
@@ -579,9 +1210,9 @@ civitas.ui = {
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_add_grass: function(row, column, color) {
+	this.svg_add_grass = function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M33.1,13.7l0.8,8l1.4-0.1v-7l0.3,0c0.1,0.7,0.3,1.5,0.4,2.2c0.1,1.3,0.1,2.7,0.2,4c0,0.2,0.4,0.5,0.5,0.7c0.2-0.3,0.5-0.5,0.5-0.8c0-1.4,0-2.9,0-4.3c0-0.3,0-0.6,0.1-0.9l0.3,0c0.1,0.4,0.1,0.7,0.2,1c0.1,1.5,0.2,3,0.4,4.6c0,0.2,0.3,0.4,0.5,0.6c0.1-0.2,0.3-0.4,0.3-0.6c0-1.2,0-2.5,0.2-3.8c0.1,0.3,0.3,0.5,0.3,0.8c0.1,0.8,0.2,1.5,0.2,2.3c0,0.8,0.3,1.5,1.4,1.4l0.2-3l0.3,0c0.1,0.5,0.2,1.1,0.3,1.6c0.2,1.7,0.4,1.8,2.1,1.7c0.4,0,0.7,0,1.1,0c-7.2,0.8-14.4,0.7-21.7,0.4l0-0.3h3.6v-3.6l0.4,0l0.6,3.3l0.3,0v-4.4l0.3,0l0.7,4.5h0.3v-6l0.3,0c0.2,1.8,0.4,3.7,0.6,5.5c0,0.3,0.3,0.5,0.5,0.7c0.2-0.3,0.4-0.5,0.4-0.8c0-2.4-0.1-4.9-0.1-7.3c0-0.2,0.1-0.5,0.2-0.6c0.1,0.9,0.3,1.9,0.4,2.8c0.2,1.7,0.3,3.5,0.5,5.2c0,0.2,0.2,0.3,0.4,0.5c0.1-0.2,0.4-0.4,0.4-0.5c0-0.6-0.1-1.2-0.1-1.9c0-1.8,0-3.5,0-5.3c0-0.1,0.1-0.3,0.1-0.4L33.1,13.7z',
@@ -603,9 +1234,9 @@ civitas.ui = {
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_add_plains: function(row, column, color) {
+	this.svg_add_plains = function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M24.53,39.05a1.93,1.93,0,0,1-.33,0L21.93,39c0.09-.78.16-1.52,0.26-2.26s-0.14-.94-0.87-0.91c-1.64.06-3.29,0-4.94,0h-0.9a21.05,21.05,0,0,1,.59-2.48A22.84,22.84,0,0,1,17.26,31l-1.86-.12c0-1.52,0-3,0-4.44a0.57,0.57,0,0,0-.58-0.63c-0.91-.21-1.82-0.42-2.71-0.69A3.8,3.8,0,0,1,11,24.49c-0.8-.57-0.92-1-0.6-2.17-0.23-.07-0.46-0.12-0.69-0.2a10.11,10.11,0,0,1-1.13-.43A2,2,0,0,1,7.28,20a1.93,1.93,0,0,1,1.28-1.73c0.39-.21.81-0.37,1.29-0.58l-0.48-.53a2.49,2.49,0,0,1,0-3.72,4.61,4.61,0,0,1,2.79-1.23,1.9,1.9,0,0,0,1-.45,5.91,5.91,0,0,1,7.35-.32,3.67,3.67,0,0,1,1.31,3.09,7,7,0,0,0,.74-2.17,2.5,2.5,0,0,1,1-2,1.31,1.31,0,0,0,.59-1.73,0.91,0.91,0,0,1,.18-0.69c1-1.52,2-3,3.08-4.62C28.84,4.78,30.24,6.1,30.77,8c0.13,0.48.4,0.92,0.52,1.41s0,0.76,0,1.14a1.86,1.86,0,0,0,.34.87c0.53,0.63,1.45.94,1.53,2a1.17,1.17,0,0,0,.61.32,15.89,15.89,0,0,1,2.45.91,2.73,2.73,0,0,1,1.4,2.82,1,1,0,0,0,.4.64,12.62,12.62,0,0,1,2.12,1.76,3.25,3.25,0,0,1-.86,4.57c-0.34.26-.71,0.47-1.06,0.7,0.69,1.31.5,2.1-.88,2.68a16.76,16.76,0,0,1-3.5.92,0.67,0.67,0,0,0-.72.79c0,1.36,0,2.72,0,4.14H31.46c0-1.41,0-2.79,0-4.17a0.65,0.65,0,0,0-.72-0.8,17.53,17.53,0,0,1-1.81-.33c-0.32.81,0.94,1.9-.52,2.52a13.68,13.68,0,0,1,1.52,2.2,14.37,14.37,0,0,1,.62,2.67c-0.38,0-.65,0-0.91,0H24.85c-0.87,0-.9,0-0.75.92S24.38,38.25,24.53,39.05Zm8.53-14.51c-0.71,1.18-.45,2.08.78,2.45a4.31,4.31,0,0,0,2,.08c1.42-.29,1.78-1.31,1-2.52a0.56,0.56,0,0,1,0-.2c0.26-.09.55-0.18,0.82-0.28a2.64,2.64,0,0,0,1.77-2.49,2.69,2.69,0,0,0-1.81-2.39A2.65,2.65,0,0,0,37,19c-0.46,0-.6-0.2-0.46-0.69a2.22,2.22,0,0,0-1.17-2.73,2.38,2.38,0,0,0-2.87.67,2.18,2.18,0,0,0,.17,2.9,2.31,2.31,0,0,1,.15.24C30.82,21.65,30.84,22.1,33.06,24.54ZM17,21.45c-0.61,1-.63,1.43-0.06,2a2.59,2.59,0,0,0,2.23.72,0.66,0.66,0,0,0,.6-1,1.77,1.77,0,0,1,0-.87,14.87,14.87,0,0,1,.44-1.58c0.28-.88.55-1.77,0.89-2.63,0.24-.6.58-1.16,0.85-1.69a0.7,0.7,0,0,0-.1-0.15l-0.2-.1c-0.68-.3-1.36-0.48-1-1.59a2.09,2.09,0,0,0-1.44-2.39,2.46,2.46,0,0,0-2.85.83,2.17,2.17,0,0,0,.08,2.73c0.1,0.14.2,0.28,0.29,0.41C14.74,18.58,14.76,19,17,21.45Zm8.29,1.88a8.7,8.7,0,0,0-.83-1.22,3.58,3.58,0,0,0-.9-0.51,3.48,3.48,0,0,0-.21.86c0,2.65.16,5.31,0.09,8A9.79,9.79,0,0,0,23.84,33a2.14,2.14,0,0,0,2.48,2,20,20,0,0,1,2.57.16,5.71,5.71,0,0,0-3.53-5.18l0.17-.2h2.33a8.1,8.1,0,0,0-.39-0.85c-0.62-1-.79-2.36-2.18-2.75a0.35,0.35,0,0,1-.18-0.23c-0.19-.78-0.37-1.56-0.55-2.36ZM28,6.21l-0.15.09c0.13,2.93.25,5.85,0.39,8.78,0,0.49.48,0.61,0.93,0.27l2.29-1.69a2.2,2.2,0,0,0-1.26-1.6,1,1,0,0,1-.55-0.46c-0.22-.74-0.37-1.51-0.54-2.29l0.76-.24ZM17.18,28.43l0.32,0.09c0.21-.75.45-1.49,0.62-2.25a0.62,0.62,0,0,0-.44-0.4,0.63,0.63,0,0,0-.48.39C17.15,27,17.18,27.7,17.18,28.43Z',
@@ -613,9 +1244,9 @@ civitas.ui = {
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_add_swamp: function(row, column, color) {
+	this.svg_add_swamp = function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M22.33,2.5c0.91-.81,1-0.78,1.5.23a1.26,1.26,0,0,0,1.95.41A1.64,1.64,0,0,1,28.17,3a4.23,4.23,0,0,0,1.52.49A17.93,17.93,0,0,1,32,3.77a6.28,6.28,0,0,1,1.35,1c1.19,0.81,1.18,2,1,3.13l-1.48.36-1-1.84c-0.82,1.49-.64,2.32.58,3a2.55,2.55,0,0,0,2.23.47,0.92,0.92,0,0,1,.79.2A23,23,0,0,1,37.23,12c0.65,0.79.48,2.95-.38,4L35.49,14.2a0.91,0.91,0,0,0-.88,1.09,8.59,8.59,0,0,1,0,1.67,3.86,3.86,0,0,1-.5,1l-0.36-.1c0-.83,0-1.66,0-2.49a2.18,2.18,0,0,0-.1-1,2.69,2.69,0,0,0-.88-0.6,2.7,2.7,0,0,0-.27.76c0,0.88,0,1.76,0,2.64,0,1.63,0,1.68-1.77,1.93-0.21-.7,0-1.8-1.27-1.71-0.37,1,.1,2.24-0.83,3l-0.39,0c0-1,0-1.95,0-2.91a2.5,2.5,0,0,0-.82-2c-0.53-.53-1-0.76-1.52-0.1a0.79,0.79,0,0,1-.3.13l-0.26-.13c0.16-.37.33-0.74,0.47-1.11a2,2,0,0,0,.32-1.07A1.48,1.48,0,0,0,25,12.51a48.68,48.68,0,0,0-5.53.7A3,3,0,0,0,16.88,16a2.05,2.05,0,0,0,1.56,1.84,21.8,21.8,0,0,1,2.23.6c1.6,0.54,1.86,2,2.1,3.35a8.54,8.54,0,0,1,0,1.47c-1.41,0-1.65-.25-1.67-1.54a3.11,3.11,0,0,0-1.88-2.12,1,1,0,0,0-.72.29A1.47,1.47,0,0,0,18.77,21a2.24,2.24,0,0,1,1,2l-1.6.53c-0.2-.87-0.38-1.66-0.57-2.44-0.26-1.08-.53-1.25-1.87-1.15a5.2,5.2,0,0,1,.7,3.79,2.21,2.21,0,0,1-.45.58l-0.74-2.93c-1.23.84-.42,2-0.84,2.95a0.75,0.75,0,0,1-.81-0.79c-0.07-.93-0.5-1.88.32-2.74a0.94,0.94,0,0,0-.22-0.86,1.33,1.33,0,0,0-1.52.82c-0.05.64,0,1.3-.06,1.93a1,1,0,0,1-.52.68c-0.5.14-.54-0.29-0.53-0.66,0-.58.08-1.17,0.08-1.75A2.76,2.76,0,0,0,11,20.26l-0.34,0a15.53,15.53,0,0,0-.47,1.94c-0.16,1.33-.21,1.39-1.78,1,0.41-1.47.82-2.94,1.24-4.41a1,1,0,0,1,1.14-.71c2.44,0,2.56,0,3.16-2.35a5.63,5.63,0,0,1,2.75-3.61A1.29,1.29,0,0,0,17.08,10a7.61,7.61,0,0,0-1.39-1.44,1,1,0,0,0-1.61.69,1.76,1.76,0,0,1-.43.84,4,4,0,0,0-.26-1,3.54,3.54,0,0,0-.69-0.7,2.38,2.38,0,0,0-.52.79,7.38,7.38,0,0,0,0,1.67,0.8,0.8,0,0,1-.84,1c0-.3,0-0.57-0.06-0.85a1.16,1.16,0,0,0-.07-0.59c-1.33-.66-0.53-2-0.94-2.94a4.57,4.57,0,0,1-.17-1.2,1.36,1.36,0,0,1,.53-1.54,2.72,2.72,0,0,0,.61-0.9c0.28-.47.53-0.94,1.21-0.49,0.4,0.26.77,0.16,0.78-.4,0-.9.64-0.85,1.23-0.8,1.13,0.09,2.26.24,3.39,0.33a2.85,2.85,0,0,0,2-.53A3.25,3.25,0,0,1,21.67,2,2,2,0,0,1,22.33,2.5ZM20.55,7l-0.3-.13a3.52,3.52,0,0,0-.58,1,0.89,0.89,0,0,1-.84.92,0.77,0.77,0,0,0-.37.62,1.75,1.75,0,0,0,.31,1,3.62,3.62,0,0,0,1.92-.17A12.74,12.74,0,0,0,22.61,8.7,1.48,1.48,0,0,0,23,7a2.05,2.05,0,0,0-.6-0.65,3.93,3.93,0,0,0-.39.76c-0.16.6-.27,1.22-0.4,1.83l-0.37,0Zm2.21,3.75c1.14,0.29,2.81-.23,3.17-1a1.56,1.56,0,0,0-.16-1.17A2.63,2.63,0,0,0,24.89,8ZM17.64,8c0.25-1.39-.1-2.08-1.09-2.2a2.82,2.82,0,0,0-1,.28A2.49,2.49,0,0,0,16,7.15,9.07,9.07,0,0,0,17.64,8Z',
@@ -637,9 +1268,9 @@ civitas.ui = {
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_add_jungle: function(row, column, color) {
+	this.svg_add_jungle = function(row, column, color) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
 			.attr({
 				d: 'M22.46,17.67l-1.17-.41a3,3,0,0,0,.09,2.45,5.7,5.7,0,0,1-1.08,6.79,6.79,6.79,0,0,0-1.7-4.19,14.23,14.23,0,0,0-2.37-1.91c-0.71-.46-0.92-0.29-0.92.59q0,7.69,0,15.39c0,0.29,0,.58,0,0.92H13.26L14.66,21l-0.22-.06a8.13,8.13,0,0,0-1.57,4.21c-0.22,1.54-.29,3.11-0.43,4.68A1.39,1.39,0,0,1,10.57,29a8.25,8.25,0,0,1,.05-8.25c0.12-.21.26-0.4,0.4-0.62-1.23-.08-2.17.65-5.51,4.28L4.4,23.74c0.52-1.1,1-2.19,1.55-3.25a1.62,1.62,0,0,0,.27-1.17c-0.35-1.89,1.17-3.7,3.36-4.13a3.13,3.13,0,0,1,1.12-.14A1.11,1.11,0,0,0,12.12,14a2.59,2.59,0,0,1,.26-0.59,5.91,5.91,0,0,0,1-3.44c-0.15-2.15,2.12-3.9,4.71-4.15a6.55,6.55,0,0,1,4.92,1.4,6.79,6.79,0,0,1,8-1.4c1.35,0.7,1.89,1.8,1.4,2.85a0.74,0.74,0,0,1-.16.14,6.12,6.12,0,0,0-3.91-.52,6.07,6.07,0,0,0,.5.42,6.59,6.59,0,0,1,2.89,6.87,0.84,0.84,0,0,0,.58,1.21,6.08,6.08,0,0,1,1,.62c1.36-2.1,5.26-2.3,7.26-.93a1.65,1.65,0,0,1,.71,2.32,5.1,5.1,0,0,0-3.49-.44A5.61,5.61,0,0,1,41,23.44a5.66,5.66,0,0,1-1.69,4.25c-0.1-.54-0.16-1-0.28-1.46a7.08,7.08,0,0,0-3.64-4.62c-1-.52-1.12-0.42-1.11.64q0,7.61,0,15.22c0,0.29,0,.59,0,0.94H32.22l1.39-16.33-0.28,0c-1.76,2.71-1.81,5.81-1.85,8.93a1.68,1.68,0,0,1-2-.89,8.32,8.32,0,0,1,.11-8.25c0.11-.2.24-0.4,0.36-0.6L29.84,21a10.41,10.41,0,0,0-2.06,1.11C26.76,23,25.89,24,24.94,25c-0.23.23-.5,0.42-0.84,0.71v6.07H21.66l1.65-19.22a4.44,4.44,0,0,0-1.51,2.62,1,1,0,0,0,.37.57A1.55,1.55,0,0,1,22.46,17.67Zm6.6-1.44a7.87,7.87,0,0,0-4.26-4.38c-0.61-.17-0.75.12-0.75,0.67,0,3.27,0,6.53,0,9.8a3.2,3.2,0,0,0,.08.43c0.52-.94,1.26-1.57,1-2.71A2.53,2.53,0,0,1,26,17.77,5.16,5.16,0,0,1,29.07,16.23Zm-10-4.75a10,10,0,0,0-5.49,4.21l0.92,0.63A3.67,3.67,0,0,1,17,14.68a1.23,1.23,0,0,0,.74-0.38C18.19,13.4,18.61,12.45,19.08,11.48Z',
@@ -647,9 +1278,9 @@ civitas.ui = {
 				'class': 'w-t-p'
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_create_group: function(terrain, row, column) {
+	this.svg_create_group = function(terrain, row, column) {
 		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		let t_x = Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE);
 		let t_y = Math.round(height * (row * 2 + (column % 2)));
@@ -659,38 +1290,9 @@ civitas.ui = {
 				'transform': 'translate(' + t_x + ', ' + t_y + ')',
 			})
 			.appendTo('.svg-grid');
-	},
+	};
 
-	svg_get_cell_middle: function(row, column) {
-		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
-		let center = {
-			x: Math.round(civitas.WORLD_HEX_SIZE), 
-			y: Math.round(height)
-		};
-		return center;
-	},
-
-	/**
-	 * Scroll the world map to the specified location.
-	 *
-	 * @param {Object} location
-	 */
-	worldmap_scrollto: function(location) {
-		let coords = civitas.ui.svg_get_cell_middle_coords(location.y, location.x);
-		$('.worldmap').scrollTop(coords.y - (700 / 2));
-		$('.worldmap').scrollLeft(coords.x - (1164 / 2));
-	},
-
-	svg_get_cell_middle_coords: function(row, column) {
-		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
-		return {
-			x: Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE),
-			y: Math.round(height * (row * 2 + (column % 2)))
-		}
-		
-	},
-
-	svg_map_element: function(row, column, prev_row, prev_column, element_type, id, title) {
+	this.svg_map_element = function(row, column, prev_row, prev_column, element_type, id, title) {
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
 			.attr({
 				'id': 'w-t-i' + row + '-' + column,
@@ -707,11 +1309,12 @@ civitas.ui = {
 			.appendTo('.s-c-g-' + row + '-' + column);
 		document.getElementById('w-t-i' + row + '-' + column)
 			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + element_type + '.png');
-	},
+	};
 
-	svg_link_cells: function(source, destination) {
-		let _source = civitas.ui.svg_get_cell_middle_coords(source.x, source.y);
-		let _destination = civitas.ui.svg_get_cell_middle_coords(destination.x, destination.y);
+	/*
+	this.svg_link_cells = function(source, destination) {
+		let _source = this.get_cell_middle_coords(source.x, source.y);
+		let _destination = this.get_cell_middle_coords(destination.x, destination.y);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'line'))
 			.attr({
 				'x1': _source.x,
@@ -724,11 +1327,12 @@ civitas.ui = {
 				'stroke-width': 2
 			})
 			.appendTo('.svg-grid');
-	},
+	}
+	*/
 
-	svg_create_cell: function(row, column, color, show_grid) {
+	this.svg_create_cell = function(row, column, color, show_grid) {
 		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
-		let center = civitas.ui.svg_get_cell_middle(row, column);
+		let center = this.get_cell_middle(row, column);
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'polygon'))
 			.attr({
 				points: [
@@ -747,9 +1351,9 @@ civitas.ui = {
 				'stroke-width': (show_grid === true) ? 0.1 : 0
 			})
 			.appendTo('.s-c-g-' + row + '-' + column);
-	},
+	};
 
-	svg_create_worldmap: function(cell_size, colors) {
+	this.svg_create_worldmap = function(cell_size, colors) {
 		let height = Math.sqrt(3) / 2 * cell_size;
 		$(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
 			.attr({
@@ -763,23 +1367,85 @@ civitas.ui = {
 				height: (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height,
 				'background-color': colors.X.bg
 			});
-	},
+	};
 
-	svg_apply_terrain: function(row, column, color, terrain) {
+	this.svg_apply_terrain = function(row, column, color, terrain) {
 		if (terrain === 'M') {
-			civitas.ui.svg_add_mountain(row, column, color);
+			this.svg_add_mountain(row, column, color);
 		} else if (terrain === 'H') {
-			civitas.ui.svg_add_hill(row, column, color);
+			this.svg_add_hill(row, column, color);
 		} else if (terrain === 'D') {
-			civitas.ui.svg_add_desert(row, column, color);
+			this.svg_add_desert(row, column, color);
 		} else if (terrain === 'G') {
-			civitas.ui.svg_add_grass(row, column, color);
+			this.svg_add_grass(row, column, color);
 		} else if (terrain === 'P') {
-			civitas.ui.svg_add_plains(row, column, color);
+			this.svg_add_plains(row, column, color);
 		} else if (terrain === 'J') {
-			civitas.ui.svg_add_jungle(row, column, color);
+			this.svg_add_jungle(row, column, color);
 		} else if (terrain === 'W') {
-			civitas.ui.svg_add_swamp(row, column, color);
+			this.svg_add_swamp(row, column, color);
 		}
-	}
+	};
+
+	/**
+	 * Get the middle of a hex cell.
+	 *
+	 * @public
+	 * @param {Number} row
+	 * @param {Number} column
+	 * @returns {Number}
+	 */
+	this.get_cell_middle = function(row, column) {
+		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		let center = {
+			x: Math.round(civitas.WORLD_HEX_SIZE), 
+			y: Math.round(height)
+		};
+		return center;
+	};
+
+	/**
+	 * Scroll the world map to the specified location.
+	 *
+	 * @param {Object} location
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.worldmap_scrollto = function(location) {
+		const coords = this.get_cell_middle_coords(location.y, location.x);
+		$('.worldmap').scrollTop(coords.y - (700 / 2));
+		$('.worldmap').scrollLeft(coords.x - (1164 / 2));
+		return this;
+	};
+
+	/**
+	 * Get the middle coordonates of a hex cell.
+	 *
+	 * @public
+	 * @param {Number} row
+	 * @param {Number} column
+	 * @returns {Object}
+	 */
+	this.get_cell_middle_coords = function(row, column) {
+		const height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		return {
+			x: Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE),
+			y: Math.round(height * (row * 2 + (column % 2)))
+		}
+	};
+
+	/**
+	 * Get a random HSL color.
+	 *
+	 * @public
+	 * @returns {String}
+	 */
+	this.get_random_color = function() {
+		let color = (Math.random() * 250) + 1;
+		let colors = Math.random() * 255;
+		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
+	};
+
+	// Fire up the constructor
+	return this.__init(core);
 };

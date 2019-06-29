@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_ACADEMY = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.building_panel_template(),
 
 	/**
 	 * Internal id of the panel.
@@ -20,6 +14,16 @@ civitas.PANEL_ACADEMY = {
 	 * @default
 	 */
 	id: 'academy',
+
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().building_panel_template();
+	},
 
 	/**
 	 * Callback function for showing the panel.
@@ -32,7 +36,7 @@ civitas.PANEL_ACADEMY = {
 		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
-		$(this.handle + ' section').append(civitas.ui.tabs([
+		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Research',
 			'Technologies'
@@ -45,8 +49,8 @@ civitas.PANEL_ACADEMY = {
 			'</div>';
 		$(this.handle + ' #tab-technologies').empty().append(_t);
 		_t = '';
-		for (let i = 0; i < civitas.RESEARCH.length; i++) {
-			_t += '<div data-technology="' + civitas.RESEARCH[i].handle + '" class="technology"><img src="' + civitas.ASSETS_URL + 'images/assets/research/' + civitas.RESEARCH[i].handle + '.png" /></div>';
+		for (let i = 0; i < civitas.TECHNOLOGIES.length; i++) {
+			_t += '<div data-technology="' + civitas.TECHNOLOGIES[i].handle + '" class="technology"><img src="' + civitas.ASSETS_URL + 'images/assets/research/' + civitas.TECHNOLOGIES[i].handle + '.png" /></div>';
 		}
 		$(this.handle + ' .column-left').empty().append(_t);
 		$(this.handle).on('click', '.technology', function() {
@@ -54,7 +58,7 @@ civitas.PANEL_ACADEMY = {
 			$(this).addClass('selected');
 			let technology_name = $(this).data('technology');
 			let technology = core.get_research_config_data(technology_name);
-			if (technology !== false) {
+			if (technology) {
 				_t = '<h2>' + technology.name + '</h2>' +
 				'<p>' + technology.description + '</p>' +
 				'<dl>' +
@@ -68,11 +72,11 @@ civitas.PANEL_ACADEMY = {
 				for (let y in technology.effect) {
 					if (y === 'buildings') {
 						for (let b in technology.effect[y]) {
-							var _z = core.get_building_config_data(b);
+							let _z = core.get_building_config_data(b);
 							_t += '<dd>' + _z.name + ' +' + technology.effect[y][b] + '</dd>';
 						}
 					} else if (y === 'tax') {
-						_t += '<dd>+' + technology.effect[y] + civitas.ui.resource_small_img('coins') + ' each house</dd>';
+						_t += '<dd>+' + technology.effect[y] + core.ui().resource_small_img('coins') + ' each house</dd>';
 					}
 				}
 				_t += '<div class="toolbar"></div>';
@@ -89,9 +93,9 @@ civitas.PANEL_ACADEMY = {
 		}).on('click', '.do-research', function() {
 			let technology_name = $(this).data('technology');
 			let technology = core.get_research_config_data(technology_name);
-			if (technology !== false) {
+			if (technology) {
 				if (core.get_settlement().has_resources(technology.cost)) {
-					if (core.add_to_queue(my_settlement, null, civitas.ACTION_RESEARCH, null, {
+					if (core.queue_add(my_settlement, null, civitas.ACTION_RESEARCH, null, {
 						handle: technology.handle,
 						name: technology.name,
 						duration: technology.duration
@@ -99,7 +103,7 @@ civitas.PANEL_ACADEMY = {
 						$(self.handle + ' .toolbar').empty();
 					}
 				} else {
-					core.error('You don`t have enough resources to research this technology.');
+					core.ui().error('You don`t have enough resources to research this technology.');
 				}
 			}
 			return false;
@@ -119,9 +123,8 @@ civitas.PANEL_ACADEMY = {
 		let technologies = core.research();
 		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
-			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, building.get_level()));
-			$(this.handle + ' #tab-research').empty().append('' +
-				'<div class="section">' + civitas.ui.progress((research * 100) / civitas.MAX_RESEARCH_VALUE, 'large', research) + '</div>');
+			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
+			$(this.handle + ' #tab-research').empty().append('<div class="section">' + core.ui().progress((research * 100) / civitas.MAX_RESEARCH_VALUE, 'large', research) + '</div>');
 		} else {
 			this.destroy();
 		}

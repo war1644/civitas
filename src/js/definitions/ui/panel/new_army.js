@@ -42,7 +42,7 @@ civitas.PANEL_NEW_ARMY = {
 		let settlements = core.get_settlements();
 		let army = my_settlement.get_army();
 		let location = my_settlement.location();
-		let distance = civitas.utils.get_distance_in_days(location, settlement.location());
+		let distance = core.world().get_distance_in_days(location, settlement.location());
 		this.assigned_army = {};
 		this.assigned_navy = {};
 		for (let item in army) {
@@ -68,7 +68,7 @@ civitas.PANEL_NEW_ARMY = {
 				_cost = civitas.ARMY_COSTS[item];
 			}
 			_t += '<dt>' + civitas.utils.nice_numbers(_cost) + '</dt>' +
-				'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
+				'<dd>' + core.ui().resource_small_img(item) + '</dd>';
 		}
 		_t += '</dl>' +
 			'</fieldset>';
@@ -169,7 +169,7 @@ civitas.PANEL_NEW_ARMY = {
 			return false;
 		}).on('click', '.dispatch', function() {
 			if (!my_settlement.can_recruit_soldiers()) {
-				core.error('You will need to construct a Military Camp before being able to attack other settlements.');
+				core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
 				return false;
 			}
 			let destination = parseInt($(self.handle + ' .army-destination').val());
@@ -178,17 +178,17 @@ civitas.PANEL_NEW_ARMY = {
 			}
 			// TODO there is an error here when there is no shipyard to send navy.
 			if (destination === 0 || !settlement || (my_settlement.num_soldiers(self.assigned_army) === 0 && my_settlement.num_ships(self.assigned_navy) === 0)) {
-				core.error('There was an error creating and dispatching the army, check the data you entered and try again.');
+				core.ui().error('There was an error creating and dispatching the army, check the data you entered and try again.');
 				return false;
 			}
-			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
+			if (core.queue_add(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
 				army: self.assigned_army,
 				navy: self.assigned_navy
 			})) {
-				core.achievement('sendarmy');
+				core.do_achievement('sendarmy');
 				self.destroy();
 			} else {
-				core.error('There was an error creating and dispatching the army, check the data you entered and try again.');
+				core.ui().error('There was an error creating and dispatching the army, check the data you entered and try again.');
 			}
 			return false;
 		});

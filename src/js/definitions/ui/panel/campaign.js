@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_CAMPAIGN = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template(),
 
 	params_data: null,
 
@@ -22,6 +16,16 @@ civitas.PANEL_CAMPAIGN = {
 	 * @default
 	 */
 	id: 'campaign',
+
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template();
+	},
 
 	/**
 	 * Callback function for showing the panel.
@@ -65,7 +69,7 @@ civitas.PANEL_CAMPAIGN = {
 			}
 			tabs.push('Resources');
 		}
-		$(this.handle + ' section').append(civitas.ui.tabs(tabs));
+		$(this.handle + ' section').append(core.ui().tabs(tabs));
 	},
 	
 	/**
@@ -82,7 +86,7 @@ civitas.PANEL_CAMPAIGN = {
 		let out = '';
 		let source = core.get_settlement(campaign.source.id);
 		let destination = core.get_settlement(campaign.destination.id);
-		let distance = civitas.utils.get_distance(campaign.source, campaign.destination);
+		let distance = core.world().get_distance(campaign.source, campaign.destination);
 		let action = '';
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
 			action = 'Attacking';
@@ -102,10 +106,10 @@ civitas.PANEL_CAMPAIGN = {
 			'</dl>');
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
 			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
-				$(this.handle + ' #tab-soldiers').empty().append(civitas.ui.army_list(campaign.data.army));
+				$(this.handle + ' #tab-soldiers').empty().append(core.ui().army_list(campaign.data.army));
 			}
 			if (my_settlement.num_ships(campaign.data.navy) > 0) {
-				$(this.handle + ' #tab-ships').empty().append(civitas.ui.navy_list(campaign.data.navy));
+				$(this.handle + ' #tab-ships').empty().append(core.ui().navy_list(campaign.data.navy));
 			}
 		} else if (campaign.type === civitas.CAMPAIGN_CARAVAN) {
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
@@ -114,7 +118,7 @@ civitas.PANEL_CAMPAIGN = {
 				for (let item in campaign.data.resources) {
 					if (campaign.data.resources[item] > 0) {
 						out += '<dt>' + campaign.data.resources[item] + '</dt>' +
-							'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
+							'<dd>' + core.ui().resource_small_img(item) + '</dd>';
 					}
 				}
 				out += '</dl>';
@@ -129,17 +133,17 @@ civitas.PANEL_CAMPAIGN = {
 				(campaign.data.mission === civitas.SPY_MISSION_RELIGION ? '<dt>Religion</dt>' +
 				'<dd>' + civitas.RELIGIONS[campaign.data.religion].capitalize() + '</dd>' : '') +
 				'<dt>Espionage</dt>' +
-				'<dd>' + campaign.data.espionage + ' ' + civitas.ui.resource_small_img('espionage') + '</dd>' +
+				'<dd>' + campaign.data.espionage + ' ' + core.ui().resource_small_img('espionage') + '</dd>' +
 				'<dt>Success chance</dt>' +
 				'<dd>' + Math.ceil(campaign.data.espionage / 100) + '%</dd>' +
 			'</dl>';
 			$(this.handle + ' #tab-spy').empty().append(out);
 		} else if (campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
 			if (my_settlement.num_soldiers(campaign.data.army) > 0) {
-				$(this.handle + ' #tab-soldiers').empty().append(civitas.ui.army_list(campaign.data.army));
+				$(this.handle + ' #tab-soldiers').empty().append(core.ui().army_list(campaign.data.army));
 			}
 			if (my_settlement.num_ships(campaign.data.navy) > 0) {
-				$(this.handle + ' #tab-ships').empty().append(civitas.ui.navy_list(campaign.data.navy));
+				$(this.handle + ' #tab-ships').empty().append(core.ui().navy_list(campaign.data.navy));
 			}
 			if (typeof campaign.data.resources !== 'undefined' && !$.isEmptyObject(campaign.data.resources)) {
 				out = '<p>This army is bringing back to its home city the following spoils of war:</p>' +
@@ -147,7 +151,7 @@ civitas.PANEL_CAMPAIGN = {
 				for (let item in campaign.data.resources) {
 					if (campaign.data.resources[item] > 0) {
 						out += '<dt>' + campaign.data.resources[item] + '</dt>' +
-							'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
+							'<dd>' + core.ui().resource_small_img(item) + '</dd>';
 					}
 				}
 				out += '</dl>';

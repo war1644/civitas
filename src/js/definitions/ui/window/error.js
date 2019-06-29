@@ -46,7 +46,7 @@ civitas.WINDOW_ERROR = {
 		$(handle + ' .error-message').html('Message: ' + this.params_data.error);
 		$(handle + ' .error-code').html('Code: ' + this.params_data.code);
 		$(handle).on('click', '.do-restart', function () {
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
 						core.reset_storage_data();
@@ -67,6 +67,6 @@ civitas.WINDOW_ERROR = {
 	 * @public
 	 */
 	on_hide: function() {
-		civitas.ui.hide_loader();
+		this.core().ui().hide_loader();
 	}
 };

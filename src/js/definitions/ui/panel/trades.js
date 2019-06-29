@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_TRADES = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template('World Market'),
 
 	/**
 	 * Internal id of the panel.
@@ -20,6 +14,16 @@ civitas.PANEL_TRADES = {
 	 * @default
 	 */
 	id: 'trades',
+	
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template('World Market');
+	},
 
 	/**
 	 * Callback function for showing the panel.
@@ -33,7 +37,7 @@ civitas.PANEL_TRADES = {
 		let settlement = core.get_settlement();
 		let el = this.handle;
 		let _t = '';
-		$(el + ' section').append(civitas.ui.tabs([
+		$(el + ' section').append(core.ui().tabs([
 			'Export',
 			'Import',
 			'Mercenaries',
@@ -81,11 +85,11 @@ civitas.PANEL_TRADES = {
 		$(el + ' .bm-materials').empty().append(out);
 		$(el).on('click', '.settlement-info', function () {
 			let _settlement_name = $(this).data('settlement');
-			core.open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
+			core.ui().open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
 			return false;
 		}).on('click', '.buy:not(.disabled)', function () {
 			if (!settlement.can_trade()) {
-				core.error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
+				core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 				return false;
 			}
 			let handle = $(this).data('settlement');
@@ -96,7 +100,7 @@ civitas.PANEL_TRADES = {
 			return false;
 		}).on('click', '.sell:not(.disabled)', function () {
 			if (!settlement.can_trade()) {
-				core.error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
+				core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 				return false;
 			}
 			let handle = $(this).data('settlement');
@@ -115,7 +119,7 @@ civitas.PANEL_TRADES = {
 					self.on_refresh();
 				}
 			} else {
-				core.error('Select a resource and the amount of it you want to place on the Black Market.');
+				core.ui().error('Select a resource and the amount of it you want to place on the Black Market.');
 			}
 			return false;
 		}).on('click', '.recruit:not(.disabled)', function () {
@@ -127,7 +131,7 @@ civitas.PANEL_TRADES = {
 		}).on('click', '.view-army:not(.disabled)', function () {
 			let army = parseInt($(this).data('id'));
 			let army_data = civitas.MERCENARIES[army];
-			core.open_panel(civitas.PANEL_ARMY, army_data);
+			core.ui().open_panel(civitas.PANEL_ARMY, army_data);
 			return false;
 		});
 	},
@@ -147,8 +151,8 @@ civitas.PANEL_TRADES = {
 		let bm = core.get_black_market();
 		for (let item in bm) {
 			out += '<tr>' +
-					'<td>Amount: ' + bm[item].amount + civitas.ui.resource_small_img(item) + '</td>' +
-					'<td>Total price: ' + bm[item].price + civitas.ui.resource_small_img('coins') + '</td>' +
+					'<td>Amount: ' + bm[item].amount + core.ui().resource_small_img(item) + '</td>' +
+					'<td>Total price: ' + bm[item].price + core.ui().resource_small_img('coins') + '</td>' +
 					'<td>&nbsp;</td>' +
 				'</tr>';
 		}
@@ -180,12 +184,12 @@ civitas.PANEL_TRADES = {
 					let discount_price = Math.ceil(civitas.RESOURCES[item].price - discount);
 					out += '<tr>' +
 							'<td><a href="#" class="settlement-info tips" data-settlement="' + settlements[z].name() + '" title="View info about this settlement.">' + settlements[z].name() + '</a></td>' +
-							'<td class="center">' + civitas.ui.resource_small_img(item) + '</td>' +
+							'<td class="center">' + core.ui().resource_small_img(item) + '</td>' +
 							'<td class="center">' + imports[item] + '</td>' +
-							'<td class="center">' + civitas.RESOURCES[item].price + civitas.ui.resource_small_img('coins') + '</td>' +
-							'<td class="center">' + discount + civitas.ui.resource_small_img('coins') + '</td>' +
-							'<td class="center">' + discount_price + civitas.ui.resource_small_img('coins') + '</td>' +
-							'<td class="center">' + Math.ceil(discount_price * imports[item]) + civitas.ui.resource_small_img('coins') + '</td>' +
+							'<td class="center">' + civitas.RESOURCES[item].price + core.ui().resource_small_img('coins') + '</td>' +
+							'<td class="center">' + discount + core.ui().resource_small_img('coins') + '</td>' +
+							'<td class="center">' + discount_price + core.ui().resource_small_img('coins') + '</td>' +
+							'<td class="center">' + Math.ceil(discount_price * imports[item]) + core.ui().resource_small_img('coins') + '</td>' +
 							'<td class="center">' +
 								'<a title="Sell those goods" data-resource="' + item + '" data-settlement="' + settlements[z].name() + '" class="tips sell' + (imports[item] === 0 ? ' disabled' : '') + '" href="#">sell</a>' +
 							'</td>' +
@@ -218,10 +222,10 @@ civitas.PANEL_TRADES = {
 						'<p class="description">' + civitas.MERCENARIES[i].description + '</p>' +
 					'</td>' +
 					'<td>' + 
-						civitas.utils.nice_numbers(civitas.MERCENARIES[i].cost) + civitas.ui.resource_small_img('coins') + 
+						civitas.utils.nice_numbers(civitas.MERCENARIES[i].cost) + core.ui().resource_small_img('coins') + 
 					'</td>' +
 					'<td class="medium">' +
-						'<a title="View info on this mercenary army" data-id="' + i + '" class="tips view-army" href="#">view</a> ' + civitas.ui.panel_btn('recruit', 'Recruit this mercenary army', civitas.MERCENARIES[i].handle, 'recruit', core.get_settlement().is_mercenary_recruited(civitas.MERCENARIES[i].handle)) +
+						'<a title="View info on this mercenary army" data-id="' + i + '" class="tips view-army" href="#">view</a> ' + core.ui().panel_btn('recruit', 'Recruit this mercenary army', civitas.MERCENARIES[i].handle, 'recruit', core.get_settlement().is_mercenary_recruited(civitas.MERCENARIES[i].handle)) +
 					'</td>' +
 				'</tr>';
 		}
@@ -254,12 +258,12 @@ civitas.PANEL_TRADES = {
 					let discount_price = Math.ceil(civitas.RESOURCES[item].price + discount);
 					out += '<tr>' +
 							'<td>' + settlements[z].name() + '</td>' +
-							'<td class="center">' + civitas.ui.resource_small_img(item) + '</td>' +
+							'<td class="center">' + core.ui().resource_small_img(item) + '</td>' +
 							'<td class="center">' + exports[item] + '</td>' +
-							'<td class="center">' + civitas.RESOURCES[item].price + civitas.ui.resource_small_img('coins') + '</td>' +
-							'<td class="center">' + discount + civitas.ui.resource_small_img('coins') + '</td>' +
-							'<td class="center">' + discount_price + civitas.ui.resource_small_img('coins') + '</td>' +
-							'<td class="center">' + Math.ceil(discount_price * exports[item]) + civitas.ui.resource_small_img('coins') + '</td>' +
+							'<td class="center">' + civitas.RESOURCES[item].price + core.ui().resource_small_img('coins') + '</td>' +
+							'<td class="center">' + discount + core.ui().resource_small_img('coins') + '</td>' +
+							'<td class="center">' + discount_price + core.ui().resource_small_img('coins') + '</td>' +
+							'<td class="center">' + Math.ceil(discount_price * exports[item]) + core.ui().resource_small_img('coins') + '</td>' +
 							'<td class="center">' +
 								'<a title="Buy those goods" data-resource="' + item + '" data-settlement="' + settlements[z].name() + '" class="tips buy' + (exports[item] === 0 ? ' disabled' : '') + '" href="#">buy</a>' +
 							'</td>' +
@@ -300,11 +304,11 @@ civitas.PANEL_TRADES = {
 				let bm_tax = Math.ceil((civitas.RESOURCES[item].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
 				out += '<tr>' +
 					'<td>' + civitas.RESOURCES[item].name + '</td>' +
-					'<td class="center">' + civitas.ui.resource_small_img(item) + '</td>' +
-					'<td class="center">' + civitas.RESOURCES[item].price + civitas.ui.resource_small_img('coins') + '</td>' +
-					'<td class="center">' + (civitas.RESOURCES[item].price - tax) + civitas.ui.resource_small_img('coins') + '</td>' +
-					'<td class="center">' + (civitas.RESOURCES[item].price + discount) + civitas.ui.resource_small_img('coins') + '</td>' +
-					'<td class="center">' + (civitas.RESOURCES[item].price - bm_tax) + civitas.ui.resource_small_img('coins') + '</td>' +
+					'<td class="center">' + core.ui().resource_small_img(item) + '</td>' +
+					'<td class="center">' + civitas.RESOURCES[item].price + core.ui().resource_small_img('coins') + '</td>' +
+					'<td class="center">' + (civitas.RESOURCES[item].price - tax) + core.ui().resource_small_img('coins') + '</td>' +
+					'<td class="center">' + (civitas.RESOURCES[item].price + discount) + core.ui().resource_small_img('coins') + '</td>' +
+					'<td class="center">' + (civitas.RESOURCES[item].price - bm_tax) + core.ui().resource_small_img('coins') + '</td>' +
 					'<td class="center">' + ((civitas.RESOURCES[item].imported === true) ? 'imported' : 'produced') + '</td>' +
 				'</tr>';
 			}

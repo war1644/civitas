@@ -1,0 +1,8191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>ui - Civitas game</title>
+    
+    <meta name="description" content="Civitas is an empire-building game written in Javascript with the help of the jQuery library." />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://sizeof.cat" target="_blank" class="menu-item" id="site_link" >sizeof(cat)</a></h2><h2><a href="https://github.com/sizeofcat/civitas" target="_blank" class="menu-item" id="github_link" >GitHub</a></h2><h3>Classes</h3><ul><li><a href="civitas.controls.modal.html">modal</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.controls.modal.html#alert">alert</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.modal.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.modal.html#on_click">on_click</a></li></ul></li><li><a href="civitas.controls.panel.html">panel</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.controls.panel.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.panel.html#destroy">destroy</a></li></ul></li><li><a href="civitas.controls.window.html">window</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#destroy">destroy</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#handle">handle</a></li><li data-type='method' style='display: none;'><a href="civitas.controls.window.html#id">id</a></li></ul></li><li><a href="civitas.game.html">game</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.game.html#achievement_points">achievement_points</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#achievements">achievements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#add_random_settlement">add_random_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#add_settlement">add_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#check_achievements">check_achievements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#date">date</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#decrypt">decrypt</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#difficulty">difficulty</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#disband_city">disband_city</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#do_achievement">do_achievement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#do_research">do_research</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#encrypt">encrypt</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#export">export</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#format_date">format_date</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_army">generate_random_army</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_navy">generate_random_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_resources">generate_random_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#generate_random_settlement_data">generate_random_settlement_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_achievement_config_data">get_achievement_config_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_black_market">get_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_building_config_data">get_building_config_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_num_settlements">get_num_settlements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_prod_modifier">get_prod_modifier</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_nationality">get_random_nationality</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_personality">get_random_personality</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_religion">get_random_religion</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_random_resource">get_random_resource</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_research_config_data">get_research_config_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_settings">get_settings</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_settlement">get_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_settlements">get_settlements</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_storage_data">get_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#get_tax_modifier">get_tax_modifier</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#has_achievement">has_achievement</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#has_research">has_research</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#has_storage_data">has_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#import">import</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#in_queue">in_queue</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_autumn">is_autumn</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_paused">is_paused</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_spring">is_spring</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_summer">is_summer</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#is_winter">is_winter</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#level_up">level_up</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#load_game_data">load_game_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#mode">mode</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#new_game">new_game</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#pause">pause</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue">queue</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue_add">queue_add</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue_process_action">queue_process_action</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#queue_remove_action">queue_remove_action</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#refresh_trades">refresh_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#research">research</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#reset_black_market">reset_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#reset_storage_data">reset_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#save">save</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#save_and_refresh">save_and_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#set_black_market">set_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#set_settings">set_settings</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#set_storage_data">set_storage_data</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#ui">ui</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#unpause">unpause</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#version">version</a></li><li data-type='method' style='display: none;'><a href="civitas.game.html#world">world</a></li></ul></li><li><a href="civitas.modules.ai.html">ai</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.modules.ai.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.ai.html#process">process</a></li></ul></li><li><a href="civitas.modules.api.html">api</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#_request">_request</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#api_version">api_version</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#city_info">city_info</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#do_export">do_export</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#do_import">do_import</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#heartbeat">heartbeat</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#login">login</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#logout">logout</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.api.html#register">register</a></li></ul></li><li><a href="civitas.modules.jailer.html">jailer</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.modules.jailer.html#check">check</a></li><li data-type='method' style='display: none;'><a href="civitas.modules.jailer.html#core">core</a></li></ul></li><li><a href="civitas.objects.battleground.html">battleground</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#add">add</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#attack">attack</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#distance">distance</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#end_turn">end_turn</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#grid">grid</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#highlight_cells">highlight_cells</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#log">log</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#move">move</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#num_turns">num_turns</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_attack">on_attack</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_end_turn">on_end_turn</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_lose">on_lose</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_move">on_move</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_select">on_select</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#on_win">on_win</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#properties">properties</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#redraw">redraw</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.battleground.html#show_stats">show_stats</a></li></ul></li><li><a href="civitas.objects.building.html">building</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#demolish">demolish</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#downgrade">downgrade</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_building_data">get_building_data</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_handle">get_handle</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_level">get_level</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_name">get_name</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_settlement">get_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_settlement_resources">get_settlement_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_tax_amount">get_tax_amount</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_type">get_type</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#get_upgrade_costs">get_upgrade_costs</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_building_requirements">has_building_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_problems">has_problems</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_requirements">has_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_research_requirements">has_research_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#has_settlement_requirements">has_settlement_requirements</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_downgradable">is_downgradable</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_housing_building">is_housing_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_marketplace">is_marketplace</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_municipal_building">is_municipal_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_production_building">is_production_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_stopped">is_stopped</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#is_upgradable">is_upgradable</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#log_to_console">log_to_console</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#notify">notify</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#process">process</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#produce">produce</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#set_level">set_level</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#start_production">start_production</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#stop_production">stop_production</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#tax">tax</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.building.html#upgrade">upgrade</a></li></ul></li><li><a href="civitas.objects.event.html">event</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.event.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.event.html#process">process</a></li></ul></li><li><a href="civitas.objects.hero.html">hero</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.hero.html#core">core</a></li></ul></li><li><a href="civitas.objects.settlement.html">settlement</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#add_to_black_market">add_to_black_market</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#add_to_storage">add_to_storage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#adjust_campaign_cost">adjust_campaign_cost</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#ai">ai</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#build">build</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#buy_from_settlement">buy_from_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#calc_neighbours">calc_neighbours</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_build_ships">can_build_ships</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_diplomacy">can_diplomacy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_recruit_heroes">can_recruit_heroes</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_recruit_soldiers">can_recruit_soldiers</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_research">can_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#can_trade">can_trade</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#change_religion">change_religion</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#city_council">city_council</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#climate">climate</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#coins">coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#color">color</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#dec_coins">dec_coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#diplomacy">diplomacy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#disband_ship">disband_ship</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#disband_soldier">disband_soldier</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#espionage">espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#export">export</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#export_buildings">export_buildings</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#faith">faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#fame">fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_army">get_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_building">get_building</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_building_data">get_building_data</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_buildings">get_buildings</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_diplomacy_status">get_diplomacy_status</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_influence_with_settlement">get_influence_with_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_navy">get_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_neighbours">get_neighbours</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_properties">get_properties</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_rank">get_rank</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_resources">get_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_spoils">get_spoils</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_trades">get_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_trades_exports">get_trades_exports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_trades_imports">get_trades_imports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#get_type">get_type</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_any_resources">has_any_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_coins">has_coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_resource">has_resource</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_resources">has_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_same_nationality">has_same_nationality</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_ships">has_ships</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_soldiers">has_soldiers</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#has_storage_space_for">has_storage_space_for</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#heroes">heroes</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#icon">icon</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#id">id</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#inc_coins">inc_coins</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_building_built">is_building_built</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_camp">is_camp</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_city">is_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_mercenary_recruited">is_mercenary_recruited</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_metropolis">is_metropolis</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_player">is_player</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_urban">is_urban</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#is_village">is_village</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#level">level</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#level_up">level_up</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#load_army">load_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#location">location</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_espionage">lower_espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_faith">lower_faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_fame">lower_fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_influence">lower_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_prestige">lower_prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#lower_research">lower_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#mercenary">mercenary</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#merge_army">merge_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#merge_navy">merge_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#merge_resources">merge_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#name">name</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#nationality">nationality</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#nice_name">nice_name</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#num_ships">num_ships</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#num_soldiers">num_soldiers</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#personality">personality</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#population">population</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#prestige">prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_espionage">raise_espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_faith">raise_faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_fame">raise_fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_influence">raise_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_prestige">raise_prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#raise_research">raise_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#recruit_mercenary_army">recruit_mercenary_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#recruit_ship">recruit_ship</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#recruit_soldier">recruit_soldier</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#refresh_heroes">refresh_heroes</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#release_mercenaries">release_mercenaries</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#release_mercenary">release_mercenary</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#religion">religion</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_from_exports">remove_from_exports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_from_imports">remove_from_imports</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_resource">remove_resource</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#remove_resources">remove_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#rename">rename</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#research">research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_espionage">reset_espionage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_faith">reset_faith</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_fame">reset_fame</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_influence">reset_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_prestige">reset_prestige</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_research">reset_research</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#reset_trades">reset_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#ruler">ruler</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#sell_to_settlement">sell_to_settlement</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_army">set_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_influence">set_influence</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_navy">set_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_resources">set_resources</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#set_trades">set_trades</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#setup_initial_buildings">setup_initial_buildings</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#split_army">split_army</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#split_navy">split_navy</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#status">status</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#storage">storage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_camp">to_camp</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_city">to_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_metropolis">to_metropolis</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#to_village">to_village</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.settlement.html#waterside">waterside</a></li></ul></li><li><a href="civitas.objects.ui.html">ui</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#army_img">army_img</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#army_list">army_list</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#build_main">build_main</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#building_element">building_element</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#building_panel">building_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#building_panel_template">building_panel_template</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#chance_panel">chance_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#check_storage">check_storage</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#close_panel">close_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#cost_panel">cost_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#error">error</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#generic_panel_template">generic_panel_template</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_cell_middle">get_cell_middle</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_cell_middle_coords">get_cell_middle_coords</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_panel">get_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_panels">get_panels</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#get_random_color">get_random_color</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#hide_loader">hide_loader</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#item_tooltip">item_tooltip</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#level_panel">level_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#log">log</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#materials_panel">materials_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#navy_img">navy_img</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#navy_list">navy_list</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#normal_panel">normal_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#notify">notify</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#open_modal">open_modal</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#open_panel">open_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#open_window">open_window</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#panel_btn">panel_btn</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#panel_exists">panel_exists</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#production_panel">production_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#progress">progress</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh">refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh_panels">refresh_panels</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh_toolbar">refresh_toolbar</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#refresh_ui">refresh_ui</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#requires_panel">requires_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resize">resize</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resource_small_img">resource_small_img</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resource_storage_el">resource_storage_el</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#resource_storage_small_el">resource_storage_small_el</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#show_loader">show_loader</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#storage_panel">storage_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#tabs">tabs</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#tax_panel">tax_panel</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#trades_list">trades_list</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#window_about_section">window_about_section</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#window_exists">window_exists</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.ui.html#worldmap_scrollto">worldmap_scrollto</a></li></ul></li><li><a href="civitas.objects.world.html">world</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#add_city">add_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#colors">colors</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#core">core</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#data">data</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_climate_from_terrain">get_climate_from_terrain</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_distance">get_distance</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_distance_in_days">get_distance_in_days</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex">get_hex</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex_elevation">get_hex_elevation</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex_moisture">get_hex_moisture</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_hex_terrain">get_hex_terrain</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_random_location">get_random_location</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#get_terrain_from_climate">get_terrain_from_climate</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#hex_is_locked">hex_is_locked</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#hex_is_water">hex_is_water</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#hex_locked_by">hex_locked_by</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#lock_hex">lock_hex</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#properties">properties</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#remove_city">remove_city</a></li><li data-type='method' style='display: none;'><a href="civitas.objects.world.html#set_hex">set_hex</a></li></ul></li></ul><h3>Mixins</h3><ul><li><a href="civitas.html">civitas</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.html#.ACHIEVEMENTS">ACHIEVEMENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ACTION_CAMPAIGN">ACTION_CAMPAIGN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ACTION_DIPLOMACY">ACTION_DIPLOMACY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ACTION_RESEARCH">ACTION_RESEARCH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.API_ENTRY_POINT">API_ENTRY_POINT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.API_URL">API_URL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.API_VERSION">API_VERSION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_CLOTH">ARMOR_TYPE_CLOTH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_LEATHER">ARMOR_TYPE_LEATHER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_MAIL">ARMOR_TYPE_MAIL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMOR_TYPE_PLATE">ARMOR_TYPE_PLATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ARMY_COSTS">ARMY_COSTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ASSETS_URL">ASSETS_URL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.AUTOSTART_MUSIC">AUTOSTART_MUSIC</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.AVATARS">AVATARS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BATTLEGROUND_ATTACK">BATTLEGROUND_ATTACK</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BATTLEGROUND_DEFENSE">BATTLEGROUND_DEFENSE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BLACK_MARKET_DISCOUNT">BLACK_MARKET_DISCOUNT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BUILDINGS">BUILDINGS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BUILDINGS_ALL">BUILDINGS_ALL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.BUILDINGS_CATEGORIES">BUILDINGS_CATEGORIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMP">CAMP</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_ARMY">CAMPAIGN_ARMY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_ARMY_RETURN">CAMPAIGN_ARMY_RETURN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_CARAVAN">CAMPAIGN_CARAVAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CAMPAIGN_SPY">CAMPAIGN_SPY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CARAVAN_COSTS">CARAVAN_COSTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CARAVAN_INFLUENCE">CARAVAN_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CITY">CITY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_ARID">CLIMATE_ARID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_POLAR">CLIMATE_POLAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_TEMPERATE">CLIMATE_TEMPERATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATE_TROPICAL">CLIMATE_TROPICAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.CLIMATES">CLIMATES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DEBUG">DEBUG</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_EASY">DIFFICULTY_EASY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_HARD">DIFFICULTY_HARD</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_HARDCORE">DIFFICULTY_HARDCORE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIFFICULTY_MEDIUM">DIFFICULTY_MEDIUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACIES">DIPLOMACIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_ALLIANCE">DIPLOMACY_ALLIANCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_CEASE_FIRE">DIPLOMACY_CEASE_FIRE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PACT">DIPLOMACY_PACT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_ALLIANCE">DIPLOMACY_PROPOSE_ALLIANCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_CEASE_FIRE">DIPLOMACY_PROPOSE_CEASE_FIRE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_JOIN">DIPLOMACY_PROPOSE_JOIN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_PROPOSE_PACT">DIPLOMACY_PROPOSE_PACT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_TRUCE">DIPLOMACY_TRUCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_VASSAL">DIPLOMACY_VASSAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.DIPLOMACY_WAR">DIPLOMACY_WAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ENCRYPTION">ENCRYPTION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.EVENTS">EVENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.EXPORT_INFLUENCE">EXPORT_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.EXPORT_PRESTIGE">EXPORT_PRESTIGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_DRUID">HERO_CLASS_DRUID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_LIST">HERO_CLASS_LIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_MAGE">HERO_CLASS_MAGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_PRIEST">HERO_CLASS_PRIEST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_ROGUE">HERO_CLASS_ROGUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_SHAMAN">HERO_CLASS_SHAMAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HERO_CLASS_WARRIOR">HERO_CLASS_WARRIOR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.HEROES">HEROES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORT_INFLUENCE">IMPORT_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORT_PRESTIGE">IMPORT_PRESTIGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_HIGH">IMPORTANCE_HIGH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_LOW">IMPORTANCE_LOW</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_MEDIUM">IMPORTANCE_MEDIUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.IMPORTANCE_VITAL">IMPORTANCE_VITAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_BACKPACK_NUM">ITEM_BACKPACK_NUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_COLORS">ITEM_QUALITY_COLORS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_COMMON">ITEM_QUALITY_COMMON</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_EPIC">ITEM_QUALITY_EPIC</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_LEGENDARY">ITEM_QUALITY_LEGENDARY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_LIST">ITEM_QUALITY_LIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_QUALITY_RARE">ITEM_QUALITY_RARE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_ANY_HAND">ITEM_SLOT_ANY_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_CHEST">ITEM_SLOT_CHEST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_FEET">ITEM_SLOT_FEET</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_HANDS">ITEM_SLOT_HANDS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_HEAD">ITEM_SLOT_HEAD</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_LEGS">ITEM_SLOT_LEGS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_MAIN_HAND">ITEM_SLOT_MAIN_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_NECK">ITEM_SLOT_NECK</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_NONE">ITEM_SLOT_NONE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_OFF_HAND">ITEM_SLOT_OFF_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_RING">ITEM_SLOT_RING</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_SHOULDER">ITEM_SLOT_SHOULDER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOT_WAIST">ITEM_SLOT_WAIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOTS_LIST">ITEM_SLOTS_LIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_SLOTS_NUM">ITEM_SLOTS_NUM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_TYPE_ARMOR">ITEM_TYPE_ARMOR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_TYPE_OTHER">ITEM_TYPE_OTHER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_TYPE_WEAPON">ITEM_TYPE_WEAPON</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.ITEM_WEAPON_DAGGER_WICKED">ITEM_WEAPON_DAGGER_WICKED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.LEVELS">LEVELS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_CONSOLE_LINES">MAX_CONSOLE_LINES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_ESPIONAGE_SUCESS_RATE">MAX_ESPIONAGE_SUCESS_RATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_ESPIONAGE_VALUE">MAX_ESPIONAGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_FAITH_VALUE">MAX_FAITH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_INFLUENCE_VALUE">MAX_INFLUENCE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_PRESTIGE_VALUE">MAX_PRESTIGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_RESEARCH_VALUE">MAX_RESEARCH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_SETTLEMENT_ICONS">MAX_SETTLEMENT_ICONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_SETTLEMENT_LEVEL">MAX_SETTLEMENT_LEVEL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MAX_SETTLEMENTS">MAX_SETTLEMENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MERCENARIES">MERCENARIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.METROPOLIS">METROPOLIS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_ESPIONAGE_VALUE">MIN_ESPIONAGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_FAITH_VALUE">MIN_FAITH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_INFLUENCE_VALUE">MIN_INFLUENCE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_PRESTIGE_VALUE">MIN_PRESTIGE_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MIN_RESEARCH_VALUE">MIN_RESEARCH_VALUE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MODE_MULTIPLAYER">MODE_MULTIPLAYER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.MODE_SINGLEPLAYER">MODE_SINGLEPLAYER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NAMES">NAMES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_ASSYRIAN">NATION_ASSYRIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_CARTHAGINIAN">NATION_CARTHAGINIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_CHINESE">NATION_CHINESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_EGYPTIAN">NATION_EGYPTIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_FRANKS">NATION_FRANKS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_FRENCH">NATION_FRENCH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_GREEK">NATION_GREEK</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_INDIAN">NATION_INDIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_JAPANESE">NATION_JAPANESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_KHMER">NATION_KHMER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_MALINESE">NATION_MALINESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_MONGOLIAN">NATION_MONGOLIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_NIGERIAN">NATION_NIGERIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_PERSAN">NATION_PERSAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_PHOENICIAN">NATION_PHOENICIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_ROMAN">NATION_ROMAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_RUSSIAN">NATION_RUSSIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_SPANISH">NATION_SPANISH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_SUDANESE">NATION_SUDANESE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_SUMERIAN">NATION_SUMERIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_THRACIAN">NATION_THRACIAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATION_TIBETAN">NATION_TIBETAN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NATIONS">NATIONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_MISSING_REQ">NOTIFICATION_MISSING_REQ</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_MISSING_RES">NOTIFICATION_MISSING_RES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_PAUSED">NOTIFICATION_PAUSED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFICATION_SETTLEMENT_LOW_LEVEL">NOTIFICATION_SETTLEMENT_LOW_LEVEL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_ACHIEVEMENT">NOTIFY_ACHIEVEMENT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_ERROR">NOTIFY_ERROR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_EVENT">NOTIFY_EVENT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_NORMAL">NOTIFY_NORMAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_RELIGION">NOTIFY_RELIGION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_RESEARCH">NOTIFY_RESEARCH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.NOTIFY_WAR">NOTIFY_WAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITIES">PERSONALITIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITY_BALANCED">PERSONALITY_BALANCED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITY_DIPLOMAT">PERSONALITY_DIPLOMAT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.PERSONALITY_WARLORD">PERSONALITY_WARLORD</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.POPULATION_PER_LEVEL">POPULATION_PER_LEVEL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RANDOM_UNCOMMON">RANDOM_UNCOMMON</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_BUDDHISM">RELIGION_BUDDHISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_CHRISTIANITY">RELIGION_CHRISTIANITY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_CONFUCIANISM">RELIGION_CONFUCIANISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_HINDUISM">RELIGION_HINDUISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_ISLAM">RELIGION_ISLAM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_JUDAISM">RELIGION_JUDAISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_NONE">RELIGION_NONE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGION_TAOISM">RELIGION_TAOISM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RELIGIONS">RELIGIONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RESOURCE_CATEGORIES">RESOURCE_CATEGORIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.RESOURCES">RESOURCES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SECONDS_TO_DAY">SECONDS_TO_DAY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_ARID">SETTLEMENT_BUILDINGS_ARID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_POLAR">SETTLEMENT_BUILDINGS_POLAR</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_TEMPERATE">SETTLEMENT_BUILDINGS_TEMPERATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_BUILDINGS_TROPICAL">SETTLEMENT_BUILDINGS_TROPICAL</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENT_NAMES">SETTLEMENT_NAMES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SETTLEMENTS">SETTLEMENTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SHIPS">SHIPS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SOLDIERS">SOLDIERS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_COSTS">SPY_COSTS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_INFLUENCE">SPY_MISSION_INFLUENCE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_INSTIGATE">SPY_MISSION_INSTIGATE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_NONE">SPY_MISSION_NONE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_RELIGION">SPY_MISSION_RELIGION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSION_STEAL_RESOURCES">SPY_MISSION_STEAL_RESOURCES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.SPY_MISSIONS">SPY_MISSIONS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.STORAGE_KEY">STORAGE_KEY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.TECHNOLOGIES">TECHNOLOGIES</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.VERSION">VERSION</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.VILLAGE">VILLAGE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE">WEAPON_TYPE_MELEE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_AXE_ONE_HAND">WEAPON_TYPE_MELEE_AXE_ONE_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_AXE_TWO_HAND">WEAPON_TYPE_MELEE_AXE_TWO_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_DAGGER">WEAPON_TYPE_MELEE_DAGGER</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_FIST">WEAPON_TYPE_MELEE_FIST</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_MACE_ONE_HAND">WEAPON_TYPE_MELEE_MACE_ONE_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_MACE_TWO_HAND">WEAPON_TYPE_MELEE_MACE_TWO_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_POLEARM">WEAPON_TYPE_MELEE_POLEARM</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_STAFF">WEAPON_TYPE_MELEE_STAFF</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_SWORD_ONE_HAND">WEAPON_TYPE_MELEE_SWORD_ONE_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_MELEE_SWORD_TWO_HAND">WEAPON_TYPE_MELEE_SWORD_TWO_HAND</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED">WEAPON_TYPE_RANGED</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_BOW">WEAPON_TYPE_RANGED_BOW</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_CROSSBOW">WEAPON_TYPE_RANGED_CROSSBOW</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_GUN">WEAPON_TYPE_RANGED_GUN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WEAPON_TYPE_RANGED_THROWN">WEAPON_TYPE_RANGED_THROWN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_BEAUTIFY">WORLD_BEAUTIFY</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_GRID">WORLD_GRID</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_HEX_SIZE">WORLD_HEX_SIZE</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_ROUGHNESS">WORLD_ROUGHNESS</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_SIZE_HEIGHT">WORLD_SIZE_HEIGHT</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.WORLD_SIZE_WIDTH">WORLD_SIZE_WIDTH</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.YEARLY_INFLUENCE_GAIN">YEARLY_INFLUENCE_GAIN</a></li><li data-type='member' style='display: none;'><a href="civitas.html#.YEARLY_INFLUENCE_LOSS">YEARLY_INFLUENCE_LOSS</a></li></ul></li><li><a href="civitas.PANEL_ACADEMY.html">PANEL_ACADEMY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_ACADEMY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_ARMY.html">PANEL_ARMY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_ARMY.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_ARMY.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_ARMY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_BUILDING.html">PANEL_BUILDING</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_BUILDING.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDING.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDING.html#.on_refresh">on_refresh</a></li></ul></li><li><a href="civitas.PANEL_BUILDINGS.html">PANEL_BUILDINGS</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_BUILDINGS.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDINGS.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_BUILDINGS.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_CAMPAIGN.html">PANEL_CAMPAIGN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CAMPAIGN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_CHURCH.html">PANEL_CHURCH</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_CHURCH.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_COUNCIL.html">PANEL_COUNCIL</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_COUNCIL.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_DEBUG.html">PANEL_DEBUG</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_DEBUG.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_DEBUG.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_DEBUG.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_EMBASSY.html">PANEL_EMBASSY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_EMBASSY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_HELP.html">PANEL_HELP</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_HELP.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_HELP.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_HELP.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_MILITARYCAMP.html">PANEL_MILITARYCAMP</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_MILITARYCAMP.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_NEW_ARMY.html">PANEL_NEW_ARMY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_ARMY.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_ARMY.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_ARMY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_NEW_CARAVAN.html">PANEL_NEW_CARAVAN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_CARAVAN.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_CARAVAN.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_CARAVAN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_NEW_SPY.html">PANEL_NEW_SPY</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_NEW_SPY.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_RANKS.html">PANEL_RANKS</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_RANKS.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_RANKS.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_RANKS.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_RANKS.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_SETTLEMENT.html">PANEL_SETTLEMENT</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_SETTLEMENT.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_SHIPYARD.html">PANEL_SHIPYARD</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_SHIPYARD.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_STORAGE.html">PANEL_STORAGE</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_STORAGE.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_TAVERN.html">PANEL_TAVERN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TAVERN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_TRADES.html">PANEL_TRADES</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_TRADES.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_TRADES.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TRADES.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_TRADES.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.PANEL_WORLD.html">PANEL_WORLD</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.PANEL_WORLD.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.PANEL_WORLD.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_WORLD.html#.on_refresh">on_refresh</a></li><li data-type='method' style='display: none;'><a href="civitas.PANEL_WORLD.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.utils.html">utils</a><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.utils.html#.calc_price">calc_price</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.calc_price_minus_discount">calc_price_minus_discount</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.calc_price_plus_discount">calc_price_plus_discount</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_damage_points">get_damage_points</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_health_points">get_health_points</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_mana_points">get_mana_points</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_now">get_now</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_random">get_random</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_random_by_importance">get_random_by_importance</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_random_unique">get_random_unique</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_resource_name">get_resource_name</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.get_up_number">get_up_number</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.nice_numbers">nice_numbers</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.resource_exists">resource_exists</a></li><li data-type='method' style='display: none;'><a href="civitas.utils.html#.time_since">time_since</a></li></ul></li><li><a href="civitas.WINDOW_BATTLE.html">WINDOW_BATTLE</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_BATTLE.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.WINDOW_BATTLE.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_BATTLE.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_ERROR.html">WINDOW_ERROR</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.id">id</a></li><li data-type='member' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.template">template</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_ERROR.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_OPTIONS.html">WINDOW_OPTIONS</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_OPTIONS.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_SIGNIN.html">WINDOW_SIGNIN</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNIN.html#.on_show">on_show</a></li></ul></li><li><a href="civitas.WINDOW_SIGNUP.html">WINDOW_SIGNUP</a><ul class='members'><li data-type='member' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.id">id</a></li></ul><ul class='methods'><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.on_create">on_create</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.on_hide">on_hide</a></li><li data-type='method' style='display: none;'><a href="civitas.WINDOW_SIGNUP.html#.on_show">on_show</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#findIndexByHandle">findIndexByHandle</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">ui</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        ui
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+
+    <h4 class="name" id="ui"><span class="type-signature"></span>new ui<span class="signature">(core)</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-license">License:</dt>
+    <dd class="tag-license"><ul class="dummy"><li>GPLv3</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Main Game UI object.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>core</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="army_img"><span class="type-signature"></span>army_img<span class="signature">(name)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line378">line 378</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="army_list"><span class="type-signature"></span>army_list<span class="signature">(army, no_margin)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line390">line 390</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>army</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>no_margin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="build_main"><span class="type-signature"></span>build_main<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line70">line 70</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Build the main DOM UI of the game.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="building_element"><span class="type-signature"></span>building_element<span class="signature">(params)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line508">line 508</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="building_panel"><span class="type-signature"></span>building_panel<span class="signature">(params, level)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line247">line 247</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="building_panel_template"><span class="type-signature"></span>building_panel_template<span class="signature">(title)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line220">line 220</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Generate a building panel template.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="chance_panel"><span class="type-signature"></span>chance_panel<span class="signature">(materials, level)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line597">line 597</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>materials</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="check_storage"><span class="type-signature"></span>check_storage<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line984">line 984</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Calculate and return the total and free storage space in the main settlement.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="close_panel"><span class="type-signature"></span>close_panel<span class="signature">(id)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1074">line 1074</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Close the UI panel specified by its id.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="core"><span class="type-signature"></span>core<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.game.html">civitas.game</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line708">line 708</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Return a pointer to the game core.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.game.html">civitas.game</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="cost_panel"><span class="type-signature"></span>cost_panel<span class="signature">(conts, level, levels)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line315">line 315</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>conts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>levels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="error"><span class="type-signature"></span>error<span class="signature">(message, title, no_console)</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line853">line 853</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Perform an error notification in the game.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>no_console</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="generic_panel_template"><span class="type-signature"></span>generic_panel_template<span class="signature">(title)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line200">line 200</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Generate a generic panel template.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get_cell_middle"><span class="type-signature"></span>get_cell_middle<span class="signature">(row, column)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1398">line 1398</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Get the middle of a hex cell.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>row</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>column</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get_cell_middle_coords"><span class="type-signature"></span>get_cell_middle_coords<span class="signature">(row, column)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1429">line 1429</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Get the middle coordonates of a hex cell.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>row</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>column</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get_panel"><span class="type-signature"></span>get_panel<span class="signature">(id)</span><span class="type-signature"> &rarr; {<a href="civitas.controls.panel.html">civitas.controls.panel</a>|Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1055">line 1055</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Return the UI panel specified by its id.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.controls.panel.html">civitas.controls.panel</a></span>
+|
+
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get_panels"><span class="type-signature"></span>get_panels<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1018">line 1018</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Get the panels open in the game.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get_random_color"><span class="type-signature"></span>get_random_color<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1443">line 1443</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Get a random HSL color.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="hide_loader"><span class="type-signature"></span>hide_loader<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line59">line 59</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Hide the application loading indicator.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="item_tooltip"><span class="type-signature"></span>item_tooltip<span class="signature">(item)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line143">line 143</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Create an item tooltip.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="level_panel"><span class="type-signature"></span>level_panel<span class="signature">(level, new_level, max_level)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line300">line 300</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>new_level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>max_level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="log"><span class="type-signature"></span>log<span class="signature">(namespace, message, error)</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line894">line 894</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Log data to the console.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>namespace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="materials_panel"><span class="type-signature"></span>materials_panel<span class="signature">(materials)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line570">line 570</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>materials</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="navy_img"><span class="type-signature"></span>navy_img<span class="signature">(name)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line367">line 367</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="navy_list"><span class="type-signature"></span>navy_list<span class="signature">(army, no_margin)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line481">line 481</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>army</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>no_margin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="normal_panel"><span class="type-signature"></span>normal_panel<span class="signature">(section, contents)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line283">line 283</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>section</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="notify"><span class="type-signature"></span>notify<span class="signature">(message, title, timeout)</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line721">line 721</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Perform a normal notification in the game.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="open_modal"><span class="type-signature"></span>open_modal<span class="signature">(callback, text, title)</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line949">line 949</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Open a modal window (usually to ask for confirmations).
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="open_panel"><span class="type-signature"></span>open_panel<span class="signature">(panel_data, extra_data, sidebar)</span><span class="type-signature"> &rarr; {<a href="civitas.controls.panel.html">civitas.controls.panel</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line911">line 911</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Open a UI panel.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>panel_data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extra_data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sidebar</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.controls.panel.html">civitas.controls.panel</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="open_window"><span class="type-signature"></span>open_window<span class="signature">(window_data, extra_data)</span><span class="type-signature"> &rarr; {<a href="civitas.controls.window.html">civitas.controls.window</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line932">line 932</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Open a UI window.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>window_data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extra_data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.controls.window.html">civitas.controls.window</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="panel_btn"><span class="type-signature"></span>panel_btn<span class="signature">(text, title, handle, class_name, disabled)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line447">line 447</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>handle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>class_name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="panel_exists"><span class="type-signature"></span>panel_exists<span class="signature">(id)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line429">line 429</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check if a panel exists and is opened.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="production_panel"><span class="type-signature"></span>production_panel<span class="signature">(materials, level)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line616">line 616</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>materials</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="progress"><span class="type-signature"></span>progress<span class="signature">(value, progress_type, show_value)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line335">line 335</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>progress_type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>show_value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="refresh"><span class="type-signature"></span>refresh<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1000">line 1000</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Refresh the UI and panels.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="refresh_panels"><span class="type-signature"></span>refresh_panels<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1093">line 1093</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Force refresh of the UI panels open.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="refresh_toolbar"><span class="type-signature"></span>refresh_toolbar<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1028">line 1028</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Refresh the resources toolbar.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="refresh_ui"><span class="type-signature"></span>refresh_ui<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line967">line 967</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Refresh all the UI information after a property change.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="requires_panel"><span class="type-signature"></span>requires_panel<span class="signature">(requires)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line634">line 634</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>requires</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="resize"><span class="type-signature"></span>resize<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line871">line 871</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Resize the UI.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="resource_small_img"><span class="type-signature"></span>resource_small_img<span class="signature">(resource)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line698">line 698</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>resource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="resource_storage_el"><span class="type-signature"></span>resource_storage_el<span class="signature">(resource, amount)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line538">line 538</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>resource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>amount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="resource_storage_small_el"><span class="type-signature"></span>resource_storage_small_el<span class="signature">(resource, amount)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line526">line 526</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>resource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>amount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="show_loader"><span class="type-signature"></span>show_loader<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Show the application loading indicator.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="storage_panel"><span class="type-signature"></span>storage_panel<span class="signature">(storage, level)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line682">line 682</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>storage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="tabs"><span class="type-signature"></span>tabs<span class="signature">(data)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line549">line 549</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="tax_panel"><span class="type-signature"></span>tax_panel<span class="signature">(tax, level)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line665">line 665</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="trades_list"><span class="type-signature"></span>trades_list<span class="signature">(trades, mode)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line459">line 459</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>trades</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="window_about_section"><span class="type-signature"></span>window_about_section<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line179">line 179</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Build the About section of the UI.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="window_exists"><span class="type-signature"></span>window_exists<span class="signature">(id)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line416">line 416</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Check if a window exists and is opened.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="worldmap_scrollto"><span class="type-signature"></span>worldmap_scrollto<span class="signature">(location)</span><span class="type-signature"> &rarr; {<a href="civitas.objects.ui.html">civitas.objects.ui</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="objects_ui_ui.js.html">objects/ui/ui.js</a>, <a href="objects_ui_ui.js.html#line1414">line 1414</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Scroll the world map to the specified location.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>location</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="civitas.objects.ui.html">civitas.objects.ui</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Sat Jun 29 2019 20:34:20 GMT+0300 (Eastern European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

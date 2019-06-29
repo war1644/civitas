@@ -9,6 +9,14 @@
 civitas.controls.panel = function (params) {
 
 	/**
+	 * DOM template of this panel.
+	 *
+	 * @private
+	 * @type {String}
+	 */
+	this.template = null;
+
+	/**
 	 * DOM handle of this panel.
 	 *
 	 * @private
@@ -49,6 +57,14 @@ civitas.controls.panel = function (params) {
 	this.title = null;
 
 	/**
+	 * Callback function when the panel is created.
+	 *
+	 * @public
+	 * @type {Function}
+	 */
+	this.on_create = null;
+
+	/**
 	 * Callback function when the panel is shown.
 	 *
 	 * @public
@@ -79,9 +95,9 @@ civitas.controls.panel = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.__destroy = function () {
-		this.core().log('ui', 'Destroying panel with id `' + this.id + '`');
+		this.core().ui().log('ui', 'Destroying panel with id `' + this.id + '`');
 		$(this.handle).remove();
-		let panels = this.core().get_panels();
+		let panels = this.core().ui().get_panels();
 		for (let i = 0; i < panels.length; i++) {
 			if (panels[i].id === this.id) {
 				panels.splice(i, 1);
@@ -117,6 +133,12 @@ civitas.controls.panel = function (params) {
 		this.id = params.id;
 		this.handle = '#panel-' + this.id;
 		this.params_data = params.data;
+		this.template = typeof params.template !== 'undefined' ? params.template : '';
+		if (params.on_create instanceof Function) {
+			this.on_create = params.on_create;
+		} else {
+			this.on_create = function() {};
+		}
 		if (params.on_show instanceof Function) {
 			this.on_show = params.on_show;
 		} else {
@@ -132,14 +154,13 @@ civitas.controls.panel = function (params) {
 		} else {
 			this.on_refresh = function() {};
 		}
-		if (civitas.ui.panel_exists(this.handle)) {
+		if (this.core().ui().panel_exists(this.handle)) {
 			this.destroy();
 		}
-		this.core().log('ui', 'Creating panel with id `' + this.id + '`');
-		let tpl = params.template.replace(/{ID}/g, params.id);
-		if (typeof this.params_data !== 'undefined' && 
-			typeof this.params_data.name !== 'undefined' &&
-			typeof this.params_data.name !== 'function') {
+		this.core().ui().log('ui', 'Creating panel with id `' + this.id + '`');
+		this.on_create.call(this, params);
+		let tpl = this.template.replace(/{ID}/g, params.id);
+		if (typeof this.params_data !== 'undefined' && typeof this.params_data.name !== 'undefined' && typeof this.params_data.name !== 'function') {
 			tpl = tpl.replace(/{BUILDING}/g, this.params_data.handle);
 			if (this.params_data.sidebar === true) {
 				$('.ui > aside').empty().append(tpl);
@@ -175,7 +196,7 @@ civitas.controls.panel = function (params) {
 					$(this.handle + ' .start, ' + this.handle + ' .pause').hide();
 				}
 				$(this.handle).on('click', '.upgrade', function () {
-					self.core().open_modal(
+					self.core().ui().open_modal(
 						function(button) {
 							if (button === 'yes') {
 								if (building.upgrade()) {
@@ -191,7 +212,7 @@ civitas.controls.panel = function (params) {
 					);
 					return false;
 				}).on('click', '.downgrade', function () {
-					self.core().open_modal(
+					self.core().ui().open_modal(
 						function(button) {
 							if (button === 'yes') {
 								if (building.downgrade()) {
@@ -207,7 +228,7 @@ civitas.controls.panel = function (params) {
 					);
 					return false;
 				}).on('click', '.demolish', function () {
-					self.core().open_modal(
+					self.core().ui().open_modal(
 						function(button) {
 							if (button === 'yes') {
 								if (building.demolish(true)) {

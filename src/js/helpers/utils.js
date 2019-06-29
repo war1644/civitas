@@ -4,59 +4,6 @@
  * @mixin
  */
 civitas.utils = {
-	get_neighbours: function(y, x) {
-		if (x % 2 == 0) {
-			return [
-			    {
-			    	x: x+1,
-			    	y: y
-			    }, {
-			    	x: x+1,
-			    	y: y-1
-			    }, {
-			    	x: x,
-			    	y: y-1
-			    }, {
-			    	x: x-1,
-			    	y: y
-			    }, {
-			    	x: x-1,
-			    	y: y-1 // y + 1
-			    }, {
-			    	x: x,
-			    	y: y+1
-			    }
-			]
-		} else {
-			return [
-			    {
-			    	x: x+1,
-			    	y: y
-			    }, {
-			    	x: x+1,
-			    	y: y+1
-			    }, {
-			    	x: x,
-			    	y: y-1
-			    }, {
-			    	x: x-1,
-			    	y: y
-			    }, {
-			    	x: x-1,
-			    	y: y+1
-			    }, {
-			    	x: x,
-			    	y: y+1
-			    }
-			]
-		}
-	},
-
-	get_random_color: function() {
-		let color = (Math.random() * 250) + 1;
-		let colors = Math.random() * 255;
-		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
-	},
 
 	is_virtual_resource: function(resource) {
 		if (typeof civitas.RESOURCES[resource] !== undefined) {
@@ -158,28 +105,6 @@ civitas.utils = {
 			}
 		}
 		return false;
-	},
-
-	/**
-	 * Get the distance between two points.
-	 *
-	 * @param {Number} source
-	 * @param {Number} destination
-	 * @returns {Number}
-	 */
-	get_distance: function(source, destination) {
-		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2))) * 100;
-	},
-
-	/**
-	 * Get the distance between two points in days
-	 *
-	 * @param {Number} source
-	 * @param {Number} destination
-	 * @returns {Number}
-	 */
-	get_distance_in_days: function(source, destination) {
-		return Math.floor((Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100) / 15);
 	},
 
 	/**

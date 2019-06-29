@@ -214,7 +214,7 @@ civitas.objects.world = function (params) {
 	 * @returns {Object}
 	 */
 	this.get_random_location = function(terrain) {
-		let pos = {
+		const pos = {
 			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
 			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
 		}
@@ -271,7 +271,7 @@ civitas.objects.world = function (params) {
 	 * @returns {Boolean}
 	 */
 	this.hex_is_water = function(hex) {
-		let data = this.data();
+		const data = this.data();
 		if (data[hex.y][hex.x].t === 'S' || data[hex.y][hex.x].t === 'O') {
 			return true;
 		}
@@ -379,12 +379,12 @@ civitas.objects.world = function (params) {
 	 * @returns {civitas.objects.world}
 	 */
 	this.add_city = function(settlement) {
-		let location = settlement.location();
+		const location = settlement.location();
 		this._data[location.y][location.x].s = settlement.id();
 		this._data[location.y][location.x].l = true;
 		this._data[location.y][location.x].lid = settlement.id();
 		this._data[location.y][location.x].n = settlement.name();
-		//civitas.ui.svg_add_city_image(location.x, location.y, settlement);
+		//civitas.svg.add_city_image(location.x, location.y, settlement);
 		return this;
 	};
 
@@ -396,8 +396,8 @@ civitas.objects.world = function (params) {
 	 * @returns {civitas.objects.world}
 	 */
 	this.remove_city = function(settlement) {
-		let location = settlement.location();
-		let id = settlement.id();
+		const location = settlement.location();
+		const id = settlement.id();
 		this._data[location.y][location.x].s = null;
 		this._data[location.y][location.x].n = null;
 		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
@@ -528,6 +528,76 @@ civitas.objects.world = function (params) {
 		}
 		return value;
 	};
+
+	this.get_neighbours = function(y, x) {
+		if (x % 2 == 0) {
+			return [
+			    {
+			    	x: x+1,
+			    	y: y
+			    }, {
+			    	x: x+1,
+			    	y: y-1
+			    }, {
+			    	x: x,
+			    	y: y-1
+			    }, {
+			    	x: x-1,
+			    	y: y
+			    }, {
+			    	x: x-1,
+			    	y: y-1 // y + 1
+			    }, {
+			    	x: x,
+			    	y: y+1
+			    }
+			]
+		} else {
+			return [
+			    {
+			    	x: x+1,
+			    	y: y
+			    }, {
+			    	x: x+1,
+			    	y: y+1
+			    }, {
+			    	x: x,
+			    	y: y-1
+			    }, {
+			    	x: x-1,
+			    	y: y
+			    }, {
+			    	x: x-1,
+			    	y: y+1
+			    }, {
+			    	x: x,
+			    	y: y+1
+			    }
+			]
+		}
+	};
+
+	/**
+	 * Get the distance between two points.
+	 *
+	 * @param {Number} source
+	 * @param {Number} destination
+	 * @returns {Number}
+	 */
+	this.get_distance = function(source, destination) {
+		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2))) * 100;
+	};
+
+	/**
+	 * Get the distance between two points in days
+	 *
+	 * @param {Number} source
+	 * @param {Number} destination
+	 * @returns {Number}
+	 */
+	this.get_distance_in_days = function(source, destination) {
+		return Math.floor((Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100) / 15);
+	}
 
 	/**
 	 * Return the world data array.

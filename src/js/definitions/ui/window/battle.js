@@ -64,12 +64,12 @@ civitas.WINDOW_BATTLE = {
 				navy: this.params_data.destination.navy
 			},
 			on_win: function(winner, loser) {
-				core.achievement('conqueror');
+				core.do_achievement('conqueror');
 				$(handle + ' .end').hide();
 				$(handle + ' .close').show();
 			},
 			on_lose: function(winner, loser) {
-				core.achievement('foolish');
+				core.do_achievement('foolish');
 				$(handle + ' .end').hide();
 				$(handle + ' .close').show();
 			},

@@ -44,7 +44,7 @@ civitas.PANEL_NEW_SPY = {
 		let settlements = core.get_settlements();
 		let espionage = my_settlement.espionage();
 		let location = my_settlement.location();
-		let distance = civitas.utils.get_distance_in_days(location, settlement.location());
+		let distance = core.world().get_distance_in_days(location, settlement.location());
 		let _t = '<fieldset>' +
 			'<legend>Initial costs</legend>' +
 			'<dl>';
@@ -58,7 +58,7 @@ civitas.PANEL_NEW_SPY = {
 				_cost = civitas.SPY_COSTS[item];
 			}
 			_t += '<dt>' + civitas.utils.nice_numbers(_cost) + '</dt>' +
-				'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
+				'<dd>' + core.ui().resource_small_img(item) + '</dd>';
 		}
 		_t += '</dl>' +
 		'</fieldset>' +
@@ -109,7 +109,7 @@ civitas.PANEL_NEW_SPY = {
 			}
 		}).on('click', '.dispatch', function() {
 			if (!my_settlement.can_diplomacy()) {
-				core.error('You will need to construct an Embassy before being able to send spies to other settlements.');
+				core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
 				return false;
 			}
 			let _espionage = parseInt($(self.handle + ' .espionage-value').val());
@@ -119,8 +119,7 @@ civitas.PANEL_NEW_SPY = {
 				settlement = core.get_settlement(destination);
 			}
 			if (destination === 0 || _espionage > espionage || !settlement || mission <= 0) {
-				console.log(1);
-				core.error('There was an error creating and dispatching the spy, check the data you entered and try again.');
+				core.ui().error('There was an error creating and dispatching the spy, check the data you entered and try again.');
 				return false;
 			}
 			let data = {
@@ -130,12 +129,11 @@ civitas.PANEL_NEW_SPY = {
 			if (mission === civitas.SPY_MISSION_RELIGION) {
 				data.religion = parseInt($(self.handle + ' .espionage-religion').val());
 			}
-			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_SPY, data)) {
-				core.achievement('jamesbond');
+			if (core.queue_add(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_SPY, data)) {
+				core.do_achievement('jamesbond');
 				self.destroy();
 			} else {
-				console.log(2);
-				core.error('There was an error creating and dispatching the spy, check the data you entered and try again.');
+				core.ui().error('There was an error creating and dispatching the spy, check the data you entered and try again.');
 			}
 			return false;
 		});

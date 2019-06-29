@@ -64,7 +64,7 @@ civitas.controls.modal = function (params) {
 		if (this._is_open()) {
 			return false;
 		}
-		civitas.ui.show_loader();
+		this.core().ui().show_loader();
 		$('.modal').css({
 			width: '400px'
 		});
@@ -102,7 +102,7 @@ civitas.controls.modal = function (params) {
 	this._clear = function() {
 		$('.modal-overlay').remove();
 		// $('body').append(this._template);
-		civitas.ui.hide_loader();
+		this.core().ui().hide_loader();
 		// this._resize();
 		return true;
 	};

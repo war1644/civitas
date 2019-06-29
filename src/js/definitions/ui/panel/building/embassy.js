@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_EMBASSY = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.building_panel_template(),
 
 	/**
 	 * Internal id of the panel.
@@ -20,6 +14,16 @@ civitas.PANEL_EMBASSY = {
 	 * @default
 	 */
 	id: 'embassy',
+
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().building_panel_template();
+	},
 
 	/**
 	 * Callback function for showing the panel.
@@ -35,7 +39,7 @@ civitas.PANEL_EMBASSY = {
 		let status = settlement.status();
 		let building = core.get_settlement().get_building(this.params_data.handle);
 		let level = building.get_level();
-		$(this.handle + ' section').append(civitas.ui.tabs([
+		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Diplomacy',
 			'Espionage'
@@ -45,7 +49,7 @@ civitas.PANEL_EMBASSY = {
 			let _settlement_id = parseInt($(this).data('id'));
 			let _settlement = core.get_settlement(_settlement_id);
 			if (_settlement) {
-				core.open_panel(civitas.PANEL_SETTLEMENT, _settlement);
+				core.ui().open_panel(civitas.PANEL_SETTLEMENT, _settlement);
 			}
 			return false;
 		});
@@ -65,8 +69,8 @@ civitas.PANEL_EMBASSY = {
 		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
 			let level = building.get_level();
-			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, level));
-			$(this.handle + ' #tab-espionage').empty().append('<div class="section">' + civitas.ui.progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage()) + '</div>');
+			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, level));
+			$(this.handle + ' #tab-espionage').empty().append('<div class="section">' + core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage()) + '</div>');
 			let _t = '<table class="normal">';
 			for (let i = 1; i < settlements.length; i++) {
 				let _status = settlement.get_diplomacy_status(settlements[i].id());
@@ -76,7 +80,7 @@ civitas.PANEL_EMBASSY = {
 						'</td>' +
 						'<td>' +
 							'<p class="title">' + settlements[i].nice_name() + '</p> ' +
-							'<div data-id="' + settlements[i].id() + '" >' + civitas.ui.progress(status[settlements[i].id()].influence, 'big') + '</div>' +
+							'<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'big') + '</div>' +
 						'</td>' +
 						'<td>' +
 							'<p>Leader: <strong>' + settlements[i].ruler().name + '</strong>' + '</p>' +

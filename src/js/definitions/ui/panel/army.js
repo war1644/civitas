@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_ARMY = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template(),
 
 	/**
 	 * Internal id of the panel.
@@ -20,7 +14,17 @@ civitas.PANEL_ARMY = {
 	 * @default
 	 */
 	id: 'army',
-	
+		
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template();
+	},
+
 	/**
 	 * Callback function for showing the panel.
 	 *
@@ -40,13 +44,13 @@ civitas.PANEL_ARMY = {
 		if (my_settlement.num_ships(army.navy) > 0) {
 			tabs.push('Ships');
 		}
-		$(this.handle + ' section').append(civitas.ui.tabs(tabs));
+		$(this.handle + ' section').append(core.ui().tabs(tabs));
 		$(this.handle + ' #tab-info').append('<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/emblems/' + ((typeof army.icon !== 'undefined') ? army.icon : '22') + '.png" />' + '<p>' + army.description + '</p>');
 		if (my_settlement.num_soldiers(army.army) > 0) {
-			$(this.handle + ' #tab-soldiers').append(civitas.ui.army_list(army.army));
+			$(this.handle + ' #tab-soldiers').append(core.ui().army_list(army.army));
 		}
 		if (my_settlement.num_ships(army.navy) > 0) {
-			$(this.handle + ' #tab-ships').append(civitas.ui.navy_list(army.navy));
+			$(this.handle + ' #tab-ships').append(core.ui().navy_list(army.navy));
 		}
 	}
 };

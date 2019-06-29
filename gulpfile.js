@@ -31,29 +31,30 @@ gulp.task('app', function() {
 		'src/js/constants/research.js',
 		'src/js/constants/buildings.js',
 		'src/js/constants/world.js',
+		'src/js/constants/trades.js',
 		'src/js/constants/settlements.js',
 		'src/js/constants/events.js',
 		'src/js/constants/resources.js',
 		'src/js/constants/achievements.js',
 		'src/js/constants/items.js',
 		'src/js/constants/hero.js',
-		'src/js/helpers/utils.js',
 		'src/js/objects/modules/ai.js',
 		/*
 		'src/js/objects/modules/api.js',
 		'src/js/objects/modules/jailer.js',
 		*/
-		'src/js/helpers/ui.js',
 		'src/js/objects/core/world.js',
 		'src/js/objects/core/settlement.js',
 		'src/js/objects/core/event.js',
 		'src/js/objects/core/building.js',
 		'src/js/objects/core/battleground.js',
 		'src/js/objects/core/hero.js',
-		'src/js/objects/ui/window.js',
-		'src/js/objects/ui/modal.js',
-		'src/js/objects/ui/panel.js',
+		'src/js/objects/ui/controls/window.js',
+		'src/js/objects/ui/controls/modal.js',
+		'src/js/objects/ui/controls/panel.js',
+		'src/js/objects/ui/ui.js',
 		'src/js/objects/core/game.js',
+		'src/js/helpers/utils.js',
 		'src/js/definitions/ui/panel/settlement.js',
 		'src/js/definitions/ui/panel/help.js',
 		'src/js/definitions/ui/panel/debug.js',
@@ -151,25 +152,6 @@ gulp.task('css', function() {
     .pipe(gulp.dest('dist/'))
 });
 
-gulp.task('css_minify', gulp.series(gulp.parallel('css'), function() {
-	return gulp.src([
-		'dist/app.debug.css'
-  	])
-    .pipe(concat('app.min.css'))
-    .pipe(cleanCSS())
-    .pipe(gulp.dest('dist/'))
-}));
-
-gulp.task('minify', gulp.series(gulp.parallel(['app_minify', 'lib_minify', 'css_minify']), async function() {
-	return true;
-}));
-
-gulp.task('watch', function () {
-	gulp.watch("src/**/*.js", gulp.series(['app', 'doc']));
-	gulp.watch("src/**/*.css", gulp.parallel('css'));
-	gulp.watch("vendor/**/*.js", gulp.parallel('lib'));
-});
-
 gulp.task('doc', function (cb) {
 	del([
 		'docs/*.html'
@@ -181,6 +163,25 @@ gulp.task('doc', function (cb) {
 	.pipe(jsdoc(config, cb));
 });
 
-gulp.task('build', gulp.series(gulp.series('css', 'app', 'lib', 'doc')));
+gulp.task('css_minify', gulp.series(gulp.parallel('css'), function() {
+	return gulp.src([
+		'dist/app.debug.css'
+  	])
+    .pipe(concat('app.min.css'))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('dist/'))
+}));
+
+gulp.task('minify', gulp.series(gulp.parallel(['app_minify', 'lib_minify', 'css_minify'], 'doc'), async function() {
+	return true;
+}));
+
+gulp.task('watch', function () {
+	gulp.watch("src/**/*.js", gulp.series(['app']));
+	gulp.watch("src/**/*.css", gulp.parallel('css'));
+	gulp.watch("vendor/**/*.js", gulp.parallel('lib'));
+});
+
+gulp.task('build', gulp.series(gulp.series('css', 'app', 'lib')));
 
 gulp.task('default', gulp.series(gulp.parallel('watch', 'build')));

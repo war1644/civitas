@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_MILITARYCAMP = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.building_panel_template(),
 
 	/**
 	 * Internal id of the panel.
@@ -22,6 +16,16 @@ civitas.PANEL_MILITARYCAMP = {
 	id: 'militarycamp',
 
 	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().building_panel_template();
+	},
+
+	/**
 	 * Callback function for showing the panel.
 	 *
 	 * @type {Function}
@@ -31,7 +35,7 @@ civitas.PANEL_MILITARYCAMP = {
 		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
-		$(this.handle + ' section').append(civitas.ui.tabs([
+		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Army'
 		]));
@@ -43,7 +47,7 @@ civitas.PANEL_MILITARYCAMP = {
 					'<div class="cost">' +
 						'<dl class="nomg">';
 			for (let res in civitas.SOLDIERS[item].cost) {
-				_t += '<dt>' + civitas.utils.nice_numbers(civitas.SOLDIERS[item].cost[res]) + '</dt><dd>' + civitas.ui.resource_small_img(res) + '</dd>';
+				_t += '<dt>' + civitas.utils.nice_numbers(civitas.SOLDIERS[item].cost[res]) + '</dt><dd>' + core.ui().resource_small_img(res) + '</dd>';
 			}
 			_t += '</dl>' +
 					'</div>' +
@@ -64,13 +68,13 @@ civitas.PANEL_MILITARYCAMP = {
 			if (settlement.has_resources(costs)) {
 				if (settlement.remove_resources(costs)) {
 					if (settlement.recruit_soldier(soldier)) {
-						core.notify('A new ' + civitas.SOLDIERS[soldier].name + ' has been recruited.');
+						core.ui().notify('A new ' + civitas.SOLDIERS[soldier].name + ' has been recruited.');
 						self.on_refresh();
 						return false;
 					}
 				}
 			}
-			core.error('You don`t have enough resources to recruit a ' + civitas.SOLDIERS[soldier].name + '.');
+			core.ui().error('You don`t have enough resources to recruit a ' + civitas.SOLDIERS[soldier].name + '.');
 			return false;
 		});
 	},
@@ -86,9 +90,9 @@ civitas.PANEL_MILITARYCAMP = {
 		let settlement = core.get_settlement();
 		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
-			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, building.get_level()));
+			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
 			$(this.handle + ' .army-list').empty().append('<fieldset>' +
-					'<legend>Current Army</legend>' + civitas.ui.army_list(settlement.get_army(), true) +
+					'<legend>Current Army</legend>' + core.ui().army_list(settlement.get_army(), true) +
 				'</fieldset>');
 		} else {
 			this.destroy();

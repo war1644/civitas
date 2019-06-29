@@ -200,24 +200,6 @@ civitas.MIN_PRESTIGE_VALUE = 1;
 civitas.MAX_PRESTIGE_VALUE = 10000;
 
 /**
- * The minimum value settlement research can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.MIN_RESEARCH_VALUE = 1;
-
-/**
- * The maximum value settlement research can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.MAX_RESEARCH_VALUE = 1000;
-
-/**
  * The minimum value settlement espionage can have.
  *
  * @constant
@@ -262,6 +244,24 @@ civitas.MIN_INFLUENCE_VALUE = 1;
  * @type {Number}
  */
 civitas.MAX_INFLUENCE_VALUE = 100;
+
+/**
+ * Amount of influence your settlement loses each year.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.YEARLY_INFLUENCE_LOSS = 2;
+
+/**
+ * Amount of influence your settlement gains each year.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.YEARLY_INFLUENCE_GAIN = 2;
 
 /**
  * List of game diplomacy options.
@@ -376,3 +376,30 @@ civitas.ARMY_COSTS = {
  * @type {Number}
  */
 civitas.CARAVAN_INFLUENCE = 5;
+
+/**
+ * Diplomacy proposal action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.ACTION_DIPLOMACY = 0;
+
+/**
+ * Campaign action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.ACTION_CAMPAIGN = 1;
+
+/**
+ * Research action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.ACTION_RESEARCH = 2;

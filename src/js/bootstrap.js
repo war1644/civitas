@@ -7,7 +7,10 @@
  * @author sizeof(cat) <sizeofcat@riseup.net>
  * @version 0.3.0
  */
-let civitas = {
+const civitas = {
+	game: {
+		// Todo
+	},
 	objects: {
 		// Todo
 	},
@@ -18,3 +21,10 @@ let civitas = {
 		// Todo
 	}
 };
+
+/**
+ * Boot up the core.
+ */
+$(document).ready(function () {
+	new civitas.game();
+});

@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_WORLD = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template('World Map'),
 
 	/**
 	 * Internal id of the panel.
@@ -20,6 +14,16 @@ civitas.PANEL_WORLD = {
 	 * @default
 	 */
 	id: 'world',
+	
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template('World Map');
+	},
 
 	/**
 	 * Callback function for showing the panel.
@@ -39,12 +43,12 @@ civitas.PANEL_WORLD = {
 		let settings = core.get_settings();
 		let world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
-		civitas.ui.svg_create_worldmap(civitas.WORLD_HEX_SIZE, colors);
+		core.ui().svg_create_worldmap(civitas.WORLD_HEX_SIZE, colors);
 		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
 				let terrain = world_data[row][column].t;
 				color = colors[terrain].bg;
-				civitas.ui.svg_create_group(terrain, row, column);
+				core.ui().svg_create_group(terrain, row, column);
 				if (world_data[row][column].l === true) {
 					let lid = world_data[row][column].lid;
 					if (lid !== null) {
@@ -53,9 +57,9 @@ civitas.PANEL_WORLD = {
 						}
 					}
 				}
-				civitas.ui.svg_create_cell(row, column, color, settings.worldmap_grid);
+				core.ui().svg_create_cell(row, column, color, settings.worldmap_grid);
 				if (settings.worldmap_beautify === true) {
-					civitas.ui.svg_apply_terrain(row, column, colors[terrain].fg, terrain);
+					core.ui().svg_apply_terrain(row, column, colors[terrain].fg, terrain);
 				}
 			}
 		}
@@ -63,7 +67,7 @@ civitas.PANEL_WORLD = {
 			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
 				let suid = world_data[row][column].s;
 				if (suid !== null && typeof settlements[suid] !== 'undefined') {
-					civitas.ui.svg_add_settlement_image(row, column, settlements[suid], settlement);
+					core.ui().svg_add_settlement_image(row, column, settlements[suid], settlement);
 				}
 			}
 		}
@@ -93,22 +97,22 @@ civitas.PANEL_WORLD = {
 		$(this.handle).on('click', '.settlement', function () {
 			let _settlement_name = $(this).data('name');
 			if (_settlement_name === settlement.name()) {
-				core.open_panel(civitas.PANEL_COUNCIL);
+				core.ui().open_panel(civitas.PANEL_COUNCIL);
 			} else {
-				core.open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
+				core.ui().open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
 			}
 			return false;
 		}).on('click', '.troop', function () {
 			let _action_id = parseInt($(this).data('id'));
 			if (core._queue[_action_id].mode === civitas.ACTION_CAMPAIGN) {
-				core.open_panel(civitas.PANEL_CAMPAIGN, core._queue[_action_id]);
+				core.ui().open_panel(civitas.PANEL_CAMPAIGN, core._queue[_action_id]);
 			}
 			return false;
 		});
 		/*
-		civitas.ui.svg_link_cells({x: 21, y: 25}, {x: 24, y: 32});
+		core.ui().svg_link_cells({x: 21, y: 25}, {x: 24, y: 32});
 		*/
-		civitas.ui.worldmap_scrollto(settlement.location());
+		core.ui().worldmap_scrollto(settlement.location());
 	},
 	
 	/**
@@ -129,7 +133,7 @@ civitas.PANEL_WORLD = {
 			let action = queue_actions[i];
 			let source = action.source;
 			let destination = action.destination;
-			let distance_in_days = civitas.utils.get_distance_in_days(source, destination);
+			let distance_in_days = core.world().get_distance_in_days(source, destination);
 			if (action.mode === civitas.ACTION_DIPLOMACY) {
 				distance_in_days = distance_in_days / 2;
 			}
@@ -159,7 +163,7 @@ civitas.PANEL_WORLD = {
 				troop_type = 'troop_diplomatic';
 				title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
 			}
-			civitas.ui.svg_map_element(y, x, prev_y, prev_x, troop_type, i, title);
+			core.ui().svg_map_element(y, x, prev_y, prev_x, troop_type, i, title);
 		}
 	}
 };

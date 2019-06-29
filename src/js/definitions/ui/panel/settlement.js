@@ -72,21 +72,21 @@ civitas.PANEL_SETTLEMENT = {
 			}
 			tabs.push('Resources');
 		}
-		$(this.handle + ' section').append(civitas.ui.tabs(tabs));
+		$(this.handle + ' section').append(core.ui().tabs(tabs));
 		$(this.handle).on('click', '.alliance', function () {
 			if (!my_settlement.can_diplomacy()) {
-				core.error('You will need to construct an Embassy before being able to propose an alliance to other settlements.');
+				core.ui().error('You will need to construct an Embassy before being able to propose an alliance to other settlements.');
 				return false;
 			}
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
-						if (!core.add_to_queue(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
+						if (!core.queue_add(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
 							civitas.DIPLOMACY_PROPOSE_ALLIANCE, {})) {
-							core.error('There was an error proposing an alliance to this settlement, check the data you entered and try again.');
+							core.ui().error('There was an error proposing an alliance to this settlement, check the data you entered and try again.');
 							return false;
 						}
-						core.achievement('pacifist');
+						core.do_achievement('pacifist');
 					}
 				},
 				'Are you sure you want to propose an alliance to this settlement?'
@@ -94,18 +94,18 @@ civitas.PANEL_SETTLEMENT = {
 			return false;
 		}).on('click', '.join', function () {
 			if (!my_settlement.can_diplomacy()) {
-				core.error('You will need to construct an Embassy before being able to ask other settlements to join your city.');
+				core.ui().error('You will need to construct an Embassy before being able to ask other settlements to join your city.');
 				return false;
 			}
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
-						if (!core.add_to_queue(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
+						if (!core.queue_add(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
 							civitas.DIPLOMACY_PROPOSE_JOIN, {})) {
-							core.error('There was an error proposing this settlement to join your city, check the data you entered and try again.');
+							core.ui().error('There was an error proposing this settlement to join your city, check the data you entered and try again.');
 							return false;
 						}
-						core.achievement('rulethemall');
+						core.do_achievement('rulethemall');
 					}
 				},
 				'Are you sure you want to propose this this settlement to join you?'
@@ -113,18 +113,18 @@ civitas.PANEL_SETTLEMENT = {
 			return false;
 		}).on('click', '.pact', function () {
 			if (!my_settlement.can_diplomacy()) {
-				core.error('You will need to construct an Embassy before being able to propose a pact to other settlements.');
+				core.ui().error('You will need to construct an Embassy before being able to propose a pact to other settlements.');
 				return false;
 			}
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
-						if (!core.add_to_queue(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
+						if (!core.queue_add(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
 							civitas.DIPLOMACY_PROPOSE_PACT, {})) {
-							core.error('There was an error proposing a pact to this settlement, check the data you entered and try again.');
+							core.ui().error('There was an error proposing a pact to this settlement, check the data you entered and try again.');
 							return false;
 						}
-						core.achievement('friendly');
+						core.do_achievement('friendly');
 					}
 				},
 				'Are you sure you want to propose a pact to this settlement?'
@@ -132,15 +132,15 @@ civitas.PANEL_SETTLEMENT = {
 			return false;
 		}).on('click', '.ceasefire', function () {
 			if (!my_settlement.can_diplomacy()) {
-				core.error('You will need to construct an Embassy before being able to propose a cease fire to other settlements.');
+				core.ui().error('You will need to construct an Embassy before being able to propose a cease fire to other settlements.');
 				return false;
 			}
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
-						if (!core.add_to_queue(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
+						if (!core.queue_add(my_settlement, settlement, civitas.ACTION_DIPLOMACY,
 							civitas.DIPLOMACY_PROPOSE_CEASE_FIRE, {})) {
-							core.error('There was an error proposing a cease fire to this settlement, check the data you entered and try again.');
+							core.ui().error('There was an error proposing a cease fire to this settlement, check the data you entered and try again.');
 							return false;
 						}
 					}
@@ -150,10 +150,10 @@ civitas.PANEL_SETTLEMENT = {
 			return false;
 		}).on('click', '.war', function () {
 			if (!my_settlement.can_diplomacy()) {
-				core.error('You will need to construct an Embassy before being able to declare war to other settlements.');
+				core.ui().error('You will need to construct an Embassy before being able to declare war to other settlements.');
 				return false;
 			}
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
 						my_settlement.diplomacy(settlement.id(), civitas.DIPLOMACY_WAR);
@@ -164,24 +164,24 @@ civitas.PANEL_SETTLEMENT = {
 			return false;
 		}).on('click', '.caravan', function () {
 			if (!my_settlement.can_trade()) {
-				core.error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
+				core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 				return false;
 			}
-			core.open_panel(civitas.PANEL_NEW_CARAVAN, settlement);
+			core.ui().open_panel(civitas.PANEL_NEW_CARAVAN, settlement);
 			return false;
 		}).on('click', '.spy', function () {
 			if (!my_settlement.can_diplomacy()) {
-				core.error('You will need to construct an Embassy before being able to send spies to other settlements.');
+				core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
 				return false;
 			}
-			core.open_panel(civitas.PANEL_NEW_SPY, settlement);
+			core.ui().open_panel(civitas.PANEL_NEW_SPY, settlement);
 			return false;
 		}).on('click', '.attack', function () {
 			if (!my_settlement.can_recruit_soldiers()) {
-				core.error('You will need to construct a Military Camp before being able to attack other settlements.');
+				core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
 				return false;
 			}
-			core.open_panel(civitas.PANEL_NEW_ARMY, settlement);
+			core.ui().open_panel(civitas.PANEL_NEW_ARMY, settlement);
 			return false;
 		});
 	},
@@ -228,7 +228,7 @@ civitas.PANEL_SETTLEMENT = {
 				'<dt>Level</dt>' +
 				'<dd>' + settlement.level() + '</dd>' +
 				'<dt>Prestige</dt>' +
-				'<dd>' + civitas.ui.progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>'
+				'<dd>' + core.ui().progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>'
 				: '') + 
 				'<dt>Population</dt>' +
 				'<dd>' + civitas.utils.nice_numbers(settlement.population()) + '</dd>' +
@@ -238,29 +238,29 @@ civitas.PANEL_SETTLEMENT = {
 				'<dt>Religion</dt>' +
 				'<dd>' + settlement.religion().name + '</dd>' +
 				'<dt>Influence</dt>' +
-				'<dd>' + civitas.ui.progress(my_settlement.get_influence_with_settlement(settlement.id()), 'small') + '</dd>' +
+				'<dd>' + core.ui().progress(my_settlement.get_influence_with_settlement(settlement.id()), 'small') + '</dd>' +
 				'<dt>Diplomatic Status</dt>' +
 				'<dd>' + my_settlement.get_diplomacy_status(settlement.id()).name + '</dd>'
 				: '') + 
 				'<dt>Distance</dt>' +
-				'<dd>' + civitas.utils.get_distance(location, settlement.location()) + ' miles (' + civitas.utils.get_distance_in_days(location, settlement.location()) + ' days)</dd>' +
+				'<dd>' + core.world().get_distance(location, settlement.location()) + ' miles (' + core.world().get_distance_in_days(location, settlement.location()) + ' days)</dd>' +
 			'</dl>');
 		if (my_settlement.can_diplomacy() || settlement.is_camp()) {
-			$(this.handle + ' #tab-army').empty().append(civitas.ui.army_list(settlement.get_army()));
+			$(this.handle + ' #tab-army').empty().append(core.ui().army_list(settlement.get_army()));
 			if (settlement.waterside() === true) {
-				$(this.handle + ' #tab-navy').empty().append(civitas.ui.navy_list(settlement.get_navy()));
+				$(this.handle + ' #tab-navy').empty().append(core.ui().navy_list(settlement.get_navy()));
 			}
 		}
 		if (settlement.is_urban()) {
-			$(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + civitas.ui.trades_list(trades, 'imports'));
-			$(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this city will be selling this year.</p>' + civitas.ui.trades_list(trades, 'exports'));
+			$(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + core.ui().trades_list(trades, 'imports'));
+			$(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this city will be selling this year.</p>' + core.ui().trades_list(trades, 'exports'));
 		}
 		let out = '';
 		let _out = '<p>This settlement has the the following resources:</p>';
 		for (let item in settlement.get_resources()) {
 			if (!civitas.utils.is_virtual_resource(item)) {
 				if (settlement.resources[item] > 0) {
-					out += civitas.ui.resource_storage_small_el(item, settlement.resources[item]);
+					out += core.ui().resource_storage_small_el(item, settlement.resources[item]);
 				}
 			}
 		}

@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_RANKS = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template('World Rankings'),
 
 	/**
 	 * Internal id of the panel.
@@ -20,6 +14,16 @@ civitas.PANEL_RANKS = {
 	 * @default
 	 */
 	id: 'ranks',
+	
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template('World Ranks');
+	},
 
 	/**
 	 * Callback function for showing the panel.

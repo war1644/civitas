@@ -3,17 +3,17 @@
 /**
  * Find index by handle into an array.
  *
- * @function findIndexM
+ * @function findIndexByHandle
  * @param {String} value
  * @returns {Object|Boolean}
  */
-Array.prototype.findIndexM = function (value) {
-    for (let i = 0; i < this.length; i++) {
-        if (this[i].handle === value) {
-            return i;
-        }
-    }
-    return false;
+Array.prototype.findIndexByHandle = function (value) {
+	for (let i = 0; i < this.length; i++) {
+		if (this[i].handle === value) {
+			return i;
+		}
+	}
+	return false;
 };
 
 /**
@@ -23,5 +23,5 @@ Array.prototype.findIndexM = function (value) {
  * @returns {String}
  */
 String.prototype.capitalize = function () {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+	return this.charAt(0).toUpperCase() + this.slice(1);
 };

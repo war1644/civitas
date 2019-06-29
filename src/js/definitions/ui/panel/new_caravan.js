@@ -43,7 +43,7 @@ civitas.PANEL_NEW_CARAVAN = {
 		let settlement = params.data;
 		let settlements = core.get_settlements();
 		let location = my_settlement.location();
-		let distance = civitas.utils.get_distance_in_days(location, settlement.location());
+		let distance = core.world().get_distance_in_days(location, settlement.location());
 		let _t = '<fieldset>' +
 			'<legend>Initial costs</legend>' +
 			'<dl>';
@@ -57,7 +57,7 @@ civitas.PANEL_NEW_CARAVAN = {
 				_cost = civitas.CARAVAN_COSTS[item];
 			}
 			_t += '<dt>' + civitas.utils.nice_numbers(_cost) + '</dt>' +
-				'<dd>' + civitas.ui.resource_small_img(item) + '</dd>';
+				'<dd>' + core.ui().resource_small_img(item) + '</dd>';
 		}
 		_t += '</dl>' +
 		'</fieldset>' +
@@ -100,7 +100,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			for (let item in this.resources) {
 				_t += '<tr>' +
 					'<td>' + this.resources[item] + '</td>' +
-					'<td>' + civitas.ui.resource_small_img(item) + '</td>' +
+					'<td>' + core.ui().resource_small_img(item) + '</td>' +
 					'<td>' +
 						'<a title="Remove this resource from the caravan." href="#" data-id="' + item + '" class="tips caravan-resources-delete">-</a>' +
 					'</td>' +
@@ -115,10 +115,10 @@ civitas.PANEL_NEW_CARAVAN = {
 			let resource = $(self.handle + ' .caravan-resources-select').val();
 			if (resource !== '0') {
 				if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
-					core.error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
+					core.ui().error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
 					return false;
 				} else if (typeof self.resources[resource] === 'undefined' && !my_settlement.has_resource(resource, amount)) {
-					core.error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
+					core.ui().error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
 					return false;
 				}
 				if (typeof self.resources[resource] !== 'undefined') {
@@ -136,7 +136,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			return false;
 		}).on('click', '.dispatch', function() {
 			if (!my_settlement.can_trade()) {
-				core.error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
+				core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 				return false;
 			}
 			let destination = parseInt($(self.handle + ' .caravan-destination').val());
@@ -144,16 +144,16 @@ civitas.PANEL_NEW_CARAVAN = {
 				settlement = core.get_settlement(destination);
 			}
 			if (destination === 0 || !settlement || $.isEmptyObject(self.resources)) {
-				core.error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
+				core.ui().error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
 				return false;
 			}
-			if (core.add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_CARAVAN, {
+			if (core.queue_add(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_CARAVAN, {
 				resources: self.resources
 			})) {
-				core.achievement('donkeylord');
+				core.do_achievement('donkeylord');
 				self.destroy();
 			} else {
-				core.error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
+				core.ui().error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
 			}
 			return false;
 		});

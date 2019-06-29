@@ -5,24 +5,6 @@
  * @mixin
  */
 civitas.WINDOW_OPTIONS = {
-	/**
-	 * Template of the window.
-	 *
-	 * @type {String}
-	 */
-	template: '' +
-		'<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'<a href="#" class="do-pause button">Pause</a>' +
-				'<a href="#" class="do-restart button">Restart</a>' +
-				'<a href="#" class="do-options button">Options</a>' +
-				'<div class="options-game"></div>' +
-				civitas.ui.window_about_section() +
-				'<br />' +
-				'<a href="#" class="do-resume button">Resume Playing</a>' +
-			'</fieldset>' +
-		'</section>',
 
 	/**
 	 * Internal id of the window.
@@ -32,6 +14,27 @@ civitas.WINDOW_OPTIONS = {
 	 * @default
 	 */
 	id: 'options',
+	
+	/**
+	 * Callback function for creating the window.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = '<section id="window-{ID}" class="window">' +
+			'<div class="logo">Civitas</div>' +
+			'<fieldset>' +
+				'<a href="#" class="do-pause button">Pause</a>' +
+				'<a href="#" class="do-restart button">Restart</a>' +
+				'<a href="#" class="do-options button">Options</a>' +
+				'<div class="options-game"></div>' +
+				this.core().ui().window_about_section() +
+				'<br />' +
+				'<a href="#" class="do-resume button">Resume Playing</a>' +
+			'</fieldset>' +
+		'</section>';
+	},
 
 	/**
 	 * Callback function for showing the window.
@@ -44,7 +47,11 @@ civitas.WINDOW_OPTIONS = {
 		let self = this;
 		let handle = this.handle();
 		let core = this.core();
-		$(handle + ' .options-game').append(civitas.ui.tabs(['Sounds', 'UI', 'Gameplay']));
+		$(handle + ' .options-game').append(core.ui().tabs([
+			'Sounds',
+			'UI',
+			'Gameplay'
+		]));
 		$(handle + ' #tab-sounds').append('<div>' +
 			'<a href="#" class="music-control ui-control ' + ((core.get_settings('music') === true) ? 'on' : 'off') + '">music</a>' +
 			'<input class="music-volume" type="range" min="0" max="1" step="0.1" ' + ((core.get_settings('music') !== true) ? 'disabled' : '') + ' />' +
@@ -55,18 +62,18 @@ civitas.WINDOW_OPTIONS = {
 			'</div>');
 		$(handle + ' .tabs').tabs();
 		$(handle).on('click', '.do-resume', function () {
-			civitas.ui.hide_loader();
+			core.ui().hide_loader();
 			core.unpause();
 			self.destroy();
 			return false;
 		}).on('click', '.do-pause', function () {
 			if (core.is_paused() === true) {
 				$(this).removeClass('highlight').html('Pause');
-				civitas.ui.show_loader();
+				core.ui().show_loader();
 				core.unpause();
 			} else {
 				$(this).addClass('highlight').html('Resume');
-				civitas.ui.hide_loader();
+				core.ui().hide_loader();
 				core.pause();
 			}
 			return false;
@@ -77,7 +84,7 @@ civitas.WINDOW_OPTIONS = {
 			$(handle + ' .about-game').slideToggle();
 			return false;
 		}).on('click', '.do-restart', function () {
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
 						core.reset_storage_data();
@@ -135,6 +142,6 @@ civitas.WINDOW_OPTIONS = {
 	 * @public
 	 */
 	on_hide: function() {
-		civitas.ui.hide_loader();
+		this.core().ui().hide_loader();
 	}
 };

@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_BUILDING = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.building_panel_template(),
 
 	/**
 	 * Internal id of the panel.
@@ -22,15 +16,26 @@ civitas.PANEL_BUILDING = {
 	id: 'building',
 	
 	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().building_panel_template();
+	},
+
+	/**
 	 * Callback function for refreshing the panel.
 	 *
 	 * @type {Function}
 	 * @public
 	 */
 	on_refresh: function() {
-		let building = this.core().get_settlement().get_building(this.params_data.handle);
+		let core = this.core();
+		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
-			$(this.handle + ' section').empty().append(civitas.ui.building_panel(this.params_data, building.get_level()));
+			$(this.handle + ' section').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
 		} else {
 			this.destroy();
 		}

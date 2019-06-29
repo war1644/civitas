@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_TAVERN = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.building_panel_template(),
 
 	/**
 	 * Internal id of the panel.
@@ -22,6 +16,16 @@ civitas.PANEL_TAVERN = {
 	id: 'tavern',
 
 	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().building_panel_template();
+	},
+
+	/**
 	 * Callback function for showing the panel.
 	 *
 	 * @type {Function}
@@ -31,7 +35,7 @@ civitas.PANEL_TAVERN = {
 		let self = this;
 		let core = self.core();
 		let _t = '';
-		$(this.handle + ' section').append(civitas.ui.tabs([
+		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Heroes',
 			'Items'
@@ -44,7 +48,7 @@ civitas.PANEL_TAVERN = {
 				'<div class="column hero-info"></div>' +
 				'<div class="column hero-items"></div>'
 			);
-			$(self.handle + ' #tab-info').empty().append(civitas.ui.building_panel(self.params_data, building.get_level()));
+			$(self.handle + ' #tab-info').empty().append(core.ui().building_panel(self.params_data, building.get_level()));
 			self.empty_items = function() {
 				$(self.handle + ' .hero-items').empty().append('<h3>Equipment</h3>');
 				for (let i = 1; i < civitas.ITEM_SLOTS_NUM; i++) {
@@ -87,7 +91,7 @@ civitas.PANEL_TAVERN = {
 						$(self.handle + ' .hero-items > div.slot[data-slot="' + slot + '"]')
 							.empty()
 							.append('X')
-							.attr('title', civitas.ui.item_tooltip(hero_data.items[x]))
+							.attr('title', core.ui().item_tooltip(hero_data.items[x]))
 							.tipsy({
 								className: 'item',
 								html: true
@@ -97,7 +101,7 @@ civitas.PANEL_TAVERN = {
 						$(self.handle + ' .hero-items > div.slot[data-backpack-slot="' + x + '"]')
 							.empty()
 							.append('X')
-							.attr('title', civitas.ui.item_tooltip(hero_data.backpack[x]))
+							.attr('title', core.ui().item_tooltip(hero_data.backpack[x]))
 							.tipsy({
 								className: 'item',
 								html: true

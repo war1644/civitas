@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_SHIPYARD = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.building_panel_template(),
 
 	/**
 	 * Internal id of the panel.
@@ -22,6 +16,16 @@ civitas.PANEL_SHIPYARD = {
 	id: 'shipyard',
 
 	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().building_panel_template();
+	},
+
+	/**
 	 * Callback function for showing the panel.
 	 *
 	 * @type {Function}
@@ -30,7 +34,7 @@ civitas.PANEL_SHIPYARD = {
 	on_show: function(params) {
 		let core = this.core();
 		let settlement = core.get_settlement();
-		$(this.handle + ' section').append(civitas.ui.tabs([
+		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Navy'
 		]));
@@ -43,7 +47,7 @@ civitas.PANEL_SHIPYARD = {
 						'<dl class="nomg">';
 			for (let res in civitas.SHIPS[item].cost) {
 				_t += '<dt>' + civitas.utils.nice_numbers(civitas.SHIPS[item].cost[res]) + 
-					'</dt><dd>' + civitas.ui.resource_small_img(res) + '</dd>';
+					'</dt><dd>' + core.ui().resource_small_img(res) + '</dd>';
 			}
 			_t += '</dl>' +
 					'</div>' +
@@ -64,13 +68,13 @@ civitas.PANEL_SHIPYARD = {
 			if (settlement.has_resources(costs)) {
 				if (settlement.remove_resources(costs)) {
 					if (settlement.recruit_ship(ship)) {
-						core.notify('A new ' + civitas.SHIPS[ship].name + ' has been recruited.');
+						core.ui().notify('A new ' + civitas.SHIPS[ship].name + ' has been recruited.');
 						self.on_refresh();
 						return false;
 					}
 				}
 			}
-			core.error('You don`t have enough resources to recruit a ' + civitas.SHIPS[ship].name + '.');
+			core.ui().error('You don`t have enough resources to recruit a ' + civitas.SHIPS[ship].name + '.');
 			return false;
 		});
 	},
@@ -87,9 +91,9 @@ civitas.PANEL_SHIPYARD = {
 		let building = settlement.get_building(this.params_data.handle);
 		if (building) {
 			let level = building.get_level();
-			$(this.handle + ' #tab-info').empty().append(civitas.ui.building_panel(this.params_data, level));
+			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, level));
 			$(this.handle + ' .navy-list').empty().append('<fieldset>' +
-					'<legend>Current Navy</legend>' + civitas.ui.navy_list(settlement.get_navy(), true) +
+					'<legend>Current Navy</legend>' + core.ui().navy_list(settlement.get_navy(), true) +
 				'</fieldset>');
 		} else {
 			this.destroy();

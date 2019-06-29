@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_DEBUG = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template('Debug'),
 
 	/**
 	 * Internal id of the panel.
@@ -20,7 +14,17 @@ civitas.PANEL_DEBUG = {
 	 * @default
 	 */
 	id: 'debug',
-	
+		
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template('Debugging');
+	},
+
 	/**
 	 * Callback function for showing the panel.
 	 *
@@ -32,7 +36,7 @@ civitas.PANEL_DEBUG = {
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let handle = this.handle;
-		$(this.handle + ' section').append(civitas.ui.tabs([
+		$(this.handle + ' section').append(core.ui().tabs([
 			'Data',
 			'Console',
 			'Cheats'
@@ -64,7 +68,7 @@ civitas.PANEL_DEBUG = {
 		$(this.handle).on('click', '.fourty', function() {
 			let city_index = civitas.utils.get_random(1, core.get_num_settlements() - 1);
 			let _settlement = core.get_settlement(city_index);
-			core.add_to_queue(_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
+			core.queue_add(_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY, {
 				army: {
 					militia: 40,
 					axeman: 30,
@@ -167,7 +171,7 @@ civitas.PANEL_DEBUG = {
 		}).on('click', '.load', function() {
 			let save_game = $(handle + ' .storage-data').val();
 			if (save_game != '') {
-				core.open_modal(
+				core.ui().open_modal(
 					function(button) {
 						if (button === 'yes') {
 							core.set_storage_data('live', save_game, true);
@@ -178,7 +182,7 @@ civitas.PANEL_DEBUG = {
 					'Civitas'
 				);
 			} else {
-				core.error('Invalid save game.');
+				core.ui().error('Invalid save game.');
 			}
 			return false;
 		}).on('click', '.save', function() {

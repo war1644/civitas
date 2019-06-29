@@ -1695,7 +1695,10 @@ civitas.BUILDINGS = [{
 			stones: 40
 		},
 		requires: {
-			settlement_level: 16
+			settlement_level: 16,
+			buildings: {
+				beehive: 1
+			}
 		}
 	}, {
 		name: 'Bee Hive',

@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_COUNCIL = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template('City Council'),
 
 	/**
 	 * Internal id of the panel.
@@ -20,6 +14,16 @@ civitas.PANEL_COUNCIL = {
 	 * @default
 	 */
 	id: 'council',
+	
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template('City Council');
+	},
 
 	/**
 	 * Callback function for showing the panel.
@@ -29,7 +33,7 @@ civitas.PANEL_COUNCIL = {
 	 */
 	on_show: function(params) {
 		let core = this.core();
-		$(this.handle + ' section').append(civitas.ui.tabs([
+		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Tips',
 			'Production',
@@ -59,14 +63,14 @@ civitas.PANEL_COUNCIL = {
 		$(this.handle).on('click', '.view-merc', function () {
 			let _army = parseInt($(this).data('id'));
 			let data = civitas.MERCENARIES[_army];
-			core.open_panel(civitas.PANEL_ARMY, data);
+			core.ui().open_panel(civitas.PANEL_ARMY, data);
 			return false;
 		}).on('click', '.raid-merc', function () {
 			let _army = parseInt($(this).data('id'));
-			core.error('Not implemented yet.');
+			core.ui().error('Not implemented yet.');
 			return false;
 		}).on('click', '.disband-merc', function () {
-			core.open_modal(
+			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
 						let _army = parseInt($(this).data('id'));
@@ -83,9 +87,9 @@ civitas.PANEL_COUNCIL = {
 			let building_data = core.get_building_config_data(handle);
 			if (handle && building_data) {
 				if (typeof panel !== 'undefined') {
-					core.open_panel(panel, building_data);
+					core.ui().open_panel(panel, building_data);
 				} else {
-					core.open_panel(civitas.PANEL_BUILDING, building_data, true);
+					core.ui().open_panel(civitas.PANEL_BUILDING, building_data, true);
 				}
 			}
 			return false;
@@ -192,17 +196,17 @@ civitas.PANEL_COUNCIL = {
 				'<dt>Religion</dt>' +
 				'<dd>' + settlement.religion().name + '</dd>' +
 				'<dt>Level</dt>' +
-				'<dd>' + civitas.ui.progress((settlement.level() * 100) / civitas.MAX_SETTLEMENT_LEVEL, 'small', settlement.level()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.level() * 100) / civitas.MAX_SETTLEMENT_LEVEL, 'small', settlement.level()) + '</dd>' +
 				'<dt>Fame</dt>' +
-				'<dd>' + civitas.ui.progress((settlement.fame() * 100) / civitas.LEVELS[settlement.level()], 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(civitas.LEVELS[settlement.level()])) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.fame() * 100) / civitas.LEVELS[settlement.level()], 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(civitas.LEVELS[settlement.level()])) + '</dd>' +
 				'<dt>Prestige</dt>' +
-				'<dd>' + civitas.ui.progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' +
 				'<dt>Espionage</dt>' +
-				'<dd>' + civitas.ui.progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'small', settlement.espionage()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'small', settlement.espionage()) + '</dd>' +
 				'<dt>Faith</dt>' +
-				'<dd>' + civitas.ui.progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'small', settlement.faith()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'small', settlement.faith()) + '</dd>' +
 				'<dt>Research</dt>' +
-				'<dd>' + civitas.ui.progress((settlement.research() * 100) / civitas.MAX_RESEARCH_VALUE, 'small', settlement.research()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.research() * 100) / civitas.MAX_RESEARCH_VALUE, 'small', settlement.research()) + '</dd>' +
 			'</dl>';
 		$(this.handle + ' #tab-info').empty().append(_t);
 		_t = '';
@@ -234,7 +238,7 @@ civitas.PANEL_COUNCIL = {
 					if (building_data.production) {
 						for (let item in building_data.production) {
 							total_benefits[item] += (buildings[l].has_problems() === false) ? (buildings[l].get_level() * building_data.production[item] + core.get_prod_modifier(building_data)) : 0;
-							_t += ' +' + buildings[l].get_level() * building_data.production[item] + ' ' + civitas.ui.resource_small_img(item);
+							_t += ' +' + buildings[l].get_level() * building_data.production[item] + ' ' + core.ui().resource_small_img(item);
 						}
 					}
 				_t += '</td>' +
@@ -242,7 +246,7 @@ civitas.PANEL_COUNCIL = {
 					if (building_data.production) {
 						for (let item in building_data.production) {
 							if (core.get_prod_modifier(building_data) > 0) {
-								_t += ' +' + core.get_prod_modifier(building_data) + ' ' + civitas.ui.resource_small_img(item);
+								_t += ' +' + core.get_prod_modifier(building_data) + ' ' + core.ui().resource_small_img(item);
 							}
 						}
 					}
@@ -253,13 +257,13 @@ civitas.PANEL_COUNCIL = {
 							for (let i = 0; i < building_data.materials.length; i++) {
 								for (let y in building_data.materials[i]) {
 									total_costs += (buildings[l].has_problems() === false) ? building_data.materials[i][y] : 0;
-									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
+									_t += ' -' + building_data.materials[i][y] + ' ' + core.ui().resource_small_img(y);
 								}
 							}
 						} else {
 							for (let item in building_data.materials) {
 								total_costs += (buildings[l].has_problems() === false) ? building_data.materials[item] : 0;
-								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+								_t += ' -' + building_data.materials[item] + ' ' + core.ui().resource_small_img(item);
 							}
 						}
 					}
@@ -269,7 +273,7 @@ civitas.PANEL_COUNCIL = {
 		}
 		for (let item in total_benefits) {
 			if (total_benefits[item] > 0) {
-				_z += ' +' + total_benefits[item] + ' ' + civitas.ui.resource_small_img(item);
+				_z += ' +' + total_benefits[item] + ' ' + core.ui().resource_small_img(item);
 			}
 		}
 		_t += '<tfoot>' +
@@ -277,7 +281,7 @@ civitas.PANEL_COUNCIL = {
 						'<td>Total</td>' +
 						'<td></td>' +
 						'<td colspan="2">' + _z + '</td>' +
-						'<td>' + (total_costs > 0 ? '-' : '') + total_costs + ' ' + civitas.ui.resource_small_img('coins') + '</td>' +
+						'<td>' + (total_costs > 0 ? '-' : '') + total_costs + ' ' + core.ui().resource_small_img('coins') + '</td>' +
 					'</tr>' +
 				'</tfoot>' +
 			'</table>';
@@ -301,13 +305,13 @@ civitas.PANEL_COUNCIL = {
 					'<td>';
 					if (building_data.tax) {
 						total_tax += (buildings[l].has_problems() === false) ? buildings[l].get_tax_amount(building_data.tax) : 0;
-						_t += ' +' + buildings[l].get_level() * building_data.tax + ' ' + civitas.ui.resource_small_img('coins');
+						_t += ' +' + buildings[l].get_level() * building_data.tax + ' ' + core.ui().resource_small_img('coins');
 					}
 				_t += '</td>' +
 					'<td>';
 					if (building_data.tax) {
 						if (core.get_tax_modifier(building_data) > 0) {
-							_t += ' +' + core.get_tax_modifier(building_data) + ' ' + civitas.ui.resource_small_img('coins');
+							_t += ' +' + core.get_tax_modifier(building_data) + ' ' + core.ui().resource_small_img('coins');
 						}
 					}
 				_t += '</td>' +
@@ -316,12 +320,12 @@ civitas.PANEL_COUNCIL = {
 						if (Array.isArray(building_data.materials)) {
 							for (let i = 0; i < building_data.materials.length; i++) {
 								for (let y in building_data.materials[i]) {
-									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
+									_t += ' -' + building_data.materials[i][y] + ' ' + core.ui().resource_small_img(y);
 								}
 							}
 						} else {
 							for (let item in building_data.materials) {
-								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+								_t += ' -' + building_data.materials[item] + ' ' + core.ui().resource_small_img(item);
 							}
 						}
 					}
@@ -333,7 +337,7 @@ civitas.PANEL_COUNCIL = {
 					'<tr>' +
 						'<td>Income</td>' +
 						'<td></td>' +
-						'<td colspan="2">+' + total_tax + ' ' + civitas.ui.resource_small_img('coins') + '</td>' +
+						'<td colspan="2">+' + total_tax + ' ' + core.ui().resource_small_img('coins') + '</td>' +
 						'<td></td>' +
 					'</tr>' +
 				'</tfoot>' +
@@ -359,7 +363,7 @@ civitas.PANEL_COUNCIL = {
 					'<td>';
 					if (building_data.production) {
 						for (let item in building_data.production) {
-							_t += ' +' + (buildings[l].get_level() * building_data.production[item]) + ' ' + civitas.ui.resource_small_img(item);
+							_t += ' +' + (buildings[l].get_level() * building_data.production[item]) + ' ' + core.ui().resource_small_img(item);
 						}
 					}
 				_t += '</td>' +
@@ -367,7 +371,7 @@ civitas.PANEL_COUNCIL = {
 					if (building_data.production) {
 						for (let item in building_data.production) {
 							if (core.get_prod_modifier(building_data) > 0) {
-								_t += ' +' + core.get_prod_modifier(building_data) + ' ' + civitas.ui.resource_small_img(item);
+								_t += ' +' + core.get_prod_modifier(building_data) + ' ' + core.ui().resource_small_img(item);
 							}
 						}
 					}
@@ -377,12 +381,12 @@ civitas.PANEL_COUNCIL = {
 						if (Array.isArray(building_data.materials)) {
 							for (let i = 0; i < building_data.materials.length; i++) {
 								for (let y in building_data.materials[i]) {
-									_t += ' -' + building_data.materials[i][y] + ' ' + civitas.ui.resource_small_img(y);
+									_t += ' -' + building_data.materials[i][y] + ' ' + core.ui().resource_small_img(y);
 								}
 							}
 						} else {
 							for (let item in building_data.materials) {
-								_t += ' -' + building_data.materials[item] + ' ' + civitas.ui.resource_small_img(item);
+								_t += ' -' + building_data.materials[item] + ' ' + core.ui().resource_small_img(item);
 							}
 						}
 					}

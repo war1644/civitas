@@ -5,12 +5,6 @@
  * @mixin
  */
 civitas.PANEL_BUILDINGS = {
-	/**
-	 * Template of the panel.
-	 *
-	 * @type {String}
-	 */
-	template: civitas.ui.generic_panel_template('City Buildings'),
 
 	/**
 	 * Internal id of the panel.
@@ -21,6 +15,16 @@ civitas.PANEL_BUILDINGS = {
 	 */
 	id: 'buildings',
 	
+	/**
+	 * Callback function for creating the panel.
+	 *
+	 * @type {Function}
+	 * @public
+	 */
+	on_create: function(params) {
+		this.template = this.core().ui().generic_panel_template('City Buildings');
+	},
+
 	/**
 	 * Callback function for showing the panel.
 	 *

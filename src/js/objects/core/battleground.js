@@ -556,7 +556,7 @@ civitas.objects.battleground = function (params) {
 			settlement.army = settlement.load_army(loser.army);
 			settlement.navy = settlement.load_navy(loser.navy);
 			let spoils = settlement.get_spoils();
-			this.core().add_to_queue(settlement, my_settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+			this.core().queue_add(settlement, my_settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
 				army: winner.army,
 				navy: winner.navy,
 				resources: spoils
@@ -568,7 +568,7 @@ civitas.objects.battleground = function (params) {
 			let has_loser_army = settlement.num_soldiers(loser.army);
 			let has_loser_navy = settlement.num_ships(loser.navy);
 			if (has_loser_army > 0 || has_loser_navy > 0) {
-				this.core().add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+				this.core().queue_add(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
 					army: loser.army,
 					navy: loser.navy,
 					resources: {}
@@ -596,7 +596,7 @@ civitas.objects.battleground = function (params) {
 			let has_loser_army = settlement.num_soldiers(loser.army);
 			let has_loser_navy = settlement.num_ships(loser.navy);
 			if (has_loser_army > 0 || has_loser_navy > 0) {
-				this.core().add_to_queue(settlement, my_settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+				this.core().queue_add(settlement, my_settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
 					army: loser.army,
 					navy: loser.navy,
 					resources: {}
@@ -607,7 +607,7 @@ civitas.objects.battleground = function (params) {
 			my_settlement.army = my_settlement.load_army(loser.army);
 			my_settlement.navy = my_settlement.load_navy(loser.navy);
 			let spoils = my_settlement.get_spoils();
-			this.core().add_to_queue(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+			this.core().queue_add(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
 				army: winner.army,
 				navy: winner.navy,
 				resources: spoils
