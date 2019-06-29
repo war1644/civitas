@@ -2445,7 +2445,7 @@ civitas.objects.settlement = function(params) {
 			const discount = Math.ceil((civitas.RESOURCES[resource].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
 			const price = civitas.utils.calc_price_minus_discount(amount, resource, discount);
 			this._add_to_black_market(resource, amount, price);
-			this.core().refresh();
+			this.core().ui().refresh();
 			if (this.is_player()) {
 				this.core().ui().notify(this.name() + ' placed ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + civitas.utils.get_resource_name('coins') + ' next month.', 'Black Market');
 			}

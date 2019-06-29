@@ -5047,8 +5047,8 @@ civitas.BUILDINGS = [{
 			coal: 1
 		},
 		position: {
-			x: 1,
-			y: 1
+			x: 120,
+			y: 440
 		},
 		levels: 5,
 		cost: {
@@ -7767,12 +7767,11 @@ civitas.HERO_CLASS_LIST = [
  * @constant
  * @type {Object}
  */
-civitas.HEROES = {
-	1: {
+civitas.HEROES = [
+	{
 		name: 'Achilles',
-		description: 'Achilles is a Greek hero of the Trojan War and the central character and ' +
-			'greatest warrior of Homer`s Iliad. His mother is the immortal nymph Thetis, and ' +
-			'his father, the mortal Peleus, is the king of the Myrmidons.',
+		handle: 'achilles',
+		description: 'Achilles is a Greek hero of the Trojan War and the central character and greatest warrior of Homer`s Iliad. His mother is the immortal nymph Thetis, and his father, the mortal Peleus, is the king of the Myrmidons.',
 		price: 5000000,
 		link: 'https://en.wikipedia.org/wiki/Achilles',
 		stats: {
@@ -7788,14 +7787,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	2: {
+	}, {
 		name: 'Hector',
-		description: 'In Greek mythology and Roman Mythology, Hector is a Trojan prince and ' +
-			'the greatest fighter for Troy in the Trojan War. As the first-born son of King ' +
-			'Priam and Queen Hecuba, who was a descendant of Dardanus and Tros, the founder ' +
-			'of Troy, he is a prince of the royal house and the heir apparent to his father`s ' +
-			'throne.',
+		handle: 'hector',
+		description: 'In Greek mythology and Roman Mythology, Hector is a Trojan prince and the greatest fighter for Troy in the Trojan War. As the first-born son of King Priam and Queen Hecuba, who was a descendant of Dardanus and Tros, the founder of Troy, he is a prince of the royal house and the heir apparent to his father`s throne.',
 		price: 4000000,
 		link: 'https://en.wikipedia.org/wiki/Hector',
 		stats: {
@@ -7812,11 +7807,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	3: {
+	}, {
 		name: 'Hannibal',
-		description: 'Hannibal Barca is a Carthaginian general, considered one of the greatest ' +
-			'military commanders in history.',
+		handle: 'hannibal',
+		description: 'Hannibal Barca is a Carthaginian general, considered one of the greatest military commanders in history.',
 		price: 3000000,
 		link: 'https://en.wikipedia.org/wiki/Hannibal',
 		stats: {
@@ -7831,14 +7825,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	4: {
+	}, {
 		name: 'Heracles',
-		description: 'Heracles is a divine hero in Greek mythology, the son of Zeus and ' +
-			'Alcmene, foster son of Amphitryon and great-grandson and half-brother (as they ' +
-			'are both sired by the god Zeus) of Perseus.<br /><br />He is the greatest of the Greek heroes, ' +
-			'a paragon of masculinity, the ancestor of royal clans who claim to be Heracleidae, ' +
-			'and a champion of the Olympian order against chthonic monsters.',
+		handle: 'heracles',
+		description: 'Heracles is a divine hero in Greek mythology, the son of Zeus and Alcmene, foster son of Amphitryon and great-grandson and half-brother (as they are both sired by the god Zeus) of Perseus.<br /><br />He is the greatest of the Greek heroes, a paragon of masculinity, the ancestor of royal clans who claim to be Heracleidae, and a champion of the Olympian order against chthonic monsters.',
 		price: 5000000,
 		link: 'https://en.wikipedia.org/wiki/Heracles',
 		stats: {
@@ -7864,12 +7854,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	5: {
+	}, {
 		name: 'Akhenaten',
-		description: 'Akhenaten, known before the fifth year of his reign as Amenhotep IV ' +
-			'(sometimes given its Greek form, Amenophis IV, and meaning "Amun Is Satisfied"), ' +
-			'is an Ancient Egyptian pharaoh of the 18th Dynasty who ruled for 17 years.',
+		handle: 'akhenaten',
+		description: 'Akhenaten, known before the fifth year of his reign as Amenhotep IV (sometimes given its Greek form, Amenophis IV, and meaning "Amun Is Satisfied"), is an Ancient Egyptian pharaoh of the 18th Dynasty who ruled for 17 years.',
 		price: 1000000,
 		link: 'https://en.wikipedia.org/wiki/Akhenaten',
 		stats: {
@@ -7879,13 +7867,13 @@ civitas.HEROES = {
 			spirit: 9,
 			intellect: 9
 		},
-		class: civitas.HERO_CLASS_WARRIOR,
+		class: civitas.HERO_CLASS_PRIEST,
 		items: [
 		],
 		backpack: [
 		]
 	}
-};
+];
 
 /**
  * Main Game AI (Artificial Intelligence) object.
@@ -11019,7 +11007,7 @@ civitas.objects.settlement = function(params) {
 			const discount = Math.ceil((civitas.RESOURCES[resource].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
 			const price = civitas.utils.calc_price_minus_discount(amount, resource, discount);
 			this._add_to_black_market(resource, amount, price);
-			this.core().refresh();
+			this.core().ui().refresh();
 			if (this.is_player()) {
 				this.core().ui().notify(this.name() + ' placed ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + civitas.utils.get_resource_name('coins') + ' next month.', 'Black Market');
 			}
@@ -11569,7 +11557,7 @@ civitas.objects.building = function(params) {
 	 * Calculate the upgrade costs according to the next level.
 	 *
 	 * @public
-	 * @returns {Object}
+	 * @returns {Object|Boolean}
 	 */
 	this.get_upgrade_costs = function() {
 		if (this.is_upgradable()) {
@@ -13494,7 +13482,7 @@ civitas.controls.modal = function (params) {
 		this._resize();
 		$('.modal header').html(options.title);
 		$('.modal footer').html('<a data-id="yes" href="#" class="btn float-right">Yes</a><a data-id="no" href="#" class="btn">No</a>');
-		$('.modal section').html((settlement ? '<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
+		$('.modal section').html((settlement ? '<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
 		$('.modal footer').on('click', 'a', function() {
 			self._action($(this).data('id'));
 			return false;
@@ -14161,7 +14149,7 @@ civitas.objects.ui = function (core) {
 		}
 		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
 		let out = '<div class="column">' +
-			'<img src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
+			'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
 		'</div>' +
 		'<div class="column">' +
 			'<p>' + params.description + '</p>' +
@@ -16037,7 +16025,7 @@ civitas.game = function () {
 					}
 					if (cond_item === 'religion') {
 						let religion = settlement.religion();
-						if (religion.name === condition) {
+						if (religion.name === condition.capitalize()) {
 							this.do_achievement(id);
 						}
 					}
@@ -17493,6 +17481,20 @@ civitas.game = function () {
 	};
 
 	/**
+	 * Get hero data from the main configuration array.
+	 * 
+	 * @public
+	 * @param {String} handle
+	 * @returns {Object|Boolean}
+	 */
+	this.get_hero_config_data = function (handle) {
+		if (typeof handle === 'string') {
+			return civitas.HEROES[civitas.HEROES.findIndexByHandle(handle)];
+		}
+		return false;
+	};
+
+	/**
 	 * Get the world object.
 	 *
 	 * @public
@@ -18055,7 +18057,7 @@ civitas.PANEL_SETTLEMENT = {
 			sett_type_text = 'Raider Camp';
 		}
 		$(this.handle + ' #tab-info').empty().append('' +
-			'<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
+			'<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
 			'<dl>' +
 				'<dt>' + settlement.ruler().title + '</dt><dd>' + settlement.ruler().name + '</dd>' +
 				'<dt>Settlement Type</dt>' +
@@ -18640,7 +18642,7 @@ civitas.PANEL_CAMPAIGN = {
 			action = 'Going to';
 		}
 		$(this.handle + ' #tab-info').empty().append('' +
-			'<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.ruler().avatar : source.ruler().avatar) + '.png" />' +
+			'<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.ruler().avatar : source.ruler().avatar) + '.png" />' +
 			'<dl>' +
 				'<dt>Sent By</dt><dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.name() : source.name()) + '</dd>' +
 				'<dt>Destination</dt><dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? source.name() : destination.name()) + '</dd>' +
@@ -19728,7 +19730,7 @@ civitas.PANEL_COUNCIL = {
 					.html(civitas.utils.time_since(achievements[f].date) + ' ago');
 			}
 		}
-		_t = '<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
+		_t = '<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
 			'<dl>' +
 				'<dt>Current date</dt>' +
 				'<dd class="citydate">' + core.format_date() + '</dd>' +
@@ -20010,7 +20012,7 @@ civitas.PANEL_ARMY = {
 			tabs.push('Ships');
 		}
 		$(this.handle + ' section').append(core.ui().tabs(tabs));
-		$(this.handle + ' #tab-info').append('<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/emblems/' + ((typeof army.icon !== 'undefined') ? army.icon : '22') + '.png" />' + '<p>' + army.description + '</p>');
+		$(this.handle + ' #tab-info').append('<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/emblems/' + ((typeof army.icon !== 'undefined') ? army.icon : '22') + '.png" />' + '<p>' + army.description + '</p>');
 		if (my_settlement.num_soldiers(army.army) > 0) {
 			$(this.handle + ' #tab-soldiers').append(core.ui().army_list(army.army));
 		}
@@ -20967,25 +20969,53 @@ civitas.PANEL_EMBASSY = {
 			let level = building.get_level();
 			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, level));
 			$(this.handle + ' #tab-espionage').empty().append('<div class="section">' + core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage()) + '</div>');
-			let _t = '<table class="normal">';
+			let _t = '<table class="normal">' +
+				'<thead>' +
+				'<tr>' +
+					'<td>Settlement</td>' +
+					'<td>Ruler</td>' +
+					'<td>Influence</td>' +
+					'<td>Religion</td>' +
+					'<td>Status</td>' +
+					'<td>Personality</td>' +
+				'</tr>' +
+				'</thead>';
 			for (let i = 1; i < settlements.length; i++) {
 				let _status = settlement.get_diplomacy_status(settlements[i].id());
 				_t += '<tr>' +
+						'<td>' +
+							'<p>' + settlements[i].name() + '</p> ' +
+						'</td>' +
 						'<td class="icon">' +
-							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#"><img src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" /></a>' +
+							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' +
+								'<img class="avatar small" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' +
+							'</a>' +
 						'</td>' +
 						'<td>' +
-							'<p class="title">' + settlements[i].nice_name() + '</p> ' +
-							'<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'big') + '</div>' +
+							'<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'small') + '</div>' +
 						'</td>' +
 						'<td>' +
-							'<p>Leader: <strong>' + settlements[i].ruler().name + '</strong>' + '</p>' +
-							'<p>Personality: <strong>' + settlements[i].personality().name + '</strong>' + '</p>' +
-							'<p>Diplomatic Status: <strong>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</strong>' + '</p>' +
+							'<p>' + settlements[i].religion().name + '</p>' +
+						'</td>' +
+						'<td>' +
+							'<p>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</p>' +
+						'</td>' +
+						'<td>' +
+							'<p>' + settlements[i].personality().name + '</p>' +
 						'</td>' +
 					'</tr>';
 			}
-			_t += '</table>';
+			_t += '<tfoot>' +
+				'<tr>' +
+					'<td>Settlement</td>' +
+					'<td>Ruler</td>' +
+					'<td>Influence</td>' +
+					'<td>Religion</td>' +
+					'<td>Status</td>' +
+					'<td>Personality</td>' +
+				'</tr>' +
+				'</tfoot>' +
+				'</table>';
 			$(this.handle + ' .settlements-list').empty().append(_t);
 		} else {
 			this.destroy();
@@ -21033,11 +21063,13 @@ civitas.PANEL_TAVERN = {
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Heroes',
-			'Items'
+			'Items',
+			'Quests'
 		]));
 		let building = core.get_settlement().get_building(self.params_data.handle);
 		if (building) {
-			$(self.handle + ' #tab-items').empty().append('Not implemented yet.');
+			$(self.handle + ' #tab-items').empty().append('<p>Not implemented yet.</p>');
+			$(self.handle + ' #tab-quests').empty().append('<p>Not implemented yet.</p>');
 			$(self.handle + ' #tab-heroes').empty().append(
 				'<div class="column hero-list"></div>' +
 				'<div class="column hero-info"></div>' +
@@ -21055,13 +21087,13 @@ civitas.PANEL_TAVERN = {
 				}
 			}
 			self.empty_items();
-			for (let item in civitas.HEROES) {
-				_t += '<p><a href="#" data-hero="' + item + '">' + civitas.HEROES[item].name + '</a></p>';
+			for (let i = 0; i < civitas.HEROES.length; i++) {
+				_t += '<p><a href="#" data-hero="' + civitas.HEROES[i].handle + '">' + civitas.HEROES[i].name + '</a></p>';
 			}
 			$(self.handle + ' .hero-list').empty().append(_t);
 			$(self.handle).on('click', '.hero-list a', function() {
-				let hero_id = parseInt($(this).data('hero'));
-				let hero_data = civitas.HEROES[hero_id];
+				let hero = $(this).data('hero');
+				let hero_data = core.get_hero_config_data(hero);
 				if (hero_data) {
 					$(self.handle + ' .hero-info').empty().append(
 						'<h3>Info <a title="Information provided by Wikipedia." href="' + hero_data.link + '" class="tips external-link wikipedia"></a></h3>' +

@@ -167,7 +167,7 @@ civitas.objects.building = function(params) {
 	 * Calculate the upgrade costs according to the next level.
 	 *
 	 * @public
-	 * @returns {Object}
+	 * @returns {Object|Boolean}
 	 */
 	this.get_upgrade_costs = function() {
 		if (this.is_upgradable()) {

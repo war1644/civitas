@@ -71,25 +71,53 @@ civitas.PANEL_EMBASSY = {
 			let level = building.get_level();
 			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, level));
 			$(this.handle + ' #tab-espionage').empty().append('<div class="section">' + core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage()) + '</div>');
-			let _t = '<table class="normal">';
+			let _t = '<table class="normal">' +
+				'<thead>' +
+				'<tr>' +
+					'<td>Settlement</td>' +
+					'<td>Ruler</td>' +
+					'<td>Influence</td>' +
+					'<td>Religion</td>' +
+					'<td>Status</td>' +
+					'<td>Personality</td>' +
+				'</tr>' +
+				'</thead>';
 			for (let i = 1; i < settlements.length; i++) {
 				let _status = settlement.get_diplomacy_status(settlements[i].id());
 				_t += '<tr>' +
+						'<td>' +
+							'<p>' + settlements[i].name() + '</p> ' +
+						'</td>' +
 						'<td class="icon">' +
-							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#"><img src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" /></a>' +
+							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' +
+								'<img class="avatar small" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' +
+							'</a>' +
 						'</td>' +
 						'<td>' +
-							'<p class="title">' + settlements[i].nice_name() + '</p> ' +
-							'<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'big') + '</div>' +
+							'<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'small') + '</div>' +
 						'</td>' +
 						'<td>' +
-							'<p>Leader: <strong>' + settlements[i].ruler().name + '</strong>' + '</p>' +
-							'<p>Personality: <strong>' + settlements[i].personality().name + '</strong>' + '</p>' +
-							'<p>Diplomatic Status: <strong>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</strong>' + '</p>' +
+							'<p>' + settlements[i].religion().name + '</p>' +
+						'</td>' +
+						'<td>' +
+							'<p>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</p>' +
+						'</td>' +
+						'<td>' +
+							'<p>' + settlements[i].personality().name + '</p>' +
 						'</td>' +
 					'</tr>';
 			}
-			_t += '</table>';
+			_t += '<tfoot>' +
+				'<tr>' +
+					'<td>Settlement</td>' +
+					'<td>Ruler</td>' +
+					'<td>Influence</td>' +
+					'<td>Religion</td>' +
+					'<td>Status</td>' +
+					'<td>Personality</td>' +
+				'</tr>' +
+				'</tfoot>' +
+				'</table>';
 			$(this.handle + ' .settlements-list').empty().append(_t);
 		} else {
 			this.destroy();

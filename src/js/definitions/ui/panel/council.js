@@ -177,7 +177,7 @@ civitas.PANEL_COUNCIL = {
 					.html(civitas.utils.time_since(achievements[f].date) + ' ago');
 			}
 		}
-		_t = '<img class="avatar" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
+		_t = '<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' +
 			'<dl>' +
 				'<dt>Current date</dt>' +
 				'<dd class="citydate">' + core.format_date() + '</dd>' +

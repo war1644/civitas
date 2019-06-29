@@ -38,11 +38,13 @@ civitas.PANEL_TAVERN = {
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Heroes',
-			'Items'
+			'Items',
+			'Quests'
 		]));
 		let building = core.get_settlement().get_building(self.params_data.handle);
 		if (building) {
-			$(self.handle + ' #tab-items').empty().append('Not implemented yet.');
+			$(self.handle + ' #tab-items').empty().append('<p>Not implemented yet.</p>');
+			$(self.handle + ' #tab-quests').empty().append('<p>Not implemented yet.</p>');
 			$(self.handle + ' #tab-heroes').empty().append(
 				'<div class="column hero-list"></div>' +
 				'<div class="column hero-info"></div>' +
@@ -60,13 +62,13 @@ civitas.PANEL_TAVERN = {
 				}
 			}
 			self.empty_items();
-			for (let item in civitas.HEROES) {
-				_t += '<p><a href="#" data-hero="' + item + '">' + civitas.HEROES[item].name + '</a></p>';
+			for (let i = 0; i < civitas.HEROES.length; i++) {
+				_t += '<p><a href="#" data-hero="' + civitas.HEROES[i].handle + '">' + civitas.HEROES[i].name + '</a></p>';
 			}
 			$(self.handle + ' .hero-list').empty().append(_t);
 			$(self.handle).on('click', '.hero-list a', function() {
-				let hero_id = parseInt($(this).data('hero'));
-				let hero_data = civitas.HEROES[hero_id];
+				let hero = $(this).data('hero');
+				let hero_data = core.get_hero_config_data(hero);
 				if (hero_data) {
 					$(self.handle + ' .hero-info').empty().append(
 						'<h3>Info <a title="Information provided by Wikipedia." href="' + hero_data.link + '" class="tips external-link wikipedia"></a></h3>' +

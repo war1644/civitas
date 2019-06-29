@@ -493,6 +493,21 @@
 	max-width: 1400px;
 }
 
+aside .panel .column img.building {
+	width: 200px;
+	margin: 0 auto;
+	display: block;
+}
+
+aside .panel .column {
+	border-bottom: 1px solid #935F22;
+	margin-bottom: 10px;
+	width: 100% !important;
+}
+
+aside .panel .column:last-of-type {
+	margin-left: 0 !important;
+}
 /* City Builder panel */
 
 #panel-buildings {

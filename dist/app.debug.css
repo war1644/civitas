@@ -160,13 +160,21 @@ li {
 }
 
 img.avatar {
-	float: right;
 	border-radius: 100%;
 	border: 0;
 	padding: 0;
-	margin: 0 10px 0 0;
 	width: 90px;
 	height: 90px;
+}
+
+img.avatar.small {
+	width: 64px;
+	height: 64px;
+}
+
+img.avatar.right {
+	float: right;
+	margin: 0 10px 0 0;
 }
 
 p {
@@ -1292,6 +1300,21 @@ img.small {
 	max-width: 1400px;
 }
 
+aside .panel .column img.building {
+	width: 200px;
+	margin: 0 auto;
+	display: block;
+}
+
+aside .panel .column {
+	border-bottom: 1px solid #935F22;
+	margin-bottom: 10px;
+	width: 100% !important;
+}
+
+aside .panel .column:last-of-type {
+	margin-left: 0 !important;
+}
 /* City Builder panel */
 
 #panel-buildings {

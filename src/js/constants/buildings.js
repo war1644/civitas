@@ -2994,8 +2994,8 @@ civitas.BUILDINGS = [{
 			coal: 1
 		},
 		position: {
-			x: 1,
-			y: 1
+			x: 120,
+			y: 440
 		},
 		levels: 5,
 		cost: {

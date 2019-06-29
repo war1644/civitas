@@ -678,7 +678,7 @@ civitas.game = function () {
 					}
 					if (cond_item === 'religion') {
 						let religion = settlement.religion();
-						if (religion.name === condition) {
+						if (religion.name === condition.capitalize()) {
 							this.do_achievement(id);
 						}
 					}
@@ -2131,6 +2131,20 @@ civitas.game = function () {
 			this.properties.mode = value;
 		}
 		return this.properties.mode;
+	};
+
+	/**
+	 * Get hero data from the main configuration array.
+	 * 
+	 * @public
+	 * @param {String} handle
+	 * @returns {Object|Boolean}
+	 */
+	this.get_hero_config_data = function (handle) {
+		if (typeof handle === 'string') {
+			return civitas.HEROES[civitas.HEROES.findIndexByHandle(handle)];
+		}
+		return false;
 	};
 
 	/**

@@ -75,12 +75,11 @@ civitas.HERO_CLASS_LIST = [
  * @constant
  * @type {Object}
  */
-civitas.HEROES = {
-	1: {
+civitas.HEROES = [
+	{
 		name: 'Achilles',
-		description: 'Achilles is a Greek hero of the Trojan War and the central character and ' +
-			'greatest warrior of Homer`s Iliad. His mother is the immortal nymph Thetis, and ' +
-			'his father, the mortal Peleus, is the king of the Myrmidons.',
+		handle: 'achilles',
+		description: 'Achilles is a Greek hero of the Trojan War and the central character and greatest warrior of Homer`s Iliad. His mother is the immortal nymph Thetis, and his father, the mortal Peleus, is the king of the Myrmidons.',
 		price: 5000000,
 		link: 'https://en.wikipedia.org/wiki/Achilles',
 		stats: {
@@ -96,14 +95,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	2: {
+	}, {
 		name: 'Hector',
-		description: 'In Greek mythology and Roman Mythology, Hector is a Trojan prince and ' +
-			'the greatest fighter for Troy in the Trojan War. As the first-born son of King ' +
-			'Priam and Queen Hecuba, who was a descendant of Dardanus and Tros, the founder ' +
-			'of Troy, he is a prince of the royal house and the heir apparent to his father`s ' +
-			'throne.',
+		handle: 'hector',
+		description: 'In Greek mythology and Roman Mythology, Hector is a Trojan prince and the greatest fighter for Troy in the Trojan War. As the first-born son of King Priam and Queen Hecuba, who was a descendant of Dardanus and Tros, the founder of Troy, he is a prince of the royal house and the heir apparent to his father`s throne.',
 		price: 4000000,
 		link: 'https://en.wikipedia.org/wiki/Hector',
 		stats: {
@@ -120,11 +115,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	3: {
+	}, {
 		name: 'Hannibal',
-		description: 'Hannibal Barca is a Carthaginian general, considered one of the greatest ' +
-			'military commanders in history.',
+		handle: 'hannibal',
+		description: 'Hannibal Barca is a Carthaginian general, considered one of the greatest military commanders in history.',
 		price: 3000000,
 		link: 'https://en.wikipedia.org/wiki/Hannibal',
 		stats: {
@@ -139,14 +133,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	4: {
+	}, {
 		name: 'Heracles',
-		description: 'Heracles is a divine hero in Greek mythology, the son of Zeus and ' +
-			'Alcmene, foster son of Amphitryon and great-grandson and half-brother (as they ' +
-			'are both sired by the god Zeus) of Perseus.<br /><br />He is the greatest of the Greek heroes, ' +
-			'a paragon of masculinity, the ancestor of royal clans who claim to be Heracleidae, ' +
-			'and a champion of the Olympian order against chthonic monsters.',
+		handle: 'heracles',
+		description: 'Heracles is a divine hero in Greek mythology, the son of Zeus and Alcmene, foster son of Amphitryon and great-grandson and half-brother (as they are both sired by the god Zeus) of Perseus.<br /><br />He is the greatest of the Greek heroes, a paragon of masculinity, the ancestor of royal clans who claim to be Heracleidae, and a champion of the Olympian order against chthonic monsters.',
 		price: 5000000,
 		link: 'https://en.wikipedia.org/wiki/Heracles',
 		stats: {
@@ -172,12 +162,10 @@ civitas.HEROES = {
 		],
 		backpack: [
 		]
-	},
-	5: {
+	}, {
 		name: 'Akhenaten',
-		description: 'Akhenaten, known before the fifth year of his reign as Amenhotep IV ' +
-			'(sometimes given its Greek form, Amenophis IV, and meaning "Amun Is Satisfied"), ' +
-			'is an Ancient Egyptian pharaoh of the 18th Dynasty who ruled for 17 years.',
+		handle: 'akhenaten',
+		description: 'Akhenaten, known before the fifth year of his reign as Amenhotep IV (sometimes given its Greek form, Amenophis IV, and meaning "Amun Is Satisfied"), is an Ancient Egyptian pharaoh of the 18th Dynasty who ruled for 17 years.',
 		price: 1000000,
 		link: 'https://en.wikipedia.org/wiki/Akhenaten',
 		stats: {
@@ -187,10 +175,10 @@ civitas.HEROES = {
 			spirit: 9,
 			intellect: 9
 		},
-		class: civitas.HERO_CLASS_WARRIOR,
+		class: civitas.HERO_CLASS_PRIEST,
 		items: [
 		],
 		backpack: [
 		]
 	}
-};
+];

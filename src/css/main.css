@@ -68,13 +68,21 @@ li {
 }
 
 img.avatar {
-	float: right;
 	border-radius: 100%;
 	border: 0;
 	padding: 0;
-	margin: 0 10px 0 0;
 	width: 90px;
 	height: 90px;
+}
+
+img.avatar.small {
+	width: 64px;
+	height: 64px;
+}
+
+img.avatar.right {
+	float: right;
+	margin: 0 10px 0 0;
 }
 
 p {
