@@ -77,13 +77,15 @@ civitas.PANEL_ACADEMY = {
 						}
 					} else if (y === 'tax') {
 						_t += '<dd>+' + technology.effect[y] + core.ui().resource_small_img('coins') + ' each house</dd>';
+					} else if (y === 'distance') {
+						_t += '<dd>Faster world map travel</dd>';
 					}
 				}
 				_t += '<div class="toolbar"></div>';
 				$(self.handle + ' .column-right').empty().append(_t);
 				if (core.has_research(technology.handle)) {
 					$(self.handle + ' .toolbar').empty().append('You already researched this technology.');
-				} else if (core.in_queue(technology.handle)) {
+				} else if (core.in_queue(technology.handle) !== false) {
 					$(self.handle + ' .toolbar').empty().append('You are currently researching this technology.');
 				} else {
 					$(self.handle + ' .toolbar').empty().append('<a href="#" class="btn do-research" data-technology="' + technology.handle + '">Research</a>');
@@ -94,16 +96,22 @@ civitas.PANEL_ACADEMY = {
 			let technology_name = $(this).data('technology');
 			let technology = core.get_research_config_data(technology_name);
 			if (technology) {
-				if (core.get_settlement().has_resources(technology.cost)) {
-					if (core.queue_add(my_settlement, null, civitas.ACTION_RESEARCH, null, {
-						handle: technology.handle,
-						name: technology.name,
-						duration: technology.duration
-					})) {
-						$(self.handle + ' .toolbar').empty();
+				if (core.has_research_in_queue() === false) {
+					if (core.get_settlement().has_resources(technology.cost)) {
+						if (core.queue_add(my_settlement, null, civitas.ACTION_RESEARCH, null, {
+							handle: technology.handle,
+							name: technology.name,
+							duration: technology.duration
+						})) {
+							my_settlement.remove_resources(technology.cost);
+							$(self.handle + ' .toolbar').empty();
+							core.save_and_refresh();
+						}
+					} else {
+						core.ui().error('You don`t have enough resources to research this technology.');
 					}
 				} else {
-					core.ui().error('You don`t have enough resources to research this technology.');
+					core.ui().error('You can research only one technology at a time. Wait for the current research to finish.');
 				}
 			}
 			return false;
@@ -121,10 +129,22 @@ civitas.PANEL_ACADEMY = {
 		let settlement = core.get_settlement();
 		let research = settlement.research();
 		let technologies = core.research();
+		let _t = '';
 		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
 			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
-			$(this.handle + ' #tab-research').empty().append('<div class="section">' + core.ui().progress((research * 100) / civitas.MAX_RESEARCH_VALUE, 'large', research) + '</div>');
+			_t = '<h2>Research points</h2>' +
+				'<div class="section">' +
+					core.ui().progress((research * 100) / civitas.MAX_RESEARCH_VALUE, 'large', research + ' / ' + civitas.MAX_RESEARCH_VALUE) +
+				'</div>';
+			let queue_action = core.has_research_in_queue();
+			if (queue_action !== false) {
+				_t += '<h2>Currently researching `' + queue_action.data.name + '`</h2>' +
+				'<div class="section">' +
+					core.ui().progress((queue_action.passed * 100) / queue_action.duration, 'large', queue_action.passed + ' / ' + queue_action.duration + ' days') +
+				'</div>';
+			}
+			$(this.handle + ' #tab-research').empty().append(_t);
 		} else {
 			this.destroy();
 		}

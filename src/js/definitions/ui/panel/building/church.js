@@ -65,7 +65,7 @@ civitas.PANEL_CHURCH = {
 		let building = core.get_settlement().get_building(this.params_data.handle);
 		if (building) {
 			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
-			let _t = '<div class="section">' + core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'large', settlement.faith()) + '</div>' +
+			let _t = '<div class="section">' + core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'large', settlement.faith() + ' / ' + civitas.MAX_FAITH_VALUE) + '</div>' +
 				'<p>Changing your settlement`s religion requires <strong>' + civitas.MAX_FAITH_VALUE + '</strong> faith, each religion gives you access to different heroes in your Tavern and gives you a boost to the influence with the cities sharing the same religion.</p>' +
 				'<div class="religion-list">';
 			for (let i = 0; i < civitas.RELIGIONS.length; i++) {

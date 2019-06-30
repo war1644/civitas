@@ -194,7 +194,7 @@ civitas.objects.building = function(params) {
 		const resources = settlement.get_resources();
 		const next_level = this.get_level() + 1;
 		let data = this.get_building_data(this.get_type());
-		const building_image = this.get_type();
+		let building_image = this.get_type();
 		const costs = this.get_upgrade_costs();
 		if (data && this.is_upgradable() && settlement.is_building_built(this.get_type())) {
 			if (costs && this.get_settlement().has_resources(costs)) {

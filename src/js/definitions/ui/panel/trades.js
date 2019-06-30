@@ -117,6 +117,7 @@ civitas.PANEL_TRADES = {
 			if (resource !== '0' && amount > 0) {
 				if (settlement.add_to_black_market(resource, amount)) {
 					self.on_refresh();
+					$('.bm-qty-manual').val('');
 				}
 			} else {
 				core.ui().error('Select a resource and the amount of it you want to place on the Black Market.');

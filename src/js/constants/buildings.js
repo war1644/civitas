@@ -339,7 +339,7 @@ civitas.BUILDINGS = [{
 		large: true,
 		visible_upgrades: true,
 		production: {
-			fame: 5
+			fame: 3
 		},
 		cost: {
 			coins: 100000
@@ -380,7 +380,7 @@ civitas.BUILDINGS = [{
 		is_municipal: true,
 		is_production: true,
 		production: {
-			fame: 10,
+			fame: 8,
 			faith: 1
 		},
 		materials: {
@@ -868,7 +868,7 @@ civitas.BUILDINGS = [{
 		description: 'The Clay Mine produces clay which is required for higher-level buildings.',
 		is_production: true,
 		production: {
-			clay: 1
+			clay: 2
 		},
 		position: {
 			x: 800,
@@ -1093,7 +1093,7 @@ civitas.BUILDINGS = [{
 		},
 		levels: 5,
 		cost: {
-			coins: 40000,
+			coins: 30000,
 			woodplanks: 40,
 			stones: 50
 		},
@@ -2602,7 +2602,7 @@ civitas.BUILDINGS = [{
 		description: 'A Cotton Farm provides your city with cotton.',
 		is_production: true,
 		production: {
-			cotton: 2
+			cotton: 3
 		},
 		levels: 3,
 		position: {
@@ -2999,9 +2999,10 @@ civitas.BUILDINGS = [{
 		},
 		levels: 5,
 		cost: {
-			coins: 2000,
+			coins: 10000,
 			wood: 20,
-			stones: 10
+			stones: 20,
+			clay: 20
 		},
 		requires: {
 			settlement_level: 12,

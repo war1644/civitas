@@ -754,9 +754,8 @@ civitas.game = function () {
 	 */
 	this.do_research = function (handle) {
 		if (!this.has_research(handle)) {
-			const research = this.get_research_config_data(handle)
+			const research = this.get_research_config_data(handle);
 			if (research !== false) {
-				this.get_settlement().remove_resources(research.cost);
 				this._research.push({
 					handle: handle
 				});
@@ -765,6 +764,21 @@ civitas.game = function () {
 			}
 		}
 		return this;
+	};
+
+	/**
+	 * Check if the player is already researching a technology.
+	 *
+	 * @public
+	 * @returns {Object|Boolean}
+	 */
+	this.has_research_in_queue = function() {
+		for (let i = 0; i < this._queue.length; i++) {
+			if (this._queue[i].mode === civitas.ACTION_RESEARCH) {
+				return this._queue[i];
+			}
+		}
+		return false;
 	};
 
 	/**
@@ -823,7 +837,7 @@ civitas.game = function () {
 	this.in_queue = function(handle) {
 		for (let i = 0; i < this._queue.length; i++) {
 			if (this._queue[i].data.handle === handle) {
-				return true;
+				return this._queue[i];
 			}
 		}
 		return false;
@@ -1442,7 +1456,7 @@ civitas.game = function () {
 			type: s_type,
 			player: false,
 			name: civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
-			religion: this.get_random_religion(),
+			religion: s_type === civitas.CAMP ? civitas.RELIGION_NONE : this.get_random_religion(),
 			nationality: this.get_random_nationality(),
 			level: level,
 			resources: resources.resources,
@@ -2170,13 +2184,13 @@ civitas.game = function () {
 		if (level <= 5) {
 			exp = 1.2;
 		} else if (level > 5 && level <= 10) {
-			exp = 0.45;
+			exp = 0.6;
 		} else if (level > 10 && level <= 15) {
-			exp = 0.31;
+			exp = 0.5;
 		} else if (level > 15 && level <= 20) {
-			exp = 0.2;
+			exp = 0.3;
 		} else if (level > 20 && level <= 25) {
-			exp = 0.2;
+			exp = 0.3;
 		} else if (level > 25 && level <= 30) {
 			exp = 0.2;
 		} else if (level > 30 && level <= 35) {

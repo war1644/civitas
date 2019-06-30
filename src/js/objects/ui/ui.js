@@ -869,11 +869,11 @@ civitas.objects.ui = function (core) {
 	 * @returns {civitas.objects.ui}
 	 */
 	this.resize = function() {
-		const window_width = $(window).width();
-		const window_height = $(window).height();
-		const header_height = $('.ui > header').height();
-		const sidebar_width = $('.ui > aside').width();
-		const footer_width = $('.ui > footer').width();
+		const window_width = parseInt($(window).width());
+		const window_height = parseInt($(window).height());
+		const header_height = parseInt($('.ui > header').height());
+		const sidebar_width = parseInt($('.ui > aside').width());
+		const footer_width = parseInt($('.ui > footer').width());
 		$('.ui > footer').css({
 			left: (window_width / 2) - (footer_width / 2)
 		});

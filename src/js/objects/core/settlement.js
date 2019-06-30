@@ -397,7 +397,7 @@ civitas.objects.settlement = function(params) {
 			advices.push('Your settlement`s prestige is too low, start doing trades with the other settlements to improve it.');
 		}
 		if (resources.faith < 100) {
-			advices.push('Your settlement`s faith is too low, build a Church or upgrade it to be able to gather faith and choose/switch reglinios.');
+			advices.push('Your settlement`s faith is too low, build a Church or upgrade it to be able to gather faith and choose/switch religions.');
 		}
 		if (resources.faith === civitas.MAX_FAITH_VALUE) {
 			advices.push('You are at maximum faith, start using it from your settlement`s Church.');
@@ -2354,7 +2354,7 @@ civitas.objects.settlement = function(params) {
 					this.raise_influence(_settlement.id(), (is_double ? civitas.IMPORT_INFLUENCE * 2 : civitas.IMPORT_INFLUENCE));
 					this.raise_prestige(is_double ? civitas.IMPORT_PRESTIGE * 2 : civitas.IMPORT_PRESTIGE);
 					this.raise_fame(50);
-					this.core().refresh();
+					this.core().ui().refresh();
 					if (this.is_player()) {
 						this.core().ui().notify(this.name() + ' bought <strong>' + amount + '</strong> ' + civitas.utils.get_resource_name(item) + ' from ' + settlement + ' for <strong>' + item_discount_price + '</strong> ' + civitas.utils.get_resource_name('coins') + ' each, for a total of <strong>' + price + '</strong> ' + civitas.utils.get_resource_name('coins') + '.', 'World Market');
 					}
@@ -2533,7 +2533,7 @@ civitas.objects.settlement = function(params) {
 					this.raise_influence(_settlement.id(), (is_double ? civitas.EXPORT_INFLUENCE * 2 : civitas.EXPORT_INFLUENCE));
 					this.raise_prestige(is_double ? civitas.EXPORT_PRESTIGE * 2 : civitas.EXPORT_PRESTIGE);
 					this.raise_fame(50);
-					this.core().refresh();
+					this.core().ui().refresh();
 					if (this.is_player()) {
 						this.core().ui().notify(this.name() + ' sold <strong>' + amount + '</strong> ' + civitas.utils.get_resource_name(item) + ' to ' + settlement + ' for <strong>' + item_discount_price + '</strong> ' + civitas.utils.get_resource_name('coins') + ' each, for a total of <strong>' + price + '</strong> ' + civitas.utils.get_resource_name('coins') + '.', 'World Market');
 					}

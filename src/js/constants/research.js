@@ -40,17 +40,22 @@ civitas.TECHNOLOGIES = [{
 				grainfarm: 1,
 				grapesfarm: 1,
 				rosenursery: 1,
-				tobaccofarm: 1
+				tobaccofarm: 1,
+				almondsfarm: 1,
+				coffeefarm: 1,
+				datesfarm: 1,
+				indigofarm: 1,
+				sugarfarm: 1
 			}
 		}
 	}, {
 		name: 'Animal Enclosures',
 		handle: 'animalenclosure',
-		description: '',
+		description: 'Animal enclosures will allow your animal farms to raise more livestock.',
 		duration: 70,
 		cost: {
 			research: 400,
-			coins: 500000,
+			coins: 300000,
 			woodplanks: 100,
 			iron: 100
 		},
@@ -58,22 +63,9 @@ civitas.TECHNOLOGIES = [{
 			buildings: {
 				cattlefarm: 1,
 				pigfarm: 1,
-				goatfarm: 1
+				goatfarm: 1,
+				apiary: 1
 			}
-		}
-	}, {
-		name: 'Antibiotics',
-		handle: 'antibiotics',
-		description: 'An antibiotic is a type of antimicrobial substance active against bacteria and is the most important type of antibacterial agent for fighting bacterial infections.',
-		duration: 30,
-		cost: {
-			research: 500,
-			coins: 400000,
-			alcohol: 500,
-			essentialoil: 500
-		},
-		effect: {
-			
 		}
 	}, {
 		name: 'Canned Food',
@@ -81,13 +73,18 @@ civitas.TECHNOLOGIES = [{
 		description: 'Canning is a method of preserving food in which the food contents are processed and sealed in an airtight container (jars like Mason jars, and steel and tin cans).',
 		duration: 50,
 		cost: {
-			research: 300,
+			research: 500,
 			coins: 200000,
-			meals: 100
+			meals: 100,
+			bread: 50,
+			meat: 50,
+			iron: 20
 		},
 		effect: {
 			buildings: {
-				cookhouse: 1
+				cookhouse: 1,
+				butcher: 1,
+				bakery: 1
 			}
 		}
 	}, {
@@ -97,7 +94,7 @@ civitas.TECHNOLOGIES = [{
 		duration: 120,
 		cost: {
 			research: 300,
-			coins: 100000,
+			coins: 200000,
 			wood: 200,
 			woodplanks: 100
 		},
@@ -110,13 +107,16 @@ civitas.TECHNOLOGIES = [{
 	}, {
 		name: 'Diplomacy',
 		handle: 'diplomacy',
-		description: '',
-		duration: 160,
+		description: 'Researching diplomacy will give a boost to your Embassy`s production of fame and espionage.',
+		duration: 320,
 		cost: {
-			research: 1000,
-			coins: 100000,
+			research: civitas.MAX_RESEARCH_VALUE,
+			coins: 500000,
 			soap: 100,
-			jewelery: 100
+			jewelery: 100,
+			alcohol: 10,
+			perfume: 10,
+			donkeys: 50
 		},
 		effect: {
 			buildings: {
@@ -124,39 +124,37 @@ civitas.TECHNOLOGIES = [{
 			}
 		}
 	}, {
-		name: 'Fertilisers',
-		handle: 'fertilisers',
-		description: 'A fertiliser is any material of natural or synthetic origin (other than liming materials) that is applied to soils or to plant tissues to supply one or more plant nutrients essential to the growth of plants.',
-		duration: 90,
+		name: 'Distillery',
+		handle: 'distillery',
+		description: 'If you need more beer or wine in your settlement, research this technology.',
+		duration: 120,
 		cost: {
-			research: 100,
-			coins: 100000
+			research: 500,
+			coins: 500000,
+			alcohol: 200,
+			barrels: 100,
+			bottles: 100,
+			wine: 100,
+			coal: 400,
+			copper: 100
 		},
 		effect: {
-		}
-	}, {
-		name: 'Light Bulbs',
-		handle: 'lightbulbs',
-		description: 'The light bulb is the most common form of artificial lighting and is essential to modern society, providing interior lighting for buildings and exterior light for evening and nighttime activities.',
-		duration: 3,
-		cost: {
-			research: 100,
-			coins: 100000,
-			steel: 200,
-			glass: 1000
-		},
-		effect: {
+			buildings: {
+				winery: 1,
+				brewery: 1
+			}
 		}
 	}, {
 		name: 'Minerals',
 		handle: 'minerals',
-		description: '',
-		duration: 60,
+		description: 'Digging deeper into the mountains, your settlers will find more minerals if you research this technology.',
+		duration: 120,
 		cost: {
-			research: 100,
-			coins: 100000,
+			research: 700,
+			coins: 500000,
 			steel: 200,
-			glass: 1000
+			glass: 1000,
+			iron: 100
 		},
 		effect: {
 			buildings: {
@@ -167,68 +165,95 @@ civitas.TECHNOLOGIES = [{
 			}
 		}
 	}, {
-		name: 'Paved streets',
-		handle: 'pavedstreets',
-		description: '',
-		duration: 3,
-		cost: {
-			research: 100,
-			coins: 100000,
-			steel: 200,
-			glass: 1000
-		},
-		effect: {
-		}
-	}, {
 		name: 'Projectiles',
 		handle: 'projectiles',
-		description: '',
-		duration: 3,
+		description: 'Researching heavy projectiles will give a production boost to your Cannon Foundry and Catapult Workshop.',
+		duration: 200,
 		cost: {
-			research: 100,
-			coins: 100000,
+			research: civitas.MAX_RESEARCH_VALUE,
+			coins: 800000,
 			steel: 200,
+			gunpowder: 100,
+			coal: 300,
+			copper: 50,
+			uranium: 100,
+			sulphur: 100,
 			glass: 1000
 		},
 		effect: {
+			buildings: {
+				cannonfoundry: 1,
+				catapultworkshop: 1
+			}
 		}
 	}, {
 		name: 'Railway',
 		handle: 'railway',
-		description: '',
-		duration: 3,
+		description: 'Researching the railway will break in half the time required to travel from one city to another.',
+		duration: 300,
 		cost: {
-			research: 100,
-			coins: 100000,
-			steel: 200,
-			glass: 1000
+			research: civitas.MAX_RESEARCH_VALUE,
+			coins: 1000000,
+			steel: 1000,
+			glass: 1000,
+			gunpowder: 500,
+			iron: 1000,
+			woodplanks: 100
 		},
 		effect: {
+			distance: 2
 		}
 	}, {
 		name: 'Sewing machine',
 		handle: 'sewingmachine',
-		description: '',
-		duration: 3,
+		description: 'Sewing machine technology will give a boost to your buildings responsible with manufacturing clothes and textile goods.',
+		duration: 36,
 		cost: {
-			research: 100,
+			research: 500,
 			coins: 100000,
-			steel: 200,
-			glass: 1000
+			cottonfabric: 100,
+			cotton: 100,
+			leather: 100,
+			steel: 100,
+			copper: 20,
+			glass: 100
 		},
 		effect: {
+			buildings: {
+				clothingfactory: 2,
+				weaver: 2,
+				furrier: 2
+			}
 		}
 	}, {
 		name: 'Taxation',
 		handle: 'taxation',
-		description: '',
-		duration: 100,
+		description: 'Researching taxation will provide an extra 100 coins from each of your houses, regardless of their level.',
+		duration: 260,
 		cost: {
-			research: 900,
-			coins: 1000000
+			research: civitas.MAX_RESEARCH_VALUE,
+			coins: 1000000,
+			gold: 1000,
+			silver: 1000
 		},
 		effect: {
 			tax: 100
+		}
+	}, {
+		name: 'Trawlers',
+		handle: 'trawlers',
+		description: 'Researching this technology will provide your ships with better trawl nets, therefore giving a boost to your settlement`s Shipyard.',
+		duration: 36,
+		cost: {
+			research: 200,
+			coins: 100000,
+			cottonfabric: 100,
+			cotton: 100
+		},
+		effect: {
+			buildings: {
+				shipyard: 1
+			}
 		}
 	}
 ];

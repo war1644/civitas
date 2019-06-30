@@ -70,7 +70,12 @@ civitas.PANEL_EMBASSY = {
 		if (building) {
 			let level = building.get_level();
 			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, level));
-			$(this.handle + ' #tab-espionage').empty().append('<div class="section">' + core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage()) + '</div>');
+			$(this.handle + ' #tab-espionage').empty().append(
+				'<h2>Espionage points</h2>' +
+				'<div class="section">' + 
+					core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage() + ' / ' + civitas.MAX_ESPIONAGE_VALUE) + 
+				'</div>'
+			);
 			let _t = '<table class="normal">' +
 				'<thead>' +
 				'<tr>' +
