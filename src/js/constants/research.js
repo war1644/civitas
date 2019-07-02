@@ -68,6 +68,18 @@ civitas.TECHNOLOGIES = [{
 			}
 		}
 	}, {
+		name: 'Archeology',
+		handle: 'archeology',
+		description: '',
+		duration: 96,
+		cost: {
+			research: civitas.MAX_RESEARCH_VALUE,
+			coins: 200000,
+			prestige: 100
+		},
+		effect: {
+		}
+	}, {
 		name: 'Canned Food',
 		handle: 'cannedfood',
 		description: 'Canning is a method of preserving food in which the food contents are processed and sealed in an airtight container (jars like Mason jars, and steel and tin cans).',
@@ -160,8 +172,7 @@ civitas.TECHNOLOGIES = [{
 			buildings: {
 				ironmine: 1,
 				coppermine: 1,
-				goldmine: 1,
-				uraniummine: 1
+				goldmine: 1
 			}
 		}
 	}, {
@@ -176,7 +187,6 @@ civitas.TECHNOLOGIES = [{
 			gunpowder: 100,
 			coal: 300,
 			copper: 50,
-			uranium: 100,
 			sulphur: 100,
 			glass: 1000
 		},
@@ -252,7 +262,8 @@ civitas.TECHNOLOGIES = [{
 		},
 		effect: {
 			buildings: {
-				shipyard: 1
+				shipyard: 1,
+				fisherman: 1
 			}
 		}
 	}

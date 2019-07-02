@@ -14,6 +14,7 @@ civitas.INITIAL_SEED = [
 			/* Raider camps */
 			3: 6 //0
 		},
+		places: 6,
 		/* Number of soldiers and ships to build initially */
 		military: {
 			army: {
@@ -70,6 +71,7 @@ civitas.INITIAL_SEED = [
 			2: 5,
 			3: 3
 		},
+		places: 4,
 		military: {
 			army: {
 				militia: 5,
@@ -125,6 +127,7 @@ civitas.INITIAL_SEED = [
 			2: 6,
 			3: 10
 		},
+		places: 3,
 		military: {
 			army: {
 				militia: 3,
@@ -177,6 +180,7 @@ civitas.INITIAL_SEED = [
 			2: 20,
 			3: 20
 		},
+		places: 1,
 		military: {
 			army: {},
 			navy: {}

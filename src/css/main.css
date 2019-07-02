@@ -262,6 +262,9 @@ td.icon {
 	margin: 5px;
 	cursor: pointer;
 	float: left;
+	background-size: 40px;
+	background-repeat: no-repeat;
+	background-color: transparent;
 }
 
 /* Main */
@@ -275,24 +278,26 @@ td.icon {
 .ui .game {
 	position: relative;
 	z-index: 99;
-	width: 1920px;
-	height: 1080px;
+	width: 4000px;
+	height: 2000px;
 	overflow: hidden;
 }
 
 .ui .game .building {
-	width: 100px;
-	height: 89px;
+	width: 160px;
+	height: 160px;
 	cursor: pointer;
 	position: absolute;
-	background-size: 100px;
+	background-size: 160px;
 	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center; 
 }
 
 .ui .game .building.large {
-	width: 200px;
-	height: 180px;
-	background-size: 200px;
+	width: 260px;
+	height: 260px;
+	background-size: 260px;
 }
 
 .ui .game .building .notification {

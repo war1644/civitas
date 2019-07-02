@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.6302019
+ * @version 0.3.0.732019
  * @license GPLv3
  */ /* Game animations */
 
@@ -354,6 +354,9 @@ td.icon {
 	margin: 5px;
 	cursor: pointer;
 	float: left;
+	background-size: 40px;
+	background-repeat: no-repeat;
+	background-color: transparent;
 }
 
 /* Main */
@@ -367,24 +370,26 @@ td.icon {
 .ui .game {
 	position: relative;
 	z-index: 99;
-	width: 1920px;
-	height: 1080px;
+	width: 4000px;
+	height: 2000px;
 	overflow: hidden;
 }
 
 .ui .game .building {
-	width: 100px;
-	height: 89px;
+	width: 160px;
+	height: 160px;
 	cursor: pointer;
 	position: absolute;
-	background-size: 100px;
+	background-size: 160px;
 	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center; 
 }
 
 .ui .game .building.large {
-	width: 200px;
-	height: 180px;
-	background-size: 200px;
+	width: 260px;
+	height: 260px;
+	background-size: 260px;
 }
 
 .ui .game .building .notification {
@@ -931,7 +936,7 @@ img.small {
 }
 
 #panel-council section dd,
-#panel-militarycamp section dd,
+#panel-barracks section dd,
 #panel-shipyard section dd {
 	width: auto;
 }
@@ -1075,10 +1080,11 @@ img.small {
 	overflow: hidden;
 }
 
+#panel-world .worldmap .place,
 #panel-world .worldmap .settlement,
 #panel-world .worldmap .troop {
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	cursor: pointer;
 }
 
@@ -1103,7 +1109,7 @@ img.small {
 
 /* City Council panel */
 
-#panel-militarycamp,
+#panel-barracks,
 #panel-shipyard {
 	width: 780px;
 	max-width: 780px;
@@ -1396,6 +1402,7 @@ aside .panel .column:last-of-type {
 
 #panel-new-army,
 #panel-new-spy,
+#panel-new-scout,
 #panel-new-caravan {
 	max-width: 640px;
 	max-height: 600px;
@@ -1688,15 +1695,22 @@ a.wikipedia {
 	min-width: 400px;
 }
 
-.panel footer a.attack,
-.panel footer a.caravan,
-.panel footer a.spy,
-.panel footer a.alliance,
-.panel footer a.pact,
-.panel footer a.join,
-.panel footer a.war,
-.panel footer a.ceasefire {
+#panel-settlement footer a.attack,
+#panel-settlement footer a.caravan,
+#panel-settlement footer a.spy,
+#panel-settlement footer a.alliance,
+#panel-settlement footer a.pact,
+#panel-settlement footer a.join,
+#panel-settlement footer a.war,
+#panel-settlement footer a.ceasefire {
 	display: none;
+}
+
+#panel-place {
+	width: 450px;
+	max-width: 450px;
+	max-height: 600px;
+	height: auto;
 }
 
 /* Progress bars */
@@ -1746,6 +1760,7 @@ a.wikipedia {
 	margin: 0;
 	line-height: 20px;
 	text-shadow: 1px 1px 2px #000;
+	font-size: 10px;
 	color: #fff;
 }
 
@@ -1792,35 +1807,35 @@ a.wikipedia {
 /* Bottom panel with game actions */
 
 footer a[data-panel=trades] {
-	background: transparent url(../images/assets/ui/toolbar/trades.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/trades.png);
 }
 
 footer a[data-panel=storage] {
-	background: transparent url(../images/assets/ui/toolbar/storage.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/storage.png);
 }
 
 footer a[data-panel=buildings] {
-	background: transparent url(../images/assets/ui/toolbar/buildings.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/build.png);
 }
 
 footer a[data-panel=council] {
-	background: transparent url(../images/assets/ui/toolbar/council.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/council.png);
 }
 
 footer a[data-panel=world] {
-	background: transparent url(../images/assets/ui/toolbar/worldmap.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/worldmap.png);
 }
 
 footer a[data-panel=ranks] {
-	background: transparent url(../images/assets/ui/toolbar/ranks.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/ranks.png);
 }
 
 footer a[data-panel=debug] {
-	background: transparent url(../images/assets/ui/toolbar/debug.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/debug.png);
 }
 
 footer a[data-panel=help] {
-	background: transparent url(../images/assets/ui/toolbar/help.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/help.png);
 }
 
 /* Panel footer icons */
@@ -1837,8 +1852,20 @@ footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/icons/spy.png) no-repeat;
 }
 
+.panel footer .scout {
+	background: transparent url(../images/assets/ui/icons/scout.png) no-repeat;
+}
+
 .panel footer .ceasefire {
 	background: transparent url(../images/assets/ui/icons/sign.png) no-repeat;
+}
+
+.panel footer .claim {
+	background: transparent url(../images/assets/ui/icons/upgrade.png) no-repeat;
+}
+
+.panel footer .unclaim {
+	background: transparent url(../images/assets/ui/icons/downgrade.png) no-repeat;
 }
 
 .panel footer .caravan {

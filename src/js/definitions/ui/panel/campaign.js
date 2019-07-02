@@ -87,22 +87,42 @@ civitas.PANEL_CAMPAIGN = {
 		let source = core.get_settlement(campaign.source.id);
 		let destination = core.get_settlement(campaign.destination.id);
 		let distance = core.world().get_distance(campaign.source, campaign.destination);
+		let mission_type;
 		let action = '';
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
+			mission_type = 'Army';
 			action = 'Attacking';
 		} else if (campaign.type === civitas.CAMPAIGN_ARMY_RETURN) {
+			mission_type = 'Army';
 			action = 'Returning';
+		} else if (campaign.type === civitas.CAMPAIGN_SPY) {
+			mission_type = 'Spy';
+			action = 'Sneaking in';
+		} else if (campaign.type === civitas.CAMPAIGN_SCOUT) {
+			mission_type = 'Scout';
+			action = 'Scouting';
+		} else if (campaign.type === civitas.CAMPAIGN_CARAVAN) {
+			mission_type = 'Caravan';
+			action = 'Going to';
 		} else {
+			mission_type = 'Misc';
 			action = 'Going to';
 		}
 		$(this.handle + ' #tab-info').empty().append('' +
 			'<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.ruler().avatar : source.ruler().avatar) + '.png" />' +
 			'<dl>' +
-				'<dt>Sent By</dt><dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.name() : source.name()) + '</dd>' +
-				'<dt>Destination</dt><dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? source.name() : destination.name()) + '</dd>' +
-				'<dt>Action</dt><dd>' + action + '</dd>' +
-				'<dt>Distance</dt><dd>' + distance + ' miles (' + campaign.duration + ' days)</dd>' +
-				'<dt>Remaining</dt><dd>' + (10 * (campaign.duration - campaign.passed)) + ' miles (' + (campaign.duration - campaign.passed) + ' days)</dd>' +
+				'<dt>Type</dt>' +
+				'<dd>' + mission_type + '</dd>' +
+				'<dt>Sent By</dt>' +
+				'<dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.name() : source.name()) + '</dd>' +
+				'<dt>Destination</dt>' +
+				'<dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? source.name() : destination.name()) + '</dd>' +
+				'<dt>Action</dt>' +
+				'<dd>' + action + '</dd>' +
+				'<dt>Distance</dt>' +
+				'<dd>' + distance + ' miles (' + campaign.duration + ' days)</dd>' +
+				'<dt>Remaining</dt>' +
+				'<dd>' + (10 * (campaign.duration - campaign.passed)) + ' miles (' + (campaign.duration - campaign.passed) + ' days)</dd>' +
 			'</dl>');
 		if (campaign.type === civitas.CAMPAIGN_ARMY) {
 			if (my_settlement.num_soldiers(campaign.data.army) > 0) {

@@ -39,7 +39,8 @@ civitas.PANEL_ACADEMY = {
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Research',
-			'Technologies'
+			'Technologies',
+			'Projects'
 		]));
 		_t += '<div class="column-left">' +
 			'</div>' +

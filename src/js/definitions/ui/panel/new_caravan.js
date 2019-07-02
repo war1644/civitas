@@ -52,7 +52,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			if (item === 'coins') {
 				_cost = civitas.CARAVAN_COSTS[item] * distance;
 			} else if (item === 'provisions') {
-				_cost = Math.ceil((civitas.CARAVAN_COSTS[item] * distance) / 2);
+				_cost = Math.ceil((civitas.CARAVAN_COSTS[item] * distance) / 4);
 			} else {
 				_cost = civitas.CARAVAN_COSTS[item];
 			}

@@ -124,7 +124,7 @@
 }
 
 #panel-council section dd,
-#panel-militarycamp section dd,
+#panel-barracks section dd,
 #panel-shipyard section dd {
 	width: auto;
 }
@@ -268,10 +268,11 @@
 	overflow: hidden;
 }
 
+#panel-world .worldmap .place,
 #panel-world .worldmap .settlement,
 #panel-world .worldmap .troop {
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	cursor: pointer;
 }
 
@@ -296,7 +297,7 @@
 
 /* City Council panel */
 
-#panel-militarycamp,
+#panel-barracks,
 #panel-shipyard {
 	width: 780px;
 	max-width: 780px;
@@ -589,6 +590,7 @@ aside .panel .column:last-of-type {
 
 #panel-new-army,
 #panel-new-spy,
+#panel-new-scout,
 #panel-new-caravan {
 	max-width: 640px;
 	max-height: 600px;
@@ -881,13 +883,20 @@ a.wikipedia {
 	min-width: 400px;
 }
 
-.panel footer a.attack,
-.panel footer a.caravan,
-.panel footer a.spy,
-.panel footer a.alliance,
-.panel footer a.pact,
-.panel footer a.join,
-.panel footer a.war,
-.panel footer a.ceasefire {
+#panel-settlement footer a.attack,
+#panel-settlement footer a.caravan,
+#panel-settlement footer a.spy,
+#panel-settlement footer a.alliance,
+#panel-settlement footer a.pact,
+#panel-settlement footer a.join,
+#panel-settlement footer a.war,
+#panel-settlement footer a.ceasefire {
 	display: none;
+}
+
+#panel-place {
+	width: 450px;
+	max-width: 450px;
+	max-height: 600px;
+	height: auto;
 }

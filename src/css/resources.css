@@ -1,35 +1,35 @@
 /* Bottom panel with game actions */
 
 footer a[data-panel=trades] {
-	background: transparent url(../images/assets/ui/toolbar/trades.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/trades.png);
 }
 
 footer a[data-panel=storage] {
-	background: transparent url(../images/assets/ui/toolbar/storage.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/storage.png);
 }
 
 footer a[data-panel=buildings] {
-	background: transparent url(../images/assets/ui/toolbar/buildings.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/build.png);
 }
 
 footer a[data-panel=council] {
-	background: transparent url(../images/assets/ui/toolbar/council.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/council.png);
 }
 
 footer a[data-panel=world] {
-	background: transparent url(../images/assets/ui/toolbar/worldmap.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/worldmap.png);
 }
 
 footer a[data-panel=ranks] {
-	background: transparent url(../images/assets/ui/toolbar/ranks.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/ranks.png);
 }
 
 footer a[data-panel=debug] {
-	background: transparent url(../images/assets/ui/toolbar/debug.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/debug.png);
 }
 
 footer a[data-panel=help] {
-	background: transparent url(../images/assets/ui/toolbar/help.png) no-repeat;
+	background-image: url(../images/assets/ui/toolbar/help.png);
 }
 
 /* Panel footer icons */
@@ -46,8 +46,20 @@ footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/icons/spy.png) no-repeat;
 }
 
+.panel footer .scout {
+	background: transparent url(../images/assets/ui/icons/scout.png) no-repeat;
+}
+
 .panel footer .ceasefire {
 	background: transparent url(../images/assets/ui/icons/sign.png) no-repeat;
+}
+
+.panel footer .claim {
+	background: transparent url(../images/assets/ui/icons/upgrade.png) no-repeat;
+}
+
+.panel footer .unclaim {
+	background: transparent url(../images/assets/ui/icons/downgrade.png) no-repeat;
 }
 
 .panel footer .caravan {

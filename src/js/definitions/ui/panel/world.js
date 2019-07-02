@@ -36,6 +36,7 @@ civitas.PANEL_WORLD = {
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
+		let places = core.places();
 		let world = core.world();
 		let colors = world.colors();
 		let color;
@@ -51,10 +52,14 @@ civitas.PANEL_WORLD = {
 				core.ui().svg_create_group(terrain, row, column);
 				if (world_data[row][column].l === true) {
 					let lid = world_data[row][column].lid;
-					if (lid !== null) {
+					let pid = world_data[row][column].p;
+					if (lid !== null && pid === null) {
 						if (typeof settlements[lid] !== 'undefined') {
 							color = settlements[lid].color();
 						}
+					} else if (lid !== null && pid !== null) {
+						// Todo
+						/* This is a special place */
 					}
 				}
 				core.ui().svg_create_cell(row, column, color, settings.worldmap_grid);
@@ -66,8 +71,15 @@ civitas.PANEL_WORLD = {
 		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
 			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
 				let suid = world_data[row][column].s;
-				if (suid !== null && typeof settlements[suid] !== 'undefined') {
+				let puid = world_data[row][column].p;
+				if (suid !== null && puid === null && typeof settlements[suid] !== 'undefined') {
 					core.ui().svg_add_settlement_image(row, column, settlements[suid], settlement);
+				} else if (suid === null && puid !== null && typeof places[puid] !== 'undefined') {
+					/* For debug
+					if (core.has_research('archeology')) {*/
+						core.ui().svg_add_place_image(row, column, places[puid]);
+					/*}
+					*/
 				}
 			}
 		}
@@ -101,6 +113,10 @@ civitas.PANEL_WORLD = {
 			} else {
 				core.ui().open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
 			}
+			return false;
+		}).on('click', '.place', function () {
+			let place_id = parseInt($(this).data('id'));
+			core.ui().open_panel(civitas.PANEL_PLACE, core.get_place(place_id));
 			return false;
 		}).on('click', '.troop', function () {
 			let _action_id = parseInt($(this).data('id'));
@@ -149,6 +165,9 @@ civitas.PANEL_WORLD = {
 				if (action.type === civitas.CAMPAIGN_CARAVAN) {
 					troop_type = 'troop_caravan';
 					title = 'Caravan from ' + _source.name() + ' sent to ' + _destination.name() + '.';
+				} else if (action.type === civitas.CAMPAIGN_SCOUT) {
+					troop_type = 'troop_scout';
+					title = 'Scout from ' + _source.name() + ' going to a specific place.';
 				} else if (action.type === civitas.CAMPAIGN_SPY) {
 					troop_type = 'troop_spy';
 					title = 'Spy from ' + _source.name() + ' sneaking into ' + _destination.name() + '.';

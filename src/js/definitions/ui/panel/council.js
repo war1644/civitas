@@ -185,6 +185,8 @@ civitas.PANEL_COUNCIL = {
 				'<dd>' + settlement.ruler().name + '</dd>' +
 				'<dt>Climate</dt>' +
 				'<dd>' + settlement.climate().name + '</dd>' +
+				'<dt>Season</dt>' +
+				'<dd>' + core.season().name + '</dd>' +
 				'<dt>Personality</dt>' +
 				'<dd>' + settlement.personality().name + '</dd>' +
 				'<dt>Nationality</dt>' +
@@ -200,13 +202,13 @@ civitas.PANEL_COUNCIL = {
 				'<dt>Fame</dt>' +
 				'<dd>' + core.ui().progress(settlement.fame() * 100 / core.level_to_fame(settlement.level()), 'small', civitas.utils.nice_numbers(settlement.fame()) + ' / ' + civitas.utils.nice_numbers(core.level_to_fame(settlement.level()))) + '</dd>' +
 				'<dt>Prestige</dt>' +
-				'<dd>' + core.ui().progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.prestige() * 100) / civitas.MAX_PRESTIGE_VALUE, 'small', settlement.prestige() + ' / ' + civitas.MAX_PRESTIGE_VALUE) + '</dd>' +
 				'<dt>Espionage</dt>' +
-				'<dd>' + core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'small', settlement.espionage()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.espionage() * 100) / civitas.MAX_ESPIONAGE_VALUE, 'small', settlement.espionage() + ' / ' + civitas.MAX_ESPIONAGE_VALUE) + '</dd>' +
 				'<dt>Faith</dt>' +
-				'<dd>' + core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'small', settlement.faith()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'small', settlement.faith() + ' / ' + civitas.MAX_FAITH_VALUE) + '</dd>' +
 				'<dt>Research</dt>' +
-				'<dd>' + core.ui().progress((settlement.research() * 100) / civitas.MAX_RESEARCH_VALUE, 'small', settlement.research()) + '</dd>' +
+				'<dd>' + core.ui().progress((settlement.research() * 100) / civitas.MAX_RESEARCH_VALUE, 'small', settlement.research() + ' / ' + civitas.MAX_RESEARCH_VALUE) + '</dd>' +
 			'</dl>';
 		$(this.handle + ' #tab-info').empty().append(_t);
 		_t = '';

@@ -98,7 +98,7 @@ civitas.PANEL_DEBUG = {
 				army[soldier] = civitas.utils.get_random(1, 100);
 			}
 			settlement.build('provisions');
-			settlement.build('militarycamp');
+			settlement.build('barracks');
 			settlement.build('shipyard');
 			core.save_and_refresh();
 			return false;

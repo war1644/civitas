@@ -53,7 +53,7 @@ civitas.PANEL_NEW_SPY = {
 			if (item === 'coins') {
 				_cost = civitas.SPY_COSTS[item] * distance;
 			} else if (item === 'provisions') {
-				_cost = Math.ceil((civitas.SPY_COSTS[item] * distance) / 2);
+				_cost = Math.ceil((civitas.SPY_COSTS[item] * distance) / 4);
 			} else {
 				_cost = civitas.SPY_COSTS[item];
 			}

@@ -334,7 +334,7 @@ civitas.SPY_MISSION_INSTIGATE = 4;
  * @type {Object}
  */
 civitas.CARAVAN_COSTS = {
-	coins: 1000,
+	coins: 100,
 	donkeys: 10,
 	wood: 10,
 	ropes: 2,
@@ -349,11 +349,33 @@ civitas.CARAVAN_COSTS = {
  * @type {Object}
  */
 civitas.SPY_COSTS = {
-	coins: 500,
+	coins: 50,
 	spyglasses: 1,
 	weapons: 1,
 	provisions: 1
 }
+
+/**
+ * Initial resource costs for sending a scout mission.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+civitas.SCOUT_COSTS = {
+	coins: 50,
+	spyglasses: 1,
+	provisions: 1
+}
+
+/**
+ * Scouting mission to reveal information about the target.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.SCOUT_MISSION_INFO = 1;
 
 /**
  * Initial resource costs for sending an army.
@@ -363,7 +385,7 @@ civitas.SPY_COSTS = {
  * @type {Object}
  */
 civitas.ARMY_COSTS = {
-	coins: 2000,
+	coins: 200,
 	provisions: 1
 }
 
@@ -403,3 +425,12 @@ civitas.ACTION_CAMPAIGN = 1;
  * @type {Number}
  */
 civitas.ACTION_RESEARCH = 2;
+
+/**
+ * Build a special place action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.ACTION_BUILD_PLACE = 2;

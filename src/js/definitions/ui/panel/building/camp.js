@@ -1,10 +1,10 @@
 /**
- * Military Camp panel data.
+ * Barracks panel data.
  *
  * @type {Object}
  * @mixin
  */
-civitas.PANEL_MILITARYCAMP = {
+civitas.PANEL_BARRACKS = {
 
 	/**
 	 * Internal id of the panel.
@@ -13,7 +13,7 @@ civitas.PANEL_MILITARYCAMP = {
 	 * @constant
 	 * @default
 	 */
-	id: 'militarycamp',
+	id: 'barracks',
 
 	/**
 	 * Callback function for creating the panel.

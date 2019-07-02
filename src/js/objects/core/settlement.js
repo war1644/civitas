@@ -761,7 +761,7 @@ civitas.objects.settlement = function(params) {
 			if (item === 'coins') {
 				mission_costs[item] = Math.ceil(cost[item] * duration);
 			} else if (item === 'provisions') {
-				mission_costs[item] = Math.ceil((cost[item] * duration) / 2);
+				mission_costs[item] = Math.ceil((cost[item] * duration) / 4);
 			}
 		}
 		if (typeof resources !== 'undefined') {
@@ -996,7 +996,7 @@ civitas.objects.settlement = function(params) {
 	 * @returns {Boolean}
 	 */
 	this.can_recruit_soldiers = function() {
-		return this.is_building_built('militarycamp');
+		return this.is_building_built('barracks');
 	};
 
 	/**

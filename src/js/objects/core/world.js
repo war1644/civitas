@@ -326,17 +326,6 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
-	 * Return the moisture data for the specified hex.
-	 *
-	 * @public
-	 * @param {Object} hex
-	 * @returns {String}
-	 */
-	this.get_hex_moisture = function(hex) {
-		return this.get_hex(hex.x, hex.y).m;
-	};
-
-	/**
 	 * Return the elevation data for the specified hex.
 	 *
 	 * @public
@@ -372,10 +361,25 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Add a place into the world data.
+	 *
+	 * @public
+	 * @param {civitas.objects.place} place
+	 * @returns {civitas.objects.world}
+	 */
+	this.add_place = function(place) {
+		const location = place.location();
+		this._data[location.y][location.x].p = place.id();
+		this._data[location.y][location.x].l = true;
+		this._data[location.y][location.x].lid = place.id();
+		return this;
+	};
+
+	/**
 	 * Add a settlement into the world data.
 	 *
 	 * @public
-	 * @param {civitas.settlement} settlement
+	 * @param {civitas.objects.settlement} settlement
 	 * @returns {civitas.objects.world}
 	 */
 	this.add_city = function(settlement) {
@@ -392,7 +396,7 @@ civitas.objects.world = function (params) {
 	 * Remove a settlement from the world data.
 	 *
 	 * @public
-	 * @param {civitas.settlement} settlement
+	 * @param {civitas.objects.settlement} settlement
 	 * @returns {civitas.objects.world}
 	 */
 	this.remove_city = function(settlement) {
@@ -435,6 +439,8 @@ civitas.objects.world = function (params) {
 					e: -1,
 					/* Terrain */
 					t: 'S',
+					/* Place id */
+					p: null,
 					/* Settlement id */
 					s: null,
 					/* Settlement name */
@@ -442,9 +448,7 @@ civitas.objects.world = function (params) {
 					/* Locked */
 					l: false,
 					/* Locked to settlement id */
-					lid: null,
-					/* Moisture */
-					m: 0
+					lid: null
 				};
 			}
 		}

@@ -95,11 +95,6 @@ civitas.RESOURCES = {
 		price: 40,
 		category: 'construction'
 	},
-	cement: {
-		name: 'Cement',
-		price: 100,
-		category: 'construction'
-	},
 	candles: {
 		name: 'Candles',
 		price: 100,
@@ -366,12 +361,6 @@ civitas.RESOURCES = {
 		category: 'food',
 		toolbar: true
 	},
-	microchips: {
-		name: 'Microchips',
-		price: 990,
-		imported: true,
-		category: 'industry'
-	},
 	milk: {
 		name: 'Milk',
 		price: 30,
@@ -406,12 +395,6 @@ civitas.RESOURCES = {
 		name: 'Pig',
 		price: 55,
 		category: 'animals'
-	},
-	plastics: {
-		name: 'Plastics',
-		price: 200,
-		imported: true,
-		category: 'industry'
 	},
 	pottery: {
 		name: 'Pottery',
@@ -535,12 +518,6 @@ civitas.RESOURCES = {
 		price: 35,
 		category: 'construction',
 		toolbar: true
-	},
-	uranium: {
-		name: 'Uranium',
-		price: 850,
-		imported: true,
-		category: 'industry'
 	},
 	wax: {
 		name: 'Wax',

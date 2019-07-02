@@ -1100,6 +1100,23 @@ civitas.objects.ui = function (core) {
 		return this;
 	};
 
+	this.svg_add_place_image = function(row, column, place) {
+		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
+			.attr({
+				'id': 'w-s-i' + row + '-' + column,
+				'xlink:href': '',
+				'height': 42,
+				'width': 42,
+				'x': "2px",
+				'y': "-3px",
+				'class': 'place',
+				'data-id': place.id()
+			})
+			.appendTo('.s-c-g-' + row + '-' + column);
+		document.getElementById('w-s-i' + row + '-' + column)
+			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/place.png');
+	};
+
 	this.svg_add_settlement_image = function(row, column, settlement, player_settlement) {
 		let image = 'village';
 		let color = settlement.color();
@@ -1415,6 +1432,19 @@ civitas.objects.ui = function (core) {
 		const coords = this.get_cell_middle_coords(location.y, location.x);
 		$('.worldmap').scrollTop(coords.y - (700 / 2));
 		$('.worldmap').scrollLeft(coords.x - (1164 / 2));
+		return this;
+	};
+
+	/**
+	 * Scroll the city map to the specified location.
+	 *
+	 * @param {Object} location
+	 * @public
+	 * @returns {civitas.objects.ui}
+	 */
+	this.citymap_scrollto = function(location) {
+		$('.viewport').scrollTop(location.y - (200 / 2));
+		$('.viewport').scrollLeft(location.x - (1164 / 2));
 		return this;
 	};
 

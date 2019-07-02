@@ -8,6 +8,14 @@
 civitas.game = function () {
 
 	/**
+	 * List of all the special places in the game.
+	 * 
+	 * @type {Array}
+	 * @private
+	 */
+	this._places = [];
+
+	/**
 	 * List of all the settlements in the game.
 	 * 
 	 * @type {Array}
@@ -347,13 +355,20 @@ civitas.game = function () {
 	this.export = function(to_local_storage) {
 		const settlement = this.get_settlement();
 		const settlements_list = [];
+		const places_list = [];
 		for (let i = 0; i < this.settlements.length; i++) {
 			if (typeof this.settlements[i] !== 'undefined') {
 				settlements_list.push(this.settlements[i].export());
 			}
 		}
+		for (let i = 0; i < this._places.length; i++) {
+			if (typeof this._places[i] !== 'undefined') {
+				places_list.push(this._places[i].export());
+			}
+		}
 		const data = {
 			settlements: settlements_list,
+			places: places_list,
 			difficulty: this.difficulty(),
 			world: this.world().data(),
 			achievements: this.achievements(),
@@ -548,6 +563,32 @@ civitas.game = function () {
 			return true;
 		}
 		return false;
+	};
+
+	/**
+	 * Get the current season.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	this.season = function() {
+		let _season = {
+			// Todo
+		};
+		if (this.is_spring()) {
+			_season.id = civitas.SEASON_SPRING;
+			_season.name = civitas.SEASONS[civitas.SEASON_SPRING].capitalize();
+		} else if (this.is_summer()) {
+			_season.id = civitas.SEASON_SUMMER;
+			_season.name = civitas.SEASONS[civitas.SEASON_SUMMER].capitalize();
+		} else if (this.is_autumn()) {
+			_season.id = civitas.SEASON_AUTUMN;
+			_season.name = civitas.SEASONS[civitas.SEASON_AUTUMN].capitalize();
+		} else if (this.is_winter()) {
+			_season.id = civitas.SEASON_WINTER;
+			_season.name = civitas.SEASONS[civitas.SEASON_WINTER].capitalize();
+		}
+		return _season;
 	};
 
 	/* =================================== Achivements =================================== */
@@ -872,8 +913,12 @@ civitas.game = function () {
 		let failed = true;
 		let destination_settlement;
 		let settlement = this.get_settlement(action.source.id);
-		if (typeof action.destination !== 'undefined') {
-			destination_settlement = this.get_settlement(action.destination.id);
+		if (action.type === civitas.CAMPAIGN_SCOUT) {
+			destination_settlement = this.get_place(action.destination.id);
+		} else {
+			if (typeof action.destination !== 'undefined') {
+				destination_settlement = this.get_settlement(action.destination.id);
+			}
 		}
 		if (action.mode === civitas.ACTION_CAMPAIGN) {
 			let random = Math.ceil(Math.random() * 100);
@@ -884,6 +929,10 @@ civitas.game = function () {
 					return false;
 				}
 				if (action.type === civitas.CAMPAIGN_SPY && !settlement.can_diplomacy()) {
+					this.queue_remove_action(id);
+					return false;
+				}
+				if (action.type === civitas.CAMPAIGN_SCOUT && !settlement.can_diplomacy()) {
 					this.queue_remove_action(id);
 					return false;
 				}
@@ -961,6 +1010,10 @@ civitas.game = function () {
 								break;
 						}
 					}
+					break;
+				case civitas.CAMPAIGN_SCOUT:
+					this.ui().notify('The spy you sent ' + action.duration + ' days ago to a specific place in the world reached its destination and scouted the area.');
+					destination_settlement.scout();
 					break;
 				case civitas.CAMPAIGN_CARAVAN:
 					let total = 0;
@@ -1099,6 +1152,20 @@ civitas.game = function () {
 					}
 				}
 				this.ui().notify('A spy was dispatched from ' + source_settlement.name() + ' to ' + destination_settlement.name() + ' and will reach its destination in ' + duration + ' days.');
+			} else if (type === civitas.CAMPAIGN_SCOUT) {
+				if (source_settlement.id() === this.get_settlement().id()) {
+					if (!source_settlement.can_diplomacy()) {
+						return false;
+					}
+					mission_costs = source_settlement.adjust_campaign_cost(civitas.SCOUT_COSTS, duration);
+					if (!source_settlement.has_resources(mission_costs)) {
+						return false;
+					}
+					if (!source_settlement.remove_resources(mission_costs)) {
+						return false;
+					}
+				}
+				this.ui().notify('A scout was dispatched from ' + source_settlement.name() + ' to a specific place in the world and will reach its destination in ' + duration + ' days.');
 			} else if (type === civitas.CAMPAIGN_CARAVAN) {
 				if (source_settlement.id() === this.get_settlement().id()) {
 					if (!source_settlement.can_trade()) {
@@ -1170,7 +1237,7 @@ civitas.game = function () {
 	 * 
 	 * @private
 	 * @param {String} name
-	 * @returns {civitas.settlement|Boolean}
+	 * @returns {civitas.objects.settlement|Boolean}
 	 */
 	this._process_settlements = function() {
 		const settlements = this.get_settlements();
@@ -1200,11 +1267,32 @@ civitas.game = function () {
 	};
 
 	/**
+	 * Get a pointer to a special place (har har).
+	 * 
+	 * @public
+	 * @param {String|Number} name
+	 * @returns {civitas.objects.place|Boolean}
+	 */
+	this.get_place = function (id) {
+		const _places = this.places();
+		if (typeof id === 'number') {
+			for (let i = 0; i < _places.length; i++) {
+				if (typeof _places[i] !== 'undefined') {
+					if (_places[i].id() === id) {
+						return _places[i];
+					}
+				}
+			}
+		}
+		return false;
+	};
+
+	/**
 	 * Get a pointer to the player's settlement.
 	 * 
 	 * @public
 	 * @param {String|Number} name
-	 * @returns {civitas.settlement|Boolean}
+	 * @returns {civitas.objects.settlement|Boolean}
 	 */
 	this.get_settlement = function (name) {
 		const settlements = this.get_settlements();
@@ -1637,9 +1725,11 @@ civitas.game = function () {
 	 */
 	this._setup_neighbours = function (data) {
 		let new_settlement;
+		let new_place;
 		let s_data;
 		const difficulty = this.difficulty();
 		let num;
+		let num_places;
 		if (data !== null) {
 			for (let i = 1; i < data.settlements.length; i++) {
 				s_data = data.settlements[i];
@@ -1647,12 +1737,22 @@ civitas.game = function () {
 				new_settlement = new civitas.objects.settlement(s_data);
 				this.settlements.push(new_settlement);
 			}
+			for (let i = 1; i < data.places.length; i++) {
+				s_data = data.places[i];
+				s_data.core = this;
+				new_place = new civitas.objects.place(s_data);
+				this._places.push(new_place);
+			}
 		} else {
 			for (let i = 0; i < civitas.SETTLEMENTS.length; i++) {
 				num = civitas.INITIAL_SEED[difficulty - 1].settlements[i];
 				for (let z = 0; z < num; z++) {
 					this.add_random_settlement(i);
 				}
+			}
+			num_places = civitas.INITIAL_SEED[difficulty - 1].places;
+			for (let i = 0; i < num_places; i++) {
+				this.add_random_place(i);
 			}
 		}
 		return this;
@@ -1669,6 +1769,48 @@ civitas.game = function () {
 		const data = this.generate_random_settlement_data(s_type);
 		this.add_settlement(data);
 		return this;
+	};
+
+	/**
+	 * Add a random place into the world.
+	 *
+	 * @public
+	 * @param {Number} id
+	 * @returns {civitas.objects.place}
+	 */
+	this.add_random_place = function(id) {
+		let location = this.world().get_random_location();
+		let place = new civitas.objects.place({
+			core: this,
+			properties: {
+				id: id,
+				sid: null,
+				name: null
+			},
+			resources: {
+				current: {
+					// Todo
+				},
+				required: this.generate_random_place_resources()
+			},
+			location: location
+		});
+		this._places.push(place);
+		return place;
+	};
+
+	this.generate_random_place_resources = function() {
+		let resources = {};
+		let plusminus;
+		for (let item in civitas.PLACE_RESOURCES_REQ) {
+			if (civitas.utils.is_virtual_resource(item)) {
+				resources[item] = civitas.PLACE_RESOURCES_REQ[item];
+			} else {
+				plusminus = (civitas.PLACE_RESOURCES_REQ[item] * 10) / 100;
+				resources[item] = civitas.utils.get_random(civitas.PLACE_RESOURCES_REQ[item] - plusminus, civitas.PLACE_RESOURCES_REQ[item] + plusminus);
+			}
+		}
+		return resources;
 	};
 
 	/**
@@ -1805,6 +1947,7 @@ civitas.game = function () {
 		});
 		ui.hide_loader();
 		this.save_and_refresh();
+		this.ui().citymap_scrollto(civitas.BUILDINGS[0].position);
 		return this;
 	};
 
@@ -2000,6 +2143,10 @@ civitas.game = function () {
 		this.save();
 		this.ui().refresh();
 		return this;
+	};
+
+	this.places = function() {
+		return this._places;
 	};
 
 	/**
