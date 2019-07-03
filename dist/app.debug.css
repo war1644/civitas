@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.732019
+ * @version 0.3.0.742019
  * @license GPLv3
  */ /* Game animations */
 
@@ -340,21 +340,20 @@ td.icon {
 /* Footer */
 
 .ui > footer {
-	background: transparent url(../images/ui/resource-panel.png) repeat-x;
-	width: 400px;
-	height: 50px;
+	background-color: transparent;
+	width: 460px;
 	position: fixed;
 	bottom: 0;
 	z-index: 9999;
 }
 
 .ui > footer > a {
-	width: 40px;
-	height: 40px;
-	margin: 5px;
+	width: 52px;
+	height: 52px;
+	margin: 0 5px 0 0;
 	cursor: pointer;
 	float: left;
-	background-size: 40px;
+	background-size: 52px;
 	background-repeat: no-repeat;
 	background-color: transparent;
 }
@@ -370,8 +369,8 @@ td.icon {
 .ui .game {
 	position: relative;
 	z-index: 99;
-	width: 4000px;
-	height: 2000px;
+	width: 3549px;
+	height: 1824px;
 	overflow: hidden;
 }
 
@@ -396,8 +395,8 @@ td.icon {
 	width: 46px;
 	height: 46px;
 	position: absolute;
-	top: 30%;
-	left: 30%;
+	top: 45%;
+	left: 45%;
 }
 
 .ui dd img {

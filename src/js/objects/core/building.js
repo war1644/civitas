@@ -125,12 +125,9 @@ civitas.objects.building = function(params) {
 			}
 			this.core().ui().refresh();
 		}
-		const building = this.get_building_data();
-		switch (this.get_type()) {
-			case 'marketplace':
-			case 'warehouse':
-				this.get_settlement().storage(this.get_settlement().storage().all + (building.storage * this.get_level()));
-				break;
+		//const building = this.get_building_data();
+		if (typeof params.data.storage !== 'undefined') {
+			this.get_settlement().storage(this.get_settlement().storage().all + (params.data.storage * this.get_level()));
 		}
 		return this;
 	};

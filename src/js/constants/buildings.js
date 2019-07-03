@@ -18,7 +18,7 @@ civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 	'mill', 'bakery', 'butcher', 'cookhouse', 'fisherman',
 
 	/* Mines */
-	'coppermine', 'ironmine', 'saltmine', 'claymine', 'coalmine', 'quartzmine',
+	'coppermine', 'ironmine', 'claymine', 'coalmine', 'quartzmine',
 
 	/* Smelters */
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
@@ -31,7 +31,7 @@ civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
 	'silkweaver', 'jeweler', 'toolmaker', 'apiary', 'beehive',
 	'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
 	'cosmetics', 'weaver', 'clothingfactory', 'provisions', 'carpenter',
-	'marzipanworkshop', 'cannonfoundry', 'brickworks',
+	'marzipanworkshop', 'cannonfoundry', 'brickworks', 'saltprocessor',
 
 	/* Farms */
 	'almondsfarm', 'almondsfield', 'cattlefarm', 'cattlefield', 'coffeefarm',
@@ -94,7 +94,7 @@ civitas.SETTLEMENT_BUILDINGS_ARID = [
 	'mill', 'bakery', 'butcher', 'cookhouse', 'fisherman',
 
 	/* Mines */
-	'coppermine', 'goldmine', 'ironmine', 'saltmine', 'claymine', 'coalmine',
+	'coppermine', 'goldmine', 'ironmine', 'claymine', 'coalmine',
 	'quartzmine',
 
 	/* Smelters */
@@ -108,7 +108,7 @@ civitas.SETTLEMENT_BUILDINGS_ARID = [
 	'gunpowdermill', 'apiary', 'beehive', 'barrelcooperage', 'brewery',
 	'candlemakersworkshop', 'sugarmill', 'cosmetics', 'weaver',
 	'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
-	'cannonfoundry', 'brickworks',
+	'cannonfoundry', 'brickworks', 'saltprocessor',
 
 	/* Farms */
 	'goatfarm', 'goatfield', 'cattlefarm', 'cattlefield', 'pigfarm',
@@ -136,7 +136,7 @@ civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
 	'mill', 'bakery', 'butcher',  'cookhouse', 'fisherman',
 
 	/* Mines */
-	'coppermine', 'goldmine', 'ironmine', 'saltmine', 'claymine', 'coalmine',
+	'coppermine', 'goldmine', 'ironmine', 'claymine', 'coalmine',
 
 	/* Smelters */
 	'goldsmelter', 'coppersmelter', 'ironsmelter',
@@ -149,7 +149,7 @@ civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
 	'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop', 'apiary',
 	'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop',
 	'sugarmill', 'cosmetics', 'weaver', 'clothingfactory', 'provisions',
-	'carpenter', 'catapultworkshop', 'cannonfoundry', 'brickworks',
+	'carpenter', 'catapultworkshop', 'cannonfoundry', 'brickworks', 'saltprocessor',
 
 	/* Farms */
 	'cattlefarm', 'cattlefield', 'grainfarm',
@@ -171,12 +171,12 @@ civitas.BUILDINGS_ALL = [
 	'pigfield', 'cattlefield', 'house1', 'house2', 'house3', 'house4',
 	'house5', 'house6', 'house7', 'datesfarm', 'datesfield', 'house8',
 	'house9', 'house10', 'house11', 'church', 'bakery', 'butcher',
-	'grainfarm', 'grainfield', 'ironsmelter', 'tannery', 'furrier', 'saltmine',
+	'grainfarm', 'grainfield', 'ironsmelter', 'tannery', 'furrier',
 	'coppermine', 'goldmine', 'goldsmelter', 'coppersmelter', 'armory',
 	'coffeefarm', 'coffeefield', 'cottonfarm', 'cottonfield', 'sugarfarm',
 	'spicefarm', 'spicefield', 'sugarfield', 'silkfarm', 'silkfield',
 	'coffeeroaster', 'quartzmine', 'grapesfarm', 'grapesfield', 'winery',
-	'carpenter', 'pottery', 'jeweler', 'toolmaker',
+	'carpenter', 'pottery', 'jeweler', 'toolmaker', 'saltprocessor',
 	'charcoalburnerhut', 'opticiansworkshop', 'papermill',
 	'printingpress', 'redsmithsworkshop', 'ropeyard', 'glassworks',
 	'provisions', 'silkweaver', 'gunpowdermill', 'goatfarm', 'goatfield',
@@ -232,7 +232,6 @@ civitas.BUILDINGS_CATEGORIES = {
 		'goldmine',
 		'ironmine',
 		'quartzmine',
-		'saltmine',
 		'stonequarry'
 	],
 	'Farms': [
@@ -286,6 +285,7 @@ civitas.BUILDINGS_CATEGORIES = {
 		'lumberjack',
 		'pottery',
 		'ropeyard',
+		'saltprocessor',
 		'trapper',
 		'tannery',
 		'toolmaker',
@@ -325,21 +325,21 @@ civitas.BUILDINGS = [{
 		name: 'Marketplace',
 		handle: 'marketplace',
 		description: 'The Marketplace is the main building of your settlement and provides a place for the settlers to gather. It cannot be demolished.',
-		storage: 100000,
+		storage: 50000,
 		is_production: true,
 		is_municipal: true,
 		levels: 5,
 		large: true,
 		visible_upgrades: true,
+		position: {
+			x: 1600,
+			y: 500
+		},
 		production: {
 			fame: 3
 		},
 		cost: {
 			coins: 100000
-		},
-		position: {
-			x: 1600,
-			y: 500
 		},
 		requires: {
 			settlement_level: 1
@@ -372,6 +372,12 @@ civitas.BUILDINGS = [{
 		description: 'A Church provides a massive fame boost to your settlement by using coins and converting them to fame, as well as providing faith for free. Faith allows you to choose a religion for your settlement.',
 		is_municipal: true,
 		is_production: true,
+		levels: 3,
+		large: true,
+		position: {
+			x: 1600,
+			y: 820
+		},
 		production: {
 			fame: 5,
 			faith: 1
@@ -379,12 +385,6 @@ civitas.BUILDINGS = [{
 		materials: {
 			coins: 50
 		},
-		large: true,
-		position: {
-			x: 1600,
-			y: 820
-		},
-		levels: 3,
 		cost: {
 			coins: 10000,
 			wood: 20,
@@ -400,7 +400,9 @@ civitas.BUILDINGS = [{
 		handle: 'tradingpost',
 		description: 'The Trading Post is a merchant building that allows you to trade resources with the other settlements in the world.',
 		is_municipal: true,
+		storage: 10000,
 		visible_upgrades: true,
+		levels: 5,
 		position: {
 			x: 2300,
 			y: 1370
@@ -411,7 +413,6 @@ civitas.BUILDINGS = [{
 			woodplanks: 40,
 			stones: 40
 		},
-		levels: 5,
 		requires: {
 			settlement_level: 4
 		}
@@ -423,6 +424,11 @@ civitas.BUILDINGS = [{
 		visible_upgrades: true,
 		large: true,
 		is_production: true,
+		levels: 5,
+		position: {
+			x: 1320,
+			y: 640
+		},
 		production: {
 			fame: 5,
 			research: 1
@@ -430,11 +436,6 @@ civitas.BUILDINGS = [{
 		materials: {
 			coins: 100
 		},
-		position: {
-			x: 1320,
-			y: 640
-		},
-		levels: 5,
 		cost: {
 			coins: 100000,
 			woodplanks: 1000,
@@ -451,6 +452,11 @@ civitas.BUILDINGS = [{
 		is_municipal: true,
 		is_production: true,
 		large: true,
+		levels: 3,
+		position: {
+			x: 1840,
+			y: 740
+		},
 		production: {
 			fame: 5,
 			espionage: 1
@@ -458,11 +464,6 @@ civitas.BUILDINGS = [{
 		materials: {
 			coins: 50
 		},
-		position: {
-			x: 1840,
-			y: 700
-		},
-		levels: 3,
 		cost: {
 			coins: 100000,
 			woodplanks: 100,
@@ -477,6 +478,11 @@ civitas.BUILDINGS = [{
 		handle: 'provisions',
 		description: 'The Provision House requires various goods to produce provisions for military units and expeditions.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 290,
+			y: 780
+		},
 		production: {
 			provisions: 2
 		},
@@ -487,11 +493,6 @@ civitas.BUILDINGS = [{
 			pottery: 1,
 			ropes: 1
 		},
-		position: {
-			x: 290,
-			y: 780
-		},
-		levels: 3,
 		cost: {
 			coins: 100000,
 			wood: 200,
@@ -508,15 +509,15 @@ civitas.BUILDINGS = [{
 		is_municipal: true,
 		is_special: true,
 		is_production: true,
-		materials: {
-			coins: 20,
-			meals: 1,
-		},
+		levels: 3,
 		position: {
 			x: 1920,
 			y: 550
 		},
-		levels: 3,
+		materials: {
+			coins: 20,
+			meals: 1,
+		},
 		cost: {
 			coins: 100000,
 			woodplanks: 200,
@@ -539,11 +540,11 @@ civitas.BUILDINGS = [{
 		description: 'The Shipyard helps you expand your settlement overseas by housing your ships and providing you with fish, oil and an ultra-small chance to gather pearls.',
 		is_production: true,
 		large: true,
+		levels: 5,
 		position: {
 			x: 2430,
 			y: 900
 		},
-		levels: 5,
 		chance: {
 			pearls: 0.005
 		},
@@ -567,17 +568,17 @@ civitas.BUILDINGS = [{
 		name: 'Barracks',
 		handle: 'barracks',
 		description: 'The Barracks is your main base of defense and attack. If you plan on going to war, you will need one. It also raises your settlement`s prestige.',
+		levels: 5,
+		visible_upgrades: true,
+		large: true,
+		is_production: true,
 		position: {
 			x: 1970,
 			y: 950
 		},
-		is_production: true,
 		production: {
 			prestige: 1
 		},
-		levels: 5,
-		visible_upgrades: true,
-		large: true,
 		cost: {
 			coins: 50000,
 			wood: 200,
@@ -598,14 +599,14 @@ civitas.BUILDINGS = [{
 		is_production: true,
 		is_municipal: true,
 		large: true,
+		levels: 2,
+		position: {
+			x: 700,
+			y: 1200
+		},
 		production: {
 			fame: 100,
 			prestige: 1
-		},
-		levels: 2,
-		position: {
-			x: 2300,
-			y: 660
 		},
 		materials: {
 			coins: 200
@@ -631,13 +632,13 @@ civitas.BUILDINGS = [{
 		handle: 'lumberjack',
 		description: 'A Lumberjack provides you with wood which you can use for creating additional buildings, resources or sell to other settlements.',
 		is_production: true,
-		production: {
-			wood: 4
-		},
 		levels: 5,
 		position: {
 			x: 1840,
 			y: 340
+		},
+		production: {
+			wood: 4
 		},
 		cost: {
 			coins: 2000,
@@ -652,16 +653,16 @@ civitas.BUILDINGS = [{
 		description: 'The Carpenter processes the wood from the Lumberjack into wood planks that are required for more advanced buildings.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 2060,
+			y: 460
+		},
 		materials: {
 			wood: 2
 		},
 		production: {
 			woodplanks: 2
-		},
-		levels: 5,
-		position: {
-			x: 2060,
-			y: 460
 		},
 		cost: {
 			coins: 5000,
@@ -677,14 +678,14 @@ civitas.BUILDINGS = [{
 		description: 'A Stone Quarry produces stone blocks that are essential for the construction of any settlement`s buildings.',
 		is_production: true,
 		visible_upgrades: true,
-		production: {
-			stones: 1
-		},
+		levels: 6,
 		position: {
 			x: 930,
 			y: 290
 		},
-		levels: 6,
+		production: {
+			stones: 1
+		},
 		cost: {
 			coins: 2000,
 			wood: 20
@@ -703,14 +704,14 @@ civitas.BUILDINGS = [{
 		description: 'The Gold Mine extracts gold ore, that can be smelted later into gold bars.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1010,
+			y: 200
+		},
 		production: {
 			goldore: 3
 		},
-		position: {
-			x: 1060,
-			y: 240
-		},
-		levels: 5,
 		chance: {
 			gems: 0.0004,
 			diamonds: 0.0004
@@ -729,14 +730,14 @@ civitas.BUILDINGS = [{
 		description: 'The Coal Mine extracts coal from the mountains you own (provided you own some).',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1180,
+			y: 240
+		},
 		production: {
 			coal: 4
 		},
-		position: {
-			x: 1140,
-			y: 300
-		},
-		levels: 5,
 		chance: {
 			gems: 0.0001,
 			diamonds: 0.0001
@@ -755,14 +756,14 @@ civitas.BUILDINGS = [{
 		description: 'The Iron Mine extracts iron ore, that can be smelted later into iron bars.',
 		is_production: true,
 		visible_upgrades: true,
-		production: {
-			ironore: 3
-		},
+		levels: 5,
 		position: {
 			x: 380,
 			y: 620
 		},
-		levels: 5,
+		production: {
+			ironore: 3
+		},
 		chance: {
 			gems: 0.0002,
 			diamonds: 0.0002
@@ -777,18 +778,18 @@ civitas.BUILDINGS = [{
 		}
 	}, {
 		name: 'Salt Processor',
-		handle: 'saltmine',
+		handle: 'saltprocessor',
 		description: 'A Salt Processor processes seawater and retrieves salt.',
 		is_production: true,
 		visible_upgrades: true,
-		production: {
-			salt: 3
-		},
+		levels: 5,
 		position: {
 			x: 500,
 			y: 540
 		},
-		levels: 5,
+		production: {
+			salt: 3
+		},
 		cost: {
 			coins: 8000,
 			wood: 20,
@@ -802,14 +803,14 @@ civitas.BUILDINGS = [{
 		handle: 'claymine',
 		description: 'The Clay Mine produces clay which is required later for bricks and pottery.',
 		is_production: true,
-		production: {
-			clay: 2
-		},
+		levels: 5,
 		position: {
 			x: 2900,
 			y: 800
 		},
-		levels: 5,
+		production: {
+			clay: 2
+		},
 		cost: {
 			coins: 5000,
 			wood: 20,
@@ -828,14 +829,14 @@ civitas.BUILDINGS = [{
 		description: 'The copper mine extracts copper ore, that can be smelted later into copper bars.',
 		is_production: true,
 		visible_upgrades: true,
-		production: {
-			copperore: 3
-		},
+		levels: 5,
 		position: {
 			x: 1310,
 			y: 110
 		},
-		levels: 5,
+		production: {
+			copperore: 3
+		},
 		chance: {
 			gems: 0.0001,
 			diamonds: 0.0002
@@ -854,16 +855,16 @@ civitas.BUILDINGS = [{
 		description: 'The Flour Mill produces flour from the wheat cultivated by your Grain Farm.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1360,
+			y: 1180
+		},
 		production: {
 			flour: 2
 		},
 		materials: {
 			wheat: 2
-		},
-		levels: 5,
-		position: {
-			x: 1360,
-			y: 1180
 		},
 		cost: {
 			coins: 10000,
@@ -879,17 +880,17 @@ civitas.BUILDINGS = [{
 		description: 'The Bakery creates bread from flour, therefore providing your settlers with basic food.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 550,
+			y: 910
+		},
 		production: {
 			bread: 3
 		},
 		materials: {
 			flour: 2
 		},
-		position: {
-			x: 550,
-			y: 910
-		},
-		levels: 5,
 		cost: {
 			coins: 15000,
 			woodplanks: 30,
@@ -903,17 +904,17 @@ civitas.BUILDINGS = [{
 		handle: 'pottery',
 		description: 'The Pottery Workshop uses a high-temperature kiln and clay to create pottery for the inhabitants of your settlement.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1740,
+			y: 1240
+		},
 		production: {
 			pottery: 4
 		},
 		materials: {
 			clay: 3
 		},
-		position: {
-			x: 1740,
-			y: 1240
-		},
-		levels: 3,
 		cost: {
 			coins: 30000,
 			woodplanks: 30,
@@ -928,17 +929,17 @@ civitas.BUILDINGS = [{
 		handle: 'gunpowdermill',
 		description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder from the sulphur found in your Charcoal Burner`s Hut.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 500,
+			y: 1370
+		},
 		production: {
 			gunpowder: 1
 		},
 		materials: {
 			sulphur: 10
 		},
-		position: {
-			x: 840,
-			y: 1220
-		},
-		levels: 3,
 		cost: {
 			coins: 30000,
 			woodplanks: 30,
@@ -956,6 +957,11 @@ civitas.BUILDINGS = [{
 		description: 'The Armory is a major building that produces weapons and armor for your soldiers. If you want to conquer other settlements, you will need to build one and keep it stocked with materials.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1820,
+			y: 180
+		},
 		production: {
 			weapons: 1,
 			armor: 1
@@ -966,11 +972,6 @@ civitas.BUILDINGS = [{
 			leather: 8,
 			copper: 4
 		},
-		position: {
-			x: 1820,
-			y: 180
-		},
-		levels: 5,
 		cost: {
 			coins: 50000,
 			woodplanks: 100,
@@ -986,6 +987,11 @@ civitas.BUILDINGS = [{
 		description: 'The Butcher slaughters cattle, pigs or goats for meat, providing meat, a food type that is more nutritious. Hides will be processed further at the Tannery.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 420,
+			y: 850
+		},
 		production: {
 			meat: 3,
 			hides: 2,
@@ -1000,11 +1006,6 @@ civitas.BUILDINGS = [{
 				salt: 1
 			}
 		],
-		position: {
-			x: 420,
-			y: 850
-		},
-		levels: 5,
 		cost: {
 			coins: 20000,
 			woodplanks: 40,
@@ -1019,6 +1020,11 @@ civitas.BUILDINGS = [{
 		description: 'The Iron Smelter (or foundry) smelts iron ore into iron bars using coal.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1140,
+			y: 100
+		},
 		production: {
 			iron: 4
 		},
@@ -1029,11 +1035,6 @@ civitas.BUILDINGS = [{
 		chance: {
 			steel: 0.05
 		},
-		position: {
-			x: 1180,
-			y: 170
-		},
-		levels: 5,
 		cost: {
 			coins: 30000,
 			woodplanks: 40,
@@ -1048,6 +1049,11 @@ civitas.BUILDINGS = [{
 		description: 'The Copper Smelter smelts copper ore into copper bars using coal.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1480,
+			y: 150
+		},
 		production: {
 			copper: 2
 		},
@@ -1055,11 +1061,6 @@ civitas.BUILDINGS = [{
 			copperore: 4,
 			coal: 1
 		},
-		position: {
-			x: 1480,
-			y: 150
-		},
-		levels: 5,
 		cost: {
 			coins: 40000,
 			woodplanks: 50,
@@ -1074,6 +1075,11 @@ civitas.BUILDINGS = [{
 		description: 'The Gold Smelter smelts gold ore into gold bars using coal.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1680,
+			y: 230
+		},
 		production: {
 			gold: 1
 		},
@@ -1081,11 +1087,6 @@ civitas.BUILDINGS = [{
 			goldore: 4,
 			coal: 1
 		},
-		position: {
-			x: 1680,
-			y: 230
-		},
-		levels: 5,
 		cost: {
 			coins: 40000,
 			woodplanks: 55,
@@ -1101,15 +1102,15 @@ civitas.BUILDINGS = [{
 		description: 'The trapper captures wild animals and slaughters them, gathering their furs and some meat.',
 		is_production: true,
 		visible_upgrades: true,
-		production: {
-			furs: 2,
-			meat: 1
-		},
+		levels: 5,
 		position: {
 			x: 790,
 			y: 410
 		},
-		levels: 5,
+		production: {
+			furs: 2,
+			meat: 1
+		},
 		cost: {
 			coins: 15000,
 			wood: 40,
@@ -1123,6 +1124,11 @@ civitas.BUILDINGS = [{
 		handle: 'furrier',
 		description: 'The furrier uses furs from the Trapper`s Lodge mixed with salt and processes them into fur coats that will help your settlers during the cold winters.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1640,
+			y: 1140
+		},
 		production: {
 			furcoats: 1
 		},
@@ -1130,11 +1136,6 @@ civitas.BUILDINGS = [{
 			furs: 2,
 			salt: 2
 		},
-		position: {
-			x: 1640,
-			y: 1140
-		},
-		levels: 3,
 		cost: {
 			coins: 15000,
 			woodplanks: 30,
@@ -1148,17 +1149,17 @@ civitas.BUILDINGS = [{
 		handle: 'clothingfactory',
 		description: 'The Clothing Factory produces clothes for your settlement. You don`t want naked citizens, do you?',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1580,
+			y: 1280
+		},
 		production: {
 			clothes: 1
 		},
 		materials: {
 			cottonfabric: 2
 		},
-		position: {
-			x: 1580,
-			y: 1280
-		},
-		levels: 3,
 		cost: {
 			coins: 15000,
 			wood: 40,
@@ -1174,17 +1175,17 @@ civitas.BUILDINGS = [{
 		description: 'The weaver uses a hefty amount of cotton to produce cotton fabric for your settlers` clothes.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1230,
+			y: 1250
+		},
 		production: {
 			cottonfabric: 2
 		},
 		materials: {
 			cotton: 4
 		},
-		position: {
-			x: 1230,
-			y: 1250
-		},
-		levels: 5,
 		cost: {
 			coins: 10000,
 			wood: 30,
@@ -1199,17 +1200,17 @@ civitas.BUILDINGS = [{
 		description: 'The Tannery produces leather from processed animal hides.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 930,
+			y: 1110
+		},
 		production: {
 			leather: 2
 		},
 		materials: {
 			hides: 4,
 			salt: 1
-		},
-		levels: 5,
-		position: {
-			x: 930,
-			y: 1110
 		},
 		cost: {
 			coins: 20000,
@@ -1224,17 +1225,17 @@ civitas.BUILDINGS = [{
 		handle: 'coffeeroaster',
 		description: 'The Coffee Roaster uses the coffee beans from your Coffee Farm and processes them into coffee.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 2150,
+			y: 1430
+		},
 		production: {
 			coffee: 1
 		},
 		materials: {
 			coffeebeans: 4
 		},
-		position: {
-			x: 2150,
-			y: 1430
-		},
-		levels: 3,
 		cost: {
 			coins: 70000,
 			woodplanks: 80,
@@ -1254,17 +1255,17 @@ civitas.BUILDINGS = [{
 		description: 'The Sugar Mill processes any sugar cane you have in storage into sugar.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 2700,
+			y: 880
+		},
 		production: {
 			sugar: 1
 		},
 		materials: {
 			sugarcane: 4
 		},
-		position: {
-			x: 2700,
-			y: 880
-		},
-		levels: 5,
 		cost: {
 			coins: 70000,
 			woodplanks: 80,
@@ -1283,6 +1284,11 @@ civitas.BUILDINGS = [{
 		handle: 'winery',
 		description: 'The Winery uses the grapes from your Grapes Farm and processes them into wine. It uses either barrels or bottles, depending on what you have in storage.',
 		is_production: true,
+		levels: 5,
+		position: {
+			x: 2520,
+			y: 510
+		},
 		production: {
 			wine: 2
 		},
@@ -1297,11 +1303,6 @@ civitas.BUILDINGS = [{
 		chance: {
 			alcohol: 0.01
 		},
-		position: {
-			x: 2520,
-			y: 510
-		},
-		levels: 5,
 		cost: {
 			coins: 50000,
 			wood: 50,
@@ -1317,6 +1318,11 @@ civitas.BUILDINGS = [{
 		handle: 'opticiansworkshop',
 		description: 'The optician uses copper and glass to create glasses for your settlers.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1280,
+			y: 330
+		},
 		production: {
 			glasses: 1
 		},
@@ -1324,11 +1330,6 @@ civitas.BUILDINGS = [{
 			copper: 2,
 			glass: 2
 		},
-		position: {
-			x: 1280,
-			y: 330
-		},
-		levels: 3,
 		cost: {
 			coins: 81000,
 			woodplanks: 70,
@@ -1345,17 +1346,17 @@ civitas.BUILDINGS = [{
 		description: 'The Paper Mill uses wood to produce paper, which is used together with indigo to produce books at the Printing House.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1080,
+			y: 340
+		},
 		production: {
 			paper: 2
 		},
 		materials: {
 			wood: 1
 		},
-		position: {
-			x: 1050,
-			y: 370
-		},
-		levels: 5,
 		cost: {
 			coins: 83000,
 			woodplanks: 60,
@@ -1372,6 +1373,11 @@ civitas.BUILDINGS = [{
 		description: 'The Printing Press produces books from paper using indigo ink.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1540,
+			y: 430
+		},
 		production: {
 			books: 1
 		},
@@ -1379,11 +1385,6 @@ civitas.BUILDINGS = [{
 			paper: 4,
 			indigo: 1
 		},
-		position: {
-			x: 1540,
-			y: 430
-		},
-		levels: 5,
 		cost: {
 			coins: 84000,
 			woodplanks: 100,
@@ -1399,6 +1400,11 @@ civitas.BUILDINGS = [{
 		handle: 'cosmetics',
 		description: 'The Cosmetics manufacturer produces soap and perfume.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1500,
+			y: 1170
+		},
 		production: {
 			perfume: 1,
 			soap: 1
@@ -1410,11 +1416,6 @@ civitas.BUILDINGS = [{
 			cocoa: 1,
 			alcohol: 1
 		},
-		position: {
-			x: 1500,
-			y: 1170
-		},
-		levels: 3,
 		cost: {
 			coins: 90000,
 			woodplanks: 80,
@@ -1434,6 +1435,11 @@ civitas.BUILDINGS = [{
 		description: 'The Redsmith`s Workshop processes copper and candles into candlesticks.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 520,
+			y: 720
+		},
 		production: {
 			candlesticks: 1
 		},
@@ -1441,11 +1447,6 @@ civitas.BUILDINGS = [{
 			copper: 3,
 			candles: 2
 		},
-		position: {
-			x: 520,
-			y: 720
-		},
-		levels: 5,
 		cost: {
 			coins: 75000,
 			wood: 70,
@@ -1461,17 +1462,17 @@ civitas.BUILDINGS = [{
 		handle: 'ropeyard',
 		description: 'The Ropeyard produces ropes that are needed for your city`s ships.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 3000,
+			y: 1030
+		},
 		production: {
 			ropes: 1
 		},
 		materials: {
 			cotton: 2
 		},
-		position: {
-			x: 3000,
-			y: 1030
-		},
-		levels: 3,
 		cost: {
 			coins: 15000,
 			wood: 70,
@@ -1486,6 +1487,11 @@ civitas.BUILDINGS = [{
 		handle: 'glassworks',
 		description: 'The Glassworks processes quartz, sand and coal into glass.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1400,
+			y: 1320
+		},
 		production: {
 			glass: 1
 		},
@@ -1497,11 +1503,6 @@ civitas.BUILDINGS = [{
 		chance: {
 			bottles: 0.2
 		},
-		position: {
-			x: 1400,
-			y: 1320
-		},
-		levels: 3,
 		cost: {
 			coins: 50000,
 			wood: 50,
@@ -1516,6 +1517,11 @@ civitas.BUILDINGS = [{
 		handle: 'carpetmanufacturer',
 		description: 'The Carpet Mill produces carpets.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 2020,
+			y: 1370
+		},
 		production: {
 			carpets: 1
 		},
@@ -1523,11 +1529,6 @@ civitas.BUILDINGS = [{
 			cottonfabric: 4,
 			indigo: 2
 		},
-		position: {
-			x: 2020,
-			y: 1370
-		},
-		levels: 3,
 		cost: {
 			coins: 50000,
 			wood: 50,
@@ -1546,6 +1547,11 @@ civitas.BUILDINGS = [{
 		handle: 'marzipanworkshop',
 		description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage to create delicious marzipan. Your settlers will definitely appreciate it.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1090,
+			y: 850
+		},
 		production: {
 			marzipan: 1
 		},
@@ -1554,11 +1560,6 @@ civitas.BUILDINGS = [{
 			sugar: 2,
 			milk: 4
 		},
-		position: {
-			x: 1090,
-			y: 850
-		},
-		levels: 3,
 		cost: {
 			coins: 50000,
 			wood: 50,
@@ -1577,6 +1578,11 @@ civitas.BUILDINGS = [{
 		handle: 'silkweaver',
 		description: 'The Silk Weaver requires cotton, gold and silk and produces brocade robes.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1220,
+			y: 970
+		},
 		production: {
 			robes: 1
 		},
@@ -1585,11 +1591,6 @@ civitas.BUILDINGS = [{
 			cotton: 1,
 			gold: 2
 		},
-		position: {
-			x: 1220,
-			y: 970
-		},
-		levels: 3,
 		cost: {
 			coins: 50000,
 			wood: 50,
@@ -1608,14 +1609,14 @@ civitas.BUILDINGS = [{
 		handle: 'quartzmine',
 		description: 'The Quartz Mine provides your city with quartz.',
 		is_production: true,
-		production: {
-			quartz: 2
-		},
+		levels: 3,
 		position: {
 			x: 700,
 			y: 710
 		},
-		levels: 3,
+		production: {
+			quartz: 2
+		},
 		cost: {
 			coins: 40000,
 			wood: 50,
@@ -1630,15 +1631,15 @@ civitas.BUILDINGS = [{
 		handle: 'apiary',
 		description: 'The Apiary produces honey and bees wax for use in candles.',
 		is_production: true,
-		production: {
-			wax: 2,
-			honey: 1
-		},
+		levels: 3,
 		position: {
 			x: 1140,
 			y: 1150
 		},
-		levels: 3,
+		production: {
+			wax: 2,
+			honey: 1
+		},
 		cost: {
 			coins: 40000,
 			wood: 50,
@@ -1672,6 +1673,11 @@ civitas.BUILDINGS = [{
 		handle: 'barrelcooperage',
 		description: 'The Barrel Cooperage creates barrels from wood and iron.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 910,
+			y: 430
+		},
 		production: {
 			barrels: 2
 		},
@@ -1679,11 +1685,6 @@ civitas.BUILDINGS = [{
 			wood: 3,
 			iron: 1
 		},
-		position: {
-			x: 910,
-			y: 430
-		},
-		levels: 3,
 		cost: {
 			coins: 25000,
 			wood: 80,
@@ -1699,6 +1700,11 @@ civitas.BUILDINGS = [{
 		description: 'The Brewery brews beer from wheat. Beer is needed for higher-level houses or your city`s navy.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 650,
+			y: 1120
+		},
 		production: {
 			beer: 1
 		},
@@ -1706,14 +1712,9 @@ civitas.BUILDINGS = [{
 			barrels: 1,
 			wheat: 2
 		},
-		position: {
-			x: 800,
-			y: 1050
-		},
 		chance: {
 			alcohol: 0.01
 		},
-		levels: 5,
 		cost: {
 			coins: 25000,
 			wood: 60,
@@ -1728,6 +1729,11 @@ civitas.BUILDINGS = [{
 		description: 'The Candlemaker Hut produces candles for your settlers` houses.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 640,
+			y: 480
+		},
 		production: {
 			candles: 1
 		},
@@ -1735,11 +1741,6 @@ civitas.BUILDINGS = [{
 			wax: 2,
 			cotton: 1
 		},
-		position: {
-			x: 640,
-			y: 480
-		},
-		levels: 5,
 		cost: {
 			coins: 45000,
 			woodplanks: 80,
@@ -1755,6 +1756,11 @@ civitas.BUILDINGS = [{
 		handle: 'catapultworkshop',
 		description: 'The Catapult Workshop builds catapults, the ultimate siege weapon.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1400,
+			y: 1050
+		},
 		production: {
 			catapults: 1
 		},
@@ -1767,11 +1773,6 @@ civitas.BUILDINGS = [{
 			woodplanks: 40,
 			ropes: 10
 		},
-		position: {
-			x: 1400,
-			y: 1050
-		},
-		levels: 3,
 		cost: {
 			coins: 250000,
 			woodplanks: 200,
@@ -1788,6 +1789,11 @@ civitas.BUILDINGS = [{
 		description: 'The Cannon Foundry is responsable with the manufacture of the city cannons.',
 		is_production: true,
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 760,
+			y: 560
+		},
 		production: {
 			cannons: 1
 		},
@@ -1801,11 +1807,6 @@ civitas.BUILDINGS = [{
 			ropes: 2,
 			gunpowder: 6
 		},
-		position: {
-			x: 760,
-			y: 560
-		},
-		levels: 5,
 		cost: {
 			coins: 200000,
 			woodplanks: 200,
@@ -1821,6 +1822,11 @@ civitas.BUILDINGS = [{
 		handle: 'charcoalburnerhut',
 		description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which is needed by all your smelters.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1370,
+			y: 230
+		},
 		production: {
 			coal: 4,
 			sulphur: 1
@@ -1828,11 +1834,6 @@ civitas.BUILDINGS = [{
 		materials: {
 			wood: 2
 		},
-		position: {
-			x: 1370,
-			y: 230
-		},
-		levels: 3,
 		cost: {
 			coins: 15000,
 			wood: 50,
@@ -1847,6 +1848,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 5,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1200,
+			y: 770
+		},
 		cost: {
 			wood: 10,
 			coins: 1000
@@ -1854,12 +1861,6 @@ civitas.BUILDINGS = [{
 		materials: {
 			bread: 1
 		},
-		position: {
-			x: 1200,
-			y: 770
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 1
 		}
@@ -1869,6 +1870,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 10,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1080,
+			y: 680
+		},
 		cost: {
 			wood: 10,
 			coins: 2000
@@ -1876,12 +1883,6 @@ civitas.BUILDINGS = [{
 		materials: {
 			bread: 1
 		},
-		position: {
-			x: 1080,
-			y: 680
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 1
 		}
@@ -1891,6 +1892,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 15,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 960,
+			y: 590
+		},
 		cost: {
 			woodplanks: 10,
 			stones: 20,
@@ -1900,12 +1907,6 @@ civitas.BUILDINGS = [{
 			bread: 1,
 			meat: 1
 		},
-		position: {
-			x: 960,
-			y: 590
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 3
 		}
@@ -1915,6 +1916,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 20,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1200,
+			y: 580
+		},
 		cost: {
 			woodplanks: 10,
 			stones: 20,
@@ -1925,12 +1932,6 @@ civitas.BUILDINGS = [{
 			meat: 1,
 			pottery: 1
 		},
-		position: {
-			x: 1200,
-			y: 580
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 6,
 			buildings: {
@@ -1943,6 +1944,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 25,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1080,
+			y: 500
+		},
 		cost: {
 			woodplanks: 25,
 			stones: 35,
@@ -1954,12 +1961,6 @@ civitas.BUILDINGS = [{
 			pottery: 1,
 			beer: 1
 		},
-		position: {
-			x: 1080,
-			y: 500
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 10,
 			buildings: {
@@ -1972,6 +1973,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 30,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1300,
+			y: 840
+		},
 		cost: {
 			woodplanks: 30,
 			stones: 45,
@@ -1982,12 +1989,6 @@ civitas.BUILDINGS = [{
 			meals: 1,
 			pottery: 1
 		},
-		position: {
-			x: 1300,
-			y: 840
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 16,
 			buildings: {
@@ -2000,6 +2001,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 35,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1470,
+			y: 780
+		},
 		cost: {
 			woodplanks: 40,
 			stones: 80,
@@ -2011,12 +2018,6 @@ civitas.BUILDINGS = [{
 			pottery: 1,
 			candlesticks: 1
 		},
-		position: {
-			x: 1470,
-			y: 780
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 20,
 			buildings: {
@@ -2029,6 +2030,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 40,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1700,
+			y: 390
+		},
 		cost: {
 			woodplanks: 50,
 			stones: 100,
@@ -2042,12 +2049,6 @@ civitas.BUILDINGS = [{
 			candlesticks: 1,
 			furcoats: 1
 		},
-		position: {
-			x: 1700,
-			y: 390
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 25,
 			buildings: {
@@ -2060,6 +2061,12 @@ civitas.BUILDINGS = [{
 		description: 'Houses provide coins through taxes and space for your settlers.',
 		is_housing: true,
 		tax: 50,
+		levels: 6,
+		visible_upgrades: true,
+		position: {
+			x: 1840,
+			y: 480
+		},
 		cost: {
 			woodplanks: 100,
 			stones: 200,
@@ -2075,12 +2082,6 @@ civitas.BUILDINGS = [{
 			perfume: 1,
 			soap: 1
 		},
-		position: {
-			x: 1840,
-			y: 480
-		},
-		levels: 6,
-		visible_upgrades: true,
 		requires: {
 			settlement_level: 30,
 			buildings: {
@@ -2168,7 +2169,7 @@ civitas.BUILDINGS = [{
 		},
 		levels: 3,
 		position: {
-			x: 2160,
+			x: 2480,
 			y: 770
 		},
 		cost: {
@@ -2187,7 +2188,7 @@ civitas.BUILDINGS = [{
 		handle: 'datesfield',
 		description: 'An Dates Field is required for the Dates Farm to operate.',
 		position: {
-			x: 2040,
+			x: 2380,
 			y: 660
 		},
 		cost: {
@@ -2243,6 +2244,12 @@ civitas.BUILDINGS = [{
 		handle: 'cattlefarm',
 		description: 'A Cattle Farm grows cattle so your settlers can eat food that is more nutritious than bread. Also produces milk and has a low chance for producing cheese.',
 		is_production: true,
+		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1510,
+			y: 1470
+		},
 		production: {
 			cattle: 1,
 			milk: 1
@@ -2250,13 +2257,8 @@ civitas.BUILDINGS = [{
 		chance: {
 			cheese: 0.01
 		},
-		levels: 3,
 		materials: {
 			herbs: 2
-		},
-		position: {
-			x: 1510,
-			y: 1470
 		},
 		cost: {
 			coins: 10000,
@@ -2436,13 +2438,13 @@ civitas.BUILDINGS = [{
 		handle: 'grapesfarm',
 		description: 'A Grapes Farm provides your city with grapes for wine processing.',
 		is_production: true,
-		production: {
-			grapes: 2
-		},
 		levels: 3,
 		position: {
 			x: 2380,
 			y: 460
+		},
+		production: {
+			grapes: 2
 		},
 		cost: {
 			coins: 15000,
@@ -2476,14 +2478,14 @@ civitas.BUILDINGS = [{
 		handle: 'coffeefarm',
 		description: 'A Coffee Farm cultivates coffee beans in your city, ready to be processed into coffee.',
 		is_production: true,
-		production: {
-			coffeebeans: 2,
-			herbs: 1
-		},
 		levels: 3,
 		position: {
 			x: 1840,
 			y: 1000
+		},
+		production: {
+			coffeebeans: 2,
+			herbs: 1
 		},
 		cost: {
 			coins: 60000,
@@ -2517,13 +2519,13 @@ civitas.BUILDINGS = [{
 		handle: 'cottonfarm',
 		description: 'A Cotton Farm provides your city with cotton.',
 		is_production: true,
-		production: {
-			cotton: 3
-		},
 		levels: 3,
 		position: {
 			x: 1870,
 			y: 1590
+		},
+		production: {
+			cotton: 3
 		},
 		cost: {
 			coins: 20000,
@@ -2559,13 +2561,13 @@ civitas.BUILDINGS = [{
 		handle: 'silkfarm',
 		description: 'A Silk Farm provides your city with silk.',
 		is_production: true,
-		production: {
-			silk: 1
-		},
 		levels: 3,
 		position: {
 			x: 1450,
 			y: 340
+		},
+		production: {
+			silk: 1
 		},
 		cost: {
 			coins: 80000,
@@ -2601,14 +2603,14 @@ civitas.BUILDINGS = [{
 		handle: 'sugarfarm',
 		description: 'A Sugar Cane Farm provides your city with sugar cane.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 2280,
+			y: 780
+		},
 		production: {
 			sugarcane: 2,
 			herbs: 1
-		},
-		levels: 3,
-		position: {
-			x: 1840,
-			y: 870
 		},
 		cost: {
 			coins: 100000,
@@ -2627,8 +2629,8 @@ civitas.BUILDINGS = [{
 		handle: 'sugarfield',
 		description: 'A Sugar Field is required for the Sugar Farm to operate.',
 		position: {
-			x: 1980,
-			y: 810
+			x: 2100,
+			y: 720
 		},
 		cost: {
 			coins: 10000,
@@ -2644,14 +2646,14 @@ civitas.BUILDINGS = [{
 		is_production: true,
 		visible_upgrades: true,
 		description: 'The Indigo Farm produces indigo that can be turned to ink and used to create books.',
-		production: {
-			indigo: 1,
-			herbs: 1
-		},
 		levels: 5,
 		position: {
 			x: 2440,
 			y: 1440
+		},
+		production: {
+			indigo: 1,
+			herbs: 1
 		},
 		cost: {
 			coins: 200000,
@@ -2686,16 +2688,16 @@ civitas.BUILDINGS = [{
 		handle: 'tobaccofarm',
 		is_production: true,
 		description: 'A Tobacco Farm produces cigars from tobacco.',
+		levels: 3,
+		position: {
+			x: 1750,
+			y: 1500
+		},
 		production: {
 			cigars: 1
 		},
 		materials: {
 			tobacco: 2
-		},
-		levels: 3,
-		position: {
-			x: 1750,
-			y: 1500
 		},
 		cost: {
 			coins: 200000,
@@ -2734,14 +2736,14 @@ civitas.BUILDINGS = [{
 		handle: 'rosenursery',
 		is_production: true,
 		description: 'The Rose Farm produces roses which are needed to manufacture perfume.',
-		production: {
-			roses: 1,
-			herbs: 1
-		},
 		levels: 3,
 		position: {
 			x: 2780,
 			y: 670
+		},
+		production: {
+			roses: 1,
+			herbs: 1
 		},
 		cost: {
 			coins: 20000,
@@ -2779,14 +2781,14 @@ civitas.BUILDINGS = [{
 		handle: 'spicefarm',
 		is_production: true,
 		description: 'The Spice Farm is responsable for the production of spices.',
-		production: {
-			spices: 1,
-			herbs: 1
-		},
 		levels: 3,
 		position: {
 			x: 1500,
 			y: 970
+		},
+		production: {
+			spices: 1,
+			herbs: 1
 		},
 		cost: {
 			coins: 200000,
@@ -2823,6 +2825,11 @@ civitas.BUILDINGS = [{
 		is_production: true,
 		description: 'Tools are needed to construct higher-level buildings, and a Toolmaker Workshop will create those for your settlement.',
 		visible_upgrades: true,
+		levels: 5,
+		position: {
+			x: 1640,
+			y: 110
+		},
 		production: {
 			tools: 2
 		},
@@ -2831,11 +2838,6 @@ civitas.BUILDINGS = [{
 			iron: 1,
 			coal: 1,
 			copper: 1
-		},
-		levels: 5,
-		position: {
-			x: 1640,
-			y: 110
 		},
 		cost: {
 			coins: 30000,
@@ -2851,16 +2853,16 @@ civitas.BUILDINGS = [{
 		handle: 'jeweler',
 		is_production: true,
 		description: 'The Jeweler processes pearls into jewelery for your settlers (and traders).',
+		levels: 3,
+		position: {
+			x: 1780,
+			y: 1350
+		},
 		production: {
 			jewelery: 1
 		},
 		materials: {
 			pearls: 10
-		},
-		levels: 3,
-		position: {
-			x: 1780,
-			y: 1350
 		},
 		cost: {
 			coins: 55000,
@@ -2877,6 +2879,11 @@ civitas.BUILDINGS = [{
 		handle: 'brickworks',
 		description: 'The Brickworks uses coal and clay to manufacture bricks, needed for higher-level buildings in your settlement.',
 		is_production: true,
+		levels: 5,
+		position: {
+			x: 620,
+			y: 640
+		},
 		production: {
 			bricks: 2
 		},
@@ -2884,11 +2891,6 @@ civitas.BUILDINGS = [{
 			clay: 3,
 			coal: 1
 		},
-		position: {
-			x: 620,
-			y: 640
-		},
-		levels: 5,
 		cost: {
 			coins: 10000,
 			wood: 20,
@@ -2906,6 +2908,11 @@ civitas.BUILDINGS = [{
 		handle: 'cookhouse',
 		description: 'The Cookhouse makes meals for your houses, army, navy and expeditions.',
 		is_production: true,
+		levels: 3,
+		position: {
+			x: 1020,
+			y: 970
+		},
 		production: {
 			meals: 2
 		},
@@ -2915,11 +2922,6 @@ civitas.BUILDINGS = [{
 			fish: 2,
 			wine: 1
 		},
-		position: {
-			x: 1020,
-			y: 970
-		},
-		levels: 3,
 		cost: {
 			coins: 20000,
 			wood: 100,
@@ -2936,9 +2938,7 @@ civitas.BUILDINGS = [{
 		description: 'The fisherman reels in fish from the waters surrounding your settlement.',
 		is_production: true,
 		visible_upgrades: true,
-		production: {
-			fish: 1
-		},
+		levels: 5,
 		position: {
 			x: 2830,
 			y: 970
@@ -2946,7 +2946,9 @@ civitas.BUILDINGS = [{
 		chance: {
 			pearls: 0.003
 		},
-		levels: 5,
+		production: {
+			fish: 1
+		},
 		cost: {
 			coins: 15000,
 			wood: 100,
