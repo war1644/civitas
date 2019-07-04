@@ -236,7 +236,7 @@ input[type=range]::-moz-range-thumb {
 input[type=number].small,
 input[type=password].small,
 input[type=text].small {
-	width: 50px;
+	width: 70px;
 }
 
 input[type=text],
@@ -870,7 +870,7 @@ img.small {
 }
 
 .ui .panel section .buildings.left {
-	width: 510px;
+	width: 630px;
 	float: left;
 	position: relative;
 }
@@ -1095,8 +1095,8 @@ img.small {
 /* World Trades panel */
 
 #panel-trades {
-	width: 700px;
-	max-width: 700px;
+	width: 800px;
+	max-width: 800px;
 	max-height: 500px;
 	height: auto;
 }
@@ -1320,13 +1320,14 @@ aside .panel .column {
 aside .panel .column:last-of-type {
 	margin-left: 0 !important;
 }
+
 /* City Builder panel */
 
 #panel-buildings {
-	max-width: 1070px;
-	max-height: 640px;
+	max-width: 1190px;
+	max-height: 630px;
 	height: auto;
-	width: 510px;
+	width: 630px;
 }
 
 #panel-buildings .b-desc {
@@ -1334,7 +1335,7 @@ aside .panel .column:last-of-type {
 }
 
 #panel-buildings.expanded {
-	width: 960px !important;
+	width: 1080px !important;
 }
 
 #panel-buildings .building-item .building-info .btn {
@@ -1347,7 +1348,8 @@ aside .panel .column:last-of-type {
 }
 
 #panel-buildings .building-item {
-	width: 120px;
+	width: 150px;
+	height: 150px;
 	float: left;
 	text-align: center;
 	margin: 0 10px 10px 0;
@@ -1388,8 +1390,7 @@ aside .panel .column:last-of-type {
 }
 
 #panel-buildings .building-item img.building {
-	width: 100px;
-	height: 89px;
+	width: 130px;
 }
 
 #panel-settlement .pact,

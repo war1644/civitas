@@ -125,6 +125,7 @@ civitas.objects.world = function (params) {
 	this._adjust = function() {
 		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
 			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
+				this._data[y][x].e = this._data[y][x].e.toFixed(3);
 				if (this._data[y][x].e < 0) {
 					this._data[y][x].t = 'O';
 				} else if (this._data[y][x].e >= 0 && this._data[y][x].e <= 0.3) {

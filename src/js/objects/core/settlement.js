@@ -2147,9 +2147,10 @@ civitas.objects.settlement = function(params) {
 	 * @param {civitas.objects.settlement|String|Number} settlement
 	 * @param {String} resource
 	 * @param {Number} amount
+	 * @param {Boolean} is_auctioneer
 	 * @returns {Object|Boolean}
 	 */
-	this.buy_from_settlement = function(settlement, resource, amount) {
+	this.buy_from_settlement = function(settlement, resource, amount, is_auctioneer) {
 		if (!civitas.utils.resource_exists(resource)) {
 			if (this.is_player()) {
 				this.core().ui().error('The resource you specified does not exist.');
@@ -2159,6 +2160,7 @@ civitas.objects.settlement = function(params) {
 		if (this.can_trade()) {
 			const resources = this.get_resources();
 			let _settlement;
+			let discount;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);
 				if (settlement === false) {
@@ -2169,6 +2171,7 @@ civitas.objects.settlement = function(params) {
 				}
 			} else {
 				_settlement = settlement;
+				settlement = _settlement.name();
 			}
 			const is_double = this.religion().id === _settlement.religion().id ? true : false;
 			const trades = _settlement.get_trades();
@@ -2189,7 +2192,10 @@ civitas.objects.settlement = function(params) {
 					if (typeof amount === 'undefined') {
 						amount = trades.exports[item];
 					}
-					const discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
+					discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
+					if (typeof is_auctioneer !== 'undefined' && is_auctioneer === true) {
+						discount = Math.ceil(discount + Math.ceil((civitas.RESOURCES[item].price * civitas.AUCTIONEER_DISCOUNT) / 100));
+					}
 					const price = civitas.utils.calc_price_plus_discount(amount, item, discount);
 					const s_price = civitas.utils.calc_price(amount, item);
 					const item_discount_price = Math.ceil(civitas.RESOURCES[item].price + discount);
@@ -2256,71 +2262,6 @@ civitas.objects.settlement = function(params) {
 		return true;
 	};
 
-	/**
-	 * Add the specified resource amount and the total price to the Black Market goods list.
-	 * 
-	 * @private
-	 * @param {String} resource
-	 * @param {Number} amount
-	 * @param {Number} price
-	 * @returns {Object}
-	 */
-	this._add_to_black_market = function (resource, amount, price) {
-		if (typeof this.core().black_market[resource] !== 'undefined') {
-			const old = this.core().black_market[resource];
-			this.core().black_market[resource] = {
-				resource: resource,
-				amount: old.amount + amount,
-				price: old.price + price
-			};
-		} else {
-			this.core().black_market[resource] = {
-				resource: resource,
-				amount: amount,
-				price: price
-			};
-		}
-		return this.core().black_market;
-	};
-
-	/**
-	 * List the specified goods onto the Black Market.
-	 * 
-	 * @public
-	 * @param {String} resource
-	 * @param {Number} amount
-	 * @returns {Object|Boolean}
-	 */
-	this.add_to_black_market = function(resource, amount) {
-		if (!civitas.utils.resource_exists(resource)) {
-			return false;
-		}
-		const resources = this.get_resources();
-		if (!this.has_resource(resource, amount)) {
-			if (this.is_player()) {
-				this.core().ui().error(this.name() + ' doesn`t have enough resources of this type.');
-			}
-			return false;
-		}
-		if (this.remove_resource(resource, amount)) {
-			const discount = Math.ceil((civitas.RESOURCES[resource].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
-			const price = civitas.utils.calc_price_minus_discount(amount, resource, discount);
-			this._add_to_black_market(resource, amount, price);
-			this.core().ui().refresh();
-			if (this.is_player()) {
-				this.core().ui().notify(this.name() + ' placed ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + civitas.utils.get_resource_name('coins') + ' next month.', 'Black Market');
-			}
-			return {
-				seller: this.name(),
-				amount: amount,
-				goods: civitas.utils.get_resource_name(resource),
-				price: price,
-				discount: discount
-			};
-		}
-		return false;
-	};
-		
 	/**
 	 * Sell the specified goods to a settlement.
 	 * 

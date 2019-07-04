@@ -37,6 +37,7 @@ civitas.PANEL_CHURCH = {
 		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
+			'Faith',
 			'Religion'
 		]));
 		$(this.handle).on('click', '.religion', function() {
@@ -63,10 +64,15 @@ civitas.PANEL_CHURCH = {
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let building = core.get_settlement().get_building(this.params_data.handle);
+		let _t = '';
 		if (building) {
 			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
-			let _t = '<div class="section">' + core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'large', settlement.faith() + ' / ' + civitas.MAX_FAITH_VALUE) + '</div>' +
-				'<p>Changing your settlement`s religion requires <strong>' + civitas.MAX_FAITH_VALUE + '</strong> faith, each religion gives you access to different heroes in your Tavern and gives you a boost to the influence with the cities sharing the same religion.</p>' +
+			_t = '<h2>Faith</h2>' + 
+				'<div class="section">' + 
+					core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'large', settlement.faith() + ' / ' + civitas.MAX_FAITH_VALUE) +
+				'</div>';
+			$(this.handle + ' #tab-faith').empty().append(_t);
+			_t = '<p>Changing your settlement`s religion requires <strong>' + civitas.MAX_FAITH_VALUE + '</strong> faith, each religion gives you access to different heroes in your Tavern and gives you a boost to the influence with the cities sharing the same religion.</p>' +
 				'<div class="religion-list">';
 			for (let i = 0; i < civitas.RELIGIONS.length; i++) {
 				_t += '<div data-handle="' + civitas.RELIGIONS[i] + '" data-id="' + i + '" class="religion' + (settlement.religion().id === i ? ' selected' : '') + '"><span>' + civitas.RELIGIONS[i].capitalize() + '</span></div>';

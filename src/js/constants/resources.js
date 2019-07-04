@@ -34,8 +34,7 @@ civitas.RESOURCES = {
 	},
 	prestige: {
 		name: 'Prestige',
-		category: 'virtual',
-		toolbar: true
+		category: 'virtual'
 	},
 	espionage: {
 		name: 'Espionage',
@@ -515,9 +514,8 @@ civitas.RESOURCES = {
 	},
 	tools: {
 		name: 'Tools',
-		price: 35,
-		category: 'construction',
-		toolbar: true
+		price: 135,
+		category: 'construction'
 	},
 	wax: {
 		name: 'Wax',

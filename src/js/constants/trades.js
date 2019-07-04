@@ -52,3 +52,12 @@ civitas.FAME_PER_TRADE = 50;
  * @type {Number}
  */
 civitas.BLACK_MARKET_DISCOUNT = 80;
+
+/**
+ * The auctioneer discount.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.AUCTIONEER_DISCOUNT = 20;

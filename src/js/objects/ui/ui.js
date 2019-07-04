@@ -1436,15 +1436,18 @@ civitas.objects.ui = function (core) {
 	};
 
 	/**
-	 * Scroll the city map to the specified location.
+	 * Scroll the city map to the specified building location.
 	 *
-	 * @param {Object} location
+	 * @param {Object} building
 	 * @public
 	 * @returns {civitas.objects.ui}
 	 */
-	this.citymap_scrollto = function(location) {
-		$('.viewport').scrollTop(location.y - (200 / 2));
-		$('.viewport').scrollLeft(location.x - (1164 / 2));
+	this.citymap_scrollto_building = function(building) {
+		const location = building.position();
+		const view_width = parseInt($('.ui > .viewport').width());
+		const view_height = parseInt($('.ui > .viewport').height());
+		$('.viewport').scrollTop(location.y - ((view_height - 260) / 2));
+		$('.viewport').scrollLeft(location.x - ((view_width - 260) / 2));
 		return this;
 	};
 

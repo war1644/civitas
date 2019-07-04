@@ -2342,7 +2342,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Trading Post',
 		handle: 'tradingpost',
-		description: 'The Trading Post is a merchant building that allows you to trade resources with the other settlements in the world.',
+		description: 'The Trading Post is a merchant building that allows you to trade resources with the other settlements in the world. Also allows you to use the powerful Auctioneer.',
 		is_municipal: true,
 		storage: 10000,
 		visible_upgrades: true,
@@ -2382,8 +2382,8 @@ civitas.BUILDINGS = [{
 		},
 		cost: {
 			coins: 100000,
-			woodplanks: 1000,
-			stones: 1000,
+			woodplanks: 500,
+			stones: 500,
 			tools: 20
 		},
 		requires: {
@@ -3650,7 +3650,7 @@ civitas.BUILDINGS = [{
 			y: 1120
 		},
 		production: {
-			beer: 1
+			beer: 2
 		},
 		materials: {
 			barrels: 1,
@@ -3900,7 +3900,7 @@ civitas.BUILDINGS = [{
 			coins: 5000
 		},
 		materials: {
-			fish: 2,
+			fish: 1,
 			meat: 2,
 			pottery: 1,
 			beer: 1
@@ -5016,6 +5016,15 @@ civitas.FAME_PER_TRADE = 50;
 civitas.BLACK_MARKET_DISCOUNT = 80;
 
 /**
+ * The auctioneer discount.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.AUCTIONEER_DISCOUNT = 20;
+
+/**
  * Special place.
  *
  * @constant
@@ -5593,8 +5602,7 @@ civitas.RESOURCES = {
 	},
 	prestige: {
 		name: 'Prestige',
-		category: 'virtual',
-		toolbar: true
+		category: 'virtual'
 	},
 	espionage: {
 		name: 'Espionage',
@@ -6074,9 +6082,8 @@ civitas.RESOURCES = {
 	},
 	tools: {
 		name: 'Tools',
-		price: 35,
-		category: 'construction',
-		toolbar: true
+		price: 135,
+		category: 'construction'
 	},
 	wax: {
 		name: 'Wax',
@@ -8082,6 +8089,7 @@ civitas.objects.world = function (params) {
 	this._adjust = function() {
 		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
 			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
+				this._data[y][x].e = this._data[y][x].e.toFixed(3);
 				if (this._data[y][x].e < 0) {
 					this._data[y][x].t = 'O';
 				} else if (this._data[y][x].e >= 0 && this._data[y][x].e <= 0.3) {
@@ -10775,9 +10783,10 @@ civitas.objects.settlement = function(params) {
 	 * @param {civitas.objects.settlement|String|Number} settlement
 	 * @param {String} resource
 	 * @param {Number} amount
+	 * @param {Boolean} is_auctioneer
 	 * @returns {Object|Boolean}
 	 */
-	this.buy_from_settlement = function(settlement, resource, amount) {
+	this.buy_from_settlement = function(settlement, resource, amount, is_auctioneer) {
 		if (!civitas.utils.resource_exists(resource)) {
 			if (this.is_player()) {
 				this.core().ui().error('The resource you specified does not exist.');
@@ -10787,6 +10796,7 @@ civitas.objects.settlement = function(params) {
 		if (this.can_trade()) {
 			const resources = this.get_resources();
 			let _settlement;
+			let discount;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);
 				if (settlement === false) {
@@ -10797,6 +10807,7 @@ civitas.objects.settlement = function(params) {
 				}
 			} else {
 				_settlement = settlement;
+				settlement = _settlement.name();
 			}
 			const is_double = this.religion().id === _settlement.religion().id ? true : false;
 			const trades = _settlement.get_trades();
@@ -10817,7 +10828,10 @@ civitas.objects.settlement = function(params) {
 					if (typeof amount === 'undefined') {
 						amount = trades.exports[item];
 					}
-					const discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
+					discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
+					if (typeof is_auctioneer !== 'undefined' && is_auctioneer === true) {
+						discount = Math.ceil(discount + Math.ceil((civitas.RESOURCES[item].price * civitas.AUCTIONEER_DISCOUNT) / 100));
+					}
 					const price = civitas.utils.calc_price_plus_discount(amount, item, discount);
 					const s_price = civitas.utils.calc_price(amount, item);
 					const item_discount_price = Math.ceil(civitas.RESOURCES[item].price + discount);
@@ -10884,71 +10898,6 @@ civitas.objects.settlement = function(params) {
 		return true;
 	};
 
-	/**
-	 * Add the specified resource amount and the total price to the Black Market goods list.
-	 * 
-	 * @private
-	 * @param {String} resource
-	 * @param {Number} amount
-	 * @param {Number} price
-	 * @returns {Object}
-	 */
-	this._add_to_black_market = function (resource, amount, price) {
-		if (typeof this.core().black_market[resource] !== 'undefined') {
-			const old = this.core().black_market[resource];
-			this.core().black_market[resource] = {
-				resource: resource,
-				amount: old.amount + amount,
-				price: old.price + price
-			};
-		} else {
-			this.core().black_market[resource] = {
-				resource: resource,
-				amount: amount,
-				price: price
-			};
-		}
-		return this.core().black_market;
-	};
-
-	/**
-	 * List the specified goods onto the Black Market.
-	 * 
-	 * @public
-	 * @param {String} resource
-	 * @param {Number} amount
-	 * @returns {Object|Boolean}
-	 */
-	this.add_to_black_market = function(resource, amount) {
-		if (!civitas.utils.resource_exists(resource)) {
-			return false;
-		}
-		const resources = this.get_resources();
-		if (!this.has_resource(resource, amount)) {
-			if (this.is_player()) {
-				this.core().ui().error(this.name() + ' doesn`t have enough resources of this type.');
-			}
-			return false;
-		}
-		if (this.remove_resource(resource, amount)) {
-			const discount = Math.ceil((civitas.RESOURCES[resource].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
-			const price = civitas.utils.calc_price_minus_discount(amount, resource, discount);
-			this._add_to_black_market(resource, amount, price);
-			this.core().ui().refresh();
-			if (this.is_player()) {
-				this.core().ui().notify(this.name() + ' placed ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + civitas.utils.get_resource_name('coins') + ' next month.', 'Black Market');
-			}
-			return {
-				seller: this.name(),
-				amount: amount,
-				goods: civitas.utils.get_resource_name(resource),
-				price: price,
-				discount: discount
-			};
-		}
-		return false;
-	};
-		
 	/**
 	 * Sell the specified goods to a settlement.
 	 * 
@@ -11609,6 +11558,14 @@ civitas.objects.building = function(params) {
 	 */
 	this.problems = false;
 
+	/*
+	 * The position of this building.
+	 *
+	 * @type {Object}
+	 * @private
+	 */
+	this._position = null;
+
 	/**
 	 * Object constructor.
 	 * 
@@ -11626,6 +11583,10 @@ civitas.objects.building = function(params) {
 		this.is_municipal = (typeof params.data.is_municipal !== 'undefined' && params.data.is_municipal === true) ? true : false;
 		this.is_housing = (typeof params.data.is_housing !== 'undefined' && params.data.is_housing === true) ? true : false;
 		this.level = (typeof params.data.level !== 'undefined') ? params.data.level : 1;
+		this._position = (typeof params.data.position !== 'undefined') ? params.data.position : {
+			x: 0,
+			y: 0
+		};
 		this.stopped = (typeof params.stopped !== 'undefined') ? params.stopped : false;
 		this.handle = params.data.handle;
 		params.data.level = this.get_level();
@@ -12324,6 +12285,16 @@ civitas.objects.building = function(params) {
 			}
 		}
 		return this;
+	};
+
+	/**
+	 * Get the city position of this building.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	this.position = function() {
+		return this._position;
 	};
 
 	// Fire up the constructor
@@ -15461,15 +15432,18 @@ civitas.objects.ui = function (core) {
 	};
 
 	/**
-	 * Scroll the city map to the specified location.
+	 * Scroll the city map to the specified building location.
 	 *
-	 * @param {Object} location
+	 * @param {Object} building
 	 * @public
 	 * @returns {civitas.objects.ui}
 	 */
-	this.citymap_scrollto = function(location) {
-		$('.viewport').scrollTop(location.y - (200 / 2));
-		$('.viewport').scrollLeft(location.x - (1164 / 2));
+	this.citymap_scrollto_building = function(building) {
+		const location = building.position();
+		const view_width = parseInt($('.ui > .viewport').width());
+		const view_height = parseInt($('.ui > .viewport').height());
+		$('.viewport').scrollTop(location.y - ((view_height - 260) / 2));
+		$('.viewport').scrollLeft(location.x - ((view_width - 260) / 2));
 		return this;
 	};
 
@@ -15584,12 +15558,20 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Black Market data.
+	 * Auctioneer data.
 	 * 
-	 * @public
+	 * @private
 	 * @type {Object}
 	 */
-	this.black_market = {};
+	this._auctioneer = {};
+
+	/**
+	 * Black Market data.
+	 * 
+	 * @private
+	 * @type {Object}
+	 */
+	this._black_market = {};
 
 	/**
 	 * Game settings
@@ -15847,7 +15829,8 @@ civitas.game = function () {
 		this.world().data(data.world);
 		this.achievement_points(data.achievement_points);
 		this.date(data.date);
-		this.set_black_market(data.black_market);
+		this.black_market(data.black_market);
+		this.auctioneer(data.auctioneer);
 		this.set_settings(data.settings);
 		return data;
 	};
@@ -15881,7 +15864,8 @@ civitas.game = function () {
 			achievements: this.achievements(),
 			research: this.research(),
 			achievement_points: this.achievement_points(),
-			black_market: this.get_black_market(),
+			black_market: this.black_market(),
+			auctioneer: this.auctioneer(),
 			date: this.date(),
 			queue: this.queue(),
 			settings: this.get_settings(),
@@ -15927,6 +15911,7 @@ civitas.game = function () {
 		this._process_settlements();
 		this._check_for_events();
 		this._queue_advance();
+		this.auctioneer_process();
 		this._date.day_of_month++;
 		if (this._date.day_of_month > 30) {
 			this._do_monthly();
@@ -15956,7 +15941,8 @@ civitas.game = function () {
 		if (this._date.month === 6 || this._date.month === 12) {
 			this._do_biannually();
 		}
-		this.reset_black_market();
+		//this.auctioneer_process();
+		this.black_market_reset();
 		return this;
 	};
 
@@ -16098,6 +16084,252 @@ civitas.game = function () {
 		return _season;
 	};
 
+	/* =================================== Auctioneer =================================== */
+
+	/**
+	 * Reset the Auctioneer goods.
+	 * 
+	 * @public
+	 * @returns {civitas.game}
+	 */
+	this.auctioneer_reset = function () {
+		this._auctioneer = {};
+		this.ui().refresh();
+		return this;
+	};
+
+	/**
+	 * Remove the specified item from the Auctioneer data.
+	 *
+	 * @public
+	 * @param {String} item
+	 * @returns {civitas.game}
+	 */
+	this.auctioneer_delete = function(item) {
+		let auctions = this.auctioneer();
+		delete auctions[item];
+		return this;
+	};
+
+	/**
+	 * Assign the auctioneer to check for the requested goods.
+	 * 
+	 * @public
+	 * @returns {Boolean}
+	 */
+	this.auctioneer_process = function () {
+		let settlements = this.get_settlements();
+		let player_settlement = this.get_settlement();
+		let auctions = this.auctioneer();
+		let trades;
+		let amount;
+		if (!player_settlement.can_trade()) {
+			this._auctioneer = {};
+			return false;
+		}
+		for (let item in auctions) {
+			if (auctions[item].amount > 0) {
+				for (let i = 0; i < settlements.length; i++) {
+					if (!settlements[i].is_player()) {
+						trades = settlements[i].get_trades();
+						if (trades === null) {
+							break;
+						}
+						if (typeof trades.exports === 'undefined') {
+							break;
+						}
+						for (let trade in trades.exports) {
+							if (trades.exports[trade] > 0) {
+								if (trade === item) {
+									if (auctions[item].amount >= trades.exports[trade]) {
+										amount = trades.exports[trade];
+									} else if (auctions[item].amount < trades.exports[trade]) {
+										amount = auctions[item].amount;
+									} else {
+										amount = 0;
+									}
+									/*
+									if ((auctions[item].amount >= trades.exports[trade]) && (auctions[item].amount - trades.exports[trade] > 0)) {
+										amount = trades.exports[trade];
+									} else if (auctions[item].amount < trades.exports[trade]) {
+										amount = auctions[item].amount;
+									} else {
+										amount = 0;
+									}
+									*/
+									console.log(settlements[i].name() + ' is selling ' + trades.exports[item] + ' ' + item + ' and we need ' + amount);
+									if (auctions[item].amount - amount >= 0) {
+										player_settlement.buy_from_settlement(settlements[i], item, amount, true);
+										auctions[item].amount = auctions[item].amount - amount;
+										if (auctions[item].amount <= 0) {
+											this.auctioneer_delete(item);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			} else {
+				this.auctioneer_delete(item);
+			}
+		}
+		return true;
+	};
+
+	/**
+	 * Get/set the Auctioneer goods list.
+	 * 
+	 * @public
+	 * @param {Object} value
+	 * @returns {Object}
+	 */
+	this.auctioneer = function (value) {
+		if (typeof value !== 'undefined') {
+			this._auctioneer = value;
+		}
+		return this._auctioneer;
+	};
+
+	/**
+	 * Use the Auctioneer to search for and buy the specified goods.
+	 * 
+	 * @public
+	 * @param {String} resource
+	 * @param {Number} amount
+	 * @returns {Object|Boolean}
+	 */
+	this.auctioneer_add = function(resource, amount) {
+		let settlement = this.get_settlement();
+		if (settlement.can_trade()) {
+			const resources = settlement.get_resources();
+			let discount = Math.ceil(Math.ceil((civitas.RESOURCES[resource].price * civitas.TRADES_ADDITION) / 100) + Math.ceil((civitas.RESOURCES[resource].price * civitas.AUCTIONEER_DISCOUNT) / 100));
+			const price = civitas.utils.calc_price_plus_discount(amount, resource, discount);
+			if (typeof this._auctioneer[resource] !== 'undefined') {
+				const old = this._auctioneer[resource];
+				this._auctioneer[resource] = {
+					resource: resource,
+					amount: old.amount + amount,
+					price: old.price + price
+				};
+			} else {
+				this._auctioneer[resource] = {
+					resource: resource,
+					amount: amount,
+					price: price
+				};
+			}
+			this.ui().refresh();
+			this.ui().notify(this.name() + ' placed an order for ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
+			return {
+				buyer: settlement.name(),
+				amount: amount,
+				goods: civitas.utils.get_resource_name(resource),
+				price: price,
+				discount: discount
+			};
+		}
+		return false;
+	};
+
+	/* =================================== Black Market =================================== */
+
+	/**
+	 * Remove the specified item from the Black Market data.
+	 *
+	 * @public
+	 * @param {String} item
+	 * @returns {civitas.game}
+	 */
+	this.black_market_delete = function(item) {
+		let goods = this.black_market();
+		delete goods[item];
+		return this;
+	};
+
+	/**
+	 * List the specified goods onto the Black Market.
+	 * 
+	 * @public
+	 * @param {String} resource
+	 * @param {Number} amount
+	 * @returns {Object|Boolean}
+	 */
+	this.black_market_add = function(resource, amount) {
+		let settlement = this.get_settlement();
+		if (!civitas.utils.resource_exists(resource)) {
+			return false;
+		}
+		const resources = this.get_resources();
+		if (!settlement.has_resource(resource, amount)) {
+			this.ui().error(this.name() + ' doesn`t have enough resources of this type.');
+			return false;
+		}
+		if (settlement.remove_resource(resource, amount)) {
+			const discount = Math.ceil((civitas.RESOURCES[resource].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
+			const price = civitas.utils.calc_price_minus_discount(amount, resource, discount);
+			if (typeof this._black_market[resource] !== 'undefined') {
+				const old = this._black_market[resource];
+				this._black_market[resource] = {
+					resource: resource,
+					amount: old.amount + amount,
+					price: old.price + price
+				};
+			} else {
+				this._black_market[resource] = {
+					resource: resource,
+					amount: amount,
+					price: price
+				};
+			}
+			this.ui().refresh();
+			this.ui().notify(settlement.name() + ' placed ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + civitas.utils.get_resource_name('coins') + ' next month.', 'Black Market');
+			return {
+				seller: settlement.name(),
+				amount: amount,
+				goods: civitas.utils.get_resource_name(resource),
+				price: price,
+				discount: discount
+			};
+		}
+		return false;
+	};
+
+	/**
+	 * Reset the Black Market goods.
+	 * 
+	 * @public
+	 * @returns {Number}
+	 */
+	this.black_market_reset = function () {
+		let t_coins = 0;
+		for (let item in this._black_market) {
+			this.get_settlement().inc_coins(this._black_market[item].price);
+			t_coins += this._black_market[item].price;
+		}
+		this._black_market = {};
+		this.ui().refresh();
+		$('#tab-blackmarket > .contents > table > tbody').empty();
+		if (t_coins > 0) {
+			this.ui().notify(this.get_settlement().name() + ' received <strong>' + t_coins + '</strong> ' + civitas.utils.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
+		}
+		return t_coins;
+	};
+
+	/**
+	 * Return the Black Market goods list.
+	 * 
+	 * @public
+	 * @param {Object} value
+	 * @returns {Object}
+	 */
+	this.black_market = function (value) {
+		if (typeof value !== 'undefined') {
+			this._black_market = value;
+		}
+		return this._black_market;
+	};
+
 	/* =================================== Achivements =================================== */
 
 	/**
@@ -16146,7 +16378,7 @@ civitas.game = function () {
 	 * @public
 	 * @returns {civitas.game}
 	 */
-	this.check_achievements = function() {
+	this.achievements_process = function() {
 		let condition;
 		let good = false;
 		let achievement;
@@ -17345,12 +17577,12 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Ask the City Council for tips.
+	 * Get a list of advice from the city council.
 	 * 
 	 * @public
 	 * @returns {Array}
 	 */
-	this.city_council = function() {
+	this.advice = function() {
 		const advices = [];
 		const settlement = this.get_settlement();
 		if (settlement.is_player()) {
@@ -17472,53 +17704,6 @@ civitas.game = function () {
 	};
 
 	/**
-	 * Reset the Black Market goods.
-	 * 
-	 * @public
-	 * @returns {Number}
-	 */
-	this.reset_black_market = function () {
-		let t_coins = 0;
-		for (let item in this.black_market) {
-			this.get_settlement().inc_coins(this.black_market[item].price);
-			t_coins += this.black_market[item].price;
-		}
-		this.black_market = {};
-		this.ui().refresh();
-		$('#tab-blackmarket > .contents > table > tbody').empty();
-		if (t_coins > 0) {
-			this.ui().notify(this.get_settlement().name() + ' received <strong>' + t_coins + '</strong> ' + civitas.utils.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
-		}
-		return t_coins;
-	};
-
-	/**
-	 * Return the Black Market goods list.
-	 * 
-	 * @public
-	 * @returns {Object}
-	 */
-	this.get_black_market = function () {
-		return this.black_market;
-	};
-
-	/**
-	 * Set the Black Market goods list to the specified value.
-	 * 
-	 * @public
-	 * @param {Object} value
-	 * @returns {civitas.game}
-	 */
-	this.set_black_market = function (value) {
-		if (typeof value !== 'undefined') {
-			this.black_market = value;
-		} else {
-			this.black_market = {};
-		}
-		return this;
-	};
-
-	/**
 	 * Internal method for starting up a game.
 	 *
 	 * @private
@@ -17551,7 +17736,7 @@ civitas.game = function () {
 		});
 		ui.hide_loader();
 		this.save_and_refresh();
-		this.ui().citymap_scrollto(civitas.BUILDINGS[0].position);
+		this.ui().citymap_scrollto_building(this.get_settlement().get_building('marketplace'));
 		return this;
 	};
 
@@ -17743,7 +17928,7 @@ civitas.game = function () {
 	 * @returns {civitas.game}
 	 */
 	this.save_and_refresh = function() {
-		this.check_achievements();
+		this.achievements_process();
 		this.save();
 		this.ui().refresh();
 		return this;
@@ -19718,9 +19903,11 @@ civitas.PANEL_NEW_ARMY = {
 	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create army<a class="tips close" title="Close"></a></header>' +
+			'<header>Create army' +
+				'<a class="tips close" title="Close"></a>' +
+			'</header>' +
 			'<section></section>' +
-			'<div class="toolbar clearfix">' +
+			'<div class="toolbar">' +
 				'<a class="dispatch btn iblock" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',
@@ -20166,7 +20353,8 @@ civitas.PANEL_NEW_CARAVAN = {
 	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create caravan<a class="tips close" title="Close"></a>' +
+			'<header>Create caravan' +
+				'<a class="tips close" title="Close"></a>' +
 			'</header>' +
 			'<section></section>' +
 			'<div class="toolbar">' +
@@ -20441,7 +20629,7 @@ civitas.PANEL_COUNCIL = {
 		let buildings = settlement.get_buildings();
 		let resources = settlement.get_resources();
 		let achievements = core.achievements();
-		let advices = core.city_council();
+		let advices = core.advice();
 		let total_costs = 0;
 		let total_tax = 0;
 		let army_data;
@@ -21028,7 +21216,7 @@ civitas.PANEL_BUILDINGS = {
 				if (_i !== true) {
 					$(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
 				} else {
-					$(el + ' .toolbar').append('You already constructed this building.');
+					//$(el + ' .toolbar').append('You already constructed this building.');
 				}
 				$(el + ' .right').show();
 			}
@@ -21037,7 +21225,7 @@ civitas.PANEL_BUILDINGS = {
 			let handle = $(this).data('handle');
 			if (settlement.build(handle) !== false) {
 				$(el + ' .building-item[data-handle=' + handle + ']').addClass('disabled');
-				$(el + ' .toolbar').empty().append('You already constructed this building.');
+				$(el + ' .toolbar').empty();//.append('You already constructed this building.');
 			}
 			return false;
 		});
@@ -21081,15 +21269,20 @@ civitas.PANEL_TRADES = {
 		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
+		let auctions = core.auctioneer();
 		let el = this.handle;
 		let _t = '';
-		$(el + ' section').append(core.ui().tabs([
+		let tabs = [
 			'Export',
 			'Import',
 			'Mercenaries',
 			'BlackMarket',
 			'Prices'
-		]));
+		];
+		if (settlement.can_trade()) {
+			tabs.push('Auctioneer');
+		}
+		$(el + ' section').append(core.ui().tabs(tabs));
 		$(el + ' #tab-import').append('<p>Below is a list of goods that the other cities in the world are looking to sell. The goods replenish every six months, so plan accordingly. You will need to build a Trading Post before being able to sell goods.</p>' +
 			'<div class="contents"></div>');
 		$(el + ' #tab-export').append('<p>Below is a list of goods that the other cities in the world are looking to buy. The goods replenish every six months, so plan accordingly. You will need to build a Trading Post before being able to buy goods.</p>' +
@@ -21098,20 +21291,22 @@ civitas.PANEL_TRADES = {
 			'<div class="contents"></div>');
 		$(el + ' #tab-blackmarket').append('<p>The Black Market is a way to dump your excess materials when you`re in need of emptying your warehouses, but expect a steep price drop (taxes for all Black Market trades are <strong>' + civitas.BLACK_MARKET_DISCOUNT + '%</strong>). The goods will be taken immediately from your warehouses but you will receive the coins at the <strong>start of the next month</strong>. Also, you get <strong>no prestige</strong> from Black Market trades.</p>' +
 			'<div class="contents"></div>');
+		$(el + ' #tab-auctioneer').append('<p>The Auctioneer is an automated way to purchase goods from the world trade market. When the requested goods become available, the Auctioneer purchases them automatically, taking an extra <strong>' + civitas.AUCTIONEER_DISCOUNT + '%</strong> tax on the total amount of coins paid for the goods.</p>' +
+			'<div class="contents"></div>');
 		$(el + ' #tab-prices').append('<div class="contents"></div>');
 		$(el + ' #tab-blackmarket > .contents').append('' +
 			'<table class="normal">' +
 				'<thead>' +
 					'<tr>' +
 						'<td>Resources: <select class="bm-materials"></select></td>' +
-						'<td>Quantity: ' +
+						'<td>Quantity&nbsp;&nbsp;&nbsp;&nbsp;' +
 							'<select class="bm-quantity">' +
 								'<option value="0">-- select --</option>' +
 								'<option value="10">10</option>' +
 								'<option value="100">100</option>' +
 								'<option value="1000">1000</option>' +
 								'<option value="10000">10000</option>' +
-							'</select> or enter manually <input type="number" min="1" max="100000" placeholder="amount" class="small bm-qty-manual" />' +
+							'</select>&nbsp;&nbsp;&nbsp;&nbsp;or enter manually&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="1" max="100000" placeholder="amount" class="small bm-qty-manual" />' +
 						'</td>' +
 						'<td>' +
 							'<a title="List goods on Black Market" class="tips bmarket" href="#">List</a>' +
@@ -21121,6 +21316,30 @@ civitas.PANEL_TRADES = {
 				'<tbody>' +
 				'</tbody>' +
 			'</table>');
+		if (settlement.can_trade()) {
+			$(el + ' #tab-auctioneer > .contents').append('' +
+				'<table class="normal">' +
+					'<thead>' +
+						'<tr>' +
+							'<td>Resources: <select class="auc-materials"></select></td>' +
+							'<td>Quantity&nbsp;&nbsp;&nbsp;&nbsp;' +
+								'<select class="auc-quantity">' +
+									'<option value="0">-- select --</option>' +
+									'<option value="10">10</option>' +
+									'<option value="100">100</option>' +
+									'<option value="1000">1000</option>' +
+									'<option value="10000">10000</option>' +
+								'</select>&nbsp;&nbsp;&nbsp;&nbsp;or enter manually&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="1" max="100000" placeholder="amount" class="small auc-qty-manual" />' +
+							'</td>' +
+							'<td>' +
+								'<a title="Search for the goods" class="tips auction" href="#">Search</a>' +
+							'</td>' +
+						'</tr>' +
+					'</thead>' +
+					'<tbody>' +
+					'</tbody>' +
+				'</table>');
+		}
 		let out = '<option value="0">-- select --</option>';
 		let resources = settlement.get_resources();
 		for (let item in resources) {
@@ -21128,7 +21347,7 @@ civitas.PANEL_TRADES = {
 				out += '<option value="' + item + '"> ' + civitas.utils.get_resource_name(item) + '</option>';
 			}
 		}
-		$(el + ' .bm-materials').empty().append(out);
+		$(el + ' .bm-materials, ' + el + ' .auc-materials').empty().append(out);
 		$(el).on('click', '.settlement-info', function () {
 			let _settlement_name = $(this).data('settlement');
 			core.ui().open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
@@ -21155,19 +21374,42 @@ civitas.PANEL_TRADES = {
 				self.on_refresh();
 			}
 			return false;
+		}).on('click', '.auction', function () {
+			if (!settlement.can_trade()) {
+				core.ui().error('You will need to construct a Trading Post before being able to assign an Auctioneer to buy items.');
+				return false;
+			}
+			let resource = $('.auc-materials').val();
+			let auto_amount = $('.auc-quantity').val();
+			let manual_amount = $('.auc-qty-manual').val();
+			let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
+			if (resource !== '0' && amount > 0 && amount <= 10000) {
+				if (core.auctioneer_add(resource, amount)) {
+					self.on_refresh();
+					$('.auc-qty-manual').val('');
+				}
+			} else {
+				core.ui().error('Select a resource and the amount you want the Auctioneer to search for.');
+			}
+			return false;
 		}).on('click', '.bmarket', function () {
 			let resource = $('.bm-materials').val();
 			let auto_amount = $('.bm-quantity').val();
 			let manual_amount = $('.bm-qty-manual').val();
 			let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
 			if (resource !== '0' && amount > 0) {
-				if (settlement.add_to_black_market(resource, amount)) {
+				if (core.black_market_add(resource, amount)) {
 					self.on_refresh();
 					$('.bm-qty-manual').val('');
 				}
 			} else {
 				core.ui().error('Select a resource and the amount of it you want to place on the Black Market.');
 			}
+			return false;
+		}).on('click', '.auc-resources-delete', function() {
+			let resource = $(this).data('id');
+			delete auctions[resource];
+			self.generate_table_data();
 			return false;
 		}).on('click', '.recruit:not(.disabled)', function () {
 			let handle = $(this).data('handle');
@@ -21195,15 +21437,32 @@ civitas.PANEL_TRADES = {
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
 		let out = '';
-		let bm = core.get_black_market();
+		let bm = core.black_market();
 		for (let item in bm) {
 			out += '<tr>' +
-					'<td>Amount: ' + bm[item].amount + core.ui().resource_small_img(item) + '</td>' +
-					'<td>Total price: ' + bm[item].price + core.ui().resource_small_img('coins') + '</td>' +
+					'<td>Amount: ' + bm[item].amount + ' ' + core.ui().resource_small_img(item) + '</td>' +
+					'<td>Total price: ' + bm[item].price + ' ' + core.ui().resource_small_img('coins') + '</td>' +
 					'<td>&nbsp;</td>' +
 				'</tr>';
 		}
 		$('#tab-blackmarket > .contents > table > tbody').empty().append(out);
+		if (settlement.can_trade()) {
+			this.generate_table_data = function() {
+				let out = '';
+				let auctions = core.auctioneer();
+				for (let item in auctions) {
+					out += '<tr>' +
+							'<td>Amount: ' + auctions[item].amount + ' ' + core.ui().resource_small_img(item) + '</td>' +
+							'<td>Total price: ' + auctions[item].price + ' ' + core.ui().resource_small_img('coins') + '</td>' +
+							'<td>' +
+								'<a title="Remove this resource from the Auctioneer." href="#" data-id="' + item + '" class="tips auc-resources-delete">-</a>' +
+							'</td>' +
+						'</tr>';
+				}
+				$('#tab-auctioneer > .contents > table > tbody').empty().append(out);
+			};
+			this.generate_table_data();
+		}
 		out = '<table class="normal">' +
 					'<thead>' +
 					'<tr>' +
@@ -21337,10 +21596,11 @@ civitas.PANEL_TRADES = {
 					'<tr>' +
 						'<td>Resource</td>' +
 						'<td class="center">Icon</td>' +
-						'<td class="center">Price</td>' +
-						'<td class="center tips" title="This is the price you get for selling one unit of the resource to another settlement, minus the <strong>' + civitas.TRADES_DISCOUNT + '%</strong> export taxes.">Sell Price</td>' +
-						'<td class="center tips" title="This is the price you get for buying one unit of the resource from another settlement, plus the <strong>' + civitas.TRADES_ADDITION + '%</strong> import taxes.">Buy Price</td>' +
-						'<td class="center tips" title="This is the price you get for placing one unit of the resource on the Black Market, minus the <strong>' + civitas.BLACK_MARKET_DISCOUNT + '%</strong> taxes.">BM Price</td>' +
+						'<td class="center">Base Price</td>' +
+						'<td class="center tips" title="This is the price you get for selling one unit of the resource to another settlement, base price minus the <strong>' + civitas.TRADES_DISCOUNT + '%</strong> export taxes.">Sell Price</td>' +
+						'<td class="center tips" title="This is the price you get for buying one unit of the resource from another settlement, base price plus the <strong>' + civitas.TRADES_ADDITION + '%</strong> import taxes.">Buy Price</td>' +
+						'<td class="center tips" title="This is the price you get for placing one unit of the resource on the Black Market, base price minus the <strong>' + civitas.BLACK_MARKET_DISCOUNT + '%</strong> taxes.">Black Market</td>' +
+						'<td class="center tips" title="This is the price you get for buying one unit of the resource via the Auctioneer, base price plus the <strong>' + civitas.TRADES_ADDITION + '%</strong> import taxes and plus the <strong>' + civitas.AUCTIONEER_DISCOUNT + '%</strong> Auctioneer taxes.">Auctioneer</td>' +
 						'<td class="center tips" title="If the resource is listed as produced, that possibility depends on the location and climate of your settlement (ex. tropical settlements can build <strong>Sugar Farms</strong> and produce <strong>Sugar</strong>).">Type</td>' +
 					'</tr>' +
 					'</thead>';
@@ -21349,6 +21609,7 @@ civitas.PANEL_TRADES = {
 				let discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
 				let tax = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_DISCOUNT) / 100);
 				let bm_tax = Math.ceil((civitas.RESOURCES[item].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
+				let auc_tax = Math.ceil((civitas.RESOURCES[item].price * civitas.AUCTIONEER_DISCOUNT) / 100);
 				out += '<tr>' +
 					'<td>' + civitas.RESOURCES[item].name + '</td>' +
 					'<td class="center">' + core.ui().resource_small_img(item) + '</td>' +
@@ -21356,6 +21617,7 @@ civitas.PANEL_TRADES = {
 					'<td class="center">' + (civitas.RESOURCES[item].price - tax) + core.ui().resource_small_img('coins') + '</td>' +
 					'<td class="center">' + (civitas.RESOURCES[item].price + discount) + core.ui().resource_small_img('coins') + '</td>' +
 					'<td class="center">' + (civitas.RESOURCES[item].price - bm_tax) + core.ui().resource_small_img('coins') + '</td>' +
+					'<td class="center">' + (civitas.RESOURCES[item].price + Math.ceil(discount + auc_tax)) + core.ui().resource_small_img('coins') + '</td>' +
 					'<td class="center">' + ((civitas.RESOURCES[item].imported === true) ? 'imported' : 'produced') + '</td>' +
 				'</tr>';
 			}
@@ -21364,10 +21626,11 @@ civitas.PANEL_TRADES = {
 					'<tr>' +
 						'<td>Resource</td>' +
 						'<td class="center">Icon</td>' +
-						'<td class="center">Price</td>' +
+						'<td class="center">Base Price</td>' +
 						'<td class="center">Sell Price</td>' +
 						'<td class="center">Buy Price</td>' +
-						'<td class="center">BM Price</td>' +
+						'<td class="center">Black Market</td>' +
+						'<td class="center">Auctioneer</td>' +
 						'<td class="center">Type</td>' +
 					'</tr>' +
 				'</tfoot>' +
@@ -21620,6 +21883,7 @@ civitas.PANEL_CHURCH = {
 		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
+			'Faith',
 			'Religion'
 		]));
 		$(this.handle).on('click', '.religion', function() {
@@ -21646,10 +21910,15 @@ civitas.PANEL_CHURCH = {
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let building = core.get_settlement().get_building(this.params_data.handle);
+		let _t = '';
 		if (building) {
 			$(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
-			let _t = '<div class="section">' + core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'large', settlement.faith() + ' / ' + civitas.MAX_FAITH_VALUE) + '</div>' +
-				'<p>Changing your settlement`s religion requires <strong>' + civitas.MAX_FAITH_VALUE + '</strong> faith, each religion gives you access to different heroes in your Tavern and gives you a boost to the influence with the cities sharing the same religion.</p>' +
+			_t = '<h2>Faith</h2>' + 
+				'<div class="section">' + 
+					core.ui().progress((settlement.faith() * 100) / civitas.MAX_FAITH_VALUE, 'large', settlement.faith() + ' / ' + civitas.MAX_FAITH_VALUE) +
+				'</div>';
+			$(this.handle + ' #tab-faith').empty().append(_t);
+			_t = '<p>Changing your settlement`s religion requires <strong>' + civitas.MAX_FAITH_VALUE + '</strong> faith, each religion gives you access to different heroes in your Tavern and gives you a boost to the influence with the cities sharing the same religion.</p>' +
 				'<div class="religion-list">';
 			for (let i = 0; i < civitas.RELIGIONS.length; i++) {
 				_t += '<div data-handle="' + civitas.RELIGIONS[i] + '" data-id="' + i + '" class="religion' + (settlement.religion().id === i ? ' selected' : '') + '"><span>' + civitas.RELIGIONS[i].capitalize() + '</span></div>';
@@ -21705,8 +21974,8 @@ civitas.PANEL_EMBASSY = {
 		let level = building.get_level();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
-			'Diplomacy',
-			'Espionage'
+			'Espionage',
+			'Diplomacy'
 		]));
 		$(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
 		$(this.handle).on('click', '.view', function () {
@@ -21755,12 +22024,10 @@ civitas.PANEL_EMBASSY = {
 				let _status = settlement.get_diplomacy_status(settlements[i].id());
 				_t += '<tr>' +
 						'<td>' +
-							'<p>' + settlements[i].name() + '</p> ' +
+							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' + settlements[i].name() + '</a> ' +
 						'</td>' +
 						'<td class="icon">' +
-							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' +
-								'<img class="avatar small" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' +
-							'</a>' +
+							'<img class="avatar small" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' +
 						'</td>' +
 						'<td>' +
 							'<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'small') + '</div>' +

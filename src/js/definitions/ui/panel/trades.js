@@ -35,15 +35,20 @@ civitas.PANEL_TRADES = {
 		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
+		let auctions = core.auctioneer();
 		let el = this.handle;
 		let _t = '';
-		$(el + ' section').append(core.ui().tabs([
+		let tabs = [
 			'Export',
 			'Import',
 			'Mercenaries',
 			'BlackMarket',
 			'Prices'
-		]));
+		];
+		if (settlement.can_trade()) {
+			tabs.push('Auctioneer');
+		}
+		$(el + ' section').append(core.ui().tabs(tabs));
 		$(el + ' #tab-import').append('<p>Below is a list of goods that the other cities in the world are looking to sell. The goods replenish every six months, so plan accordingly. You will need to build a Trading Post before being able to sell goods.</p>' +
 			'<div class="contents"></div>');
 		$(el + ' #tab-export').append('<p>Below is a list of goods that the other cities in the world are looking to buy. The goods replenish every six months, so plan accordingly. You will need to build a Trading Post before being able to buy goods.</p>' +
@@ -52,20 +57,22 @@ civitas.PANEL_TRADES = {
 			'<div class="contents"></div>');
 		$(el + ' #tab-blackmarket').append('<p>The Black Market is a way to dump your excess materials when you`re in need of emptying your warehouses, but expect a steep price drop (taxes for all Black Market trades are <strong>' + civitas.BLACK_MARKET_DISCOUNT + '%</strong>). The goods will be taken immediately from your warehouses but you will receive the coins at the <strong>start of the next month</strong>. Also, you get <strong>no prestige</strong> from Black Market trades.</p>' +
 			'<div class="contents"></div>');
+		$(el + ' #tab-auctioneer').append('<p>The Auctioneer is an automated way to purchase goods from the world trade market. When the requested goods become available, the Auctioneer purchases them automatically, taking an extra <strong>' + civitas.AUCTIONEER_DISCOUNT + '%</strong> tax on the total amount of coins paid for the goods.</p>' +
+			'<div class="contents"></div>');
 		$(el + ' #tab-prices').append('<div class="contents"></div>');
 		$(el + ' #tab-blackmarket > .contents').append('' +
 			'<table class="normal">' +
 				'<thead>' +
 					'<tr>' +
 						'<td>Resources: <select class="bm-materials"></select></td>' +
-						'<td>Quantity: ' +
+						'<td>Quantity&nbsp;&nbsp;&nbsp;&nbsp;' +
 							'<select class="bm-quantity">' +
 								'<option value="0">-- select --</option>' +
 								'<option value="10">10</option>' +
 								'<option value="100">100</option>' +
 								'<option value="1000">1000</option>' +
 								'<option value="10000">10000</option>' +
-							'</select> or enter manually <input type="number" min="1" max="100000" placeholder="amount" class="small bm-qty-manual" />' +
+							'</select>&nbsp;&nbsp;&nbsp;&nbsp;or enter manually&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="1" max="100000" placeholder="amount" class="small bm-qty-manual" />' +
 						'</td>' +
 						'<td>' +
 							'<a title="List goods on Black Market" class="tips bmarket" href="#">List</a>' +
@@ -75,6 +82,30 @@ civitas.PANEL_TRADES = {
 				'<tbody>' +
 				'</tbody>' +
 			'</table>');
+		if (settlement.can_trade()) {
+			$(el + ' #tab-auctioneer > .contents').append('' +
+				'<table class="normal">' +
+					'<thead>' +
+						'<tr>' +
+							'<td>Resources: <select class="auc-materials"></select></td>' +
+							'<td>Quantity&nbsp;&nbsp;&nbsp;&nbsp;' +
+								'<select class="auc-quantity">' +
+									'<option value="0">-- select --</option>' +
+									'<option value="10">10</option>' +
+									'<option value="100">100</option>' +
+									'<option value="1000">1000</option>' +
+									'<option value="10000">10000</option>' +
+								'</select>&nbsp;&nbsp;&nbsp;&nbsp;or enter manually&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="1" max="100000" placeholder="amount" class="small auc-qty-manual" />' +
+							'</td>' +
+							'<td>' +
+								'<a title="Search for the goods" class="tips auction" href="#">Search</a>' +
+							'</td>' +
+						'</tr>' +
+					'</thead>' +
+					'<tbody>' +
+					'</tbody>' +
+				'</table>');
+		}
 		let out = '<option value="0">-- select --</option>';
 		let resources = settlement.get_resources();
 		for (let item in resources) {
@@ -82,7 +113,7 @@ civitas.PANEL_TRADES = {
 				out += '<option value="' + item + '"> ' + civitas.utils.get_resource_name(item) + '</option>';
 			}
 		}
-		$(el + ' .bm-materials').empty().append(out);
+		$(el + ' .bm-materials, ' + el + ' .auc-materials').empty().append(out);
 		$(el).on('click', '.settlement-info', function () {
 			let _settlement_name = $(this).data('settlement');
 			core.ui().open_panel(civitas.PANEL_SETTLEMENT, core.get_settlement(_settlement_name));
@@ -109,19 +140,42 @@ civitas.PANEL_TRADES = {
 				self.on_refresh();
 			}
 			return false;
+		}).on('click', '.auction', function () {
+			if (!settlement.can_trade()) {
+				core.ui().error('You will need to construct a Trading Post before being able to assign an Auctioneer to buy items.');
+				return false;
+			}
+			let resource = $('.auc-materials').val();
+			let auto_amount = $('.auc-quantity').val();
+			let manual_amount = $('.auc-qty-manual').val();
+			let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
+			if (resource !== '0' && amount > 0 && amount <= 10000) {
+				if (core.auctioneer_add(resource, amount)) {
+					self.on_refresh();
+					$('.auc-qty-manual').val('');
+				}
+			} else {
+				core.ui().error('Select a resource and the amount you want the Auctioneer to search for.');
+			}
+			return false;
 		}).on('click', '.bmarket', function () {
 			let resource = $('.bm-materials').val();
 			let auto_amount = $('.bm-quantity').val();
 			let manual_amount = $('.bm-qty-manual').val();
 			let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
 			if (resource !== '0' && amount > 0) {
-				if (settlement.add_to_black_market(resource, amount)) {
+				if (core.black_market_add(resource, amount)) {
 					self.on_refresh();
 					$('.bm-qty-manual').val('');
 				}
 			} else {
 				core.ui().error('Select a resource and the amount of it you want to place on the Black Market.');
 			}
+			return false;
+		}).on('click', '.auc-resources-delete', function() {
+			let resource = $(this).data('id');
+			delete auctions[resource];
+			self.generate_table_data();
 			return false;
 		}).on('click', '.recruit:not(.disabled)', function () {
 			let handle = $(this).data('handle');
@@ -149,15 +203,32 @@ civitas.PANEL_TRADES = {
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
 		let out = '';
-		let bm = core.get_black_market();
+		let bm = core.black_market();
 		for (let item in bm) {
 			out += '<tr>' +
-					'<td>Amount: ' + bm[item].amount + core.ui().resource_small_img(item) + '</td>' +
-					'<td>Total price: ' + bm[item].price + core.ui().resource_small_img('coins') + '</td>' +
+					'<td>Amount: ' + bm[item].amount + ' ' + core.ui().resource_small_img(item) + '</td>' +
+					'<td>Total price: ' + bm[item].price + ' ' + core.ui().resource_small_img('coins') + '</td>' +
 					'<td>&nbsp;</td>' +
 				'</tr>';
 		}
 		$('#tab-blackmarket > .contents > table > tbody').empty().append(out);
+		if (settlement.can_trade()) {
+			this.generate_table_data = function() {
+				let out = '';
+				let auctions = core.auctioneer();
+				for (let item in auctions) {
+					out += '<tr>' +
+							'<td>Amount: ' + auctions[item].amount + ' ' + core.ui().resource_small_img(item) + '</td>' +
+							'<td>Total price: ' + auctions[item].price + ' ' + core.ui().resource_small_img('coins') + '</td>' +
+							'<td>' +
+								'<a title="Remove this resource from the Auctioneer." href="#" data-id="' + item + '" class="tips auc-resources-delete">-</a>' +
+							'</td>' +
+						'</tr>';
+				}
+				$('#tab-auctioneer > .contents > table > tbody').empty().append(out);
+			};
+			this.generate_table_data();
+		}
 		out = '<table class="normal">' +
 					'<thead>' +
 					'<tr>' +
@@ -291,10 +362,11 @@ civitas.PANEL_TRADES = {
 					'<tr>' +
 						'<td>Resource</td>' +
 						'<td class="center">Icon</td>' +
-						'<td class="center">Price</td>' +
-						'<td class="center tips" title="This is the price you get for selling one unit of the resource to another settlement, minus the <strong>' + civitas.TRADES_DISCOUNT + '%</strong> export taxes.">Sell Price</td>' +
-						'<td class="center tips" title="This is the price you get for buying one unit of the resource from another settlement, plus the <strong>' + civitas.TRADES_ADDITION + '%</strong> import taxes.">Buy Price</td>' +
-						'<td class="center tips" title="This is the price you get for placing one unit of the resource on the Black Market, minus the <strong>' + civitas.BLACK_MARKET_DISCOUNT + '%</strong> taxes.">BM Price</td>' +
+						'<td class="center">Base Price</td>' +
+						'<td class="center tips" title="This is the price you get for selling one unit of the resource to another settlement, base price minus the <strong>' + civitas.TRADES_DISCOUNT + '%</strong> export taxes.">Sell Price</td>' +
+						'<td class="center tips" title="This is the price you get for buying one unit of the resource from another settlement, base price plus the <strong>' + civitas.TRADES_ADDITION + '%</strong> import taxes.">Buy Price</td>' +
+						'<td class="center tips" title="This is the price you get for placing one unit of the resource on the Black Market, base price minus the <strong>' + civitas.BLACK_MARKET_DISCOUNT + '%</strong> taxes.">Black Market</td>' +
+						'<td class="center tips" title="This is the price you get for buying one unit of the resource via the Auctioneer, base price plus the <strong>' + civitas.TRADES_ADDITION + '%</strong> import taxes and plus the <strong>' + civitas.AUCTIONEER_DISCOUNT + '%</strong> Auctioneer taxes.">Auctioneer</td>' +
 						'<td class="center tips" title="If the resource is listed as produced, that possibility depends on the location and climate of your settlement (ex. tropical settlements can build <strong>Sugar Farms</strong> and produce <strong>Sugar</strong>).">Type</td>' +
 					'</tr>' +
 					'</thead>';
@@ -303,6 +375,7 @@ civitas.PANEL_TRADES = {
 				let discount = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_ADDITION) / 100);
 				let tax = Math.ceil((civitas.RESOURCES[item].price * civitas.TRADES_DISCOUNT) / 100);
 				let bm_tax = Math.ceil((civitas.RESOURCES[item].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
+				let auc_tax = Math.ceil((civitas.RESOURCES[item].price * civitas.AUCTIONEER_DISCOUNT) / 100);
 				out += '<tr>' +
 					'<td>' + civitas.RESOURCES[item].name + '</td>' +
 					'<td class="center">' + core.ui().resource_small_img(item) + '</td>' +
@@ -310,6 +383,7 @@ civitas.PANEL_TRADES = {
 					'<td class="center">' + (civitas.RESOURCES[item].price - tax) + core.ui().resource_small_img('coins') + '</td>' +
 					'<td class="center">' + (civitas.RESOURCES[item].price + discount) + core.ui().resource_small_img('coins') + '</td>' +
 					'<td class="center">' + (civitas.RESOURCES[item].price - bm_tax) + core.ui().resource_small_img('coins') + '</td>' +
+					'<td class="center">' + (civitas.RESOURCES[item].price + Math.ceil(discount + auc_tax)) + core.ui().resource_small_img('coins') + '</td>' +
 					'<td class="center">' + ((civitas.RESOURCES[item].imported === true) ? 'imported' : 'produced') + '</td>' +
 				'</tr>';
 			}
@@ -318,10 +392,11 @@ civitas.PANEL_TRADES = {
 					'<tr>' +
 						'<td>Resource</td>' +
 						'<td class="center">Icon</td>' +
-						'<td class="center">Price</td>' +
+						'<td class="center">Base Price</td>' +
 						'<td class="center">Sell Price</td>' +
 						'<td class="center">Buy Price</td>' +
-						'<td class="center">BM Price</td>' +
+						'<td class="center">Black Market</td>' +
+						'<td class="center">Auctioneer</td>' +
 						'<td class="center">Type</td>' +
 					'</tr>' +
 				'</tfoot>' +

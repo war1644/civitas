@@ -88,6 +88,14 @@ civitas.objects.building = function(params) {
 	 */
 	this.problems = false;
 
+	/*
+	 * The position of this building.
+	 *
+	 * @type {Object}
+	 * @private
+	 */
+	this._position = null;
+
 	/**
 	 * Object constructor.
 	 * 
@@ -105,6 +113,10 @@ civitas.objects.building = function(params) {
 		this.is_municipal = (typeof params.data.is_municipal !== 'undefined' && params.data.is_municipal === true) ? true : false;
 		this.is_housing = (typeof params.data.is_housing !== 'undefined' && params.data.is_housing === true) ? true : false;
 		this.level = (typeof params.data.level !== 'undefined') ? params.data.level : 1;
+		this._position = (typeof params.data.position !== 'undefined') ? params.data.position : {
+			x: 0,
+			y: 0
+		};
 		this.stopped = (typeof params.stopped !== 'undefined') ? params.stopped : false;
 		this.handle = params.data.handle;
 		params.data.level = this.get_level();
@@ -803,6 +815,16 @@ civitas.objects.building = function(params) {
 			}
 		}
 		return this;
+	};
+
+	/**
+	 * Get the city position of this building.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	this.position = function() {
+		return this._position;
 	};
 
 	// Fire up the constructor

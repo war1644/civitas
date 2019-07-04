@@ -398,7 +398,7 @@ civitas.BUILDINGS = [{
 	}, {
 		name: 'Trading Post',
 		handle: 'tradingpost',
-		description: 'The Trading Post is a merchant building that allows you to trade resources with the other settlements in the world.',
+		description: 'The Trading Post is a merchant building that allows you to trade resources with the other settlements in the world. Also allows you to use the powerful Auctioneer.',
 		is_municipal: true,
 		storage: 10000,
 		visible_upgrades: true,
@@ -438,8 +438,8 @@ civitas.BUILDINGS = [{
 		},
 		cost: {
 			coins: 100000,
-			woodplanks: 1000,
-			stones: 1000,
+			woodplanks: 500,
+			stones: 500,
 			tools: 20
 		},
 		requires: {
@@ -1706,7 +1706,7 @@ civitas.BUILDINGS = [{
 			y: 1120
 		},
 		production: {
-			beer: 1
+			beer: 2
 		},
 		materials: {
 			barrels: 1,
@@ -1956,7 +1956,7 @@ civitas.BUILDINGS = [{
 			coins: 5000
 		},
 		materials: {
-			fish: 2,
+			fish: 1,
 			meat: 2,
 			pottery: 1,
 			beer: 1

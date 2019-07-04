@@ -41,8 +41,8 @@ civitas.PANEL_EMBASSY = {
 		let level = building.get_level();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
-			'Diplomacy',
-			'Espionage'
+			'Espionage',
+			'Diplomacy'
 		]));
 		$(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
 		$(this.handle).on('click', '.view', function () {
@@ -91,12 +91,10 @@ civitas.PANEL_EMBASSY = {
 				let _status = settlement.get_diplomacy_status(settlements[i].id());
 				_t += '<tr>' +
 						'<td>' +
-							'<p>' + settlements[i].name() + '</p> ' +
+							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' + settlements[i].name() + '</a> ' +
 						'</td>' +
 						'<td class="icon">' +
-							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' +
-								'<img class="avatar small" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' +
-							'</a>' +
+							'<img class="avatar small" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' +
 						'</td>' +
 						'<td>' +
 							'<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'small') + '</div>' +

@@ -239,7 +239,7 @@ civitas.PANEL_BUILDINGS = {
 				if (_i !== true) {
 					$(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
 				} else {
-					$(el + ' .toolbar').append('You already constructed this building.');
+					//$(el + ' .toolbar').append('You already constructed this building.');
 				}
 				$(el + ' .right').show();
 			}
@@ -248,7 +248,7 @@ civitas.PANEL_BUILDINGS = {
 			let handle = $(this).data('handle');
 			if (settlement.build(handle) !== false) {
 				$(el + ' .building-item[data-handle=' + handle + ']').addClass('disabled');
-				$(el + ' .toolbar').empty().append('You already constructed this building.');
+				$(el + ' .toolbar').empty();//.append('You already constructed this building.');
 			}
 			return false;
 		});

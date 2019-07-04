@@ -12,9 +12,11 @@ civitas.PANEL_NEW_ARMY = {
 	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create army<a class="tips close" title="Close"></a></header>' +
+			'<header>Create army' +
+				'<a class="tips close" title="Close"></a>' +
+			'</header>' +
 			'<section></section>' +
-			'<div class="toolbar clearfix">' +
+			'<div class="toolbar">' +
 				'<a class="dispatch btn iblock" href="#">Dispatch</a>' +
 			'</div>' +
 		'</div>',

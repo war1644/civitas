@@ -12,7 +12,8 @@ civitas.PANEL_NEW_CARAVAN = {
 	 */
 	template: '' +
 		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create caravan<a class="tips close" title="Close"></a>' +
+			'<header>Create caravan' +
+				'<a class="tips close" title="Close"></a>' +
 			'</header>' +
 			'<section></section>' +
 			'<div class="toolbar">' +
