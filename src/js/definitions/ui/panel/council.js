@@ -125,7 +125,7 @@ civitas.PANEL_COUNCIL = {
 		let buildings = settlement.get_buildings();
 		let resources = settlement.get_resources();
 		let achievements = core.achievements();
-		let advices = settlement.city_council();
+		let advices = core.city_council();
 		let total_costs = 0;
 		let total_tax = 0;
 		let army_data;

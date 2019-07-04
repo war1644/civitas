@@ -125,7 +125,6 @@ civitas.objects.building = function(params) {
 			}
 			this.core().ui().refresh();
 		}
-		//const building = this.get_building_data();
 		if (typeof params.data.storage !== 'undefined') {
 			this.get_settlement().storage(this.get_settlement().storage().all + (params.data.storage * this.get_level()));
 		}
@@ -539,10 +538,11 @@ civitas.objects.building = function(params) {
 	this.process = function() {
 		const building = this.get_building_data();
 		const materials = building.materials;
+		const settlement = this.get_settlement();
 		if (building.is_housing === true) {
 			if (typeof materials !== 'undefined') {
-				if (this.get_settlement().has_resources(materials)) {
-					this.get_settlement().remove_resources(materials);
+				if (settlement.has_resources(materials)) {
+					settlement.remove_resources(materials);
 					this.tax(building.tax);
 					this.log_to_console();
 				} else {
@@ -559,7 +559,7 @@ civitas.objects.building = function(params) {
 							let all_good = true;
 							let removable = {};
 							for (let i = 0; i < materials.length; i++) {
-								let res = this.get_settlement().has_any_resources(materials[i]);
+								let res = settlement.has_any_resources(materials[i]);
 								if (res !== false) {
 									removable[res] = materials[i][res];
 								} else {
@@ -567,13 +567,13 @@ civitas.objects.building = function(params) {
 								}
 							}
 							if (all_good === true) {
-								if (this.get_settlement().has_storage_space_for(products)) {
-									this.get_settlement().remove_resources(removable);
+								if (settlement.has_storage_space_for(products)) {
+									settlement.remove_resources(removable);
 									if (this.produce(products)) {
 										this.log_to_console();
 									}
 								} else {
-									this.core().ui().log('game', 'There is no storage space in your city to accomodate the new goods.', true);
+									this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
 									this.problems = true;
 									return false;
 								}
@@ -583,14 +583,14 @@ civitas.objects.building = function(params) {
 								return false;
 							}
 						} else {
-							if (this.get_settlement().has_resources(materials)) {
-								if (this.get_settlement().has_storage_space_for(products)) {
-									this.get_settlement().remove_resources(materials);
+							if (settlement.has_resources(materials)) {
+								if (settlement.has_storage_space_for(products)) {
+									settlement.remove_resources(materials);
 									if (this.produce(products)) {
 										this.log_to_console();
 									}
 								} else {
-									this.core().ui().log('game', 'There is no storage space in your city to accomodate the new goods.', true);
+									this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
 									this.problems = true;
 									return false;
 								}
@@ -600,12 +600,12 @@ civitas.objects.building = function(params) {
 							}
 						}
 					} else {
-						if (this.get_settlement().has_storage_space_for(products)) {
+						if (settlement.has_storage_space_for(products)) {
 							if (this.produce(products)) {
 								this.log_to_console();
 							}
 						} else {
-							this.core().ui().log('game', 'There is no storage space in your city to accomodate the new goods.', true);
+							this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
 							this.problems = true;
 							return false;
 						}

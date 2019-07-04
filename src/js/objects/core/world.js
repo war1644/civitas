@@ -215,8 +215,8 @@ civitas.objects.world = function (params) {
 	 */
 	this.get_random_location = function(terrain) {
 		const pos = {
-			x: civitas.utils.get_random(1, civitas.WORLD_SIZE_WIDTH - 2),
-			y: civitas.utils.get_random(1, civitas.WORLD_SIZE_HEIGHT - 2)
+			x: civitas.utils.get_random(0, civitas.WORLD_SIZE_WIDTH - 1),
+			y: civitas.utils.get_random(0, civitas.WORLD_SIZE_HEIGHT - 1)
 		}
 		if (typeof terrain !== 'undefined') {
 			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
@@ -388,6 +388,7 @@ civitas.objects.world = function (params) {
 		this._data[location.y][location.x].l = true;
 		this._data[location.y][location.x].lid = settlement.id();
 		this._data[location.y][location.x].n = settlement.name();
+		this.calc_neighbours(settlement);
 		//civitas.svg.add_city_image(location.x, location.y, settlement);
 		return this;
 	};
@@ -533,7 +534,54 @@ civitas.objects.world = function (params) {
 		return value;
 	};
 
-	this.get_neighbours = function(y, x) {
+	/**
+	 * Get the list of all the neighbouring hexes to the specified settlement.
+	 *
+	 * @returns {Array}
+	 * @public
+	 */
+	this.get_neighbours = function(settlement) {
+		const hexes = [];
+		const location = settlement.location();
+		const neighbours = this.get_neighbouring_hexes(location.y, location.x);
+		if (settlement.is_city()) {
+			for (let z = 0; z < neighbours.length; z++) {
+				hexes.push(neighbours[z]);
+			}
+		} else if (settlement.is_metropolis()) {
+			for (let z = 0; z < neighbours.length; z++) {
+				hexes.push(neighbours[z]);
+				const new_neighbours = this.get_neighbouring_hexes(neighbours[z].y, neighbours[z].x);
+				for (let u = 0; u < new_neighbours.length; u++) {
+					hexes.push(new_neighbours[u]);
+				}
+			}
+		}
+		return hexes;
+	};
+
+	/**
+	 * Lock neighbouring hexes.
+	 *
+	 * @public
+	 * @returns {civitas.objects.world}
+	 */
+	this.calc_neighbours = function(settlement) {
+		let terrain;
+		const neighbours = this.get_neighbours(settlement);
+		for (let i = 0; i < neighbours.length; i++) {
+			if ((neighbours[i].x > 1 && neighbours[i].x <= civitas.WORLD_SIZE_WIDTH) && (neighbours[i].y > 1 && neighbours[i].y <= civitas.WORLD_SIZE_HEIGHT)) {
+				terrain = this.get_hex_terrain(neighbours[i].x, neighbours[i].y);
+				this.lock_hex(neighbours[i].x, neighbours[i].y, settlement.id());
+				if (terrain === 'S' || terrain === 'O') {
+					settlement.waterside(true);
+				}
+			}
+		}
+		return this;
+	};
+
+	this.get_neighbouring_hexes = function(y, x) {
 		if (x % 2 == 0) {
 			return [
 			    {

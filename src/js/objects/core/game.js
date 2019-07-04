@@ -645,6 +645,7 @@ civitas.game = function () {
 		let achievement;
 		let id;
 		const settlement = this.get_settlement();
+		if (settlement.is_player()) {
 		for (let i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
 			achievement = civitas.ACHIEVEMENTS[i];
 			id = achievement.handle;
@@ -726,6 +727,7 @@ civitas.game = function () {
 				}
 			}
 		}
+	}
 		return this;
 	};
 
@@ -1835,6 +1837,101 @@ civitas.game = function () {
 		return this._ui;
 	};
 
+	/**
+	 * Ask the City Council for tips.
+	 * 
+	 * @public
+	 * @returns {Array}
+	 */
+	this.city_council = function() {
+		const advices = [];
+		const settlement = this.get_settlement();
+		if (settlement.is_player()) {
+			const resources = settlement.get_resources();
+			const storage = settlement.storage();
+			const army = settlement.num_soldiers();
+			const navy = settlement.num_ships();
+			const queue = this.queue();
+			const buildings = settlement.get_buildings();
+			const problem_buildings = [];
+			if (army === 0) {
+				advices.push('You have no army, this is an open invitation for attack.');
+			}
+			if (army < 10 && army > 0) {
+				advices.push('You have a small army, try to recruit some more soldiers.');
+			}
+			if (navy === 0) {
+				advices.push('You have no navy, this is an open invitation for attack.');
+			}
+			if (navy < 3 && navy > 0) {
+				advices.push('You have a small navy, try to construct some more ships.');
+			}
+			if (storage.occupied >= storage.all) {
+				advices.push('You have no storage space to store your new goods and they will be lost. Sell some goods or build a warehouse.');
+			} else if ((storage.all - storage.occupied) < 100) {
+				advices.push('You will soon run out of storage space and all goods produced will be lost. Sell some goods or build a warehouse.');
+			}
+			if (resources.coins < 1000) {
+				advices.push('You seem to be losing coins fast, sell some goods or upgrade your houses to get better taxes.');
+			}
+			if (resources.wood < 100 || resources.stones < 100 || resources.woodplanks < 50) {
+				advices.push('You are lacking construction materials, buy some stones, wood planks and/or wood off the World Trade Market.');
+			}
+			if (resources.prestige < 100) {
+				advices.push('Your settlement`s prestige is too low, start doing trades with the other settlements to improve it.');
+			}
+			if (resources.faith < 100) {
+				advices.push('Your settlement`s faith is too low, build a Church or upgrade it to be able to gather faith and choose/switch religions.');
+			}
+			if (resources.faith === civitas.MAX_FAITH_VALUE) {
+				advices.push('You are at maximum faith, start using it from your settlement`s Church.');
+			}
+			if (resources.research < 100) {
+				advices.push('Your settlement`s research is too low, build an Academy or upgrade it to be able to gather research and use it.');
+			}
+			if (resources.research === civitas.MAX_RESEARCH_VALUE) {
+				advices.push('You are at maximum research, start using it for settlement researches, from your Academy.');
+			}
+			if (resources.espionage < 100) {
+				advices.push('Your settlement`s espionage is too low, build an Embassy or upgrade it to be able to gather espionage.');
+			}
+			if (resources.espionage === civitas.MAX_ESPIONAGE_VALUE) {
+				advices.push('You are at maximum espionage, start using it for espionage missiong from your Embassy.');
+			}
+			if (resources.coins > 100000) {
+				advices.push('You have lots of coins, why not invest some in goods?');
+			}
+			for (let item in resources) {
+				if (!civitas.utils.is_virtual_resource(item)) {
+					if (resources[item] > 1000) {
+						advices.push('You seem to have a surplus of ' + civitas.utils.get_resource_name(item) + '. You can sell some or place it on the Black Market and get coins instead.');
+					}
+				}
+			}
+			for (let i = 0; i < queue.length; i++) {
+				if (queue[i].mode === civitas.ACTION_CAMPAIGN) {
+					if (queue[i].destination.id === settlement.id()) {
+						advices.push('There is an army from ' + this.get_settlement(queue[i].source.id).name() + ' marching towards your city!');
+					}
+					if (queue[i].source.id === settlement.id()) {
+						advices.push('Your have an army marching towards ' + this.get_settlement(queue[i].destination.id).name() + '!');
+					}
+				}
+			}
+			for (let i = 0; i < buildings.length; i++) {
+				if (typeof buildings[i] !== 'undefined') {
+					if (buildings[i].has_problems()) {
+						problem_buildings.push(buildings[i].get_name());
+					}
+				}
+			}
+			if (problem_buildings.length > 0) {
+				advices.push((problem_buildings.length === 1 ? 'One' : 'Several') + ' of your buildings (' + problem_buildings.join(', ') + ') ' + (problem_buildings.length === 1 ? 'is' : 'are') + ' not working due to a shortage of materials. Buy more goods.');
+			}
+		}
+		return advices;
+	};
+	
 	/**
 	 * Set game settings.
 	 * 

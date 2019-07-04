@@ -111,16 +111,17 @@ civitas.objects.event = function (params) {
 		const core = this.core();
 		const random_s_id = civitas.utils.get_random(1, core.settlements.length);
 		const with_settlement = core.get_settlement(random_s_id);
+		const settlement = core.get_settlement();
 		let description = '';
 		if (with_settlement !== false) {
 			description = this._description.replace(/SETTLEMENT/g, with_settlement.name());
 			if (this._raise !== null) {
 				for (let item in this._raise) {
 					if (item === 'influence') {
-						core.get_settlement().raise_influence(with_settlement.id(), this._raise[item]);
+						settlement.raise_influence(with_settlement.id(), this._raise[item]);
 					} else {
-						if (core.get_settlement().has_storage_space_for(item, this._raise[item])) {
-							core.get_settlement().add_to_storage(item, this._raise[item]);
+						if (settlement.has_storage_space_for(item, this._raise[item])) {
+							settlement.add_to_storage(item, this._raise[item]);
 						}
 					}
 					let replace = new RegExp(item.toUpperCase(), 'g');
@@ -130,9 +131,9 @@ civitas.objects.event = function (params) {
 			if (this._lower !== null) {
 				for (let item in this._lower) {
 					if (item === 'influence') {
-						core.get_settlement().lower_influence(with_settlement.id(), this._lower[item]);
+						settlement.lower_influence(with_settlement.id(), this._lower[item]);
 					} else {
-						core.get_settlement().remove_resource(item, this._lower[item]);
+						settlement.remove_resource(item, this._lower[item]);
 					}
 					let replace = new RegExp(item.toUpperCase(), 'g');
 					description = description.replace(replace, this._lower[item]);
@@ -140,7 +141,7 @@ civitas.objects.event = function (params) {
 			}
 		}
 		if (this._destroy !== null) {
-			let buildings = core.get_settlement().get_buildings();
+			let buildings = settlement.get_buildings();
 			const building = civitas.utils.get_random(1, buildings.length);
 			const _building = buildings[building];
 			if (typeof _building !== 'undefined') {
@@ -151,12 +152,12 @@ civitas.objects.event = function (params) {
 			}
 		}
 		if (this._build !== null) {
-			const buildings = core.get_settlement().get_buildings();
+			const buildings = settlement.get_buildings();
 			// Todo
 			let replace = new RegExp('BUILDING', 'g');
 			description = description.replace(replace, name);
 		}
-		if (core.get_settlement().is_player()) {
+		if (settlement.is_player()) {
 			core.ui().notify(description, 'Event: ' + this._name, false, civitas.NOTIFY_EVENT);
 		}
 		core.ui().log('event', this._name);

@@ -1,12 +1,3 @@
-
-civitas.ERA_1 = 1;
-
-civitas.ERA_2 = 2;
-
-civitas.ERA_3 = 3;
-
-civitas.ERA_4 = 4;
-
 /**
  * List of the possible seasons.
  * 
@@ -21,10 +12,38 @@ civitas.SEASONS = [
 	'winter'
 ];
 
+/**
+ * Spring season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.SEASON_SPRING = 0;
 
+/**
+ * Summer season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.SEASON_SUMMER = 1;
 
+/**
+ * Autumn season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.SEASON_AUTUMN = 2;
 
+/**
+ * Winter season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.SEASON_WINTER = 3;

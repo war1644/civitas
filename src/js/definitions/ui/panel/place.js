@@ -48,7 +48,6 @@ civitas.PANEL_PLACE = {
 		if (place.is_scouted()) {
 			labs.push('Resources', 'Construction');
 		}
-		console.log(place.location());
 		$(this.handle + ' section').append(core.ui().tabs(tabs));
 		let claimed_by = place.is_claimed();
 		let claimed_by_settlement = core.get_settlement(claimed_by);

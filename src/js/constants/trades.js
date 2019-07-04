@@ -42,6 +42,8 @@ civitas.TRADES_ADDITION = 10;
 
 civitas.TRADES_DISCOUNT = 20;
 
+civitas.FAME_PER_TRADE = 50;
+
 /**
  * The black market discount.
  * 
