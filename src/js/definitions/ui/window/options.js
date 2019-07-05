@@ -23,17 +23,17 @@ civitas.WINDOW_OPTIONS = {
 	 */
 	on_create: function(params) {
 		this.template = '<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'<a href="#" class="do-pause button">Pause</a>' +
-				'<a href="#" class="do-restart button">Restart</a>' +
-				'<a href="#" class="do-options button">Options</a>' +
-				'<div class="options-game"></div>' +
-				this.core().ui().window_about_section() +
-				'<br />' +
-				'<a href="#" class="do-resume button">Resume Playing</a>' +
-			'</fieldset>' +
-		'</section>';
+							'<div class="logo">Civitas</div>' +
+							'<fieldset>' +
+								'<a href="#" class="do-pause button">Pause</a>' +
+								'<a href="#" class="do-restart button">Restart</a>' +
+								'<a href="#" class="do-options button">Options</a>' +
+								'<div class="options-game"></div>' +
+								this.core().ui().window_about_section() +
+								'<br />' +
+								'<a href="#" class="do-resume button">Resume Playing</a>' +
+							'</fieldset>' +
+						'</section>';
 	},
 
 	/**

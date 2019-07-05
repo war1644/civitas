@@ -67,6 +67,33 @@ civitas.MAX_SETTLEMENTS = 100;
 civitas.MAX_SETTLEMENT_ICONS = 3;
 
 /**
+ * Max level a settlement can have.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.MAX_SETTLEMENT_LEVEL = 99;
+
+/**
+ * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.POPULATION_PER_LEVEL = 2300;
+
+/**
+ * The minimum value settlement fame can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.MIN_FAME_VALUE = 1;
+
+/**
  * List of possible world settlement names.
  *
  * @constant
@@ -416,30 +443,3 @@ civitas.NAMES = [
 	'Tasufin',
 	'Hammad'
 ];
-
-/**
- * Max level a settlement can have.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-civitas.MAX_SETTLEMENT_LEVEL = 99;
-
-/**
- * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.POPULATION_PER_LEVEL = 2300;
-
-/**
- * The minimum value settlement fame can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.MIN_FAME_VALUE = 1;

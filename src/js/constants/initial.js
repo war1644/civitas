@@ -1,3 +1,10 @@
+/**
+ * Initial state of the game, based on the selected difficulty.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
 civitas.INITIAL_SEED = [
 	/* Easy difficulty */
 	{

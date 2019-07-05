@@ -10,19 +10,18 @@ civitas.WINDOW_ERROR = {
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'An error has occured in Civitas and the game is unable to resume.' +
-				'<br /><br />' +
-				'<span class="error-message"></span>' +
-				'<br />' +
-				'<span class="error-code"></span>' +
-				'<br /><br />' +
-				'<a href="#" class="do-restart button">Restart</a>' +
-			'</fieldset>' +
-		'</section>',
+	template: '<section id="window-{ID}" class="window">' +
+				'<div class="logo">Civitas</div>' +
+				'<fieldset>' +
+					'An error has occured in Civitas and the game is unable to resume.' +
+					'<br /><br />' +
+					'<span class="error-message"></span>' +
+					'<br />' +
+					'<span class="error-code"></span>' +
+					'<br /><br />' +
+					'<a href="#" class="do-restart button">Restart</a>' +
+				'</fieldset>' +
+			'</section>',
 
 	/**
 	 * Internal id of the window.

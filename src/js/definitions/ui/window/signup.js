@@ -23,46 +23,54 @@ civitas.WINDOW_SIGNUP = {
 	 */
 	on_create: function(params) {
 		this.template = '<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'<div class="new-game">' +
-					'<p>Choose your city details well, climate changes and game difficulty affects your building options and resources.</p>' +
-					'<dl>' +
-						'<dt class="clearfix">Your Name:</dt>' +
-						'<dd><input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" /></dd>' +
-						((civitas.ENCRYPTION === true) ?
-						'<dt class="clearfix">Password:</dt>' +
-						'<dd><input type="password" class="password text-input" /></dd>' +
-						'<dt class="clearfix">Confirm Password:</dt>' +
-						'<dd><input type="password" class="password2 text-input" /></dd>'
-						: '') +
-						'<div class="hr"></div>' +
-						'<dt class="clearfix">City Name:</dt>' +
-						'<dd><input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" /></dd>' +
-						'<dt class="clearfix">Nationality:</dt>' +
-						'<dd>' +
-							'<select class="nation text-input"></select>' +
-						'</dd>' +
-						'<dt class="clearfix">Climate:</dt>' +
-						'<dd>' +
-							'<select class="climate text-input"></select>' +
-						'</dd>' +
-						'<dt class="clearfix">Difficulty:</dt>' +
-						'<dd>' +
-							'<select class="difficulty text-input">' +
-								'<option value="1">Easy</option>' +
-								'<option value="2">Medium</option>' +
-								'<option value="3">Hard</option>' +
-								'<option value="4">Hardcore</option>' +
-							'</select>' +
-						'</dd>' +
-						'<div class="avatar-select"></div>' +
-					'</dl>' +
-					'<a href="#" class="do-start highlight button">Start Playing</a>' +
-				'</div>' +
-				this.core().ui().window_about_section() +
-			'</fieldset>' +
-		'</section>';
+							'<div class="logo">Civitas</div>' +
+							'<fieldset>' +
+								'<div class="new-game">' +
+									'<p>Choose your city details well, climate changes and game difficulty affects your building options and resources.</p>' +
+									'<dl>' +
+										'<dt class="clearfix">Your Name:</dt>' +
+										'<dd>' +
+											'<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" />' +
+										'</dd>' +
+										((civitas.ENCRYPTION === true) ?
+										'<dt class="clearfix">Password:</dt>' +
+										'<dd>' +
+											'<input type="password" class="password text-input" />' +
+										'</dd>' +
+										'<dt class="clearfix">Confirm Password:</dt>' +
+										'<dd>' +
+											'<input type="password" class="password2 text-input" />' +
+										'</dd>'
+										: '') +
+										'<div class="hr"></div>' +
+										'<dt class="clearfix">City Name:</dt>' +
+										'<dd>' +
+											'<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" />' +
+										'</dd>' +
+										'<dt class="clearfix">Nationality:</dt>' +
+										'<dd>' +
+											'<select class="nation text-input"></select>' +
+										'</dd>' +
+										'<dt class="clearfix">Climate:</dt>' +
+										'<dd>' +
+											'<select class="climate text-input"></select>' +
+										'</dd>' +
+										'<dt class="clearfix">Difficulty:</dt>' +
+										'<dd>' +
+											'<select class="difficulty text-input">' +
+												'<option value="1">Easy</option>' +
+												'<option value="2">Medium</option>' +
+												'<option value="3">Hard</option>' +
+												'<option value="4">Hardcore</option>' +
+											'</select>' +
+										'</dd>' +
+										'<div class="avatar-select"></div>' +
+									'</dl>' +
+									'<a href="#" class="do-start highlight button">Start Playing</a>' +
+								'</div>' +
+								this.core().ui().window_about_section() +
+							'</fieldset>' +
+						'</section>';
 	},
 
 	/**

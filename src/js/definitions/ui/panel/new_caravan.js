@@ -5,21 +5,21 @@
  * @mixin
  */
 civitas.PANEL_NEW_CARAVAN = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create caravan' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<div class="toolbar">' +
-				'<a class="btn dispatch" href="#">Dispatch</a>' +
-			'</div>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>Create caravan' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<div class="toolbar">' +
+					'<a class="btn dispatch" href="#">Dispatch</a>' +
+				'</div>' +
+			'</div>',
 
 	/**
 	 * Internal id of the panel.

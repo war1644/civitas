@@ -137,6 +137,278 @@
 	width: 140px;
 }
 
+.ui .panel .section {
+	padding: 10px;
+}
+
+.ui .panel .section {
+	padding: 20px;
+}
+
+.ui .panel footer a {
+	background-color: #BF9A76;
+	border-radius: 10px;
+	background-size: 32px 32px;
+	background-position: center center;
+}
+
+.ui .panel footer a:hover {
+	background-color: #9F7E5E;
+}
+
+.ui .panel .army-item-inc,
+.ui .panel .army-item-dec,
+.ui .panel .navy-item-inc,
+.ui .panel .navy-item-dec {
+	width: 20px;
+	height: 20px;
+	border: 1px solid #aaa;
+	position: absolute;
+}
+
+.ui .panel .army-item-inc,
+.ui .panel .navy-item-inc {
+	left: 0;
+	top: 0;
+	background-color: #84da86;
+	border-bottom-right-radius: 20px;
+}
+
+.ui .panel .army-item-dec,
+.ui .panel .navy-item-dec {
+	right: 0;
+	top: 0;
+	background-color: #da9a84;
+	border-bottom-left-radius: 20px;
+}
+
+.ui .panel .army-recruiter,
+.ui .panel .navy-recruiter {
+	width: 630px;
+	float: right;
+	padding: 10px 0 0 0;
+	max-height: 410px;
+	overflow: auto;
+}
+
+.ui .panel .navy-item,
+.ui .panel .army-item,
+.ui .panel .storage-item {
+	width: 75px;
+	height: 65px;
+	float: left;
+	text-align: center;
+	margin: 0 4px 4px 0;
+	position: relative;
+	box-shadow: inset 0 0 3px 0 rgba(20, 20, 20, 0.75);
+	font-size: 11px;
+}
+
+.ui .panel .navy-item,
+.ui .panel .army-item {
+	width: 65px;
+	height: 65px;
+	font-size: 11px;
+	position: relative;
+}
+
+.ui .panel .storage-item.small {
+	width: 46px;
+	height: 50px;
+	font-size: 11px;
+}
+
+.ui .panel .storage-item .title {
+	width: 100%;
+	display: inline-block;
+	width: 100%;
+	padding-top: 4px;
+}
+
+.ui .panel .navy-item span.amount,
+.ui .panel .army-item span.amount,
+.ui .panel .storage-item span.amount {
+	position: absolute;
+	bottom: 0;
+	right: 4px;
+}
+
+.ui .panel .navy-item img {
+	margin: 8px auto 0 auto;
+}
+
+.ui .panel .army-item img {
+	margin: 15px auto 0 auto;
+}
+
+.ui .panel .storage-item.small img {
+	margin: 10px auto 0 auto;
+	width: 20px;
+}
+
+.ui .panel .storage-item img {
+	width: 32px;
+}
+
+.ui .panel .settlements-list {
+	overflow: auto;
+	max-height: 415px;
+}
+
+.ui .panel .column {
+	width: 300px;
+	float: left;
+}
+
+.ui aside .panel .column {
+	float: none;
+}
+
+.ui .panel .column-small {
+	width: 215px;
+	float: left;
+}
+
+.ui .panel .column-small:nth-child(3) {
+	margin-left: 10px;
+}
+
+.ui .panel .column:last-of-type {
+	margin-left: 10px;
+}
+
+.ui .panel fieldset select {
+	width: 100%;
+	border: 1px solid #aaa;
+	padding: 4px 0;
+}
+
+.ui .panel fieldset p {
+	margin: 10px 0 0 0;
+}
+
+.ui .panel .army-list,
+.ui .panel .navy-list {
+	float: left;
+	width: 140px;
+	padding: 10px 0 0 0;
+}
+
+.ui .panel .army-recruiter fieldset,
+.ui .panel .navy-recruiter fieldset {
+	display: block;
+	float: left;
+	margin: 0 10px 10px 0;
+	width: 176px;
+	position: relative;
+}
+
+.ui .panel .army-recruiter fieldset:nth-child(3),
+.ui .panel .army-recruiter fieldset:nth-child(6),
+.ui .panel .army-recruiter fieldset:nth-child(9),
+.ui .panel .army-recruiter fieldset:nth-child(12),
+.ui .panel .navy-recruiter fieldset:nth-child(3),
+.ui .panel .navy-recruiter fieldset:nth-child(6),
+.ui .panel .navy-recruiter fieldset:nth-child(9),
+.ui .panel .navy-recruiter fieldset:nth-child(12) {
+	margin-right:0 !important;
+}
+
+.ui .panel .army-recruiter fieldset > img,
+.ui .panel .navy-recruiter fieldset > img {
+	float: right;
+	cursor: pointer;
+	bottom: 10px;
+	right: 10px;
+	position: absolute;
+}
+
+.ui .panel .army-recruiter fieldset .info,
+.ui .panel .navy-recruiter fieldset .info {
+	float: right;
+	width: 100px;
+	margin-left: 10px;
+}
+
+.ui .panel .army-recruiter fieldset .cost,
+.ui .panel .navy-recruiter fieldset .cost {
+	float: left;
+	width: 60px;
+}
+
+.ui .panel ul.advices {
+	max-height: 300px;
+	display: block;
+	margin: 0;
+	padding: 10px 0 0 0;
+	overflow: auto;
+}
+
+.ui .panel ul.advices li {
+	line-height: 30px;
+	padding-left: 50px;
+}
+
+.ui .panel .hired-mercenaries-list {
+	max-height: 370px;
+	overflow: auto;
+}
+
+/* Sidebar */
+
+.ui aside .panel {
+	position: static;
+	top: 0;
+	left: 0;
+	z-index: 99997;
+	background-color: #ECD0B7;
+	color: #444;
+	padding: 10px;
+	box-shadow: 0 0 0 transparent;
+}
+
+.ui aside .panel {
+	width: 310px;
+	max-height: 100%;
+}
+
+.ui aside .panel header {
+	cursor: default;
+}
+
+.ui aside .panel footer {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	position: fixed;
+	bottom: 0;
+}
+
+.ui aside .panel section {
+	overflow: scroll;
+	height: calc(100% - 81px);
+}
+
+.ui aside .panel section p {
+	text-align: justify;
+}
+
+.ui aside .panel .column img.building {
+	width: 200px;
+	margin: 0 auto;
+	display: block;
+}
+
+.ui aside .panel .column {
+	border-bottom: 1px solid #935F22;
+	margin-bottom: 10px;
+	width: 100% !important;
+}
+
+.ui aside .panel .column:last-of-type {
+	margin-left: 0 !important;
+}
+
 /* Debug panel */
 
 #panel-debug {
@@ -297,14 +569,6 @@
 
 /* City Council panel */
 
-#panel-barracks,
-#panel-shipyard {
-	width: 780px;
-	max-width: 780px;
-	height: auto;
-	max-height: 600px;
-}
-
 #panel-council {
 	width: 750px;
 	max-width: 750px;
@@ -317,87 +581,6 @@
 	max-height: 460px;
 }
 
-.ui .panel .army-recruiter,
-.ui .panel .navy-recruiter {
-	width: 630px;
-	float: right;
-	padding: 10px 0 0 0;
-	max-height: 410px;
-	overflow: auto;
-}
-
-.ui .panel .settlements-list {
-	overflow: auto;
-	max-height: 415px;
-}
-
-.ui .panel .army-list,
-.ui .panel .navy-list {
-	float: left;
-	width: 140px;
-	padding: 10px 0 0 0;
-}
-
-.ui .panel .army-recruiter fieldset,
-.ui .panel .navy-recruiter fieldset {
-	display: block;
-	float: left;
-	margin: 0 10px 10px 0;
-	width: 176px;
-	position: relative;
-}
-
-.ui .panel .army-recruiter fieldset:nth-child(3),
-.ui .panel .army-recruiter fieldset:nth-child(6),
-.ui .panel .army-recruiter fieldset:nth-child(9),
-.ui .panel .army-recruiter fieldset:nth-child(12),
-.ui .panel .navy-recruiter fieldset:nth-child(3),
-.ui .panel .navy-recruiter fieldset:nth-child(6),
-.ui .panel .navy-recruiter fieldset:nth-child(9),
-.ui .panel .navy-recruiter fieldset:nth-child(12) {
-	margin-right:0 !important;
-}
-
-.ui .panel .army-recruiter fieldset > img,
-.ui .panel .navy-recruiter fieldset > img {
-	float: right;
-	cursor: pointer;
-	bottom: 10px;
-	right: 10px;
-	position: absolute;
-}
-
-.ui .panel .army-recruiter fieldset .info,
-.ui .panel .navy-recruiter fieldset .info {
-	float: right;
-	width: 100px;
-	margin-left: 10px;
-}
-
-.ui .panel .army-recruiter fieldset .cost,
-.ui .panel .navy-recruiter fieldset .cost {
-	float: left;
-	width: 60px;
-}
-
-.ui .panel ul.advices {
-	max-height: 300px;
-	display: block;
-	margin: 0;
-	padding: 10px 0 0 0;
-	overflow: auto;
-}
-
-.ui .panel ul.advices li {
-	line-height: 30px;
-	padding-left: 50px;
-}
-
-.ui .panel .hired-mercenaries-list {
-	max-height: 370px;
-	overflow: auto;
-}
-
 /* City Storage panel */
 
 #panel-storage {
@@ -406,7 +589,7 @@
 	height: auto;
 }
 
-.ui .panel .storage-board {
+#panel-storage .storage-board {
 	width: 560px;
 	height: 100%;
 	padding: 10px;
@@ -415,65 +598,6 @@
 #panel-storage .total-storage, 
 #panel-storage .used-storage {
 	font-weight: bold;
-}
-
-.ui .panel .navy-item,
-.ui .panel .army-item,
-.ui .panel .storage-item {
-	width: 75px;
-	height: 65px;
-	float: left;
-	text-align: center;
-	margin: 0 4px 4px 0;
-	position: relative;
-	box-shadow: inset 0 0 3px 0 rgba(20, 20, 20, 0.75);
-	font-size: 11px;
-}
-
-.ui .panel .navy-item,
-.ui .panel .army-item {
-	width: 65px;
-	height: 65px;
-	font-size: 11px;
-	position: relative;
-}
-
-.ui .panel .storage-item.small {
-	width: 46px;
-	height: 50px;
-	font-size: 11px;
-}
-
-.ui .panel .storage-item .title {
-	width: 100%;
-	display: inline-block;
-	width: 100%;
-	padding-top: 4px;
-}
-
-.ui .panel .navy-item span.amount,
-.ui .panel .army-item span.amount,
-.ui .panel .storage-item span.amount {
-	position: absolute;
-	bottom: 0;
-	right: 4px;
-}
-
-.ui .panel .navy-item img {
-	margin: 8px auto 0 auto;
-}
-
-.ui .panel .army-item img {
-	margin: 15px auto 0 auto;
-}
-
-.ui .panel .storage-item.small img {
-	margin: 10px auto 0 auto;
-	width: 20px;
-}
-
-.ui .panel .storage-item img {
-	width: 32px;
 }
 
 /* City info panel */
@@ -492,22 +616,6 @@
 #panel-building {
 	max-height: 600px;
 	max-width: 1400px;
-}
-
-aside .panel .column img.building {
-	width: 200px;
-	margin: 0 auto;
-	display: block;
-}
-
-aside .panel .column {
-	border-bottom: 1px solid #935F22;
-	margin-bottom: 10px;
-	width: 100% !important;
-}
-
-aside .panel .column:last-of-type {
-	margin-left: 0 !important;
 }
 
 /* City Builder panel */
@@ -582,6 +690,8 @@ aside .panel .column:last-of-type {
 	width: 130px;
 }
 
+/* Other panels */
+
 #panel-settlement .pact,
 #panel-settlement .alliance,
 #panel-settlement .war,
@@ -595,38 +705,6 @@ aside .panel .column:last-of-type {
 #panel-new-caravan {
 	max-width: 640px;
 	max-height: 600px;
-}
-
-.ui .panel .column {
-	width: 300px;
-	float: left;
-}
-
-.ui aside .panel .column {
-	float: none;
-}
-
-.ui .panel .column-small {
-	width: 215px;
-	float: left;
-}
-
-.ui .panel .column-small:nth-child(3) {
-	margin-left: 10px;
-}
-
-.ui .panel .column:last-of-type {
-	margin-left: 10px;
-}
-
-.ui .panel fieldset select {
-	width: 100%;
-	border: 1px solid #aaa;
-	padding: 4px 0;
-}
-
-.ui .panel fieldset p {
-	margin: 10px 0 0 0;
 }
 
 #panel-academy {
@@ -699,43 +777,9 @@ aside .panel .column:last-of-type {
 	width: 620px;
 }
 
-.ui .panel .section {
-	padding: 10px;
-}
-
-.ui .panel .section {
-	padding: 20px;
-}
-
 #panel-help .ui-tabs-panel li > a,
 #panel-help p > a {
 	text-decoration: underline;
-}
-
-.ui .panel .army-item-inc,
-.ui .panel .army-item-dec,
-.ui .panel .navy-item-inc,
-.ui .panel .navy-item-dec {
-	width: 20px;
-	height: 20px;
-	border: 1px solid #aaa;
-	position: absolute;
-}
-
-.ui .panel .army-item-inc,
-.ui .panel .navy-item-inc {
-	left: 0;
-	top: 0;
-	background-color: #84da86;
-	border-bottom-right-radius: 20px;
-}
-
-.ui .panel .army-item-dec,
-.ui .panel .navy-item-dec {
-	right: 0;
-	top: 0;
-	background-color: #da9a84;
-	border-bottom-left-radius: 20px;
 }
 
 #panel-buildings .bldg-tabs {
@@ -825,61 +869,6 @@ aside .panel .column:last-of-type {
 	margin: 0 0 10px 0;
 }
 
-a.wikipedia {
-	width: 20px;
-	height: 20px;
-	background: transparent url(../images/ui/wikipedia.png) no-repeat;
-	display: inline-block;
-}
-
-.ui aside .panel {
-	position: static;
-	top: 0;
-	left: 0;
-	z-index: 99997;
-	background-color: #ECD0B7;
-	color: #444;
-	padding: 10px;
-	box-shadow: 0 0 0 transparent;
-}
-
-.ui aside .panel {
-	width: 310px;
-	max-height: 100%;
-}
-
-.ui aside .panel header {
-	cursor: default;
-}
-
-.ui aside .panel footer {
-	border: 0;
-	margin: 0;
-	padding: 0;
-	position: fixed;
-	bottom: 0;
-}
-
-.ui aside .panel section {
-	overflow: scroll;
-	height: calc(100% - 81px);
-}
-
-.ui aside .panel section p {
-	text-align: justify;
-}
-
-.ui .panel footer a {
-	background-color: #BF9A76;
-	border-radius: 10px;
-	background-size: 32px 32px;
-	background-position: center center;
-}
-
-.ui .panel footer a:hover {
-	background-color: #9F7E5E;
-}
-
 #panel-campaign {
 	min-width: 400px;
 }
@@ -900,4 +889,12 @@ a.wikipedia {
 	max-width: 450px;
 	max-height: 600px;
 	height: auto;
+}
+
+#panel-barracks,
+#panel-shipyard {
+	width: 780px;
+	max-width: 780px;
+	height: auto;
+	max-height: 600px;
 }

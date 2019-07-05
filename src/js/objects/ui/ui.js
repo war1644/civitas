@@ -72,33 +72,33 @@ civitas.objects.ui = function (core) {
 		let clicked = false;
 		let clickY, clickX;
 		let out = '<section class="ui">' +
-				'<header>' +
-					'<div class="resource-panel"></div>' +
-					'<div class="top-panel">' +
-						'<span title="City level" class="tips citylevel"></span>&nbsp;&nbsp;&nbsp;' +
-						'<span title="City Council" class="tips cityavatar"></span>&nbsp;&nbsp;&nbsp;' +
-						'<span class="cityname"></span>' +
+					'<header>' +
+						'<div class="resource-panel"></div>' +
+						'<div class="top-panel">' +
+							'<span title="City level" class="tips citylevel"></span>&nbsp;&nbsp;&nbsp;' +
+							'<span title="City Council" class="tips cityavatar"></span>&nbsp;&nbsp;&nbsp;' +
+							'<span class="cityname"></span>' +
+						'</div>' +
+					'</header>' +
+					'<aside></aside>' +
+					'<div class="viewport">' +
+						'<section class="game"></section>' +
 					'</div>' +
-				'</header>' +
-				'<aside></aside>' +
-				'<div class="viewport">' +
-					'<section class="game"></section>' +
-				'</div>' +
-				'<footer>' +
-					'<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' +
-					'<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' +
-					'<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' +
-					'<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' +
-					'<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' +
-					'<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' +
-					'<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' +
-					'<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' +
-				'</footer>' +
-			'</section>' +
-			'<audio id="music" loop>' +
-				'<source src="music/track1.mp3" type="audio/mpeg">' +
-			'</audio>' +
-			'<div title="Game is doing stuff in the background." class="loading"></div>';
+					'<footer>' +
+						'<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' +
+						'<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' +
+						'<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' +
+						'<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' +
+						'<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' +
+						'<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' +
+						'<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' +
+						'<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' +
+					'</footer>' +
+				'</section>' +
+				'<audio id="music" loop>' +
+					'<source src="music/track1.mp3" type="audio/mpeg">' +
+				'</audio>' +
+				'<div title="Game is doing stuff in the background." class="loading"></div>';
 		$('body').empty().append(out);
 		for (let item in civitas.RESOURCES) {
 			if (civitas.RESOURCES[item].toolbar === true) {
@@ -178,15 +178,15 @@ civitas.objects.ui = function (core) {
 	 */
 	this.window_about_section = function() {
 		let out = '<a href="#" class="do-about button">About</a>' +
-			'<div class="about-game">' +
-				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
-				'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
-				'<p>Big thanks to:</p>' +
-				'<ul>' +
-					'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
-					'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
-				'</ul>' +
-			'</div>';
+					'<div class="about-game">' +
+						'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
+						'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
+						'<p>Big thanks to:</p>' +
+						'<ul>' +
+							'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
+							'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
+						'</ul>' +
+					'</div>';
 		return out;
 	};
 
@@ -202,11 +202,11 @@ civitas.objects.ui = function (core) {
 			title = '';
 		}
 		let out = '<div id="panel-{ID}" class="panel">' +
-			'<header>' + title +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-		'</div>';
+					'<header>' + title +
+						'<a class="tips close" title="Close"></a>' +
+					'</header>' +
+					'<section></section>' +
+				'</div>';
 		return out;
 	};
 
@@ -222,17 +222,17 @@ civitas.objects.ui = function (core) {
 			title = '';
 		}
 		let out = '<div id="panel-{ID}" class="panel">' +
-			'<header>' + title +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<footer>' +
-				'<a class="tips demolish" title="Demolish this building" href="#"></a>' +
-				'<a class="tips pause start" href="#"></a>' +
-				'<a class="tips upgrade" title="Upgrade building" href="#"></a>' +
-				'<a class="tips downgrade" title="Downgrade building" href="#"></a>' +
-			'</footer>' +
-		'</div>';
+					'<header>' + title +
+						'<a class="tips close" title="Close"></a>' +
+					'</header>' +
+					'<section></section>' +
+					'<footer>' +
+						'<a class="tips demolish" title="Demolish this building" href="#"></a>' +
+						'<a class="tips pause start" href="#"></a>' +
+						'<a class="tips upgrade" title="Upgrade building" href="#"></a>' +
+						'<a class="tips downgrade" title="Downgrade building" href="#"></a>' +
+					'</footer>' +
+				'</div>';
 		return out;
 	};
 
@@ -254,21 +254,21 @@ civitas.objects.ui = function (core) {
 		}
 		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
 		let out = '<div class="column">' +
-			'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
-		'</div>' +
-		'<div class="column">' +
-			'<p>' + params.description + '</p>' +
-			'<dl>' +
-				this.level_panel(params.level, level, params.levels) +
-				this.cost_panel(params.cost, level, params.levels) +
-				this.materials_panel(params.materials) +
-				this.production_panel(params.production, level) +
-				this.requires_panel(params.requires) +
-				this.chance_panel(params.chance, level) +
-				this.tax_panel(params.tax, level) +
-				this.storage_panel(params.storage, level) +
-			'</dl>' +
-		'</div>'; 
+					'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
+				'</div>' +
+				'<div class="column">' +
+					'<p>' + params.description + '</p>' +
+					'<dl>' +
+						this.level_panel(params.level, level, params.levels) +
+						this.cost_panel(params.cost, level, params.levels) +
+						this.materials_panel(params.materials) +
+						this.production_panel(params.production, level) +
+						this.requires_panel(params.requires) +
+						this.chance_panel(params.chance, level) +
+						this.tax_panel(params.tax, level) +
+						this.storage_panel(params.storage, level) +
+					'</dl>' +
+				'</div>'; 
 		return out;
 	};
 
@@ -282,9 +282,9 @@ civitas.objects.ui = function (core) {
 	 */
 	this.normal_panel = function (section, contents) {
 		let out = '<fieldset>' +
-				'<legend>' + section + '</legend>' +
-				contents +
-			'</fieldset>';
+					'<legend>' + section + '</legend>' +
+					contents +
+				'</fieldset>';
 		return out;
 	};
 
@@ -299,7 +299,9 @@ civitas.objects.ui = function (core) {
 	 */
 	this.level_panel = function (level, new_level, max_level) {
 		let out = '<dt>Level</dt>' +
-			'<dd><span title="Current building level" class="tips">' + new_level + '</span> / <span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '</span> </dd>';
+				'<dd>' +
+					'<span title="Current building level" class="tips">' + new_level + '</span> / <span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '</span>' +
+				'</dd>';
 		return out;
 	};
 
@@ -351,10 +353,10 @@ civitas.objects.ui = function (core) {
 			_e = ' ugood';
 		}
 		return '<div class="progress ' + progress_type + '">' +
-			'<div class="bar' + _e + '" style="width:' + value + '%">' +
-				'<p>' + (typeof show_value !== 'undefined' ? show_value : value) + '</p>' +
-			'</div>' +
-		'</div>';
+				'<div class="bar' + _e + '" style="width:' + value + '%">' +
+					'<p>' + (typeof show_value !== 'undefined' ? show_value : value) + '</p>' +
+				'</div>' +
+			'</div>';
 	};
 
 	/**
@@ -682,8 +684,10 @@ civitas.objects.ui = function (core) {
 	this.storage_panel = function (storage, level) {
 		let out = '';
 		if (typeof storage !== 'undefined') {
-			out += '<dt>Storage</dt>';
-			out += '<dd>' + (level * storage) + '<img alt="Storage space" class="tips small" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" /></dd>';
+			out += '<dt>Storage</dt>' +
+				'<dd>' +
+					(level * storage) + '<img alt="Storage space" class="tips small" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" />' +
+				'</dd>';
 		}
 		return out;
 	};

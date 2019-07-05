@@ -5,28 +5,34 @@
  * @mixin
  */
 civitas.PANEL_SETTLEMENT = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<footer>' +
-				'<a class="tips attack" title="Attack this settlement." href="#"></a>' +
-				'<a class="tips caravan" title="Send a caravan to this settlement." href="#"></a>' +
-				'<a class="tips spy" title="Send a spy to this settlement." href="#"></a>' +
-				'<a class="tips alliance" title="Propose an alliance to this settlement." href="#"></a>' +
-				'<a class="tips pact" title="Propose a pact to this settlement." href="#"></a>' +
-				'<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"></a>' +
-				'<a class="tips join" title="Ask this settlement to join your city." href="#"></a>' +
-				'<a class="tips war" title="Declare war to this settlement." href="#"></a>' +
-			'</footer>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<footer>' +
+					'<a class="tips attack" title="Attack this settlement." href="#"></a>' +
+					'<a class="tips caravan" title="Send a caravan to this settlement." href="#"></a>' +
+					'<a class="tips spy" title="Send a spy to this settlement." href="#"></a>' +
+					'<a class="tips alliance" title="Propose an alliance to this settlement." href="#"></a>' +
+					'<a class="tips pact" title="Propose a pact to this settlement." href="#"></a>' +
+					'<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"></a>' +
+					'<a class="tips join" title="Ask this settlement to join your city." href="#"></a>' +
+					'<a class="tips war" title="Declare war to this settlement." href="#"></a>' +
+				'</footer>' +
+			'</div>',
+
+	/**
+	 * Extra parameters passed to the panel.
+	 *
+	 * @type {Object}
+	 */
 	params_data: null,
 
 	/**

@@ -650,38 +650,40 @@ civitas.game = function () {
 			if (auctions[item].amount > 0) {
 				for (let i = 0; i < settlements.length; i++) {
 					if (!settlements[i].is_player()) {
-						trades = settlements[i].get_trades();
-						if (trades === null) {
-							break;
-						}
-						if (typeof trades.exports === 'undefined') {
-							break;
-						}
-						for (let trade in trades.exports) {
-							if (trades.exports[trade] > 0) {
-								if (trade === item) {
-									if (auctions[item].amount >= trades.exports[trade]) {
-										amount = trades.exports[trade];
-									} else if (auctions[item].amount < trades.exports[trade]) {
-										amount = auctions[item].amount;
-									} else {
-										amount = 0;
-									}
-									/*
-									if ((auctions[item].amount >= trades.exports[trade]) && (auctions[item].amount - trades.exports[trade] > 0)) {
-										amount = trades.exports[trade];
-									} else if (auctions[item].amount < trades.exports[trade]) {
-										amount = auctions[item].amount;
-									} else {
-										amount = 0;
-									}
-									*/
-									console.log(settlements[i].name() + ' is selling ' + trades.exports[item] + ' ' + item + ' and we need ' + amount);
-									if (auctions[item].amount - amount >= 0) {
-										player_settlement.buy_from_settlement(settlements[i], item, amount, true);
-										auctions[item].amount = auctions[item].amount - amount;
-										if (auctions[item].amount <= 0) {
-											this.auctioneer_delete(item);
+						if (settlements[i].is_urban()) {
+							trades = settlements[i].get_trades();
+							if (trades === null) {
+								break;
+							}
+							if (typeof trades.exports === 'undefined') {
+								break;
+							}
+							for (let trade in trades.exports) {
+								if (trades.exports[trade] > 0) {
+									if (trade === item) {
+										if (auctions[item].amount >= trades.exports[trade]) {
+											amount = trades.exports[trade];
+										} else if (auctions[item].amount < trades.exports[trade]) {
+											amount = auctions[item].amount;
+										} else {
+											amount = 0;
+										}
+										/*
+										if ((auctions[item].amount >= trades.exports[trade]) && (auctions[item].amount - trades.exports[trade] > 0)) {
+											amount = trades.exports[trade];
+										} else if (auctions[item].amount < trades.exports[trade]) {
+											amount = auctions[item].amount;
+										} else {
+											amount = 0;
+										}
+										*/
+										console.log(settlements[i].name() + ' is selling ' + trades.exports[item] + ' ' + item + ' and we need ' + amount);
+										if (auctions[item].amount - amount >= 0) {
+											player_settlement.buy_from_settlement(settlements[i], item, amount, true);
+											auctions[item].amount = auctions[item].amount - amount;
+											if (auctions[item].amount <= 0) {
+												this.auctioneer_delete(item);
+											}
 										}
 									}
 								}
@@ -739,7 +741,7 @@ civitas.game = function () {
 				};
 			}
 			this.ui().refresh();
-			this.ui().notify(this.name() + ' placed an order for ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
+			this.ui().notify(settlement.name() + ' placed an order for ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
 			return {
 				buyer: settlement.name(),
 				amount: amount,

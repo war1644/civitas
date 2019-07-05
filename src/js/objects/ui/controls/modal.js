@@ -23,12 +23,12 @@ civitas.controls.modal = function (params) {
 	 * @type {String}
 	 */
 	this._template = '<div class="modal-overlay">' +
-			'<div class="modal">' +
-				'<header></header>' +
-				'<section></section>' +
-				'<footer></footer>' +
-			'</div>' +
-		'</div>';
+						'<div class="modal">' +
+							'<header></header>' +
+							'<section></section>' +
+							'<footer></footer>' +
+						'</div>' +
+					'</div>';
 
 	/**
 	 * Object constructor.

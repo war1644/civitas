@@ -7,8 +7,22 @@
  */
 civitas.SPECIAL_PLACE = 99;
 
+/**
+ * Days it takes to complete a world project.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.PLACE_TIME_TO_BUILD = 7200;
 
+/**
+ * Resources required to complete atage 2 or builging a world project.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
 civitas.PLACE_RESOURCES_REQ = {
 	coins: 100000000,
 	wood: 10000,

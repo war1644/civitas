@@ -54,6 +54,7 @@ civitas.PANEL_ACADEMY = {
 			_t += '<div data-technology="' + civitas.TECHNOLOGIES[i].handle + '" class="technology"><img src="' + civitas.ASSETS_URL + 'images/assets/research/' + civitas.TECHNOLOGIES[i].handle + '.png" /></div>';
 		}
 		$(this.handle + ' .column-left').empty().append(_t);
+		$(self.handle + ' #tab-projects').empty().append('<p>Not implemented yet.</p>');
 		$(this.handle).on('click', '.technology', function() {
 			$(self.handle + ' .technology').removeClass('selected');
 			$(this).addClass('selected');

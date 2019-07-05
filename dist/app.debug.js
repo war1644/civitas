@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.742019
+ * @version 0.3.0.752019
  * @license GPLv3
  */ 'use strict';
 
@@ -1695,7 +1695,8 @@ civitas.MAX_RESEARCH_VALUE = 1000;
  * @constant
  * @type {Array}
  */
-civitas.TECHNOLOGIES = [{
+civitas.TECHNOLOGIES = [
+	{
 		name: 'Agriculture',
 		handle: 'agriculture',
 		description: 'The development of agriculture enables the human population to grow many times larger than could be sustained by hunting and gathering.',
@@ -2265,7 +2266,8 @@ civitas.BUILDINGS_CATEGORIES = {
  * @constant
  * @type {Array}
  */
-civitas.BUILDINGS = [{
+civitas.BUILDINGS = [
+	{
 		name: 'Marketplace',
 		handle: 'marketplace',
 		description: 'The Marketplace is the main building of your settlement and provides a place for the settlers to gather. It cannot be demolished.',
@@ -2956,7 +2958,7 @@ civitas.BUILDINGS = [{
 			stones: 40
 		},
 		requires: {
-			settlement_level: 4
+			settlement_level: 5
 		}
 	}, {
 		name: 'Iron smelter',
@@ -4961,8 +4963,7 @@ civitas.WORLD_GRID = true;
 civitas.WORLD_ROUGHNESS = 5;
 
 /**
- * Goods importance, vital means at most 50 stacks of goods will be up
- * for importing or exporting.
+ * Goods importance, vital.
  *
  * @constant
  * @default
@@ -4971,8 +4972,7 @@ civitas.WORLD_ROUGHNESS = 5;
 civitas.IMPORTANCE_VITAL = 50;
 
 /**
- * Goods importance, high means at most 30 stacks of goods will be up
- * for importing or exporting.
+ * Goods importance, high.
  *
  * @constant
  * @default
@@ -4981,8 +4981,7 @@ civitas.IMPORTANCE_VITAL = 50;
 civitas.IMPORTANCE_HIGH = 30;
 
 /**
- * Goods importance, medium means at most 20 stacks of goods will be up
- * for importing or exporting.
+ * Goods importance, medium.
  *
  * @constant
  * @default
@@ -4991,8 +4990,7 @@ civitas.IMPORTANCE_HIGH = 30;
 civitas.IMPORTANCE_MEDIUM = 20;
 
 /**
- * Goods importance, low means at most 10 stacks of goods will be up
- * for importing or exporting.
+ * Goods importance, low.
  *
  * @constant
  * @default
@@ -5000,10 +4998,31 @@ civitas.IMPORTANCE_MEDIUM = 20;
  */
 civitas.IMPORTANCE_LOW = 10;
 
+/**
+ * Tax discount for buying resources.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.TRADES_ADDITION = 10;
 
+/**
+ * Tax percent for selling resources.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.TRADES_DISCOUNT = 20;
 
+/**
+ * Amount of fame your settlement gets for each successful trade.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.FAME_PER_TRADE = 50;
 
 /**
@@ -5033,8 +5052,22 @@ civitas.AUCTIONEER_DISCOUNT = 20;
  */
 civitas.SPECIAL_PLACE = 99;
 
+/**
+ * Days it takes to complete a world project.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
 civitas.PLACE_TIME_TO_BUILD = 7200;
 
+/**
+ * Resources required to complete atage 2 or builging a world project.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
 civitas.PLACE_RESOURCES_REQ = {
 	coins: 100000000,
 	wood: 10000,
@@ -5129,6 +5162,33 @@ civitas.MAX_SETTLEMENTS = 100;
  * @type {Number}
  */
 civitas.MAX_SETTLEMENT_ICONS = 3;
+
+/**
+ * Max level a settlement can have.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.MAX_SETTLEMENT_LEVEL = 99;
+
+/**
+ * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.POPULATION_PER_LEVEL = 2300;
+
+/**
+ * The minimum value settlement fame can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+civitas.MIN_FAME_VALUE = 1;
 
 /**
  * List of possible world settlement names.
@@ -5482,89 +5542,64 @@ civitas.NAMES = [
 ];
 
 /**
- * Max level a settlement can have.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-civitas.MAX_SETTLEMENT_LEVEL = 99;
-
-/**
- * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.POPULATION_PER_LEVEL = 2300;
-
-/**
- * The minimum value settlement fame can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-civitas.MIN_FAME_VALUE = 1;
-
-/**
  * List of all available in-game events.
  * 
  * @constant
  * @type {Array}
  */
-civitas.EVENTS = [{
-	name: 'Great earthquake',
-	description: 'A great earthquake sweeps across your city destroying the settlement`s BUILDING in the process.',
-	chance: 0.00001,
-	destroy: true
-}, {
-	name: 'Royal marriage',
-	description: 'A marriage was arranged between a member of your family ' +
-		'and the royal family of SETTLEMENT. This raises your influence on ' +
-		'SETTLEMENT by INFLUENCE. Good job!',
-	chance: 0.0001,
-	raise: {
-		influence: 10
+civitas.EVENTS = [
+	{
+		name: 'Great earthquake',
+		description: 'A great earthquake sweeps across your city destroying the settlement`s BUILDING in the process.',
+		chance: 0.00001,
+		destroy: true
+	}, {
+		name: 'Royal marriage',
+		description: 'A marriage was arranged between a member of your family ' +
+			'and the royal family of SETTLEMENT. This raises your influence on ' +
+			'SETTLEMENT by INFLUENCE. Good job!',
+		chance: 0.0001,
+		raise: {
+			influence: 10
+		}
+	}, {
+		name: 'Raiders attack',
+		description: 'A band of raiders attacked the outskirts of your ' +
+			'settlement. Repairing the affected buildings costs your settlement ' +
+			'COINS coins.',
+		chance: 0.0002,
+		lower: {
+			coins: 1000
+		}
+	}, {
+		name: 'Discovery',
+		description: 'The engineers in your settlement made a great discovery ' +
+			'which made you more famous, thus gaining FAME fame and RESEARCH ' +
+			'research.',
+		chance: 0.0004,
+		raise: {
+			fame: 100,
+			research: 10
+		}
+	}, {
+		name: 'Foreign spy discovered',
+		description: 'A spy from SETTLEMENT was found hiding in your ' +
+			'settlement, as a reward for finding him you gain ESPIONAGE ' +
+			'espionage.',
+		chance: 0.002,
+		raise: {
+			espionage: 10
+		}
+	}, {
+		name: 'Your spy uncovered',
+		description: 'One of your spies in SETTLEMENT was discovered, ' +
+			'SETTLEMENT`s ruler is angry so you lose PRESTIGE prestige.',
+		chance: 0.003,
+		lower: {
+			prestige: 10
+		}
 	}
-}, {
-	name: 'Raiders attack',
-	description: 'A band of raiders attacked the outskirts of your ' +
-		'settlement. Repairing the affected buildings costs your settlement ' +
-		'COINS coins.',
-	chance: 0.0002,
-	lower: {
-		coins: 1000
-	}
-}, {
-	name: 'Discovery',
-	description: 'The engineers in your settlement made a great discovery ' +
-		'which made you more famous, thus gaining FAME fame and RESEARCH ' +
-		'research.',
-	chance: 0.0004,
-	raise: {
-		fame: 100,
-		research: 10
-	}
-}, {
-	name: 'Foreign spy discovered',
-	description: 'A spy from SETTLEMENT was found hiding in your ' +
-		'settlement, as a reward for finding him you gain ESPIONAGE ' +
-		'espionage.',
-	chance: 0.002,
-	raise: {
-		espionage: 10
-	}
-}, {
-	name: 'Your spy uncovered',
-	description: 'One of your spies in SETTLEMENT was discovered, ' +
-		'SETTLEMENT`s ruler is angry so you lose PRESTIGE prestige.',
-	chance: 0.003,
-	lower: {
-		prestige: 10
-	}
-}];
+];
 
 
 /**
@@ -7675,6 +7710,13 @@ civitas.HEROES = [
 	}
 ];
 
+/**
+ * Initial state of the game, based on the selected difficulty.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
 civitas.INITIAL_SEED = [
 	/* Easy difficulty */
 	{
@@ -13533,12 +13575,12 @@ civitas.controls.modal = function (params) {
 	 * @type {String}
 	 */
 	this._template = '<div class="modal-overlay">' +
-			'<div class="modal">' +
-				'<header></header>' +
-				'<section></section>' +
-				'<footer></footer>' +
-			'</div>' +
-		'</div>';
+						'<div class="modal">' +
+							'<header></header>' +
+							'<section></section>' +
+							'<footer></footer>' +
+						'</div>' +
+					'</div>';
 
 	/**
 	 * Object constructor.
@@ -14068,33 +14110,33 @@ civitas.objects.ui = function (core) {
 		let clicked = false;
 		let clickY, clickX;
 		let out = '<section class="ui">' +
-				'<header>' +
-					'<div class="resource-panel"></div>' +
-					'<div class="top-panel">' +
-						'<span title="City level" class="tips citylevel"></span>&nbsp;&nbsp;&nbsp;' +
-						'<span title="City Council" class="tips cityavatar"></span>&nbsp;&nbsp;&nbsp;' +
-						'<span class="cityname"></span>' +
+					'<header>' +
+						'<div class="resource-panel"></div>' +
+						'<div class="top-panel">' +
+							'<span title="City level" class="tips citylevel"></span>&nbsp;&nbsp;&nbsp;' +
+							'<span title="City Council" class="tips cityavatar"></span>&nbsp;&nbsp;&nbsp;' +
+							'<span class="cityname"></span>' +
+						'</div>' +
+					'</header>' +
+					'<aside></aside>' +
+					'<div class="viewport">' +
+						'<section class="game"></section>' +
 					'</div>' +
-				'</header>' +
-				'<aside></aside>' +
-				'<div class="viewport">' +
-					'<section class="game"></section>' +
-				'</div>' +
-				'<footer>' +
-					'<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' +
-					'<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' +
-					'<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' +
-					'<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' +
-					'<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' +
-					'<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' +
-					'<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' +
-					'<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' +
-				'</footer>' +
-			'</section>' +
-			'<audio id="music" loop>' +
-				'<source src="music/track1.mp3" type="audio/mpeg">' +
-			'</audio>' +
-			'<div title="Game is doing stuff in the background." class="loading"></div>';
+					'<footer>' +
+						'<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' +
+						'<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' +
+						'<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' +
+						'<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' +
+						'<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' +
+						'<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' +
+						'<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' +
+						'<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' +
+					'</footer>' +
+				'</section>' +
+				'<audio id="music" loop>' +
+					'<source src="music/track1.mp3" type="audio/mpeg">' +
+				'</audio>' +
+				'<div title="Game is doing stuff in the background." class="loading"></div>';
 		$('body').empty().append(out);
 		for (let item in civitas.RESOURCES) {
 			if (civitas.RESOURCES[item].toolbar === true) {
@@ -14174,15 +14216,15 @@ civitas.objects.ui = function (core) {
 	 */
 	this.window_about_section = function() {
 		let out = '<a href="#" class="do-about button">About</a>' +
-			'<div class="about-game">' +
-				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
-				'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
-				'<p>Big thanks to:</p>' +
-				'<ul>' +
-					'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
-					'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
-				'</ul>' +
-			'</div>';
+					'<div class="about-game">' +
+						'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
+						'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
+						'<p>Big thanks to:</p>' +
+						'<ul>' +
+							'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
+							'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
+						'</ul>' +
+					'</div>';
 		return out;
 	};
 
@@ -14198,11 +14240,11 @@ civitas.objects.ui = function (core) {
 			title = '';
 		}
 		let out = '<div id="panel-{ID}" class="panel">' +
-			'<header>' + title +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-		'</div>';
+					'<header>' + title +
+						'<a class="tips close" title="Close"></a>' +
+					'</header>' +
+					'<section></section>' +
+				'</div>';
 		return out;
 	};
 
@@ -14218,17 +14260,17 @@ civitas.objects.ui = function (core) {
 			title = '';
 		}
 		let out = '<div id="panel-{ID}" class="panel">' +
-			'<header>' + title +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<footer>' +
-				'<a class="tips demolish" title="Demolish this building" href="#"></a>' +
-				'<a class="tips pause start" href="#"></a>' +
-				'<a class="tips upgrade" title="Upgrade building" href="#"></a>' +
-				'<a class="tips downgrade" title="Downgrade building" href="#"></a>' +
-			'</footer>' +
-		'</div>';
+					'<header>' + title +
+						'<a class="tips close" title="Close"></a>' +
+					'</header>' +
+					'<section></section>' +
+					'<footer>' +
+						'<a class="tips demolish" title="Demolish this building" href="#"></a>' +
+						'<a class="tips pause start" href="#"></a>' +
+						'<a class="tips upgrade" title="Upgrade building" href="#"></a>' +
+						'<a class="tips downgrade" title="Downgrade building" href="#"></a>' +
+					'</footer>' +
+				'</div>';
 		return out;
 	};
 
@@ -14250,21 +14292,21 @@ civitas.objects.ui = function (core) {
 		}
 		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
 		let out = '<div class="column">' +
-			'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
-		'</div>' +
-		'<div class="column">' +
-			'<p>' + params.description + '</p>' +
-			'<dl>' +
-				this.level_panel(params.level, level, params.levels) +
-				this.cost_panel(params.cost, level, params.levels) +
-				this.materials_panel(params.materials) +
-				this.production_panel(params.production, level) +
-				this.requires_panel(params.requires) +
-				this.chance_panel(params.chance, level) +
-				this.tax_panel(params.tax, level) +
-				this.storage_panel(params.storage, level) +
-			'</dl>' +
-		'</div>'; 
+					'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
+				'</div>' +
+				'<div class="column">' +
+					'<p>' + params.description + '</p>' +
+					'<dl>' +
+						this.level_panel(params.level, level, params.levels) +
+						this.cost_panel(params.cost, level, params.levels) +
+						this.materials_panel(params.materials) +
+						this.production_panel(params.production, level) +
+						this.requires_panel(params.requires) +
+						this.chance_panel(params.chance, level) +
+						this.tax_panel(params.tax, level) +
+						this.storage_panel(params.storage, level) +
+					'</dl>' +
+				'</div>'; 
 		return out;
 	};
 
@@ -14278,9 +14320,9 @@ civitas.objects.ui = function (core) {
 	 */
 	this.normal_panel = function (section, contents) {
 		let out = '<fieldset>' +
-				'<legend>' + section + '</legend>' +
-				contents +
-			'</fieldset>';
+					'<legend>' + section + '</legend>' +
+					contents +
+				'</fieldset>';
 		return out;
 	};
 
@@ -14295,7 +14337,9 @@ civitas.objects.ui = function (core) {
 	 */
 	this.level_panel = function (level, new_level, max_level) {
 		let out = '<dt>Level</dt>' +
-			'<dd><span title="Current building level" class="tips">' + new_level + '</span> / <span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '</span> </dd>';
+				'<dd>' +
+					'<span title="Current building level" class="tips">' + new_level + '</span> / <span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '</span>' +
+				'</dd>';
 		return out;
 	};
 
@@ -14347,10 +14391,10 @@ civitas.objects.ui = function (core) {
 			_e = ' ugood';
 		}
 		return '<div class="progress ' + progress_type + '">' +
-			'<div class="bar' + _e + '" style="width:' + value + '%">' +
-				'<p>' + (typeof show_value !== 'undefined' ? show_value : value) + '</p>' +
-			'</div>' +
-		'</div>';
+				'<div class="bar' + _e + '" style="width:' + value + '%">' +
+					'<p>' + (typeof show_value !== 'undefined' ? show_value : value) + '</p>' +
+				'</div>' +
+			'</div>';
 	};
 
 	/**
@@ -14678,8 +14722,10 @@ civitas.objects.ui = function (core) {
 	this.storage_panel = function (storage, level) {
 		let out = '';
 		if (typeof storage !== 'undefined') {
-			out += '<dt>Storage</dt>';
-			out += '<dd>' + (level * storage) + '<img alt="Storage space" class="tips small" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" /></dd>';
+			out += '<dt>Storage</dt>' +
+				'<dd>' +
+					(level * storage) + '<img alt="Storage space" class="tips small" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" />' +
+				'</dd>';
 		}
 		return out;
 	};
@@ -16131,38 +16177,40 @@ civitas.game = function () {
 			if (auctions[item].amount > 0) {
 				for (let i = 0; i < settlements.length; i++) {
 					if (!settlements[i].is_player()) {
-						trades = settlements[i].get_trades();
-						if (trades === null) {
-							break;
-						}
-						if (typeof trades.exports === 'undefined') {
-							break;
-						}
-						for (let trade in trades.exports) {
-							if (trades.exports[trade] > 0) {
-								if (trade === item) {
-									if (auctions[item].amount >= trades.exports[trade]) {
-										amount = trades.exports[trade];
-									} else if (auctions[item].amount < trades.exports[trade]) {
-										amount = auctions[item].amount;
-									} else {
-										amount = 0;
-									}
-									/*
-									if ((auctions[item].amount >= trades.exports[trade]) && (auctions[item].amount - trades.exports[trade] > 0)) {
-										amount = trades.exports[trade];
-									} else if (auctions[item].amount < trades.exports[trade]) {
-										amount = auctions[item].amount;
-									} else {
-										amount = 0;
-									}
-									*/
-									console.log(settlements[i].name() + ' is selling ' + trades.exports[item] + ' ' + item + ' and we need ' + amount);
-									if (auctions[item].amount - amount >= 0) {
-										player_settlement.buy_from_settlement(settlements[i], item, amount, true);
-										auctions[item].amount = auctions[item].amount - amount;
-										if (auctions[item].amount <= 0) {
-											this.auctioneer_delete(item);
+						if (settlements[i].is_urban()) {
+							trades = settlements[i].get_trades();
+							if (trades === null) {
+								break;
+							}
+							if (typeof trades.exports === 'undefined') {
+								break;
+							}
+							for (let trade in trades.exports) {
+								if (trades.exports[trade] > 0) {
+									if (trade === item) {
+										if (auctions[item].amount >= trades.exports[trade]) {
+											amount = trades.exports[trade];
+										} else if (auctions[item].amount < trades.exports[trade]) {
+											amount = auctions[item].amount;
+										} else {
+											amount = 0;
+										}
+										/*
+										if ((auctions[item].amount >= trades.exports[trade]) && (auctions[item].amount - trades.exports[trade] > 0)) {
+											amount = trades.exports[trade];
+										} else if (auctions[item].amount < trades.exports[trade]) {
+											amount = auctions[item].amount;
+										} else {
+											amount = 0;
+										}
+										*/
+										console.log(settlements[i].name() + ' is selling ' + trades.exports[item] + ' ' + item + ' and we need ' + amount);
+										if (auctions[item].amount - amount >= 0) {
+											player_settlement.buy_from_settlement(settlements[i], item, amount, true);
+											auctions[item].amount = auctions[item].amount - amount;
+											if (auctions[item].amount <= 0) {
+												this.auctioneer_delete(item);
+											}
 										}
 									}
 								}
@@ -16220,7 +16268,7 @@ civitas.game = function () {
 				};
 			}
 			this.ui().refresh();
-			this.ui().notify(this.name() + ' placed an order for ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
+			this.ui().notify(settlement.name() + ' placed an order for ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
 			return {
 				buyer: settlement.name(),
 				amount: amount,
@@ -18493,20 +18541,26 @@ civitas.utils = {
  * @mixin
  */
 civitas.PANEL_PLACE = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<footer>' +
-			'</footer>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<footer>' +
+				'</footer>' +
+			'</div>',
+
+	/**
+	 * Extra parameters passed to the panel.
+	 *
+	 * @type {Object}
+	 */
 	params_data: null,
 
 	/**
@@ -18665,28 +18719,34 @@ civitas.PANEL_PLACE = {
  * @mixin
  */
 civitas.PANEL_SETTLEMENT = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<footer>' +
-				'<a class="tips attack" title="Attack this settlement." href="#"></a>' +
-				'<a class="tips caravan" title="Send a caravan to this settlement." href="#"></a>' +
-				'<a class="tips spy" title="Send a spy to this settlement." href="#"></a>' +
-				'<a class="tips alliance" title="Propose an alliance to this settlement." href="#"></a>' +
-				'<a class="tips pact" title="Propose a pact to this settlement." href="#"></a>' +
-				'<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"></a>' +
-				'<a class="tips join" title="Ask this settlement to join your city." href="#"></a>' +
-				'<a class="tips war" title="Declare war to this settlement." href="#"></a>' +
-			'</footer>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<footer>' +
+					'<a class="tips attack" title="Attack this settlement." href="#"></a>' +
+					'<a class="tips caravan" title="Send a caravan to this settlement." href="#"></a>' +
+					'<a class="tips spy" title="Send a spy to this settlement." href="#"></a>' +
+					'<a class="tips alliance" title="Propose an alliance to this settlement." href="#"></a>' +
+					'<a class="tips pact" title="Propose a pact to this settlement." href="#"></a>' +
+					'<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"></a>' +
+					'<a class="tips join" title="Ask this settlement to join your city." href="#"></a>' +
+					'<a class="tips war" title="Declare war to this settlement." href="#"></a>' +
+				'</footer>' +
+			'</div>',
+
+	/**
+	 * Extra parameters passed to the panel.
+	 *
+	 * @type {Object}
+	 */
 	params_data: null,
 
 	/**
@@ -19896,21 +19956,21 @@ civitas.PANEL_RANKS = {
  * @mixin
  */
 civitas.PANEL_NEW_ARMY = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create army' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<div class="toolbar">' +
-				'<a class="dispatch btn iblock" href="#">Dispatch</a>' +
-			'</div>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>Create army' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<div class="toolbar">' +
+					'<a class="dispatch btn iblock" href="#">Dispatch</a>' +
+				'</div>' +
+			'</div>',
 
 	/**
 	 * Internal id of the panel.
@@ -20095,21 +20155,21 @@ civitas.PANEL_NEW_ARMY = {
  * @mixin
  */
 civitas.PANEL_NEW_SPY = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create spy' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<div class="toolbar">' +
-				'<a class="btn dispatch" href="#">Dispatch</a>' +
-			'</div>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>Create spy' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<div class="toolbar">' +
+					'<a class="btn dispatch" href="#">Dispatch</a>' +
+				'</div>' +
+			'</div>',
 
 	/**
 	 * Internal id of the panel.
@@ -20250,21 +20310,21 @@ civitas.PANEL_NEW_SPY = {
  * @mixin
  */
 civitas.PANEL_NEW_SCOUT = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create scout' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<div class="toolbar">' +
-				'<a class="btn dispatch" href="#">Dispatch</a>' +
-			'</div>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>Create scout' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<div class="toolbar">' +
+					'<a class="btn dispatch" href="#">Dispatch</a>' +
+				'</div>' +
+			'</div>',
 
 	/**
 	 * Internal id of the panel.
@@ -20346,21 +20406,21 @@ civitas.PANEL_NEW_SCOUT = {
  * @mixin
  */
 civitas.PANEL_NEW_CARAVAN = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>Create caravan' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<div class="toolbar">' +
-				'<a class="btn dispatch" href="#">Dispatch</a>' +
-			'</div>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>Create caravan' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<div class="toolbar">' +
+					'<a class="btn dispatch" href="#">Dispatch</a>' +
+				'</div>' +
+			'</div>',
 
 	/**
 	 * Internal id of the panel.
@@ -22247,6 +22307,7 @@ civitas.PANEL_ACADEMY = {
 			_t += '<div data-technology="' + civitas.TECHNOLOGIES[i].handle + '" class="technology"><img src="' + civitas.ASSETS_URL + 'images/assets/research/' + civitas.TECHNOLOGIES[i].handle + '.png" /></div>';
 		}
 		$(this.handle + ' .column-left').empty().append(_t);
+		$(self.handle + ' #tab-projects').empty().append('<p>Not implemented yet.</p>');
 		$(this.handle).on('click', '.technology', function() {
 			$(self.handle + ' .technology').removeClass('selected');
 			$(this).addClass('selected');
@@ -22375,20 +22436,22 @@ civitas.WINDOW_SIGNIN = {
 	 */
 	on_create: function(params) {
 		this.template = '<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'<div class="new-game">' +
-					'<p>Enter the city password to decrypt the game data.</p>' +
-					'<dl>' +
-						'<dt class="clearfix">Password:</dt>' +
-						'<dd><input type="password" class="password text-input" /></dd>' +
-					'</dl>' +
-					'<a href="#" class="do-start highlight button">Load Game</a>' +
-				'</div>' +
-				'<a href="#" class="do-restart button">Restart</a>' +
-				this.core().ui().window_about_section() +
-			'</fieldset>' +
-		'</section>';
+							'<div class="logo">Civitas</div>' +
+							'<fieldset>' +
+								'<div class="new-game">' +
+									'<p>Enter the city password to decrypt the game data.</p>' +
+									'<dl>' +
+										'<dt class="clearfix">Password:</dt>' +
+										'<dd>' +
+											'<input type="password" class="password text-input" />' +
+										'</dd>' +
+									'</dl>' +
+									'<a href="#" class="do-start highlight button">Load Game</a>' +
+								'</div>' +
+								'<a href="#" class="do-restart button">Restart</a>' +
+								this.core().ui().window_about_section() +
+							'</fieldset>' +
+						'</section>';
 	},
 
 	/**
@@ -22456,18 +22519,19 @@ civitas.WINDOW_BATTLE = {
 	 * @type {String}
 	 */
 	template: '<section id="window-{ID}" class="window">' +
-			'<div class="container">' +
-				'<div title="Attack and defense rating for the attacking army." class="tips attack"></div>' +
-				'<div title="Attack and defense rating for the defending army." class="tips defense"></div>' +
-				'<div class="battleground"></div>' +
-				'<div title="Current turn." class="tips turns">1</div>' +
-				'<div class="status"></div>' +	
-				'<div class="toolbar">' +
-					'<a title="End current turn." class="tips button end" href="#">End turn</a> ' +
-					'<a title="Close the window." class="tips button close" href="#">Close</a>' +
+				'<div class="container">' +
+					'<div title="Attack and defense rating for the attacking army." class="tips attack"></div>' +
+					'<div title="Attack and defense rating for the defending army." class="tips defense"></div>' +
+					'<div class="battleground"></div>' +
+					'<div title="Current turn." class="tips turns">1</div>' +
+					'<div class="status"></div>' +	
+					'<div class="toolbar">' +
+						'<a title="End current turn." class="tips button end" href="#">End turn</a> ' +
+						'<a title="Close the window." class="tips button close" href="#">Close</a>' +
+					'</div>' +
 				'</div>' +
-			'</div>' +
-		'</section>',
+			'</section>',
+
 	/**
 	 * Internal id of the window.
 	 *
@@ -22559,46 +22623,54 @@ civitas.WINDOW_SIGNUP = {
 	 */
 	on_create: function(params) {
 		this.template = '<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'<div class="new-game">' +
-					'<p>Choose your city details well, climate changes and game difficulty affects your building options and resources.</p>' +
-					'<dl>' +
-						'<dt class="clearfix">Your Name:</dt>' +
-						'<dd><input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" /></dd>' +
-						((civitas.ENCRYPTION === true) ?
-						'<dt class="clearfix">Password:</dt>' +
-						'<dd><input type="password" class="password text-input" /></dd>' +
-						'<dt class="clearfix">Confirm Password:</dt>' +
-						'<dd><input type="password" class="password2 text-input" /></dd>'
-						: '') +
-						'<div class="hr"></div>' +
-						'<dt class="clearfix">City Name:</dt>' +
-						'<dd><input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" /></dd>' +
-						'<dt class="clearfix">Nationality:</dt>' +
-						'<dd>' +
-							'<select class="nation text-input"></select>' +
-						'</dd>' +
-						'<dt class="clearfix">Climate:</dt>' +
-						'<dd>' +
-							'<select class="climate text-input"></select>' +
-						'</dd>' +
-						'<dt class="clearfix">Difficulty:</dt>' +
-						'<dd>' +
-							'<select class="difficulty text-input">' +
-								'<option value="1">Easy</option>' +
-								'<option value="2">Medium</option>' +
-								'<option value="3">Hard</option>' +
-								'<option value="4">Hardcore</option>' +
-							'</select>' +
-						'</dd>' +
-						'<div class="avatar-select"></div>' +
-					'</dl>' +
-					'<a href="#" class="do-start highlight button">Start Playing</a>' +
-				'</div>' +
-				this.core().ui().window_about_section() +
-			'</fieldset>' +
-		'</section>';
+							'<div class="logo">Civitas</div>' +
+							'<fieldset>' +
+								'<div class="new-game">' +
+									'<p>Choose your city details well, climate changes and game difficulty affects your building options and resources.</p>' +
+									'<dl>' +
+										'<dt class="clearfix">Your Name:</dt>' +
+										'<dd>' +
+											'<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" />' +
+										'</dd>' +
+										((civitas.ENCRYPTION === true) ?
+										'<dt class="clearfix">Password:</dt>' +
+										'<dd>' +
+											'<input type="password" class="password text-input" />' +
+										'</dd>' +
+										'<dt class="clearfix">Confirm Password:</dt>' +
+										'<dd>' +
+											'<input type="password" class="password2 text-input" />' +
+										'</dd>'
+										: '') +
+										'<div class="hr"></div>' +
+										'<dt class="clearfix">City Name:</dt>' +
+										'<dd>' +
+											'<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" />' +
+										'</dd>' +
+										'<dt class="clearfix">Nationality:</dt>' +
+										'<dd>' +
+											'<select class="nation text-input"></select>' +
+										'</dd>' +
+										'<dt class="clearfix">Climate:</dt>' +
+										'<dd>' +
+											'<select class="climate text-input"></select>' +
+										'</dd>' +
+										'<dt class="clearfix">Difficulty:</dt>' +
+										'<dd>' +
+											'<select class="difficulty text-input">' +
+												'<option value="1">Easy</option>' +
+												'<option value="2">Medium</option>' +
+												'<option value="3">Hard</option>' +
+												'<option value="4">Hardcore</option>' +
+											'</select>' +
+										'</dd>' +
+										'<div class="avatar-select"></div>' +
+									'</dl>' +
+									'<a href="#" class="do-start highlight button">Start Playing</a>' +
+								'</div>' +
+								this.core().ui().window_about_section() +
+							'</fieldset>' +
+						'</section>';
 	},
 
 	/**
@@ -22697,19 +22769,18 @@ civitas.WINDOW_ERROR = {
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'An error has occured in Civitas and the game is unable to resume.' +
-				'<br /><br />' +
-				'<span class="error-message"></span>' +
-				'<br />' +
-				'<span class="error-code"></span>' +
-				'<br /><br />' +
-				'<a href="#" class="do-restart button">Restart</a>' +
-			'</fieldset>' +
-		'</section>',
+	template: '<section id="window-{ID}" class="window">' +
+				'<div class="logo">Civitas</div>' +
+				'<fieldset>' +
+					'An error has occured in Civitas and the game is unable to resume.' +
+					'<br /><br />' +
+					'<span class="error-message"></span>' +
+					'<br />' +
+					'<span class="error-code"></span>' +
+					'<br /><br />' +
+					'<a href="#" class="do-restart button">Restart</a>' +
+				'</fieldset>' +
+			'</section>',
 
 	/**
 	 * Internal id of the window.
@@ -22783,17 +22854,17 @@ civitas.WINDOW_OPTIONS = {
 	 */
 	on_create: function(params) {
 		this.template = '<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'<a href="#" class="do-pause button">Pause</a>' +
-				'<a href="#" class="do-restart button">Restart</a>' +
-				'<a href="#" class="do-options button">Options</a>' +
-				'<div class="options-game"></div>' +
-				this.core().ui().window_about_section() +
-				'<br />' +
-				'<a href="#" class="do-resume button">Resume Playing</a>' +
-			'</fieldset>' +
-		'</section>';
+							'<div class="logo">Civitas</div>' +
+							'<fieldset>' +
+								'<a href="#" class="do-pause button">Pause</a>' +
+								'<a href="#" class="do-restart button">Restart</a>' +
+								'<a href="#" class="do-options button">Options</a>' +
+								'<div class="options-game"></div>' +
+								this.core().ui().window_about_section() +
+								'<br />' +
+								'<a href="#" class="do-resume button">Resume Playing</a>' +
+							'</fieldset>' +
+						'</section>';
 	},
 
 	/**

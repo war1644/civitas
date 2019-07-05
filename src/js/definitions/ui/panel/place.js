@@ -5,20 +5,26 @@
  * @mixin
  */
 civitas.PANEL_PLACE = {
+	
 	/**
 	 * Template of the panel.
 	 *
 	 * @type {String}
 	 */
-	template: '' +
-		'<div id="panel-{ID}" class="panel">' +
-			'<header>' +
-				'<a class="tips close" title="Close"></a>' +
-			'</header>' +
-			'<section></section>' +
-			'<footer>' +
-			'</footer>' +
-		'</div>',
+	template: '<div id="panel-{ID}" class="panel">' +
+				'<header>' +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<footer>' +
+				'</footer>' +
+			'</div>',
+
+	/**
+	 * Extra parameters passed to the panel.
+	 *
+	 * @type {Object}
+	 */
 	params_data: null,
 
 	/**

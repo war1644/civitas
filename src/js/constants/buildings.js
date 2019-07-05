@@ -321,7 +321,8 @@ civitas.BUILDINGS_CATEGORIES = {
  * @constant
  * @type {Array}
  */
-civitas.BUILDINGS = [{
+civitas.BUILDINGS = [
+	{
 		name: 'Marketplace',
 		handle: 'marketplace',
 		description: 'The Marketplace is the main building of your settlement and provides a place for the settlers to gather. It cannot be demolished.',
@@ -1012,7 +1013,7 @@ civitas.BUILDINGS = [{
 			stones: 40
 		},
 		requires: {
-			settlement_level: 4
+			settlement_level: 5
 		}
 	}, {
 		name: 'Iron smelter',

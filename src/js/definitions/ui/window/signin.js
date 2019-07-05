@@ -23,20 +23,22 @@ civitas.WINDOW_SIGNIN = {
 	 */
 	on_create: function(params) {
 		this.template = '<section id="window-{ID}" class="window">' +
-			'<div class="logo">Civitas</div>' +
-			'<fieldset>' +
-				'<div class="new-game">' +
-					'<p>Enter the city password to decrypt the game data.</p>' +
-					'<dl>' +
-						'<dt class="clearfix">Password:</dt>' +
-						'<dd><input type="password" class="password text-input" /></dd>' +
-					'</dl>' +
-					'<a href="#" class="do-start highlight button">Load Game</a>' +
-				'</div>' +
-				'<a href="#" class="do-restart button">Restart</a>' +
-				this.core().ui().window_about_section() +
-			'</fieldset>' +
-		'</section>';
+							'<div class="logo">Civitas</div>' +
+							'<fieldset>' +
+								'<div class="new-game">' +
+									'<p>Enter the city password to decrypt the game data.</p>' +
+									'<dl>' +
+										'<dt class="clearfix">Password:</dt>' +
+										'<dd>' +
+											'<input type="password" class="password text-input" />' +
+										'</dd>' +
+									'</dl>' +
+									'<a href="#" class="do-start highlight button">Load Game</a>' +
+								'</div>' +
+								'<a href="#" class="do-restart button">Restart</a>' +
+								this.core().ui().window_about_section() +
+							'</fieldset>' +
+						'</section>';
 	},
 
 	/**

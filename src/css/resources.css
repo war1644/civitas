@@ -102,7 +102,7 @@ footer a[data-panel=help] {
 	background: transparent url(../images/assets/ui/icons/downgrade.png) no-repeat;
 }
 
-/* Others */
+/* Building notifications */
 
 .game .building .notification.error {
 	background: transparent url(../images/assets/ui/icons/notify-error.png) no-repeat;
@@ -115,6 +115,8 @@ footer a[data-panel=help] {
 .game .building .notification.requirements {
 	background: transparent url(../images/assets/ui/icons/notify-missing.png) no-repeat;
 }
+
+/* Others */
 
 .ach.img {
 	background: transparent url(../images/assets/ui/icon_achievement.png) no-repeat;
@@ -155,4 +157,12 @@ footer a[data-panel=help] {
 
 .ui > aside {
 	background: #ECD0B7 url(../images/ui/sidebar.png) repeat-y left top;
+}
+
+a.wikipedia {
+	background: transparent url(../images/ui/wikipedia.png) no-repeat;
+}
+
+.ui > header {
+	background: transparent url(../images/ui/resource-panel.png) repeat-x;
 }

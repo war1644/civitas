@@ -22,7 +22,8 @@ civitas.MAX_RESEARCH_VALUE = 1000;
  * @constant
  * @type {Array}
  */
-civitas.TECHNOLOGIES = [{
+civitas.TECHNOLOGIES = [
+	{
 		name: 'Agriculture',
 		handle: 'agriculture',
 		description: 'The development of agriculture enables the human population to grow many times larger than could be sustained by hunting and gathering.',
