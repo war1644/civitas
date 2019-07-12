@@ -41,7 +41,7 @@ civitas.INITIAL_SEED = [
 			prestige: civitas.MIN_PRESTIGE_VALUE,
 			espionage: civitas.MIN_ESPIONAGE_VALUE,
 			research: civitas.MIN_RESEARCH_VALUE,
-			bread: 300,
+			bread: 400,
 			meat: 100,
 			stones: 100,
 			weapons: 100,

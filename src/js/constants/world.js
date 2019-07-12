@@ -50,4 +50,4 @@ civitas.WORLD_GRID = true;
  * @default
  * @type {Number}
  */
-civitas.WORLD_ROUGHNESS = 5;
+civitas.WORLD_EROSION = 1.8;

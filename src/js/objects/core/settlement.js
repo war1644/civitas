@@ -156,7 +156,7 @@ civitas.objects.settlement = function(params) {
 		this._fill_resources();
 		this._location = params.location;
 		this.properties.color = (typeof params.properties.color !== 'undefined') ? params.properties.color : this.core().ui().get_random_color();
-		this.core().world().add_city(this);
+		this.core().world().add_settlement(this);
 		if (this.waterside() === true) {
 			this.navy = this.load_navy(params.navy);
 		}
@@ -172,11 +172,14 @@ civitas.objects.settlement = function(params) {
 			});
 		}
 		if (!this.is_player()) {
-			const terrain = this.core().world().get_hex_terrain(this._location.x, this._location.y);
+			const terrain = this.core().world().get_hex_terrain({
+				x: this._location.x,
+				y: this._location.y
+			});
 			const climate = this.core().world().get_climate_from_terrain(terrain);
 			this.properties.climate = civitas['CLIMATE_' + climate.name.toUpperCase()];
 			if (this.is_urban()) {
-				this.setup_initial_buildings(civitas['SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase()], true);
+				this.setup_initial_buildings(this.core().get_buildings_for_settlement(this), true);
 			}
 		} else {
 			this.properties.climate = params.properties.climate;
@@ -1196,6 +1199,12 @@ civitas.objects.settlement = function(params) {
 				}
 				return false;
 			}
+			if ((typeof building_data.requires.climate !== 'undefined') && ($.inArray(this.climate().id, building_data.requires.climate) === -1)) {
+				if (this.is_player()) {
+					this.core().ui().error('Your city lacks the required fertility and climate to construct this building.');
+				}
+				return false;
+			}
 			if ((typeof building_data.requires.research !== 'undefined') && (!this.core().has_research(building_data.requires.research))) {
 				if (this.is_player()) {
 					this.core().ui().error('Your city is missing the `' + this.core().get_research_config_data(building_data.requires.research).name + '` research needed to construct this building.');
@@ -1234,6 +1243,7 @@ civitas.objects.settlement = function(params) {
 			this.raise_prestige();
 			if (this.is_player()) {
 				this.core().save_and_refresh();
+				this.core().ui().citymap_scrollto_building(_building);
 				this.core().ui().notify('A new ' + _building.get_name() + ' was just constructed in your city.');
 				$('.tips').tipsy({
 					gravity: $.fn.tipsy.autoNS,

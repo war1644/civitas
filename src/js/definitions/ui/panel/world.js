@@ -44,45 +44,35 @@ civitas.PANEL_WORLD = {
 		let settings = core.get_settings();
 		let world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
-		core.ui().svg_create_worldmap(civitas.WORLD_HEX_SIZE, colors);
-		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
-			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				let terrain = world_data[row][column].t;
-				color = colors[terrain].bg;
-				core.ui().svg_create_group(terrain, row, column);
-				if (world_data[row][column].l === true) {
-					let lid = world_data[row][column].lid;
-					let pid = world_data[row][column].p;
-					if (lid !== null && pid === null) {
-						if (typeof settlements[lid] !== 'undefined') {
-							color = settlements[lid].color();
-						}
-					} else if (lid !== null && pid !== null) {
-						// Todo
-						/* This is a special place */
-					}
-				}
-				core.ui().svg_create_cell(row, column, color, settings.worldmap_grid);
-				if (settings.worldmap_beautify === true) {
-					core.ui().svg_apply_terrain(row, column, colors[terrain].fg, terrain);
+		core.world().draw();
+		for (let i = 0; i < settlements.length; i++) {
+			let image = 'village';
+			let color = settlements[i].color();
+			let name = settlements[i].name();
+			let location = settlements[i].location();
+			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+			if (typeof settlement !== 'undefined' && name === settlement.name()) {
+				image = 'settlement';
+			} else {
+				if (settlements[i].is_metropolis()) {
+					image = 'metropolis' + settlements[i].icon();
+				} else if (settlements[i].is_city()) {
+					image = 'city' + settlements[i].icon();
+				} else if (settlements[i].is_village()) {
+					image = 'village' + settlements[i].icon();
+				} else if (settlements[i].is_camp()) {
+					image = 'camp';
 				}
 			}
+			$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
 		}
-		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
-			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				let suid = world_data[row][column].s;
-				let puid = world_data[row][column].p;
-				if (suid !== null && puid === null && typeof settlements[suid] !== 'undefined') {
-					core.ui().svg_add_settlement_image(row, column, settlements[suid], settlement);
-				} else if (suid === null && puid !== null && typeof places[puid] !== 'undefined') {
-					/* For debug
-					if (core.has_research('archeology')) {*/
-						core.ui().svg_add_place_image(row, column, places[puid]);
-					/*}
-					*/
-				}
+		//if (core.has_research('archeology')) {
+			for (let i = 0; i < places.length; i++) {
+				let location = places[i].location();
+				let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+				$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Special Place" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].id() + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
 			}
-		}
+		//}
 		let clicked = false;
 		let clickY, clickX;
 		$('.worldmap').on({
@@ -125,9 +115,6 @@ civitas.PANEL_WORLD = {
 			}
 			return false;
 		});
-		/*
-		core.ui().svg_link_cells({x: 21, y: 25}, {x: 24, y: 32});
-		*/
 		core.ui().worldmap_scrollto(settlement.location());
 	},
 	
@@ -182,7 +169,8 @@ civitas.PANEL_WORLD = {
 				troop_type = 'troop_diplomatic';
 				title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
 			}
-			core.ui().svg_map_element(y, x, prev_y, prev_x, troop_type, i, title);
+			let coords = core.ui().get_cell_middle_coords(y, x);
+			$('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + i + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
 		}
 	}
 };

@@ -9,6 +9,17 @@
 civitas.objects.world = function (params) {
 
 	/**
+	 * Random seeds for world generation.
+	 *
+	 * @private
+	 * @type {Object}
+	 */
+	this._seeds = {
+		elevation: null,
+		moisture: null
+	};
+
+	/**
 	 * Reference to the core object.
 	 *
 	 * @private
@@ -23,71 +34,25 @@ civitas.objects.world = function (params) {
 	 * @type {Object}
 	 */
 	this._colors = {
-		// Sea
-		S: {
-			bg: '#64B4E1',
-			fg: ''
-		},
-		// Ocean
-		O: {
-			bg: '#509FCC',
-			fg: ''
-		},
-		// Grass
-		G: {
-			bg: '#E6F59A',
-			fg: '#527B2A'
-		},
-		// Jungle
-		J: {
-			bg: '#549D65',
-			fg: '#205b45'
-		},
-		// Plains
-		P: {
-			bg: '#96C764',
-			fg: '#264b0e'
-		},
-		// Hills
-		H: {
-			bg: '#E1C859',
-			fg: '#6F5D0D'
-		},
-		// Swamp
-		W: {
-			bg: '#82C995',
-			fg: '#349253'
-		},
-		// Mountains
-		M: {
-			bg: '#B37D1A',
-			fg: '#33381D'
-		},
-		// Desert
-		D: {
-			bg: '#F2CD63',
-			fg: '#c0b23c'
-		},
-		// Ice
-		I: {
-			bg: '#FFFFFF',
-			fg: ''
-		},
-		// Borders
-		X: {
-			bg: '#64B4E1',
-			fg: ''
-		}
-	}
-	
-	/**
-	 * World properties.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._properties = {
-		roughness: 5
+		background: '#64B4E1',
+		ocean: '#64B5E1',
+		grass: '#E6F59A',
+		subtropical_desert: '#F2CD63',
+		temperate_desert: '#F2CD63',
+		taiga: '#E1C85A',
+		shrubland: '#E1C859',
+		beach: '#FFF899',
+		scorched: '#E5F59A',
+		bare: '#D1BE79',
+		tundra: '#E5F59A',
+		snow: '#DCDCE6',
+		temperate_deciduous_forest: '#78AA46',
+		temperate_rain_forest: '#78AA46',
+		tropical_rain_forest: '#549D65',
+		tropical_seasonal_forest: '#549D65',
+		hills: '#E1C859',
+		mountains: '#B37D1A',
+		mountains_ice: '#DCDCE6'
 	};
 
 	/**
@@ -108,49 +73,77 @@ civitas.objects.world = function (params) {
 	 */
 	this.__init = function (params) {
 		this._core = params.core;
-		this._properties.roughness = (typeof params.roughness !== 'undefined') ? params.roughness : civitas.WORLD_ROUGHNESS;
+		this._seeds.moisture = typeof params.moisture !== 'undefined' && params.moisture !== null ? params.moisture : this.seed();
+		this._seeds.elevation = typeof params.elevation !== 'undefined' && params.elevation !== null ? params.elevation : this.seed();
+		this._data = typeof params.data !== 'undefined' ? params.data : [];
 		if (this._data.length === 0) {
+			this._create_array();
 			this._generate();
-			this._adjust();
 		}
 		return this;
 	};
 
 	/**
-	 * Adjust terrain based on the elevation.
-	 * 
-	 * @private
-	 * @returns {civitas.objects.world}
+	 * Get a random number to seed the generator.
+	 *
+	 * @public
+	 * @returns {Number}
 	 */
-	this._adjust = function() {
-		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
-			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
-				this._data[y][x].e = this._data[y][x].e.toFixed(3);
-				if (this._data[y][x].e < 0) {
-					this._data[y][x].t = 'O';
-				} else if (this._data[y][x].e >= 0 && this._data[y][x].e <= 0.3) {
-					this._data[y][x].t = 'S';
-				} else if (this._data[y][x].e > 0.3 && this._data[y][x].e <= 0.33) {
-					this._data[y][x].t = 'W';
-				} else if (this._data[y][x].e > 0.33 && this._data[y][x].e <= 0.38) {
-					this._data[y][x].t = 'D';
-				} else if (this._data[y][x].e > 0.38 && this._data[y][x].e <= 0.5) {
-					this._data[y][x].t = 'G';
-				} else if (this._data[y][x].e > 0.5 && this._data[y][x].e <= 0.55) {
-					this._data[y][x].t = 'J';
-				} else if (this._data[y][x].e > 0.55 && this._data[y][x].e <= 0.8) {
-					this._data[y][x].t = 'P';
-				} else if (this._data[y][x].e > 0.8 && this._data[y][x].e <= 0.95) {
-					this._data[y][x].t = 'H';
-				} else if (this._data[y][x].e > 0.95 && this._data[y][x].e <= 1) {
-					this._data[y][x].t = 'M';
-				}
-				if ((y === 0 || y === civitas.WORLD_SIZE_HEIGHT - 1) && (this._data[y][x].t !== 'O' && this._data[y][x].t !== 'S')) {
-					this._data[y][x].t = 'I';
-				}
+	this.seed = function() {
+		return Math.random() * (2147483646 - 1) + 1;
+	};
+
+	/**
+	 * Get the terrain data as a string based on the elevation.
+	 * 
+	 * @public
+	 * @param {Object} hex
+	 * @returns {String}
+	 */
+	this.get_hex_terrain = function(hex) {
+		let elevation = this._data[hex.y][hex.x].e;
+		let moisture = this._data[hex.y][hex.x].m;
+		if (elevation <= 0.1) {
+			return 'ocean';
+		} else if (elevation > 0.1 && elevation <= 0.15) {
+			return 'beach';
+		} else if (elevation > 0.15 && elevation <= 0.35) {
+			if (moisture <= 0.30) {
+				return 'subtropical_desert';
+			} else if (moisture > 0.30 && moisture <= 0.45) {
+				return 'grass';
+			} else if (moisture > 0.45 && moisture <= 0.66) {
+				return 'tropical_seasonal_forest';
+			} else {
+				return 'tropical_rain_forest';
+			}
+		} else if (elevation > 0.35 && elevation <= 0.75) {
+			if (moisture <= 0.20) {
+				return 'temperate_desert';
+			} else if (moisture > 0.20 && moisture <= 0.50) {
+				return 'grass';
+			} else if (moisture > 0.50 && moisture <= 0.83) {
+				return 'temperate_deciduous_forest';
+			} else {
+				return 'temperate_rain_forest';
+			}
+		} else if (elevation > 0.75 && elevation <= 0.8) {
+			if (moisture <= 0.33) {
+				return 'temperate_desert';
+			} else if (moisture > 0.33 && moisture <= 0.66) {
+				return 'shrubland';
+			} else {
+				return 'taiga';
+			}
+		} else if (elevation > 0.8 && elevation <= 0.85) {
+			return 'hills';
+		} else {
+			if (moisture >= 0.8) {
+				return 'mountains_ice';
+			} else {
+				return 'mountains';
 			}
 		}
-		return this;
 	};
 
 	/**
@@ -161,22 +154,22 @@ civitas.objects.world = function (params) {
 	 * @returns {Boolean|Object}
 	 */
 	this.get_climate_from_terrain = function(terrain) {
-		if (terrain === 'W' || terrain === 'J') {
+		if (terrain === 'tropical_rain_forest' || terrain === 'tropical_seasonal_forest') {
 			return {
 				id: civitas.CLIMATE_TROPICAL,
 				name: civitas.CLIMATES[civitas.CLIMATE_TROPICAL]
 			};
-		} else if (terrain === 'D') {
+		} else if (terrain === 'subtropical_desert' || terrain === 'temperate_desert') {
 			return {
 				id: civitas.CLIMATE_ARID,
 				name: civitas.CLIMATES[civitas.CLIMATE_ARID]
 			};
-		} else if (terrain === 'I') {
+		} else if (terrain === 'mountains_ice' || terrain === 'snow') {
 			return {
 				id: civitas.CLIMATE_POLAR,
 				name: civitas.CLIMATES[civitas.CLIMATE_POLAR]
 			};
-		} else if (terrain === 'G' || terrain === 'P' || terrain === 'H' || terrain === 'M') {
+		} else if (terrain === 'grass' || terrain === 'temperate_deciduous_forest' || terrain === 'temperate_rain_forest' || terrain === 'hills' || terrain === 'mountains' || terrain === 'taiga' || terrain === 'shrubland' || terrain === 'beach' || terrain === 'scorched' || terrain === 'tundra' || terrain === 'bare') {
 			return {
 				id: civitas.CLIMATE_TEMPERATE,
 				name: civitas.CLIMATES[civitas.CLIMATE_TEMPERATE]
@@ -195,13 +188,34 @@ civitas.objects.world = function (params) {
 	 */
 	this.get_terrain_from_climate = function(climate) {
 		if (climate === civitas.CLIMATE_TROPICAL) {
-			return ['W', 'J'];
+			return [
+				'tropical_rain_forest',
+				'tropical_seasonal_forest'
+			];
 		} else if (climate === civitas.CLIMATE_ARID) {
-			return ['D'];
+			return [
+				'subtropical_desert',
+				'temperate_desert'
+			];
 		} else if (climate === civitas.CLIMATE_POLAR) {
-			return ['I'];
+			return [
+				'mountains_ice',
+				'snow'
+			];
 		} else if (climate === civitas.CLIMATE_TEMPERATE) {
-			return ['G', 'P', 'H', 'M'];
+			return [
+				'grass',
+				'temperate_deciduous_forest',
+				'temperate_rain_forest',
+				'hills',
+				'mountains',
+				'taiga',
+				'shrubland',
+				'beach',
+				'scorched',
+				'tundra',
+				'bare'
+			];
 		} else {
 			return false;
 		}
@@ -215,20 +229,20 @@ civitas.objects.world = function (params) {
 	 * @returns {Object}
 	 */
 	this.get_random_location = function(terrain) {
-		const pos = {
+		const hex = {
 			x: civitas.utils.get_random(0, civitas.WORLD_SIZE_WIDTH - 1),
 			y: civitas.utils.get_random(0, civitas.WORLD_SIZE_HEIGHT - 1)
 		}
 		if (typeof terrain !== 'undefined') {
-			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
-				//if ($.inArray(data[pos.y][pos.x].t, terrain) !== -1) {
-					return pos;
+			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+				//if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
+					return hex;
 				//}
 			}
 			return this.get_random_location(terrain);
 		} else {
-			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
-				return pos;
+			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+				return hex;
 			}
 			return this.get_random_location(terrain);
 		}
@@ -265,43 +279,29 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
-	 * Check if the specified hex is sea or ocean.
+	 * Check if the specified hex is ocean.
 	 *
 	 * @public
 	 * @param {Object} hex
 	 * @returns {Boolean}
 	 */
 	this.hex_is_water = function(hex) {
-		const data = this.data();
-		if (data[hex.y][hex.x].t === 'S' || data[hex.y][hex.x].t === 'O') {
+		if (this.get_hex_terrain(hex) === 'ocean') {
 			return true;
 		}
 		return false;
 	};
 
 	/**
-	 * Return the terrain data for the specified hex.
+	 * Lock the specified hex as being inside the borders of a settlement.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
+	 * @param {Object} hex
 	 * @returns {String}
 	 */
-	this.get_hex_terrain = function(x, y) {
-		return this.get_hex(x, y).t;
-	};
-
-	/**
-	 * Lock the specified hex as being inside the borders of a city.
-	 *
-	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @returns {String}
-	 */
-	this.lock_hex = function(x, y, lid) {
-		this.set_hex(x, y, 'l', true);
-		this.set_hex(x, y, 'lid', lid);
+	this.lock_hex = function(hex, lid) {
+		this.set_hex(hex, 'l', true);
+		this.set_hex(hex, 'lid', lid);
 	};
 
 	/**
@@ -327,6 +327,17 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Return the moisture data for the specified hex.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {Number}
+	 */
+	this.get_hex_moisture = function(hex) {
+		return this.get_hex(hex.x, hex.y).m;
+	};
+
+	/**
 	 * Return the elevation data for the specified hex.
 	 *
 	 * @public
@@ -338,12 +349,12 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
-	 * Return the specified hex data.
+	 * Return the specified hex raw data.
 	 *
 	 * @public
 	 * @param {Number} x
 	 * @param {Number} y
-	 * @returns {String}
+	 * @returns {Object}
 	 */
 	this.get_hex = function(x, y) {
 		return this._data[y][x];
@@ -353,12 +364,13 @@ civitas.objects.world = function (params) {
 	 * Set the specified hex data.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @returns {String}
+	 * @param {Object} hex
+	 * @param {String} key
+	 * @param {String|Number|Array|Object} value
+	 * @returns {Object}
 	 */
-	this.set_hex = function(x, y, key, value) {
-		return this._data[y][x][key] = value;
+	this.set_hex = function(hex, key, value) {
+		return this._data[hex.y][hex.x][key] = value;
 	};
 
 	/**
@@ -370,9 +382,8 @@ civitas.objects.world = function (params) {
 	 */
 	this.add_place = function(place) {
 		const location = place.location();
-		this._data[location.y][location.x].p = place.id();
-		this._data[location.y][location.x].l = true;
-		this._data[location.y][location.x].lid = place.id();
+		this.set_hex(location, 'p', place.id());
+		this.lock_hex(location, place.id());
 		return this;
 	};
 
@@ -383,14 +394,12 @@ civitas.objects.world = function (params) {
 	 * @param {civitas.objects.settlement} settlement
 	 * @returns {civitas.objects.world}
 	 */
-	this.add_city = function(settlement) {
+	this.add_settlement = function(settlement) {
 		const location = settlement.location();
-		this._data[location.y][location.x].s = settlement.id();
-		this._data[location.y][location.x].l = true;
-		this._data[location.y][location.x].lid = settlement.id();
-		this._data[location.y][location.x].n = settlement.name();
+		this.set_hex(location, 's', settlement.id());
+		this.set_hex(location, 'n', settlement.name());
+		this.lock_hex(location, settlement.id());
 		this.calc_neighbours(settlement);
-		//civitas.svg.add_city_image(location.x, location.y, settlement);
 		return this;
 	};
 
@@ -406,41 +415,36 @@ civitas.objects.world = function (params) {
 		const id = settlement.id();
 		this._data[location.y][location.x].s = null;
 		this._data[location.y][location.x].n = null;
-		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
-			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
+		for (let x = 0; x < civitas.WORLD_SIZE_WIDTH; x++) {
+			for (let y = 0; y < civitas.WORLD_SIZE_HEIGHT; y++) {
 				if (this._data[y][x].lid === id) {
 					this._data[y][x].lid = null;
 					this._data[y][x].l = false;
 				}
 			}
 		}
-		$('#worldmap-city-image' + location.y + '-' + location.x).remove();
+		//$('#worldmap-city-image' + location.y + '-' + location.x).remove();
 		return this;
-	}
-
-	/**
-	 * Generate elevation/terrain data.
-	 *
-	 * @private
-	 * @returns {Array}
-	 */
-	this._generate = function() {
-		this._data = this.create_map_array(civitas.WORLD_SIZE_WIDTH + 1, civitas.WORLD_SIZE_WIDTH + 1);
-		this._start_displacement(civitas.WORLD_SIZE_WIDTH);
 	};
 
-	this.create_map_array = function(d1, d2) {
-		let x = new Array(d1);
-		for (let i = 0; i < d1; i += 1) {
-			x[i] = new Array(d2);
+	/**
+	 * Create the raw multidimensional array.
+	 *
+	 * @private
+	 * @returns {civitas.objects.world}
+	 */
+	this._create_array = function() {
+		this._data = new Array(civitas.WORLD_SIZE_WIDTH);
+		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; i += 1) {
+			this._data[i] = new Array(civitas.WORLD_SIZE_HEIGHT);
 		}
-		for (let i = 0; i < d1; i += 1) {
-			for (let j = 0; j < d2; j += 1) {
-				x[i][j] = {
+		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; i += 1) {
+			for (let j = 0; j < civitas.WORLD_SIZE_HEIGHT; j += 1) {
+				this._data[i][j] = {
 					/* Elevation */
-					e: -1,
-					/* Terrain */
-					t: 'S',
+					e: 0,
+					/* Moisture */
+					m: 0,
 					/* Place id */
 					p: null,
 					/* Settlement id */
@@ -454,85 +458,50 @@ civitas.objects.world = function (params) {
 				};
 			}
 		}
-		return x;
+		return this;
 	};
 
-	this._start_displacement = function(size) {
-		let tr, tl, t, br, bl, b, r, l, center;
-		this._data[0][0].e = Math.random(1.0);
-		tl = this._data[0][0].e;
-		this._data[0][size].e = Math.random(1.0);
-		bl = this._data[0][size].e;
-		this._data[size][0].e = Math.random(1.0);
-		tr = this._data[size][0].e;
-		this._data[size][size].e = Math.random(1.0);
-		br = this._data[size][size].e;
-		this._data[size / 2][size / 2].e = this._data[0][0].e + this._data[0][size].e + this._data[size][0].e + this._data[size][size].e / 4;
-		this._data[size / 2][size / 2].e = this.normalize(this._data[size / 2][size / 2].e);
-		center = this._data[size / 2][size / 2].e;
-		this._data[size / 2][size].e = bl + br + center + center / 4;
-		this._data[size / 2][0].e = tl + tr + center + center / 4;
-		this._data[size][size / 2].e = tr + br + center + center / 4;
-		this._data[0][size / 2].e = tl + bl + center + center / 4;
-		this._midpoint_displacement(size);
-	};
-
-	this._midpoint_displacement = function(dimension) {
-		let new_dimension = dimension / 2;
-		let top, tr, tl, bottom, bl, br, right, left, center;
-		if (new_dimension > 1) {
-			for (let i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
-				for (let j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
-					let x = i - (new_dimension / 2);
-					let y = j - (new_dimension / 2);
-					tl = this._data[i - new_dimension][j - new_dimension].e;
-					tr = this._data[i][j - new_dimension].e;
-					bl = this._data[i - new_dimension][j].e;
-					br = this._data[i][j].e;
-					this._data[x][y].e = (tl + tr + bl + br) / 4 + this._displace(dimension);
-					this._data[x][y].e = this.normalize(this._data[x][y].e);
-					center = this._data[x][y].e;
-					if (j - (new_dimension * 2) + (new_dimension / 2) > 0) {
-						this._data[x][j - new_dimension].e = (tl + tr + center + this._data[x][j - dimension + (new_dimension / 2)].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[x][j - new_dimension].e = (tl + tr + center) / 3 + this._displace(dimension);
-					}
-					this._data[x][j - new_dimension].e = this.normalize(this._data[x][j - new_dimension].e);
-					if (j + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-						this._data[x][j].e = (bl + br + center + this._data[x][j + (new_dimension / 2)].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[x][j].e = (bl + br + center) / 3 + this._displace(dimension);
-					}
-					this._data[x][j].e = this.normalize(this._data[x][j].e);
-					if (i + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-						this._data[i][y].e = (tr + br + center + this._data[i + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[i][y].e = (tr + br + center) / 3 + this._displace(dimension);
-					}
-					this._data[i][y].e = this.normalize(this._data[i][y].e);
-					if (i - (new_dimension * 2) + (new_dimension / 2) > 0) {
-						this._data[i - new_dimension][y].e = (tl + bl + center + this._data[i - dimension + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[i - new_dimension][y].e = (tl + bl + center) / 3 + this._displace(dimension);
-					}
-					this._data[i - new_dimension][y].e = this.normalize(this._data[i - new_dimension][y].e);
-				}
+	/**
+	 * Generate the elevation and moisture maps.
+	 *
+	 * @private
+	 * @returns {civitas.objects.world}
+	 */
+	this._generate = function() {
+		let rng1 = PM_PRNG.create(this._seeds.elevation);
+		let rng2 = PM_PRNG.create(this._seeds.moisture);
+		let gen1 = new SimplexNoise(rng1.nextDouble.bind(rng1));
+		let gen2 = new SimplexNoise(rng2.nextDouble.bind(rng2));
+		function noise1(nx, ny) {
+			return gen1.noise2D(nx, ny) / 2 + 0.5;
+		}
+		function noise2(nx, ny) {
+			return gen2.noise2D(nx, ny) / 2 + 0.5;
+		}
+		for (let x = 0; x < civitas.WORLD_SIZE_HEIGHT; x++) {
+			for (let y = 0; y < civitas.WORLD_SIZE_WIDTH; y++) {      
+				let nx = x / civitas.WORLD_SIZE_HEIGHT - 0.5;
+				let ny = y / civitas.WORLD_SIZE_WIDTH - 0.5;
+				let e = (1.00 * noise1(1 * nx,  1 * ny)
+					+ 0.77 * noise1(2 * nx,  2 * ny)
+					+ 0.00 * noise1(4 * nx,  4 * ny)
+					+ 0.00 * noise1(8 * nx,  8 * ny)
+					+ 0.00 * noise1(16 * nx, 16 * ny)
+					+ 0.00 * noise1(32 * nx, 32 * ny));
+				e /= (1.00 + 0.77 + 0.00 + 0.00 + 0.00 + 0.00);
+				e = Math.pow(e, civitas.WORLD_EROSION);
+				this._data[y][x].e = e;
+				let m = (1.00 * noise2(1 * nx,  1 * ny)
+					+ 0.75 * noise2(2 * nx,  2 * ny)
+					+ 0.33 * noise2(4 * nx,  4 * ny)
+					+ 0.33 * noise2(8 * nx,  8 * ny)
+					+ 0.33 * noise2(16 * nx, 16 * ny)
+					+ 0.50 * noise2(32 * nx, 32 * ny));
+				m /= (1.00 + 0.75 + 0.33 + 0.33 + 0.33 + 0.50);
+				this._data[y][x].m = m;
 			}
-			this._midpoint_displacement(new_dimension);
 		}
-	};
-
-	this._displace = function(num) {
-		return (Math.random(1.0) - 0.5) * (num / (civitas.WORLD_SIZE_WIDTH + civitas.WORLD_SIZE_WIDTH) * this._properties.roughness);
-	};
-
-	this.normalize = function(value) {
-		if (value > 1) {
-			value = 1;
-		} else if (value < -1) {
-			value = -1;
-		}
-		return value;
+		return this;
 	};
 
 	/**
@@ -571,10 +540,10 @@ civitas.objects.world = function (params) {
 		let terrain;
 		const neighbours = this.get_neighbours(settlement);
 		for (let i = 0; i < neighbours.length; i++) {
-			if ((neighbours[i].x > 1 && neighbours[i].x <= civitas.WORLD_SIZE_WIDTH) && (neighbours[i].y > 1 && neighbours[i].y <= civitas.WORLD_SIZE_HEIGHT)) {
-				terrain = this.get_hex_terrain(neighbours[i].x, neighbours[i].y);
-				this.lock_hex(neighbours[i].x, neighbours[i].y, settlement.id());
-				if (terrain === 'S' || terrain === 'O') {
+			if ((neighbours[i].x >= 0 && neighbours[i].x < civitas.WORLD_SIZE_WIDTH) && (neighbours[i].y >= 0 && neighbours[i].y < civitas.WORLD_SIZE_HEIGHT)) {
+				terrain = this.get_hex_terrain(neighbours[i]);
+				this.lock_hex(neighbours[i], settlement.id());
+				if (terrain === 'ocean') {
 					settlement.waterside(true);
 				}
 			}
@@ -585,47 +554,47 @@ civitas.objects.world = function (params) {
 	this.get_neighbouring_hexes = function(y, x) {
 		if (x % 2 == 0) {
 			return [
-			    {
-			    	x: x+1,
-			    	y: y
-			    }, {
-			    	x: x+1,
-			    	y: y-1
-			    }, {
-			    	x: x,
-			    	y: y-1
-			    }, {
-			    	x: x-1,
-			    	y: y
-			    }, {
-			    	x: x-1,
-			    	y: y-1 // y + 1
-			    }, {
-			    	x: x,
-			    	y: y+1
-			    }
+				{
+					x: x+1,
+					y: y
+				}, {
+					x: x+1,
+					y: y-1
+				}, {
+					x: x,
+					y: y-1
+				}, {
+					x: x-1,
+					y: y
+				}, {
+					x: x-1,
+					y: y-1
+				}, {
+					x: x,
+					y: y+1
+				}
 			]
 		} else {
 			return [
-			    {
-			    	x: x+1,
-			    	y: y
-			    }, {
-			    	x: x+1,
-			    	y: y+1
-			    }, {
-			    	x: x,
-			    	y: y-1
-			    }, {
-			    	x: x-1,
-			    	y: y
-			    }, {
-			    	x: x-1,
-			    	y: y+1
-			    }, {
-			    	x: x,
-			    	y: y+1
-			    }
+				{
+					x: x+1,
+					y: y
+				}, {
+					x: x+1,
+					y: y+1
+				}, {
+					x: x,
+					y: y-1
+				}, {
+					x: x-1,
+					y: y
+				}, {
+					x: x-1,
+					y: y+1
+				}, {
+					x: x,
+					y: y+1
+				}
 			]
 		}
 	};
@@ -650,10 +619,24 @@ civitas.objects.world = function (params) {
 	 */
 	this.get_distance_in_days = function(source, destination) {
 		return Math.floor((Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100) / 15);
-	}
+	};
 
 	/**
-	 * Return the world data array.
+	 * Get/set the world data seeds.
+	 *
+	 * @public
+	 * @param {Array} value
+	 * @returns {Array}
+	 */
+	this.seeds = function(value) {
+		if (typeof value !== 'undefined') {
+			this._seeds = value;
+		}
+		return this._seeds;
+	};
+
+	/**
+	 * Get/set the world data array.
 	 *
 	 * @public
 	 * @param {Array} value
@@ -664,6 +647,111 @@ civitas.objects.world = function (params) {
 			this._data = value;
 		}
 		return this._data;
+	};
+
+	/**
+	 * Draw the worldmap data to a HTML5 canvas.
+	 *
+	 * @public
+	 * @returns {civitas.objects.world}
+	 */
+	this.draw = function() {
+		let settlements = this.core().get_settlements();
+		let data = this.data();
+		let colors = this.colors();
+		let scale = civitas.WORLD_HEX_SIZE / 24;
+		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		let image_width = (1.5 * civitas.WORLD_SIZE_WIDTH +  0.5) * civitas.WORLD_HEX_SIZE;
+		let image_height = (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height;
+		$('.worldmap').empty().append('<canvas class="canvas-map"></canvas>');
+		let canvas = $('.canvas-map').get(0);
+		let currentHexX;
+		let currentHexY;
+		let offsetColumn = false;
+		let __height = Math.sqrt(3) * civitas.WORLD_HEX_SIZE;
+		let __width = 2 * civitas.WORLD_HEX_SIZE;
+		let __side = (3 / 2) * civitas.WORLD_HEX_SIZE;
+		canvas.width = image_width;
+		canvas.height = image_height;
+		let ctx = canvas.getContext('2d');
+		ctx.fillStyle = colors.background;
+		ctx.fillRect(0, 0, image_width, image_height);
+		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; ++i) {
+			for (let j = 0; j < civitas.WORLD_SIZE_HEIGHT; ++j) {
+				if (!offsetColumn) {
+					currentHexX = i * __side;
+					currentHexY = j * __height;
+				} else {
+					currentHexX = i * __side;
+					currentHexY = (j * __height) + (__height * 0.5);
+				}
+				let terrain = this.get_hex_terrain({
+					x: i,
+					y: j
+				});
+				let color = colors[terrain];
+				let opacity = 0.6;
+				if (data[j][i].l === true) {
+					let lid = data[j][i].lid;
+					let pid = data[j][i].p;
+					if (lid !== null && pid === null) {
+						if (typeof settlements[lid] !== 'undefined') {
+							color = settlements[lid].color();
+							opacity = 0.3;
+						}
+					} else if (lid !== null && pid !== null) {
+						// Todo
+					}
+				}
+				ctx.beginPath();
+				ctx.moveTo(currentHexX + __width - __side, currentHexY);
+				ctx.lineTo(currentHexX + __side, currentHexY);
+				ctx.lineTo(currentHexX + __width, currentHexY + (__height / 2));
+				ctx.lineTo(currentHexX + __side, currentHexY + __height);
+				ctx.lineTo(currentHexX + __width - __side, currentHexY + __height);
+				ctx.lineTo(currentHexX, currentHexY + (__height / 2));
+				ctx.closePath();
+				if (civitas.WORLD_GRID === true) {
+					ctx.strokeStyle = "#666";
+				} else {
+					ctx.strokeStyle = color;
+				}
+				ctx.lineWidth = 1;
+				ctx.stroke();
+				ctx.fillStyle = color;
+				ctx.fill();
+				if (civitas.WORLD_BEAUTIFY === true) {
+					this._apply_terrain(currentHexX, currentHexY, canvas, terrain, opacity);
+				}
+			}
+			offsetColumn = !offsetColumn;
+		}
+		return this;
+	};
+
+	/**
+	 * Apply the terrain features.
+	 *
+	 * @private
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @param {Object} canvas
+	 * @param {String} terrain
+	 * @param {Number} opacity
+	 * @returns {civitas.objects.world}
+	 */
+	this._apply_terrain = function(x, y, canvas, terrain, opacity) {
+		let scale = civitas.WORLD_HEX_SIZE / 24;
+		let ctx = canvas.getContext('2d');
+		let imageObject = new Image();
+		let image_size = civitas.WORLD_HEX_SIZE * 36 / 24;
+		imageObject.onload = function() {
+			ctx.globalAlpha = opacity;
+			ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
+			ctx.globalAlpha = 1;
+		}
+		imageObject.src = civitas.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
+		return this;
 	};
 
 	// Fire up the constructor

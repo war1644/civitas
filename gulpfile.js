@@ -116,7 +116,9 @@ gulp.task('lib', function() {
 		'vendor/js/jquery.ui.js',
 		'vendor/js/jquery.scrollto.js',
 		'vendor/js/jquery.tipsy.js',
-		'vendor/js/crypto.js'
+		'vendor/js/crypto.js',
+		'vendor/js/pmprng.js',
+		'vendor/js/simplexnoise.js',
   	])
     .pipe(concat('libs.debug.js'))
     .pipe(gulp.dest('dist/'))

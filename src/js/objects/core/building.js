@@ -109,9 +109,9 @@ civitas.objects.building = function(params) {
 		this.settlement = params.settlement;
 		this.type = params.type;
 		this.name = params.data.name;
-		this.is_production = (typeof params.data.is_production !== 'undefined' && params.data.is_production === true) ? true : false;
+		this.is_production = (typeof params.data.production !== 'undefined') ? true : false;
 		this.is_municipal = (typeof params.data.is_municipal !== 'undefined' && params.data.is_municipal === true) ? true : false;
-		this.is_housing = (typeof params.data.is_housing !== 'undefined' && params.data.is_housing === true) ? true : false;
+		this.is_housing = (typeof params.data.tax !== 'undefined') ? true : false;
 		this.level = (typeof params.data.level !== 'undefined') ? params.data.level : 1;
 		this._position = (typeof params.data.position !== 'undefined') ? params.data.position : {
 			x: 0,
@@ -551,7 +551,7 @@ civitas.objects.building = function(params) {
 		const building = this.get_building_data();
 		const materials = building.materials;
 		const settlement = this.get_settlement();
-		if (building.is_housing === true) {
+		if (this.is_housing_building()) {
 			if (typeof materials !== 'undefined') {
 				if (settlement.has_resources(materials)) {
 					settlement.remove_resources(materials);
@@ -562,7 +562,7 @@ civitas.objects.building = function(params) {
 					return false;
 				}
 			}
-		} else if (building.is_production === true) {
+		} else if (this.is_production_building()) {
 			if (!this.is_stopped()) {
 				let products = building.production;
 				if (this.has_requirements()) {

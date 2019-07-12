@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.752019
+ * @version 0.3.0.7122019
  * @license GPLv3
  */ 'use strict';
 
@@ -1944,166 +1944,6 @@ civitas.TECHNOLOGIES = [
 ];
 
 /**
- * Buildings native to the tropical climate.
- * 
- * @constant
- * @type {Array}
- */
-civitas.SETTLEMENT_BUILDINGS_TROPICAL = [
-
-	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'barracks', 
-	'castle', 'shipyard', 'embassy', 'academy', 'tavern',
-
-	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
-	'house8', 'house9', 'house10', 'house11',
-
-	/* Food Production */
-	'mill', 'bakery', 'butcher', 'cookhouse', 'fisherman',
-
-	/* Mines */
-	'coppermine', 'ironmine', 'claymine', 'coalmine', 'quartzmine',
-
-	/* Smelters */
-	'goldsmelter', 'coppersmelter', 'ironsmelter',
-
-	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
-	'coffeeroaster', 'winery', 'pottery', 'carpetmanufacturer',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
-	'gunpowdermill', 'redsmithsworkshop', 'ropeyard', 'glassworks',
-	'silkweaver', 'jeweler', 'toolmaker', 'apiary', 'beehive',
-	'barrelcooperage', 'brewery', 'candlemakersworkshop', 'sugarmill',
-	'cosmetics', 'weaver', 'clothingfactory', 'provisions', 'carpenter',
-	'marzipanworkshop', 'cannonfoundry', 'brickworks', 'saltprocessor',
-
-	/* Farms */
-	'almondsfarm', 'almondsfield', 'cattlefarm', 'cattlefield', 'coffeefarm',
-	'coffeefield', 'grainfarm', 'grainfield', 'datesfarm', 'datesfield',
-	'goatfarm', 'goatfield', 'grapesfarm', 'grapesfield', 'cottonfarm',
-	'cottonfield', 'pigfarm', 'pigfield', 'sugarfarm', 'sugarfield',
-	'indigofarm', 'indigofield', 'tobaccofarm', 'tobaccofield'
-];
-
-/**
- * Buildings native to the polar climate.
- * 
- * @constant
- * @type {Array}
- */
-civitas.SETTLEMENT_BUILDINGS_POLAR = [
-
-	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'barracks',
-	'castle', 'shipyard', 'embassy', 'academy', 'tavern',
-
-	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
-
-	/* Food Production */
-	'mill', 'bakery', 'butcher', 'cookhouse', 'fisherman',
-
-	/* Mines */
-	'coppermine', 'goldmine', 'ironmine', 'claymine', 'coalmine',
-
-	/* Smelters */
-	'goldsmelter', 'coppersmelter', 'ironsmelter',
-
-	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
-	'coffeeroaster', 'winery', 'pottery', 'jeweler', 'toolmaker',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
-	'gunpowdermill', 'redsmithsworkshop', 'ropeyard', 'glassworks',
-	'silkweaver', 'marzipanworkshop', 'apiary', 'beehive', 'barrelcooperage',
-	'brewery', 'candlemakersworkshop', 'sugarmill', 'cannonfoundry',
-	'cosmetics', 'weaver', 'clothingfactory', 'provisions', 'carpenter', 'brickworks'
-];
-
-/**
- * Buildings native to the arid climate.
- * 
- * @constant
- * @type {Array}
- */
-civitas.SETTLEMENT_BUILDINGS_ARID = [
-
-	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 
-	'barracks', 'castle', 'shipyard', 'embassy', 'academy', 'tavern',
-
-	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
-
-	/* Food Production */
-	'mill', 'bakery', 'butcher', 'cookhouse', 'fisherman',
-
-	/* Mines */
-	'coppermine', 'goldmine', 'ironmine', 'claymine', 'coalmine',
-	'quartzmine',
-
-	/* Smelters */
-	'goldsmelter', 'coppersmelter', 'ironsmelter',
-
-	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
-	'coffeeroaster', 'winery', 'pottery', 'jeweler', 'toolmaker',
-	'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress',
-	'redsmithsworkshop', 'ropeyard', 'glassworks', 'silkweaver',
-	'gunpowdermill', 'apiary', 'beehive', 'barrelcooperage', 'brewery',
-	'candlemakersworkshop', 'sugarmill', 'cosmetics', 'weaver',
-	'clothingfactory', 'provisions', 'carpenter', 'marzipanworkshop',
-	'cannonfoundry', 'brickworks', 'saltprocessor',
-
-	/* Farms */
-	'goatfarm', 'goatfield', 'cattlefarm', 'cattlefield', 'pigfarm',
-	'pigfield', 'indigofarm', 'indigofield', 'spicefarm', 'spicefield',
-	'datesfarm', 'datesfield', 'tobaccofarm', 'tobaccofield'
-];
-
-/**
- * Buildings native to the temperate climate.
- * 
- * @constant
- * @type {Array}
- */
-civitas.SETTLEMENT_BUILDINGS_TEMPERATE = [
-
-	/* Municipal */
-	'marketplace', 'warehouse', 'tradingpost', 'church', 'barracks',
-	'castle', 'shipyard', 'embassy', 'academy', 'tavern',
-
-	/* Housing */
-	'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7',
-	'house8', 'house9', 'house10', 'house11',
-
-	/* Food Production */
-	'mill', 'bakery', 'butcher',  'cookhouse', 'fisherman',
-
-	/* Mines */
-	'coppermine', 'goldmine', 'ironmine', 'claymine', 'coalmine',
-
-	/* Smelters */
-	'goldsmelter', 'coppersmelter', 'ironsmelter',
-
-	/* Industry */
-	'lumberjack', 'stonequarry', 'trapper', 'tannery', 'furrier', 'armory',
-	'coffeeroaster', 'winery', 'pottery', 'jeweler', 'toolmaker',
-	'carpetmanufacturer', 'charcoalburnerhut', 'opticiansworkshop',
-	'papermill', 'printingpress', 'gunpowdermill', 'redsmithsworkshop',
-	'ropeyard', 'glassworks', 'silkweaver', 'marzipanworkshop', 'apiary',
-	'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop',
-	'sugarmill', 'cosmetics', 'weaver', 'clothingfactory', 'provisions',
-	'carpenter', 'catapultworkshop', 'cannonfoundry', 'brickworks', 'saltprocessor',
-
-	/* Farms */
-	'cattlefarm', 'cattlefield', 'grainfarm',
-	'grainfield', 'grapesfarm', 'grapesfield', 'rosenursery', 'rosefield',
-	'goatfarm', 'goatfield', 'cottonfarm', 'cottonfield', 'pigfarm', 'pigfield',
-	'tobaccofarm', 'tobaccofield'
-];
-
-/**
  * All the buildings for a city.
  * 
  * @constant
@@ -2272,7 +2112,6 @@ civitas.BUILDINGS = [
 		handle: 'marketplace',
 		description: 'The Marketplace is the main building of your settlement and provides a place for the settlers to gather. It cannot be demolished.',
 		storage: 50000,
-		is_production: true,
 		is_municipal: true,
 		levels: 5,
 		large: true,
@@ -2317,7 +2156,6 @@ civitas.BUILDINGS = [
 		handle: 'church',
 		description: 'A Church provides a massive fame boost to your settlement by using coins and converting them to fame, as well as providing faith for free. Faith allows you to choose a religion for your settlement.',
 		is_municipal: true,
-		is_production: true,
 		levels: 3,
 		large: true,
 		position: {
@@ -2369,7 +2207,6 @@ civitas.BUILDINGS = [
 		is_municipal: true,
 		visible_upgrades: true,
 		large: true,
-		is_production: true,
 		levels: 5,
 		position: {
 			x: 1320,
@@ -2396,7 +2233,6 @@ civitas.BUILDINGS = [
 		handle: 'embassy',
 		description: 'An Embassy is required to propose pacts, declare war, send spies to other settlements, basically any diplomacy.',
 		is_municipal: true,
-		is_production: true,
 		large: true,
 		levels: 3,
 		position: {
@@ -2423,7 +2259,6 @@ civitas.BUILDINGS = [
 		name: 'Provision House',
 		handle: 'provisions',
 		description: 'The Provision House requires various goods to produce provisions for military units and expeditions.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 290,
@@ -2453,8 +2288,6 @@ civitas.BUILDINGS = [
 		handle: 'tavern',
 		description: 'The Tavern is the place where heroes of the known (and unknown) world hang around. If you are looking to recruit Achilles, build a Tavern and he might show up.',
 		is_municipal: true,
-		is_special: true,
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1920,
@@ -2484,7 +2317,6 @@ civitas.BUILDINGS = [
 		name: 'Shipyard',
 		handle: 'shipyard',
 		description: 'The Shipyard helps you expand your settlement overseas by housing your ships and providing you with fish, oil and an ultra-small chance to gather pearls.',
-		is_production: true,
 		large: true,
 		levels: 5,
 		position: {
@@ -2517,7 +2349,6 @@ civitas.BUILDINGS = [
 		levels: 5,
 		visible_upgrades: true,
 		large: true,
-		is_production: true,
 		position: {
 			x: 1970,
 			y: 950
@@ -2542,7 +2373,6 @@ civitas.BUILDINGS = [
 		name: 'Castle',
 		handle: 'castle',
 		description: 'The Castle is your main base of operations. It houses your settlement`s soldiers and provides you with prestige and some extra fame.',
-		is_production: true,
 		is_municipal: true,
 		large: true,
 		levels: 2,
@@ -2570,14 +2400,14 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 20,
 			buildings: {
-				barracks: 1
+				barracks: 1,
+				provisions: 2
 			}
 		}
 	}, {
 		name: 'Lumberjack',
 		handle: 'lumberjack',
 		description: 'A Lumberjack provides you with wood which you can use for creating additional buildings, resources or sell to other settlements.',
-		is_production: true,
 		levels: 5,
 		position: {
 			x: 1840,
@@ -2597,7 +2427,6 @@ civitas.BUILDINGS = [
 		name: 'Carpenter',
 		handle: 'carpenter',
 		description: 'The Carpenter processes the wood from the Lumberjack into wood planks that are required for more advanced buildings.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2622,7 +2451,6 @@ civitas.BUILDINGS = [
 		name: 'Stone Quarry',
 		handle: 'stonequarry',
 		description: 'A Stone Quarry produces stone blocks that are essential for the construction of any settlement`s buildings.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 6,
 		position: {
@@ -2648,7 +2476,6 @@ civitas.BUILDINGS = [
 		name: 'Gold Mine',
 		handle: 'goldmine',
 		description: 'The Gold Mine extracts gold ore, that can be smelted later into gold bars.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2674,7 +2501,6 @@ civitas.BUILDINGS = [
 		name: 'Coal Mine',
 		handle: 'coalmine',
 		description: 'The Coal Mine extracts coal from the mountains you own (provided you own some).',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2700,7 +2526,6 @@ civitas.BUILDINGS = [
 		name: 'Iron Mine',
 		handle: 'ironmine',
 		description: 'The Iron Mine extracts iron ore, that can be smelted later into iron bars.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2726,7 +2551,6 @@ civitas.BUILDINGS = [
 		name: 'Salt Processor',
 		handle: 'saltprocessor',
 		description: 'A Salt Processor processes seawater and retrieves salt.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2748,7 +2572,6 @@ civitas.BUILDINGS = [
 		name: 'Clay Mine',
 		handle: 'claymine',
 		description: 'The Clay Mine produces clay which is required later for bricks and pottery.',
-		is_production: true,
 		levels: 5,
 		position: {
 			x: 2900,
@@ -2773,7 +2596,6 @@ civitas.BUILDINGS = [
 		name: 'Copper Mine',
 		handle: 'coppermine',
 		description: 'The copper mine extracts copper ore, that can be smelted later into copper bars.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2799,7 +2621,6 @@ civitas.BUILDINGS = [
 		name: 'Flour Mill',
 		handle: 'mill',
 		description: 'The Flour Mill produces flour from the wheat cultivated by your Grain Farm.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2824,7 +2645,6 @@ civitas.BUILDINGS = [
 		name: 'Bakery',
 		handle: 'bakery',
 		description: 'The Bakery creates bread from flour, therefore providing your settlers with basic food.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2843,13 +2663,12 @@ civitas.BUILDINGS = [
 			stones: 30
 		},
 		requires: {
-			settlement_level: 3
+			settlement_level: 4
 		}
 	}, {
 		name: 'Pottery Workshop',
 		handle: 'pottery',
 		description: 'The Pottery Workshop uses a high-temperature kiln and clay to create pottery for the inhabitants of your settlement.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1740,
@@ -2874,7 +2693,6 @@ civitas.BUILDINGS = [
 		name: 'Gunpowder Mill',
 		handle: 'gunpowdermill',
 		description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder from the sulphur found in your Charcoal Burner`s Hut.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 500,
@@ -2901,7 +2719,6 @@ civitas.BUILDINGS = [
 		name: 'Armory',
 		handle: 'armory',
 		description: 'The Armory is a major building that produces weapons and armor for your soldiers. If you want to conquer other settlements, you will need to build one and keep it stocked with materials.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2931,7 +2748,6 @@ civitas.BUILDINGS = [
 		name: 'Butcher',
 		handle: 'butcher',
 		description: 'The Butcher slaughters cattle, pigs or goats for meat, providing meat, a food type that is more nutritious. Hides will be processed further at the Tannery.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2964,7 +2780,6 @@ civitas.BUILDINGS = [
 		name: 'Iron smelter',
 		handle: 'ironsmelter',
 		description: 'The Iron Smelter (or foundry) smelts iron ore into iron bars using coal.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -2993,7 +2808,6 @@ civitas.BUILDINGS = [
 		name: 'Copper smelter',
 		handle: 'coppersmelter',
 		description: 'The Copper Smelter smelts copper ore into copper bars using coal.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3019,7 +2833,6 @@ civitas.BUILDINGS = [
 		name: 'Gold smelter',
 		handle: 'goldsmelter',
 		description: 'The Gold Smelter smelts gold ore into gold bars using coal.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3046,7 +2859,6 @@ civitas.BUILDINGS = [
 		name: 'Trapper`s Lodge',
 		handle: 'trapper',
 		description: 'The trapper captures wild animals and slaughters them, gathering their furs and some meat.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3069,7 +2881,6 @@ civitas.BUILDINGS = [
 		name: 'Furrier`s Workshop',
 		handle: 'furrier',
 		description: 'The furrier uses furs from the Trapper`s Lodge mixed with salt and processes them into fur coats that will help your settlers during the cold winters.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1640,
@@ -3094,7 +2905,6 @@ civitas.BUILDINGS = [
 		name: 'Clothing Factory',
 		handle: 'clothingfactory',
 		description: 'The Clothing Factory produces clothes for your settlement. You don`t want naked citizens, do you?',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1580,
@@ -3119,7 +2929,6 @@ civitas.BUILDINGS = [
 		name: 'Weaver`s Hut',
 		handle: 'weaver',
 		description: 'The weaver uses a hefty amount of cotton to produce cotton fabric for your settlers` clothes.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3144,7 +2953,6 @@ civitas.BUILDINGS = [
 		name: 'Tannery',
 		handle: 'tannery',
 		description: 'The Tannery produces leather from processed animal hides.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3170,7 +2978,6 @@ civitas.BUILDINGS = [
 		name: 'Coffee roaster',
 		handle: 'coffeeroaster',
 		description: 'The Coffee Roaster uses the coffee beans from your Coffee Farm and processes them into coffee.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 2150,
@@ -3199,7 +3006,6 @@ civitas.BUILDINGS = [
 		name: 'Sugar Mill',
 		handle: 'sugarmill',
 		description: 'The Sugar Mill processes any sugar cane you have in storage into sugar.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3229,7 +3035,6 @@ civitas.BUILDINGS = [
 		name: 'Winery',
 		handle: 'winery',
 		description: 'The Winery uses the grapes from your Grapes Farm and processes them into wine. It uses either barrels or bottles, depending on what you have in storage.',
-		is_production: true,
 		levels: 5,
 		position: {
 			x: 2520,
@@ -3263,7 +3068,6 @@ civitas.BUILDINGS = [
 		name: 'Optician`s Shop',
 		handle: 'opticiansworkshop',
 		description: 'The optician uses copper and glass to create glasses for your settlers.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1280,
@@ -3290,7 +3094,6 @@ civitas.BUILDINGS = [
 		name: 'Paper Mill',
 		handle: 'papermill',
 		description: 'The Paper Mill uses wood to produce paper, which is used together with indigo to produce books at the Printing House.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3317,7 +3120,6 @@ civitas.BUILDINGS = [
 		name: 'Printing Press',
 		handle: 'printingpress',
 		description: 'The Printing Press produces books from paper using indigo ink.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3345,7 +3147,6 @@ civitas.BUILDINGS = [
 		name: 'Cosmetics',
 		handle: 'cosmetics',
 		description: 'The Cosmetics manufacturer produces soap and perfume.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1500,
@@ -3379,7 +3180,6 @@ civitas.BUILDINGS = [
 		name: 'Redsmith`s Workshop',
 		handle: 'redsmithsworkshop',
 		description: 'The Redsmith`s Workshop processes copper and candles into candlesticks.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3407,7 +3207,6 @@ civitas.BUILDINGS = [
 		name: 'Ropeyard',
 		handle: 'ropeyard',
 		description: 'The Ropeyard produces ropes that are needed for your city`s ships.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 3000,
@@ -3432,7 +3231,6 @@ civitas.BUILDINGS = [
 		name: 'Glassworks',
 		handle: 'glassworks',
 		description: 'The Glassworks processes quartz, sand and coal into glass.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1400,
@@ -3462,7 +3260,6 @@ civitas.BUILDINGS = [
 		name: 'Carpet Mill',
 		handle: 'carpetmanufacturer',
 		description: 'The Carpet Mill produces carpets.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 2020,
@@ -3492,7 +3289,6 @@ civitas.BUILDINGS = [
 		name: 'Marzipan Workshop',
 		handle: 'marzipanworkshop',
 		description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage to create delicious marzipan. Your settlers will definitely appreciate it.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1090,
@@ -3523,7 +3319,6 @@ civitas.BUILDINGS = [
 		name: 'Silk Weaver',
 		handle: 'silkweaver',
 		description: 'The Silk Weaver requires cotton, gold and silk and produces brocade robes.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1220,
@@ -3554,7 +3349,6 @@ civitas.BUILDINGS = [
 		name: 'Quartz Mine',
 		handle: 'quartzmine',
 		description: 'The Quartz Mine provides your city with quartz.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 700,
@@ -3570,13 +3364,15 @@ civitas.BUILDINGS = [
 			stones: 90
 		},
 		requires: {
-			settlement_level: 16
+			settlement_level: 16,
+			climate: [
+				civitas.CLIMATE_ARID
+			]
 		}
 	}, {
 		name: 'Apiary',
 		handle: 'apiary',
 		description: 'The Apiary produces honey and bees wax for use in candles.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1140,
@@ -3596,7 +3392,11 @@ civitas.BUILDINGS = [
 			settlement_level: 16,
 			buildings: {
 				beehive: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL,
+				civitas.CLIMATE_TEMPERATE
+			]
 		}
 	}, {
 		name: 'Bee Hive',
@@ -3612,13 +3412,16 @@ civitas.BUILDINGS = [
 			clay: 20
 		},
 		requires: {
-			settlement_level: 16
+			settlement_level: 16,
+			climate: [
+				civitas.CLIMATE_TROPICAL,
+				civitas.CLIMATE_TEMPERATE
+			]
 		}
 	}, {
 		name: 'Barrel Cooperage',
 		handle: 'barrelcooperage',
 		description: 'The Barrel Cooperage creates barrels from wood and iron.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 910,
@@ -3644,7 +3447,6 @@ civitas.BUILDINGS = [
 		name: 'Brewery',
 		handle: 'brewery',
 		description: 'The Brewery brews beer from wheat. Beer is needed for higher-level houses or your city`s navy.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3673,7 +3475,6 @@ civitas.BUILDINGS = [
 		name: 'Candlemaker`s Hut',
 		handle: 'candlemakersworkshop',
 		description: 'The Candlemaker Hut produces candles for your settlers` houses.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3701,7 +3502,6 @@ civitas.BUILDINGS = [
 		name: 'Catapult Workshop',
 		handle: 'catapultworkshop',
 		description: 'The Catapult Workshop builds catapults, the ultimate siege weapon.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1400,
@@ -3733,7 +3533,6 @@ civitas.BUILDINGS = [
 		name: 'Cannon Foundry',
 		handle: 'cannonfoundry',
 		description: 'The Cannon Foundry is responsable with the manufacture of the city cannons.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -3767,7 +3566,6 @@ civitas.BUILDINGS = [
 		name: 'Charcoal Burner`s Hut',
 		handle: 'charcoalburnerhut',
 		description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which is needed by all your smelters.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1370,
@@ -3781,18 +3579,18 @@ civitas.BUILDINGS = [
 			wood: 2
 		},
 		cost: {
-			coins: 15000,
+			coins: 25000,
 			wood: 50,
-			stones: 50
+			stones: 50,
+			bricks: 50
 		},
 		requires: {
-			settlement_level: 5
+			settlement_level: 15
 		}
 	}, {
 		name: 'House',
 		handle: 'house1',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 5,
 		levels: 6,
 		visible_upgrades: true,
@@ -3814,7 +3612,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house2',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 10,
 		levels: 6,
 		visible_upgrades: true,
@@ -3836,7 +3633,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house3',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 15,
 		levels: 6,
 		visible_upgrades: true,
@@ -3860,7 +3656,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house4',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 20,
 		levels: 6,
 		visible_upgrades: true,
@@ -3888,7 +3683,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house5',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 25,
 		levels: 6,
 		visible_upgrades: true,
@@ -3917,7 +3711,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house6',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 30,
 		levels: 6,
 		visible_upgrades: true,
@@ -3945,7 +3738,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house7',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 35,
 		levels: 6,
 		visible_upgrades: true,
@@ -3974,7 +3766,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house8',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 40,
 		levels: 6,
 		visible_upgrades: true,
@@ -4005,7 +3796,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house9',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 50,
 		levels: 6,
 		visible_upgrades: true,
@@ -4038,7 +3828,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house10',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 60,
 		cost: {
 			woodplanks: 100,
@@ -4073,7 +3862,6 @@ civitas.BUILDINGS = [
 		name: 'House',
 		handle: 'house11',
 		description: 'Houses provide coins through taxes and space for your settlers.',
-		is_housing: true,
 		tax: 80,
 		cost: {
 			woodplanks: 100,
@@ -4108,7 +3896,6 @@ civitas.BUILDINGS = [
 	}, {
 		name: 'Dates farm',
 		handle: 'datesfarm',
-		is_production: true,
 		description: 'The Dates Farm cultivates dates.',
 		production: {
 			dates: 1
@@ -4127,7 +3914,10 @@ civitas.BUILDINGS = [
 			settlement_level: 36,
 			buildings: {
 				datesfield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Dates field',
@@ -4143,12 +3933,14 @@ civitas.BUILDINGS = [
 			clay: 20
 		},
 		requires: {
-			settlement_level: 36
+			settlement_level: 36,
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Almonds farm',
 		handle: 'almondsfarm',
-		is_production: true,
 		description: 'The Almonds Farm cultivates almonds for marzipan manufacture or export.',
 		production: {
 			almonds: 1
@@ -4167,7 +3959,11 @@ civitas.BUILDINGS = [
 			settlement_level: 36,
 			buildings: {
 				almondsfield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_ARID,
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Almonds field',
@@ -4183,13 +3979,16 @@ civitas.BUILDINGS = [
 			clay: 20
 		},
 		requires: {
-			settlement_level: 36
+			settlement_level: 36,
+			climate: [
+				civitas.CLIMATE_ARID,
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Cattle Farm',
 		handle: 'cattlefarm',
 		description: 'A Cattle Farm grows cattle so your settlers can eat food that is more nutritious than bread. Also produces milk and has a low chance for producing cheese.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -4202,9 +4001,6 @@ civitas.BUILDINGS = [
 		},
 		chance: {
 			cheese: 0.01
-		},
-		materials: {
-			herbs: 2
 		},
 		cost: {
 			coins: 10000,
@@ -4221,13 +4017,9 @@ civitas.BUILDINGS = [
 		name: 'Cattle field',
 		handle: 'cattlefield',
 		description: 'A Cattle Field is required for the Cattle Farm to operate.',
-		is_production: true,
 		position: {
 			x: 1630,
 			y: 1420
-		},
-		production: {
-			herbs: 2
 		},
 		cost: {
 			coins: 1000,
@@ -4241,15 +4033,11 @@ civitas.BUILDINGS = [
 		name: 'Pig Farm',
 		handle: 'pigfarm',
 		description: 'A Pig Farm grows pigs so your settlers can eat food that is more nutritious than bread.',
-		is_production: true,
 		visible_upgrades: true,
 		production: {
 			pig: 1
 		},
 		levels: 5,
-		materials: {
-			herbs: 2
-		},
 		position: {
 			x: 1900,
 			y: 1150
@@ -4269,13 +4057,9 @@ civitas.BUILDINGS = [
 		name: 'Pig field',
 		handle: 'pigfield',
 		description: 'A Pig Field is required for the Pig Farm to operate.',
-		is_production: true,
 		position: {
 			x: 1900,
 			y: 1270
-		},
-		production: {
-			herbs: 2
 		},
 		cost: {
 			coins: 1500,
@@ -4289,7 +4073,6 @@ civitas.BUILDINGS = [
 		name: 'Goat Farm',
 		handle: 'goatfarm',
 		description: 'A Goat Farm grows cattle so your settlers can eat food that is more nutritious than bread. Also produces milk and has a low chance for producing cheese.',
-		is_production: true,
 		visible_upgrades: true,
 		production: {
 			goat: 1,
@@ -4297,9 +4080,6 @@ civitas.BUILDINGS = [
 		},
 		chance: {
 			cheese: 0.01
-		},
-		materials: {
-			herbs: 2
 		},
 		levels: 5,
 		position: {
@@ -4321,13 +4101,9 @@ civitas.BUILDINGS = [
 		name: 'Goat field',
 		handle: 'goatfield',
 		description: 'A Goat Field is required for the Goat Farm to operate.',
-		is_production: true,
 		position: {
 			x: 2150,
 			y: 900
-		},
-		production: {
-			herbs: 2
 		},
 		cost: {
 			coins: 1500,
@@ -4341,11 +4117,9 @@ civitas.BUILDINGS = [
 		name: 'Grain farm',
 		handle: 'grainfarm',
 		description: 'A Grain Farm cultivates wheat that will be later transformed into bread, and your settlers will live happily ever after.',
-		is_production: true,
 		visible_upgrades: true,
 		production: {
-			wheat: 2,
-			herbs: 1
+			wheat: 2
 		},
 		levels: 6,
 		position: {
@@ -4383,7 +4157,6 @@ civitas.BUILDINGS = [
 		name: 'Grapes farm',
 		handle: 'grapesfarm',
 		description: 'A Grapes Farm provides your city with grapes for wine processing.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 2380,
@@ -4401,7 +4174,10 @@ civitas.BUILDINGS = [
 			settlement_level: 16,
 			buildings: {
 				grapesfield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TEMPERATE
+			]
 		}
 	}, {
 		name: 'Grapes field',
@@ -4417,21 +4193,22 @@ civitas.BUILDINGS = [
 			clay: 20
 		},
 		requires: {
-			settlement_level: 16
+			settlement_level: 16,
+			climate: [
+				civitas.CLIMATE_TEMPERATE
+			]
 		}
 	}, {
 		name: 'Coffee farm',
 		handle: 'coffeefarm',
 		description: 'A Coffee Farm cultivates coffee beans in your city, ready to be processed into coffee.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1840,
 			y: 1000
 		},
 		production: {
-			coffeebeans: 2,
-			herbs: 1
+			coffeebeans: 2
 		},
 		cost: {
 			coins: 60000,
@@ -4442,7 +4219,10 @@ civitas.BUILDINGS = [
 			settlement_level: 36,
 			buildings: {
 				coffeefield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Coffee field',
@@ -4458,13 +4238,15 @@ civitas.BUILDINGS = [
 			clay: 40
 		},
 		requires: {
-			settlement_level: 36
+			settlement_level: 36,
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Cotton farm',
 		handle: 'cottonfarm',
 		description: 'A Cotton Farm provides your city with cotton.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1870,
@@ -4483,7 +4265,10 @@ civitas.BUILDINGS = [
 			settlement_level: 10,
 			buildings: {
 				cottonfield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Cotton field',
@@ -4500,13 +4285,15 @@ civitas.BUILDINGS = [
 		},
 		requires: {
 			research: 'agriculture',
-			settlement_level: 10
+			settlement_level: 10,
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Silk farm',
 		handle: 'silkfarm',
 		description: 'A Silk Farm provides your city with silk.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1450,
@@ -4525,7 +4312,10 @@ civitas.BUILDINGS = [
 			settlement_level: 28,
 			buildings: {
 				silkfield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Silk field',
@@ -4542,21 +4332,22 @@ civitas.BUILDINGS = [
 		},
 		requires: {
 			research: 'agriculture',
-			settlement_level: 28
+			settlement_level: 28,
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Sugar Cane Farm',
 		handle: 'sugarfarm',
 		description: 'A Sugar Cane Farm provides your city with sugar cane.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 2280,
 			y: 780
 		},
 		production: {
-			sugarcane: 2,
-			herbs: 1
+			sugarcane: 2
 		},
 		cost: {
 			coins: 100000,
@@ -4568,7 +4359,10 @@ civitas.BUILDINGS = [
 			buildings: {
 				academy: 1,
 				sugarfield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TEMPERATE
+			]
 		}
 	}, {
 		name: 'Sugar field',
@@ -4584,22 +4378,23 @@ civitas.BUILDINGS = [
 			clay: 100
 		},
 		requires: {
-			settlement_level: 24
+			settlement_level: 24,
+			climate: [
+				civitas.CLIMATE_TEMPERATE
+			]
 		}
 	}, {
 		name: 'Indigo farm',
 		handle: 'indigofarm',
-		is_production: true,
-		visible_upgrades: true,
 		description: 'The Indigo Farm produces indigo that can be turned to ink and used to create books.',
 		levels: 5,
+		visible_upgrades: true,
 		position: {
 			x: 2440,
 			y: 1440
 		},
 		production: {
-			indigo: 1,
-			herbs: 1
+			indigo: 1
 		},
 		cost: {
 			coins: 200000,
@@ -4611,7 +4406,10 @@ civitas.BUILDINGS = [
 			settlement_level: 20,
 			buildings: {
 				indigofield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Indigo field',
@@ -4627,12 +4425,14 @@ civitas.BUILDINGS = [
 			clay: 100
 		},
 		requires: {
-			settlement_level: 20
+			settlement_level: 20,
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Tobacco farm',
 		handle: 'tobaccofarm',
-		is_production: true,
 		description: 'A Tobacco Farm produces cigars from tobacco.',
 		levels: 3,
 		position: {
@@ -4655,13 +4455,15 @@ civitas.BUILDINGS = [
 			settlement_level: 25,
 			buildings: {
 				tobaccofield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Tobacco field',
 		handle: 'tobaccofield',
 		description: 'The Tobacco Field produces tobacco that will be further processed by the Tobacco Farm',
-		is_production: true,
 		position: {
 			x: 1870,
 			y: 1460
@@ -4675,12 +4477,14 @@ civitas.BUILDINGS = [
 			clay: 100
 		},
 		requires: {
-			settlement_level: 20
+			settlement_level: 20,
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Rose Farm',
 		handle: 'rosenursery',
-		is_production: true,
 		description: 'The Rose Farm produces roses which are needed to manufacture perfume.',
 		levels: 3,
 		position: {
@@ -4688,8 +4492,7 @@ civitas.BUILDINGS = [
 			y: 670
 		},
 		production: {
-			roses: 1,
-			herbs: 1
+			roses: 1
 		},
 		cost: {
 			coins: 20000,
@@ -4703,7 +4506,11 @@ civitas.BUILDINGS = [
 			buildings: {
 				academy: 1,
 				rosefield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_ARID,
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Roses field',
@@ -4720,12 +4527,15 @@ civitas.BUILDINGS = [
 		},
 		requires: {
 			research: 'agriculture',
-			settlement_level: 26
+			settlement_level: 26,
+			climate: [
+				civitas.CLIMATE_ARID,
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Spice Farm',
 		handle: 'spicefarm',
-		is_production: true,
 		description: 'The Spice Farm is responsable for the production of spices.',
 		levels: 3,
 		position: {
@@ -4733,8 +4543,7 @@ civitas.BUILDINGS = [
 			y: 970
 		},
 		production: {
-			spices: 1,
-			herbs: 1
+			spices: 1
 		},
 		cost: {
 			coins: 200000,
@@ -4747,7 +4556,10 @@ civitas.BUILDINGS = [
 			buildings: {
 				academy: 1,
 				spicefield: 1
-			}
+			},
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Spice field',
@@ -4763,12 +4575,14 @@ civitas.BUILDINGS = [
 			clay: 300
 		},
 		requires: {
-			settlement_level: 32
+			settlement_level: 32,
+			climate: [
+				civitas.CLIMATE_TROPICAL
+			]
 		}
 	}, {
 		name: 'Toolmaker Workshop',
 		handle: 'toolmaker',
-		is_production: true,
 		description: 'Tools are needed to construct higher-level buildings, and a Toolmaker Workshop will create those for your settlement.',
 		visible_upgrades: true,
 		levels: 5,
@@ -4797,7 +4611,6 @@ civitas.BUILDINGS = [
 	}, {
 		name: 'Jeweler',
 		handle: 'jeweler',
-		is_production: true,
 		description: 'The Jeweler processes pearls into jewelery for your settlers (and traders).',
 		levels: 3,
 		position: {
@@ -4824,7 +4637,6 @@ civitas.BUILDINGS = [
 		name: 'Brickworks',
 		handle: 'brickworks',
 		description: 'The Brickworks uses coal and clay to manufacture bricks, needed for higher-level buildings in your settlement.',
-		is_production: true,
 		levels: 5,
 		position: {
 			x: 620,
@@ -4853,7 +4665,6 @@ civitas.BUILDINGS = [
 		name: 'Cookhouse',
 		handle: 'cookhouse',
 		description: 'The Cookhouse makes meals for your houses, army, navy and expeditions.',
-		is_production: true,
 		levels: 3,
 		position: {
 			x: 1020,
@@ -4882,7 +4693,6 @@ civitas.BUILDINGS = [
 		name: 'Fisherman',
 		handle: 'fisherman',
 		description: 'The fisherman reels in fish from the waters surrounding your settlement.',
-		is_production: true,
 		visible_upgrades: true,
 		levels: 5,
 		position: {
@@ -4960,7 +4770,7 @@ civitas.WORLD_GRID = true;
  * @default
  * @type {Number}
  */
-civitas.WORLD_ROUGHNESS = 5;
+civitas.WORLD_EROSION = 1.8;
 
 /**
  * Goods importance, vital.
@@ -5888,11 +5698,6 @@ civitas.RESOURCES = {
 		name: 'Gunpowder',
 		price: 420,
 		category: 'military'
-	},
-	herbs: {
-		name: 'Herbs',
-		price: 18,
-		category: 'industry'
 	},
 	hides: {
 		name: 'Hides',
@@ -7753,7 +7558,7 @@ civitas.INITIAL_SEED = [
 			prestige: civitas.MIN_PRESTIGE_VALUE,
 			espionage: civitas.MIN_ESPIONAGE_VALUE,
 			research: civitas.MIN_RESEARCH_VALUE,
-			bread: 300,
+			bread: 400,
 			meat: 100,
 			stones: 100,
 			weapons: 100,
@@ -8015,6 +7820,17 @@ civitas.modules.ai = function (params) {
 civitas.objects.world = function (params) {
 
 	/**
+	 * Random seeds for world generation.
+	 *
+	 * @private
+	 * @type {Object}
+	 */
+	this._seeds = {
+		elevation: null,
+		moisture: null
+	};
+
+	/**
 	 * Reference to the core object.
 	 *
 	 * @private
@@ -8029,71 +7845,25 @@ civitas.objects.world = function (params) {
 	 * @type {Object}
 	 */
 	this._colors = {
-		// Sea
-		S: {
-			bg: '#64B4E1',
-			fg: ''
-		},
-		// Ocean
-		O: {
-			bg: '#509FCC',
-			fg: ''
-		},
-		// Grass
-		G: {
-			bg: '#E6F59A',
-			fg: '#527B2A'
-		},
-		// Jungle
-		J: {
-			bg: '#549D65',
-			fg: '#205b45'
-		},
-		// Plains
-		P: {
-			bg: '#96C764',
-			fg: '#264b0e'
-		},
-		// Hills
-		H: {
-			bg: '#E1C859',
-			fg: '#6F5D0D'
-		},
-		// Swamp
-		W: {
-			bg: '#82C995',
-			fg: '#349253'
-		},
-		// Mountains
-		M: {
-			bg: '#B37D1A',
-			fg: '#33381D'
-		},
-		// Desert
-		D: {
-			bg: '#F2CD63',
-			fg: '#c0b23c'
-		},
-		// Ice
-		I: {
-			bg: '#FFFFFF',
-			fg: ''
-		},
-		// Borders
-		X: {
-			bg: '#64B4E1',
-			fg: ''
-		}
-	}
-	
-	/**
-	 * World properties.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._properties = {
-		roughness: 5
+		background: '#64B4E1',
+		ocean: '#64B5E1',
+		grass: '#E6F59A',
+		subtropical_desert: '#F2CD63',
+		temperate_desert: '#F2CD63',
+		taiga: '#E1C85A',
+		shrubland: '#E1C859',
+		beach: '#FFF899',
+		scorched: '#E5F59A',
+		bare: '#D1BE79',
+		tundra: '#E5F59A',
+		snow: '#DCDCE6',
+		temperate_deciduous_forest: '#78AA46',
+		temperate_rain_forest: '#78AA46',
+		tropical_rain_forest: '#549D65',
+		tropical_seasonal_forest: '#549D65',
+		hills: '#E1C859',
+		mountains: '#B37D1A',
+		mountains_ice: '#DCDCE6'
 	};
 
 	/**
@@ -8114,49 +7884,77 @@ civitas.objects.world = function (params) {
 	 */
 	this.__init = function (params) {
 		this._core = params.core;
-		this._properties.roughness = (typeof params.roughness !== 'undefined') ? params.roughness : civitas.WORLD_ROUGHNESS;
+		this._seeds.moisture = typeof params.moisture !== 'undefined' && params.moisture !== null ? params.moisture : this.seed();
+		this._seeds.elevation = typeof params.elevation !== 'undefined' && params.elevation !== null ? params.elevation : this.seed();
+		this._data = typeof params.data !== 'undefined' ? params.data : [];
 		if (this._data.length === 0) {
+			this._create_array();
 			this._generate();
-			this._adjust();
 		}
 		return this;
 	};
 
 	/**
-	 * Adjust terrain based on the elevation.
-	 * 
-	 * @private
-	 * @returns {civitas.objects.world}
+	 * Get a random number to seed the generator.
+	 *
+	 * @public
+	 * @returns {Number}
 	 */
-	this._adjust = function() {
-		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
-			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
-				this._data[y][x].e = this._data[y][x].e.toFixed(3);
-				if (this._data[y][x].e < 0) {
-					this._data[y][x].t = 'O';
-				} else if (this._data[y][x].e >= 0 && this._data[y][x].e <= 0.3) {
-					this._data[y][x].t = 'S';
-				} else if (this._data[y][x].e > 0.3 && this._data[y][x].e <= 0.33) {
-					this._data[y][x].t = 'W';
-				} else if (this._data[y][x].e > 0.33 && this._data[y][x].e <= 0.38) {
-					this._data[y][x].t = 'D';
-				} else if (this._data[y][x].e > 0.38 && this._data[y][x].e <= 0.5) {
-					this._data[y][x].t = 'G';
-				} else if (this._data[y][x].e > 0.5 && this._data[y][x].e <= 0.55) {
-					this._data[y][x].t = 'J';
-				} else if (this._data[y][x].e > 0.55 && this._data[y][x].e <= 0.8) {
-					this._data[y][x].t = 'P';
-				} else if (this._data[y][x].e > 0.8 && this._data[y][x].e <= 0.95) {
-					this._data[y][x].t = 'H';
-				} else if (this._data[y][x].e > 0.95 && this._data[y][x].e <= 1) {
-					this._data[y][x].t = 'M';
-				}
-				if ((y === 0 || y === civitas.WORLD_SIZE_HEIGHT - 1) && (this._data[y][x].t !== 'O' && this._data[y][x].t !== 'S')) {
-					this._data[y][x].t = 'I';
-				}
+	this.seed = function() {
+		return Math.random() * (2147483646 - 1) + 1;
+	};
+
+	/**
+	 * Get the terrain data as a string based on the elevation.
+	 * 
+	 * @public
+	 * @param {Object} hex
+	 * @returns {String}
+	 */
+	this.get_hex_terrain = function(hex) {
+		let elevation = this._data[hex.y][hex.x].e;
+		let moisture = this._data[hex.y][hex.x].m;
+		if (elevation <= 0.1) {
+			return 'ocean';
+		} else if (elevation > 0.1 && elevation <= 0.15) {
+			return 'beach';
+		} else if (elevation > 0.15 && elevation <= 0.35) {
+			if (moisture <= 0.30) {
+				return 'subtropical_desert';
+			} else if (moisture > 0.30 && moisture <= 0.45) {
+				return 'grass';
+			} else if (moisture > 0.45 && moisture <= 0.66) {
+				return 'tropical_seasonal_forest';
+			} else {
+				return 'tropical_rain_forest';
+			}
+		} else if (elevation > 0.35 && elevation <= 0.75) {
+			if (moisture <= 0.20) {
+				return 'temperate_desert';
+			} else if (moisture > 0.20 && moisture <= 0.50) {
+				return 'grass';
+			} else if (moisture > 0.50 && moisture <= 0.83) {
+				return 'temperate_deciduous_forest';
+			} else {
+				return 'temperate_rain_forest';
+			}
+		} else if (elevation > 0.75 && elevation <= 0.8) {
+			if (moisture <= 0.33) {
+				return 'temperate_desert';
+			} else if (moisture > 0.33 && moisture <= 0.66) {
+				return 'shrubland';
+			} else {
+				return 'taiga';
+			}
+		} else if (elevation > 0.8 && elevation <= 0.85) {
+			return 'hills';
+		} else {
+			if (moisture >= 0.8) {
+				return 'mountains_ice';
+			} else {
+				return 'mountains';
 			}
 		}
-		return this;
 	};
 
 	/**
@@ -8167,22 +7965,22 @@ civitas.objects.world = function (params) {
 	 * @returns {Boolean|Object}
 	 */
 	this.get_climate_from_terrain = function(terrain) {
-		if (terrain === 'W' || terrain === 'J') {
+		if (terrain === 'tropical_rain_forest' || terrain === 'tropical_seasonal_forest') {
 			return {
 				id: civitas.CLIMATE_TROPICAL,
 				name: civitas.CLIMATES[civitas.CLIMATE_TROPICAL]
 			};
-		} else if (terrain === 'D') {
+		} else if (terrain === 'subtropical_desert' || terrain === 'temperate_desert') {
 			return {
 				id: civitas.CLIMATE_ARID,
 				name: civitas.CLIMATES[civitas.CLIMATE_ARID]
 			};
-		} else if (terrain === 'I') {
+		} else if (terrain === 'mountains_ice' || terrain === 'snow') {
 			return {
 				id: civitas.CLIMATE_POLAR,
 				name: civitas.CLIMATES[civitas.CLIMATE_POLAR]
 			};
-		} else if (terrain === 'G' || terrain === 'P' || terrain === 'H' || terrain === 'M') {
+		} else if (terrain === 'grass' || terrain === 'temperate_deciduous_forest' || terrain === 'temperate_rain_forest' || terrain === 'hills' || terrain === 'mountains' || terrain === 'taiga' || terrain === 'shrubland' || terrain === 'beach' || terrain === 'scorched' || terrain === 'tundra' || terrain === 'bare') {
 			return {
 				id: civitas.CLIMATE_TEMPERATE,
 				name: civitas.CLIMATES[civitas.CLIMATE_TEMPERATE]
@@ -8201,13 +7999,34 @@ civitas.objects.world = function (params) {
 	 */
 	this.get_terrain_from_climate = function(climate) {
 		if (climate === civitas.CLIMATE_TROPICAL) {
-			return ['W', 'J'];
+			return [
+				'tropical_rain_forest',
+				'tropical_seasonal_forest'
+			];
 		} else if (climate === civitas.CLIMATE_ARID) {
-			return ['D'];
+			return [
+				'subtropical_desert',
+				'temperate_desert'
+			];
 		} else if (climate === civitas.CLIMATE_POLAR) {
-			return ['I'];
+			return [
+				'mountains_ice',
+				'snow'
+			];
 		} else if (climate === civitas.CLIMATE_TEMPERATE) {
-			return ['G', 'P', 'H', 'M'];
+			return [
+				'grass',
+				'temperate_deciduous_forest',
+				'temperate_rain_forest',
+				'hills',
+				'mountains',
+				'taiga',
+				'shrubland',
+				'beach',
+				'scorched',
+				'tundra',
+				'bare'
+			];
 		} else {
 			return false;
 		}
@@ -8221,20 +8040,20 @@ civitas.objects.world = function (params) {
 	 * @returns {Object}
 	 */
 	this.get_random_location = function(terrain) {
-		const pos = {
+		const hex = {
 			x: civitas.utils.get_random(0, civitas.WORLD_SIZE_WIDTH - 1),
 			y: civitas.utils.get_random(0, civitas.WORLD_SIZE_HEIGHT - 1)
 		}
 		if (typeof terrain !== 'undefined') {
-			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
-				//if ($.inArray(data[pos.y][pos.x].t, terrain) !== -1) {
-					return pos;
+			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+				//if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
+					return hex;
 				//}
 			}
 			return this.get_random_location(terrain);
 		} else {
-			if (!this.hex_is_water(pos) && !this.hex_is_locked(pos)) {
-				return pos;
+			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+				return hex;
 			}
 			return this.get_random_location(terrain);
 		}
@@ -8271,43 +8090,29 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
-	 * Check if the specified hex is sea or ocean.
+	 * Check if the specified hex is ocean.
 	 *
 	 * @public
 	 * @param {Object} hex
 	 * @returns {Boolean}
 	 */
 	this.hex_is_water = function(hex) {
-		const data = this.data();
-		if (data[hex.y][hex.x].t === 'S' || data[hex.y][hex.x].t === 'O') {
+		if (this.get_hex_terrain(hex) === 'ocean') {
 			return true;
 		}
 		return false;
 	};
 
 	/**
-	 * Return the terrain data for the specified hex.
+	 * Lock the specified hex as being inside the borders of a settlement.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
+	 * @param {Object} hex
 	 * @returns {String}
 	 */
-	this.get_hex_terrain = function(x, y) {
-		return this.get_hex(x, y).t;
-	};
-
-	/**
-	 * Lock the specified hex as being inside the borders of a city.
-	 *
-	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @returns {String}
-	 */
-	this.lock_hex = function(x, y, lid) {
-		this.set_hex(x, y, 'l', true);
-		this.set_hex(x, y, 'lid', lid);
+	this.lock_hex = function(hex, lid) {
+		this.set_hex(hex, 'l', true);
+		this.set_hex(hex, 'lid', lid);
 	};
 
 	/**
@@ -8333,6 +8138,17 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Return the moisture data for the specified hex.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {Number}
+	 */
+	this.get_hex_moisture = function(hex) {
+		return this.get_hex(hex.x, hex.y).m;
+	};
+
+	/**
 	 * Return the elevation data for the specified hex.
 	 *
 	 * @public
@@ -8344,12 +8160,12 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
-	 * Return the specified hex data.
+	 * Return the specified hex raw data.
 	 *
 	 * @public
 	 * @param {Number} x
 	 * @param {Number} y
-	 * @returns {String}
+	 * @returns {Object}
 	 */
 	this.get_hex = function(x, y) {
 		return this._data[y][x];
@@ -8359,12 +8175,13 @@ civitas.objects.world = function (params) {
 	 * Set the specified hex data.
 	 *
 	 * @public
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @returns {String}
+	 * @param {Object} hex
+	 * @param {String} key
+	 * @param {String|Number|Array|Object} value
+	 * @returns {Object}
 	 */
-	this.set_hex = function(x, y, key, value) {
-		return this._data[y][x][key] = value;
+	this.set_hex = function(hex, key, value) {
+		return this._data[hex.y][hex.x][key] = value;
 	};
 
 	/**
@@ -8376,9 +8193,8 @@ civitas.objects.world = function (params) {
 	 */
 	this.add_place = function(place) {
 		const location = place.location();
-		this._data[location.y][location.x].p = place.id();
-		this._data[location.y][location.x].l = true;
-		this._data[location.y][location.x].lid = place.id();
+		this.set_hex(location, 'p', place.id());
+		this.lock_hex(location, place.id());
 		return this;
 	};
 
@@ -8389,14 +8205,12 @@ civitas.objects.world = function (params) {
 	 * @param {civitas.objects.settlement} settlement
 	 * @returns {civitas.objects.world}
 	 */
-	this.add_city = function(settlement) {
+	this.add_settlement = function(settlement) {
 		const location = settlement.location();
-		this._data[location.y][location.x].s = settlement.id();
-		this._data[location.y][location.x].l = true;
-		this._data[location.y][location.x].lid = settlement.id();
-		this._data[location.y][location.x].n = settlement.name();
+		this.set_hex(location, 's', settlement.id());
+		this.set_hex(location, 'n', settlement.name());
+		this.lock_hex(location, settlement.id());
 		this.calc_neighbours(settlement);
-		//civitas.svg.add_city_image(location.x, location.y, settlement);
 		return this;
 	};
 
@@ -8412,41 +8226,36 @@ civitas.objects.world = function (params) {
 		const id = settlement.id();
 		this._data[location.y][location.x].s = null;
 		this._data[location.y][location.x].n = null;
-		for (let x = 0; x <= civitas.WORLD_SIZE_WIDTH; x++) {
-			for (let y = 0; y <= civitas.WORLD_SIZE_HEIGHT; y++) {
+		for (let x = 0; x < civitas.WORLD_SIZE_WIDTH; x++) {
+			for (let y = 0; y < civitas.WORLD_SIZE_HEIGHT; y++) {
 				if (this._data[y][x].lid === id) {
 					this._data[y][x].lid = null;
 					this._data[y][x].l = false;
 				}
 			}
 		}
-		$('#worldmap-city-image' + location.y + '-' + location.x).remove();
+		//$('#worldmap-city-image' + location.y + '-' + location.x).remove();
 		return this;
-	}
-
-	/**
-	 * Generate elevation/terrain data.
-	 *
-	 * @private
-	 * @returns {Array}
-	 */
-	this._generate = function() {
-		this._data = this.create_map_array(civitas.WORLD_SIZE_WIDTH + 1, civitas.WORLD_SIZE_WIDTH + 1);
-		this._start_displacement(civitas.WORLD_SIZE_WIDTH);
 	};
 
-	this.create_map_array = function(d1, d2) {
-		let x = new Array(d1);
-		for (let i = 0; i < d1; i += 1) {
-			x[i] = new Array(d2);
+	/**
+	 * Create the raw multidimensional array.
+	 *
+	 * @private
+	 * @returns {civitas.objects.world}
+	 */
+	this._create_array = function() {
+		this._data = new Array(civitas.WORLD_SIZE_WIDTH);
+		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; i += 1) {
+			this._data[i] = new Array(civitas.WORLD_SIZE_HEIGHT);
 		}
-		for (let i = 0; i < d1; i += 1) {
-			for (let j = 0; j < d2; j += 1) {
-				x[i][j] = {
+		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; i += 1) {
+			for (let j = 0; j < civitas.WORLD_SIZE_HEIGHT; j += 1) {
+				this._data[i][j] = {
 					/* Elevation */
-					e: -1,
-					/* Terrain */
-					t: 'S',
+					e: 0,
+					/* Moisture */
+					m: 0,
 					/* Place id */
 					p: null,
 					/* Settlement id */
@@ -8460,85 +8269,50 @@ civitas.objects.world = function (params) {
 				};
 			}
 		}
-		return x;
+		return this;
 	};
 
-	this._start_displacement = function(size) {
-		let tr, tl, t, br, bl, b, r, l, center;
-		this._data[0][0].e = Math.random(1.0);
-		tl = this._data[0][0].e;
-		this._data[0][size].e = Math.random(1.0);
-		bl = this._data[0][size].e;
-		this._data[size][0].e = Math.random(1.0);
-		tr = this._data[size][0].e;
-		this._data[size][size].e = Math.random(1.0);
-		br = this._data[size][size].e;
-		this._data[size / 2][size / 2].e = this._data[0][0].e + this._data[0][size].e + this._data[size][0].e + this._data[size][size].e / 4;
-		this._data[size / 2][size / 2].e = this.normalize(this._data[size / 2][size / 2].e);
-		center = this._data[size / 2][size / 2].e;
-		this._data[size / 2][size].e = bl + br + center + center / 4;
-		this._data[size / 2][0].e = tl + tr + center + center / 4;
-		this._data[size][size / 2].e = tr + br + center + center / 4;
-		this._data[0][size / 2].e = tl + bl + center + center / 4;
-		this._midpoint_displacement(size);
-	};
-
-	this._midpoint_displacement = function(dimension) {
-		let new_dimension = dimension / 2;
-		let top, tr, tl, bottom, bl, br, right, left, center;
-		if (new_dimension > 1) {
-			for (let i = new_dimension; i <= civitas.WORLD_SIZE_WIDTH; i += new_dimension) {
-				for (let j = new_dimension; j <= civitas.WORLD_SIZE_WIDTH; j += new_dimension) {
-					let x = i - (new_dimension / 2);
-					let y = j - (new_dimension / 2);
-					tl = this._data[i - new_dimension][j - new_dimension].e;
-					tr = this._data[i][j - new_dimension].e;
-					bl = this._data[i - new_dimension][j].e;
-					br = this._data[i][j].e;
-					this._data[x][y].e = (tl + tr + bl + br) / 4 + this._displace(dimension);
-					this._data[x][y].e = this.normalize(this._data[x][y].e);
-					center = this._data[x][y].e;
-					if (j - (new_dimension * 2) + (new_dimension / 2) > 0) {
-						this._data[x][j - new_dimension].e = (tl + tr + center + this._data[x][j - dimension + (new_dimension / 2)].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[x][j - new_dimension].e = (tl + tr + center) / 3 + this._displace(dimension);
-					}
-					this._data[x][j - new_dimension].e = this.normalize(this._data[x][j - new_dimension].e);
-					if (j + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-						this._data[x][j].e = (bl + br + center + this._data[x][j + (new_dimension / 2)].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[x][j].e = (bl + br + center) / 3 + this._displace(dimension);
-					}
-					this._data[x][j].e = this.normalize(this._data[x][j].e);
-					if (i + (new_dimension / 2) < civitas.WORLD_SIZE_WIDTH) {
-						this._data[i][y].e = (tr + br + center + this._data[i + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[i][y].e = (tr + br + center) / 3 + this._displace(dimension);
-					}
-					this._data[i][y].e = this.normalize(this._data[i][y].e);
-					if (i - (new_dimension * 2) + (new_dimension / 2) > 0) {
-						this._data[i - new_dimension][y].e = (tl + bl + center + this._data[i - dimension + (new_dimension / 2)][y].e) / 4 + this._displace(dimension);
-					} else {
-						this._data[i - new_dimension][y].e = (tl + bl + center) / 3 + this._displace(dimension);
-					}
-					this._data[i - new_dimension][y].e = this.normalize(this._data[i - new_dimension][y].e);
-				}
+	/**
+	 * Generate the elevation and moisture maps.
+	 *
+	 * @private
+	 * @returns {civitas.objects.world}
+	 */
+	this._generate = function() {
+		let rng1 = PM_PRNG.create(this._seeds.elevation);
+		let rng2 = PM_PRNG.create(this._seeds.moisture);
+		let gen1 = new SimplexNoise(rng1.nextDouble.bind(rng1));
+		let gen2 = new SimplexNoise(rng2.nextDouble.bind(rng2));
+		function noise1(nx, ny) {
+			return gen1.noise2D(nx, ny) / 2 + 0.5;
+		}
+		function noise2(nx, ny) {
+			return gen2.noise2D(nx, ny) / 2 + 0.5;
+		}
+		for (let x = 0; x < civitas.WORLD_SIZE_HEIGHT; x++) {
+			for (let y = 0; y < civitas.WORLD_SIZE_WIDTH; y++) {      
+				let nx = x / civitas.WORLD_SIZE_HEIGHT - 0.5;
+				let ny = y / civitas.WORLD_SIZE_WIDTH - 0.5;
+				let e = (1.00 * noise1(1 * nx,  1 * ny)
+					+ 0.77 * noise1(2 * nx,  2 * ny)
+					+ 0.00 * noise1(4 * nx,  4 * ny)
+					+ 0.00 * noise1(8 * nx,  8 * ny)
+					+ 0.00 * noise1(16 * nx, 16 * ny)
+					+ 0.00 * noise1(32 * nx, 32 * ny));
+				e /= (1.00 + 0.77 + 0.00 + 0.00 + 0.00 + 0.00);
+				e = Math.pow(e, civitas.WORLD_EROSION);
+				this._data[y][x].e = e;
+				let m = (1.00 * noise2(1 * nx,  1 * ny)
+					+ 0.75 * noise2(2 * nx,  2 * ny)
+					+ 0.33 * noise2(4 * nx,  4 * ny)
+					+ 0.33 * noise2(8 * nx,  8 * ny)
+					+ 0.33 * noise2(16 * nx, 16 * ny)
+					+ 0.50 * noise2(32 * nx, 32 * ny));
+				m /= (1.00 + 0.75 + 0.33 + 0.33 + 0.33 + 0.50);
+				this._data[y][x].m = m;
 			}
-			this._midpoint_displacement(new_dimension);
 		}
-	};
-
-	this._displace = function(num) {
-		return (Math.random(1.0) - 0.5) * (num / (civitas.WORLD_SIZE_WIDTH + civitas.WORLD_SIZE_WIDTH) * this._properties.roughness);
-	};
-
-	this.normalize = function(value) {
-		if (value > 1) {
-			value = 1;
-		} else if (value < -1) {
-			value = -1;
-		}
-		return value;
+		return this;
 	};
 
 	/**
@@ -8577,10 +8351,10 @@ civitas.objects.world = function (params) {
 		let terrain;
 		const neighbours = this.get_neighbours(settlement);
 		for (let i = 0; i < neighbours.length; i++) {
-			if ((neighbours[i].x > 1 && neighbours[i].x <= civitas.WORLD_SIZE_WIDTH) && (neighbours[i].y > 1 && neighbours[i].y <= civitas.WORLD_SIZE_HEIGHT)) {
-				terrain = this.get_hex_terrain(neighbours[i].x, neighbours[i].y);
-				this.lock_hex(neighbours[i].x, neighbours[i].y, settlement.id());
-				if (terrain === 'S' || terrain === 'O') {
+			if ((neighbours[i].x >= 0 && neighbours[i].x < civitas.WORLD_SIZE_WIDTH) && (neighbours[i].y >= 0 && neighbours[i].y < civitas.WORLD_SIZE_HEIGHT)) {
+				terrain = this.get_hex_terrain(neighbours[i]);
+				this.lock_hex(neighbours[i], settlement.id());
+				if (terrain === 'ocean') {
 					settlement.waterside(true);
 				}
 			}
@@ -8591,47 +8365,47 @@ civitas.objects.world = function (params) {
 	this.get_neighbouring_hexes = function(y, x) {
 		if (x % 2 == 0) {
 			return [
-			    {
-			    	x: x+1,
-			    	y: y
-			    }, {
-			    	x: x+1,
-			    	y: y-1
-			    }, {
-			    	x: x,
-			    	y: y-1
-			    }, {
-			    	x: x-1,
-			    	y: y
-			    }, {
-			    	x: x-1,
-			    	y: y-1 // y + 1
-			    }, {
-			    	x: x,
-			    	y: y+1
-			    }
+				{
+					x: x+1,
+					y: y
+				}, {
+					x: x+1,
+					y: y-1
+				}, {
+					x: x,
+					y: y-1
+				}, {
+					x: x-1,
+					y: y
+				}, {
+					x: x-1,
+					y: y-1
+				}, {
+					x: x,
+					y: y+1
+				}
 			]
 		} else {
 			return [
-			    {
-			    	x: x+1,
-			    	y: y
-			    }, {
-			    	x: x+1,
-			    	y: y+1
-			    }, {
-			    	x: x,
-			    	y: y-1
-			    }, {
-			    	x: x-1,
-			    	y: y
-			    }, {
-			    	x: x-1,
-			    	y: y+1
-			    }, {
-			    	x: x,
-			    	y: y+1
-			    }
+				{
+					x: x+1,
+					y: y
+				}, {
+					x: x+1,
+					y: y+1
+				}, {
+					x: x,
+					y: y-1
+				}, {
+					x: x-1,
+					y: y
+				}, {
+					x: x-1,
+					y: y+1
+				}, {
+					x: x,
+					y: y+1
+				}
 			]
 		}
 	};
@@ -8656,10 +8430,24 @@ civitas.objects.world = function (params) {
 	 */
 	this.get_distance_in_days = function(source, destination) {
 		return Math.floor((Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100) / 15);
-	}
+	};
 
 	/**
-	 * Return the world data array.
+	 * Get/set the world data seeds.
+	 *
+	 * @public
+	 * @param {Array} value
+	 * @returns {Array}
+	 */
+	this.seeds = function(value) {
+		if (typeof value !== 'undefined') {
+			this._seeds = value;
+		}
+		return this._seeds;
+	};
+
+	/**
+	 * Get/set the world data array.
 	 *
 	 * @public
 	 * @param {Array} value
@@ -8670,6 +8458,111 @@ civitas.objects.world = function (params) {
 			this._data = value;
 		}
 		return this._data;
+	};
+
+	/**
+	 * Draw the worldmap data to a HTML5 canvas.
+	 *
+	 * @public
+	 * @returns {civitas.objects.world}
+	 */
+	this.draw = function() {
+		let settlements = this.core().get_settlements();
+		let data = this.data();
+		let colors = this.colors();
+		let scale = civitas.WORLD_HEX_SIZE / 24;
+		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+		let image_width = (1.5 * civitas.WORLD_SIZE_WIDTH +  0.5) * civitas.WORLD_HEX_SIZE;
+		let image_height = (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height;
+		$('.worldmap').empty().append('<canvas class="canvas-map"></canvas>');
+		let canvas = $('.canvas-map').get(0);
+		let currentHexX;
+		let currentHexY;
+		let offsetColumn = false;
+		let __height = Math.sqrt(3) * civitas.WORLD_HEX_SIZE;
+		let __width = 2 * civitas.WORLD_HEX_SIZE;
+		let __side = (3 / 2) * civitas.WORLD_HEX_SIZE;
+		canvas.width = image_width;
+		canvas.height = image_height;
+		let ctx = canvas.getContext('2d');
+		ctx.fillStyle = colors.background;
+		ctx.fillRect(0, 0, image_width, image_height);
+		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; ++i) {
+			for (let j = 0; j < civitas.WORLD_SIZE_HEIGHT; ++j) {
+				if (!offsetColumn) {
+					currentHexX = i * __side;
+					currentHexY = j * __height;
+				} else {
+					currentHexX = i * __side;
+					currentHexY = (j * __height) + (__height * 0.5);
+				}
+				let terrain = this.get_hex_terrain({
+					x: i,
+					y: j
+				});
+				let color = colors[terrain];
+				let opacity = 0.6;
+				if (data[j][i].l === true) {
+					let lid = data[j][i].lid;
+					let pid = data[j][i].p;
+					if (lid !== null && pid === null) {
+						if (typeof settlements[lid] !== 'undefined') {
+							color = settlements[lid].color();
+							opacity = 0.3;
+						}
+					} else if (lid !== null && pid !== null) {
+						// Todo
+					}
+				}
+				ctx.beginPath();
+				ctx.moveTo(currentHexX + __width - __side, currentHexY);
+				ctx.lineTo(currentHexX + __side, currentHexY);
+				ctx.lineTo(currentHexX + __width, currentHexY + (__height / 2));
+				ctx.lineTo(currentHexX + __side, currentHexY + __height);
+				ctx.lineTo(currentHexX + __width - __side, currentHexY + __height);
+				ctx.lineTo(currentHexX, currentHexY + (__height / 2));
+				ctx.closePath();
+				if (civitas.WORLD_GRID === true) {
+					ctx.strokeStyle = "#666";
+				} else {
+					ctx.strokeStyle = color;
+				}
+				ctx.lineWidth = 1;
+				ctx.stroke();
+				ctx.fillStyle = color;
+				ctx.fill();
+				if (civitas.WORLD_BEAUTIFY === true) {
+					this._apply_terrain(currentHexX, currentHexY, canvas, terrain, opacity);
+				}
+			}
+			offsetColumn = !offsetColumn;
+		}
+		return this;
+	};
+
+	/**
+	 * Apply the terrain features.
+	 *
+	 * @private
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @param {Object} canvas
+	 * @param {String} terrain
+	 * @param {Number} opacity
+	 * @returns {civitas.objects.world}
+	 */
+	this._apply_terrain = function(x, y, canvas, terrain, opacity) {
+		let scale = civitas.WORLD_HEX_SIZE / 24;
+		let ctx = canvas.getContext('2d');
+		let imageObject = new Image();
+		let image_size = civitas.WORLD_HEX_SIZE * 36 / 24;
+		imageObject.onload = function() {
+			ctx.globalAlpha = opacity;
+			ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
+			ctx.globalAlpha = 1;
+		}
+		imageObject.src = civitas.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
+		return this;
 	};
 
 	// Fire up the constructor
@@ -8834,7 +8727,7 @@ civitas.objects.settlement = function(params) {
 		this._fill_resources();
 		this._location = params.location;
 		this.properties.color = (typeof params.properties.color !== 'undefined') ? params.properties.color : this.core().ui().get_random_color();
-		this.core().world().add_city(this);
+		this.core().world().add_settlement(this);
 		if (this.waterside() === true) {
 			this.navy = this.load_navy(params.navy);
 		}
@@ -8850,11 +8743,14 @@ civitas.objects.settlement = function(params) {
 			});
 		}
 		if (!this.is_player()) {
-			const terrain = this.core().world().get_hex_terrain(this._location.x, this._location.y);
+			const terrain = this.core().world().get_hex_terrain({
+				x: this._location.x,
+				y: this._location.y
+			});
 			const climate = this.core().world().get_climate_from_terrain(terrain);
 			this.properties.climate = civitas['CLIMATE_' + climate.name.toUpperCase()];
 			if (this.is_urban()) {
-				this.setup_initial_buildings(civitas['SETTLEMENT_BUILDINGS_' + climate.name.toUpperCase()], true);
+				this.setup_initial_buildings(this.core().get_buildings_for_settlement(this), true);
 			}
 		} else {
 			this.properties.climate = params.properties.climate;
@@ -9874,6 +9770,12 @@ civitas.objects.settlement = function(params) {
 				}
 				return false;
 			}
+			if ((typeof building_data.requires.climate !== 'undefined') && ($.inArray(this.climate().id, building_data.requires.climate) === -1)) {
+				if (this.is_player()) {
+					this.core().ui().error('Your city lacks the required fertility and climate to construct this building.');
+				}
+				return false;
+			}
 			if ((typeof building_data.requires.research !== 'undefined') && (!this.core().has_research(building_data.requires.research))) {
 				if (this.is_player()) {
 					this.core().ui().error('Your city is missing the `' + this.core().get_research_config_data(building_data.requires.research).name + '` research needed to construct this building.');
@@ -9912,6 +9814,7 @@ civitas.objects.settlement = function(params) {
 			this.raise_prestige();
 			if (this.is_player()) {
 				this.core().save_and_refresh();
+				this.core().ui().citymap_scrollto_building(_building);
 				this.core().ui().notify('A new ' + _building.get_name() + ' was just constructed in your city.');
 				$('.tips').tipsy({
 					gravity: $.fn.tipsy.autoNS,
@@ -11621,9 +11524,9 @@ civitas.objects.building = function(params) {
 		this.settlement = params.settlement;
 		this.type = params.type;
 		this.name = params.data.name;
-		this.is_production = (typeof params.data.is_production !== 'undefined' && params.data.is_production === true) ? true : false;
+		this.is_production = (typeof params.data.production !== 'undefined') ? true : false;
 		this.is_municipal = (typeof params.data.is_municipal !== 'undefined' && params.data.is_municipal === true) ? true : false;
-		this.is_housing = (typeof params.data.is_housing !== 'undefined' && params.data.is_housing === true) ? true : false;
+		this.is_housing = (typeof params.data.tax !== 'undefined') ? true : false;
 		this.level = (typeof params.data.level !== 'undefined') ? params.data.level : 1;
 		this._position = (typeof params.data.position !== 'undefined') ? params.data.position : {
 			x: 0,
@@ -12063,7 +11966,7 @@ civitas.objects.building = function(params) {
 		const building = this.get_building_data();
 		const materials = building.materials;
 		const settlement = this.get_settlement();
-		if (building.is_housing === true) {
+		if (this.is_housing_building()) {
 			if (typeof materials !== 'undefined') {
 				if (settlement.has_resources(materials)) {
 					settlement.remove_resources(materials);
@@ -12074,7 +11977,7 @@ civitas.objects.building = function(params) {
 					return false;
 				}
 			}
-		} else if (building.is_production === true) {
+		} else if (this.is_production_building()) {
 			if (!this.is_stopped()) {
 				let products = building.production;
 				if (this.has_requirements()) {
@@ -15142,310 +15045,6 @@ civitas.objects.ui = function (core) {
 		return this;
 	};
 
-	this.svg_add_place_image = function(row, column, place) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
-			.attr({
-				'id': 'w-s-i' + row + '-' + column,
-				'xlink:href': '',
-				'height': 42,
-				'width': 42,
-				'x': "2px",
-				'y': "-3px",
-				'class': 'place',
-				'data-id': place.id()
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		document.getElementById('w-s-i' + row + '-' + column)
-			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/place.png');
-	};
-
-	this.svg_add_settlement_image = function(row, column, settlement, player_settlement) {
-		let image = 'village';
-		let color = settlement.color();
-		let name = settlement.name();
-		if (typeof player_settlement !== 'undefined' && name === player_settlement.name()) {
-			image = 'settlement';
-		} else {
-			if (settlement.is_metropolis()) {
-				image = 'metropolis' + settlement.icon();
-			} else if (settlement.is_city()) {
-				image = 'city' + settlement.icon();
-			} else if (settlement.is_village()) {
-				image = 'village' + settlement.icon();
-			} else if (settlement.is_camp()) {
-				image = 'camp';
-			}
-		}
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
-			.attr({
-				'id': 'w-s-i' + row + '-' + column,
-				'xlink:href': '',
-				'height': 42,
-				'width': 42,
-				'x': "2px",
-				'y': "0",
-				'class': 'settlement',
-				'data-name': name
-				//'title': settlement.nice_name()
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		document.getElementById('w-s-i' + row + '-' + column)
-			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png');
-		if (!settlement.is_camp()) {
-			$(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
-				.attr({
-					x: name.length * 2,
-					y: 1
-				})
-				.css({
-					'text-anchor': 'middle',
-					'font-size': (typeof player_settlement !== 'undefined' && name === player_settlement.name()) ? '12px' : '10px'
-				})
-				.text(name)
-				.appendTo('.s-c-g-' + row + '-' + column);
-		}
-	};
-
-	this.svg_add_mountain = function(row, column, color) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M10.6,24.6l-7.1-5.5c5.4-3,9.5-7.4,13.3-12.3c1.5,1.6,2.9,3.3,4.5,4.8c1,1,2.2,2,3.3,2.8c0.5,0.3,1.2,0.3,1.8,0.5c0.2,1,0,1.6-0.7,1.8c-0.2,0.1-0.5,0.1-0.6,0c-1-0.6-2.1-1.1-3-1.9c-1.6-1.4-3.1-3-4.6-4.6c-0.1-0.1-0.2-0.2-0.5-0.4c-0.7,2.7-0.6,5.4-1.8,7.9S12.5,22.4,10.6,24.6z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M23.2,18.6l7,7.9l-1.2,1L24,21.9l-0.3,0c-0.5,4.3-2.5,8-4.4,11.9L8.2,29.1c1.7-1,3.3-2,4.9-2.9c1.4-0.8,2.8-1.7,4.2-2.4c2.1-1,3.7-2.6,5.2-4.2C22.7,19.3,22.9,19,23.2,18.6z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M33,25.4c-1.7-0.2-3.1-0.7-4.2-2.2c-0.5-0.8-1.3-1.4-1.9-2.1c-0.7-0.8-0.6-2.3,0.3-2.9c1.5-1.1,3.1-2.2,3.9-4c0.6-1.3,1.1-2.6,1.6-4c0.2-0.5,0.4-0.9,0.6-1.3c2.4,6,7.2,10,11.4,14.6l-1.2,1.1c-0.9-0.9-1.9-1.8-2.8-2.7c-0.8-0.7-1.5-1.5-2.3-2.1c-1.8-1.4-3.2-3.3-4-5.4c-0.1-0.2-0.2-0.4-0.3-0.5c-0.1-0.1-0.2-0.2-0.4-0.3c-0.3,1.2-0.8,2.3-0.9,3.4c-0.1,2.4,0.1,4.8,0.1,7.2C33,24.6,33,25,33,25.4z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M27.6,33.3c1.6-0.7,3.2-1.2,3.9-3l3,3.2l-0.8,0.8l-2.1-1.9l-2.1,3.3L27.6,33.3z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_add_hill = function(row, column, color) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M13.2,26.2L8,21.6c1.8-0.5,3.4-1,5-1.4c1.4-0.3,2.8-0.8,4-1.7c0.7-0.5,1.6-0.9,2.3-1.5c0.9-0.7,1.8-0.7,2.8-0.5c2.4,0.3,4.5,1.6,6.7,2.4c2.6,1,5.1,2.1,7.6,3.2c0.7,0.3,1.3,0.5,2,0.6c0.6,0.1,1,0.4,1.2,1c0.1,0.3,0.2,0.6,0.3,0.9c-1.6-0.1-3.1,0.2-4.7-0.4c-3.9-1.5-7.8-2.9-11.7-4.3c-0.9-0.3-1.8-0.3-2.7-0.4c-0.2,0-0.4,0.2-0.6,0.4c-2.2,1.9-4.4,3.8-6.5,5.7C13.6,25.9,13.4,26,13.2,26.2z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M38,32.5c-1.9,0-3.7,0-5.5,0c-0.2,0-0.4-0.1-0.5-0.2c-2.3-1.1-4.6-2.2-6.9-3.3c-0.9-0.4-1.8-0.5-2.7,0.3c-1.9,1.7-3.8,3.3-5.7,5c-0.3,0.3-0.5,0.3-0.9,0.1c-1.5-1-3-1.9-4.4-2.9c-0.1-0.1-0.2-0.2-0.4-0.3c1.2-0.2,2.4-0.5,3.5-0.6c0.9-0.1,1.7-0.4,2.4-0.9c1.8-1.3,3.6-2.5,5.4-3.7c0.3-0.2,0.7-0.2,1-0.2c2,0.1,3.8,1.2,5.6,1.9c2.8,1.2,5.5,2.6,8.5,3.3c0.2,0,0.4,0.3,0.5,0.5C37.8,31.7,37.9,32.1,38,32.5z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M15,16.7l-4.6-4.6c0.7-0.2,1.5-0.5,2.3-0.7c2.3-0.6,4.6-1.4,6.5-2.8c1.5-1,3.1-1.3,4.8-1.1c0.3,0,0.5,0.1,0.8,0.3c1.9,1,3.8,2,5.7,3.1c1.3,0.8,2.7,1.1,4.2,1.2c0.4,0,0.9,0,1.2,0.2c0.4,0.3,0.7,0.8,1.1,1.2l-0.1,0.2c-0.6,0-1.2-0.1-1.8,0c-2.3,0.3-4.4-0.3-6.3-1.5c-1.4-0.9-2.9-1.5-4.2-2.3c-0.8-0.4-1.5-0.2-2.2-0.1c-0.1,0-0.2,0.1-0.2,0.1c-1.7,0.6-2.9,1.7-4,3.2C17,14.4,16,15.5,15,16.7z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_add_desert = function(row, column, color) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M39.5,18.7h-1c-0.6-2.1-2.3-2.8-4.1-3.3c-3-0.7-5.8-0.6-8.6,0.7C25,16.5,24.3,17,24,17.8c1,0.8,2.1,0.3,3.2,0.2c3.5-0.2,6.9,0.2,10,1.9c1.6,0.8,2.9,1.9,3.3,3.8c0,0.3,0.1,0.6,0.1,0.9h-1c-0.5-2.1-2.2-2.8-4.1-3.2c-2.9-0.8-5.8-0.6-8.5,0.6c-0.2,0.1-0.3,0.2-0.5,0.2c-0.2,0.1-0.3,0.2-0.5,0.4c3,1.1,6.2,2,6.8,6h-1.1c-0.4-1.9-2-2.7-3.7-3.2c-2.7-0.8-5.6-0.7-8.3,0.3c-1.4,0.5-2.5,1.3-2.8,2.9H8.9c-0.2-1.8,0.9-3.3,3.9-5h-7c-0.1-1,0.2-1.9,0.8-2.7c1.3-1.7,3-2.6,5-3.1c1.3-0.4,2.7-0.5,4.1-0.8c0.2,0,0.5-0.1,0.6-0.3c1.2-2,3-3,5.1-3.6c4.9-1.6,9.8-1.5,14.5,0.7c1.1,0.5,2.1,1.4,3,2.3C39.3,16.7,39.6,17.6,39.5,18.7z M19.8,19.8c-2.3,0.4-4.8,0.6-6.2,3.3c1.3-0.3,2.4-0.6,3.4-0.9c0.2-0.1,0.3-0.1,0.4-0.3C18.3,21.3,19,20.5,19.8,19.8L19.8,19.8z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_add_grass = function(row, column, color) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M33.1,13.7l0.8,8l1.4-0.1v-7l0.3,0c0.1,0.7,0.3,1.5,0.4,2.2c0.1,1.3,0.1,2.7,0.2,4c0,0.2,0.4,0.5,0.5,0.7c0.2-0.3,0.5-0.5,0.5-0.8c0-1.4,0-2.9,0-4.3c0-0.3,0-0.6,0.1-0.9l0.3,0c0.1,0.4,0.1,0.7,0.2,1c0.1,1.5,0.2,3,0.4,4.6c0,0.2,0.3,0.4,0.5,0.6c0.1-0.2,0.3-0.4,0.3-0.6c0-1.2,0-2.5,0.2-3.8c0.1,0.3,0.3,0.5,0.3,0.8c0.1,0.8,0.2,1.5,0.2,2.3c0,0.8,0.3,1.5,1.4,1.4l0.2-3l0.3,0c0.1,0.5,0.2,1.1,0.3,1.6c0.2,1.7,0.4,1.8,2.1,1.7c0.4,0,0.7,0,1.1,0c-7.2,0.8-14.4,0.7-21.7,0.4l0-0.3h3.6v-3.6l0.4,0l0.6,3.3l0.3,0v-4.4l0.3,0l0.7,4.5h0.3v-6l0.3,0c0.2,1.8,0.4,3.7,0.6,5.5c0,0.3,0.3,0.5,0.5,0.7c0.2-0.3,0.4-0.5,0.4-0.8c0-2.4-0.1-4.9-0.1-7.3c0-0.2,0.1-0.5,0.2-0.6c0.1,0.9,0.3,1.9,0.4,2.8c0.2,1.7,0.3,3.5,0.5,5.2c0,0.2,0.2,0.3,0.4,0.5c0.1-0.2,0.4-0.4,0.4-0.5c0-0.6-0.1-1.2-0.1-1.9c0-1.8,0-3.5,0-5.3c0-0.1,0.1-0.3,0.1-0.4L33.1,13.7z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M26.4,30.1c0,0.5,0,1,0,1.4c0,1.4,0,2.8,0,4.1c0,0.2,0.3,0.4,0.4,0.6c0.1-0.2,0.4-0.4,0.4-0.6c0.2-1.2,0.3-2.5,0.5-3.7l0.2,0c0,0.5,0.1,1.1,0.1,1.6c0,0.6-0.1,1.3,0,1.9c0.1,0.4,0.4,0.6,0.7,0.8c0.5,0.1,0.6-0.3,0.7-0.8c0.1-0.7,0.2-1.5,0.4-2.2h0.3c0,0.6,0.1,1.3,0.1,1.9c-0.1,0.8-0.1,1.5,1.1,1.3c0.8-0.1,1.7,0.1,2.5,0.2c-7.2,0.8-14.4,0.6-21.7,0.1c0.2,0,0.3-0.1,0.5-0.1c0.5,0,1.1,0.1,1.6,0c0.7,0,1.1-0.4,1.1-1.1c0-0.7,0.1-1.4,0.2-2.1c0-0.1,0.1-0.3,0.2-0.4l0.3,0v3.4h0.3c1-1.4,0.4-3.1,0.8-4.6h0.2v4.4l0.4,0l0.7-6.1l0.3,0c0,1.3,0,2.5,0,3.8c0,0.6,0,1.2,0,1.8c0,0.2,0.3,0.5,0.4,0.7c0.2-0.2,0.6-0.4,0.6-0.7c0.2-1.4,0.2-2.8,0.3-4.2c0.1-1.2,0.2-2.5,0.4-3.7l0.2,0c0,0.9,0,1.7,0,2.6c0,1.7-0.1,3.4-0.1,5.2c0,0.3,0.2,0.5,0.3,0.8c0.2-0.3,0.5-0.5,0.5-0.8c0.2-2.3,0.4-4.5,0.6-6.8c0-0.3,0.2-0.5,0.4-0.6c0,0.9,0,1.9,0,2.8c0,1.5-0.1,3.1-0.1,4.6c0,0.2,0.3,0.7,0.4,0.7c0.4-0.1,0.9-0.2,1-0.5c0.2-0.3,0.1-0.8,0.1-1.2c0.2-1.8,0.4-3.6,0.7-5.4c0.5,2.3,0,4.6,0.1,6.8c0.7,0.2,1,0,1-0.8c0.1-1.5,0.3-3.1,0.5-4.6c0-0.2,0.1-0.4,0.1-0.7L26.4,30.1z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M17.6,12.5c1.4,0.1,1.4,0.1,1.5-1.2c0.2-1.9,0.4-3.8,0.7-5.7c0.5,2.2,0,4.4,0.1,6.6c0.7,0.2,1,0.1,1-0.7c0.1-1.5,0.3-2.9,0.4-4.4c0-0.2,0.1-0.5,0.1-0.7l0.3,0c0,0.4,0,0.9,0,1.3c0,1.4,0,2.7,0,4.1c0,0.2,0.3,0.4,0.4,0.6c0.1-0.2,0.4-0.4,0.4-0.7c0.2-1.1,0.3-2.3,0.6-3.5c0.1,0.2,0.1,0.5,0.2,0.8c0,0.7,0,1.5-0.1,2.2c0,1.1,0.1,1.2,1.3,1.1c0.1-0.5,0.2-1,0.3-1.5c0.1-0.4,0.2-0.9,0.3-1.3l0.4,0c0,0.7,0.1,1.4,0,2.1c-0.1,0.6,0.2,0.9,0.7,0.9c0.6,0,1.2,0.1,1.8,0.1c0.2,0,0.5,0,0.7,0.1c-7.2,0.8-14.4,0.7-21.7,0.4l0-0.2c0.3,0,0.6,0,1,0c2.2,0.2,2.4-0.1,2.7-2.2c0.1-0.4,0.1-0.9,0.2-1.3h0.3c0,0.5,0.1,1,0.1,1.6c0,0.5,0,1,0.1,1.5c1.2-1.3,0.4-2.9,1.1-4.3l0.2,4.2l0.2,0l0.7-5.9l0.3,0c0,1.7,0,3.4,0,5.1c0,0.4-0.2,0.9,0.5,0.9c0.7,0,0.6-0.5,0.6-0.9c0.2-2.3,0.4-4.7,0.6-7c0-0.2,0.1-0.4,0.3-0.5c0,0.9,0,1.7,0,2.6c0,1.6,0,3.3,0,4.9c0,0.3,0.2,0.6,0.4,0.8c0.2-0.3,0.4-0.5,0.4-0.8c0.2-2.2,0.4-4.3,0.6-6.5c0-0.3,0.2-0.5,0.4-0.6L17.6,12.5L17.6,12.5z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_add_plains = function(row, column, color) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M24.53,39.05a1.93,1.93,0,0,1-.33,0L21.93,39c0.09-.78.16-1.52,0.26-2.26s-0.14-.94-0.87-0.91c-1.64.06-3.29,0-4.94,0h-0.9a21.05,21.05,0,0,1,.59-2.48A22.84,22.84,0,0,1,17.26,31l-1.86-.12c0-1.52,0-3,0-4.44a0.57,0.57,0,0,0-.58-0.63c-0.91-.21-1.82-0.42-2.71-0.69A3.8,3.8,0,0,1,11,24.49c-0.8-.57-0.92-1-0.6-2.17-0.23-.07-0.46-0.12-0.69-0.2a10.11,10.11,0,0,1-1.13-.43A2,2,0,0,1,7.28,20a1.93,1.93,0,0,1,1.28-1.73c0.39-.21.81-0.37,1.29-0.58l-0.48-.53a2.49,2.49,0,0,1,0-3.72,4.61,4.61,0,0,1,2.79-1.23,1.9,1.9,0,0,0,1-.45,5.91,5.91,0,0,1,7.35-.32,3.67,3.67,0,0,1,1.31,3.09,7,7,0,0,0,.74-2.17,2.5,2.5,0,0,1,1-2,1.31,1.31,0,0,0,.59-1.73,0.91,0.91,0,0,1,.18-0.69c1-1.52,2-3,3.08-4.62C28.84,4.78,30.24,6.1,30.77,8c0.13,0.48.4,0.92,0.52,1.41s0,0.76,0,1.14a1.86,1.86,0,0,0,.34.87c0.53,0.63,1.45.94,1.53,2a1.17,1.17,0,0,0,.61.32,15.89,15.89,0,0,1,2.45.91,2.73,2.73,0,0,1,1.4,2.82,1,1,0,0,0,.4.64,12.62,12.62,0,0,1,2.12,1.76,3.25,3.25,0,0,1-.86,4.57c-0.34.26-.71,0.47-1.06,0.7,0.69,1.31.5,2.1-.88,2.68a16.76,16.76,0,0,1-3.5.92,0.67,0.67,0,0,0-.72.79c0,1.36,0,2.72,0,4.14H31.46c0-1.41,0-2.79,0-4.17a0.65,0.65,0,0,0-.72-0.8,17.53,17.53,0,0,1-1.81-.33c-0.32.81,0.94,1.9-.52,2.52a13.68,13.68,0,0,1,1.52,2.2,14.37,14.37,0,0,1,.62,2.67c-0.38,0-.65,0-0.91,0H24.85c-0.87,0-.9,0-0.75.92S24.38,38.25,24.53,39.05Zm8.53-14.51c-0.71,1.18-.45,2.08.78,2.45a4.31,4.31,0,0,0,2,.08c1.42-.29,1.78-1.31,1-2.52a0.56,0.56,0,0,1,0-.2c0.26-.09.55-0.18,0.82-0.28a2.64,2.64,0,0,0,1.77-2.49,2.69,2.69,0,0,0-1.81-2.39A2.65,2.65,0,0,0,37,19c-0.46,0-.6-0.2-0.46-0.69a2.22,2.22,0,0,0-1.17-2.73,2.38,2.38,0,0,0-2.87.67,2.18,2.18,0,0,0,.17,2.9,2.31,2.31,0,0,1,.15.24C30.82,21.65,30.84,22.1,33.06,24.54ZM17,21.45c-0.61,1-.63,1.43-0.06,2a2.59,2.59,0,0,0,2.23.72,0.66,0.66,0,0,0,.6-1,1.77,1.77,0,0,1,0-.87,14.87,14.87,0,0,1,.44-1.58c0.28-.88.55-1.77,0.89-2.63,0.24-.6.58-1.16,0.85-1.69a0.7,0.7,0,0,0-.1-0.15l-0.2-.1c-0.68-.3-1.36-0.48-1-1.59a2.09,2.09,0,0,0-1.44-2.39,2.46,2.46,0,0,0-2.85.83,2.17,2.17,0,0,0,.08,2.73c0.1,0.14.2,0.28,0.29,0.41C14.74,18.58,14.76,19,17,21.45Zm8.29,1.88a8.7,8.7,0,0,0-.83-1.22,3.58,3.58,0,0,0-.9-0.51,3.48,3.48,0,0,0-.21.86c0,2.65.16,5.31,0.09,8A9.79,9.79,0,0,0,23.84,33a2.14,2.14,0,0,0,2.48,2,20,20,0,0,1,2.57.16,5.71,5.71,0,0,0-3.53-5.18l0.17-.2h2.33a8.1,8.1,0,0,0-.39-0.85c-0.62-1-.79-2.36-2.18-2.75a0.35,0.35,0,0,1-.18-0.23c-0.19-.78-0.37-1.56-0.55-2.36ZM28,6.21l-0.15.09c0.13,2.93.25,5.85,0.39,8.78,0,0.49.48,0.61,0.93,0.27l2.29-1.69a2.2,2.2,0,0,0-1.26-1.6,1,1,0,0,1-.55-0.46c-0.22-.74-0.37-1.51-0.54-2.29l0.76-.24ZM17.18,28.43l0.32,0.09c0.21-.75.45-1.49,0.62-2.25a0.62,0.62,0,0,0-.44-0.4,0.63,0.63,0,0,0-.48.39C17.15,27,17.18,27.7,17.18,28.43Z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_add_swamp = function(row, column, color) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M22.33,2.5c0.91-.81,1-0.78,1.5.23a1.26,1.26,0,0,0,1.95.41A1.64,1.64,0,0,1,28.17,3a4.23,4.23,0,0,0,1.52.49A17.93,17.93,0,0,1,32,3.77a6.28,6.28,0,0,1,1.35,1c1.19,0.81,1.18,2,1,3.13l-1.48.36-1-1.84c-0.82,1.49-.64,2.32.58,3a2.55,2.55,0,0,0,2.23.47,0.92,0.92,0,0,1,.79.2A23,23,0,0,1,37.23,12c0.65,0.79.48,2.95-.38,4L35.49,14.2a0.91,0.91,0,0,0-.88,1.09,8.59,8.59,0,0,1,0,1.67,3.86,3.86,0,0,1-.5,1l-0.36-.1c0-.83,0-1.66,0-2.49a2.18,2.18,0,0,0-.1-1,2.69,2.69,0,0,0-.88-0.6,2.7,2.7,0,0,0-.27.76c0,0.88,0,1.76,0,2.64,0,1.63,0,1.68-1.77,1.93-0.21-.7,0-1.8-1.27-1.71-0.37,1,.1,2.24-0.83,3l-0.39,0c0-1,0-1.95,0-2.91a2.5,2.5,0,0,0-.82-2c-0.53-.53-1-0.76-1.52-0.1a0.79,0.79,0,0,1-.3.13l-0.26-.13c0.16-.37.33-0.74,0.47-1.11a2,2,0,0,0,.32-1.07A1.48,1.48,0,0,0,25,12.51a48.68,48.68,0,0,0-5.53.7A3,3,0,0,0,16.88,16a2.05,2.05,0,0,0,1.56,1.84,21.8,21.8,0,0,1,2.23.6c1.6,0.54,1.86,2,2.1,3.35a8.54,8.54,0,0,1,0,1.47c-1.41,0-1.65-.25-1.67-1.54a3.11,3.11,0,0,0-1.88-2.12,1,1,0,0,0-.72.29A1.47,1.47,0,0,0,18.77,21a2.24,2.24,0,0,1,1,2l-1.6.53c-0.2-.87-0.38-1.66-0.57-2.44-0.26-1.08-.53-1.25-1.87-1.15a5.2,5.2,0,0,1,.7,3.79,2.21,2.21,0,0,1-.45.58l-0.74-2.93c-1.23.84-.42,2-0.84,2.95a0.75,0.75,0,0,1-.81-0.79c-0.07-.93-0.5-1.88.32-2.74a0.94,0.94,0,0,0-.22-0.86,1.33,1.33,0,0,0-1.52.82c-0.05.64,0,1.3-.06,1.93a1,1,0,0,1-.52.68c-0.5.14-.54-0.29-0.53-0.66,0-.58.08-1.17,0.08-1.75A2.76,2.76,0,0,0,11,20.26l-0.34,0a15.53,15.53,0,0,0-.47,1.94c-0.16,1.33-.21,1.39-1.78,1,0.41-1.47.82-2.94,1.24-4.41a1,1,0,0,1,1.14-.71c2.44,0,2.56,0,3.16-2.35a5.63,5.63,0,0,1,2.75-3.61A1.29,1.29,0,0,0,17.08,10a7.61,7.61,0,0,0-1.39-1.44,1,1,0,0,0-1.61.69,1.76,1.76,0,0,1-.43.84,4,4,0,0,0-.26-1,3.54,3.54,0,0,0-.69-0.7,2.38,2.38,0,0,0-.52.79,7.38,7.38,0,0,0,0,1.67,0.8,0.8,0,0,1-.84,1c0-.3,0-0.57-0.06-0.85a1.16,1.16,0,0,0-.07-0.59c-1.33-.66-0.53-2-0.94-2.94a4.57,4.57,0,0,1-.17-1.2,1.36,1.36,0,0,1,.53-1.54,2.72,2.72,0,0,0,.61-0.9c0.28-.47.53-0.94,1.21-0.49,0.4,0.26.77,0.16,0.78-.4,0-.9.64-0.85,1.23-0.8,1.13,0.09,2.26.24,3.39,0.33a2.85,2.85,0,0,0,2-.53A3.25,3.25,0,0,1,21.67,2,2,2,0,0,1,22.33,2.5ZM20.55,7l-0.3-.13a3.52,3.52,0,0,0-.58,1,0.89,0.89,0,0,1-.84.92,0.77,0.77,0,0,0-.37.62,1.75,1.75,0,0,0,.31,1,3.62,3.62,0,0,0,1.92-.17A12.74,12.74,0,0,0,22.61,8.7,1.48,1.48,0,0,0,23,7a2.05,2.05,0,0,0-.6-0.65,3.93,3.93,0,0,0-.39.76c-0.16.6-.27,1.22-0.4,1.83l-0.37,0Zm2.21,3.75c1.14,0.29,2.81-.23,3.17-1a1.56,1.56,0,0,0-.16-1.17A2.63,2.63,0,0,0,24.89,8ZM17.64,8c0.25-1.39-.1-2.08-1.09-2.2a2.82,2.82,0,0,0-1,.28A2.49,2.49,0,0,0,16,7.15,9.07,9.07,0,0,0,17.64,8Z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M20.8,30c0.2,2.14.39,4.28,0.59,6.42,0.11,1.16.12,1.16,1.46,0.86V31l0.26,0c0.11,0.65.26,1.29,0.31,1.95,0.09,1.22.09,2.44,0.2,3.66a0.88,0.88,0,0,0,.51.64c0.51,0.12.54-.3,0.54-0.69,0-1.61,0-3.21,0-4.82l0.25,0C25,32.13,25,32.55,25.07,33c0.12,1.32.22,2.63,0.37,3.95a1.5,1.5,0,0,0,.45.55,1.71,1.71,0,0,0,.31-0.58,27.2,27.2,0,0,1,.33-3.31c0.07,0.43.15,0.87,0.19,1.3s0,0.94.07,1.41a1.1,1.1,0,0,0,1.35,1.24l0.26-2.82,0.21,0c0.09,0.56.19,1.12,0.26,1.68,0.16,1.25.26,1.35,1.55,1.38,0.4,0,.81,0,1.21,0a105.11,105.11,0,0,1-19.83.11h3L15,34.46h0.17l0.55,3.25c1-1.51.31-3,.58-4.34L17,37.55H17.3V31.88l0.16,0c0.2,1.69.4,3.39,0.59,5.08,0,0.38.06,0.81,0.57,0.67A0.93,0.93,0,0,0,19,36.91c0-2.43,0-4.86,0-7.52,0.11,1.15.2,2.08,0.3,3,0.17,1.59.35,3.17,0.55,4.75a1.12,1.12,0,0,0,.42.39,1.16,1.16,0,0,0,.35-0.46c0-.75-0.06-1.5-0.06-2.24,0-1.59,0-3.19,0-4.78Z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M35.06,22q0,2.8,0,5.59c0,0.36-.22.81,0.4,0.88s0.72-.3.76-0.81c0.12-1.43.26-2.86,0.41-4.28A0.89,0.89,0,0,1,37,22.73c0,0.44-.06.87-0.06,1.31,0,1.31,0,2.63,0,3.94a1.75,1.75,0,0,0,.39.66A1.91,1.91,0,0,0,37.83,28c0.2-1.11.32-2.23,0.63-3.37,0,1,0,2,0,3,0,0.6.11,1.11,0.83,1a0.93,0.93,0,0,0,.65-0.55c0.2-.71.28-1.45,0.41-2.17l0.26,0c0,0.71,0,1.42,0,2.13a0.59,0.59,0,0,0,.62.75c0.78,0,1.57.11,2.38,0.17a121.48,121.48,0,0,1-20.91.17C23.47,29.09,24.25,29,25,29s0.86-.4.9-1c0.06-.8.16-1.59,0.24-2.39h0.31v3.08h0.34c1.1-1.23.35-2.85,0.9-4.23l0.2,4.21h0.33l0.64-5.63,0.21,0c0,1.66,0,3.33,0,5,0,0.41,0,.87.53,0.76a1,1,0,0,0,.61-0.74c0.23-2.33.39-4.66,0.58-7,0-.22.07-0.44,0.16-0.91,0,1.27,0,2.28,0,3.28,0,1.6,0,3.2,0,4.8a1.16,1.16,0,0,0,.42.44,1.55,1.55,0,0,0,.5-0.58c0.11-1.2.12-2.4,0.23-3.6a25.7,25.7,0,0,1,.57-3.6c0,2.22,0,4.44,0,6.66,0,0.41-.35,1,0.46,1.07a0.89,0.89,0,0,0,1.13-.95c0.14-1.91.41-3.82,0.63-5.72h0.1Z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_add_jungle = function(row, column, color) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-			.attr({
-				d: 'M22.46,17.67l-1.17-.41a3,3,0,0,0,.09,2.45,5.7,5.7,0,0,1-1.08,6.79,6.79,6.79,0,0,0-1.7-4.19,14.23,14.23,0,0,0-2.37-1.91c-0.71-.46-0.92-0.29-0.92.59q0,7.69,0,15.39c0,0.29,0,.58,0,0.92H13.26L14.66,21l-0.22-.06a8.13,8.13,0,0,0-1.57,4.21c-0.22,1.54-.29,3.11-0.43,4.68A1.39,1.39,0,0,1,10.57,29a8.25,8.25,0,0,1,.05-8.25c0.12-.21.26-0.4,0.4-0.62-1.23-.08-2.17.65-5.51,4.28L4.4,23.74c0.52-1.1,1-2.19,1.55-3.25a1.62,1.62,0,0,0,.27-1.17c-0.35-1.89,1.17-3.7,3.36-4.13a3.13,3.13,0,0,1,1.12-.14A1.11,1.11,0,0,0,12.12,14a2.59,2.59,0,0,1,.26-0.59,5.91,5.91,0,0,0,1-3.44c-0.15-2.15,2.12-3.9,4.71-4.15a6.55,6.55,0,0,1,4.92,1.4,6.79,6.79,0,0,1,8-1.4c1.35,0.7,1.89,1.8,1.4,2.85a0.74,0.74,0,0,1-.16.14,6.12,6.12,0,0,0-3.91-.52,6.07,6.07,0,0,0,.5.42,6.59,6.59,0,0,1,2.89,6.87,0.84,0.84,0,0,0,.58,1.21,6.08,6.08,0,0,1,1,.62c1.36-2.1,5.26-2.3,7.26-.93a1.65,1.65,0,0,1,.71,2.32,5.1,5.1,0,0,0-3.49-.44A5.61,5.61,0,0,1,41,23.44a5.66,5.66,0,0,1-1.69,4.25c-0.1-.54-0.16-1-0.28-1.46a7.08,7.08,0,0,0-3.64-4.62c-1-.52-1.12-0.42-1.11.64q0,7.61,0,15.22c0,0.29,0,.59,0,0.94H32.22l1.39-16.33-0.28,0c-1.76,2.71-1.81,5.81-1.85,8.93a1.68,1.68,0,0,1-2-.89,8.32,8.32,0,0,1,.11-8.25c0.11-.2.24-0.4,0.36-0.6L29.84,21a10.41,10.41,0,0,0-2.06,1.11C26.76,23,25.89,24,24.94,25c-0.23.23-.5,0.42-0.84,0.71v6.07H21.66l1.65-19.22a4.44,4.44,0,0,0-1.51,2.62,1,1,0,0,0,.37.57A1.55,1.55,0,0,1,22.46,17.67Zm6.6-1.44a7.87,7.87,0,0,0-4.26-4.38c-0.61-.17-0.75.12-0.75,0.67,0,3.27,0,6.53,0,9.8a3.2,3.2,0,0,0,.08.43c0.52-.94,1.26-1.57,1-2.71A2.53,2.53,0,0,1,26,17.77,5.16,5.16,0,0,1,29.07,16.23Zm-10-4.75a10,10,0,0,0-5.49,4.21l0.92,0.63A3.67,3.67,0,0,1,17,14.68a1.23,1.23,0,0,0,.74-0.38C18.19,13.4,18.61,12.45,19.08,11.48Z',
-				fill: color,
-				'class': 'w-t-p'
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_create_group = function(terrain, row, column) {
-		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
-		let t_x = Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE);
-		let t_y = Math.round(height * (row * 2 + (column % 2)));
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'g'))
-			.attr({
-				'class': 's-c-g-' + row + '-' + column,
-				'transform': 'translate(' + t_x + ', ' + t_y + ')',
-			})
-			.appendTo('.svg-grid');
-	};
-
-	this.svg_map_element = function(row, column, prev_row, prev_column, element_type, id, title) {
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'image'))
-			.attr({
-				'id': 'w-t-i' + row + '-' + column,
-				'xlink:href': '',
-				'height': 42,
-				'width': 42,
-				'x': "2px",
-				'y': "2px",
-				'class': 'troop',
-				'data-name': element_type,
-				'data-id': id
-				//'title': title
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-		document.getElementById('w-t-i' + row + '-' + column)
-			.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', civitas.ASSETS_URL + 'images/assets/ui/world/' + element_type + '.png');
-	};
-
-	/*
-	this.svg_link_cells = function(source, destination) {
-		let _source = this.get_cell_middle_coords(source.x, source.y);
-		let _destination = this.get_cell_middle_coords(destination.x, destination.y);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'line'))
-			.attr({
-				'x1': _source.x,
-				'y1': _source.y,
-				'x2': _destination.x,
-				'y2': _destination.y
-			})
-			.css({
-				'stroke': '#ff0000',
-				'stroke-width': 2
-			})
-			.appendTo('.svg-grid');
-	}
-	*/
-
-	this.svg_create_cell = function(row, column, color, show_grid) {
-		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
-		let center = this.get_cell_middle(row, column);
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'polygon'))
-			.attr({
-				points: [
-					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, -1 * height),
-					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, -1 * height),
-					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE, 0),
-					civitas.utils.to_point(center, civitas.WORLD_HEX_SIZE / 2, height),
-					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE / 2, height),
-					civitas.utils.to_point(center, -1 * civitas.WORLD_HEX_SIZE, 0)
-				].join(' '),
-				'class': 'svg-cell'
-			})
-			.css({
-				fill: color,
-				stroke: '#000',
-				'stroke-width': (show_grid === true) ? 0.1 : 0
-			})
-			.appendTo('.s-c-g-' + row + '-' + column);
-	};
-
-	this.svg_create_worldmap = function(cell_size, colors) {
-		let height = Math.sqrt(3) / 2 * cell_size;
-		$(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
-			.attr({
-				'xmlns': 'http://www.w3.org/2000/svg',
-				'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-				'class': 'svg-grid'
-			})
-			.appendTo('.worldmap')
-			.css({
-				width: (1.5 * civitas.WORLD_SIZE_WIDTH  +  0.5) * cell_size,
-				height: (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height,
-				'background-color': colors.X.bg
-			});
-	};
-
-	this.svg_apply_terrain = function(row, column, color, terrain) {
-		if (terrain === 'M') {
-			this.svg_add_mountain(row, column, color);
-		} else if (terrain === 'H') {
-			this.svg_add_hill(row, column, color);
-		} else if (terrain === 'D') {
-			this.svg_add_desert(row, column, color);
-		} else if (terrain === 'G') {
-			this.svg_add_grass(row, column, color);
-		} else if (terrain === 'P') {
-			this.svg_add_plains(row, column, color);
-		} else if (terrain === 'J') {
-			this.svg_add_jungle(row, column, color);
-		} else if (terrain === 'W') {
-			this.svg_add_swamp(row, column, color);
-		}
-	};
-
 	/**
 	 * Get the middle of a hex cell.
 	 *
@@ -15872,7 +15471,7 @@ civitas.game = function () {
 		this.queue(data.queue);
 		this.research(data.research);
 		this.achievements(data.achievements);
-		this.world().data(data.world);
+		this.world().seeds(data.seeds);
 		this.achievement_points(data.achievement_points);
 		this.date(data.date);
 		this.black_market(data.black_market);
@@ -15906,7 +15505,7 @@ civitas.game = function () {
 			settlements: settlements_list,
 			places: places_list,
 			difficulty: this.difficulty(),
-			world: this.world().data(),
+			seeds: this.world().seeds(),
 			achievements: this.achievements(),
 			research: this.research(),
 			achievement_points: this.achievement_points(),
@@ -17809,8 +17408,7 @@ civitas.game = function () {
 		}
 		this.properties.difficulty = parseInt(difficulty);
 		this._world = new civitas.objects.world({
-			core: this,
-			roughness: civitas.INITIAL_SEED[difficulty - 1].roughness
+			core: this
 		});
 		this._create_player_settlement(name, s_name, nation, climate, avatar);
 		this._setup_game(null);
@@ -17851,7 +17449,9 @@ civitas.game = function () {
 		if (game_data) {
 			ui.show_loader();
 			this._world = new civitas.objects.world({
-				core: this
+				core: this,
+				elevation: game_data.data.seeds.elevation,
+				moisture: game_data.data.seeds.moisture
 			});
 			let temp_game_data = this.import(game_data.data);
 			if (temp_game_data !== false) {
@@ -18194,6 +17794,30 @@ civitas.game = function () {
 		}
 	};
 
+	/**
+	 * Get a list of all buildings available for a settlement if the settlement level and
+	 * climate are appropriate.
+	 *
+	 * @public
+	 * @param {civitas.objects.settlement} settlement
+	 * @returns {Array}
+	 */
+	this.get_buildings_for_settlement = function(settlement) {
+		let buildings = [];
+		let building;
+		for (let i = 0; i < civitas.BUILDINGS.length; i++) {
+			building = civitas.BUILDINGS[i];
+			if ((typeof building.requires.settlement_level !== 'undefined') && (settlement.level() < building.requires.settlement_level)) {
+				break;
+			}
+			if ((typeof building.requires.climate !== 'undefined') && ($.inArray(settlement.climate().id, building.requires.climate) === -1)) {
+				break;
+			}
+			buildings.push(building.handle);
+		}
+		return buildings;
+	};
+
 	// Fire up the constructor
 	return this.__init();
 };
@@ -18527,10 +18151,6 @@ civitas.utils = {
 
 	sanitize_string: function(string) {
 		return string.replace(/[^a-z0-9+]-/gi, '-');
-	},
-
-	to_point: function(s, dx, dy) {
-		return Math.round(dx + s.x) + ',' + Math.round(dy + s.y);
 	}
 };
 
@@ -19719,45 +19339,35 @@ civitas.PANEL_WORLD = {
 		let settings = core.get_settings();
 		let world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
-		core.ui().svg_create_worldmap(civitas.WORLD_HEX_SIZE, colors);
-		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
-			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				let terrain = world_data[row][column].t;
-				color = colors[terrain].bg;
-				core.ui().svg_create_group(terrain, row, column);
-				if (world_data[row][column].l === true) {
-					let lid = world_data[row][column].lid;
-					let pid = world_data[row][column].p;
-					if (lid !== null && pid === null) {
-						if (typeof settlements[lid] !== 'undefined') {
-							color = settlements[lid].color();
-						}
-					} else if (lid !== null && pid !== null) {
-						// Todo
-						/* This is a special place */
-					}
-				}
-				core.ui().svg_create_cell(row, column, color, settings.worldmap_grid);
-				if (settings.worldmap_beautify === true) {
-					core.ui().svg_apply_terrain(row, column, colors[terrain].fg, terrain);
+		core.world().draw();
+		for (let i = 0; i < settlements.length; i++) {
+			let image = 'village';
+			let color = settlements[i].color();
+			let name = settlements[i].name();
+			let location = settlements[i].location();
+			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+			if (typeof settlement !== 'undefined' && name === settlement.name()) {
+				image = 'settlement';
+			} else {
+				if (settlements[i].is_metropolis()) {
+					image = 'metropolis' + settlements[i].icon();
+				} else if (settlements[i].is_city()) {
+					image = 'city' + settlements[i].icon();
+				} else if (settlements[i].is_village()) {
+					image = 'village' + settlements[i].icon();
+				} else if (settlements[i].is_camp()) {
+					image = 'camp';
 				}
 			}
+			$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
 		}
-		for (let row = 0; row < civitas.WORLD_SIZE_HEIGHT; row++) {
-			for (let column = 0; column < civitas.WORLD_SIZE_WIDTH; column++) {
-				let suid = world_data[row][column].s;
-				let puid = world_data[row][column].p;
-				if (suid !== null && puid === null && typeof settlements[suid] !== 'undefined') {
-					core.ui().svg_add_settlement_image(row, column, settlements[suid], settlement);
-				} else if (suid === null && puid !== null && typeof places[puid] !== 'undefined') {
-					/* For debug
-					if (core.has_research('archeology')) {*/
-						core.ui().svg_add_place_image(row, column, places[puid]);
-					/*}
-					*/
-				}
+		//if (core.has_research('archeology')) {
+			for (let i = 0; i < places.length; i++) {
+				let location = places[i].location();
+				let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+				$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Special Place" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].id() + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
 			}
-		}
+		//}
 		let clicked = false;
 		let clickY, clickX;
 		$('.worldmap').on({
@@ -19800,9 +19410,6 @@ civitas.PANEL_WORLD = {
 			}
 			return false;
 		});
-		/*
-		core.ui().svg_link_cells({x: 21, y: 25}, {x: 24, y: 32});
-		*/
 		core.ui().worldmap_scrollto(settlement.location());
 	},
 	
@@ -19857,7 +19464,8 @@ civitas.PANEL_WORLD = {
 				troop_type = 'troop_diplomatic';
 				title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
 			}
-			core.ui().svg_map_element(y, x, prev_y, prev_x, troop_type, i, title);
+			let coords = core.ui().get_cell_middle_coords(y, x);
+			$('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + i + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
 		}
 	}
 };
@@ -21074,8 +20682,10 @@ civitas.PANEL_BUILDINGS = {
 		let settlement = core.get_settlement();
 		let resources = settlement.get_resources();
 		let el = this.handle;
+		let building;
+		let building_data;
+		let building_image;
 		let _t = '<div class="left buildings">';
-		let available_buildings = civitas['SETTLEMENT_BUILDINGS_' + settlement.climate().name.toUpperCase()];
 		_t += '<div class="tabs">' +
 				'<ul>';
 		for (let category in civitas.BUILDINGS_CATEGORIES) {
@@ -21085,16 +20695,16 @@ civitas.PANEL_BUILDINGS = {
 		for (let category in civitas.BUILDINGS_CATEGORIES) {
 			_t += '<div id="tab-' + category.toLowerCase() + '" class="bldg-tabs">';
 			for (let i = 0; i < civitas.BUILDINGS_CATEGORIES[category].length; i++) {
-				let building = civitas.BUILDINGS_CATEGORIES[category][i];
-				if ($.inArray(building, available_buildings) !== -1) {
-					let building_data = core.get_building_config_data(building);
+				building = civitas.BUILDINGS_CATEGORIES[category][i];
+				if ($.inArray(building, civitas['BUILDINGS_ALL']) !== -1) {
+					building_data = core.get_building_config_data(building);
 					if (building_data) {
 						let _i = settlement.is_building_built(building_data.handle);
-						let building_image = building_data.handle;
-						if (building_data.handle.slice(0, 5) === 'house') {
+						building_image = building_data.handle;
+						if (typeof building_data.tax !== 'undefined') {
 							building_image = building_data.handle.slice(0, 5);
 						}
-						let _image = (typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false) ? building_image : building_image + building_data.level;
+						let _image = (typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false) ? building_image : building_image + '1';
 						_t += '<div data-handle="' + building_data.handle + '" class="building-item' + ((_i === true) ? ' disabled' : '') + '">' +
 								'<span class="title">' + building_data.name + '</span>' +
 								'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + _image + '.png" />' +
@@ -21117,10 +20727,6 @@ civitas.PANEL_BUILDINGS = {
 						'<legend>Cost</legend>' +
 						'<div class="b-cost"></div>' +
 					'</fieldset>' +
-					'<fieldset>' +
-						'<legend>Requirements</legend>' +
-						'<div class="b-req"></div>' +
-					'</fieldset>' +
 				'</div>' +
 				'<div class="column-small">' +
 					'<fieldset class="materials">' +
@@ -21142,6 +20748,12 @@ civitas.PANEL_BUILDINGS = {
 					'<fieldset class="taxes">' +
 						'<legend>Taxes</legend>' +
 						'<div class="b-tax"></div>' +
+					'</fieldset>' +
+				'</div>' +
+				'<div class="column-full">' +
+					'<fieldset>' +
+						'<legend>Requirements</legend>' +
+						'<div class="b-req"></div>' +
 					'</fieldset>' +
 				'</div>' +
 				'<div class="toolbar"></div>' +
@@ -21178,12 +20790,20 @@ civitas.PANEL_BUILDINGS = {
 					if (typeof building.requires.buildings !== 'undefined') {
 						for (let item in building.requires.buildings) {
 							_z += '<dt>Building</dt>' +
-								'<dd>' + core.get_building_config_data(item).name + ' (' + building.requires.buildings[item] + ')</dd>';
+								'<dd>' + core.get_building_config_data(item).name + ' (level ' + building.requires.buildings[item] + ')</dd>';
 						}
 					}
 					if (typeof building.requires.research !== 'undefined') {
 						_z += '<dt>Research</dt>' +
 							'<dd>' + core.get_research_config_data(building.requires.research).name + '</dd>';
+					}
+					if (typeof building.requires.climate !== 'undefined') {
+						let climates = [];
+						for (let i = 0; i < building.requires.climate.length; i++) {
+							climates.push(civitas.CLIMATES[building.requires.climate[i]].capitalize());
+						}
+						_z += '<dt>Climate</dt>' +
+							'<dd>' + climates.join(', ') + '</dd>';
 					}
 					_z += '<dt>City level</dt>' +
 						'<dd>' + building.requires.settlement_level + '</dd>' +
@@ -21202,62 +20822,46 @@ civitas.PANEL_BUILDINGS = {
 				} else {
 					$('fieldset.extra').hide();
 				}
-				if (building.is_production === true) {
-					if (typeof building.production !== 'undefined') {
-						_z = '<dl class="nomg">';
-						for (let y in building.production) {
-							_z += '<dt>' + building.production[y] + '</dt>' +
-								'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
-						}
-						_z += '</dl>';
-						$(el + ' .b-prod').append(_z);
-						$('fieldset.production').show();
-					} else {
-						$('fieldset.production').hide();
+				if (typeof building.production !== 'undefined') {
+					_z = '<dl class="nomg">';
+					for (let y in building.production) {
+						_z += '<dt>' + building.production[y] + '</dt>' +
+							'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 					}
-					if (typeof building.materials !== 'undefined') {
-						_z = '<dl class="nomg">';
-						if (Array.isArray(building.materials)) {
-							for (let i = 0; i < building.materials.length; i++) {
-								for (let y in building.materials[i]) {
-									_z += '<dt>' + building.materials[i][y] + '</dt>' +
-										'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
-								}
-							}
-						} else {
-							for (let y in building.materials) {
-								_z += '<dt>' + building.materials[y] + '</dt>' +
+					_z += '</dl>';
+					$(el + ' .b-prod').append(_z);
+					$('fieldset.production').show();
+				} else {
+					$('fieldset.production').hide();
+				}
+				if (typeof building.materials !== 'undefined') {
+					_z = '<dl class="nomg">';
+					if (Array.isArray(building.materials)) {
+						for (let i = 0; i < building.materials.length; i++) {
+							for (let y in building.materials[i]) {
+								_z += '<dt>' + building.materials[i][y] + '</dt>' +
 									'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 							}
 						}
-						_z += '</dl>';
-						$(el + ' .b-mats').append(_z);
-						$('fieldset.materials').show();
 					} else {
-						$('fieldset.materials').hide();
-					}
-				} else {
-					$('fieldset.production, fieldset.materials').hide();
-				}
-				if (building.is_housing === true) {
-					if (typeof building.materials !== 'undefined') {
-						_z = '<dl class="nomg">';
 						for (let y in building.materials) {
 							_z += '<dt>' + building.materials[y] + '</dt>' +
 								'<dd><img class="small tips" title="' + civitas.utils.get_resource_name(y) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
 						}
-						_z += '</dl>';
-						$(el + ' .b-mats').append(_z);
-						$('fieldset.materials').show();
 					}
-					if (typeof building.tax !== 'undefined') {
-						_z = '<dl class="nomg">' +
-								'<dt>Tax</dt>' +
-								'<dd>' + building.tax + '<img class="small tips" title="Coins" src="' + civitas.ASSETS_URL + 'images/assets/resources/coins.png" /></dd>' +
-							'</dl>';
-						$(el + ' .b-tax').append(_z);
-						$('fieldset.taxes').show();
-					}
+					_z += '</dl>';
+					$(el + ' .b-mats').append(_z);
+					$('fieldset.materials').show();
+				} else {
+					$('fieldset.materials').hide();
+				}
+				if (typeof building.tax !== 'undefined') {
+					_z = '<dl class="nomg">' +
+							'<dt>Tax</dt>' +
+							'<dd>' + building.tax + '<img class="small tips" title="Coins" src="' + civitas.ASSETS_URL + 'images/assets/resources/coins.png" /></dd>' +
+						'</dl>';
+					$(el + ' .b-tax').append(_z);
+					$('fieldset.taxes').show();
 				} else {
 					$('fieldset.taxes').hide();
 				}

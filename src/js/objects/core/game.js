@@ -345,7 +345,7 @@ civitas.game = function () {
 		this.queue(data.queue);
 		this.research(data.research);
 		this.achievements(data.achievements);
-		this.world().data(data.world);
+		this.world().seeds(data.seeds);
 		this.achievement_points(data.achievement_points);
 		this.date(data.date);
 		this.black_market(data.black_market);
@@ -379,7 +379,7 @@ civitas.game = function () {
 			settlements: settlements_list,
 			places: places_list,
 			difficulty: this.difficulty(),
-			world: this.world().data(),
+			seeds: this.world().seeds(),
 			achievements: this.achievements(),
 			research: this.research(),
 			achievement_points: this.achievement_points(),
@@ -2282,8 +2282,7 @@ civitas.game = function () {
 		}
 		this.properties.difficulty = parseInt(difficulty);
 		this._world = new civitas.objects.world({
-			core: this,
-			roughness: civitas.INITIAL_SEED[difficulty - 1].roughness
+			core: this
 		});
 		this._create_player_settlement(name, s_name, nation, climate, avatar);
 		this._setup_game(null);
@@ -2324,7 +2323,9 @@ civitas.game = function () {
 		if (game_data) {
 			ui.show_loader();
 			this._world = new civitas.objects.world({
-				core: this
+				core: this,
+				elevation: game_data.data.seeds.elevation,
+				moisture: game_data.data.seeds.moisture
 			});
 			let temp_game_data = this.import(game_data.data);
 			if (temp_game_data !== false) {
@@ -2665,6 +2666,30 @@ civitas.game = function () {
 			let prev = this.level_to_fame(level - 1);
 			return Math.floor(prev + prev * exp);
 		}
+	};
+
+	/**
+	 * Get a list of all buildings available for a settlement if the settlement level and
+	 * climate are appropriate.
+	 *
+	 * @public
+	 * @param {civitas.objects.settlement} settlement
+	 * @returns {Array}
+	 */
+	this.get_buildings_for_settlement = function(settlement) {
+		let buildings = [];
+		let building;
+		for (let i = 0; i < civitas.BUILDINGS.length; i++) {
+			building = civitas.BUILDINGS[i];
+			if ((typeof building.requires.settlement_level !== 'undefined') && (settlement.level() < building.requires.settlement_level)) {
+				break;
+			}
+			if ((typeof building.requires.climate !== 'undefined') && ($.inArray(settlement.climate().id, building.requires.climate) === -1)) {
+				break;
+			}
+			buildings.push(building.handle);
+		}
+		return buildings;
 	};
 
 	// Fire up the constructor

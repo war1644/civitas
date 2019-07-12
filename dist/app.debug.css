@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.752019
+ * @version 0.3.0.7122019
  * @license GPLv3
  */ /* Game animations */
 
@@ -950,7 +950,7 @@ a.wikipedia {
 	margin-left: 50%;
 	line-height: 20px;
 	margin-bottom: 5px;
-	width: 140px;
+/*	width: 140px; */
 }
 
 .ui .panel .section {
@@ -1085,6 +1085,10 @@ a.wikipedia {
 	float: left;
 }
 
+.ui .panel .column-full {
+	width: 440px;
+	clear: both;
+}
 .ui .panel .column-small:nth-child(3) {
 	margin-left: 10px;
 }
@@ -1361,6 +1365,7 @@ a.wikipedia {
 #panel-world .worldmap .troop {
 	width: 40px;
 	height: 40px;
+	position: absolute;
 	cursor: pointer;
 }
 

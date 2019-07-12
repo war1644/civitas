@@ -327,9 +327,5 @@ civitas.utils = {
 
 	sanitize_string: function(string) {
 		return string.replace(/[^a-z0-9+]-/gi, '-');
-	},
-
-	to_point: function(s, dx, dy) {
-		return Math.round(dx + s.x) + ',' + Math.round(dy + s.y);
 	}
 };

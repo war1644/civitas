@@ -286,11 +286,6 @@ civitas.RESOURCES = {
 		price: 420,
 		category: 'military'
 	},
-	herbs: {
-		name: 'Herbs',
-		price: 18,
-		category: 'industry'
-	},
 	hides: {
 		name: 'Hides',
 		price: 25,
