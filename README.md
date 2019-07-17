@@ -30,7 +30,7 @@ Civitas is an empire-building game written in Javascript with the help of the [j
 
 ## Playing
 
-In development, Civitas is using several assets that are copyrighted by [Bluebyte](https://www.bluebyte.com), so I cannot redistribute them with the game. You can find a link to the said assets [in this Gitee](https://gitee.com/sizeofcat/civitas/issues/IZBLB). All the other game resources are freely distributed under the GPLv3 license, same as the code.
+In development, Civitas is using several assets that are copyrighted by [Bluebyte](https://www.bluebyte.com), so I cannot redistribute them with the game. You can find a link to the said assets [in this Gitee issue](https://gitee.com/sizeofcat/civitas/issues/IZBLB). All the other game resources are freely distributed under the GPLv3 license, same as the code.
 
 
 ### 1. With Docker
