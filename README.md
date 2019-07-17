@@ -49,10 +49,10 @@ Choose an archive format from below, download and uncompress it. Point your brow
 
 ## Releases
 
-- bleeding edge version - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/master.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/master.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/develop.zip)
-- 0.3 (June 11, 2019) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.3.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.3.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.3)
-- 0.2 (April 30, 2017) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.2.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.2.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.2)
-- 0.1 (January 20, 2017) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.1.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.1.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.1)
+- bleeding edge version - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/master.zip) - [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/master.tar.gz) - [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/develop.zip)
+- 0.3 (June 11, 2019) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.3.zip) - [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.3.tar.gz) - [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.3)
+- 0.2 (April 30, 2017) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.2.zip) - [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.2.tar.gz) - [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.2)
+- 0.1 (January 20, 2017) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.1.zip) - [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.1.tar.gz) - [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.1)
 
 ## License
 
@@ -85,7 +85,7 @@ Always sign your commits and make sure you read the [coding style](CODING-STYLE.
 
 ## Source code
 
-Civitas is written using Javascript, has ~15000 lines of code, ~250Kb minified and can be [downloaded from GitHub.com](https://github.com/sizeofcat/civitas/archive/master.zip), [Gitee.com](https://gitee.com/sizeofcat/civitas/archive/master.zip) or by using git to clone the repository:
+Civitas is written using Javascript, has ~15000 lines of code, ~250Kb minified and can be [downloaded from GitHub.com](https://github.com/sizeofcat/civitas/archive/master.zip), [Gitee.com](https://gitee.com/sizeofcat/civitas/repository/archive/master.zip) or by using git to clone the repository:
 
 GitHub:
 
