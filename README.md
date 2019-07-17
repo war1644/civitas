@@ -30,7 +30,7 @@ Civitas is an empire-building game written in Javascript with the help of the [j
 
 ## Playing
 
-In development, Civitas is using several assets that are copyrighted by [Bluebyte](https://www.bluebyte.com), so I cannot redistribute them with the game. You can find a link to the said assets [in this issue](https://github.com/sizeofcat/civitas/issues/1). All the other game resources are freely distributed under the GPLv3 license, same as the code.
+In development, Civitas is using several assets that are copyrighted by [Bluebyte](https://www.bluebyte.com), so I cannot redistribute them with the game. You can find a link to the said assets [in this issue(GitHub)](https://github.com/sizeofcat/civitas/issues/1) or [in this issue(Gitee)](https://gitee.com/sizeofcat/civitas/issues/1). All the other game resources are freely distributed under the GPLv3 license, same as the code.
 
 
 ### 1. With Docker
@@ -49,14 +49,14 @@ Choose an archive format from below, download and uncompress it. Point your brow
 
 ## Releases
 
-- bleeding edge version - [.zip](https://github.com/sizeofcat/civitas/archive/master.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/master.tar.gz)
-- 0.3 (June 11, 2019) - [.zip](https://github.com/sizeofcat/civitas/archive/v0.3.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/v0.3.tar.gz)
-- 0.2 (April 30, 2017) - [.zip](https://github.com/sizeofcat/civitas/archive/v0.2.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/v0.2.tar.gz)
-- 0.1 (January 20, 2017) - [.zip](https://github.com/sizeofcat/civitas/archive/v0.1.zip) [.tar.gz](https://github.com/sizeofcat/civitas/archive/v0.1.tar.gz)
+- bleeding edge version - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/master.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/master.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/develop.zip)
+- 0.3 (June 11, 2019) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.3.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.3.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.3)
+- 0.2 (April 30, 2017) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.2.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.2.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.2)
+- 0.1 (January 20, 2017) - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/v0.1.zip) [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/v0.1.tar.gz) [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/v0.1)
 
 ## License
 
-Civitas is written by sizeof(cat) <sizeofcat AT riseup DOT net> and distributed under the [GPLv3 license](https://raw.githubusercontent.com/sizeofcat/civitas/develop/LICENSE).
+Civitas is written by sizeof(cat) <sizeofcat AT riseup DOT net> and distributed under the [GPLv3 license](LICENSE).
 
 ```
 This program is free software: you can redistribute it and/or modify
@@ -81,13 +81,19 @@ I am always thrilled to receive pull requests, and do my best to process them as
 
 If your pull request is not accepted on the first try, don't be discouraged! If there's a problem with the implementation, hopefully you received feedback on what to improve.
 
-Always sign your commits and make sure you read the [coding style](https://raw.githubusercontent.com/sizeofcat/civitas/develop/CODING-STYLE.md).
+Always sign your commits and make sure you read the [coding style](CODING-STYLE.md).
 
 ## Source code
 
-Civitas is written using Javascript, has ~15000 lines of code, ~250Kb minified and can be [downloaded from GitHub.com](https://github.com/sizeofcat/civitas/archive/master.zip) or by using git to clone the repository:
+Civitas is written using Javascript, has ~15000 lines of code, ~250Kb minified and can be [downloaded from GitHub.com](https://github.com/sizeofcat/civitas/archive/master.zip), [Gitee.com](https://gitee.com/sizeofcat/civitas/archive/master.zip) or by using git to clone the repository:
+
+GitHub:
 
 `git clone git@github.com/sizeofcat/civitas.git`
+
+Gitee
+
+`git clone git@gitee.com/sizeofcat/civitas.git`
 
 ## Dependencies
 
