@@ -556,7 +556,11 @@
 #panel-world .w-t-p {
 	opacity: 0.3;
 }
-
+/*
+#panel-world .worldmap > img {
+	pointer-events: none;
+}
+*/
 
 /* World Trades panel */
 

@@ -48,9 +48,8 @@ civitas.PANEL_DEBUG = {
 					'<a href="#" class="btn iblock thirty">+1000 food / wine</a> ' +
 					'<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a> <br /><br />' +
 					'<a href="#" class="btn iblock five">level up</a> ' +
-					'<a href="#" class="btn iblock fourteen">+900 faith</a> ' +
+					'<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a> ' +
 					'<a href="#" class="btn iblock six">+1000 fame</a> ' +
-					'<a href="#" class="btn iblock ten">+5000 fame</a> ' +
 					'<a href="#" class="btn iblock seven">refresh trades</a> <br /><br />' +
 					'<a href="#" class="btn iblock eleven">random soldiers</a> ' +
 					'<a href="#" class="btn iblock twelve">random ships</a> ' +
@@ -118,6 +117,8 @@ civitas.PANEL_DEBUG = {
 			return false;
 		}).on('click', '.fourteen', function() {
 			settlement.raise_faith(900);
+			settlement.raise_espionage(900);
+			settlement.raise_research(900);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.one', function() {
@@ -148,10 +149,6 @@ civitas.PANEL_DEBUG = {
 			return false;
 		}).on('click', '.five', function() {
 			core.level_up();
-			core.save_and_refresh();
-			return false;
-		}).on('click', '.ten', function() {
-			settlement.raise_fame(5000);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.six', function() {

@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.7122019
+ * @version 0.3.0.7172019
  * @license GPLv3
  */ 'use strict';
 
@@ -4905,6 +4905,36 @@ civitas.PLACE_RESOURCES_REQ = {
 	silk: 1000
 };
 
+civitas.PLACES_NAMES = [
+	'Aria',
+	'Zeffari',
+	'Laenteglos',
+	'Eastborne',
+	'Larton',
+	'Nantgarw',
+	'Kingcardine',
+	'Swindlincote',
+	'Cewmann',
+	'Rochdale',
+	'Malrton',
+	'Falcon Haven',
+	'Rotherham',
+	'Ironforge',
+	'Halivaara',
+	'Ularee',
+	'Snake Canyon',
+	'Dornwich',
+	'Stawford',
+	'Eastborne',
+	'Dry Gulch',
+	'Tamworth',
+	'Ferncombe',
+	'Rutherglen',
+	'Dewhurst',
+	'Haedleigh',
+	'Chepstow'
+];
+
 /**
  * List of settlement types
  *
@@ -8116,6 +8146,18 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Unlock the specified hex.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {String}
+	 */
+	this.unlock_hex = function(hex) {
+		this.set_hex(hex, 'l', false);
+		this.set_hex(hex, 'lid', null);
+	};
+
+	/**
 	 * Check if the specified hex is locked.
 	 *
 	 * @public
@@ -8194,7 +8236,11 @@ civitas.objects.world = function (params) {
 	this.add_place = function(place) {
 		const location = place.location();
 		this.set_hex(location, 'p', place.id());
-		this.lock_hex(location, place.id());
+		if (place.is_claimed() === false) {
+			this.lock_hex(location, place.id());
+		} else {
+			this.lock_hex(location, place.is_claimed());
+		}
 		return this;
 	};
 
@@ -8508,11 +8554,16 @@ civitas.objects.world = function (params) {
 					if (lid !== null && pid === null) {
 						if (typeof settlements[lid] !== 'undefined') {
 							color = settlements[lid].color();
-							opacity = 0.3;
 						}
 					} else if (lid !== null && pid !== null) {
-						// Todo
+						let place = this.core().get_place(pid);
+						if (place) {
+							if (place.is_claimed() !== false) {
+								color = settlements[lid].color();
+							}
+						}
 					}
+					opacity = 0.2;
 				}
 				ctx.beginPath();
 				ctx.moveTo(currentHexX + __width - __side, currentHexY);
@@ -11100,7 +11151,7 @@ civitas.objects.place = function(params) {
 		this._properties.id = params.properties.id;
 		this._properties.sid = params.properties.sid;
 		this._properties.scouted = params.properties.scouted;
-		this._properties.name = params.properties.name;
+		this._properties.name = (typeof params.properties.name !== 'undefined') ? params.properties.name: civitas.utils.get_random_unique(civitas.PLACES_NAMES);
 		this._location = params.location;
 		this._resources = params.resources;
 		this.core().world().add_place(this);
@@ -11168,6 +11219,7 @@ civitas.objects.place = function(params) {
 	this.claim = function(settlement) {
 		if (this._properties.sid === null) {
 			this._properties.sid = settlement.id();
+			this.core().world().lock_hex(this.location(), settlement.id());
 			return true;
 		}
 		return false;
@@ -11176,6 +11228,7 @@ civitas.objects.place = function(params) {
 	this.unclaim = function(settlement) {
 		if (settlement.id() === this._properties.sid) {
 			this._properties.sid = null;
+			this.core().world().unlock_hex(this.location());
 			return true;
 		}
 		return false;
@@ -16303,9 +16356,17 @@ civitas.game = function () {
 		let settlement = this.get_settlement(action.source.id);
 		if (action.type === civitas.CAMPAIGN_SCOUT) {
 			destination_settlement = this.get_place(action.destination.id);
+			if (!destination_settlement) {
+				this.queue_remove_action(id);
+				return false;
+			}
 		} else {
 			if (typeof action.destination !== 'undefined') {
 				destination_settlement = this.get_settlement(action.destination.id);
+				if (!destination_settlement) {
+					this.queue_remove_action(id);
+					return false;
+				}
 			}
 		}
 		if (action.mode === civitas.ACTION_CAMPAIGN) {
@@ -16400,7 +16461,7 @@ civitas.game = function () {
 					}
 					break;
 				case civitas.CAMPAIGN_SCOUT:
-					this.ui().notify('The spy you sent ' + action.duration + ' days ago to a specific place in the world reached its destination and scouted the area.');
+					this.ui().notify('The spy you sent ' + action.duration + ' days ago to a specific place in the world reached its destination and scouted the area. You can now claim the place.');
 					destination_settlement.scout();
 					break;
 				case civitas.CAMPAIGN_CARAVAN:
@@ -17125,7 +17186,7 @@ civitas.game = function () {
 				new_settlement = new civitas.objects.settlement(s_data);
 				this.settlements.push(new_settlement);
 			}
-			for (let i = 1; i < data.places.length; i++) {
+			for (let i = 0; i < data.places.length; i++) {
 				s_data = data.places[i];
 				s_data.core = this;
 				new_place = new civitas.objects.place(s_data);
@@ -17173,7 +17234,8 @@ civitas.game = function () {
 			properties: {
 				id: id,
 				sid: null,
-				name: null
+				name: null,
+				scouted: false
 			},
 			resources: {
 				current: {
@@ -18208,20 +18270,23 @@ civitas.PANEL_PLACE = {
 		$(this.handle + ' header').append('Place');
 		let tabs = ['Info'];
 		if (place.is_scouted()) {
-			labs.push('Resources', 'Construction');
+			tabs.push('Resources', 'Construction');
 		}
 		$(this.handle + ' section').append(core.ui().tabs(tabs));
 		let claimed_by = place.is_claimed();
 		let claimed_by_settlement = core.get_settlement(claimed_by);
+		let place_location = place.location();
 		$(this.handle + ' #tab-info').empty().append(
 			'<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' +
 			'<dl>' +
 				(place.is_scouted() || (claimed_by !== false && claimed_by_settlement.id() === my_settlement.id()) ?
 				'<dt>Name</dt>' +
-				'<dd>none given</dd>' +
+				'<dd>' + place.name() + '</dd>' +
 				'<dt>Claimed by</dt>' +
 				'<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>'
 				: '') +
+				'<dt>Scouted</dt>' +
+				'<dd>' + (place.is_scouted() ? 'yes': 'no') + '</dd>' +
 				'<dt>Time to build</dt>' +
 				'<dd>' + civitas.PLACE_TIME_TO_BUILD + ' days</dd>' +
 				'<dt>Distance</dt>' +
@@ -18240,7 +18305,10 @@ civitas.PANEL_PLACE = {
 				'<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>'
 			);
 			if (claimed_by !== false && claimed_by === my_settlement.id()) {
-				$(this.handle + ' footer').empty().append('<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"></a>');
+				$(this.handle + ' footer').empty().append(
+					'<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"></a>' +
+					'<a class="tips caravan" title="Send a caravan to this place." href="#"></a>'
+				);
 			} else if (claimed_by === false) {
 				$(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"></a>');
 			}
@@ -18252,6 +18320,10 @@ civitas.PANEL_PLACE = {
 				core.ui().error('You will need to construct an Embassy and Academy before being able to claim world places.');
 				return false;
 			}
+			if (place.is_claimed() !== false) {
+				core.ui().error('This place has been claimed by another settlement.');
+				return false;
+			}
 			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
@@ -18259,6 +18331,8 @@ civitas.PANEL_PLACE = {
 							core.ui().error('There was an error claiming this world place, check the data you entered and try again.');
 							return false;
 						} else {
+							core.ui().notify('A place in the world has been claimed by your settlement.');
+							core.save_and_refresh();
 							self.destroy();
 						}
 					}
@@ -18271,6 +18345,10 @@ civitas.PANEL_PLACE = {
 				core.ui().error('You will need to construct an Embassy and Academy before being able to unclaim world places.');
 				return false;
 			}
+			if (place.is_claimed() === false) {
+				core.ui().error('This place is not claimed by your settlement.');
+				return false;
+			}
 			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
@@ -18278,12 +18356,21 @@ civitas.PANEL_PLACE = {
 							core.ui().error('There was an error unclaiming this world place, check the data you entered and try again.');
 							return false;
 						} else {
+							core.ui().notify('A place in the world has been unclaimed by your settlement.');
+							core.save_and_refresh();
 							self.destroy();
 						}
 					}
 				},
 				'Are you sure you want to unclaim this world place?'
 			);
+			return false;
+		}).on('click', '.caravan', function () {
+			if (!my_settlement.can_trade()) {
+				core.ui().error('You will need to construct a Trading Post before being able to send caravans to other places.');
+				return false;
+			}
+			core.ui().open_panel(civitas.PANEL_NEW_CARAVAN, place);
 			return false;
 		}).on('click', '.view', function () {
 			let _settlement_id = parseInt($(this).data('id'));
@@ -18305,7 +18392,7 @@ civitas.PANEL_PLACE = {
 			return false;
 		});
 	},
-	
+
 	/**
 	 * Callback function for refreshing the panel.
 	 *
@@ -18834,9 +18921,8 @@ civitas.PANEL_DEBUG = {
 					'<a href="#" class="btn iblock thirty">+1000 food / wine</a> ' +
 					'<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a> <br /><br />' +
 					'<a href="#" class="btn iblock five">level up</a> ' +
-					'<a href="#" class="btn iblock fourteen">+900 faith</a> ' +
+					'<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a> ' +
 					'<a href="#" class="btn iblock six">+1000 fame</a> ' +
-					'<a href="#" class="btn iblock ten">+5000 fame</a> ' +
 					'<a href="#" class="btn iblock seven">refresh trades</a> <br /><br />' +
 					'<a href="#" class="btn iblock eleven">random soldiers</a> ' +
 					'<a href="#" class="btn iblock twelve">random ships</a> ' +
@@ -18904,6 +18990,8 @@ civitas.PANEL_DEBUG = {
 			return false;
 		}).on('click', '.fourteen', function() {
 			settlement.raise_faith(900);
+			settlement.raise_espionage(900);
+			settlement.raise_research(900);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.one', function() {
@@ -18934,10 +19022,6 @@ civitas.PANEL_DEBUG = {
 			return false;
 		}).on('click', '.five', function() {
 			core.level_up();
-			core.save_and_refresh();
-			return false;
-		}).on('click', '.ten', function() {
-			settlement.raise_fame(5000);
 			core.save_and_refresh();
 			return false;
 		}).on('click', '.six', function() {
@@ -19154,6 +19238,7 @@ civitas.PANEL_CAMPAIGN = {
 				'<dd>' + mission_type + '</dd>' +
 				'<dt>Sent By</dt>' +
 				'<dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.name() : source.name()) + '</dd>' +
+				
 				'<dt>Destination</dt>' +
 				'<dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? source.name() : destination.name()) + '</dd>' +
 				'<dt>Action</dt>' +
@@ -19330,44 +19415,8 @@ civitas.PANEL_WORLD = {
 		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let settlements = core.get_settlements();
-		let places = core.places();
-		let world = core.world();
-		let colors = world.colors();
-		let color;
-		let props = world.properties();
-		let settings = core.get_settings();
-		let world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
 		core.world().draw();
-		for (let i = 0; i < settlements.length; i++) {
-			let image = 'village';
-			let color = settlements[i].color();
-			let name = settlements[i].name();
-			let location = settlements[i].location();
-			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
-			if (typeof settlement !== 'undefined' && name === settlement.name()) {
-				image = 'settlement';
-			} else {
-				if (settlements[i].is_metropolis()) {
-					image = 'metropolis' + settlements[i].icon();
-				} else if (settlements[i].is_city()) {
-					image = 'city' + settlements[i].icon();
-				} else if (settlements[i].is_village()) {
-					image = 'village' + settlements[i].icon();
-				} else if (settlements[i].is_camp()) {
-					image = 'camp';
-				}
-			}
-			$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
-		}
-		//if (core.has_research('archeology')) {
-			for (let i = 0; i < places.length; i++) {
-				let location = places[i].location();
-				let coords = core.ui().get_cell_middle_coords(location.y, location.x);
-				$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Special Place" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].id() + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
-			}
-		//}
 		let clicked = false;
 		let clickY, clickX;
 		$('.worldmap').on({
@@ -19409,6 +19458,9 @@ civitas.PANEL_WORLD = {
 				core.ui().open_panel(civitas.PANEL_CAMPAIGN, core._queue[_action_id]);
 			}
 			return false;
+		}).on('click', '.canvas-map', function() {
+			// Todo
+			return false;
 		});
 		core.ui().worldmap_scrollto(settlement.location());
 	},
@@ -19424,9 +19476,40 @@ civitas.PANEL_WORLD = {
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
+		let places = core.places();
+		let world = core.world();
+		let colors = world.colors();
 		let queue_actions = core.queue();
 		let class_name = '';
-		$('.troop').remove();
+		$('.troop, .settlement, .place').remove();
+		for (let i = 0; i < settlements.length; i++) {
+			let image = 'village';
+			let color = settlements[i].color();
+			let name = settlements[i].name();
+			let location = settlements[i].location();
+			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+			if (typeof settlement !== 'undefined' && name === settlement.name()) {
+				image = 'settlement';
+			} else {
+				if (settlements[i].is_metropolis()) {
+					image = 'metropolis' + settlements[i].icon();
+				} else if (settlements[i].is_city()) {
+					image = 'city' + settlements[i].icon();
+				} else if (settlements[i].is_village()) {
+					image = 'village' + settlements[i].icon();
+				} else if (settlements[i].is_camp()) {
+					image = 'camp';
+				}
+			}
+			$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
+		}
+		//if (core.has_research('archeology')) {
+			for (let i = 0; i < places.length; i++) {
+				let location = places[i].location();
+				let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+				$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Ruins of ' + places[i].name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].id() + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
+			}
+		//}
 		for (let i = 0; i < queue_actions.length; i++) {
 			let action = queue_actions[i];
 			let source = action.source;

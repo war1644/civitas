@@ -305,6 +305,18 @@ civitas.objects.world = function (params) {
 	};
 
 	/**
+	 * Unlock the specified hex.
+	 *
+	 * @public
+	 * @param {Object} hex
+	 * @returns {String}
+	 */
+	this.unlock_hex = function(hex) {
+		this.set_hex(hex, 'l', false);
+		this.set_hex(hex, 'lid', null);
+	};
+
+	/**
 	 * Check if the specified hex is locked.
 	 *
 	 * @public
@@ -383,7 +395,11 @@ civitas.objects.world = function (params) {
 	this.add_place = function(place) {
 		const location = place.location();
 		this.set_hex(location, 'p', place.id());
-		this.lock_hex(location, place.id());
+		if (place.is_claimed() === false) {
+			this.lock_hex(location, place.id());
+		} else {
+			this.lock_hex(location, place.is_claimed());
+		}
 		return this;
 	};
 
@@ -697,11 +713,16 @@ civitas.objects.world = function (params) {
 					if (lid !== null && pid === null) {
 						if (typeof settlements[lid] !== 'undefined') {
 							color = settlements[lid].color();
-							opacity = 0.3;
 						}
 					} else if (lid !== null && pid !== null) {
-						// Todo
+						let place = this.core().get_place(pid);
+						if (place) {
+							if (place.is_claimed() !== false) {
+								color = settlements[lid].color();
+							}
+						}
 					}
+					opacity = 0.2;
 				}
 				ctx.beginPath();
 				ctx.moveTo(currentHexX + __width - __side, currentHexY);

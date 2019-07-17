@@ -35,44 +35,8 @@ civitas.PANEL_WORLD = {
 		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let settlements = core.get_settlements();
-		let places = core.places();
-		let world = core.world();
-		let colors = world.colors();
-		let color;
-		let props = world.properties();
-		let settings = core.get_settings();
-		let world_data = world.data();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
 		core.world().draw();
-		for (let i = 0; i < settlements.length; i++) {
-			let image = 'village';
-			let color = settlements[i].color();
-			let name = settlements[i].name();
-			let location = settlements[i].location();
-			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
-			if (typeof settlement !== 'undefined' && name === settlement.name()) {
-				image = 'settlement';
-			} else {
-				if (settlements[i].is_metropolis()) {
-					image = 'metropolis' + settlements[i].icon();
-				} else if (settlements[i].is_city()) {
-					image = 'city' + settlements[i].icon();
-				} else if (settlements[i].is_village()) {
-					image = 'village' + settlements[i].icon();
-				} else if (settlements[i].is_camp()) {
-					image = 'camp';
-				}
-			}
-			$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
-		}
-		//if (core.has_research('archeology')) {
-			for (let i = 0; i < places.length; i++) {
-				let location = places[i].location();
-				let coords = core.ui().get_cell_middle_coords(location.y, location.x);
-				$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Special Place" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].id() + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
-			}
-		//}
 		let clicked = false;
 		let clickY, clickX;
 		$('.worldmap').on({
@@ -114,6 +78,9 @@ civitas.PANEL_WORLD = {
 				core.ui().open_panel(civitas.PANEL_CAMPAIGN, core._queue[_action_id]);
 			}
 			return false;
+		}).on('click', '.canvas-map', function() {
+			// Todo
+			return false;
 		});
 		core.ui().worldmap_scrollto(settlement.location());
 	},
@@ -129,9 +96,40 @@ civitas.PANEL_WORLD = {
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
+		let places = core.places();
+		let world = core.world();
+		let colors = world.colors();
 		let queue_actions = core.queue();
 		let class_name = '';
-		$('.troop').remove();
+		$('.troop, .settlement, .place').remove();
+		for (let i = 0; i < settlements.length; i++) {
+			let image = 'village';
+			let color = settlements[i].color();
+			let name = settlements[i].name();
+			let location = settlements[i].location();
+			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+			if (typeof settlement !== 'undefined' && name === settlement.name()) {
+				image = 'settlement';
+			} else {
+				if (settlements[i].is_metropolis()) {
+					image = 'metropolis' + settlements[i].icon();
+				} else if (settlements[i].is_city()) {
+					image = 'city' + settlements[i].icon();
+				} else if (settlements[i].is_village()) {
+					image = 'village' + settlements[i].icon();
+				} else if (settlements[i].is_camp()) {
+					image = 'camp';
+				}
+			}
+			$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
+		}
+		//if (core.has_research('archeology')) {
+			for (let i = 0; i < places.length; i++) {
+				let location = places[i].location();
+				let coords = core.ui().get_cell_middle_coords(location.y, location.x);
+				$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Ruins of ' + places[i].name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].id() + '" src="' + civitas.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
+			}
+		//}
 		for (let i = 0; i < queue_actions.length; i++) {
 			let action = queue_actions[i];
 			let source = action.source;

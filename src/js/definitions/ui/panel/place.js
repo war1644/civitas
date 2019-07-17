@@ -52,20 +52,23 @@ civitas.PANEL_PLACE = {
 		$(this.handle + ' header').append('Place');
 		let tabs = ['Info'];
 		if (place.is_scouted()) {
-			labs.push('Resources', 'Construction');
+			tabs.push('Resources', 'Construction');
 		}
 		$(this.handle + ' section').append(core.ui().tabs(tabs));
 		let claimed_by = place.is_claimed();
 		let claimed_by_settlement = core.get_settlement(claimed_by);
+		let place_location = place.location();
 		$(this.handle + ' #tab-info').empty().append(
 			'<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' +
 			'<dl>' +
 				(place.is_scouted() || (claimed_by !== false && claimed_by_settlement.id() === my_settlement.id()) ?
 				'<dt>Name</dt>' +
-				'<dd>none given</dd>' +
+				'<dd>' + place.name() + '</dd>' +
 				'<dt>Claimed by</dt>' +
 				'<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>'
 				: '') +
+				'<dt>Scouted</dt>' +
+				'<dd>' + (place.is_scouted() ? 'yes': 'no') + '</dd>' +
 				'<dt>Time to build</dt>' +
 				'<dd>' + civitas.PLACE_TIME_TO_BUILD + ' days</dd>' +
 				'<dt>Distance</dt>' +
@@ -84,7 +87,10 @@ civitas.PANEL_PLACE = {
 				'<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>'
 			);
 			if (claimed_by !== false && claimed_by === my_settlement.id()) {
-				$(this.handle + ' footer').empty().append('<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"></a>');
+				$(this.handle + ' footer').empty().append(
+					'<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"></a>' +
+					'<a class="tips caravan" title="Send a caravan to this place." href="#"></a>'
+				);
 			} else if (claimed_by === false) {
 				$(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"></a>');
 			}
@@ -96,6 +102,10 @@ civitas.PANEL_PLACE = {
 				core.ui().error('You will need to construct an Embassy and Academy before being able to claim world places.');
 				return false;
 			}
+			if (place.is_claimed() !== false) {
+				core.ui().error('This place has been claimed by another settlement.');
+				return false;
+			}
 			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
@@ -103,6 +113,8 @@ civitas.PANEL_PLACE = {
 							core.ui().error('There was an error claiming this world place, check the data you entered and try again.');
 							return false;
 						} else {
+							core.ui().notify('A place in the world has been claimed by your settlement.');
+							core.save_and_refresh();
 							self.destroy();
 						}
 					}
@@ -115,6 +127,10 @@ civitas.PANEL_PLACE = {
 				core.ui().error('You will need to construct an Embassy and Academy before being able to unclaim world places.');
 				return false;
 			}
+			if (place.is_claimed() === false) {
+				core.ui().error('This place is not claimed by your settlement.');
+				return false;
+			}
 			core.ui().open_modal(
 				function(button) {
 					if (button === 'yes') {
@@ -122,12 +138,21 @@ civitas.PANEL_PLACE = {
 							core.ui().error('There was an error unclaiming this world place, check the data you entered and try again.');
 							return false;
 						} else {
+							core.ui().notify('A place in the world has been unclaimed by your settlement.');
+							core.save_and_refresh();
 							self.destroy();
 						}
 					}
 				},
 				'Are you sure you want to unclaim this world place?'
 			);
+			return false;
+		}).on('click', '.caravan', function () {
+			if (!my_settlement.can_trade()) {
+				core.ui().error('You will need to construct a Trading Post before being able to send caravans to other places.');
+				return false;
+			}
+			core.ui().open_panel(civitas.PANEL_NEW_CARAVAN, place);
 			return false;
 		}).on('click', '.view', function () {
 			let _settlement_id = parseInt($(this).data('id'));
@@ -149,7 +174,7 @@ civitas.PANEL_PLACE = {
 			return false;
 		});
 	},
-	
+
 	/**
 	 * Callback function for refreshing the panel.
 	 *

@@ -115,6 +115,7 @@ civitas.PANEL_CAMPAIGN = {
 				'<dd>' + mission_type + '</dd>' +
 				'<dt>Sent By</dt>' +
 				'<dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? destination.name() : source.name()) + '</dd>' +
+				
 				'<dt>Destination</dt>' +
 				'<dd>' + (campaign.type === civitas.CAMPAIGN_ARMY_RETURN ? source.name() : destination.name()) + '</dd>' +
 				'<dt>Action</dt>' +

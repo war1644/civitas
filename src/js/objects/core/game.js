@@ -1177,9 +1177,17 @@ civitas.game = function () {
 		let settlement = this.get_settlement(action.source.id);
 		if (action.type === civitas.CAMPAIGN_SCOUT) {
 			destination_settlement = this.get_place(action.destination.id);
+			if (!destination_settlement) {
+				this.queue_remove_action(id);
+				return false;
+			}
 		} else {
 			if (typeof action.destination !== 'undefined') {
 				destination_settlement = this.get_settlement(action.destination.id);
+				if (!destination_settlement) {
+					this.queue_remove_action(id);
+					return false;
+				}
 			}
 		}
 		if (action.mode === civitas.ACTION_CAMPAIGN) {
@@ -1274,7 +1282,7 @@ civitas.game = function () {
 					}
 					break;
 				case civitas.CAMPAIGN_SCOUT:
-					this.ui().notify('The spy you sent ' + action.duration + ' days ago to a specific place in the world reached its destination and scouted the area.');
+					this.ui().notify('The spy you sent ' + action.duration + ' days ago to a specific place in the world reached its destination and scouted the area. You can now claim the place.');
 					destination_settlement.scout();
 					break;
 				case civitas.CAMPAIGN_CARAVAN:
@@ -1999,7 +2007,7 @@ civitas.game = function () {
 				new_settlement = new civitas.objects.settlement(s_data);
 				this.settlements.push(new_settlement);
 			}
-			for (let i = 1; i < data.places.length; i++) {
+			for (let i = 0; i < data.places.length; i++) {
 				s_data = data.places[i];
 				s_data.core = this;
 				new_place = new civitas.objects.place(s_data);
@@ -2047,7 +2055,8 @@ civitas.game = function () {
 			properties: {
 				id: id,
 				sid: null,
-				name: null
+				name: null,
+				scouted: false
 			},
 			resources: {
 				current: {

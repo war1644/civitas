@@ -68,7 +68,7 @@ civitas.objects.place = function(params) {
 		this._properties.id = params.properties.id;
 		this._properties.sid = params.properties.sid;
 		this._properties.scouted = params.properties.scouted;
-		this._properties.name = params.properties.name;
+		this._properties.name = (typeof params.properties.name !== 'undefined') ? params.properties.name: civitas.utils.get_random_unique(civitas.PLACES_NAMES);
 		this._location = params.location;
 		this._resources = params.resources;
 		this.core().world().add_place(this);
@@ -136,6 +136,7 @@ civitas.objects.place = function(params) {
 	this.claim = function(settlement) {
 		if (this._properties.sid === null) {
 			this._properties.sid = settlement.id();
+			this.core().world().lock_hex(this.location(), settlement.id());
 			return true;
 		}
 		return false;
@@ -144,6 +145,7 @@ civitas.objects.place = function(params) {
 	this.unclaim = function(settlement) {
 		if (settlement.id() === this._properties.sid) {
 			this._properties.sid = null;
+			this.core().world().unlock_hex(this.location());
 			return true;
 		}
 		return false;

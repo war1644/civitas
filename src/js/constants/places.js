@@ -49,3 +49,33 @@ civitas.PLACE_RESOURCES_REQ = {
 	soap: 1000,
 	silk: 1000
 };
+
+civitas.PLACES_NAMES = [
+	'Aria',
+	'Zeffari',
+	'Laenteglos',
+	'Eastborne',
+	'Larton',
+	'Nantgarw',
+	'Kingcardine',
+	'Swindlincote',
+	'Cewmann',
+	'Rochdale',
+	'Malrton',
+	'Falcon Haven',
+	'Rotherham',
+	'Ironforge',
+	'Halivaara',
+	'Ularee',
+	'Snake Canyon',
+	'Dornwich',
+	'Stawford',
+	'Eastborne',
+	'Dry Gulch',
+	'Tamworth',
+	'Ferncombe',
+	'Rutherglen',
+	'Dewhurst',
+	'Haedleigh',
+	'Chepstow'
+];

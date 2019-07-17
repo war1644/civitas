@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.7122019
+ * @version 0.3.0.7172019
  * @license GPLv3
  */ /* Game animations */
 
@@ -1372,7 +1372,11 @@ a.wikipedia {
 #panel-world .w-t-p {
 	opacity: 0.3;
 }
-
+/*
+#panel-world .worldmap > img {
+	pointer-events: none;
+}
+*/
 
 /* World Trades panel */
 
@@ -1860,7 +1864,7 @@ footer a[data-panel=help] {
 }
 
 .panel footer .scout {
-	background: transparent url(../images/assets/ui/icons/scout.png) no-repeat;
+	background: transparent url(../images/assets/ui/icons/spy.png) no-repeat;
 }
 
 .panel footer .ceasefire {
