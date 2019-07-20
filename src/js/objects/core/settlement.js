@@ -23,7 +23,6 @@ civitas.objects.settlement = function(params) {
 		climate: null,
 		level: null,
 		icon: null,
-		population: null,
 		ruler: null,
 		religion: null,
 		player: null,
@@ -1165,7 +1164,6 @@ civitas.objects.settlement = function(params) {
 			this._build(building_type, hidden);
 			return true;
 		}
-		return false;
 	};
 
 	/**

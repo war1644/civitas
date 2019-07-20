@@ -6,7 +6,7 @@
 civitas.utils = {
 
 	is_virtual_resource: function(resource) {
-		if (typeof civitas.RESOURCES[resource] !== undefined) {
+		if (typeof civitas.RESOURCES[resource] !== 'undefined') {
 			if (civitas.RESOURCES[resource].category === 'virtual') {
  				return true;
 			}

@@ -243,7 +243,7 @@ civitas.objects.building = function(params) {
 	this.downgrade = function() {
 		const settlement = this.get_settlement();
 		let data = this.get_building_data(this.get_type());
-		const building_image = this.get_type();
+		let building_image = this.get_type();
 		const next_level = this.get_level() - 1;
 		if (data && this.is_downgradable() && settlement.is_building_built(this.get_type())) {
 			this.set_level(next_level);

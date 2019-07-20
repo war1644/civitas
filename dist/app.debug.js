@@ -2,7 +2,7 @@
  * Civitas empire-building game.
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
- * @version 0.3.0.7172019
+ * @version 0.3.0.7202019
  * @license GPLv3
  */ 'use strict';
 
@@ -8645,7 +8645,6 @@ civitas.objects.settlement = function(params) {
 		climate: null,
 		level: null,
 		icon: null,
-		population: null,
 		ruler: null,
 		religion: null,
 		player: null,
@@ -9787,7 +9786,6 @@ civitas.objects.settlement = function(params) {
 			this._build(building_type, hidden);
 			return true;
 		}
-		return false;
 	};
 
 	/**
@@ -11711,7 +11709,7 @@ civitas.objects.building = function(params) {
 	this.downgrade = function() {
 		const settlement = this.get_settlement();
 		let data = this.get_building_data(this.get_type());
-		const building_image = this.get_type();
+		let building_image = this.get_type();
 		const next_level = this.get_level() - 1;
 		if (data && this.is_downgradable() && settlement.is_building_built(this.get_type())) {
 			this.set_level(next_level);
@@ -17892,7 +17890,7 @@ civitas.game = function () {
 civitas.utils = {
 
 	is_virtual_resource: function(resource) {
-		if (typeof civitas.RESOURCES[resource] !== undefined) {
+		if (typeof civitas.RESOURCES[resource] !== 'undefined') {
 			if (civitas.RESOURCES[resource].category === 'virtual') {
  				return true;
 			}
