@@ -57,7 +57,6 @@ civitas.PANEL_PLACE = {
 		$(this.handle + ' section').append(core.ui().tabs(tabs));
 		let claimed_by = place.is_claimed();
 		let claimed_by_settlement = core.get_settlement(claimed_by);
-		let place_location = place.location();
 		$(this.handle + ' #tab-info').empty().append(
 			'<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' +
 			'<dl>' +
@@ -182,7 +181,6 @@ civitas.PANEL_PLACE = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let place = this.params_data.data;
 		if (place.is_scouted()) {

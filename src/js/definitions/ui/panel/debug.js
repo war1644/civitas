@@ -32,7 +32,6 @@ civitas.PANEL_DEBUG = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let handle = this.handle;

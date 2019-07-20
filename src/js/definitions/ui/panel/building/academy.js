@@ -46,7 +46,7 @@ civitas.PANEL_ACADEMY = {
 			'</div>' +
 			'<div class="column-right">' +
 				'<h2>Technology Tree</h2>' +
-				'<p>Select a technology from the left panel to view information about it.</p>'
+				'<p>Select a technology from the left panel to view information about it.</p>' +
 			'</div>';
 		$(this.handle + ' #tab-technologies').empty().append(_t);
 		_t = '';

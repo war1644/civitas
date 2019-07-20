@@ -34,7 +34,6 @@ civitas.PANEL_CAMPAIGN = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let campaign = params.data;
@@ -79,7 +78,6 @@ civitas.PANEL_CAMPAIGN = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let campaign = this.params_data.data;

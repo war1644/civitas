@@ -143,7 +143,6 @@ civitas.PANEL_NEW_ARMY = {
 			}
 			return false;
 		}).on('click', '.navy-item-dec', function() {
-			let max = parseInt($(this).data('max'));
 			let ship = $(this).data('ship');
 			let current = parseInt($(this).parent().children('.amount').html());
 			if (current - 1 >= 0) {
@@ -161,7 +160,6 @@ civitas.PANEL_NEW_ARMY = {
 			}
 			return false;
 		}).on('click', '.army-item-dec', function() {
-			let max = parseInt($(this).data('max'));
 			let soldier = $(this).data('soldier');
 			let current = parseInt($(this).parent().children('.amount').html());
 			if (current - 1 >= 0) {

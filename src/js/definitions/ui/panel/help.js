@@ -32,9 +32,7 @@ civitas.PANEL_HELP = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
-		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'About',
 			'Buildings',

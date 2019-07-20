@@ -18273,7 +18273,6 @@ civitas.PANEL_PLACE = {
 		$(this.handle + ' section').append(core.ui().tabs(tabs));
 		let claimed_by = place.is_claimed();
 		let claimed_by_settlement = core.get_settlement(claimed_by);
-		let place_location = place.location();
 		$(this.handle + ' #tab-info').empty().append(
 			'<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' +
 			'<dl>' +
@@ -18398,7 +18397,6 @@ civitas.PANEL_PLACE = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let place = this.params_data.data;
 		if (place.is_scouted()) {
@@ -18470,12 +18468,10 @@ civitas.PANEL_SETTLEMENT = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let settlement = params.data;
 		this.params_data = params;
-		let trades = settlement.get_trades();
 		$(this.handle + ' header').append(settlement.name());
 		let tabs = [];
 		if (settlement.is_urban()) {
@@ -18769,9 +18765,7 @@ civitas.PANEL_HELP = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
-		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'About',
 			'Buildings',
@@ -18903,7 +18897,6 @@ civitas.PANEL_DEBUG = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let handle = this.handle;
@@ -19155,7 +19148,6 @@ civitas.PANEL_CAMPAIGN = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let campaign = params.data;
@@ -19200,7 +19192,6 @@ civitas.PANEL_CAMPAIGN = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let campaign = this.params_data.data;
@@ -19783,7 +19774,6 @@ civitas.PANEL_NEW_ARMY = {
 			}
 			return false;
 		}).on('click', '.navy-item-dec', function() {
-			let max = parseInt($(this).data('max'));
 			let ship = $(this).data('ship');
 			let current = parseInt($(this).parent().children('.amount').html());
 			if (current - 1 >= 0) {
@@ -19801,7 +19791,6 @@ civitas.PANEL_NEW_ARMY = {
 			}
 			return false;
 		}).on('click', '.army-item-dec', function() {
-			let max = parseInt($(this).data('max'));
 			let soldier = $(this).data('soldier');
 			let current = parseInt($(this).parent().children('.amount').html());
 			if (current - 1 >= 0) {
@@ -20064,7 +20053,7 @@ civitas.PANEL_NEW_SCOUT = {
 				core.ui().error('You will need to construct an Embassy before being able to send scouts to other settlements.');
 				return false;
 			}
-			let destination = parseInt($(self.handle + ' .scout-destination').val());
+			//let destination = parseInt($(self.handle + ' .scout-destination').val());
 			let data = {
 				// Todo
 			};
@@ -20319,7 +20308,6 @@ civitas.PANEL_COUNCIL = {
 			core.ui().open_panel(civitas.PANEL_ARMY, data);
 			return false;
 		}).on('click', '.raid-merc', function () {
-			let _army = parseInt($(this).data('id'));
 			core.ui().error('Not implemented yet.');
 			return false;
 		}).on('click', '.disband-merc', function () {
@@ -20374,15 +20362,12 @@ civitas.PANEL_COUNCIL = {
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let settlements = core.get_settlements();
 		let buildings = settlement.get_buildings();
-		let resources = settlement.get_resources();
 		let achievements = core.achievements();
 		let advices = core.advice();
 		let total_costs = 0;
 		let total_tax = 0;
 		let army_data;
-		let achievement_data;
 		let building_data;
 		let _z = '';
 		let total_benefits = {
@@ -20701,7 +20686,6 @@ civitas.PANEL_ARMY = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let army = params.data;
@@ -20758,10 +20742,8 @@ civitas.PANEL_BUILDINGS = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let resources = settlement.get_resources();
 		let el = this.handle;
 		let building;
 		let building_data;
@@ -21623,7 +21605,6 @@ civitas.PANEL_CHURCH = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		$(this.handle + ' section').append(core.ui().tabs([
@@ -21710,13 +21691,9 @@ civitas.PANEL_EMBASSY = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let settlements = core.get_settlements();
-		let status = settlement.status();
 		let building = core.get_settlement().get_building(this.params_data.handle);
-		let level = building.get_level();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Espionage',
@@ -21766,7 +21743,6 @@ civitas.PANEL_EMBASSY = {
 				'</tr>' +
 				'</thead>';
 			for (let i = 1; i < settlements.length; i++) {
-				let _status = settlement.get_diplomacy_status(settlements[i].id());
 				_t += '<tr>' +
 						'<td>' +
 							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' + settlements[i].name() + '</a> ' +
@@ -21984,7 +21960,7 @@ civitas.PANEL_ACADEMY = {
 			'</div>' +
 			'<div class="column-right">' +
 				'<h2>Technology Tree</h2>' +
-				'<p>Select a technology from the left panel to view information about it.</p>'
+				'<p>Select a technology from the left panel to view information about it.</p>' +
 			'</div>';
 		$(this.handle + ' #tab-technologies').empty().append(_t);
 		_t = '';

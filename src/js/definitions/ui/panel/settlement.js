@@ -51,12 +51,10 @@ civitas.PANEL_SETTLEMENT = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let settlement = params.data;
 		this.params_data = params;
-		let trades = settlement.get_trades();
 		$(this.handle + ' header').append(settlement.name());
 		let tabs = [];
 		if (settlement.is_urban()) {

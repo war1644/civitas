@@ -32,10 +32,8 @@ civitas.PANEL_BUILDINGS = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let resources = settlement.get_resources();
 		let el = this.handle;
 		let building;
 		let building_data;

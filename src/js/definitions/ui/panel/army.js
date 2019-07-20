@@ -32,7 +32,6 @@ civitas.PANEL_ARMY = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let army = params.data;

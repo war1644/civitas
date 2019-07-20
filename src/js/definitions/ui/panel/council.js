@@ -66,7 +66,6 @@ civitas.PANEL_COUNCIL = {
 			core.ui().open_panel(civitas.PANEL_ARMY, data);
 			return false;
 		}).on('click', '.raid-merc', function () {
-			let _army = parseInt($(this).data('id'));
 			core.ui().error('Not implemented yet.');
 			return false;
 		}).on('click', '.disband-merc', function () {
@@ -121,15 +120,12 @@ civitas.PANEL_COUNCIL = {
 	on_refresh: function() {
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let settlements = core.get_settlements();
 		let buildings = settlement.get_buildings();
-		let resources = settlement.get_resources();
 		let achievements = core.achievements();
 		let advices = core.advice();
 		let total_costs = 0;
 		let total_tax = 0;
 		let army_data;
-		let achievement_data;
 		let building_data;
 		let _z = '';
 		let total_benefits = {

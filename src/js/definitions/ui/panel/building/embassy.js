@@ -32,13 +32,9 @@ civitas.PANEL_EMBASSY = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
-		let settlements = core.get_settlements();
-		let status = settlement.status();
 		let building = core.get_settlement().get_building(this.params_data.handle);
-		let level = building.get_level();
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Espionage',
@@ -88,7 +84,6 @@ civitas.PANEL_EMBASSY = {
 				'</tr>' +
 				'</thead>';
 			for (let i = 1; i < settlements.length; i++) {
-				let _status = settlement.get_diplomacy_status(settlements[i].id());
 				_t += '<tr>' +
 						'<td>' +
 							'<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' + settlements[i].name() + '</a> ' +
