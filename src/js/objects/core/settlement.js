@@ -1846,7 +1846,6 @@ civitas.objects.settlement = function(params) {
 		const resources = this.get_resources();
 		let tmp_res = Object.keys(resources);
 		const spoils = {};
-		let tmp;
 		let resource;
 		let random_resource;
 		let count = 0;
@@ -2166,7 +2165,6 @@ civitas.objects.settlement = function(params) {
 			return false;
 		}
 		if (this.can_trade()) {
-			const resources = this.get_resources();
 			let _settlement;
 			let discount;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
@@ -2287,7 +2285,6 @@ civitas.objects.settlement = function(params) {
 			return false;
 		}
 		if (this.can_trade()) {
-			const resources = this.get_resources();
 			let _settlement;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);

@@ -8516,7 +8516,6 @@ civitas.objects.world = function (params) {
 		let settlements = this.core().get_settlements();
 		let data = this.data();
 		let colors = this.colors();
-		let scale = civitas.WORLD_HEX_SIZE / 24;
 		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		let image_width = (1.5 * civitas.WORLD_SIZE_WIDTH +  0.5) * civitas.WORLD_HEX_SIZE;
 		let image_height = (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height;
@@ -8603,7 +8602,6 @@ civitas.objects.world = function (params) {
 	 * @returns {civitas.objects.world}
 	 */
 	this._apply_terrain = function(x, y, canvas, terrain, opacity) {
-		let scale = civitas.WORLD_HEX_SIZE / 24;
 		let ctx = canvas.getContext('2d');
 		let imageObject = new Image();
 		let image_size = civitas.WORLD_HEX_SIZE * 36 / 24;
@@ -10468,7 +10466,6 @@ civitas.objects.settlement = function(params) {
 		const resources = this.get_resources();
 		let tmp_res = Object.keys(resources);
 		const spoils = {};
-		let tmp;
 		let resource;
 		let random_resource;
 		let count = 0;
@@ -10788,7 +10785,6 @@ civitas.objects.settlement = function(params) {
 			return false;
 		}
 		if (this.can_trade()) {
-			const resources = this.get_resources();
 			let _settlement;
 			let discount;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
@@ -10909,7 +10905,6 @@ civitas.objects.settlement = function(params) {
 			return false;
 		}
 		if (this.can_trade()) {
-			const resources = this.get_resources();
 			let _settlement;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);
@@ -11438,7 +11433,7 @@ civitas.objects.event = function (params) {
 			}
 		}
 		if (this._build !== null) {
-			const buildings = settlement.get_buildings();
+			//const buildings = settlement.get_buildings();
 			// Todo
 			let replace = new RegExp('BUILDING', 'g');
 			description = description.replace(replace, name);
@@ -11630,7 +11625,6 @@ civitas.objects.building = function(params) {
 	 * @public
 	 */
 	this.is_downgradable = function() {
-		const building = this.get_building_data();
 		if (this.get_level() > 1) {
 			return true;
 		}
@@ -11665,7 +11659,6 @@ civitas.objects.building = function(params) {
 	this.upgrade = function() {
 		const core = this.core();
 		const settlement = this.get_settlement();
-		const resources = settlement.get_resources();
 		const next_level = this.get_level() + 1;
 		let data = this.get_building_data(this.get_type());
 		let building_image = this.get_type();
@@ -13634,7 +13627,7 @@ civitas.controls.modal = function (params) {
 	this._resize = function() {
 		let lbox = $('.modal');
 		if (lbox) {
-			let height = parseInt((lbox.css('height')).replace('px', ''));
+			//let height = parseInt((lbox.css('height')).replace('px', ''));
 			let width = parseInt((lbox.css('width')).replace('px', ''));
 			lbox.css({
 				top: ($(window).height() / 2) - 100 + 'px',
@@ -14501,7 +14494,6 @@ civitas.objects.ui = function (core) {
 	 */
 	this.building_element = function (params) {
 		let building_image = params.type;
-		let description = '<br /><span class="smalldesc">' + params.data.description + '</span>';
 		if (params.type.slice(0, 5) === 'house') {
 			building_image = params.type.slice(0, 5);
 		}
@@ -15539,7 +15531,6 @@ civitas.game = function () {
 	 * @returns {Object}
 	 */
 	this.export = function(to_local_storage) {
-		const settlement = this.get_settlement();
 		const settlements_list = [];
 		const places_list = [];
 		for (let i = 0; i < this.settlements.length; i++) {
@@ -15900,7 +15891,6 @@ civitas.game = function () {
 	this.auctioneer_add = function(resource, amount) {
 		let settlement = this.get_settlement();
 		if (settlement.can_trade()) {
-			const resources = settlement.get_resources();
 			let discount = Math.ceil(Math.ceil((civitas.RESOURCES[resource].price * civitas.TRADES_ADDITION) / 100) + Math.ceil((civitas.RESOURCES[resource].price * civitas.AUCTIONEER_DISCOUNT) / 100));
 			const price = civitas.utils.calc_price_plus_discount(amount, resource, discount);
 			if (typeof this._auctioneer[resource] !== 'undefined') {
@@ -15958,7 +15948,6 @@ civitas.game = function () {
 		if (!civitas.utils.resource_exists(resource)) {
 			return false;
 		}
-		const resources = this.get_resources();
 		if (!settlement.has_resource(resource, amount)) {
 			this.ui().error(this.name() + ' doesn`t have enough resources of this type.');
 			return false;
@@ -17461,7 +17450,6 @@ civitas.game = function () {
 	 * @returns {Boolean}
 	 */
 	this.new_game = function(name, s_name, nation, climate, avatar, difficulty, password) {
-		let data = null;
 		this.ui().show_loader();
 		if (civitas.ENCRYPTION === true) {
 			this.encryption.key = password;
@@ -18614,7 +18602,6 @@ civitas.PANEL_SETTLEMENT = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let settlement = this.params_data.data;
@@ -19330,7 +19317,6 @@ civitas.PANEL_STORAGE = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let storage_space = settlement.storage();
@@ -19401,7 +19387,6 @@ civitas.PANEL_WORLD = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
@@ -19461,19 +19446,15 @@ civitas.PANEL_WORLD = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
 		let places = core.places();
 		let world = core.world();
-		let colors = world.colors();
 		let queue_actions = core.queue();
-		let class_name = '';
 		$('.troop, .settlement, .place').remove();
 		for (let i = 0; i < settlements.length; i++) {
 			let image = 'village';
-			let color = settlements[i].color();
 			let name = settlements[i].name();
 			let location = settlements[i].location();
 			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
@@ -19513,8 +19494,8 @@ civitas.PANEL_WORLD = {
 			let _destination = core.get_settlement(destination.id)
 			let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
 			let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
-			let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
-			let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
+			//let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
+			//let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
 			if (action.mode === civitas.ACTION_CAMPAIGN) {
 				if (action.type === civitas.CAMPAIGN_CARAVAN) {
 					troop_type = 'troop_caravan';
@@ -20998,7 +20979,6 @@ civitas.PANEL_TRADES = {
 		let settlement = core.get_settlement();
 		let auctions = core.auctioneer();
 		let el = this.handle;
-		let _t = '';
 		let tabs = [
 			'Export',
 			'Import',
@@ -21209,7 +21189,6 @@ civitas.PANEL_TRADES = {
 				break;
 			}
 			let trades = settlements[z].get_trades();
-			let resources = settlement.get_resources();
 			if (trades !== null) {
 				let imports = trades.imports;
 				for (let item in imports) {
@@ -21283,7 +21262,6 @@ civitas.PANEL_TRADES = {
 				break;
 			}
 			let trades = settlements[z].get_trades();
-			let resources = settlement.get_resources();
 			if (trades !== null) {
 				let exports = trades.exports;
 				for (let item in exports) {
@@ -21692,8 +21670,6 @@ civitas.PANEL_EMBASSY = {
 	 */
 	on_show: function(params) {
 		let core = this.core();
-		let settlement = core.get_settlement();
-		let building = core.get_settlement().get_building(this.params_data.handle);
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Espionage',
@@ -22459,7 +22435,6 @@ civitas.WINDOW_ERROR = {
 	 * @public
 	 */
 	on_show: function() {
-		let self = this;
 		let core = this.core();
 		let handle = this.handle();
 		$(handle + ' .error-message').html('Message: ' + this.params_data.error);
@@ -22535,7 +22510,6 @@ civitas.WINDOW_OPTIONS = {
 	 * @public
 	 */
 	on_show: function() {
-		let _game_data = null;
 		let self = this;
 		let handle = this.handle();
 		let core = this.core();

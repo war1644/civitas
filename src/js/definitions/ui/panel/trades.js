@@ -37,7 +37,6 @@ civitas.PANEL_TRADES = {
 		let settlement = core.get_settlement();
 		let auctions = core.auctioneer();
 		let el = this.handle;
-		let _t = '';
 		let tabs = [
 			'Export',
 			'Import',
@@ -248,7 +247,6 @@ civitas.PANEL_TRADES = {
 				break;
 			}
 			let trades = settlements[z].get_trades();
-			let resources = settlement.get_resources();
 			if (trades !== null) {
 				let imports = trades.imports;
 				for (let item in imports) {
@@ -322,7 +320,6 @@ civitas.PANEL_TRADES = {
 				break;
 			}
 			let trades = settlements[z].get_trades();
-			let resources = settlement.get_resources();
 			if (trades !== null) {
 				let exports = trades.exports;
 				for (let item in exports) {

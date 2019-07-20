@@ -509,7 +509,6 @@ civitas.objects.ui = function (core) {
 	 */
 	this.building_element = function (params) {
 		let building_image = params.type;
-		let description = '<br /><span class="smalldesc">' + params.data.description + '</span>';
 		if (params.type.slice(0, 5) === 'house') {
 			building_image = params.type.slice(0, 5);
 		}

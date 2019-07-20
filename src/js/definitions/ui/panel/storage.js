@@ -32,7 +32,6 @@ civitas.PANEL_STORAGE = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let storage_space = settlement.storage();

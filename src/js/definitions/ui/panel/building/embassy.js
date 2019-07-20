@@ -33,8 +33,6 @@ civitas.PANEL_EMBASSY = {
 	 */
 	on_show: function(params) {
 		let core = this.core();
-		let settlement = core.get_settlement();
-		let building = core.get_settlement().get_building(this.params_data.handle);
 		$(this.handle + ' section').append(core.ui().tabs([
 			'Info',
 			'Espionage',

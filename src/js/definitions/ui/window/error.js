@@ -39,7 +39,6 @@ civitas.WINDOW_ERROR = {
 	 * @public
 	 */
 	on_show: function() {
-		let self = this;
 		let core = this.core();
 		let handle = this.handle();
 		$(handle + ' .error-message').html('Message: ' + this.params_data.error);

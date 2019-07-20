@@ -152,7 +152,7 @@ civitas.objects.event = function (params) {
 			}
 		}
 		if (this._build !== null) {
-			const buildings = settlement.get_buildings();
+			//const buildings = settlement.get_buildings();
 			// Todo
 			let replace = new RegExp('BUILDING', 'g');
 			description = description.replace(replace, name);

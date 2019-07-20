@@ -362,7 +362,6 @@ civitas.game = function () {
 	 * @returns {Object}
 	 */
 	this.export = function(to_local_storage) {
-		const settlement = this.get_settlement();
 		const settlements_list = [];
 		const places_list = [];
 		for (let i = 0; i < this.settlements.length; i++) {
@@ -723,7 +722,6 @@ civitas.game = function () {
 	this.auctioneer_add = function(resource, amount) {
 		let settlement = this.get_settlement();
 		if (settlement.can_trade()) {
-			const resources = settlement.get_resources();
 			let discount = Math.ceil(Math.ceil((civitas.RESOURCES[resource].price * civitas.TRADES_ADDITION) / 100) + Math.ceil((civitas.RESOURCES[resource].price * civitas.AUCTIONEER_DISCOUNT) / 100));
 			const price = civitas.utils.calc_price_plus_discount(amount, resource, discount);
 			if (typeof this._auctioneer[resource] !== 'undefined') {
@@ -781,7 +779,6 @@ civitas.game = function () {
 		if (!civitas.utils.resource_exists(resource)) {
 			return false;
 		}
-		const resources = this.get_resources();
 		if (!settlement.has_resource(resource, amount)) {
 			this.ui().error(this.name() + ' doesn`t have enough resources of this type.');
 			return false;
@@ -2284,7 +2281,6 @@ civitas.game = function () {
 	 * @returns {Boolean}
 	 */
 	this.new_game = function(name, s_name, nation, climate, avatar, difficulty, password) {
-		let data = null;
 		this.ui().show_loader();
 		if (civitas.ENCRYPTION === true) {
 			this.encryption.key = password;

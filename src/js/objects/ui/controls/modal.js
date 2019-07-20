@@ -128,7 +128,7 @@ civitas.controls.modal = function (params) {
 	this._resize = function() {
 		let lbox = $('.modal');
 		if (lbox) {
-			let height = parseInt((lbox.css('height')).replace('px', ''));
+			//let height = parseInt((lbox.css('height')).replace('px', ''));
 			let width = parseInt((lbox.css('width')).replace('px', ''));
 			lbox.css({
 				top: ($(window).height() / 2) - 100 + 'px',

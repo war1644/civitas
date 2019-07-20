@@ -43,7 +43,6 @@ civitas.WINDOW_OPTIONS = {
 	 * @public
 	 */
 	on_show: function() {
-		let _game_data = null;
 		let self = this;
 		let handle = this.handle();
 		let core = this.core();

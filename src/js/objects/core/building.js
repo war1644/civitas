@@ -164,7 +164,6 @@ civitas.objects.building = function(params) {
 	 * @public
 	 */
 	this.is_downgradable = function() {
-		const building = this.get_building_data();
 		if (this.get_level() > 1) {
 			return true;
 		}
@@ -199,7 +198,6 @@ civitas.objects.building = function(params) {
 	this.upgrade = function() {
 		const core = this.core();
 		const settlement = this.get_settlement();
-		const resources = settlement.get_resources();
 		const next_level = this.get_level() + 1;
 		let data = this.get_building_data(this.get_type());
 		let building_image = this.get_type();

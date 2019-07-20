@@ -197,7 +197,6 @@ civitas.PANEL_SETTLEMENT = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let my_settlement = core.get_settlement();
 		let settlement = this.params_data.data;

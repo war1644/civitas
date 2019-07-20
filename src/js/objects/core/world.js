@@ -675,7 +675,6 @@ civitas.objects.world = function (params) {
 		let settlements = this.core().get_settlements();
 		let data = this.data();
 		let colors = this.colors();
-		let scale = civitas.WORLD_HEX_SIZE / 24;
 		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
 		let image_width = (1.5 * civitas.WORLD_SIZE_WIDTH +  0.5) * civitas.WORLD_HEX_SIZE;
 		let image_height = (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height;
@@ -762,7 +761,6 @@ civitas.objects.world = function (params) {
 	 * @returns {civitas.objects.world}
 	 */
 	this._apply_terrain = function(x, y, canvas, terrain, opacity) {
-		let scale = civitas.WORLD_HEX_SIZE / 24;
 		let ctx = canvas.getContext('2d');
 		let imageObject = new Image();
 		let image_size = civitas.WORLD_HEX_SIZE * 36 / 24;

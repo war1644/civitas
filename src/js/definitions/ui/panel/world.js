@@ -32,7 +32,6 @@ civitas.PANEL_WORLD = {
 	 * @public
 	 */
 	on_show: function(params) {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		$(this.handle + ' section').append('<div class="worldmap"></div>');
@@ -92,19 +91,15 @@ civitas.PANEL_WORLD = {
 	 * @public
 	 */
 	on_refresh: function() {
-		let self = this;
 		let core = this.core();
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
 		let places = core.places();
 		let world = core.world();
-		let colors = world.colors();
 		let queue_actions = core.queue();
-		let class_name = '';
 		$('.troop, .settlement, .place').remove();
 		for (let i = 0; i < settlements.length; i++) {
 			let image = 'village';
-			let color = settlements[i].color();
 			let name = settlements[i].name();
 			let location = settlements[i].location();
 			let coords = core.ui().get_cell_middle_coords(location.y, location.x);
@@ -144,8 +139,8 @@ civitas.PANEL_WORLD = {
 			let _destination = core.get_settlement(destination.id)
 			let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
 			let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
-			let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
-			let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
+			//let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
+			//let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
 			if (action.mode === civitas.ACTION_CAMPAIGN) {
 				if (action.type === civitas.CAMPAIGN_CARAVAN) {
 					troop_type = 'troop_caravan';
