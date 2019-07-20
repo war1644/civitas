@@ -233,6 +233,7 @@ civitas.objects.world = function (params) {
 			x: civitas.utils.get_random(0, civitas.WORLD_SIZE_WIDTH - 1),
 			y: civitas.utils.get_random(0, civitas.WORLD_SIZE_HEIGHT - 1)
 		}
+		/*
 		if (typeof terrain !== 'undefined') {
 			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
 				//if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
@@ -241,11 +242,12 @@ civitas.objects.world = function (params) {
 			}
 			return this.get_random_location(terrain);
 		} else {
-			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
-				return hex;
-			}
-			return this.get_random_location(terrain);
+		*/
+		if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+			return hex;
 		}
+		return this.get_random_location(terrain);
+		//}
 	};
 
 	/**
@@ -713,7 +715,7 @@ civitas.objects.world = function (params) {
 						if (typeof settlements[lid] !== 'undefined') {
 							color = settlements[lid].color();
 						}
-					} else if (lid !== null && pid !== null) {
+					} else if (lid != null && pid != null) {
 						let place = this.core().get_place(pid);
 						if (place) {
 							if (place.is_claimed() !== false) {

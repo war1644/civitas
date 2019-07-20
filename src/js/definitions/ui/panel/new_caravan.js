@@ -115,10 +115,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			let amount = parseInt($(self.handle + ' .caravan-resources-amount').val());
 			let resource = $(self.handle + ' .caravan-resources-select').val();
 			if (resource !== '0') {
-				if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
-					core.ui().error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
-					return false;
-				} else if (typeof self.resources[resource] === 'undefined' && !my_settlement.has_resource(resource, amount)) {
+				if ((typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) || (typeof self.resources[resource] === 'undefined' && !my_settlement.has_resource(resource, amount))) {
 					core.ui().error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
 					return false;
 				}

@@ -2169,7 +2169,7 @@ civitas.objects.settlement = function(params) {
 			let discount;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);
-				if (settlement === false) {
+				if (_settlement === false) {
 					if (this.is_player()) {
 						this.core().ui().error('The settlement of <strong>' + settlement + '</strong> does not exist.');
 					}
@@ -2288,7 +2288,7 @@ civitas.objects.settlement = function(params) {
 			let _settlement;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);
-				if (settlement === false) {
+				if (_settlement === false) {
 					if (this.is_player()) {
 						this.core().ui().error(settlement + ' does not exist.');
 					}

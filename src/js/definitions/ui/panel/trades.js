@@ -242,7 +242,6 @@ civitas.PANEL_TRADES = {
 					'</tr>' +
 					'</thead>';
 		for (let z = 1; z < settlements.length; z++) {
-			let settlement = settlements[z];
 			if (my_settlement.status()[settlements[z].id()].influence < 20) {
 				break;
 			}
@@ -315,7 +314,6 @@ civitas.PANEL_TRADES = {
 					'</tr>' +
 					'</thead>';
 		for (let z = 1; z < settlements.length; z++) {
-			let settlement = settlements[z];
 			if (my_settlement.status()[settlements[z].id()].influence < 20) {
 				break;
 			}

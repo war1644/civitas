@@ -95,7 +95,6 @@ civitas.PANEL_WORLD = {
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
 		let places = core.places();
-		let world = core.world();
 		let queue_actions = core.queue();
 		$('.troop, .settlement, .place').remove();
 		for (let i = 0; i < settlements.length; i++) {

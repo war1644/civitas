@@ -323,11 +323,14 @@ civitas.game = function () {
 		if (typeof key === 'undefined') {
 			key = 'live';
 		}
+		return !!localStorage.getItem(civitas.STORAGE_KEY + '.' + key) !== null;
+		/*
 		if (localStorage.getItem(civitas.STORAGE_KEY + '.' + key) !== null) {
 			return true;
 		} else {
 			return false;
 		}
+		*/
 	};
 
 	/**

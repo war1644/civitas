@@ -8074,6 +8074,7 @@ civitas.objects.world = function (params) {
 			x: civitas.utils.get_random(0, civitas.WORLD_SIZE_WIDTH - 1),
 			y: civitas.utils.get_random(0, civitas.WORLD_SIZE_HEIGHT - 1)
 		}
+		/*
 		if (typeof terrain !== 'undefined') {
 			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
 				//if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
@@ -8082,11 +8083,12 @@ civitas.objects.world = function (params) {
 			}
 			return this.get_random_location(terrain);
 		} else {
-			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
-				return hex;
-			}
-			return this.get_random_location(terrain);
+		*/
+		if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+			return hex;
 		}
+		return this.get_random_location(terrain);
+		//}
 	};
 
 	/**
@@ -8554,7 +8556,7 @@ civitas.objects.world = function (params) {
 						if (typeof settlements[lid] !== 'undefined') {
 							color = settlements[lid].color();
 						}
-					} else if (lid !== null && pid !== null) {
+					} else if (lid != null && pid != null) {
 						let place = this.core().get_place(pid);
 						if (place) {
 							if (place.is_claimed() !== false) {
@@ -10789,7 +10791,7 @@ civitas.objects.settlement = function(params) {
 			let discount;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);
-				if (settlement === false) {
+				if (_settlement === false) {
 					if (this.is_player()) {
 						this.core().ui().error('The settlement of <strong>' + settlement + '</strong> does not exist.');
 					}
@@ -10908,7 +10910,7 @@ civitas.objects.settlement = function(params) {
 			let _settlement;
 			if (typeof settlement === 'string' || typeof settlement === 'number') {
 				_settlement = this.core().get_settlement(settlement);
-				if (settlement === false) {
+				if (_settlement === false) {
 					if (this.is_player()) {
 						this.core().ui().error(settlement + ' does not exist.');
 					}
@@ -12524,7 +12526,7 @@ civitas.objects.battleground = function (params) {
 			this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 			return false;
 		}
-		if (source !== null && destination !== null && city && city2) {
+		if (source != null && destination != null && city && city2) {
 			if (destination.side === civitas.BATTLEGROUND_DEFENSE) {
 				_a = '_defense';
 			} else {
@@ -12793,7 +12795,7 @@ civitas.objects.battleground = function (params) {
 			let can_move = civitas.SOLDIERS[source.item].moves;
 			for (let y = 0; y < this._grid.length; y++) {
 				for (let x = 0; x < this._grid[y].length; x++) {
-					if (source !== null && !source.moved && can_move &&
+					if (source != null && !source.moved && can_move &&
 						(Math.abs(y - this._from.y) + Math.abs(x - this._from.x)) <= can_move) {
 						if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
 							this.attack({
@@ -12935,11 +12937,11 @@ civitas.objects.battleground = function (params) {
 			let source = this._grid[sy][sx];
 			let destination = this._grid[cell.y][cell.x];
 			let city = this.core().get_settlement(source.city);
-			if (source !== null && source.moved) {
+			if (source != null && source.moved) {
 				this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 				return false;
 			}
-			if (source !== null && destination === null && city) {
+			if (source != null && destination == null && city) {
 				let can_move = civitas.SOLDIERS[this._grid[sy][sx].item].moves;
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) <= can_move) {
 					this._grid[cell.y][cell.x] = this._grid[sy][sx];
@@ -15492,11 +15494,14 @@ civitas.game = function () {
 		if (typeof key === 'undefined') {
 			key = 'live';
 		}
+		return !!localStorage.getItem(civitas.STORAGE_KEY + '.' + key) !== null;
+		/*
 		if (localStorage.getItem(civitas.STORAGE_KEY + '.' + key) !== null) {
 			return true;
 		} else {
 			return false;
 		}
+		*/
 	};
 
 	/**
@@ -19450,7 +19455,6 @@ civitas.PANEL_WORLD = {
 		let settlement = core.get_settlement();
 		let settlements = core.get_settlements();
 		let places = core.places();
-		let world = core.world();
 		let queue_actions = core.queue();
 		$('.troop, .settlement, .place').remove();
 		for (let i = 0; i < settlements.length; i++) {
@@ -20175,10 +20179,7 @@ civitas.PANEL_NEW_CARAVAN = {
 			let amount = parseInt($(self.handle + ' .caravan-resources-amount').val());
 			let resource = $(self.handle + ' .caravan-resources-select').val();
 			if (resource !== '0') {
-				if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
-					core.ui().error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
-					return false;
-				} else if (typeof self.resources[resource] === 'undefined' && !my_settlement.has_resource(resource, amount)) {
+				if ((typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) || (typeof self.resources[resource] === 'undefined' && !my_settlement.has_resource(resource, amount))) {
 					core.ui().error(my_settlement.name() + ' doesn`t have enough ' + civitas.utils.get_resource_name(resource) + '.');
 					return false;
 				}
@@ -21184,7 +21185,6 @@ civitas.PANEL_TRADES = {
 					'</tr>' +
 					'</thead>';
 		for (let z = 1; z < settlements.length; z++) {
-			let settlement = settlements[z];
 			if (my_settlement.status()[settlements[z].id()].influence < 20) {
 				break;
 			}
@@ -21257,7 +21257,6 @@ civitas.PANEL_TRADES = {
 					'</tr>' +
 					'</thead>';
 		for (let z = 1; z < settlements.length; z++) {
-			let settlement = settlements[z];
 			if (my_settlement.status()[settlements[z].id()].influence < 20) {
 				break;
 			}
