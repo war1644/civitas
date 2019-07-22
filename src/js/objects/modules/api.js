@@ -3,122 +3,127 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.modules.api
- * @returns {civitas.modules.api}
+ * @class api
+ * @returns {api}
  */
-civitas.modules.api = function (params) {
+class api {
 
 	/**
-	 * Reference to the core object.
-	 *
+	 * Object constructor.
+	 * 
 	 * @private
-	 * @type {civitas.game}
+	 * @constructor
+	 * @returns {api}
+	 * @param {Object} params
 	 */
-	this._core = null;
+	constructor (params) {
+		this._core = params.core;
+		return this;
+	}
 
 	/**
 	 * Sign in a visitor using the specified data.
 	 * 
 	 * @param {Object} data
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.login = function (data) {
+	login (data) {
 		return this.request({
 			url: 'login',
 			data: data
 		});
-	};
+	}
 
 	/**
 	 * Sign out the currently logged in user.
 	 * 
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.logout = function () {
+	logout () {
 		return this.request({
 			url: 'logout'
 		});
-	};
+	}
 
 	/**
 	 * Get information about the application and API version.
 	 *
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.api_version = function() {
+	api_version () {
 		return this.request({
 			url: 'version'
 		});
-	};
+	}
 
 	/**
 	 * Get information about the currently logged in user's city.
 	 *
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.city_info = function() {
+	city_info () {
 		return this.request({
 			url: 'city'
 		});
-	};
+	}
 
 	/**
 	 * Perform a heartbeat request and get data about it.
 	 *
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.heartbeat = function() {
+	heartbeat () {
 		return this.request({
 			url: 'heartbeat'
 		});
-	};
+	}
 
 	/**
 	 * Register a visitor using the specified data.
 	 * 
 	 * @param {Object} data
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.register = function (data) {
+	register (data) {
 		return this.request({
 			url: 'register',
 			data: data
 		});
-	};
+	}
 
 	/**
 	 * Export the specified data to the API endpoint.
 	 * 
 	 * @param {Object} data
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.do_export = function (data) {
+	do_export (data) {
 		return this.request({
 			url: 'export',
 			data: data
 		});
-	};
+	}
 
 	/**
 	 * Import the specified data from the API endpoint.
 	 * 
 	 * @param {Object} data
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this.do_import = function (data) {
+	do_import (data) {
 		return this.request({
 			url: 'import',
 			data: data
 		});
-	};
+	}
 
 	/**
 	 * Internal function for performing an API AJAX request.
 	 * 
 	 * @param {Object} data
-	 * @returns {civitas.modules.api}
+	 * @returns {api}
 	 */
-	this._request = function (data) {
+	_request (data) {
 		$.ajax({
 			type: (typeof data.requestType !== 'undefined') ? data.requestType : 'POST',
 			dataType: typeof data.dataType !== 'undefined' ? data.dataType : 'jsonp',
@@ -128,7 +133,7 @@ civitas.modules.api = function (params) {
 			},
 			crossDomain: true,
 			data: data.data,
-			url: civitas.API_URL + data.url,
+			url: game.API_URL + data.url,
 			async: (typeof data.async === 'undefined' || data.async == true) ? true : false,
 			success: data.success instanceof Function ? data.success : function () {
 				// TODO
@@ -138,31 +143,15 @@ civitas.modules.api = function (params) {
 			}
 		});
 		return this;
-	};
-
-	/**
-	 * Object constructor.
-	 * 
-	 * @private
-	 * @constructor
-	 * @returns {civitas.modules.api}
-	 * @param {Object} params
-	 */
-	this.__init = function (params) {
-		this._core = params.core;
-		return this;
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

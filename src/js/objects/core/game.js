@@ -1,195 +1,83 @@
 /**
  * Main Game core object, responsible with the game events.
  * 
- * @class civitas.game
  * @license GPLv3
- * @returns {civitas.game}
+ * @class game
+ * @returns {game}
  */
-civitas.game = function () {
-
-	/**
-	 * List of all the special places in the game.
-	 * 
-	 * @type {Array}
-	 * @private
-	 */
-	this._places = [];
-
-	/**
-	 * List of all the settlements in the game.
-	 * 
-	 * @type {Array}
-	 * @private
-	 */
-	this.settlements = [];
-
-	/**
-	 * Game actions queue.
-	 *
-	 * @private
-	 * @type {Array}
-	 */
-	this._queue = [];
-
-	/**
-	 * List of currently completed achievements.
-	 *
-	 * @private
-	 * @type {Array}
-	 */
-	this._achievements = [];
-
-	/**
-	 * List of currently completed researches.
-	 *
-	 * @private
-	 * @type {Array}
-	 */
-	this._research = [];
-
-	/**
-	 * Total number of achievement points
-	 *
-	 * @private
-	 * @type {Number}
-	 */
-	this._achievement_points = 0;
-
-	/**
-	 * Pointer to the audio subsystem component.
-	 * 
-	 * @private
-	 * @type {Object}
-	 */
-	this.music = null;
-
-	/**
-	 * Current game date.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._date = {
-		day: 1,
-		month: 1,
-		year: 1,
-		day_of_month: 1
-	};
-
-	/**
-	 * Auctioneer data.
-	 * 
-	 * @private
-	 * @type {Object}
-	 */
-	this._auctioneer = {};
-
-	/**
-	 * Black Market data.
-	 * 
-	 * @private
-	 * @type {Object}
-	 */
-	this._black_market = {};
-
-	/**
-	 * Game settings
-	 * 
-	 * @type {Object}
-	 * @private
-	 */
-	this.settings = {
-		worldmap_beautify: civitas.WORLD_BEAUTIFY,
-		worldmap_grid: civitas.WORLD_GRID,
-		music: false
-	};
-
-	/**
-	 * World map data.
-	 *
-	 * @type {civitas.objects.world}
-	 * @private
-	 */
-	this._world = null;
-
-	/**
-	 * Encryption data, for now it's safe (famous last words) since we're only doing local storage.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this.encryption = {
-		key: null,
-		key_size: 256,
-		iv_size: 128,
-		iterations: 100,
-		mode: CryptoJS.mode.CBC,
-		padding: CryptoJS.pad.Pkcs7
-	};
-
-	/**
-	 * Game properties.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this.properties = {
-		difficulty: civitas.DIFFICULTY_EASY,
-		mode: civitas.MODE_SINGLEPLAYER,
-		paused: false
-	};
-
-	/**
-	 * Pointer to the game UI object.
-	 *
-	 * @private
-	 * @type {civitas.objects.ui}
-	 */
-	this._ui = null;
+class game {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.__init = function () {
-		this._ui = new civitas.objects.ui(this);
-		const ui = this.ui();
-		ui.build_main();
+	constructor () {
+		let self = this;
+		this._places = [];
+		this.settlements = [];
+		this._queue = [];
+		this._achievements = [];
+		this._research = [];
+		this._achievement_points = 0;
+		this._auctioneer = {};
+		this._black_market = {};
+		this._date = {
+			day: 1,
+			month: 1,
+			year: 1,
+			day_of_month: 1
+		};
+		this.settings = {
+			worldmap_beautify: game.WORLD_BEAUTIFY,
+			worldmap_grid: game.WORLD_GRID,
+			music: false
+		};
+		this.encryption = {
+			key: null,
+			key_size: 256,
+			iv_size: 128,
+			iterations: 100,
+			mode: CryptoJS.mode.CBC,
+			padding: CryptoJS.pad.Pkcs7
+		};
+		this.properties = {
+			difficulty: game.DIFFICULTY_EASY,
+			mode: game.MODE_SINGLEPLAYER,
+			paused: false
+		};
+		this._ui = new ui(this);
+		this._ui.build_main();
 		this._setup_audio();
 		$(window).bind('resize', function() {
-			ui.resize();
+			self._ui.resize();
 		});
 		$('.ui').on('click', '.cityavatar', function () {
-			ui.open_panel(civitas.PANEL_COUNCIL);
+			self._ui.open_panel('council');
 			return false;
 		}).on('click', 'a[data-action=panel]', function () {
-			let panel = $(this).data('panel').toUpperCase();
-			if (typeof civitas['PANEL_' + panel] !== 'undefined') {
-				ui.open_panel(civitas['PANEL_' + panel]);
-			}
+			let _panel = $(this).data('panel').toLowerCase();
+			self._ui.open_panel(_panel);
 			return false;
 		}).on('click', 'a[data-action=window]', function () {
-			let _window = $(this).data('window').toUpperCase();
-			if (typeof civitas['WINDOW_' + _window] !== 'undefined') {
-				ui.open_window(civitas['WINDOW_' + _window]);
-			}
+			let _window = $(this).data('window').toLowerCase();
+			self._ui.open_window(_window);
 			return false;
 		});
-		ui.resize();
+		this._ui.resize();
 		if (!this.has_storage_data()) {
-			ui.open_window(civitas.WINDOW_SIGNUP);
+			this._ui.open_window('signup');
 		} else {
-			if (civitas.ENCRYPTION === true) {
-				ui.open_window(civitas.WINDOW_SIGNIN);
+			if (game.ENCRYPTION === true) {
+				this._ui.open_window('signin');
 			} else {
 				this.load_game_data();
 			}
 		}
 		return this;
-	};
+	}
 
 	/* =================================== Storage =================================== */
 
@@ -198,15 +86,15 @@ civitas.game = function () {
 	 * 
 	 * @param {String} key
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.reset_storage_data = function(key) {
+	reset_storage_data (key) {
 		if (typeof key === 'undefined') {
 			key = 'live';
 		}
-		localStorage.removeItem(civitas.STORAGE_KEY + '.' + key);
+		localStorage.removeItem(game.STORAGE_KEY + '.' + key);
 		return this;
-	};
+	}
 
 	/**
 	 * Encrypt data using AES encryption.
@@ -215,7 +103,7 @@ civitas.game = function () {
 	 * @param {String} data
 	 * @returns {String}
 	 */
-	this.encrypt = function(data) {
+	encrypt (data) {
 		const salt = CryptoJS.lib.WordArray.random(128 / 8);
 		const key = CryptoJS.PBKDF2(this.encryption.key, salt, {
 			keySize: this.encryption.key_size / 32,
@@ -228,7 +116,7 @@ civitas.game = function () {
 			mode: this.encryption.mode
 		});
 		return salt.toString() + iv.toString() + encrypted.toString();
-	};
+	}
 
 	/**
 	 * Decrypt data using AES encryption.
@@ -237,7 +125,7 @@ civitas.game = function () {
 	 * @param {String} data
 	 * @returns {String}
 	 */
-	this.decrypt = function(data) {
+	decrypt (data) {
 		const salt = CryptoJS.enc.Hex.parse(data.substr(0, 32));
 		const iv = CryptoJS.enc.Hex.parse(data.substr(32, 32))
 		const encrypted = data.substring(64);
@@ -256,7 +144,7 @@ civitas.game = function () {
 			return false;
 		}
 		return decrypted;
-	};
+	}
 
 	/**
 	 * Set game storage data.
@@ -265,22 +153,22 @@ civitas.game = function () {
 	 * @param {String|Number} value
 	 * @param {Boolean} as_text
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.set_storage_data = function (key, value, as_text) {
+	set_storage_data (key, value, as_text) {
 		let data;
 		if (as_text === true) {
 			data = JSON.stringify(value);
 		} else {
 			data = value;
 		}
-		if (civitas.ENCRYPTION === true) {
-			localStorage.setItem(civitas.STORAGE_KEY + '.' + key, this.encrypt(data));
+		if (game.ENCRYPTION === true) {
+			localStorage.setItem(game.STORAGE_KEY + '.' + key, this.encrypt(data));
 		} else {
-			localStorage.setItem(civitas.STORAGE_KEY + '.' + key, data);
+			localStorage.setItem(game.STORAGE_KEY + '.' + key, data);
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Retrieve game storage data.
@@ -290,16 +178,16 @@ civitas.game = function () {
 	 * @public
 	 * @returns {String|Number}
 	 */
-	this.get_storage_data = function (key, as_text) {
+	get_storage_data (key, as_text) {
 		let decrypted;
 		if (typeof key === 'undefined') {
 			key = 'live';
 		}
 		if (this.has_storage_data(key)) {
-			if (civitas.ENCRYPTION === true) {
-				decrypted = this.decrypt(localStorage.getItem(civitas.STORAGE_KEY + '.' + key));
+			if (game.ENCRYPTION === true) {
+				decrypted = this.decrypt(localStorage.getItem(game.STORAGE_KEY + '.' + key));
 			} else {
-				decrypted = localStorage.getItem(civitas.STORAGE_KEY + '.' + key);	
+				decrypted = localStorage.getItem(game.STORAGE_KEY + '.' + key);	
 			}
 			if (decrypted !== false) {
 				if (as_text === true) {
@@ -310,7 +198,7 @@ civitas.game = function () {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Check if there is any stored data.
@@ -319,16 +207,16 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Boolean}
 	 */
-	this.has_storage_data = function(key) {
+	has_storage_data (key) {
 		if (typeof key === 'undefined') {
 			key = 'live';
 		}
-		if (localStorage.getItem(civitas.STORAGE_KEY + '.' + key) !== null) {
+		if (localStorage.getItem(game.STORAGE_KEY + '.' + key) !== null) {
 			return true;
 		} else {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * Import game data.
@@ -337,7 +225,7 @@ civitas.game = function () {
 	 * @param {Object} data
 	 * @returns {Object}
 	 */
-	this.import = function(data) {
+	import (data) {
 		if (data === false) {
 			return false;
 		}
@@ -345,14 +233,14 @@ civitas.game = function () {
 		this.queue(data.queue);
 		this.research(data.research);
 		this.achievements(data.achievements);
-		this.world().seeds(data.seeds);
+		this.world().seeds = data.seeds;
 		this.achievement_points(data.achievement_points);
 		this.date(data.date);
 		this.black_market(data.black_market);
 		this.auctioneer(data.auctioneer);
 		this.set_settings(data.settings);
 		return data;
-	};
+	}
 
 	/**
 	 * Export game data.
@@ -361,7 +249,7 @@ civitas.game = function () {
 	 * @param {Boolean} to_local_storage
 	 * @returns {Object}
 	 */
-	this.export = function(to_local_storage) {
+	export (to_local_storage) {
 		const settlements_list = [];
 		const places_list = [];
 		for (let i = 0; i < this.settlements.length; i++) {
@@ -378,7 +266,7 @@ civitas.game = function () {
 			settlements: settlements_list,
 			places: places_list,
 			difficulty: this.difficulty(),
-			seeds: this.world().seeds(),
+			seeds: this.world().seeds,
 			achievements: this.achievements(),
 			research: this.research(),
 			achievement_points: this.achievement_points(),
@@ -388,7 +276,7 @@ civitas.game = function () {
 			queue: this.queue(),
 			settings: this.get_settings(),
 			info: {
-				version: civitas.VERSION
+				version: game.VERSION
 			}
 		};
 		const hash = CryptoJS.SHA512(JSON.stringify(data));
@@ -402,18 +290,18 @@ civitas.game = function () {
 			return new_data;
 		}
 		return data;
-	};
+	}
 
 	/**
 	 * Save the game data.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.save = function () {
+	save () {
 		this.export(true);
 		return this;
-	};
+	}
 	
 	/* =================================== Date / Time =================================== */
 
@@ -421,9 +309,9 @@ civitas.game = function () {
 	 * Method that gets called each 'day'.
 	 * 
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._do_daily = function () {
+	_do_daily () {
 		this._date.day++;
 		this.ui().log('world', this.format_date());
 		this._process_settlements();
@@ -442,15 +330,15 @@ civitas.game = function () {
 		this.ui().check_storage();
 		this.save_and_refresh();
 		return this;
-	};
+	}
 
 	/**
 	 * Method that gets called each 'month'.
 	 * 
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._do_monthly = function () {
+	_do_monthly () {
 		this._date.day_of_month = 1;
 		this._date.month++;
 		if (this._date.month === 3 || this._date.month === 6 || this._date.month === 9 || this._date.month === 12) {
@@ -462,43 +350,43 @@ civitas.game = function () {
 		//this.auctioneer_process();
 		this.black_market_reset();
 		return this;
-	};
+	}
 
 	/**
 	 * Method that gets called twice per year.
 	 * 
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._do_biannually = function() {
+	_do_biannually () {
 		this.refresh_trades();
 		return this;
-	};
+	}
 
 	/**
 	 * Method that gets called four times every year.
 	 * 
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._do_quarterly = function() {
+	_do_quarterly () {
 		return this;
-	};
+	}
 
 	/**
 	 * Method that gets called each 'year'.
 	 * 
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._do_yearly = function () {
+	_do_yearly () {
 		this.get_settlement().release_mercenaries();
 		this.ui().notify('At the end of the year, mercenaries from your city have been released.');
 		this._refresh_influence();
 		this._date.year++;
 		this.ui().log('game', 'New year!');
 		return this;
-	};
+	}
 
 	/**
 	 * Return the game date in a more manageable form.
@@ -506,9 +394,9 @@ civitas.game = function () {
 	 * @public
 	 * @returns {String}
 	 */
-	this.format_date = function () {
+	format_date () {
 		return 'day ' + this._date.day_of_month + ', month ' + this._date.month + ', year ' + this._date.year;
-	};
+	}
 
 	/**
 	 * Return if the current season is spring.
@@ -516,12 +404,12 @@ civitas.game = function () {
 	 * @returns {Boolean}
 	 * @public
 	 */
-	this.is_spring = function() {
+	is_spring () {
 		if (this._date.month >= 3 && this._date.month < 6) {
 			return true;
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Return if the current season is summer.
@@ -529,12 +417,12 @@ civitas.game = function () {
 	 * @returns {Boolean}
 	 * @public
 	 */
-	this.is_summer = function() {
+	is_summer () {
 		if (this._date.month >= 6 && this._date.month < 9) {
 			return true;
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Get/set the current game date.
@@ -543,12 +431,12 @@ civitas.game = function () {
 	 * @param {Object} value
 	 * @returns {Object}
 	 */
-	this.date = function(value) {
+	date (value) {
 		if (typeof value !== 'undefined') {
 			this._date = value;
 		}
 		return this._date;
-	};
+	}
 
 	/**
 	 * Return if the current season is autumn.
@@ -556,12 +444,12 @@ civitas.game = function () {
 	 * @returns {Boolean}
 	 * @public
 	 */
-	this.is_autumn = function() {
+	is_autumn () {
 		if (this._date.month >= 9 && this._date.month < 12) {
 			return true;
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Return if the current season is winter.
@@ -569,12 +457,12 @@ civitas.game = function () {
 	 * @returns {Boolean}
 	 * @public
 	 */
-	this.is_winter = function() {
+	is_winter () {
 		if (this._date.month >= 12 || this._date.month < 3) {
 			return true;
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Get the current season.
@@ -582,25 +470,25 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Object}
 	 */
-	this.season = function() {
+	season () {
 		let _season = {
 			// Todo
 		};
 		if (this.is_spring()) {
-			_season.id = civitas.SEASON_SPRING;
-			_season.name = civitas.SEASONS[civitas.SEASON_SPRING].capitalize();
+			_season.id = game.SEASON_SPRING;
+			_season.name = game.SEASONS[game.SEASON_SPRING].capitalize();
 		} else if (this.is_summer()) {
-			_season.id = civitas.SEASON_SUMMER;
-			_season.name = civitas.SEASONS[civitas.SEASON_SUMMER].capitalize();
+			_season.id = game.SEASON_SUMMER;
+			_season.name = game.SEASONS[game.SEASON_SUMMER].capitalize();
 		} else if (this.is_autumn()) {
-			_season.id = civitas.SEASON_AUTUMN;
-			_season.name = civitas.SEASONS[civitas.SEASON_AUTUMN].capitalize();
+			_season.id = game.SEASON_AUTUMN;
+			_season.name = game.SEASONS[game.SEASON_AUTUMN].capitalize();
 		} else if (this.is_winter()) {
-			_season.id = civitas.SEASON_WINTER;
-			_season.name = civitas.SEASONS[civitas.SEASON_WINTER].capitalize();
+			_season.id = game.SEASON_WINTER;
+			_season.name = game.SEASONS[game.SEASON_WINTER].capitalize();
 		}
 		return _season;
-	};
+	}
 
 	/* =================================== Auctioneer =================================== */
 
@@ -608,26 +496,26 @@ civitas.game = function () {
 	 * Reset the Auctioneer goods.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.auctioneer_reset = function () {
+	auctioneer_reset () {
 		this._auctioneer = {};
 		this.ui().refresh();
 		return this;
-	};
+	}
 
 	/**
 	 * Remove the specified item from the Auctioneer data.
 	 *
 	 * @public
 	 * @param {String} item
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.auctioneer_delete = function(item) {
+	auctioneer_delete (item) {
 		let auctions = this.auctioneer();
 		delete auctions[item];
 		return this;
-	};
+	}
 
 	/**
 	 * Assign the auctioneer to check for the requested goods.
@@ -635,7 +523,7 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Boolean}
 	 */
-	this.auctioneer_process = function () {
+	auctioneer_process () {
 		let settlements = this.get_settlements();
 		let player_settlement = this.get_settlement();
 		let auctions = this.auctioneer();
@@ -695,7 +583,7 @@ civitas.game = function () {
 			}
 		}
 		return true;
-	};
+	}
 
 	/**
 	 * Get/set the Auctioneer goods list.
@@ -704,12 +592,12 @@ civitas.game = function () {
 	 * @param {Object} value
 	 * @returns {Object}
 	 */
-	this.auctioneer = function (value) {
+	auctioneer (value) {
 		if (typeof value !== 'undefined') {
 			this._auctioneer = value;
 		}
 		return this._auctioneer;
-	};
+	}
 
 	/**
 	 * Use the Auctioneer to search for and buy the specified goods.
@@ -719,11 +607,11 @@ civitas.game = function () {
 	 * @param {Number} amount
 	 * @returns {Object|Boolean}
 	 */
-	this.auctioneer_add = function(resource, amount) {
+	auctioneer_add (resource, amount) {
 		let settlement = this.get_settlement();
 		if (settlement.can_trade()) {
-			let discount = Math.ceil(Math.ceil((civitas.RESOURCES[resource].price * civitas.TRADES_ADDITION) / 100) + Math.ceil((civitas.RESOURCES[resource].price * civitas.AUCTIONEER_DISCOUNT) / 100));
-			const price = civitas.utils.calc_price_plus_discount(amount, resource, discount);
+			let discount = Math.ceil(Math.ceil((game.RESOURCES[resource].price * game.TRADES_ADDITION) / 100) + Math.ceil((game.RESOURCES[resource].price * game.AUCTIONEER_DISCOUNT) / 100));
+			const price = game.calc_price_plus_discount(amount, resource, discount);
 			if (typeof this._auctioneer[resource] !== 'undefined') {
 				const old = this._auctioneer[resource];
 				this._auctioneer[resource] = {
@@ -739,17 +627,17 @@ civitas.game = function () {
 				};
 			}
 			this.ui().refresh();
-			this.ui().notify(settlement.name() + ' placed an order for ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
+			this.ui().notify(settlement.name() + ' placed an order for ' + amount + ' ' + game.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
 			return {
 				buyer: settlement.name(),
 				amount: amount,
-				goods: civitas.utils.get_resource_name(resource),
+				goods: game.get_resource_name(resource),
 				price: price,
 				discount: discount
 			};
 		}
 		return false;
-	};
+	}
 
 	/* =================================== Black Market =================================== */
 
@@ -758,13 +646,13 @@ civitas.game = function () {
 	 *
 	 * @public
 	 * @param {String} item
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.black_market_delete = function(item) {
+	black_market_delete (item) {
 		let goods = this.black_market();
 		delete goods[item];
 		return this;
-	};
+	}
 
 	/**
 	 * List the specified goods onto the Black Market.
@@ -774,9 +662,9 @@ civitas.game = function () {
 	 * @param {Number} amount
 	 * @returns {Object|Boolean}
 	 */
-	this.black_market_add = function(resource, amount) {
+	black_market_add (resource, amount) {
 		let settlement = this.get_settlement();
-		if (!civitas.utils.resource_exists(resource)) {
+		if (!game.resource_exists(resource)) {
 			return false;
 		}
 		if (!settlement.has_resource(resource, amount)) {
@@ -784,8 +672,8 @@ civitas.game = function () {
 			return false;
 		}
 		if (settlement.remove_resource(resource, amount)) {
-			const discount = Math.ceil((civitas.RESOURCES[resource].price * civitas.BLACK_MARKET_DISCOUNT) / 100);
-			const price = civitas.utils.calc_price_minus_discount(amount, resource, discount);
+			const discount = Math.ceil((game.RESOURCES[resource].price * game.BLACK_MARKET_DISCOUNT) / 100);
+			const price = game.calc_price_minus_discount(amount, resource, discount);
 			if (typeof this._black_market[resource] !== 'undefined') {
 				const old = this._black_market[resource];
 				this._black_market[resource] = {
@@ -801,17 +689,17 @@ civitas.game = function () {
 				};
 			}
 			this.ui().refresh();
-			this.ui().notify(settlement.name() + ' placed ' + amount + ' ' + civitas.utils.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + civitas.utils.get_resource_name('coins') + ' next month.', 'Black Market');
+			this.ui().notify(settlement.name() + ' placed ' + amount + ' ' + game.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + game.get_resource_name('coins') + ' next month.', 'Black Market');
 			return {
 				seller: settlement.name(),
 				amount: amount,
-				goods: civitas.utils.get_resource_name(resource),
+				goods: game.get_resource_name(resource),
 				price: price,
 				discount: discount
 			};
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Reset the Black Market goods.
@@ -819,7 +707,7 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.black_market_reset = function () {
+	black_market_reset () {
 		let t_coins = 0;
 		for (let item in this._black_market) {
 			this.get_settlement().inc_coins(this._black_market[item].price);
@@ -829,10 +717,10 @@ civitas.game = function () {
 		this.ui().refresh();
 		$('#tab-blackmarket > .contents > table > tbody').empty();
 		if (t_coins > 0) {
-			this.ui().notify(this.get_settlement().name() + ' received <strong>' + t_coins + '</strong> ' + civitas.utils.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
+			this.ui().notify(this.get_settlement().name() + ' received <strong>' + t_coins + '</strong> ' + game.get_resource_name('coins') + ' from the Black Market for selling goods.', 'Black Market');
 		}
 		return t_coins;
-	};
+	}
 
 	/**
 	 * Return the Black Market goods list.
@@ -841,12 +729,12 @@ civitas.game = function () {
 	 * @param {Object} value
 	 * @returns {Object}
 	 */
-	this.black_market = function (value) {
+	black_market (value) {
 		if (typeof value !== 'undefined') {
 			this._black_market = value;
 		}
 		return this._black_market;
-	};
+	}
 
 	/* =================================== Achivements =================================== */
 
@@ -857,12 +745,12 @@ civitas.game = function () {
 	 * @param {String} handle
 	 * @returns {Object|Boolean}
 	 */
-	this.get_achievement_config_data = function (handle) {
+	get_achievement_config_data (handle) {
 		if (typeof handle === 'string') {
-			return civitas.ACHIEVEMENTS[civitas.ACHIEVEMENTS.findIndexByHandle(handle)];
+			return game.ACHIEVEMENTS[game.ACHIEVEMENTS.findIndexByHandle(handle)];
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Set/get the achievements.
@@ -870,12 +758,12 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Array}
 	 */
-	this.achievements = function(value) {
+	achievements (value) {
 		if (typeof value !== 'undefined') {
 			this._achievements = value;
 		}
 		return this._achievements;
-	};
+	}
 
 	/**
 	 * Set/get the achievement points.
@@ -883,119 +771,119 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.achievement_points = function(value) {
+	achievement_points (value) {
 		if (typeof value !== 'undefined') {
 			this._achievement_points = value;
 		}
 		return this._achievement_points;
-	};
+	}
 
 	/**
 	 * Check for any achievements completion.
 	 *
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.achievements_process = function() {
+	achievements_process () {
 		let condition;
 		let good = false;
 		let achievement;
 		let id;
 		const settlement = this.get_settlement();
 		if (settlement.is_player()) {
-		for (let i = 0; i < civitas.ACHIEVEMENTS.length; i++) {
-			achievement = civitas.ACHIEVEMENTS[i];
-			id = achievement.handle;
-			if (!this.has_achievement(id)) {
-				for (let cond_item in achievement.conditions) {
-					condition = achievement.conditions[cond_item];
-					if (cond_item === 'settlement_level') {
-						if (settlement.level() === condition) {
-							this.do_achievement(id);
-						}
-					}
-					if (cond_item === 'soldiers') {
-						let army = settlement.num_soldiers();
-						if (army >= condition) {
-							this.do_achievement(id);
-						}
-					}
-					if (cond_item === 'ships') {
-						let navy = settlement.num_ships();
-						if (navy >= condition) {
-							this.do_achievement(id);
-						}
-					}
-					if (cond_item === 'population') {
-						if (settlement.population() >= condition) {
-							this.do_achievement(id);
-						}
-					}
-					if (cond_item === 'buildings') {
-						for (let item in condition) {
-							good = true;
-							if (!settlement.is_building_built(item, condition[item])) {
-								good = false;
-								break;
-							}
-						}
-						if (good === true) {
-							this.do_achievement(id);
-						}
-					}
-					if (cond_item === 'resources') {
-						good = true;
-						for (let item in condition) {
-							let amount = settlement.resources[item];
-							if (amount < condition[item]) {
-								good = false;
-								break;
-							}
-						}
-						if (good === true) {
-							this.do_achievement(id);
-						}
-					}
-					if (cond_item === 'storage') {
-						if (condition === 0) {
-							let storage = settlement.storage();
-							if (storage.occupied >= storage.all) {
+			for (let i = 0; i < game.ACHIEVEMENTS.length; i++) {
+				achievement = game.ACHIEVEMENTS[i];
+				id = achievement.handle;
+				if (!this.has_achievement(id)) {
+					for (let cond_item in achievement.conditions) {
+						condition = achievement.conditions[cond_item];
+						if (cond_item === 'settlement_level') {
+							if (settlement.level() === condition) {
 								this.do_achievement(id);
 							}
 						}
-					}
-					if (cond_item === 'achievements') {
-						if (condition === this._achievements.length) {
-							this.do_achievement(id);
+						if (cond_item === 'soldiers') {
+							let army = settlement.num_soldiers();
+							if (army >= condition) {
+								this.do_achievement(id);
+							}
 						}
-					}
-					if (cond_item === 'mercenary') {
-						let merc = settlement.mercenary();
-						if (merc.length >= condition) {
-							this.do_achievement(id);
+						if (cond_item === 'ships') {
+							let navy = settlement.num_ships();
+							if (navy >= condition) {
+								this.do_achievement(id);
+							}
 						}
-					}
-					if (cond_item === 'religion') {
-						let religion = settlement.religion();
-						if (religion.name === condition.capitalize()) {
-							this.do_achievement(id);
+						if (cond_item === 'population') {
+							if (settlement.population() >= condition) {
+								this.do_achievement(id);
+							}
+						}
+						if (cond_item === 'buildings') {
+							for (let item in condition) {
+								good = true;
+								if (!settlement.is_building_built(item, condition[item])) {
+									good = false;
+									break;
+								}
+							}
+							if (good === true) {
+								this.do_achievement(id);
+							}
+						}
+						if (cond_item === 'resources') {
+							good = true;
+							for (let item in condition) {
+								let amount = settlement.resources[item];
+								if (amount < condition[item]) {
+									good = false;
+									break;
+								}
+							}
+							if (good === true) {
+								this.do_achievement(id);
+							}
+						}
+						if (cond_item === 'storage') {
+							if (condition === 0) {
+								let storage = settlement.storage();
+								if (storage.occupied >= storage.all) {
+									this.do_achievement(id);
+								}
+							}
+						}
+						if (cond_item === 'achievements') {
+							if (condition === this._achievements.length) {
+								this.do_achievement(id);
+							}
+						}
+						if (cond_item === 'mercenary') {
+							let merc = settlement.mercenary();
+							if (merc.length >= condition) {
+								this.do_achievement(id);
+							}
+						}
+						if (cond_item === 'religion') {
+							let religion = settlement.religion();
+							if (religion.name === condition.capitalize()) {
+								this.do_achievement(id);
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 		return this;
-	};
+	}
 
 	/**
 	 * Trigger an achievement notification in the game.
 	 * 
 	 * @public
 	 * @param {String} handle
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.do_achievement = function (handle) {
+	do_achievement (handle) {
 		if (!this.has_achievement(handle)) {
 			const achievement = this.get_achievement_config_data(handle);
 			if (achievement) {
@@ -1004,12 +892,12 @@ civitas.game = function () {
 					date: + new Date()
 				});
 				this._achievement_points += achievement.points;
-				this.ui().notify(achievement.description, 'Achievement Completed', false, civitas.NOTIFY_ACHIEVEMENT);
+				this.ui().notify(achievement.description, 'Achievement Completed', false, game.NOTIFY_ACHIEVEMENT);
 				this.save_and_refresh();
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Check if the current player has the achievement specified by its handle.
@@ -1018,7 +906,7 @@ civitas.game = function () {
 	 * @param {String} handle
 	 * @returns {Object|Boolean}
 	 */
-	this.has_achievement = function(handle) {
+	has_achievement (handle) {
 		for (let i = 0; i < this._achievements.length; i++) {
 			if (typeof this._achievements[i] !== 'undefined') {
 				if (this._achievements[i].handle === handle) {
@@ -1027,7 +915,7 @@ civitas.game = function () {
 			}
 		}
 		return false;
-	};
+	}
 
 	/* =================================== Research =================================== */
 
@@ -1038,33 +926,33 @@ civitas.game = function () {
 	 * @param {String} handle
 	 * @returns {Object|Boolean}
 	 */
-	this.get_research_config_data = function (handle) {
+	get_research_config_data (handle) {
 		if (typeof handle === 'string') {
-			return civitas.TECHNOLOGIES[civitas.TECHNOLOGIES.findIndexByHandle(handle)];
+			return game.TECHNOLOGIES[game.TECHNOLOGIES.findIndexByHandle(handle)];
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Perform a research and trigger a notification in the game.
 	 * 
 	 * @public
 	 * @param {String} handle
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.do_research = function (handle) {
+	do_research (handle) {
 		if (!this.has_research(handle)) {
 			const research = this.get_research_config_data(handle);
 			if (research !== false) {
 				this._research.push({
 					handle: handle
 				});
-				this.ui().notify(research.description, 'Research: ' + research.name, false, civitas.NOTIFY_RESEARCH);
+				this.ui().notify(research.description, 'Research: ' + research.name, false, game.NOTIFY_RESEARCH);
 				this.save_and_refresh();
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Check if the player is already researching a technology.
@@ -1072,14 +960,14 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Object|Boolean}
 	 */
-	this.has_research_in_queue = function() {
+	has_research_in_queue () {
 		for (let i = 0; i < this._queue.length; i++) {
-			if (this._queue[i].mode === civitas.ACTION_RESEARCH) {
+			if (this._queue[i].mode === game.ACTION_RESEARCH) {
 				return this._queue[i];
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Check if the current player has the research specified by its handle.
@@ -1088,7 +976,7 @@ civitas.game = function () {
 	 * @param {String} handle
 	 * @returns {Object|Boolean}
 	 */
-	this.has_research = function(handle) {
+	has_research (handle) {
 		for (let i = 0; i < this._research.length; i++) {
 			if (typeof this._research[i] !== 'undefined') {
 				if (this._research[i].handle === handle) {
@@ -1097,7 +985,7 @@ civitas.game = function () {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Set/get the research.
@@ -1105,12 +993,12 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Array}
 	 */
-	this.research = function(value) {
+	research (value) {
 		if (typeof value !== 'undefined') {
 			this._research = value;
 		}
 		return this._research;
-	};
+	}
 
 	/* =================================== Queue =================================== */
 
@@ -1120,12 +1008,12 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Array}
 	 */
-	this.queue = function(value) {
+	queue (value) {
 		if (typeof value !== 'undefined') {
 			this._queue = value;
 		}
 		return this._queue;
-	};
+	}
 
 	/**
 	 * Check if something is in the action queue.
@@ -1134,22 +1022,22 @@ civitas.game = function () {
 	 * @param {String} handle
 	 * @returns {Boolean}
 	 */
-	this.in_queue = function(handle) {
+	in_queue (handle) {
 		for (let i = 0; i < this._queue.length; i++) {
 			if (this._queue[i].data.handle === handle) {
 				return this._queue[i];
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Advance the game queue.
 	 *
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._queue_advance = function() {
+	_queue_advance () {
 		for (let i = 0; i < this._queue.length; i++) {
 			if (this._queue[i].passed === this._queue[i].duration - 1) {
 				this.queue_process_action(i);
@@ -1158,21 +1046,21 @@ civitas.game = function () {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Process an action from the game queue.
 	 *
 	 * @public
 	 * @param {Number} id
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.queue_process_action = function(id) {
+	queue_process_action (id) {
 		let action = this._queue[id];
 		let failed = true;
 		let destination_settlement;
 		let settlement = this.get_settlement(action.source.id);
-		if (action.type === civitas.CAMPAIGN_SCOUT) {
+		if (action.type === game.CAMPAIGN_SCOUT) {
 			destination_settlement = this.get_place(action.destination.id);
 			if (!destination_settlement) {
 				this.queue_remove_action(id);
@@ -1187,48 +1075,48 @@ civitas.game = function () {
 				}
 			}
 		}
-		if (action.mode === civitas.ACTION_CAMPAIGN) {
+		if (action.mode === game.ACTION_CAMPAIGN) {
 			let random = Math.ceil(Math.random() * 100);
 			let amount = Math.floor(action.data.espionage / 100);
 			if (settlement.is_player()) {
-				if (action.type === civitas.CAMPAIGN_ARMY && !settlement.can_recruit_soldiers()) {
+				if (action.type === game.CAMPAIGN_ARMY && !settlement.can_recruit_soldiers()) {
 					this.queue_remove_action(id);
 					return false;
 				}
-				if (action.type === civitas.CAMPAIGN_SPY && !settlement.can_diplomacy()) {
+				if (action.type === game.CAMPAIGN_SPY && !settlement.can_diplomacy()) {
 					this.queue_remove_action(id);
 					return false;
 				}
-				if (action.type === civitas.CAMPAIGN_SCOUT && !settlement.can_diplomacy()) {
+				if (action.type === game.CAMPAIGN_SCOUT && !settlement.can_diplomacy()) {
 					this.queue_remove_action(id);
 					return false;
 				}
-				if (action.type === civitas.CAMPAIGN_CARAVAN && !settlement.can_trade()) {
+				if (action.type === game.CAMPAIGN_CARAVAN && !settlement.can_trade()) {
 					this.queue_remove_action(id);
 					return false;
 				}
 			}
 			switch (action.type) {
-				case civitas.CAMPAIGN_ARMY:
+				case game.CAMPAIGN_ARMY:
 					this.ui().notify('The army sent from ' + settlement.name() + ' to ' + destination_settlement.name() + ' ' + action.duration + ' days ago reached its destination.');
 					if (!this.ui().get_panel('battle')) {
-						this.ui().open_window(civitas.WINDOW_BATTLE, {
+						this.ui().open_window('battle', {
 							source: action,
 							destination: destination_settlement
 						});
 					}
 					break;
-				case civitas.CAMPAIGN_ARMY_RETURN:
+				case game.CAMPAIGN_ARMY_RETURN:
 					this.ui().notify('The army sent from ' + destination_settlement.name() + ' to ' + settlement.name() + ' ' + (action.duration * 2) + ' days ago reached its home town.');
 					destination_settlement.merge_army(action.data.army);
 					destination_settlement.merge_navy(action.data.navy);
 					destination_settlement.merge_resources(action.data.resources);
 					break;
-				case civitas.CAMPAIGN_SPY:
+				case game.CAMPAIGN_SPY:
 					if (typeof action.data.espionage !== 'undefined') {
 						switch (action.data.mission) {
-							case civitas.SPY_MISSION_RELIGION:
-								if (random <= Math.ceil(action.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+							case game.SPY_MISSION_RELIGION:
+								if (random <= Math.ceil(action.data.espionage / game.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (action.source.id === settlement.id()) {
 										destination_settlement.religion(action.data.religion);
 										let religion = destination_settlement.religion();
@@ -1242,8 +1130,8 @@ civitas.game = function () {
 									failed = false;
 								}
 								break;
-							case civitas.SPY_MISSION_INFLUENCE:
-								if (random <= Math.ceil(action.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+							case game.SPY_MISSION_INFLUENCE:
+								if (random <= Math.ceil(action.data.espionage / game.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (action.source.id === settlement.id()) {
 										settlement.raise_influence(action.destination.id, amount);
 										this.ui().notify('The spy you sent ' + action.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and increased your influence over this settlement.');
@@ -1256,14 +1144,14 @@ civitas.game = function () {
 									failed = false;
 								}
 								break;
-							case civitas.SPY_MISSION_STEAL_RESOURCES:
-								if (random <= Math.ceil(action.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+							case game.SPY_MISSION_STEAL_RESOURCES:
+								if (random <= Math.ceil(action.data.espionage / game.MAX_ESPIONAGE_SUCESS_RATE)) {
 									// TODO
 									failed = false;
 								}
 								break;
-							case civitas.SPY_MISSION_INSTIGATE:
-								if (random <= Math.ceil(action.data.espionage / civitas.MAX_ESPIONAGE_SUCESS_RATE)) {
+							case game.SPY_MISSION_INSTIGATE:
+								if (random <= Math.ceil(action.data.espionage / game.MAX_ESPIONAGE_SUCESS_RATE)) {
 									if (action.source.id === settlement.id()) {
 										destination_settlement.lower_prestige(amount);
 										this.ui().notify('The spy you sent ' + action.duration + ' days ago to ' + destination_settlement.name() + ' reached its destination and incited the population to revolt, therefore lowering the prestige of the city.');
@@ -1278,22 +1166,22 @@ civitas.game = function () {
 						}
 					}
 					break;
-				case civitas.CAMPAIGN_SCOUT:
+				case game.CAMPAIGN_SCOUT:
 					this.ui().notify('The spy you sent ' + action.duration + ' days ago to a specific place in the world reached its destination and scouted the area. You can now claim the place.');
 					destination_settlement.scout();
 					break;
-				case civitas.CAMPAIGN_CARAVAN:
+				case game.CAMPAIGN_CARAVAN:
 					let total = 0;
 					if (typeof action.data.resources !== 'undefined') {
 						for (let item in action.data.resources) {
-							if (!civitas.utils.is_virtual_resource(item)) {
-								total += civitas.utils.calc_price(action.data.resources[item], item);
+							if (!game.is_virtual_resource(item)) {
+								total += game.calc_price(action.data.resources[item], item);
 							} else if (item === 'coins') {
 								total += action.data.resources[item];
 							}
 							destination_settlement.add_to_storage(item, action.data.resources[item]);
 						}
-						settlement.raise_influence(action.destination.id, civitas.CARAVAN_INFLUENCE);
+						settlement.raise_influence(action.destination.id, game.CARAVAN_INFLUENCE);
 						this.ui().notify('The caravan sent from ' + settlement.name() + ' to ' + destination_settlement.name() + action.duration + ' days ago reached its destination.');
 					}
 					break;
@@ -1308,26 +1196,26 @@ civitas.game = function () {
 				}
 			}
 			*/
-		} else if (action.mode === civitas.ACTION_DIPLOMACY) {
+		} else if (action.mode === game.ACTION_DIPLOMACY) {
 			if (settlement.is_player() && !settlement.can_diplomacy()) {
 				this.queue_remove_action(id);
 				return false;
 			}
 			switch (action.type) {
-				case civitas.DIPLOMACY_PROPOSE_PACT:
-					settlement.diplomacy(destination_settlement, civitas.DIPLOMACY_PACT);
+				case game.DIPLOMACY_PROPOSE_PACT:
+					settlement.diplomacy(destination_settlement, game.DIPLOMACY_PACT);
 					//failed = false;
 					break;
-				case civitas.DIPLOMACY_PROPOSE_ALLIANCE:
-					settlement.diplomacy(destination_settlement, civitas.DIPLOMACY_ALLIANCE);
+				case game.DIPLOMACY_PROPOSE_ALLIANCE:
+					settlement.diplomacy(destination_settlement, game.DIPLOMACY_ALLIANCE);
 					//failed = false;
 					break;
-				case civitas.DIPLOMACY_PROPOSE_CEASE_FIRE:
-					settlement.diplomacy(destination_settlement, civitas.DIPLOMACY_CEASE_FIRE);
+				case game.DIPLOMACY_PROPOSE_CEASE_FIRE:
+					settlement.diplomacy(destination_settlement, game.DIPLOMACY_CEASE_FIRE);
 					//failed = false;
 					break;
-				case civitas.DIPLOMACY_PROPOSE_JOIN:
-					settlement.diplomacy(destination_settlement, civitas.DIPLOMACY_VASSAL);
+				case game.DIPLOMACY_PROPOSE_JOIN:
+					settlement.diplomacy(destination_settlement, game.DIPLOMACY_VASSAL);
 					//failed = false;
 					break;
 			}
@@ -1336,7 +1224,7 @@ civitas.game = function () {
 					this.ui().notify('The proposal you sent ' + action.duration + ' days ago to ' + destination_settlement.name() + ' was accepted.');
 				}
 			}
-		} else if (action.mode === civitas.ACTION_RESEARCH) {
+		} else if (action.mode === game.ACTION_RESEARCH) {
 			if (settlement.is_player() && !settlement.can_research()) {
 				this.queue_remove_action(id);
 				return false;
@@ -1345,20 +1233,20 @@ civitas.game = function () {
 		}
 		this.queue_remove_action(id);
 		return this;
-	};
+	}
 
 	/**
 	 * Add a campaign to the game queue.
 	 *
 	 * @public
-	 * @param {civitas.objects.settlement} source_settlement
-	 * @param {civitas.objects.settlement} destination_settlement
+	 * @param {settlement} source_settlement
+	 * @param {settlement} destination_settlement
 	 * @param {Number} mode
 	 * @param {Number} type
 	 * @param {Object} data
 	 * @returns {Object}
 	 */
-	this.queue_add = function(source_settlement, destination_settlement, mode, type, data) {
+	queue_add (source_settlement, destination_settlement, mode, type, data) {
 		let duration;
 		let d_loc;
 		let s_loc = source_settlement.location();
@@ -1371,13 +1259,13 @@ civitas.game = function () {
 		}
 		let mission_costs;
 		let action;
-		if (mode === civitas.ACTION_CAMPAIGN) {
-			if (type === civitas.CAMPAIGN_ARMY) {
+		if (mode === game.ACTION_CAMPAIGN) {
+			if (type === game.CAMPAIGN_ARMY) {
 				if (source_settlement.id() === this.get_settlement().id()) {
 					if (!source_settlement.can_recruit_soldiers()) {
 						return false;
 					}
-					mission_costs = source_settlement.adjust_campaign_cost(civitas.ARMY_COSTS, duration);
+					mission_costs = source_settlement.adjust_campaign_cost(game.ARMY_COSTS, duration);
 					if (!source_settlement.has_resources(mission_costs)) {
 						return false;
 					}
@@ -1393,12 +1281,12 @@ civitas.game = function () {
 					if (typeof data.resources === 'undefined') {
 						data.resources = {};
 					}
-					source_settlement.diplomacy(destination_settlement.id(), civitas.DIPLOMACY_WAR);
+					source_settlement.diplomacy(destination_settlement.id(), game.DIPLOMACY_WAR);
 				}
 				this.ui().notify('An army was sent from ' +  source_settlement.name() + ' to ' + destination_settlement.name() + ' and will reach its destination in ' + duration + ' days.');
-			} else if (type === civitas.CAMPAIGN_ARMY_RETURN) {
+			} else if (type === game.CAMPAIGN_ARMY_RETURN) {
 				this.ui().notify('The army sent from ' + destination_settlement.name() + ' to ' + source_settlement.name() + ' ' + duration + ' days ago finished its campaign and will be returning home with the spoils of war.');
-			} else if (type === civitas.CAMPAIGN_SPY) {
+			} else if (type === game.CAMPAIGN_SPY) {
 				if (source_settlement.id() === this.get_settlement().id()) {
 					if (!source_settlement.can_diplomacy()) {
 						return false;
@@ -1406,7 +1294,7 @@ civitas.game = function () {
 					if (data.espionage > source_settlement.espionage()) {
 						return false;
 					}
-					mission_costs = source_settlement.adjust_campaign_cost(civitas.SPY_COSTS, duration);
+					mission_costs = source_settlement.adjust_campaign_cost(game.SPY_COSTS, duration);
 					if (!source_settlement.has_resources(mission_costs)) {
 						return false;
 					}
@@ -1414,17 +1302,17 @@ civitas.game = function () {
 						return false;
 					}
 					source_settlement.lower_espionage(data.espionage);
-					if (data.mission === civitas.SPY_MISSION_RELIGION) {
+					if (data.mission === game.SPY_MISSION_RELIGION) {
 						source_settlement.reset_faith();
 					}
 				}
 				this.ui().notify('A spy was dispatched from ' + source_settlement.name() + ' to ' + destination_settlement.name() + ' and will reach its destination in ' + duration + ' days.');
-			} else if (type === civitas.CAMPAIGN_SCOUT) {
+			} else if (type === game.CAMPAIGN_SCOUT) {
 				if (source_settlement.id() === this.get_settlement().id()) {
 					if (!source_settlement.can_diplomacy()) {
 						return false;
 					}
-					mission_costs = source_settlement.adjust_campaign_cost(civitas.SCOUT_COSTS, duration);
+					mission_costs = source_settlement.adjust_campaign_cost(game.SCOUT_COSTS, duration);
 					if (!source_settlement.has_resources(mission_costs)) {
 						return false;
 					}
@@ -1433,12 +1321,12 @@ civitas.game = function () {
 					}
 				}
 				this.ui().notify('A scout was dispatched from ' + source_settlement.name() + ' to a specific place in the world and will reach its destination in ' + duration + ' days.');
-			} else if (type === civitas.CAMPAIGN_CARAVAN) {
+			} else if (type === game.CAMPAIGN_CARAVAN) {
 				if (source_settlement.id() === this.get_settlement().id()) {
 					if (!source_settlement.can_trade()) {
 						return false;
 					}
-					mission_costs = source_settlement.adjust_campaign_cost(civitas.CARAVAN_COSTS, duration, data.resources);
+					mission_costs = source_settlement.adjust_campaign_cost(game.CARAVAN_COSTS, duration, data.resources);
 					if (!source_settlement.has_resources(mission_costs)) {
 						return false;
 					}
@@ -1448,12 +1336,12 @@ civitas.game = function () {
 				}
 				this.ui().notify('A caravan was dispatched from ' + source_settlement.name() + ' to ' + destination_settlement.name() + ' and will reach its destination in ' + duration + ' days.');
 			}
-		} else if (mode === civitas.ACTION_DIPLOMACY) {
+		} else if (mode === game.ACTION_DIPLOMACY) {
 			duration = Math.ceil(duration / 2);
 			if (source_settlement.id() === this.get_settlement().id()) {
 				this.ui().notify('A diplomacy proposal was dispatched from ' + source_settlement.name() + ' to ' + destination_settlement.name() + ' and will reach its destination in ' + duration + ' days.');
 			}
-		} else if (mode === civitas.ACTION_RESEARCH) {
+		} else if (mode === game.ACTION_RESEARCH) {
 			// Todo
 			this.ui().notify('Your city`s Academy started researching ' + data.name + ' and will finish it in ' + duration + ' days.');
 		}
@@ -1479,23 +1367,23 @@ civitas.game = function () {
 		this._queue.push(action);
 		this.save_and_refresh();
 		return action;
-	};
+	}
 
 	/**
 	 * Remove an action from the game queue.
 	 *
 	 * @public
 	 * @param {Number} id
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.queue_remove_action = function(id) {
+	queue_remove_action (id) {
 		const panel = this.ui().get_panel('campaign');
 		if (panel) {
 			panel.destroy();
 		}
 		this._queue.splice(id, 1);
 		return this;
-	};
+	}
 
 	/* =================================== Others =================================== */
 
@@ -1504,9 +1392,9 @@ civitas.game = function () {
 	 * 
 	 * @private
 	 * @param {String} name
-	 * @returns {civitas.objects.settlement|Boolean}
+	 * @returns {settlement|Boolean}
 	 */
-	this._process_settlements = function() {
+	_process_settlements () {
 		const settlements = this.get_settlements();
 		let buildings;
 		for (let i = 0; i < settlements.length; i++) {
@@ -1531,16 +1419,16 @@ civitas.game = function () {
 				}
 			}
 		}
-	};
+	}
 
 	/**
 	 * Get a pointer to a special place (har har).
 	 * 
 	 * @public
 	 * @param {String|Number} name
-	 * @returns {civitas.objects.place|Boolean}
+	 * @returns {place|Boolean}
 	 */
-	this.get_place = function (id) {
+	get_place (id) {
 		const _places = this.places();
 		if (typeof id === 'number') {
 			for (let i = 0; i < _places.length; i++) {
@@ -1552,16 +1440,16 @@ civitas.game = function () {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Get a pointer to the player's settlement.
 	 * 
 	 * @public
 	 * @param {String|Number} name
-	 * @returns {civitas.objects.settlement|Boolean}
+	 * @returns {settlement|Boolean}
 	 */
-	this.get_settlement = function (name) {
+	get_settlement (name) {
 		const settlements = this.get_settlements();
 		if (typeof name === 'undefined') {
 			return settlements[0];
@@ -1584,7 +1472,7 @@ civitas.game = function () {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Load the player settlement from specified data.
@@ -1593,17 +1481,17 @@ civitas.game = function () {
 	 * @param {Object} data
 	 * @returns {Object|Boolean}
 	 */
-	this._load_player_settlement = function (data) {
+	_load_player_settlement (data) {
 		const player_s_data = data.settlements[0];
 		if (player_s_data) {
 			player_s_data.core = this;
-			const new_settlement = new civitas.objects.settlement(player_s_data);
+			const new_settlement = new settlement(player_s_data);
 			this.settlements.push(new_settlement);
 			new_settlement.setup_initial_buildings(player_s_data.buildings);
 			return data;
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Get the number of all the settlements in game.
@@ -1611,9 +1499,9 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.get_num_settlements = function () {
+	get_num_settlements () {
 		return this.settlements.length;
-	};
+	}
 
 	/**
 	 * Get the list of all the settlements in game.
@@ -1621,9 +1509,9 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Array}
 	 */
-	this.get_settlements = function () {
+	get_settlements () {
 		return this.settlements;
-	};
+	}
 
 	/**
 	 * Generate random army soldiers.
@@ -1632,37 +1520,37 @@ civitas.game = function () {
 	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_army = function(s_type) {
+	generate_random_army (s_type) {
 		const army = {};
-		for (let item in civitas.SOLDIERS) {
-			if (s_type === civitas.CITY) {
+		for (let item in game.SOLDIERS) {
+			if (s_type === game.CITY) {
 				if (item === 'cannon' || item === 'catapult') {
-					army[item] = civitas.utils.get_random(1, 2);
+					army[item] = game.get_random(1, 2);
 				} else {
-					army[item] = civitas.utils.get_random(5, 10);
+					army[item] = game.get_random(5, 10);
 				}
-			} else if (s_type === civitas.METROPOLIS) {
+			} else if (s_type === game.METROPOLIS) {
 				if (item === 'cannon' || item === 'catapult') {
-					army[item] = civitas.utils.get_random(3, 5);
+					army[item] = game.get_random(3, 5);
 				} else {
-					army[item] = civitas.utils.get_random(20, 30);
+					army[item] = game.get_random(20, 30);
 				}
-			} else if (s_type === civitas.VILLAGE) {
+			} else if (s_type === game.VILLAGE) {
 				if (item === 'cannon' || item === 'catapult') {
 					// Todo
 				} else {
-					army[item] = civitas.utils.get_random(0, 2);
+					army[item] = game.get_random(0, 2);
 				}
-			} else if (s_type === civitas.CAMP) {
+			} else if (s_type === game.CAMP) {
 				if (item === 'cannon' || item === 'catapult') {
 					// Todo
 				} else {
-					army[item] = civitas.utils.get_random(3, 5);
+					army[item] = game.get_random(3, 5);
 				}
 			}
 		}
 		return army;
-	};
+	}
 
 	/**
 	 * Generate random navy ships.
@@ -1671,21 +1559,21 @@ civitas.game = function () {
 	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_navy = function(s_type) {
+	generate_random_navy (s_type) {
 		const navy = {};
-		for (let item in civitas.SHIPS) {
-			if (s_type === civitas.CITY) {
-				navy[item] = civitas.utils.get_random(3, 5);
-			} else if (s_type === civitas.METROPOLIS) {
-				navy[item] = civitas.utils.get_random(10, 20);
-			} else if (s_type === civitas.VILLAGE) {
-				navy[item] = civitas.utils.get_random(0, 2);
-			} else if (s_type === civitas.CAMP) {
+		for (let item in game.SHIPS) {
+			if (s_type === game.CITY) {
+				navy[item] = game.get_random(3, 5);
+			} else if (s_type === game.METROPOLIS) {
+				navy[item] = game.get_random(10, 20);
+			} else if (s_type === game.VILLAGE) {
+				navy[item] = game.get_random(0, 2);
+			} else if (s_type === game.CAMP) {
 				navy[item] = 0;
 			}
 		}
 		return navy;
-	};
+	}
 
 	/**
 	 * Generate random resources and trades.
@@ -1695,7 +1583,7 @@ civitas.game = function () {
 	 * @param {Number} settlement
 	 * @returns {Object}
 	 */
-	this.generate_random_resources = function(full, settlement) {
+	generate_random_resources (full, settlement) {
 		const resources = {};
 		let num_resources;
 		let trades = {
@@ -1704,69 +1592,69 @@ civitas.game = function () {
 		};
 		let resource;
 		if (full === true) {
-			if (settlement === civitas.CITY) {
-				resources.coins = civitas.utils.get_random(10000, 1000000);
-				resources.fame = civitas.utils.get_random(50000, 100000);
-				resources.prestige = civitas.utils.get_random(civitas.MIN_PRESTIGE_VALUE, civitas.MAX_PRESTIGE_VALUE);
-				resources.espionage = civitas.utils.get_random(civitas.MIN_ESPIONAGE_VALUE, civitas.MAX_ESPIONAGE_VALUE);
-				resources.research = civitas.utils.get_random(civitas.MIN_RESEARCH_VALUE, civitas.MAX_RESEARCH_VALUE);
-				resources.faith = civitas.utils.get_random(civitas.MIN_FAITH_VALUE, civitas.MAX_FAITH_VALUE);
-			} else if (settlement === civitas.METROPOLIS) {
-				resources.coins = civitas.utils.get_random(100000, 10000000);
-				resources.fame = civitas.utils.get_random(500000, 1000000);
-				resources.prestige = civitas.utils.get_random(5000, civitas.MAX_PRESTIGE_VALUE);
-				resources.espionage = civitas.utils.get_random(500, civitas.MAX_ESPIONAGE_VALUE);
-				resources.research = civitas.utils.get_random(500, civitas.MAX_RESEARCH_VALUE);
-				resources.faith = civitas.utils.get_random(500, civitas.MAX_FAITH_VALUE);
-			} else if (settlement === civitas.VILLAGE) {
-				resources.coins = civitas.utils.get_random(10000, 30000);
-				resources.fame = civitas.utils.get_random(1, 50000);
-				resources.prestige = civitas.utils.get_random(civitas.MIN_PRESTIGE_VALUE, 100);
-				resources.espionage = civitas.utils.get_random(civitas.MIN_ESPIONAGE_VALUE, 2);
-				resources.research = civitas.utils.get_random(civitas.MIN_RESEARCH_VALUE, 2);
-				resources.faith = civitas.utils.get_random(civitas.MIN_FAITH_VALUE, civitas.MAX_FAITH_VALUE);
-			} else if (settlement === civitas.CAMP) {
-				resources.coins = civitas.utils.get_random(1000, 10000);
-				resources.fame = civitas.MIN_FAME_VALUE;
-				resources.prestige = civitas.MIN_PRESTIGE_VALUE;
-				resources.espionage = civitas.MIN_ESPIONAGE_VALUE;
-				resources.research = civitas.MIN_RESEARCH_VALUE;
-				resources.faith = civitas.MIN_FAITH_VALUE;
+			if (settlement === game.CITY) {
+				resources.coins = game.get_random(10000, 1000000);
+				resources.fame = game.get_random(50000, 100000);
+				resources.prestige = game.get_random(game.MIN_PRESTIGE_VALUE, game.MAX_PRESTIGE_VALUE);
+				resources.espionage = game.get_random(game.MIN_ESPIONAGE_VALUE, game.MAX_ESPIONAGE_VALUE);
+				resources.research = game.get_random(game.MIN_RESEARCH_VALUE, game.MAX_RESEARCH_VALUE);
+				resources.faith = game.get_random(game.MIN_FAITH_VALUE, game.MAX_FAITH_VALUE);
+			} else if (settlement === game.METROPOLIS) {
+				resources.coins = game.get_random(100000, 10000000);
+				resources.fame = game.get_random(500000, 1000000);
+				resources.prestige = game.get_random(5000, game.MAX_PRESTIGE_VALUE);
+				resources.espionage = game.get_random(500, game.MAX_ESPIONAGE_VALUE);
+				resources.research = game.get_random(500, game.MAX_RESEARCH_VALUE);
+				resources.faith = game.get_random(500, game.MAX_FAITH_VALUE);
+			} else if (settlement === game.VILLAGE) {
+				resources.coins = game.get_random(10000, 30000);
+				resources.fame = game.get_random(1, 50000);
+				resources.prestige = game.get_random(game.MIN_PRESTIGE_VALUE, 100);
+				resources.espionage = game.get_random(game.MIN_ESPIONAGE_VALUE, 2);
+				resources.research = game.get_random(game.MIN_RESEARCH_VALUE, 2);
+				resources.faith = game.get_random(game.MIN_FAITH_VALUE, game.MAX_FAITH_VALUE);
+			} else if (settlement === game.CAMP) {
+				resources.coins = game.get_random(1000, 10000);
+				resources.fame = game.MIN_FAME_VALUE;
+				resources.prestige = game.MIN_PRESTIGE_VALUE;
+				resources.espionage = game.MIN_ESPIONAGE_VALUE;
+				resources.research = game.MIN_RESEARCH_VALUE;
+				resources.faith = game.MIN_FAITH_VALUE;
 			}
 		}
-		if (settlement === civitas.CITY) {
-			num_resources = civitas.utils.get_random(5, 30);
-		} else if (settlement === civitas.METROPOLIS) {
-			num_resources = civitas.utils.get_random(15, 80);
-		} else if (settlement === civitas.VILLAGE) {
-			num_resources = civitas.utils.get_random(2, 10);
-		} else if (settlement === civitas.CAMP) {
-			num_resources = civitas.utils.get_random(2, 5);
+		if (settlement === game.CITY) {
+			num_resources = game.get_random(5, 30);
+		} else if (settlement === game.METROPOLIS) {
+			num_resources = game.get_random(15, 80);
+		} else if (settlement === game.VILLAGE) {
+			num_resources = game.get_random(2, 10);
+		} else if (settlement === game.CAMP) {
+			num_resources = game.get_random(2, 5);
 		}
 		for (let i = 0; i < num_resources; i++) {
 			resource = this.get_random_resource();
-			resources[resource] = civitas.utils.get_random(10, 500);
-			if (settlement === civitas.CITY || settlement === civitas.METROPOLIS) {
+			resources[resource] = game.get_random(10, 500);
+			if (settlement === game.CITY || settlement === game.METROPOLIS) {
 				if (resources[resource] > 450) {
-					trades.exports[resource] = civitas.IMPORTANCE_VITAL;
+					trades.exports[resource] = game.IMPORTANCE_VITAL;
 				} else if (resources[resource] > 300 && resources[resource] <= 450) {
-					trades.exports[resource] = civitas.IMPORTANCE_HIGH;
+					trades.exports[resource] = game.IMPORTANCE_HIGH;
 				} else if (resources[resource] > 150 && resources[resource] <= 250) {
-					trades.exports[resource] = civitas.IMPORTANCE_MEDIUM;
+					trades.exports[resource] = game.IMPORTANCE_MEDIUM;
 				}
 			}
 		}
-		if (settlement === civitas.CITY || settlement === civitas.METROPOLIS) {
+		if (settlement === game.CITY || settlement === game.METROPOLIS) {
 			for (let i = 0; i < num_resources; i++) {
 				resource= this.get_random_resource();
-				trades.imports[resource] = civitas.utils.get_random(civitas.IMPORTANCE_LOW, civitas.IMPORTANCE_VITAL);
+				trades.imports[resource] = game.get_random(game.IMPORTANCE_LOW, game.IMPORTANCE_VITAL);
 			}
 		}
 		return {
 			resources: resources,
 			trades: trades
 		};
-	};
+	}
 
 	/**
 	 * Get a random resource key.
@@ -1774,15 +1662,15 @@ civitas.game = function () {
 	 * @public
 	 * @returns {String}
 	 */
-	this.get_random_resource = function() {
-		const keys = Object.keys(civitas.RESOURCES);
+	get_random_resource () {
+		const keys = Object.keys(game.RESOURCES);
 		const resource = keys[keys.length * Math.random() << 0];
-		if (!civitas.utils.is_virtual_resource(resource)) {
+		if (!game.is_virtual_resource(resource)) {
 			return resource;
 		} else {
 			return this.get_random_resource();
 		}
-	};
+	}
 
 	/**
 	 * Generate random settlement data.
@@ -1791,38 +1679,38 @@ civitas.game = function () {
 	 * @param {Number} s_type
 	 * @returns {Object}
 	 */
-	this.generate_random_settlement_data = function(s_type) {
+	generate_random_settlement_data (s_type) {
 		let level;
 		if (typeof s_type === 'undefined') {
-			s_type = civitas.utils.get_random(0, civitas.SETTLEMENTS.length - 1);
+			s_type = game.get_random(0, game.SETTLEMENTS.length - 1);
 		}
 		const resources = this.generate_random_resources(true, s_type);
-		if (s_type === civitas.CITY) {
-			level = civitas.utils.get_random(10, 30);
-		} else if (s_type === civitas.METROPOLIS) {
-			level = civitas.utils.get_random(30, civitas.MAX_SETTLEMENT_LEVEL);
-		} else if (s_type === civitas.VILLAGE) {
-			level = civitas.utils.get_random(1, 5);
+		if (s_type === game.CITY) {
+			level = game.get_random(10, 30);
+		} else if (s_type === game.METROPOLIS) {
+			level = game.get_random(30, game.MAX_SETTLEMENT_LEVEL);
+		} else if (s_type === game.VILLAGE) {
+			level = game.get_random(1, 5);
 		} else {
 			level = 1;
 		}
 		const settlement = {
-			icon: civitas.utils.get_random(1, civitas.MAX_SETTLEMENT_ICONS),
+			icon: game.get_random(1, game.MAX_SETTLEMENT_ICONS),
 			type: s_type,
 			player: false,
-			name: civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
-			religion: s_type === civitas.CAMP ? civitas.RELIGION_NONE : this.get_random_religion(),
+			name: game.get_random_unique(game.SETTLEMENT_NAMES),
+			religion: s_type === game.CAMP ? game.RELIGION_NONE : this.get_random_religion(),
 			nationality: this.get_random_nationality(),
 			level: level,
 			resources: resources.resources,
 			army: this.generate_random_army(s_type),
 			navy: this.generate_random_navy(s_type)
 		}
-		if (s_type === civitas.CITY || s_type === civitas.METROPOLIS) {
+		if (s_type === game.CITY || s_type === game.METROPOLIS) {
 			settlement.trades = resources.trades;
 		}
 		return settlement;
-	};
+	}
 
 	/**
 	 * Generate a random nationality.
@@ -1830,9 +1718,9 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.get_random_nationality = function() {
-		return civitas.utils.get_random(1, civitas.NATIONS.length - 1);
-	};
+	get_random_nationality () {
+		return game.get_random(1, game.NATIONS.length - 1);
+	}
 
 	/**
 	 * Generate a random religion.
@@ -1840,9 +1728,9 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.get_random_religion = function() {
-		return civitas.utils.get_random(1, civitas.RELIGIONS.length - 1);
-	};
+	get_random_religion () {
+		return game.get_random(1, game.RELIGIONS.length - 1);
+	}
 
 	/**
 	 * Generate a random personality.
@@ -1850,9 +1738,9 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.get_random_personality = function() {
-		return civitas.utils.get_random(1, civitas.PERSONALITIES.length - 1);
-	};
+	get_random_personality () {
+		return game.get_random(1, game.PERSONALITIES.length - 1);
+	}
 
 	/**
 	 * Create the player settlement.
@@ -1863,26 +1751,26 @@ civitas.game = function () {
 	 * @param {Number} nation
 	 * @param {Number} climate
 	 * @param {Number} avatar
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._create_player_settlement = function (name, cityname, nation, climate, avatar) {
+	_create_player_settlement (name, cityname, nation, climate, avatar) {
 		const difficulty = this.difficulty();
 		this.add_settlement({
 			name: cityname,
 			climate: climate,
 			avatar: avatar,
-			religion: civitas.RELIGION_NONE,
+			religion: game.RELIGION_NONE,
 			nationality: nation,
-			army: civitas.INITIAL_SEED[difficulty - 1].military.army,
-			navy: civitas.INITIAL_SEED[difficulty - 1].military.navy,
-			resources: civitas.INITIAL_SEED[difficulty - 1].resources,
+			army: game.INITIAL_SEED[difficulty - 1].military.army,
+			navy: game.INITIAL_SEED[difficulty - 1].military.navy,
+			resources: game.INITIAL_SEED[difficulty - 1].resources,
 			core: this
 		}, 0, {
 			name: name,
 			avatar: avatar
-		}).setup_initial_buildings(civitas.INITIAL_SEED[difficulty - 1].buildings);
+		}).setup_initial_buildings(game.INITIAL_SEED[difficulty - 1].buildings);
 		return this;
-	};
+	}
 
 	/**
 	 * Add a settlement into the world.
@@ -1891,10 +1779,10 @@ civitas.game = function () {
 	 * @param {Object} s_data
 	 * @param {Number} id
 	 * @param {Object} p_data
-	 * @returns {civitas.objects.settlement|Boolean}
+	 * @returns {settlement|Boolean}
 	 */
-	this.add_settlement = function(s_data, id, p_data) {
-		if (this.get_num_settlements() <= civitas.MAX_SETTLEMENTS) {
+	add_settlement (s_data, id, p_data) {
+		if (this.get_num_settlements() <= game.MAX_SETTLEMENTS) {
 			let climate;
 			let new_settlement;
 			let ruler;
@@ -1909,15 +1797,15 @@ civitas.game = function () {
 			if (typeof s_data.climate !== 'undefined') {
 				climate = s_data.climate;
 			} else {
-				climate = civitas.CLIMATE_TEMPERATE;
+				climate = game.CLIMATE_TEMPERATE;
 			}
 			if (player === false) {
 				location = this.world().get_random_location(this.world().get_terrain_from_climate());
 				ruler = {
-					title: (s_data.type === civitas.CAMP) ? 'Warlord' : 'Mayor',
-					avatar: civitas.utils.get_random(1, civitas.AVATARS),
-					personality: (s_data.type === civitas.CAMP) ? civitas.PERSONALITY_WARLORD : this.get_random_personality(),
-					name: civitas.utils.get_random_unique(civitas.NAMES)
+					title: (s_data.type === game.CAMP) ? 'Warlord' : 'Mayor',
+					avatar: game.get_random(1, game.AVATARS),
+					personality: (s_data.type === game.CAMP) ? game.PERSONALITY_WARLORD : this.get_random_personality(),
+					name: game.get_random_unique(game.NAMES)
 				};
 			} else {
 				location = this.world().get_random_location(this.world().get_terrain_from_climate(climate));
@@ -1926,19 +1814,19 @@ civitas.game = function () {
 					name: p_data.name,
 					title: '',
 					avatar: p_data.avatar,
-					personality: civitas.PERSONALITY_BALANCED
+					personality: game.PERSONALITY_BALANCED
 				}
 			}
-			new_settlement = new civitas.objects.settlement({
+			new_settlement = new settlement({
 				core: this,
 				properties: {
 					id: id,
-					type: typeof s_data.type !== 'undefined' ? s_data.type : civitas.CITY,
-					name: typeof s_data.name !== 'undefined' ? s_data.name : civitas.utils.get_random_unique(civitas.SETTLEMENT_NAMES),
+					type: typeof s_data.type !== 'undefined' ? s_data.type : game.CITY,
+					name: typeof s_data.name !== 'undefined' ? s_data.name : game.get_random_unique(game.SETTLEMENT_NAMES),
 					player: player,
 					level: typeof s_data.level !== 'undefined' ? s_data.level : 1,
 					climate: climate,
-					religion: typeof s_data.religion !== 'undefined' ? s_data.religion : civitas.RELIGION_CHRISTIANITY,
+					religion: typeof s_data.religion !== 'undefined' ? s_data.religion : game.RELIGION_CHRISTIANITY,
 					ruler: ruler,
 					nationality: s_data.nationality,
 					icon: typeof s_data.icon !== 'undefined' ? s_data.icon : 1
@@ -1951,8 +1839,8 @@ civitas.game = function () {
 			});
 			if (player === false) {
 				this.get_settlement().status(id, {
-					influence: (s_data.type === civitas.CAMP) ? civitas.MIN_INFLUENCE_VALUE : Math.floor(civitas.MAX_INFLUENCE_VALUE / 2),
-					status: (s_data.type === civitas.CAMP) ? civitas.DIPLOMACY_WAR : civitas.DIPLOMACY_TRUCE
+					influence: (s_data.type === game.CAMP) ? game.MIN_INFLUENCE_VALUE : Math.floor(game.MAX_INFLUENCE_VALUE / 2),
+					status: (s_data.type === game.CAMP) ? game.DIPLOMACY_WAR : game.DIPLOMACY_TRUCE
 				});
 			}
 			this.settlements.push(new_settlement);
@@ -1960,7 +1848,7 @@ civitas.game = function () {
 		} else {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * Remove a settlement from the world
@@ -1969,7 +1857,7 @@ civitas.game = function () {
 	 * @param {Number} id
 	 * @returns {Boolean}
 	 */
-	this.disband_city = function(id) {
+	disband_city (id) {
 		// TODO
 		if (id <= 0) {
 			return false;
@@ -1981,16 +1869,16 @@ civitas.game = function () {
 			this.settlements.splice(id, 1);
 			return true;
 		}
-	};
+	}
 
 	/**
 	 * Create all the other settlements in the world.
 	 * 
 	 * @private
 	 * @param {Object} data
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._setup_neighbours = function (data) {
+	_setup_neighbours (data) {
 		let new_settlement;
 		let new_place;
 		let s_data;
@@ -2001,53 +1889,53 @@ civitas.game = function () {
 			for (let i = 1; i < data.settlements.length; i++) {
 				s_data = data.settlements[i];
 				s_data.core = this;
-				new_settlement = new civitas.objects.settlement(s_data);
+				new_settlement = new settlement(s_data);
 				this.settlements.push(new_settlement);
 			}
 			for (let i = 0; i < data.places.length; i++) {
 				s_data = data.places[i];
 				s_data.core = this;
-				new_place = new civitas.objects.place(s_data);
+				new_place = new place(s_data);
 				this._places.push(new_place);
 			}
 		} else {
-			for (let i = 0; i < civitas.SETTLEMENTS.length; i++) {
-				num = civitas.INITIAL_SEED[difficulty - 1].settlements[i];
+			for (let i = 0; i < game.SETTLEMENTS.length; i++) {
+				num = game.INITIAL_SEED[difficulty - 1].settlements[i];
 				for (let z = 0; z < num; z++) {
 					this.add_random_settlement(i);
 				}
 			}
-			num_places = civitas.INITIAL_SEED[difficulty - 1].places;
+			num_places = game.INITIAL_SEED[difficulty - 1].places;
 			for (let i = 0; i < num_places; i++) {
 				this.add_random_place(i);
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Add a random settlement into the world.
 	 * 
 	 * @public
 	 * @param {Number} s_type
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.add_random_settlement = function(s_type) {
+	add_random_settlement (s_type) {
 		const data = this.generate_random_settlement_data(s_type);
 		this.add_settlement(data);
 		return this;
-	};
+	}
 
 	/**
 	 * Add a random place into the world.
 	 *
 	 * @public
 	 * @param {Number} id
-	 * @returns {civitas.objects.place}
+	 * @returns {place}
 	 */
-	this.add_random_place = function(id) {
+	add_random_place (id) {
 		let location = this.world().get_random_location();
-		let place = new civitas.objects.place({
+		let _place = new place({
 			core: this,
 			properties: {
 				id: id,
@@ -2063,45 +1951,45 @@ civitas.game = function () {
 			},
 			location: location
 		});
-		this._places.push(place);
-		return place;
-	};
+		this._places.push(_place);
+		return _place;
+	}
 
-	this.generate_random_place_resources = function() {
+	generate_random_place_resources () {
 		let resources = {};
 		let plusminus;
-		for (let item in civitas.PLACE_RESOURCES_REQ) {
-			if (civitas.utils.is_virtual_resource(item)) {
-				resources[item] = civitas.PLACE_RESOURCES_REQ[item];
+		for (let item in game.PLACE_RESOURCES_REQ) {
+			if (game.is_virtual_resource(item)) {
+				resources[item] = game.PLACE_RESOURCES_REQ[item];
 			} else {
-				plusminus = (civitas.PLACE_RESOURCES_REQ[item] * 10) / 100;
-				resources[item] = civitas.utils.get_random(civitas.PLACE_RESOURCES_REQ[item] - plusminus, civitas.PLACE_RESOURCES_REQ[item] + plusminus);
+				plusminus = (game.PLACE_RESOURCES_REQ[item] * 10) / 100;
+				resources[item] = game.get_random(game.PLACE_RESOURCES_REQ[item] - plusminus, game.PLACE_RESOURCES_REQ[item] + plusminus);
 			}
 		}
 		return resources;
-	};
+	}
 
 	/**
 	 * Level up the user settlement.
 	 *
 	 * @public
-	 * @return {civitas.game}
+	 * @return {game}
 	 */
-	this.level_up = function() {
+	level_up () {
 		const settlement = this.get_settlement();
 		settlement.level_up();
 		this.ui().refresh().notify('Your settlement is now level ' + settlement.level() + '.');
-	};
+	}
 
 	/**
 	 * Return a pointer to the game UI object.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.ui = function() {
+	ui () {
 		return this._ui;
-	};
+	}
 
 	/**
 	 * Get a list of advice from the city council.
@@ -2109,7 +1997,7 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Array}
 	 */
-	this.advice = function() {
+	advice () {
 		const advices = [];
 		const settlement = this.get_settlement();
 		if (settlement.is_player()) {
@@ -2149,33 +2037,33 @@ civitas.game = function () {
 			if (resources.faith < 100) {
 				advices.push('Your settlement`s faith is too low, build a Church or upgrade it to be able to gather faith and choose/switch religions.');
 			}
-			if (resources.faith === civitas.MAX_FAITH_VALUE) {
+			if (resources.faith === game.MAX_FAITH_VALUE) {
 				advices.push('You are at maximum faith, start using it from your settlement`s Church.');
 			}
 			if (resources.research < 100) {
 				advices.push('Your settlement`s research is too low, build an Academy or upgrade it to be able to gather research and use it.');
 			}
-			if (resources.research === civitas.MAX_RESEARCH_VALUE) {
+			if (resources.research === game.MAX_RESEARCH_VALUE) {
 				advices.push('You are at maximum research, start using it for settlement researches, from your Academy.');
 			}
 			if (resources.espionage < 100) {
 				advices.push('Your settlement`s espionage is too low, build an Embassy or upgrade it to be able to gather espionage.');
 			}
-			if (resources.espionage === civitas.MAX_ESPIONAGE_VALUE) {
+			if (resources.espionage === game.MAX_ESPIONAGE_VALUE) {
 				advices.push('You are at maximum espionage, start using it for espionage missiong from your Embassy.');
 			}
 			if (resources.coins > 100000) {
 				advices.push('You have lots of coins, why not invest some in goods?');
 			}
 			for (let item in resources) {
-				if (!civitas.utils.is_virtual_resource(item)) {
+				if (!game.is_virtual_resource(item)) {
 					if (resources[item] > 1000) {
-						advices.push('You seem to have a surplus of ' + civitas.utils.get_resource_name(item) + '. You can sell some or place it on the Black Market and get coins instead.');
+						advices.push('You seem to have a surplus of ' + game.get_resource_name(item) + '. You can sell some or place it on the Black Market and get coins instead.');
 					}
 				}
 			}
 			for (let i = 0; i < queue.length; i++) {
-				if (queue[i].mode === civitas.ACTION_CAMPAIGN) {
+				if (queue[i].mode === game.ACTION_CAMPAIGN) {
 					if (queue[i].destination.id === settlement.id()) {
 						advices.push('There is an army from ' + this.get_settlement(queue[i].source.id).name() + ' marching towards your city!');
 					}
@@ -2196,7 +2084,7 @@ civitas.game = function () {
 			}
 		}
 		return advices;
-	};
+	}
 	
 	/**
 	 * Set game settings.
@@ -2204,16 +2092,16 @@ civitas.game = function () {
 	 * @param {String} key
 	 * @param {String|Number} value
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.set_settings = function (key, value) {
+	set_settings (key, value) {
 		if (typeof value === 'undefined') {
 			this.settings = key;
 		} else {
 			this.settings[key] = value;
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Retrieve game settings.
@@ -2222,33 +2110,33 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Object}
 	 */
-	this.get_settings = function (key) {
+	get_settings (key) {
 		if (typeof key === 'undefined') {
 			return this.settings;
 		} else {
 			return this.settings[key];
 		}
-	};
+	}
 
 	/**
 	 * Internal method for starting up a game.
 	 *
 	 * @private
 	 * @param {Object} data
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._setup_game = function(data) {
+	_setup_game (data) {
 		let self = this;
 		const ui = this.ui();
 		let seconds = 1;
 		this._setup_neighbours(data);
 		$('header .cityname').html(this.get_settlement().name());
 		$('header .cityavatar').css({
-			'background-image': 'url(' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + this.get_settlement().ruler().avatar + '.png)'
+			'background-image': 'url(' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.get_settlement().ruler().avatar + '.png)'
 		});
 		ui.refresh();
 		setInterval(function () {
-			if (!self.is_paused() && seconds === civitas.SECONDS_TO_DAY) {
+			if (!self.is_paused() && seconds === game.SECONDS_TO_DAY) {
 				self._do_daily();
 				seconds = 1;
 			} else if (!self.is_paused()) {
@@ -2258,14 +2146,14 @@ civitas.game = function () {
 		$(document).keyup(function(event) {
 			if (event.keyCode == 27 && !ui.window_exists('#window-options')) {
 				ui.show_loader();
-				ui.open_window(civitas.WINDOW_OPTIONS);
+				ui.open_window('options');
 			}
 		});
 		ui.hide_loader();
 		this.save_and_refresh();
 		this.ui().citymap_scrollto_building(this.get_settlement().get_building('marketplace'));
 		return this;
-	};
+	}
 
 	/**
 	 * Start a new game.
@@ -2280,19 +2168,19 @@ civitas.game = function () {
 	 * @param {String} password
 	 * @returns {Boolean}
 	 */
-	this.new_game = function(name, s_name, nation, climate, avatar, difficulty, password) {
+	new_game (name, s_name, nation, climate, avatar, difficulty, password) {
 		this.ui().show_loader();
-		if (civitas.ENCRYPTION === true) {
+		if (game.ENCRYPTION === true) {
 			this.encryption.key = password;
 		}
 		this.properties.difficulty = parseInt(difficulty);
-		this._world = new civitas.objects.world({
+		this._world = new world({
 			core: this
 		});
 		this._create_player_settlement(name, s_name, nation, climate, avatar);
 		this._setup_game(null);
 		return true;
-	};
+	}
 
 	/**
 	 * Load a game by decrypting it with the specified password.
@@ -2301,25 +2189,25 @@ civitas.game = function () {
 	 * @param {String} password
 	 * @returns {Boolean}
 	 */
-	this.load_game_data = function(password) {
+	load_game_data (password) {
 		const ui = this.ui();
 		let data = null;
 		let game_data;
 		let hash;
-		if (civitas.ENCRYPTION === true) {
+		if (game.ENCRYPTION === true) {
 			this.encryption.key = password;
 		}
 		game_data = this.get_storage_data();
 		hash = CryptoJS.SHA512(JSON.stringify(game_data.data));
 		if (typeof game_data.hash === 'undefined') {
-			ui.open_window(civitas.WINDOW_ERROR, {
+			ui.open_window('error', {
 				error: 'Missing game signature.',
 				code: '0x01'
 			});
 			return false;
 		}
 		if (hash.toString(CryptoJS.enc.Hex) !== game_data.hash) {
-			ui.open_window(civitas.WINDOW_ERROR, {
+			ui.open_window('error', {
 				error: 'Invalid game signature.',
 				code: '0x02'
 			});
@@ -2327,7 +2215,7 @@ civitas.game = function () {
 		}
 		if (game_data) {
 			ui.show_loader();
-			this._world = new civitas.objects.world({
+			this._world = new world({
 				core: this,
 				elevation: game_data.data.seeds.elevation,
 				moisture: game_data.data.seeds.moisture
@@ -2339,14 +2227,14 @@ civitas.game = function () {
 					this._setup_game(data);
 					return true;
 				} else {
-					ui.open_window(civitas.WINDOW_ERROR, {
-					error: 'Unable to process game data.',
-					code: '0x05'
-				});
-				return false;
+					ui.open_window('error', {
+						error: 'Unable to process game data.',
+						code: '0x05'
+					});
+					return false;
 				}
 			} else {
-				ui.open_window(civitas.WINDOW_ERROR, {
+				ui.open_window('error', {
 					error: 'Invalid game data.',
 					code: '0x03'
 				});
@@ -2355,35 +2243,35 @@ civitas.game = function () {
 		} else {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * Pause the game.
 	 *
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.pause = function() {
+	pause () {
 		if (this.is_paused() === false) {
 			this.properties.paused = true;
 			this.ui().log('game', 'Game is paused.');
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Resume the game.
 	 *
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.unpause = function() {
+	unpause () {
 		if (this.is_paused() === true) {
 			this.properties.paused = false;
 			this.ui().log('game', 'Game is resumed.');
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Check if the game is paused.
@@ -2391,24 +2279,24 @@ civitas.game = function () {
 	 * @public
 	 * @returns {Boolean}
 	 */
-	this.is_paused = function() {
+	is_paused () {
 		return this.properties.paused;
-	};
+	}
 
 	/**
 	 * Setup the audio part of the game.
 	 * 
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._setup_audio = function () {
+	_setup_audio () {
 		this.music = $('#music').get(0);
 		this.music.volume = 0.2;
-		if (civitas.AUTOSTART_MUSIC === true) {
+		if (game.AUTOSTART_MUSIC === true) {
 			this.music.play();
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Get building data from the main configuration array.
@@ -2417,61 +2305,61 @@ civitas.game = function () {
 	 * @param {String|Number} handle
 	 * @returns {Object|Boolean}
 	 */
-	this.get_building_config_data = function (handle) {
+	get_building_config_data (handle) {
 		if (typeof handle === 'string') {
-			return civitas.BUILDINGS[civitas.BUILDINGS.findIndexByHandle(handle)];
+			return game.BUILDINGS[game.BUILDINGS.findIndexByHandle(handle)];
 		} else if (typeof handle === 'number') {
-			return civitas.BUILDINGS[handle];
+			return game.BUILDINGS[handle];
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Check if any events occured on this day.
 	 *
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._check_for_events = function() {
+	_check_for_events () {
 		const random = Math.random().toFixed(5);
-		let event;
+		let __event;
 		let _event;
-		for (let i = 0; i < civitas.EVENTS.length; i++) {
-			_event = civitas.EVENTS[i];
+		for (let i = 0; i < game.EVENTS.length; i++) {
+			_event = game.EVENTS[i];
 			if (random <= _event.chance) {
-				event = _event;
-				event.core = this;
-				new civitas.objects.event(event);
+				__event = _event;
+				__event.core = this;
+				new event(__event);
 				return this;
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Refresh the UI and save game.
 	 *
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.save_and_refresh = function() {
+	save_and_refresh () {
 		this.achievements_process();
 		this.save();
 		this.ui().refresh();
 		return this;
-	};
+	}
 
-	this.places = function() {
+	places () {
 		return this._places;
-	};
+	}
 
 	/**
 	 * Refresh the world trades.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.refresh_trades = function() {
+	refresh_trades () {
 		const settlements = this.get_settlements();
 		for (let i = 0; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
@@ -2482,37 +2370,37 @@ civitas.game = function () {
 		}
 		this.ui().notify('World Market trades have been refreshed, settlements are looking to make new purchases and sales.', 'World Market');
 		return this;
-	};
+	}
 
 	/**
 	 * Refresh the influence of each of the cities in the world.
 	 * 
 	 * @private
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this._refresh_influence = function() {
+	_refresh_influence () {
 		const settlements = this.get_settlements();
 		for (let i = 1; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
 				if (settlements[i].is_urban()) {
 					if (this.get_settlement().religion().id === settlements[i].religion().id) {
-						this.get_settlement().raise_influence(settlements[i].id(), civitas.YEARLY_INFLUENCE_GAIN);
-					} else if ((this.get_settlement().get_diplomacy_status(settlements[i].id()) === civitas.DIPLOMACY_VASSAL) || (this.get_settlement().get_diplomacy_status(settlements[i].id()) === civitas.DIPLOMACY_ALLIANCE)) {
+						this.get_settlement().raise_influence(settlements[i].id(), game.YEARLY_INFLUENCE_GAIN);
+					} else if ((this.get_settlement().get_diplomacy_status(settlements[i].id()) === game.DIPLOMACY_VASSAL) || (this.get_settlement().get_diplomacy_status(settlements[i].id()) === game.DIPLOMACY_ALLIANCE)) {
 						this.get_settlement().raise_influence(settlements[i].id());
 					} else {
-						this.get_settlement().lower_influence(settlements[i].id(), civitas.YEARLY_INFLUENCE_LOSS);
+						this.get_settlement().lower_influence(settlements[i].id(), game.YEARLY_INFLUENCE_LOSS);
 					}
 				} else {
 					if (this.get_settlement().religion().id === settlements[i].religion().id) {
-						this.get_settlement().raise_influence(settlements[i].id(), civitas.YEARLY_INFLUENCE_GAIN);
-					} else if ((this.get_settlement().get_diplomacy_status(settlements[i].id()) === civitas.DIPLOMACY_VASSAL) || (this.get_settlement().get_diplomacy_status(settlements[i].id()) === civitas.DIPLOMACY_ALLIANCE)) {
+						this.get_settlement().raise_influence(settlements[i].id(), game.YEARLY_INFLUENCE_GAIN);
+					} else if ((this.get_settlement().get_diplomacy_status(settlements[i].id()) === game.DIPLOMACY_VASSAL) || (this.get_settlement().get_diplomacy_status(settlements[i].id()) === game.DIPLOMACY_ALLIANCE)) {
 						this.get_settlement().raise_influence(settlements[i].id());
 					}
 				}
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Return the amount of taxes produced by a building if the required technology is
@@ -2522,7 +2410,7 @@ civitas.game = function () {
 	 * @param {Object} building
 	 * @returns {Number}
 	 */
-	this.get_tax_modifier = function(building) {
+	get_tax_modifier (building) {
 		let amount = 0;
 		for (let i = 0; i < this._research.length; i++) {
 			if (typeof this._research[i] !== 'undefined') {
@@ -2539,7 +2427,7 @@ civitas.game = function () {
 			}
 		}
 		return amount;
-	};
+	}
 
 	/**
 	 * Return the amount of resources produced by a building if the required technology is
@@ -2549,7 +2437,7 @@ civitas.game = function () {
 	 * @param {Object} building
 	 * @returns {Number}
 	 */
-	this.get_prod_modifier = function(building) {
+	get_prod_modifier (building) {
 		let amount = 0;
 		for (let i = 0; i < this._research.length; i++) {
 			if (typeof this._research[i] !== 'undefined') {
@@ -2570,7 +2458,7 @@ civitas.game = function () {
 			}
 		}
 		return amount;
-	};
+	}
 
 	/**
 	 * Get the version of the game.
@@ -2578,9 +2466,9 @@ civitas.game = function () {
 	 * @public
 	 * @returns {String}
 	 */
-	this.version = function() {
-		return civitas.VERSION;
-	};
+	version () {
+		return game.VERSION;
+	}
 	
 	/**
 	 * Get/set the difficulty level of the game.
@@ -2589,12 +2477,12 @@ civitas.game = function () {
 	 * @param {Number} value
 	 * @returns {Number}
 	 */
-	this.difficulty = function(value) {
+	difficulty (value) {
 		if (typeof value !== 'undefined') {
 			this.properties.difficulty = value;
 		}
 		return this.properties.difficulty;
-	};
+	}
 
 	/**
 	 * Get/set the game mode.
@@ -2603,12 +2491,12 @@ civitas.game = function () {
 	 * @param {Number} value
 	 * @returns {Number}
 	 */
-	this.mode = function(value) {
+	mode (value) {
 		if (typeof value !== 'undefined') {
 			this.properties.mode = value;
 		}
 		return this.properties.mode;
-	};
+	}
 
 	/**
 	 * Get hero data from the main configuration array.
@@ -2617,22 +2505,22 @@ civitas.game = function () {
 	 * @param {String} handle
 	 * @returns {Object|Boolean}
 	 */
-	this.get_hero_config_data = function (handle) {
+	get_hero_config_data (handle) {
 		if (typeof handle === 'string') {
-			return civitas.HEROES[civitas.HEROES.findIndexByHandle(handle)];
+			return game.HEROES[game.HEROES.findIndexByHandle(handle)];
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Get the world object.
 	 *
 	 * @public
-	 * @returns {civitas.objects.world}
+	 * @returns {world}
 	 */
-	this.world = function() {
+	world () {
 		return this._world;
-	};
+	}
 
 	/**
 	 * Method to calculate exponential fame required for the specified level.
@@ -2641,7 +2529,7 @@ civitas.game = function () {
 	 * @param {Number} level
 	 * @returns {Number}
 	 */
-	this.level_to_fame = function (level) {
+	level_to_fame (level) {
 		const base_fame = 100;
 		let exp = 0.2;
 		if (level <= 5) {
@@ -2671,21 +2559,21 @@ civitas.game = function () {
 			let prev = this.level_to_fame(level - 1);
 			return Math.floor(prev + prev * exp);
 		}
-	};
+	}
 
 	/**
 	 * Get a list of all buildings available for a settlement if the settlement level and
 	 * climate are appropriate.
 	 *
 	 * @public
-	 * @param {civitas.objects.settlement} settlement
+	 * @param {settlement} settlement
 	 * @returns {Array}
 	 */
-	this.get_buildings_for_settlement = function(settlement) {
+	get_buildings_for_settlement (settlement) {
 		let buildings = [];
 		let building;
-		for (let i = 0; i < civitas.BUILDINGS.length; i++) {
-			building = civitas.BUILDINGS[i];
+		for (let i = 0; i < game.BUILDINGS.length; i++) {
+			building = game.BUILDINGS[i];
 			if ((typeof building.requires.settlement_level !== 'undefined') && (settlement.level() < building.requires.settlement_level)) {
 				break;
 			}
@@ -2695,8 +2583,329 @@ civitas.game = function () {
 			buildings.push(building.handle);
 		}
 		return buildings;
-	};
+	}
 
-	// Fire up the constructor
-	return this.__init();
-};
+	static is_virtual_resource (resource) {
+		if (typeof game.RESOURCES[resource] !== 'undefined') {
+			if (game.RESOURCES[resource].category === 'virtual') {
+ 				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Get the total damage points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @param {Object} hero
+	 * @returns {Object}
+	 */
+	static get_damage_points (hero) {
+		let damage_val = (hero.stats.strength * 2) + hero.stats.agility;
+		let damage_min = 0;
+		let damage_max = 0;
+		for (let i = 0; i < hero.items.length; i++) {
+			if (hero.items[i]) {
+				if (hero.items[i].stats.strength) {
+					damage_val += hero.items[i].stats.strength * 2;
+				}
+				if (hero.items[i].stats.agility) {
+					damage_val += hero.items[i].stats.agility;
+				}
+			}
+		}
+		for (let i = 0; i < hero.items.length; i++) {
+			if (hero.items[i].type === game.ITEM_TYPE_WEAPON) {
+				damage_min += hero.items[i].stats.damageMin + damage_val;
+				damage_max += hero.items[i].stats.damageMax + damage_val;
+			}
+		}
+		return {
+			value: damage_val,
+			min: damage_min !== 0 ? damage_min : 1,
+			max: damage_max !== 0 ? damage_max : damage_val
+		}
+	}
+
+	/**
+	 * Get the total mana points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @param {Object} hero
+	 * @returns {Number}
+	 */
+	static get_mana_points (hero) {
+		let mana = hero.stats.intellect * 50 + hero.stats.spirit * 10;
+		for (let i = 0; i < hero.items.length; i++) {
+			if (hero.items[i]) {
+				if (hero.items[i].stats.intellect) {
+					mana += hero.items[i].stats.intellect * 50;
+				}
+				if (hero.items[i].stats.spirit) {
+					mana += hero.items[i].stats.spirit * 10;
+				}
+			}
+		}
+		return mana;
+	}
+
+	/**
+	 * Get the total health points of a hero, modified by the items
+	 * he's using.
+	 *
+	 * @param {Object} hero
+	 * @returns {Number}
+	 */
+	static get_health_points (hero) {
+		let health = hero.stats.stamina * 30 + hero.stats.strength * 5;
+		for (let i = 0; i < hero.items.length; i++) {
+			if (hero.items[i]) {
+				if (hero.items[i].stats.stamina) {
+					health += hero.items[i].stats.stamina * 30;
+				}
+				if (hero.items[i].stats.strength) {
+					health += hero.items[i].stats.strength * 5;
+				}
+			}
+		}
+		return health;
+	}
+
+	/**
+	 * Check if resource exists.
+	 *
+	 * @param {String} resource
+	 * @returns {Boolean}
+	 */
+	static resource_exists (resource) {
+		for (let item in game.RESOURCES) {
+			if (item === resource) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Format a timestamp to a more human form (x ago).
+	 *
+	 * @param {Number} time
+	 * @returns {Number}
+	 */
+	static time_since (time) {
+		let time_formats = [
+			[
+				2, 
+				"One second", 
+				"1 second from now"
+			], [
+				60, 
+				"seconds", 
+				1
+			], [
+				120, 
+				"One minute", 
+				"1 minute from now"
+			], [
+				3600, 
+				"minutes", 
+				60
+			], [
+				7200, 
+				"One hour", 
+				"1 hour from now"
+			], [
+				86400, 
+				"hours", 
+				3600
+			], [
+				172800, 
+				"One day", 
+				"tomorrow"
+			], [
+				604800, 
+				"days", 
+				86400
+			], [
+				1209600, 
+				"One week", 
+				"next week"
+			], [
+				2419200, 
+				"weeks", 
+				604800
+			], [
+				4838400, 
+				"One month", 
+				"next month"
+			], [
+				29030400, 
+				"months", 
+				2419200
+			], [
+				58060800, 
+				"One year", 
+				"next year"
+			], [
+				2903040000, 
+				"years", 
+				29030400
+			], [
+				5806080000, 
+				"One century", 
+				"next century"
+			], [
+				58060800000, 
+				"centuries", 
+				2903040000
+			]
+		];
+		let seconds = (new Date - time) / 1000;
+		let list_choice = 1;
+		if (seconds < 0) {
+			seconds = Math.abs(seconds);
+			list_choice = 1;
+		}
+		let i = 0, format;
+		while (format = time_formats[i++]) {
+			if (seconds < format[0]) {
+				if (typeof format[2] === "string") {
+					return format[list_choice];
+				} else {
+					return Math.floor(seconds / format[2]) + " " + format[1];
+				}
+			}
+		}
+		return time;
+	}
+
+	/**
+	 * Round the number to nearest 10.
+	 *
+	 * @param {Number} value
+	 * @returns {Number}
+	 */
+	static get_up_number (value) {
+		return Math.floor(value / 10) * 10;
+	}
+
+	/**
+	 * Return a random number between min and max.
+	 *
+	 * @param {Number} min
+	 * @param {Number} max
+	 * @returns {Number}
+	 */
+	static get_random (min, max) {
+	    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	/**
+	 * Return a random number based on importance.
+	 *
+	 * @param {Number} importance
+	 * @returns {Number}
+	 */
+	static get_random_by_importance (importance) {
+		return game.get_up_number(
+			game.get_random(
+				Math.floor(Math.random() * importance) * 10 + 10,
+				Math.floor(Math.random() * importance) * 10 + 20
+			)
+		);
+	}
+
+	/**
+	 * Return the resource name by handle.
+	 *
+	 * @param {String} handle
+	 * @returns {String}
+	 */
+	static get_resource_name (handle) {
+		return game.RESOURCES[handle].name;
+	}
+
+	/**
+	 * Calculate the resource price for the specified amount minus the discount.
+	 * 
+	 * @param {Number} amount
+	 * @param {String} resource
+	 * @param {Number} discount
+	 * @returns {Number}
+	 */
+	static calc_price_minus_discount (amount, resource, discount) {
+		return Math.ceil(Math.ceil(game.RESOURCES[resource].price - discount) * amount);
+	}
+
+	/**
+	 * Calculate the resource price for the specified amount.
+	 * 
+	 * @param {Number} amount
+	 * @param {String} resource
+	 * @returns {Number}
+	 */
+	static calc_price (amount, resource) {
+		return Math.ceil(amount * (game.RESOURCES[resource].price));
+	}
+
+	/**
+	 * Calculate the resource price for the specified amount plus the discount.
+	 * 
+	 * @param {Number} amount
+	 * @param {String} resource
+	 * @param {Number} discount
+	 * @returns {Number}
+	 */
+	static calc_price_plus_discount (amount, resource, discount) {
+		return Math.ceil(Math.ceil(game.RESOURCES[resource].price + discount) * amount);
+	}
+
+	/**
+	 * Format the current time.
+	 * 
+	 * @returns {String}
+	 */
+	static get_now () {
+		let today = new Date();
+		let hh = today.getHours();
+		let mm = today.getMinutes();
+		let ss = today.getSeconds();
+		return hh + ':' + mm + ':' + ss;
+	}
+
+	/**
+	 * Format a number so that it's more user-friendly.
+	 *
+	 * @returns {String}
+	 */
+	static nice_numbers (num) {
+		if (num >= 1000000000) {
+			return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+		}
+		if (num >= 1000000) {
+			return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+		}
+		if (num >= 1000) {
+			return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+		}
+		return num;
+	}
+
+	/**
+	 * Return a random unique array element.
+	 *
+	 * @param {Array} from
+	 * @returns {String|Number}
+	 */
+	static get_random_unique (from) {
+		let id = game.get_random(0, from.length - 1);
+		let element = from[id];
+		from.splice(id, 1);
+		return element;
+	}
+
+	static sanitize_string (string) {
+		return string.replace(/[^a-z0-9+]-/gi, '-');
+	}
+}

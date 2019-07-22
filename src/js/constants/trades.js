@@ -5,7 +5,7 @@
  * @default
  * @type {Number}
  */
-civitas.IMPORTANCE_VITAL = 50;
+game.IMPORTANCE_VITAL = 50;
 
 /**
  * Goods importance, high.
@@ -14,7 +14,7 @@ civitas.IMPORTANCE_VITAL = 50;
  * @default
  * @type {Number}
  */
-civitas.IMPORTANCE_HIGH = 30;
+game.IMPORTANCE_HIGH = 30;
 
 /**
  * Goods importance, medium.
@@ -23,7 +23,7 @@ civitas.IMPORTANCE_HIGH = 30;
  * @default
  * @type {Number}
  */
-civitas.IMPORTANCE_MEDIUM = 20;
+game.IMPORTANCE_MEDIUM = 20;
 
 /**
  * Goods importance, low.
@@ -32,7 +32,7 @@ civitas.IMPORTANCE_MEDIUM = 20;
  * @default
  * @type {Number}
  */
-civitas.IMPORTANCE_LOW = 10;
+game.IMPORTANCE_LOW = 10;
 
 /**
  * Tax discount for buying resources.
@@ -41,7 +41,7 @@ civitas.IMPORTANCE_LOW = 10;
  * @default
  * @type {Number}
  */
-civitas.TRADES_ADDITION = 10;
+game.TRADES_ADDITION = 10;
 
 /**
  * Tax percent for selling resources.
@@ -50,7 +50,7 @@ civitas.TRADES_ADDITION = 10;
  * @default
  * @type {Number}
  */
-civitas.TRADES_DISCOUNT = 20;
+game.TRADES_DISCOUNT = 20;
 
 /**
  * Amount of fame your settlement gets for each successful trade.
@@ -59,7 +59,7 @@ civitas.TRADES_DISCOUNT = 20;
  * @default
  * @type {Number}
  */
-civitas.FAME_PER_TRADE = 50;
+game.FAME_PER_TRADE = 50;
 
 /**
  * The black market discount.
@@ -68,7 +68,7 @@ civitas.FAME_PER_TRADE = 50;
  * @default
  * @type {Number}
  */
-civitas.BLACK_MARKET_DISCOUNT = 80;
+game.BLACK_MARKET_DISCOUNT = 80;
 
 /**
  * The auctioneer discount.
@@ -77,4 +77,4 @@ civitas.BLACK_MARKET_DISCOUNT = 80;
  * @default
  * @type {Number}
  */
-civitas.AUCTIONEER_DISCOUNT = 20;
+game.AUCTIONEER_DISCOUNT = 20;

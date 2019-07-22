@@ -4,7 +4,7 @@
  * @constant
  * @type {Array}
  */
-civitas.BUILDINGS_ALL = [
+game.BUILDINGS_ALL = [
 	'marketplace', 'lumberjack', 'barracks', 'warehouse', 'mill', 'castle',
 	'stonequarry', 'claymine', 'ironmine', 'trapper', 'almondsfarm',
 	'almondsfield', 'tavern', 'shipyard', 'pigfarm', 'cattlefarm',
@@ -34,7 +34,7 @@ civitas.BUILDINGS_ALL = [
  * @constant
  * @type {Object}
  */
-civitas.BUILDINGS_CATEGORIES = {
+game.BUILDINGS_CATEGORIES = {
 	'Municipal': [
 		'academy',
 		'church',
@@ -161,7 +161,7 @@ civitas.BUILDINGS_CATEGORIES = {
  * @constant
  * @type {Array}
  */
-civitas.BUILDINGS = [
+game.BUILDINGS = [
 	{
 		name: 'Marketplace',
 		handle: 'marketplace',
@@ -1421,7 +1421,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 16,
 			climate: [
-				civitas.CLIMATE_ARID
+				game.CLIMATE_ARID
 			]
 		}
 	}, {
@@ -1449,8 +1449,8 @@ civitas.BUILDINGS = [
 				beehive: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL,
-				civitas.CLIMATE_TEMPERATE
+				game.CLIMATE_TROPICAL,
+				game.CLIMATE_TEMPERATE
 			]
 		}
 	}, {
@@ -1469,8 +1469,8 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 16,
 			climate: [
-				civitas.CLIMATE_TROPICAL,
-				civitas.CLIMATE_TEMPERATE
+				game.CLIMATE_TROPICAL,
+				game.CLIMATE_TEMPERATE
 			]
 		}
 	}, {
@@ -1971,7 +1971,7 @@ civitas.BUILDINGS = [
 				datesfield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -1990,7 +1990,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 36,
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2016,8 +2016,8 @@ civitas.BUILDINGS = [
 				almondsfield: 1
 			},
 			climate: [
-				civitas.CLIMATE_ARID,
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_ARID,
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2036,8 +2036,8 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 36,
 			climate: [
-				civitas.CLIMATE_ARID,
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_ARID,
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2231,7 +2231,7 @@ civitas.BUILDINGS = [
 				grapesfield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TEMPERATE
+				game.CLIMATE_TEMPERATE
 			]
 		}
 	}, {
@@ -2250,7 +2250,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 16,
 			climate: [
-				civitas.CLIMATE_TEMPERATE
+				game.CLIMATE_TEMPERATE
 			]
 		}
 	}, {
@@ -2276,7 +2276,7 @@ civitas.BUILDINGS = [
 				coffeefield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2295,7 +2295,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 36,
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2322,7 +2322,7 @@ civitas.BUILDINGS = [
 				cottonfield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2342,7 +2342,7 @@ civitas.BUILDINGS = [
 			research: 'agriculture',
 			settlement_level: 10,
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2369,7 +2369,7 @@ civitas.BUILDINGS = [
 				silkfield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2389,7 +2389,7 @@ civitas.BUILDINGS = [
 			research: 'agriculture',
 			settlement_level: 28,
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2416,7 +2416,7 @@ civitas.BUILDINGS = [
 				sugarfield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TEMPERATE
+				game.CLIMATE_TEMPERATE
 			]
 		}
 	}, {
@@ -2435,7 +2435,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 24,
 			climate: [
-				civitas.CLIMATE_TEMPERATE
+				game.CLIMATE_TEMPERATE
 			]
 		}
 	}, {
@@ -2463,7 +2463,7 @@ civitas.BUILDINGS = [
 				indigofield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2482,7 +2482,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 20,
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2512,7 +2512,7 @@ civitas.BUILDINGS = [
 				tobaccofield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2534,7 +2534,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 20,
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2563,8 +2563,8 @@ civitas.BUILDINGS = [
 				rosefield: 1
 			},
 			climate: [
-				civitas.CLIMATE_ARID,
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_ARID,
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2584,8 +2584,8 @@ civitas.BUILDINGS = [
 			research: 'agriculture',
 			settlement_level: 26,
 			climate: [
-				civitas.CLIMATE_ARID,
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_ARID,
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2613,7 +2613,7 @@ civitas.BUILDINGS = [
 				spicefield: 1
 			},
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {
@@ -2632,7 +2632,7 @@ civitas.BUILDINGS = [
 		requires: {
 			settlement_level: 32,
 			climate: [
-				civitas.CLIMATE_TROPICAL
+				game.CLIMATE_TROPICAL
 			]
 		}
 	}, {

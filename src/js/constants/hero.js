@@ -5,7 +5,7 @@
  * @default
  * @type {Number}
  */
-civitas.HERO_CLASS_WARRIOR = 1;
+game.HERO_CLASS_WARRIOR = 1;
 
 /**
  * Mage class
@@ -14,7 +14,7 @@ civitas.HERO_CLASS_WARRIOR = 1;
  * @default
  * @type {Number}
  */
-civitas.HERO_CLASS_MAGE = 2;
+game.HERO_CLASS_MAGE = 2;
 
 /**
  * Druid class
@@ -23,7 +23,7 @@ civitas.HERO_CLASS_MAGE = 2;
  * @default
  * @type {Number}
  */
-civitas.HERO_CLASS_DRUID = 3;
+game.HERO_CLASS_DRUID = 3;
 
 /**
  * Priest class
@@ -32,7 +32,7 @@ civitas.HERO_CLASS_DRUID = 3;
  * @default
  * @type {Number}
  */
-civitas.HERO_CLASS_PRIEST = 4;
+game.HERO_CLASS_PRIEST = 4;
 
 /**
  * Rogue class
@@ -41,7 +41,7 @@ civitas.HERO_CLASS_PRIEST = 4;
  * @default
  * @type {Number}
  */
-civitas.HERO_CLASS_ROGUE = 5;
+game.HERO_CLASS_ROGUE = 5;
 
 /**
  * Shaman class
@@ -50,7 +50,7 @@ civitas.HERO_CLASS_ROGUE = 5;
  * @default
  * @type {Number}
  */
-civitas.HERO_CLASS_SHAMAN = 6;
+game.HERO_CLASS_SHAMAN = 6;
 
 /**
  * List of names for hero classes
@@ -59,7 +59,7 @@ civitas.HERO_CLASS_SHAMAN = 6;
  * @default
  * @type {Array}
  */
-civitas.HERO_CLASS_LIST = [
+game.HERO_CLASS_LIST = [
 	'',
 	'Warrior',
 	'Mage',
@@ -75,7 +75,7 @@ civitas.HERO_CLASS_LIST = [
  * @constant
  * @type {Object}
  */
-civitas.HEROES = [
+game.HEROES = [
 	{
 		name: 'Achilles',
 		handle: 'achilles',
@@ -89,9 +89,9 @@ civitas.HEROES = [
 			spirit: 5,
 			intellect: 7
 		},
-		class: civitas.HERO_CLASS_WARRIOR,
+		class: game.HERO_CLASS_WARRIOR,
 		items: [
-			civitas.ITEM_TROJAN_BASTARD_SWORD
+			game.ITEM_TROJAN_BASTARD_SWORD
 		],
 		backpack: [
 		]
@@ -108,10 +108,10 @@ civitas.HEROES = [
 			spirit: 4,
 			intellect: 6
 		},
-		class: civitas.HERO_CLASS_WARRIOR,
+		class: game.HERO_CLASS_WARRIOR,
 		items: [
-			civitas.ITEM_EXCALIBUR,
-			civitas.ITEM_GOLDEN_KATANA
+			game.ITEM_EXCALIBUR,
+			game.ITEM_GOLDEN_KATANA
 		],
 		backpack: [
 		]
@@ -128,7 +128,7 @@ civitas.HEROES = [
 			spirit: 2,
 			intellect: 9
 		},
-		class: civitas.HERO_CLASS_WARRIOR,
+		class: game.HERO_CLASS_WARRIOR,
 		items: [
 		],
 		backpack: [
@@ -146,19 +146,19 @@ civitas.HEROES = [
 			spirit: 7,
 			intellect: 9
 		},
-		class: civitas.HERO_CLASS_WARRIOR,
+		class: game.HERO_CLASS_WARRIOR,
 		items: [
-			civitas.ITEM_SPEAR_OF_DESTINY,
-			civitas.ITEM_CROWN_OF_KINGS,
-			civitas.ITEM_BULWARK_OF_GODS,
-			civitas.ITEM_CHESTPIECE_OF_ZEUS,
-			civitas.ITEM_ARCHAIC_WAIST_BAND,
-			civitas.ITEM_ALCMENE_BAND,
-			civitas.ITEM_SUN_NECKLACE,
-			civitas.ITEM_ETHEREAL_BOOTS,
-			civitas.ITEM_SHOULDERPADS_OF_VALOR,
-			civitas.ITEM_MOUNTAIN_TROLLS,
-			civitas.ITEM_GAUNTLETS_OF_GHASTLY_GLARE
+			game.ITEM_SPEAR_OF_DESTINY,
+			game.ITEM_CROWN_OF_KINGS,
+			game.ITEM_BULWARK_OF_GODS,
+			game.ITEM_CHESTPIECE_OF_ZEUS,
+			game.ITEM_ARCHAIC_WAIST_BAND,
+			game.ITEM_ALCMENE_BAND,
+			game.ITEM_SUN_NECKLACE,
+			game.ITEM_ETHEREAL_BOOTS,
+			game.ITEM_SHOULDERPADS_OF_VALOR,
+			game.ITEM_MOUNTAIN_TROLLS,
+			game.ITEM_GAUNTLETS_OF_GHASTLY_GLARE
 		],
 		backpack: [
 		]
@@ -175,7 +175,7 @@ civitas.HEROES = [
 			spirit: 9,
 			intellect: 9
 		},
-		class: civitas.HERO_CLASS_PRIEST,
+		class: game.HERO_CLASS_PRIEST,
 		items: [
 		],
 		backpack: [

@@ -5,7 +5,7 @@
  * @default
  * @constant
  */
-civitas.BATTLEGROUND_ATTACK = 1;
+game.BATTLEGROUND_ATTACK = 1;
 
 /**
  * The defending side (right) in a battleground.
@@ -14,7 +14,7 @@ civitas.BATTLEGROUND_ATTACK = 1;
  * @default
  * @constant
  */
-civitas.BATTLEGROUND_DEFENSE = 2;
+game.BATTLEGROUND_DEFENSE = 2;
 
 /**
  * List of soldier types, their attributes and cost.
@@ -22,7 +22,7 @@ civitas.BATTLEGROUND_DEFENSE = 2;
  * @type {Object}
  * @constant
  */
-civitas.SOLDIERS = {
+game.SOLDIERS = {
 	militia: {
 		name: 'Militia',
 		attack: 1,
@@ -176,7 +176,7 @@ civitas.SOLDIERS = {
  * @constant
  * @type {Object}
  */
-civitas.MERCENARIES = [{
+game.MERCENARIES = [{
 	name: 'Legio I Adiutrix',
 	description: 'Legio prima Adiutrix is a Roman legion.',
 	handle: 'legio1',
@@ -346,7 +346,7 @@ civitas.MERCENARIES = [{
  * @type {Object}
  * @constant
  */
-civitas.SHIPS = {
+game.SHIPS = {
 	corsair: {
 		name: 'Corsair',
 		attack: 5,

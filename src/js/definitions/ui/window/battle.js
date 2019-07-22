@@ -1,16 +1,25 @@
 /**
  * Battle window data.
  *
- * @type {Object}
- * @mixin
+ * @param {Object} params
+ * @license GPLv3
+ * @class ui_window_battle
+ * @extends ui_window
+ * @returns {ui_window_battle}
  */
-civitas.WINDOW_BATTLE = {
+class ui_window_battle extends ui_window {
+
 	/**
-	 * Template of the window.
-	 *
-	 * @type {String}
+	 * Object constructor.
+	 * 
+	 * @private
+	 * @constructor
+	 * @returns {ui_window_battle}
+	 * @param {Object} params
 	 */
-	template: '<section id="window-{ID}" class="window">' +
+	constructor (params) {
+		params.id = 'battle';
+		params.template = '<section id="window-{ID}" class="window">' +
 				'<div class="container">' +
 					'<div title="Attack and defense rating for the attacking army." class="tips attack"></div>' +
 					'<div title="Attack and defense rating for the defending army." class="tips defense"></div>' +
@@ -22,70 +31,56 @@ civitas.WINDOW_BATTLE = {
 						'<a title="Close the window." class="tips button close" href="#">Close</a>' +
 					'</div>' +
 				'</div>' +
-			'</section>',
-
-	/**
-	 * Internal id of the window.
-	 *
-	 * @type {String}
-	 * @constant
-	 * @default
-	 */
-	id: 'battle',
-
-	/**
-	 * Callback function for showing the window.
-	 *
-	 * @type {Function}
-	 * @public
-	 */
-	on_show: function(params) {
-		let self = this;
-		let core = this.core();
-		let handle = this.handle();
-		core.pause();
-		this.battleground = new civitas.objects.battleground({
-			core: core,
-			width: 15,
-			height: 9,
-			elements: {
-				container: handle + ' .battleground',
-				attack: handle + ' .attack',
-				defense: handle + ' .defense',
-				console: handle + ' .status',
-			},
-			attack: {
-				city: this.params_data.source.source.id,
-				army: this.params_data.source.data.army,
-				navy: this.params_data.source.data.navy
-			},
-			defense: {
-				city: this.params_data.destination.id(),
-				army: this.params_data.destination.army,
-				navy: this.params_data.destination.navy
-			},
-			on_win: function(winner, loser) {
-				core.do_achievement('conqueror');
-				$(handle + ' .end').hide();
-				$(handle + ' .close').show();
-			},
-			on_lose: function(winner, loser) {
-				core.do_achievement('foolish');
-				$(handle + ' .end').hide();
-				$(handle + ' .close').show();
-			},
-			on_end_turn: function(turn) {
-				$(handle + ' .turns').html(turn);
-			}
-		});
-		$(handle + ' .close').hide();
-		$(handle).on('click', '.close', function () {
-			core.unpause();
-			self.destroy();
-			return false;
-		}).on('click', '.end', function () {
-			self.battleground.end_turn();
-			return false;
-		});
+			'</section>';
+		params.on_show = function(params) {
+			let self = this;
+			let core = this.core();
+			let handle = this.handle;
+			core.pause();
+			this.battleground = new battleground({
+				core: core,
+				width: 15,
+				height: 9,
+				elements: {
+					container: handle + ' .battleground',
+					attack: handle + ' .attack',
+					defense: handle + ' .defense',
+					console: handle + ' .status',
+				},
+				attack: {
+					city: this.params_data.source.source.id,
+					army: this.params_data.source.data.army,
+					navy: this.params_data.source.data.navy
+				},
+				defense: {
+					city: this.params_data.destination.id(),
+					army: this.params_data.destination.army,
+					navy: this.params_data.destination.navy
+				},
+				on_win: function(winner, loser) {
+					core.do_achievement('conqueror');
+					$(handle + ' .end').hide();
+					$(handle + ' .close').show();
+				},
+				on_lose: function(winner, loser) {
+					core.do_achievement('foolish');
+					$(handle + ' .end').hide();
+					$(handle + ' .close').show();
+				},
+				on_end_turn: function(turn) {
+					$(handle + ' .turns').html(turn);
+				}
+			});
+			$(handle + ' .close').hide();
+			$(handle).on('click', '.close', function () {
+				core.unpause();
+				self.destroy();
+				return false;
+			}).on('click', '.end', function () {
+				self.battleground.end_turn();
+				return false;
+			});
+		}
+		super(params);
 	}
-};
+}

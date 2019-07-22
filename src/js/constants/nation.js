@@ -5,7 +5,7 @@
  * @default
  * @type {Array}
  */
-civitas.NATIONS = [
+game.NATIONS = [
 	'none',
 	'phoenician',
 	'carthaginian',
@@ -38,7 +38,7 @@ civitas.NATIONS = [
  * @default
  * @type {Number}
  */
-civitas.NATION_PHOENICIAN = 1;
+game.NATION_PHOENICIAN = 1;
 
 /**
  * Carthaginans
@@ -47,7 +47,7 @@ civitas.NATION_PHOENICIAN = 1;
  * @default
  * @type {Number}
  */
-civitas.NATION_CARTHAGINIAN = 2;
+game.NATION_CARTHAGINIAN = 2;
 
 /**
  * Greeks
@@ -56,7 +56,7 @@ civitas.NATION_CARTHAGINIAN = 2;
  * @default
  * @type {Number}
  */
-civitas.NATION_GREEK = 3;
+game.NATION_GREEK = 3;
 
 /**
  * Egyptians
@@ -65,7 +65,7 @@ civitas.NATION_GREEK = 3;
  * @default
  * @type {Number}
  */
-civitas.NATION_EGYPTIAN = 4;
+game.NATION_EGYPTIAN = 4;
 
 /**
  * Assyrians
@@ -74,7 +74,7 @@ civitas.NATION_EGYPTIAN = 4;
  * @default
  * @type {Number}
  */
-civitas.NATION_ASSYRIAN = 5;
+game.NATION_ASSYRIAN = 5;
 
 /**
  * Romans
@@ -83,7 +83,7 @@ civitas.NATION_ASSYRIAN = 5;
  * @default
  * @type {Number}
  */
-civitas.NATION_ROMAN = 6;
+game.NATION_ROMAN = 6;
 
 /**
  * Thracians
@@ -92,7 +92,7 @@ civitas.NATION_ROMAN = 6;
  * @default
  * @type {Number}
  */
-civitas.NATION_THRACIAN = 7;
+game.NATION_THRACIAN = 7;
 
 /**
  * Sudanese
@@ -101,7 +101,7 @@ civitas.NATION_THRACIAN = 7;
  * @default
  * @type {Number}
  */
-civitas.NATION_SUDANESE = 8;
+game.NATION_SUDANESE = 8;
 
 /**
  * Spanish
@@ -110,7 +110,7 @@ civitas.NATION_SUDANESE = 8;
  * @default
  * @type {Number}
  */
-civitas.NATION_SPANISH = 9;
+game.NATION_SPANISH = 9;
 
 /**
  * Sumerians
@@ -119,7 +119,7 @@ civitas.NATION_SPANISH = 9;
  * @default
  * @type {Number}
  */
-civitas.NATION_SUMERIAN = 10;
+game.NATION_SUMERIAN = 10;
 
 /**
  * Chinese
@@ -128,7 +128,7 @@ civitas.NATION_SUMERIAN = 10;
  * @default
  * @type {Number}
  */
-civitas.NATION_CHINESE = 11;
+game.NATION_CHINESE = 11;
 
 /**
  * Indian
@@ -137,7 +137,7 @@ civitas.NATION_CHINESE = 11;
  * @default
  * @type {Number}
  */
-civitas.NATION_INDIAN = 12;
+game.NATION_INDIAN = 12;
 
 /**
  * Franks
@@ -146,7 +146,7 @@ civitas.NATION_INDIAN = 12;
  * @default
  * @type {Number}
  */
-civitas.NATION_FRANKS = 13;
+game.NATION_FRANKS = 13;
 
 /**
  * Russians
@@ -155,7 +155,7 @@ civitas.NATION_FRANKS = 13;
  * @default
  * @type {Number}
  */
-civitas.NATION_RUSSIAN = 14;
+game.NATION_RUSSIAN = 14;
 
 /**
  * Nigerians
@@ -164,7 +164,7 @@ civitas.NATION_RUSSIAN = 14;
  * @default
  * @type {Number}
  */
-civitas.NATION_NIGERIAN = 15;
+game.NATION_NIGERIAN = 15;
 
 /**
  * Malinese
@@ -173,7 +173,7 @@ civitas.NATION_NIGERIAN = 15;
  * @default
  * @type {Number}
  */
-civitas.NATION_MALINESE = 16;
+game.NATION_MALINESE = 16;
 
 /**
  * Mongolians
@@ -182,7 +182,7 @@ civitas.NATION_MALINESE = 16;
  * @default
  * @type {Number}
  */
-civitas.NATION_MONGOLIAN = 17;
+game.NATION_MONGOLIAN = 17;
 
 /**
  * Tibetans
@@ -191,7 +191,7 @@ civitas.NATION_MONGOLIAN = 17;
  * @default
  * @type {Number}
  */
-civitas.NATION_TIBETAN = 18;
+game.NATION_TIBETAN = 18;
 
 /**
  * Persans
@@ -200,7 +200,7 @@ civitas.NATION_TIBETAN = 18;
  * @default
  * @type {Number}
  */
-civitas.NATION_PERSAN = 19;
+game.NATION_PERSAN = 19;
 
 /**
  * Khmer
@@ -209,7 +209,7 @@ civitas.NATION_PERSAN = 19;
  * @default
  * @type {Number}
  */
-civitas.NATION_KHMER = 20;
+game.NATION_KHMER = 20;
 
 /**
  * Japanese
@@ -218,7 +218,7 @@ civitas.NATION_KHMER = 20;
  * @default
  * @type {Number}
  */
-civitas.NATION_JAPANESE = 21;
+game.NATION_JAPANESE = 21;
 
 /**
  * French
@@ -227,4 +227,4 @@ civitas.NATION_JAPANESE = 21;
  * @default
  * @type {Number}
  */
-civitas.NATION_FRENCH = 22;
+game.NATION_FRENCH = 22;

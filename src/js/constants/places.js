@@ -5,7 +5,7 @@
  * @default
  * @type {Number}
  */
-civitas.SPECIAL_PLACE = 99;
+game.SPECIAL_PLACE = 99;
 
 /**
  * Days it takes to complete a world project.
@@ -14,7 +14,7 @@ civitas.SPECIAL_PLACE = 99;
  * @default
  * @type {Number}
  */
-civitas.PLACE_TIME_TO_BUILD = 7200;
+game.PLACE_TIME_TO_BUILD = 7200;
 
 /**
  * Resources required to complete atage 2 or builging a world project.
@@ -23,7 +23,7 @@ civitas.PLACE_TIME_TO_BUILD = 7200;
  * @default
  * @type {Object}
  */
-civitas.PLACE_RESOURCES_REQ = {
+game.PLACE_RESOURCES_REQ = {
 	coins: 100000000,
 	wood: 10000,
 	woodplanks: 50000,
@@ -50,7 +50,7 @@ civitas.PLACE_RESOURCES_REQ = {
 	silk: 1000
 };
 
-civitas.PLACES_NAMES = [
+game.PLACES_NAMES = [
 	'Aria',
 	'Zeffari',
 	'Laenteglos',

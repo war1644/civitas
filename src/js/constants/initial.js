@@ -5,7 +5,7 @@
  * @default
  * @type {Object}
  */
-civitas.INITIAL_SEED = [
+game.INITIAL_SEED = [
 	/* Easy difficulty */
 	{
 		/* Roughness of the world generator */
@@ -36,11 +36,11 @@ civitas.INITIAL_SEED = [
 		},
 		resources: {
 			coins: 55000,
-			fame: civitas.MIN_FAME_VALUE,
-			faith: civitas.MIN_FAITH_VALUE,
-			prestige: civitas.MIN_PRESTIGE_VALUE,
-			espionage: civitas.MIN_ESPIONAGE_VALUE,
-			research: civitas.MIN_RESEARCH_VALUE,
+			fame: game.MIN_FAME_VALUE,
+			faith: game.MIN_FAITH_VALUE,
+			prestige: game.MIN_PRESTIGE_VALUE,
+			espionage: game.MIN_ESPIONAGE_VALUE,
+			research: game.MIN_RESEARCH_VALUE,
 			bread: 400,
 			meat: 100,
 			stones: 100,
@@ -92,11 +92,11 @@ civitas.INITIAL_SEED = [
 		},
 		resources: {
 			coins: 20000,
-			fame: civitas.MIN_FAME_VALUE,
-			faith: civitas.MIN_FAITH_VALUE,
-			prestige: civitas.MIN_PRESTIGE_VALUE,
-			espionage: civitas.MIN_ESPIONAGE_VALUE,
-			research: civitas.MIN_RESEARCH_VALUE,
+			fame: game.MIN_FAME_VALUE,
+			faith: game.MIN_FAITH_VALUE,
+			prestige: game.MIN_PRESTIGE_VALUE,
+			espionage: game.MIN_ESPIONAGE_VALUE,
+			research: game.MIN_RESEARCH_VALUE,
 			bread: 300,
 			meat: 100,
 			stones: 100,
@@ -146,11 +146,11 @@ civitas.INITIAL_SEED = [
 		},
 		resources: {
 			coins: 10000,
-			fame: civitas.MIN_FAME_VALUE,
-			faith: civitas.MIN_FAITH_VALUE,
-			prestige: civitas.MIN_PRESTIGE_VALUE,
-			espionage: civitas.MIN_ESPIONAGE_VALUE,
-			research: civitas.MIN_RESEARCH_VALUE,
+			fame: game.MIN_FAME_VALUE,
+			faith: game.MIN_FAITH_VALUE,
+			prestige: game.MIN_PRESTIGE_VALUE,
+			espionage: game.MIN_ESPIONAGE_VALUE,
+			research: game.MIN_RESEARCH_VALUE,
 			bread: 300,
 			meat: 100,
 			stones: 70,
@@ -194,11 +194,11 @@ civitas.INITIAL_SEED = [
 		},
 		resources: {
 			coins: 5000,
-			fame: civitas.MIN_FAME_VALUE,
-			faith: civitas.MIN_FAITH_VALUE,
-			prestige: civitas.MIN_PRESTIGE_VALUE,
-			espionage: civitas.MIN_ESPIONAGE_VALUE,
-			research: civitas.MIN_RESEARCH_VALUE,
+			fame: game.MIN_FAME_VALUE,
+			faith: game.MIN_FAITH_VALUE,
+			prestige: game.MIN_PRESTIGE_VALUE,
+			espionage: game.MIN_ESPIONAGE_VALUE,
+			research: game.MIN_RESEARCH_VALUE,
 			bread: 100,
 			meat: 50,
 			stones: 50,

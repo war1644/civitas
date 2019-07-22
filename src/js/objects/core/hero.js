@@ -3,60 +3,33 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.objects.hero
- * @returns {civitas.objects.hero}
+ * @class hero
+ * @returns {hero}
  */
-civitas.objects.hero = function (params) {
-
-	/**
-	 * Reference to the core object.
-	 *
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
-
-	/**
-	 * Name of the hero.
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	this._name = null;
-
-	/**
-	 * Description of the hero.
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	this._description = null;
+class hero {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.objects.hero}
+	 * @returns {hero}
 	 * @param {Object} params
 	 */
-	this.__init = function (params) {
+	constructor (params) {
 		this._core = params.core;
-		this._name = params.name;
-		this._description = params.description;
+		this.name = params.name;
+		this.description = params.description;
 		return this;
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

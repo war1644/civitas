@@ -5,7 +5,7 @@
  * @default
  * @type {Number}
  */
-civitas.WORLD_SIZE_WIDTH = 64;
+game.WORLD_SIZE_WIDTH = 64;
 
 /**
  * Height of the world in hexes.
@@ -14,7 +14,7 @@ civitas.WORLD_SIZE_WIDTH = 64;
  * @default
  * @type {Number}
  */
-civitas.WORLD_SIZE_HEIGHT = 64;
+game.WORLD_SIZE_HEIGHT = 64;
 
 /**
  * Size of a world hex.
@@ -23,7 +23,7 @@ civitas.WORLD_SIZE_HEIGHT = 64;
  * @default
  * @type {Number}
  */
-civitas.WORLD_HEX_SIZE = 24;
+game.WORLD_HEX_SIZE = 24;
 
 /**
  * Whether to beautify the worldmap terrain.
@@ -32,7 +32,7 @@ civitas.WORLD_HEX_SIZE = 24;
  * @default
  * @type {Boolean}
  */
-civitas.WORLD_BEAUTIFY = true;
+game.WORLD_BEAUTIFY = true;
 
 /**
  * Whether to display the worldmap grid.
@@ -41,7 +41,7 @@ civitas.WORLD_BEAUTIFY = true;
  * @default
  * @type {Boolean}
  */
-civitas.WORLD_GRID = true;
+game.WORLD_GRID = true;
 
 /**
  * World generator roughness.
@@ -50,4 +50,4 @@ civitas.WORLD_GRID = true;
  * @default
  * @type {Number}
  */
-civitas.WORLD_EROSION = 1.8;
+game.WORLD_EROSION = 1.8;

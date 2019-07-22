@@ -3,71 +3,86 @@
  * 
  * @param {Object} core
  * @license GPLv3
- * @class civitas.objects.ui
- * @returns {civitas.objects.ui}
+ * @class ui
+ * @returns {ui}
  */
-civitas.objects.ui = function (core) {
-
-	/**
-	 * Array containing the list of all open panels.
-	 *
-	 * @type {Array}
-	 * @private
-	 */
-	this.panels = [];
-
-	/**
-	 * Reference to the core object.
-	 *
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
+class ui {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 * @param {Object} core
 	 */
-	this.__init = function (core) {
+	constructor (core) {
 		this._core = core;
+		this.panels = [];
+		this.panel_class_names = {
+			'academy': ui_panel_academy,
+			'barracks': ui_panel_barracks,
+			'church': ui_panel_church,
+			'embassy': ui_panel_embassy,
+			'shipyard': ui_panel_shipyard,
+			'tavern': ui_panel_tavern,
+			'army': ui_panel_army,
+			'building': ui_panel_building,
+			'buildings': ui_panel_buildings,
+			'campaign': ui_panel_campaign,
+			'council': ui_panel_council,
+			'debug': ui_panel_debug,
+			'help': ui_panel_help,
+			'new_army': ui_panel_new_army,
+			'new_caravan': ui_panel_new_caravan,
+			'new_scout': ui_panel_new_scout,
+			'new_spy': ui_panel_new_spy,
+			'place': ui_panel_place,
+			'ranks': ui_panel_ranks,
+			'settlement': ui_panel_settlement,
+			'storage': ui_panel_storage,
+			'trades': ui_panel_trades,
+			'world': ui_panel_world
+		};
+		this.window_class_names = {
+			'options': ui_window_options,
+			'battle': ui_window_battle,
+			'signin': ui_window_signin,
+			'signup': ui_window_signup,
+			'error': ui_window_error
+		};
 		return this;
-	};
+	}
 
 	/**
 	 * Show the application loading indicator.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.show_loader = function() {
+	show_loader () {
 		$('.loading').show().tipsy({
 			gravity: 'e'
 		});
-		return this;
-	};
+	}
 
 	/**
 	 * Hide the application loading indicator.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.hide_loader = function() {
+	hide_loader () {
 		$('.loading').hide();
-		return this;
-	};
+	}
 
 	/**
 	 * Build the main DOM UI of the game.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.build_main = function() {
+	build_main () {
 		let _t = '';
 		let clicked = false;
 		let clickY, clickX;
@@ -100,11 +115,11 @@ civitas.objects.ui = function (core) {
 				'</audio>' +
 				'<div title="Game is doing stuff in the background." class="loading"></div>';
 		$('body').empty().append(out);
-		for (let item in civitas.RESOURCES) {
-			if (civitas.RESOURCES[item].toolbar === true) {
+		for (let item in game.RESOURCES) {
+			if (game.RESOURCES[item].toolbar === true) {
 				_t += '<div class="resource ' + item + '">' +
 					'<span class="amount">0</span>' +
-					'<img title="' + civitas.RESOURCES[item].name + '" class="tips small" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' +
+					'<img title="' + game.RESOURCES[item].name + '" class="tips small" src="' + game.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' +
 				'</div>';
 			}
 		}
@@ -131,7 +146,7 @@ civitas.objects.ui = function (core) {
 			clickX = event.pageX;
 		};
 		return this;
-	};
+	}
 
 	/**
 	 * Create an item tooltip.
@@ -140,13 +155,13 @@ civitas.objects.ui = function (core) {
 	 * @param {Object} item
 	 * @returns {String}
 	 */
-	this.item_tooltip = function(item) {
-		let out = '<h4 style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + item.name + '</h4>';
+	item_tooltip (item) {
+		let out = '<h4 style="color: ' + game.ITEM_QUALITY_COLORS[item.quality] + '">' + item.name + '</h4>';
 		if (item.flavour) {
 			out += '<span class="flavour">"' + item.flavour + '"</span>' + ' <br />';
 		}
-		out += 'Slot: ' + civitas.ITEM_SLOTS_LIST[item.slot] + ' <br />';
-		if (item.type === civitas.ITEM_TYPE_WEAPON) {
+		out += 'Slot: ' + game.ITEM_SLOTS_LIST[item.slot] + ' <br />';
+		if (item.type === game.ITEM_TYPE_WEAPON) {
 			out += 'Damage: <span class="red">' + item.stats.damageMin + '-' + item.stats.damageMax + '</span><br />Speed: ' + item.stats.speed + '<br />';
 		} else {
 			out += 'Armor: ' + item.stats.armor + '<br />';
@@ -166,9 +181,9 @@ civitas.objects.ui = function (core) {
 		if (item.stats.spirit) {
 			out += 'Spirit: <span class="green">+' + item.stats.spirit + '</span><br />';
 		}
-		out += 'Type: <span style="color: ' + civitas.ITEM_QUALITY_COLORS[item.quality] + '">' + civitas.ITEM_QUALITY_LIST[item.quality] + '</span>';
+		out += 'Type: <span style="color: ' + game.ITEM_QUALITY_COLORS[item.quality] + '">' + game.ITEM_QUALITY_LIST[item.quality] + '</span>';
 		return out;
-	};
+	}
 
 	/**
 	 * Build the About section of the UI.
@@ -176,19 +191,19 @@ civitas.objects.ui = function (core) {
 	 * @public
 	 * @returns {String}
 	 */
-	this.window_about_section = function() {
+	static window_about_section () {
 		let out = '<a href="#" class="do-about button">About</a>' +
-					'<div class="about-game">' +
-						'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + civitas.ASSETS_URL + '/images/ui/github.png" /></a>' +
-						'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
-						'<p>Big thanks to:</p>' +
-						'<ul>' +
-							'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
-							'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
-						'</ul>' +
-					'</div>';
+			'<div class="about-game">' +
+				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + game.ASSETS_URL + '/images/ui/github.png" /></a>' +
+				'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
+				'<p>Big thanks to:</p>' +
+				'<ul>' +
+					'<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' +
+					'<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' +
+				'</ul>' +
+			'</div>';
 		return out;
-	};
+	}
 
 	/**
 	 * Generate a generic panel template.
@@ -197,7 +212,7 @@ civitas.objects.ui = function (core) {
 	 * @param {String} title
 	 * @returns {String}
 	 */
-	this.generic_panel_template = function(title) {
+	static generic_panel_template (title) {
 		if (typeof title === 'undefined') {
 			title = '';
 		}
@@ -208,7 +223,30 @@ civitas.objects.ui = function (core) {
 					'<section></section>' +
 				'</div>';
 		return out;
-	};
+	}
+
+	/**
+	 * Generate a campaign panel template.
+	 *
+	 * @public
+	 * @param {String} title
+	 * @returns {String}
+	 */
+	static campaign_panel_template (title) {
+		if (typeof title === 'undefined') {
+			title = '';
+		}
+		let out = '<div id="panel-{ID}" class="panel">' +
+				'<header>' + title +
+					'<a class="tips close" title="Close"></a>' +
+				'</header>' +
+				'<section></section>' +
+				'<div class="toolbar">' +
+					'<a class="btn dispatch" href="#">Dispatch</a>' +
+				'</div>' +
+			'</div>';
+		return out;
+	}
 
 	/**
 	 * Generate a building panel template.
@@ -217,7 +255,7 @@ civitas.objects.ui = function (core) {
 	 * @param {String} title
 	 * @returns {String}
 	 */
-	this.building_panel_template = function(title) {
+	static building_panel_template (title) {
 		if (typeof title === 'undefined') {
 			title = '';
 		}
@@ -234,7 +272,7 @@ civitas.objects.ui = function (core) {
 					'</footer>' +
 				'</div>';
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -244,7 +282,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} level
 	 * @returns {String}
 	 */
-	this.building_panel = function (params, level) {
+	building_panel (params, level) {
 		if (typeof params.levels === 'undefined') {
 			params.levels = 1;
 		}
@@ -254,7 +292,7 @@ civitas.objects.ui = function (core) {
 		}
 		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
 		let out = '<div class="column">' +
-					'<img class="building" src="' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
+					'<img class="building" src="' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
 				'</div>' +
 				'<div class="column">' +
 					'<p>' + params.description + '</p>' +
@@ -270,7 +308,7 @@ civitas.objects.ui = function (core) {
 					'</dl>' +
 				'</div>'; 
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -280,13 +318,13 @@ civitas.objects.ui = function (core) {
 	 * @param {String} contents
 	 * @returns {String}
 	 */
-	this.normal_panel = function (section, contents) {
+	normal_panel (section, contents) {
 		let out = '<fieldset>' +
 					'<legend>' + section + '</legend>' +
 					contents +
 				'</fieldset>';
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -297,13 +335,13 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} max_level
 	 * @returns {String}
 	 */
-	this.level_panel = function (level, new_level, max_level) {
+	level_panel (level, new_level, max_level) {
 		let out = '<dt>Level</dt>' +
 				'<dd>' +
 					'<span title="Current building level" class="tips">' + new_level + '</span> / <span title="Maximum building level achievable through upgrades" class="tips">' + max_level + '</span>' +
 				'</dd>';
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -314,16 +352,16 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} levels
 	 * @returns {String}
 	 */
-	this.cost_panel = function (costs, level, levels) {
+	cost_panel (costs, level, levels) {
 		let out = '';
 		if (typeof costs !== 'undefined') {
 			out += '<dt>Cost</dt>';
 			for (let item in costs) {
-				out += '<dd>' + civitas.utils.nice_numbers(costs[item]) + this.resource_small_img(item) + (typeof levels !== 'undefined' && level < levels ? ' / ' + civitas.utils.nice_numbers(costs[item] * (level + 1)) + this.resource_small_img(item) : '') + '</dd>';
+				out += '<dd>' + game.nice_numbers(costs[item]) + this.resource_small_img(item) + (typeof levels !== 'undefined' && level < levels ? ' / ' + game.nice_numbers(costs[item] * (level + 1)) + this.resource_small_img(item) : '') + '</dd>';
 			}
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -334,7 +372,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Boolean} show_value
 	 * @returns {String}
 	 */
-	this.progress = function(value, progress_type, show_value) {
+	progress (value, progress_type, show_value) {
 		if (typeof progress_type === 'undefined') {
 			progress_type = 'small';
 		}
@@ -357,7 +395,7 @@ civitas.objects.ui = function (core) {
 					'<p>' + (typeof show_value !== 'undefined' ? show_value : value) + '</p>' +
 				'</div>' +
 			'</div>';
-	};
+	}
 
 	/**
 	 * 
@@ -366,9 +404,9 @@ civitas.objects.ui = function (core) {
 	 * @param {String} name
 	 * @returns {String}
 	 */
-	this.navy_img = function (name) {
-		return '<img class="tips small" title="' + civitas.SHIPS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
-	};
+	navy_img (name) {
+		return '<img class="tips small" title="' + game.SHIPS[name].name + '" src="' + game.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
+	}
 
 	/**
 	 * 
@@ -377,9 +415,9 @@ civitas.objects.ui = function (core) {
 	 * @param {String} name
 	 * @returns {String}
 	 */
-	this.army_img = function (name) {
-		return '<img class="tips small" title="' + civitas.SOLDIERS[name].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
-	};
+	army_img (name) {
+		return '<img class="tips small" title="' + game.SOLDIERS[name].name + '" src="' + game.ASSETS_URL + 'images/assets/army/' + name.toLowerCase().replace(/ /g,"_") + '.png" />';
+	}
 
 	/**
 	 * 
@@ -389,7 +427,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Boolean} no_margin
 	 * @returns {String}
 	 */
-	this.army_list = function (army, no_margin) {
+	army_list (army, no_margin) {
 		let out2 = '<p>There are no soldiers in this army.</p>';
 		let out = '<dl' + ((typeof no_margin !== 'undefined' && no_margin === true) ? ' class="nomg"' : '') + '>';
 		let total = 0;
@@ -407,7 +445,7 @@ civitas.objects.ui = function (core) {
 		} else {
 			return out2;
 		}
-	};
+	}
 
 	/**
 	 * Check if a window exists and is opened.
@@ -415,12 +453,12 @@ civitas.objects.ui = function (core) {
 	 * @param {String} id
 	 * @returns {Boolean}
 	 */
-	this.window_exists = function (id) {
+	window_exists (id) {
 		if ($(id).length == 0) {
 			return false;
 		}
 		return true;
-	};
+	}
 
 	/**
 	 * Check if a panel exists and is opened.
@@ -428,12 +466,12 @@ civitas.objects.ui = function (core) {
 	 * @param {String} id
 	 * @returns {Boolean}
 	 */
-	this.panel_exists = function (id) {
+	panel_exists (id) {
 		if ($(id).length == 0) {
 			return false;
 		}
 		return true;
-	};
+	}
 
 	/**
 	 * 
@@ -446,9 +484,9 @@ civitas.objects.ui = function (core) {
 	 * @param {Boolean} disabled
 	 * @returns {String}
 	 */
-	this.panel_btn = function (text, title, handle, class_name, disabled) {
+	panel_btn (text, title, handle, class_name, disabled) {
 		return '<a title="' + title + '" data-handle="' + handle + '" class="tips ' + class_name + (disabled === true ? ' disabled' : '') + '" href="#">' + text + '</a></td>';
-	};
+	}
 
 	/**
 	 * 
@@ -458,7 +496,7 @@ civitas.objects.ui = function (core) {
 	 * @param {String} mode
 	 * @returns {String}
 	 */
-	this.trades_list = function (trades, mode) {
+	trades_list (trades, mode) {
 		mode = (typeof mode === 'undefined' || mode === 'imports') ? 'imports' : 'exports';
 		let out = '';
 		if (trades !== null) {
@@ -470,7 +508,7 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -480,7 +518,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Boolean} no_margin
 	 * @returns {String}
 	 */
-	this.navy_list = function (army, no_margin) {
+	navy_list (army, no_margin) {
 		let out2 = '<p>There are no ships in this navy.</p>';
 		let out = '<dl' + ((typeof no_margin !== 'undefined' && no_margin === true) ? ' class="nomg"' : '') + '>';
 		let total = 0;
@@ -498,7 +536,7 @@ civitas.objects.ui = function (core) {
 		} else {
 			return out2;
 		}
-	};
+	}
 
 	/**
 	 * 
@@ -507,14 +545,14 @@ civitas.objects.ui = function (core) {
 	 * @param {Object} params
 	 * @returns {String}
 	 */
-	this.building_element = function (params) {
+	building_element (params) {
 		let building_image = params.type;
 		if (params.type.slice(0, 5) === 'house') {
 			building_image = params.type.slice(0, 5);
 		}
 		let image = (typeof params.data.visible_upgrades === 'undefined' || params.data.visible_upgrades === false) ? building_image : building_image + params.data.level;
-		return '<div data-type="' + params.type + '" data-level="' + params.data.level + '" ' + 'style="background-image:url(' + civitas.ASSETS_URL + 'images/assets/buildings/' + image + '.png);left:' + params.data.position.x + 'px;top:' + params.data.position.y + 'px" title=\'' + params.data.name + '\' ' + 'id="building-' + params.data.handle + '"' + 'class="tips building' + (params.data.large === true ? ' large' : '') + '"></div>';
-	};
+		return '<div data-type="' + params.type + '" data-level="' + params.data.level + '" ' + 'style="background-image:url(' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png);left:' + params.data.position.x + 'px;top:' + params.data.position.y + 'px" title=\'' + params.data.name + '\' ' + 'id="building-' + params.data.handle + '"' + 'class="tips building' + (params.data.large === true ? ' large' : '') + '"></div>';
+	}
 
 	/**
 	 * 
@@ -524,9 +562,9 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} amount
 	 * @returns {String}
 	 */
-	this.resource_storage_small_el = function (resource, amount) {
-		return '<div class="tips storage-item small" title="' + civitas.utils.get_resource_name(resource) + '"><img class="small" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></div>';
-	};
+	resource_storage_small_el (resource, amount) {
+		return '<div class="tips storage-item small" title="' + game.get_resource_name(resource) + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></div>';
+	}
 
 	/**
 	 * 
@@ -536,9 +574,9 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} amount
 	 * @returns {String}
 	 */
-	this.resource_storage_el = function (resource, amount) {
-		return '<div class="storage-item" data-resource="' + resource + '"><span class="title">' + civitas.utils.get_resource_name(resource) + '</span><img src="' + civitas.ASSETS_URL + 'images/assets/resources/' +  resource + '.png" /><span class="amount">' + amount + '</span></div>';
-	};
+	resource_storage_el (resource, amount) {
+		return '<div class="storage-item" data-resource="' + resource + '"><span class="title">' + game.get_resource_name(resource) + '</span><img src="' + game.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></div>';
+	}
 
 	/**
 	 * 
@@ -547,7 +585,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Array} data
 	 * @returns {String}
 	 */
-	this.tabs = function (data) {
+	tabs (data) {
 		let out = '<div class="tabs">' +
 				'<ul>';
 		for (let i = 0; i < data.length; i++) {
@@ -559,7 +597,7 @@ civitas.objects.ui = function (core) {
 		}
 		out += '</div>';
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -568,7 +606,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Object| Array} materials
 	 * @returns {String}
 	 */
-	this.materials_panel = function (materials) {
+	materials_panel (materials) {
 		let out = '';
 		if (typeof materials !== 'undefined') {
 			out += '<dt>Uses</dt>';
@@ -585,7 +623,7 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -595,7 +633,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} level
 	 * @returns {String}
 	 */
-	this.chance_panel = function (materials, level) {
+	chance_panel (materials, level) {
 		let out = '';
 		if (typeof materials !== 'undefined') {
 			out += '<dt>Extra materials</dt>';
@@ -604,7 +642,7 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -614,7 +652,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} level
 	 * @returns {String}
 	 */
-	this.production_panel = function (materials, level) {
+	production_panel (materials, level) {
 		let out = '';
 		if (typeof materials !== 'undefined') {
 			out += '<dt>Produces</dt>';
@@ -623,7 +661,7 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -632,7 +670,7 @@ civitas.objects.ui = function (core) {
 	 * @param {Object} requires
 	 * @returns {String}
 	 */
-	this.requires_panel = function (requires) {
+	requires_panel (requires) {
 		let out = '';
 		if (typeof requires.buildings !== 'undefined' || typeof requires.settlement_level !== 'undefined') {
 			out += '<dt>Requires</dt>';
@@ -644,7 +682,7 @@ civitas.objects.ui = function (core) {
 				}
 			}
 			if (typeof requires.research !== 'undefined') {
-				let r = civitas.TECHNOLOGIES[civitas.TECHNOLOGIES.findIndexByHandle(requires.research)];
+				let r = game.TECHNOLOGIES[game.TECHNOLOGIES.findIndexByHandle(requires.research)];
 				out += 'Research: ' + r.name + '<br />';
 			}
 			if (typeof requires.settlement_level !== 'undefined') {
@@ -653,7 +691,7 @@ civitas.objects.ui = function (core) {
 			out += '</dd>';
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -663,14 +701,14 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} level
 	 * @returns {String}
 	 */
-	this.tax_panel = function (tax, level) {
+	tax_panel (tax, level) {
 		let out = '';
 		if (typeof tax !== 'undefined') {
 			out += '<dt>Tax</dt>';
 			out += '<dd>' + (level * tax) + this.resource_small_img('coins') + '</dd>';
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -680,16 +718,16 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} level
 	 * @returns {String}
 	 */
-	this.storage_panel = function (storage, level) {
+	storage_panel (storage, level) {
 		let out = '';
 		if (typeof storage !== 'undefined') {
 			out += '<dt>Storage</dt>' +
 				'<dd>' +
-					(level * storage) + '<img alt="Storage space" class="tips small" title="Storage Space" src="' + civitas.ASSETS_URL + 'images/assets/resources/storage.png" />' +
+					(level * storage) + '<img alt="Storage space" class="tips small" title="Storage Space" src="' + game.ASSETS_URL + 'images/assets/resources/storage.png" />' +
 				'</dd>';
 		}
 		return out;
-	};
+	}
 
 	/**
 	 * 
@@ -698,19 +736,19 @@ civitas.objects.ui = function (core) {
 	 * @param {String} resource
 	 * @returns {String}
 	 */
-	this.resource_small_img = function (resource) {
-		return '<img alt="' + civitas.utils.get_resource_name(resource) + '" class="tips small" title="' + civitas.utils.get_resource_name(resource) + '" src="' + civitas.ASSETS_URL + 'images/assets/resources/' + resource + '.png" />';
-	};
+	resource_small_img (resource) {
+		return '<img alt="' + game.get_resource_name(resource) + '" class="tips small" title="' + game.get_resource_name(resource) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + resource + '.png" />';
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
+	}
 
 	/**
 	 * Perform a normal notification in the game.
@@ -719,27 +757,27 @@ civitas.objects.ui = function (core) {
 	 * @param {String} message
 	 * @param {String} title
 	 * @param {Number} timeout
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.notify = function (message, title, timeout, mode) {
+	notify (message, title, timeout, mode) {
 		this._notify({
 			title: (typeof title !== 'undefined') ? title : 'City Council',
 			content: message,
 			timeout: typeof timeout !== 'undefined' ? timeout : 15000,
-			mode: typeof mode !== 'undefined' ? mode : civitas.NOTIFY_NORMAL
+			mode: typeof mode !== 'undefined' ? mode : game.NOTIFY_NORMAL
 		});
 		this.log('game', message);
 		return this;
-	};
+	}
 
 	/**
 	 * Internal function for performing an UI notification.
 	 * 
 	 * @param {Object} settings
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 * @private
 	 */
-	this._notify = function (settings) {
+	_notify (settings) {
 		let container, notty, hide, image, right, left, inner, _container;
 		let notty_type = 'normal';
 		settings = $.extend({
@@ -747,9 +785,9 @@ civitas.objects.ui = function (core) {
 			content: undefined,
 			timeout: 15000,
 			img: undefined,
-			mode: civitas.NOTIFY_NORMAL
+			mode: game.NOTIFY_NORMAL
 		}, settings);
-		if (settings.mode === civitas.NOTIFY_ACHIEVEMENT) {
+		if (settings.mode === game.NOTIFY_ACHIEVEMENT) {
 			_container = 'achievements-notifications';
 		} else {
 			_container = 'notifications';
@@ -780,21 +818,21 @@ civitas.objects.ui = function (core) {
 			}
 		});
 		hide.addClass('hide');
-		if (settings.mode === civitas.NOTIFY_ERROR) {
+		if (settings.mode === game.NOTIFY_ERROR) {
 			notty_type = 'error';
-		} else if (settings.mode === civitas.NOTIFY_RESEARCH) {
+		} else if (settings.mode === game.NOTIFY_RESEARCH) {
 			notty_type = 'research';
-		} else if (settings.mode === civitas.NOTIFY_EVENT) {
+		} else if (settings.mode === game.NOTIFY_EVENT) {
 			notty_type = 'event';
-		} else if (settings.mode === civitas.NOTIFY_ACHIEVEMENT) {
+		} else if (settings.mode === game.NOTIFY_ACHIEVEMENT) {
 			notty_type = 'achievement';
-		} else if (settings.mode === civitas.NOTIFY_RELIGION) {
+		} else if (settings.mode === game.NOTIFY_RELIGION) {
 			notty_type = 'religion';
-		} else if (settings.mode === civitas.NOTIFY_WAR) {
+		} else if (settings.mode === game.NOTIFY_WAR) {
 			notty_type = 'war';
 		}
 		notty.addClass(notty_type);
-		settings.img = civitas.ASSETS_URL + 'images/assets/ui/icon_' + notty_type + '.png';
+		settings.img = game.ASSETS_URL + 'images/assets/ui/icon_' + notty_type + '.png';
 		image = $('<div>', {
 			style: "background: url('" + settings.img + "')"
 		});
@@ -810,10 +848,10 @@ civitas.objects.ui = function (core) {
 		left.appendTo(notty);
 		right.appendTo(notty);
 		hide.appendTo(notty);
-		if (settings.mode !== civitas.NOTIFY_ACHIEVEMENT) {
+		if (settings.mode !== game.NOTIFY_ACHIEVEMENT) {
 			let timestamp = Number(new Date());
 			let timeHTML = $('<div>', {
-				html: civitas.utils.time_since(timestamp) + ' ago'
+				html: game.time_since(timestamp) + ' ago'
 			});
 			timeHTML.addClass('time-ago').attr('title', timestamp);
 			timeHTML.appendTo(right);
@@ -821,7 +859,7 @@ civitas.objects.ui = function (core) {
 				$('.time-ago').each(function () {
 					let timing = $(this).attr('title');
 					if (timing) {
-						$(this).html(civitas.utils.time_since(timing) + ' ago');
+						$(this).html(game.time_since(timing) + ' ago');
 					}
 				});
 			}, 4000);
@@ -842,7 +880,7 @@ civitas.objects.ui = function (core) {
 			}, settings.timeout);
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Perform an error notification in the game.
@@ -851,27 +889,27 @@ civitas.objects.ui = function (core) {
 	 * @param {String} message
 	 * @param {String} title
 	 * @param {Boolean} no_console
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.error = function (message, title, no_console) {
+	error (message, title, no_console) {
 		this._notify({
 			title: (typeof title !== 'undefined') ? title : 'City Council',
-			mode: civitas.NOTIFY_ERROR,
+			mode: game.NOTIFY_ERROR,
 			content: message
 		});
 		if (typeof no_console === 'undefined' || no_console === false) {
 			this.log('game', message, true);
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Resize the UI.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.resize = function() {
+	resize () {
 		const window_width = parseInt($(window).width());
 		const window_height = parseInt($(window).height());
 		const header_height = parseInt($('.ui > header').height());
@@ -883,7 +921,7 @@ civitas.objects.ui = function (core) {
 		$('.ui > .viewport').width(window_width - sidebar_width);
 		$('.ui > .viewport').height(window_height - header_height);
 		return this;
-	};
+	}
 
 	/**
 	 * Log data to the console.
@@ -892,53 +930,56 @@ civitas.objects.ui = function (core) {
 	 * @param {String} namespace
 	 * @param {String} message
 	 * @param {Boolean} error
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.log = function (namespace, message, error) {
-		if ($('#panel-debug .console p').length > civitas.MAX_CONSOLE_LINES) {
+	log (namespace, message, error) {
+		if ($('#panel-debug .console p').length > game.MAX_CONSOLE_LINES) {
 			$('#panel-debug .console').empty();
 		}
-		$('#panel-debug .console').prepend('<p><span class="date">' + civitas.utils.get_now() + '</span><span class="namespace game-' + namespace + '">' + namespace.toUpperCase() + '</span>' + (error === true ? '<span class="error">ERROR</span>' : '') + '<span' + (error === true ? ' class="error-message"' : ' class="log-message"') + '>' + message + '</span></p>');
+		$('#panel-debug .console').prepend('<p><span class="date">' + game.get_now() + '</span><span class="namespace game-' + namespace + '">' + namespace.toUpperCase() + '</span>' + (error === true ? '<span class="error">ERROR</span>' : '') + '<span' + (error === true ? ' class="error-message"' : ' class="log-message"') + '>' + message + '</span></p>');
 		return this;
-	};
+	}
 
 	/**
 	 * Open a UI panel.
 	 *
 	 * @public
-	 * @param {Object} panel_data
+	 * @param {Object} name
 	 * @param {Object} extra_data
 	 * @param {Boolean} sidebar
-	 * @returns {civitas.controls.panel}
+	 * @returns {ui_panel}
 	 */
-	this.open_panel = function(panel_data, extra_data, sidebar) {
-		panel_data.core = this.core();
+	open_panel (name, extra_data, sidebar) {
+		let _data = {};
+		_data.core = this.core();
 		if (typeof extra_data !== 'undefined') {
-			panel_data.data = extra_data;
+			_data.data = extra_data;
 		}
 		if (typeof sidebar !== 'undefined') {
-			panel_data.data.sidebar = sidebar;
+			_data.data.sidebar = sidebar;
 		}
-		const panel = new civitas.controls.panel(panel_data);
+		const panel = new this.panel_class_names[name](_data);
 		this.panels.push(panel);
 		return panel;
-	};
+	}
 
 	/**
 	 * Open a UI window.
 	 *
 	 * @public
-	 * @param {Object} window_data
+	 * @param {Object} name
 	 * @param {Object} extra_data
-	 * @returns {civitas.controls.window}
+	 * @returns {ui_window}
 	 */
-	this.open_window = function(window_data, extra_data) {
-		window_data.core = this.core();
+	open_window (name, extra_data) {
+		let _data = {};
+		_data.core = this.core();
 		if (typeof extra_data !== 'undefined') {
-			window_data.data = extra_data;
+			_data.data = extra_data;
 		}
-		return new civitas.controls.window(window_data);
-	};
+		
+		return new this.window_class_names[name](_data);
+	}
 
 	/**
 	 * Open a modal window (usually to ask for confirmations).
@@ -947,10 +988,10 @@ civitas.objects.ui = function (core) {
 	 * @param {Function} callback
 	 * @param {String} text
 	 * @param {String} title
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.open_modal = function(callback, text, title) {
-		const modal = new civitas.controls.modal({
+	open_modal (callback, text, title) {
+		const modal = new ui_modal({
 			core: this.core()
 		});
 		modal.alert({
@@ -959,15 +1000,15 @@ civitas.objects.ui = function (core) {
 			on_click: callback
 		});
 		return this;
-	};
+	}
 
 	/**
 	 * Refresh all the UI information after a property change.
 	 * 
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.refresh_ui = function () {
+	refresh_ui () {
 		const settlement = this.core().get_settlement();
 		if (typeof settlement !== 'undefined') {
 			$('.citylevel').html(settlement.level());
@@ -976,7 +1017,7 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Calculate and return the total and free storage space in the main settlement.
@@ -984,7 +1025,7 @@ civitas.objects.ui = function (core) {
 	 * @public
 	 * @returns {Object}
 	 */
-	this.check_storage = function () {
+	check_storage () {
 		const storage = this.core().get_settlement().storage();
 		if (storage.occupied >= storage.all) {
 			this.error('You ran out of storage space and all goods produced will be lost. Upgrade your warehouse or marketplace.', 'No storage space');
@@ -992,15 +1033,15 @@ civitas.objects.ui = function (core) {
 			this.error('You will soon run out of storage space and all goods produced will be lost. Upgrade your warehouse or marketplace.', 'Storage nearly full');
 		}
 		return storage;
-	};
+	}
 
 	/**
 	 * Refresh the UI and panels.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.refresh = function() {
+	refresh () {
 		this.refresh_panels();
 		this.refresh_toolbar();
 		this.refresh_ui();
@@ -1010,7 +1051,7 @@ civitas.objects.ui = function (core) {
 			html: true
 		});
 		return this;
-	};
+	}
 
 	/**
 	 * Get the panels open in the game.
@@ -1018,22 +1059,22 @@ civitas.objects.ui = function (core) {
 	 * @public
 	 * @returns {Array}
 	 */
-	this.get_panels = function() {
+	get_panels () {
 		return this.panels;
-	};
+	}
 
 	/**
 	 * Refresh the resources toolbar.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.refresh_toolbar = function() {
+	refresh_toolbar () {
 		const settlement = this.core().get_settlement();
 		if (typeof settlement !== 'undefined') {
 			const resources = settlement.get_resources();
-			for (let item in civitas.RESOURCES) {
-				if (civitas.RESOURCES[item].toolbar === true) {
+			for (let item in game.RESOURCES) {
+				if (game.RESOURCES[item].toolbar === true) {
 					if (typeof resources[item] !== 'undefined') {
 						if (resources[item] === 0) {
 							$('.resource-panel .resource.' + item).hide();
@@ -1046,16 +1087,16 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Return the UI panel specified by its id.
 	 *
 	 * @public
 	 * @param {String} id
-	 * @returns {civitas.controls.panel|Boolean}
+	 * @returns {ui_panel|Boolean}
 	 */
-	this.get_panel = function(id) {
+	get_panel (id) {
 		const panels = this.get_panels();
 		for (let i = 0; i < panels.length; i++) {
 			if (typeof panels[i] !== 'undefined') {
@@ -1065,7 +1106,7 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Close the UI panel specified by its id.
@@ -1074,7 +1115,7 @@ civitas.objects.ui = function (core) {
 	 * @param {String} id
 	 * @returns {Boolean}
 	 */
-	this.close_panel = function(id) {
+	close_panel (id) {
 		const panels = this.get_panels();
 		for (let i = 0; i < panels.length; i++) {
 			if (typeof panels[i] !== 'undefined') {
@@ -1085,15 +1126,15 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Force refresh of the UI panels open.
 	 *
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.refresh_panels = function() {
+	refresh_panels () {
 		const panels = this.get_panels();
 		for (let i = 0; i < panels.length; i++) {
 			if (typeof panels[i] !== 'undefined') {
@@ -1101,7 +1142,7 @@ civitas.objects.ui = function (core) {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Get the middle of a hex cell.
@@ -1111,44 +1152,44 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} column
 	 * @returns {Number}
 	 */
-	this.get_cell_middle = function(row, column) {
-		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+	get_cell_middle (row, column) {
+		let height = Math.sqrt(3) / 2 * game.WORLD_HEX_SIZE;
 		let center = {
-			x: Math.round(civitas.WORLD_HEX_SIZE), 
+			x: Math.round(game.WORLD_HEX_SIZE), 
 			y: Math.round(height)
 		};
 		return center;
-	};
+	}
 
 	/**
 	 * Scroll the world map to the specified location.
 	 *
 	 * @param {Object} location
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.worldmap_scrollto = function(location) {
+	worldmap_scrollto (location) {
 		const coords = this.get_cell_middle_coords(location.y, location.x);
 		$('.worldmap').scrollTop(coords.y - (700 / 2));
 		$('.worldmap').scrollLeft(coords.x - (1164 / 2));
 		return this;
-	};
+	}
 
 	/**
 	 * Scroll the city map to the specified building location.
 	 *
 	 * @param {Object} building
 	 * @public
-	 * @returns {civitas.objects.ui}
+	 * @returns {ui}
 	 */
-	this.citymap_scrollto_building = function(building) {
-		const location = building.position();
+	citymap_scrollto_building (building) {
+		const location = building.position;
 		const view_width = parseInt($('.ui > .viewport').width());
 		const view_height = parseInt($('.ui > .viewport').height());
 		$('.viewport').scrollTop(location.y - ((view_height - 260) / 2));
 		$('.viewport').scrollLeft(location.x - ((view_width - 260) / 2));
 		return this;
-	};
+	}
 
 	/**
 	 * Get the middle coordonates of a hex cell.
@@ -1158,13 +1199,13 @@ civitas.objects.ui = function (core) {
 	 * @param {Number} column
 	 * @returns {Object}
 	 */
-	this.get_cell_middle_coords = function(row, column) {
-		const height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
+	get_cell_middle_coords (row, column) {
+		const height = Math.sqrt(3) / 2 * game.WORLD_HEX_SIZE;
 		return {
-			x: Math.round((1.5 * column) * civitas.WORLD_HEX_SIZE),
+			x: Math.round((1.5 * column) * game.WORLD_HEX_SIZE),
 			y: Math.round(height * (row * 2 + (column % 2)))
 		}
-	};
+	}
 
 	/**
 	 * Get a random HSL color.
@@ -1172,12 +1213,9 @@ civitas.objects.ui = function (core) {
 	 * @public
 	 * @returns {String}
 	 */
-	this.get_random_color = function() {
+	get_random_color () {
 		let color = (Math.random() * 250) + 1;
 		let colors = Math.random() * 255;
 		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
-	};
-
-	// Fire up the constructor
-	return this.__init(core);
-};
+	}
+}

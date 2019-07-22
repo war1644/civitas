@@ -5,7 +5,7 @@
  * @default
  * @type {Array}
  */
-civitas.CLIMATES = [
+game.CLIMATES = [
 	'none',
 	'temperate',
 	'tropical',
@@ -20,7 +20,7 @@ civitas.CLIMATES = [
  * @default
  * @type {Number}
  */
-civitas.CLIMATE_TEMPERATE = 1;
+game.CLIMATE_TEMPERATE = 1;
 
 /**
  * Tropical climate, favoring farms and exotic goods.
@@ -29,7 +29,7 @@ civitas.CLIMATE_TEMPERATE = 1;
  * @default
  * @type {Number}
  */
-civitas.CLIMATE_TROPICAL = 2;
+game.CLIMATE_TROPICAL = 2;
 
 /**
  * Arid climate, favoring ore mines.
@@ -38,7 +38,7 @@ civitas.CLIMATE_TROPICAL = 2;
  * @default
  * @type {Number}
  */
-civitas.CLIMATE_ARID = 3;
+game.CLIMATE_ARID = 3;
 
 /**
  * Polar climate, very extreme.
@@ -47,4 +47,4 @@ civitas.CLIMATE_ARID = 3;
  * @default
  * @type {Number}
  */
-civitas.CLIMATE_POLAR = 4;
+game.CLIMATE_POLAR = 4;

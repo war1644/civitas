@@ -3,41 +3,25 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.modules.ai
- * @returns {civitas.modules.ai}
+ * @class ai
+ * @returns {ai}
  */
-civitas.modules.ai = function (params) {
-
-	/**
-	 * Reference to the core object.
-	 * 
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
-
-	/**
-	 * Personality type for this AI.
-	 *
-	 * @private
-	 * @type {Number}
-	 */
-	this._type = null;
+class ai {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.modules.ai}
+	 * @returns {ai}
 	 * @param {Object} params
 	 */
-	this.__init = function (params) {
+	constructor (params) {
 		this._core = params.core;
-		this._type = params.type;
+		this.type = params.type;
 		// Todo
 		return this;
-	};
+	}
 
 	/**
 	 * Perform the actual data processing for this AI.
@@ -45,21 +29,18 @@ civitas.modules.ai = function (params) {
 	 * @public
 	 * @returns {Boolean}
 	 */
-	this.process = function() {
+	process () {
 		// Todo
 		return true;
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

@@ -5,7 +5,7 @@
  * @default
  * @type {Array}
  */
-civitas.SEASONS = [
+game.SEASONS = [
 	'spring',
 	'summer',
 	'autumn',
@@ -19,7 +19,7 @@ civitas.SEASONS = [
  * @default
  * @type {Number}
  */
-civitas.SEASON_SPRING = 0;
+game.SEASON_SPRING = 0;
 
 /**
  * Summer season.
@@ -28,7 +28,7 @@ civitas.SEASON_SPRING = 0;
  * @default
  * @type {Number}
  */
-civitas.SEASON_SUMMER = 1;
+game.SEASON_SUMMER = 1;
 
 /**
  * Autumn season.
@@ -37,7 +37,7 @@ civitas.SEASON_SUMMER = 1;
  * @default
  * @type {Number}
  */
-civitas.SEASON_AUTUMN = 2;
+game.SEASON_AUTUMN = 2;
 
 /**
  * Winter season.
@@ -46,4 +46,4 @@ civitas.SEASON_AUTUMN = 2;
  * @default
  * @type {Number}
  */
-civitas.SEASON_WINTER = 3;
+game.SEASON_WINTER = 3;

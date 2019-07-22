@@ -3,90 +3,10 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.controls.panel
- * @returns {civitas.controls.panel}
+ * @class ui_panel
+ * @returns {ui_panel}
  */
-civitas.controls.panel = function (params) {
-
-	/**
-	 * DOM template of this panel.
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	this.template = null;
-
-	/**
-	 * DOM handle of this panel.
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	this.handle = null;
-
-	/**
-	 * Reference to the core object.
-	 *
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
-
-	/**
-	 * DOM id of this panel.
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	this.id = null;
-
-	/**
-	 * Data passed to this panel.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this.params_data = null;
-
-	/**
-	 * Localized title of the panel.
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	this.title = null;
-
-	/**
-	 * Callback function when the panel is created.
-	 *
-	 * @public
-	 * @type {Function}
-	 */
-	this.on_create = null;
-
-	/**
-	 * Callback function when the panel is shown.
-	 *
-	 * @public
-	 * @type {Function}
-	 */
-	this.on_show = null;
-
-	/**
-	 * Callback function when the panel is hidden (destroyed).
-	 *
-	 * @public
-	 * @type {Function}
-	 */
-	this.on_hide = null;
-
-	/**
-	 * Callback function when the panel is refreshed.
-	 *
-	 * @public
-	 * @type {Function}
-	 */
-	this.on_refresh = null;
+class ui_panel {
 
 	/**
 	 * Object destructor.
@@ -94,7 +14,7 @@ civitas.controls.panel = function (params) {
 	 * @private
 	 * @returns {Boolean}
 	 */
-	this.__destroy = function () {
+	destructor () {
 		this.core().ui().log('ui', 'Destroying panel with id `' + this.id + '`');
 		$(this.handle).remove();
 		let panels = this.core().ui().get_panels();
@@ -107,7 +27,7 @@ civitas.controls.panel = function (params) {
 		$('.tipsy').remove();
 		this.on_hide.call(this);
 		return false;
-	};
+	}
 
 	/**
 	 * Method for destroying the panel.
@@ -115,19 +35,19 @@ civitas.controls.panel = function (params) {
 	 * @public
 	 * @returns {Boolean}
 	 */
-	this.destroy = function () {
-		return this.__destroy();
-	};
+	destroy () {
+		return this.destructor();
+	}
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.controls.panel}
+	 * @returns {ui_panel}
 	 * @param {Object} params
 	 */
-	this.__init = function (params) {
+	constructor (params) {
 		let self = this;
 		this._core = params.core;
 		this.id = params.id;
@@ -293,18 +213,15 @@ civitas.controls.panel = function (params) {
 			html: true
 		});
 		return this;
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 *
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

@@ -5,7 +5,7 @@
  * @default
  * @type {Number}
  */
-civitas.MIN_RESEARCH_VALUE = 1;
+game.MIN_RESEARCH_VALUE = 1;
 
 /**
  * The maximum value settlement research can have.
@@ -14,7 +14,7 @@ civitas.MIN_RESEARCH_VALUE = 1;
  * @default
  * @type {Number}
  */
-civitas.MAX_RESEARCH_VALUE = 1000;
+game.MAX_RESEARCH_VALUE = 1000;
 
 /**
  * List of all game research technologies.
@@ -22,7 +22,7 @@ civitas.MAX_RESEARCH_VALUE = 1000;
  * @constant
  * @type {Array}
  */
-civitas.TECHNOLOGIES = [
+game.TECHNOLOGIES = [
 	{
 		name: 'Agriculture',
 		handle: 'agriculture',
@@ -74,7 +74,7 @@ civitas.TECHNOLOGIES = [
 		description: '',
 		duration: 96,
 		cost: {
-			research: civitas.MAX_RESEARCH_VALUE,
+			research: game.MAX_RESEARCH_VALUE,
 			coins: 200000,
 			prestige: 100
 		},
@@ -123,7 +123,7 @@ civitas.TECHNOLOGIES = [
 		description: 'Researching diplomacy will give a boost to your Embassy`s production of fame and espionage.',
 		duration: 320,
 		cost: {
-			research: civitas.MAX_RESEARCH_VALUE,
+			research: game.MAX_RESEARCH_VALUE,
 			coins: 500000,
 			soap: 100,
 			jewelery: 100,
@@ -182,7 +182,7 @@ civitas.TECHNOLOGIES = [
 		description: 'Researching heavy projectiles will give a production boost to your Cannon Foundry and Catapult Workshop.',
 		duration: 200,
 		cost: {
-			research: civitas.MAX_RESEARCH_VALUE,
+			research: game.MAX_RESEARCH_VALUE,
 			coins: 800000,
 			steel: 200,
 			gunpowder: 100,
@@ -203,7 +203,7 @@ civitas.TECHNOLOGIES = [
 		description: 'Researching the railway will break in half the time required to travel from one city to another.',
 		duration: 300,
 		cost: {
-			research: civitas.MAX_RESEARCH_VALUE,
+			research: game.MAX_RESEARCH_VALUE,
 			coins: 1000000,
 			steel: 1000,
 			glass: 1000,
@@ -242,7 +242,7 @@ civitas.TECHNOLOGIES = [
 		description: 'Researching taxation will provide an extra 100 coins from each of your houses, regardless of their level.',
 		duration: 260,
 		cost: {
-			research: civitas.MAX_RESEARCH_VALUE,
+			research: game.MAX_RESEARCH_VALUE,
 			coins: 1000000,
 			gold: 1000,
 			silver: 1000

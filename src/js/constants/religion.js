@@ -5,7 +5,7 @@
  * @default
  * @type {Array}
  */
-civitas.RELIGIONS = [
+game.RELIGIONS = [
 	'none',
 	'christianity',
 	'islam',
@@ -23,7 +23,7 @@ civitas.RELIGIONS = [
  * @default
  * @type {Number}
  */
-civitas.RELIGION_NONE = 0;
+game.RELIGION_NONE = 0;
 
 /**
  * Christianity
@@ -32,7 +32,7 @@ civitas.RELIGION_NONE = 0;
  * @default
  * @type {Number}
  */
-civitas.RELIGION_CHRISTIANITY = 1;
+game.RELIGION_CHRISTIANITY = 1;
 
 /**
  * Islam
@@ -41,7 +41,7 @@ civitas.RELIGION_CHRISTIANITY = 1;
  * @default
  * @type {Number}
  */
-civitas.RELIGION_ISLAM = 2;
+game.RELIGION_ISLAM = 2;
 
 /**
  * Judaism
@@ -50,7 +50,7 @@ civitas.RELIGION_ISLAM = 2;
  * @default
  * @type {Number}
  */
-civitas.RELIGION_JUDAISM = 3;
+game.RELIGION_JUDAISM = 3;
 
 /**
  * Buddhism
@@ -59,7 +59,7 @@ civitas.RELIGION_JUDAISM = 3;
  * @default
  * @type {Number}
  */
-civitas.RELIGION_BUDDHISM = 4;
+game.RELIGION_BUDDHISM = 4;
 
 /**
  * Hinduism
@@ -68,7 +68,7 @@ civitas.RELIGION_BUDDHISM = 4;
  * @default
  * @type {Number}
  */
-civitas.RELIGION_HINDUISM = 5;
+game.RELIGION_HINDUISM = 5;
 
 /**
  * Confucianism
@@ -77,7 +77,7 @@ civitas.RELIGION_HINDUISM = 5;
  * @default
  * @type {Number}
  */
-civitas.RELIGION_CONFUCIANISM = 6;
+game.RELIGION_CONFUCIANISM = 6;
 
 /**
  * Taoism
@@ -86,7 +86,7 @@ civitas.RELIGION_CONFUCIANISM = 6;
  * @default
  * @type {Number}
  */
-civitas.RELIGION_TAOISM = 7;
+game.RELIGION_TAOISM = 7;
 
 /**
  * The minimum value settlement faith can have.
@@ -95,7 +95,7 @@ civitas.RELIGION_TAOISM = 7;
  * @default
  * @type {Number}
  */
-civitas.MIN_FAITH_VALUE = 1;
+game.MIN_FAITH_VALUE = 1;
 
 /**
  * The maximum value settlement faith can have.
@@ -104,4 +104,4 @@ civitas.MIN_FAITH_VALUE = 1;
  * @default
  * @type {Number}
  */
-civitas.MAX_FAITH_VALUE = 1000;
+game.MAX_FAITH_VALUE = 1000;

@@ -3,85 +3,52 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.objects.world
- * @returns {civitas.objects.world}
+ * @class world
+ * @returns {world}
  */
-civitas.objects.world = function (params) {
-
-	/**
-	 * Random seeds for world generation.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._seeds = {
-		elevation: null,
-		moisture: null
-	};
-
-	/**
-	 * Reference to the core object.
-	 *
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
-
-	/**
-	 * Terrain colors.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._colors = {
-		background: '#64B4E1',
-		ocean: '#64B5E1',
-		grass: '#E6F59A',
-		subtropical_desert: '#F2CD63',
-		temperate_desert: '#F2CD63',
-		taiga: '#E1C85A',
-		shrubland: '#E1C859',
-		beach: '#FFF899',
-		scorched: '#E5F59A',
-		bare: '#D1BE79',
-		tundra: '#E5F59A',
-		snow: '#DCDCE6',
-		temperate_deciduous_forest: '#78AA46',
-		temperate_rain_forest: '#78AA46',
-		tropical_rain_forest: '#549D65',
-		tropical_seasonal_forest: '#549D65',
-		hills: '#E1C859',
-		mountains: '#B37D1A',
-		mountains_ice: '#DCDCE6'
-	};
-
-	/**
-	 * Raw world data.
-	 *
-	 * @private
-	 * @type {Array}
-	 */
-	this._data = [];
+class world {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.objects.world}
+	 * @returns {world}
 	 * @param {Object} params
 	 */
-	this.__init = function (params) {
+	constructor (params) {
 		this._core = params.core;
-		this._seeds.moisture = typeof params.moisture !== 'undefined' && params.moisture !== null ? params.moisture : this.seed();
-		this._seeds.elevation = typeof params.elevation !== 'undefined' && params.elevation !== null ? params.elevation : this.seed();
-		this._data = typeof params.data !== 'undefined' ? params.data : [];
-		if (this._data.length === 0) {
+		this.seeds = {};
+		this.colors = {
+			background: '#64B4E1',
+			ocean: '#64B5E1',
+			grass: '#E6F59A',
+			subtropical_desert: '#F2CD63',
+			temperate_desert: '#F2CD63',
+			taiga: '#E1C85A',
+			shrubland: '#E1C859',
+			beach: '#FFF899',
+			scorched: '#E5F59A',
+			bare: '#D1BE79',
+			tundra: '#E5F59A',
+			snow: '#DCDCE6',
+			temperate_deciduous_forest: '#78AA46',
+			temperate_rain_forest: '#78AA46',
+			tropical_rain_forest: '#549D65',
+			tropical_seasonal_forest: '#549D65',
+			hills: '#E1C859',
+			mountains: '#B37D1A',
+			mountains_ice: '#DCDCE6'
+		};
+		this.seeds.moisture = typeof params.moisture !== 'undefined' && params.moisture !== null ? params.moisture : this.seed();
+		this.seeds.elevation = typeof params.elevation !== 'undefined' && params.elevation !== null ? params.elevation : this.seed();
+		this.data = typeof params.data !== 'undefined' ? params.data : [];
+		if (this.data.length === 0) {
 			this._create_array();
 			this._generate();
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Get a random number to seed the generator.
@@ -89,9 +56,9 @@ civitas.objects.world = function (params) {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.seed = function() {
+	seed () {
 		return Math.random() * (2147483646 - 1) + 1;
-	};
+	}
 
 	/**
 	 * Get the terrain data as a string based on the elevation.
@@ -100,9 +67,9 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {String}
 	 */
-	this.get_hex_terrain = function(hex) {
-		let elevation = this._data[hex.y][hex.x].e;
-		let moisture = this._data[hex.y][hex.x].m;
+	get_hex_terrain (hex) {
+		let elevation = this.data[hex.y][hex.x].e;
+		let moisture = this.data[hex.y][hex.x].m;
 		if (elevation <= 0.1) {
 			return 'ocean';
 		} else if (elevation > 0.1 && elevation <= 0.15) {
@@ -144,7 +111,7 @@ civitas.objects.world = function (params) {
 				return 'mountains';
 			}
 		}
-	};
+	}
 
 	/**
 	 * Convert a terrain type into climate type.
@@ -153,31 +120,31 @@ civitas.objects.world = function (params) {
 	 * @public
 	 * @returns {Boolean|Object}
 	 */
-	this.get_climate_from_terrain = function(terrain) {
+	get_climate_from_terrain (terrain) {
 		if (terrain === 'tropical_rain_forest' || terrain === 'tropical_seasonal_forest') {
 			return {
-				id: civitas.CLIMATE_TROPICAL,
-				name: civitas.CLIMATES[civitas.CLIMATE_TROPICAL]
+				id: game.CLIMATE_TROPICAL,
+				name: game.CLIMATES[game.CLIMATE_TROPICAL]
 			};
 		} else if (terrain === 'subtropical_desert' || terrain === 'temperate_desert') {
 			return {
-				id: civitas.CLIMATE_ARID,
-				name: civitas.CLIMATES[civitas.CLIMATE_ARID]
+				id: game.CLIMATE_ARID,
+				name: game.CLIMATES[game.CLIMATE_ARID]
 			};
 		} else if (terrain === 'mountains_ice' || terrain === 'snow') {
 			return {
-				id: civitas.CLIMATE_POLAR,
-				name: civitas.CLIMATES[civitas.CLIMATE_POLAR]
+				id: game.CLIMATE_POLAR,
+				name: game.CLIMATES[game.CLIMATE_POLAR]
 			};
 		} else if (terrain === 'grass' || terrain === 'temperate_deciduous_forest' || terrain === 'temperate_rain_forest' || terrain === 'hills' || terrain === 'mountains' || terrain === 'taiga' || terrain === 'shrubland' || terrain === 'beach' || terrain === 'scorched' || terrain === 'tundra' || terrain === 'bare') {
 			return {
-				id: civitas.CLIMATE_TEMPERATE,
-				name: civitas.CLIMATES[civitas.CLIMATE_TEMPERATE]
+				id: game.CLIMATE_TEMPERATE,
+				name: game.CLIMATES[game.CLIMATE_TEMPERATE]
 			};
 		} else {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * Convert a climate type into terrain type.
@@ -186,23 +153,23 @@ civitas.objects.world = function (params) {
 	 * @public
 	 * @returns {Boolean|Array}
 	 */
-	this.get_terrain_from_climate = function(climate) {
-		if (climate === civitas.CLIMATE_TROPICAL) {
+	get_terrain_from_climate (climate) {
+		if (climate === game.CLIMATE_TROPICAL) {
 			return [
 				'tropical_rain_forest',
 				'tropical_seasonal_forest'
 			];
-		} else if (climate === civitas.CLIMATE_ARID) {
+		} else if (climate === game.CLIMATE_ARID) {
 			return [
 				'subtropical_desert',
 				'temperate_desert'
 			];
-		} else if (climate === civitas.CLIMATE_POLAR) {
+		} else if (climate === game.CLIMATE_POLAR) {
 			return [
 				'mountains_ice',
 				'snow'
 			];
-		} else if (climate === civitas.CLIMATE_TEMPERATE) {
+		} else if (climate === game.CLIMATE_TEMPERATE) {
 			return [
 				'grass',
 				'temperate_deciduous_forest',
@@ -219,7 +186,7 @@ civitas.objects.world = function (params) {
 		} else {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * Get a random world location
@@ -228,10 +195,10 @@ civitas.objects.world = function (params) {
 	 * @param {String} terrain
 	 * @returns {Object}
 	 */
-	this.get_random_location = function(terrain) {
+	get_random_location (terrain) {
 		const hex = {
-			x: civitas.utils.get_random(0, civitas.WORLD_SIZE_WIDTH - 1),
-			y: civitas.utils.get_random(0, civitas.WORLD_SIZE_HEIGHT - 1)
+			x: game.get_random(0, game.WORLD_SIZE_WIDTH - 1),
+			y: game.get_random(0, game.WORLD_SIZE_HEIGHT - 1)
 		}
 		if (typeof terrain !== 'undefined') {
 			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
@@ -246,7 +213,7 @@ civitas.objects.world = function (params) {
 			}
 			return this.get_random_location(terrain);
 		}
-	};
+	}
 
 	/**
 	 * Get the world properties.
@@ -254,29 +221,19 @@ civitas.objects.world = function (params) {
 	 * @public
 	 * @returns {Object}
 	 */
-	this.properties = function() {
+	properties () {
 		return this._properties;
-	};
-
-	/**
-	 * Return the default terrain colors.
-	 * 
-	 * @public
-	 * @returns {Object}
-	 */
-	this.colors = function() {
-		return this._colors;
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
+	}
 
 	/**
 	 * Check if the specified hex is ocean.
@@ -285,12 +242,12 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {Boolean}
 	 */
-	this.hex_is_water = function(hex) {
+	hex_is_water (hex) {
 		if (this.get_hex_terrain(hex) === 'ocean') {
 			return true;
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Lock the specified hex as being inside the borders of a settlement.
@@ -299,10 +256,10 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {String}
 	 */
-	this.lock_hex = function(hex, lid) {
+	lock_hex (hex, lid) {
 		this.set_hex(hex, 'l', true);
 		this.set_hex(hex, 'lid', lid);
-	};
+	}
 
 	/**
 	 * Unlock the specified hex.
@@ -311,10 +268,10 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {String}
 	 */
-	this.unlock_hex = function(hex) {
+	unlock_hex (hex) {
 		this.set_hex(hex, 'l', false);
 		this.set_hex(hex, 'lid', null);
-	};
+	}
 
 	/**
 	 * Check if the specified hex is locked.
@@ -323,9 +280,9 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {Boolean}
 	 */
-	this.hex_is_locked = function(hex) {
+	hex_is_locked (hex) {
 		return this.get_hex(hex.x, hex.y).l;
-	};
+	}
 
 	/**
 	 * Lock the specified hex by the settlement id.
@@ -334,9 +291,9 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {Object}
 	 */
-	this.hex_locked_by = function(hex) {
+	hex_locked_by (hex) {
 		return this.get_hex(hex.x, hex.y).lid;
-	};
+	}
 
 	/**
 	 * Return the moisture data for the specified hex.
@@ -345,9 +302,9 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {Number}
 	 */
-	this.get_hex_moisture = function(hex) {
+	get_hex_moisture (hex) {
 		return this.get_hex(hex.x, hex.y).m;
-	};
+	}
 
 	/**
 	 * Return the elevation data for the specified hex.
@@ -356,9 +313,9 @@ civitas.objects.world = function (params) {
 	 * @param {Object} hex
 	 * @returns {Number}
 	 */
-	this.get_hex_elevation = function(hex) {
+	get_hex_elevation (hex) {
 		return this.get_hex(hex.x, hex.y).e;
-	};
+	}
 
 	/**
 	 * Return the specified hex raw data.
@@ -368,9 +325,9 @@ civitas.objects.world = function (params) {
 	 * @param {Number} y
 	 * @returns {Object}
 	 */
-	this.get_hex = function(x, y) {
-		return this._data[y][x];
-	};
+	get_hex (x, y) {
+		return this.data[y][x];
+	}
 
 	/**
 	 * Set the specified hex data.
@@ -381,82 +338,82 @@ civitas.objects.world = function (params) {
 	 * @param {String|Number|Array|Object} value
 	 * @returns {Object}
 	 */
-	this.set_hex = function(hex, key, value) {
-		return this._data[hex.y][hex.x][key] = value;
-	};
+	set_hex (hex, key, value) {
+		return this.data[hex.y][hex.x][key] = value;
+	}
 
 	/**
 	 * Add a place into the world data.
 	 *
 	 * @public
-	 * @param {civitas.objects.place} place
-	 * @returns {civitas.objects.world}
+	 * @param {place} place
+	 * @returns {world}
 	 */
-	this.add_place = function(place) {
-		const location = place.location();
-		this.set_hex(location, 'p', place.id());
+	add_place (place) {
+		const location = place.location;
+		this.set_hex(location, 'p', place.properties.id);
 		if (place.is_claimed() === false) {
-			this.lock_hex(location, place.id());
+			this.lock_hex(location, place.properties.id);
 		} else {
 			this.lock_hex(location, place.is_claimed());
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Add a settlement into the world data.
 	 *
 	 * @public
-	 * @param {civitas.objects.settlement} settlement
-	 * @returns {civitas.objects.world}
+	 * @param {settlement} settlement
+	 * @returns {world}
 	 */
-	this.add_settlement = function(settlement) {
+	add_settlement (settlement) {
 		const location = settlement.location();
 		this.set_hex(location, 's', settlement.id());
 		this.set_hex(location, 'n', settlement.name());
 		this.lock_hex(location, settlement.id());
 		this.calc_neighbours(settlement);
 		return this;
-	};
+	}
 
 	/**
 	 * Remove a settlement from the world data.
 	 *
 	 * @public
-	 * @param {civitas.objects.settlement} settlement
-	 * @returns {civitas.objects.world}
+	 * @param {settlement} settlement
+	 * @returns {world}
 	 */
-	this.remove_city = function(settlement) {
+	remove_city (settlement) {
 		const location = settlement.location();
 		const id = settlement.id();
-		this._data[location.y][location.x].s = null;
-		this._data[location.y][location.x].n = null;
-		for (let x = 0; x < civitas.WORLD_SIZE_WIDTH; x++) {
-			for (let y = 0; y < civitas.WORLD_SIZE_HEIGHT; y++) {
-				if (this._data[y][x].lid === id) {
-					this._data[y][x].lid = null;
-					this._data[y][x].l = false;
+		this.data[location.y][location.x].s = null;
+		this.data[location.y][location.x].n = null;
+		for (let x = 0; x < game.WORLD_SIZE_WIDTH; x++) {
+			for (let y = 0; y < game.WORLD_SIZE_HEIGHT; y++) {
+				if (this.data[y][x].lid === id) {
+					this.data[y][x].lid = null;
+					this.data[y][x].l = false;
 				}
 			}
 		}
 		//$('#worldmap-city-image' + location.y + '-' + location.x).remove();
 		return this;
-	};
+	}
 
 	/**
 	 * Create the raw multidimensional array.
 	 *
 	 * @private
-	 * @returns {civitas.objects.world}
+	 * @returns {world}
 	 */
-	this._create_array = function() {
-		this._data = new Array(civitas.WORLD_SIZE_WIDTH);
-		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; i += 1) {
-			this._data[i] = new Array(civitas.WORLD_SIZE_HEIGHT);
+	_create_array () {
+		this.data = new Array(game.WORLD_SIZE_WIDTH);
+		for (let i = 0; i < game.WORLD_SIZE_WIDTH; i += 1) {
+			this.data[i] = new Array(game.WORLD_SIZE_HEIGHT);
 		}
-		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; i += 1) {
-			for (let j = 0; j < civitas.WORLD_SIZE_HEIGHT; j += 1) {
-				this._data[i][j] = {
+		for (let i = 0; i < game.WORLD_SIZE_WIDTH; i += 1) {
+			for (let j = 0; j < game.WORLD_SIZE_HEIGHT; j += 1) {
+				this.data[i][j] = {
 					/* Elevation */
 					e: 0,
 					/* Moisture */
@@ -475,17 +432,17 @@ civitas.objects.world = function (params) {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Generate the elevation and moisture maps.
 	 *
 	 * @private
-	 * @returns {civitas.objects.world}
+	 * @returns {world}
 	 */
-	this._generate = function() {
-		let rng1 = PM_PRNG.create(this._seeds.elevation);
-		let rng2 = PM_PRNG.create(this._seeds.moisture);
+	_generate () {
+		let rng1 = PM_PRNG.create(this.seeds.elevation);
+		let rng2 = PM_PRNG.create(this.seeds.moisture);
 		let gen1 = new SimplexNoise(rng1.nextDouble.bind(rng1));
 		let gen2 = new SimplexNoise(rng2.nextDouble.bind(rng2));
 		function noise1(nx, ny) {
@@ -494,10 +451,10 @@ civitas.objects.world = function (params) {
 		function noise2(nx, ny) {
 			return gen2.noise2D(nx, ny) / 2 + 0.5;
 		}
-		for (let x = 0; x < civitas.WORLD_SIZE_HEIGHT; x++) {
-			for (let y = 0; y < civitas.WORLD_SIZE_WIDTH; y++) {      
-				let nx = x / civitas.WORLD_SIZE_HEIGHT - 0.5;
-				let ny = y / civitas.WORLD_SIZE_WIDTH - 0.5;
+		for (let x = 0; x < game.WORLD_SIZE_HEIGHT; x++) {
+			for (let y = 0; y < game.WORLD_SIZE_WIDTH; y++) {      
+				let nx = x / game.WORLD_SIZE_HEIGHT - 0.5;
+				let ny = y / game.WORLD_SIZE_WIDTH - 0.5;
 				let e = (1.00 * noise1(1 * nx,  1 * ny)
 					+ 0.77 * noise1(2 * nx,  2 * ny)
 					+ 0.00 * noise1(4 * nx,  4 * ny)
@@ -505,8 +462,8 @@ civitas.objects.world = function (params) {
 					+ 0.00 * noise1(16 * nx, 16 * ny)
 					+ 0.00 * noise1(32 * nx, 32 * ny));
 				e /= (1.00 + 0.77 + 0.00 + 0.00 + 0.00 + 0.00);
-				e = Math.pow(e, civitas.WORLD_EROSION);
-				this._data[y][x].e = e;
+				e = Math.pow(e, game.WORLD_EROSION);
+				this.data[y][x].e = e;
 				let m = (1.00 * noise2(1 * nx,  1 * ny)
 					+ 0.75 * noise2(2 * nx,  2 * ny)
 					+ 0.33 * noise2(4 * nx,  4 * ny)
@@ -514,11 +471,11 @@ civitas.objects.world = function (params) {
 					+ 0.33 * noise2(16 * nx, 16 * ny)
 					+ 0.50 * noise2(32 * nx, 32 * ny));
 				m /= (1.00 + 0.75 + 0.33 + 0.33 + 0.33 + 0.50);
-				this._data[y][x].m = m;
+				this.data[y][x].m = m;
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Get the list of all the neighbouring hexes to the specified settlement.
@@ -526,7 +483,7 @@ civitas.objects.world = function (params) {
 	 * @returns {Array}
 	 * @public
 	 */
-	this.get_neighbours = function(settlement) {
+	get_neighbours (settlement) {
 		const hexes = [];
 		const location = settlement.location();
 		const neighbours = this.get_neighbouring_hexes(location.y, location.x);
@@ -544,19 +501,19 @@ civitas.objects.world = function (params) {
 			}
 		}
 		return hexes;
-	};
+	}
 
 	/**
 	 * Lock neighbouring hexes.
 	 *
 	 * @public
-	 * @returns {civitas.objects.world}
+	 * @returns {world}
 	 */
-	this.calc_neighbours = function(settlement) {
+	calc_neighbours (settlement) {
 		let terrain;
 		const neighbours = this.get_neighbours(settlement);
 		for (let i = 0; i < neighbours.length; i++) {
-			if ((neighbours[i].x >= 0 && neighbours[i].x < civitas.WORLD_SIZE_WIDTH) && (neighbours[i].y >= 0 && neighbours[i].y < civitas.WORLD_SIZE_HEIGHT)) {
+			if ((neighbours[i].x >= 0 && neighbours[i].x < game.WORLD_SIZE_WIDTH) && (neighbours[i].y >= 0 && neighbours[i].y < game.WORLD_SIZE_HEIGHT)) {
 				terrain = this.get_hex_terrain(neighbours[i]);
 				this.lock_hex(neighbours[i], settlement.id());
 				if (terrain === 'ocean') {
@@ -565,9 +522,9 @@ civitas.objects.world = function (params) {
 			}
 		}
 		return this;
-	};
+	}
 
-	this.get_neighbouring_hexes = function(y, x) {
+	get_neighbouring_hexes (y, x) {
 		if (x % 2 == 0) {
 			return [
 				{
@@ -613,7 +570,7 @@ civitas.objects.world = function (params) {
 				}
 			]
 		}
-	};
+	}
 
 	/**
 	 * Get the distance between two points.
@@ -622,9 +579,9 @@ civitas.objects.world = function (params) {
 	 * @param {Number} destination
 	 * @returns {Number}
 	 */
-	this.get_distance = function(source, destination) {
+	get_distance (source, destination) {
 		return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2))) * 100;
-	};
+	}
 
 	/**
 	 * Get the distance between two points in days
@@ -633,66 +590,36 @@ civitas.objects.world = function (params) {
 	 * @param {Number} destination
 	 * @returns {Number}
 	 */
-	this.get_distance_in_days = function(source, destination) {
+	get_distance_in_days (source, destination) {
 		return Math.floor((Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100) / 15);
-	};
-
-	/**
-	 * Get/set the world data seeds.
-	 *
-	 * @public
-	 * @param {Array} value
-	 * @returns {Array}
-	 */
-	this.seeds = function(value) {
-		if (typeof value !== 'undefined') {
-			this._seeds = value;
-		}
-		return this._seeds;
-	};
-
-	/**
-	 * Get/set the world data array.
-	 *
-	 * @public
-	 * @param {Array} value
-	 * @returns {Array}
-	 */
-	this.data = function(value) {
-		if (typeof value !== 'undefined') {
-			this._data = value;
-		}
-		return this._data;
-	};
+	}
 
 	/**
 	 * Draw the worldmap data to a HTML5 canvas.
 	 *
 	 * @public
-	 * @returns {civitas.objects.world}
+	 * @returns {world}
 	 */
-	this.draw = function() {
+	draw () {
 		let settlements = this.core().get_settlements();
-		let data = this.data();
-		let colors = this.colors();
-		let height = Math.sqrt(3) / 2 * civitas.WORLD_HEX_SIZE;
-		let image_width = (1.5 * civitas.WORLD_SIZE_WIDTH +  0.5) * civitas.WORLD_HEX_SIZE;
-		let image_height = (2 * civitas.WORLD_SIZE_HEIGHT  +  1) * height;
+		let height = Math.sqrt(3) / 2 * game.WORLD_HEX_SIZE;
+		let image_width = (1.5 * game.WORLD_SIZE_WIDTH +  0.5) * game.WORLD_HEX_SIZE;
+		let image_height = (2 * game.WORLD_SIZE_HEIGHT  +  1) * height;
 		$('.worldmap').empty().append('<canvas class="canvas-map"></canvas>');
 		let canvas = $('.canvas-map').get(0);
 		let currentHexX;
 		let currentHexY;
 		let offsetColumn = false;
-		let __height = Math.sqrt(3) * civitas.WORLD_HEX_SIZE;
-		let __width = 2 * civitas.WORLD_HEX_SIZE;
-		let __side = (3 / 2) * civitas.WORLD_HEX_SIZE;
+		let __height = Math.sqrt(3) * game.WORLD_HEX_SIZE;
+		let __width = 2 * game.WORLD_HEX_SIZE;
+		let __side = (3 / 2) * game.WORLD_HEX_SIZE;
 		canvas.width = image_width;
 		canvas.height = image_height;
 		let ctx = canvas.getContext('2d');
-		ctx.fillStyle = colors.background;
+		ctx.fillStyle = this.colors.background;
 		ctx.fillRect(0, 0, image_width, image_height);
-		for (let i = 0; i < civitas.WORLD_SIZE_WIDTH; ++i) {
-			for (let j = 0; j < civitas.WORLD_SIZE_HEIGHT; ++j) {
+		for (let i = 0; i < game.WORLD_SIZE_WIDTH; ++i) {
+			for (let j = 0; j < game.WORLD_SIZE_HEIGHT; ++j) {
 				if (!offsetColumn) {
 					currentHexX = i * __side;
 					currentHexY = j * __height;
@@ -704,11 +631,11 @@ civitas.objects.world = function (params) {
 					x: i,
 					y: j
 				});
-				let color = colors[terrain];
+				let color = this.colors[terrain];
 				let opacity = 0.6;
-				if (data[j][i].l === true) {
-					let lid = data[j][i].lid;
-					let pid = data[j][i].p;
+				if (this.data[j][i].l === true) {
+					let lid = this.data[j][i].lid;
+					let pid = this.data[j][i].p;
 					if (lid !== null && pid === null) {
 						if (typeof settlements[lid] !== 'undefined') {
 							color = settlements[lid].color();
@@ -731,7 +658,7 @@ civitas.objects.world = function (params) {
 				ctx.lineTo(currentHexX + __width - __side, currentHexY + __height);
 				ctx.lineTo(currentHexX, currentHexY + (__height / 2));
 				ctx.closePath();
-				if (civitas.WORLD_GRID === true) {
+				if (game.WORLD_GRID === true) {
 					ctx.strokeStyle = "#666";
 				} else {
 					ctx.strokeStyle = color;
@@ -740,14 +667,14 @@ civitas.objects.world = function (params) {
 				ctx.stroke();
 				ctx.fillStyle = color;
 				ctx.fill();
-				if (civitas.WORLD_BEAUTIFY === true) {
+				if (game.WORLD_BEAUTIFY === true) {
 					this._apply_terrain(currentHexX, currentHexY, canvas, terrain, opacity);
 				}
 			}
 			offsetColumn = !offsetColumn;
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Apply the terrain features.
@@ -758,21 +685,18 @@ civitas.objects.world = function (params) {
 	 * @param {Object} canvas
 	 * @param {String} terrain
 	 * @param {Number} opacity
-	 * @returns {civitas.objects.world}
+	 * @returns {world}
 	 */
-	this._apply_terrain = function(x, y, canvas, terrain, opacity) {
+	_apply_terrain (x, y, canvas, terrain, opacity) {
 		let ctx = canvas.getContext('2d');
 		let imageObject = new Image();
-		let image_size = civitas.WORLD_HEX_SIZE * 36 / 24;
+		let image_size = game.WORLD_HEX_SIZE * 36 / 24;
 		imageObject.onload = function() {
 			ctx.globalAlpha = opacity;
 			ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
 			ctx.globalAlpha = 1;
 		}
-		imageObject.src = civitas.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
+		imageObject.src = game.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
 		return this;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

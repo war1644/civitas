@@ -5,7 +5,7 @@
  * @default
  * @type {Array}
  */
-civitas.DIPLOMACIES = [
+game.DIPLOMACIES = [
 	'truce',
 	'war',
 	'pact',
@@ -25,7 +25,7 @@ civitas.DIPLOMACIES = [
  * @default
  * @type {Number}
  */
-civitas.CAMPAIGN_ARMY = 1;
+game.CAMPAIGN_ARMY = 1;
 
 /**
  * The campaign is a caravan.
@@ -34,7 +34,7 @@ civitas.CAMPAIGN_ARMY = 1;
  * @default
  * @type {Number}
  */
-civitas.CAMPAIGN_CARAVAN = 2;
+game.CAMPAIGN_CARAVAN = 2;
 
 /**
  * The campaign is a spy.
@@ -43,7 +43,7 @@ civitas.CAMPAIGN_CARAVAN = 2;
  * @default
  * @type {Number}
  */
-civitas.CAMPAIGN_SPY = 3;
+game.CAMPAIGN_SPY = 3;
 
 /**
  * The campaign is an army returning home with spoils of war.
@@ -52,7 +52,7 @@ civitas.CAMPAIGN_SPY = 3;
  * @default
  * @type {Number}
  */
-civitas.CAMPAIGN_ARMY_RETURN = 4;
+game.CAMPAIGN_ARMY_RETURN = 4;
 
 /**
  * Just met, temporary truce, can declare war, can trade.
@@ -61,7 +61,7 @@ civitas.CAMPAIGN_ARMY_RETURN = 4;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_TRUCE = 0;
+game.DIPLOMACY_TRUCE = 0;
 
 /**
  * At war, no trades possible.
@@ -70,7 +70,7 @@ civitas.DIPLOMACY_TRUCE = 0;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_WAR = 1;
+game.DIPLOMACY_WAR = 1;
 
 /**
  * In a pact, can declare war, can trade.
@@ -79,7 +79,7 @@ civitas.DIPLOMACY_WAR = 1;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_PACT = 2;
+game.DIPLOMACY_PACT = 2;
 
 /**
  * In an alliance, cannot declare war, can trade with discounts,
@@ -89,7 +89,7 @@ civitas.DIPLOMACY_PACT = 2;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_ALLIANCE = 3;
+game.DIPLOMACY_ALLIANCE = 3;
 
 /**
  * A cease fire means a temporary peace.
@@ -98,7 +98,7 @@ civitas.DIPLOMACY_ALLIANCE = 3;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_CEASE_FIRE = 4;
+game.DIPLOMACY_CEASE_FIRE = 4;
 
 /**
  * Propose pact.
@@ -107,7 +107,7 @@ civitas.DIPLOMACY_CEASE_FIRE = 4;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_PROPOSE_PACT = 5;
+game.DIPLOMACY_PROPOSE_PACT = 5;
 
 /**
  * Propose alliance.
@@ -116,7 +116,7 @@ civitas.DIPLOMACY_PROPOSE_PACT = 5;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_PROPOSE_ALLIANCE = 6;
+game.DIPLOMACY_PROPOSE_ALLIANCE = 6;
 
 /**
  * Propose cease fire.
@@ -125,7 +125,7 @@ civitas.DIPLOMACY_PROPOSE_ALLIANCE = 6;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
+game.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
 
 /**
  * Propose to join your settlement.
@@ -134,7 +134,7 @@ civitas.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_PROPOSE_JOIN = 8;
+game.DIPLOMACY_PROPOSE_JOIN = 8;
 
 /**
  * Vassal villages count as part of your empire.
@@ -143,7 +143,7 @@ civitas.DIPLOMACY_PROPOSE_JOIN = 8;
  * @default
  * @type {Number}
  */
-civitas.DIPLOMACY_VASSAL = 9;
+game.DIPLOMACY_VASSAL = 9;
 
 /**
  * Influence gained when selling goods to a settlement.
@@ -152,7 +152,7 @@ civitas.DIPLOMACY_VASSAL = 9;
  * @default
  * @type {Number}
  */
-civitas.EXPORT_INFLUENCE = 2;
+game.EXPORT_INFLUENCE = 2;
 
 /**
  * Influence gained when buying goods from a settlement.
@@ -161,7 +161,7 @@ civitas.EXPORT_INFLUENCE = 2;
  * @default
  * @type {Number}
  */
-civitas.IMPORT_INFLUENCE = 1;
+game.IMPORT_INFLUENCE = 1;
 
 /**
  * Prestige gained when selling goods to a settlement.
@@ -170,7 +170,7 @@ civitas.IMPORT_INFLUENCE = 1;
  * @default
  * @type {Number}
  */
-civitas.EXPORT_PRESTIGE = 2;
+game.EXPORT_PRESTIGE = 2;
 
 /**
  * Prestige gained when buying goods from a settlement.
@@ -179,7 +179,7 @@ civitas.EXPORT_PRESTIGE = 2;
  * @default
  * @type {Number}
  */
-civitas.IMPORT_PRESTIGE = 1;
+game.IMPORT_PRESTIGE = 1;
 
 /**
  * The minimum value settlement prestige can have.
@@ -188,7 +188,7 @@ civitas.IMPORT_PRESTIGE = 1;
  * @default
  * @type {Number}
  */
-civitas.MIN_PRESTIGE_VALUE = 1;
+game.MIN_PRESTIGE_VALUE = 1;
 
 /**
  * The maximum value settlement prestige can have.
@@ -197,7 +197,7 @@ civitas.MIN_PRESTIGE_VALUE = 1;
  * @default
  * @type {Number}
  */
-civitas.MAX_PRESTIGE_VALUE = 10000;
+game.MAX_PRESTIGE_VALUE = 10000;
 
 /**
  * The minimum value settlement espionage can have.
@@ -206,7 +206,7 @@ civitas.MAX_PRESTIGE_VALUE = 10000;
  * @default
  * @type {Number}
  */
-civitas.MIN_ESPIONAGE_VALUE = 1;
+game.MIN_ESPIONAGE_VALUE = 1;
 
 /**
  * The maximum value settlement espionage can have.
@@ -215,7 +215,7 @@ civitas.MIN_ESPIONAGE_VALUE = 1;
  * @default
  * @type {Number}
  */
-civitas.MAX_ESPIONAGE_VALUE = 1000;
+game.MAX_ESPIONAGE_VALUE = 1000;
 
 /**
  * The success rate of an espionage mission is the espionage points
@@ -225,7 +225,7 @@ civitas.MAX_ESPIONAGE_VALUE = 1000;
  * @default
  * @type {Number}
  */
-civitas.MAX_ESPIONAGE_SUCESS_RATE = 100;
+game.MAX_ESPIONAGE_SUCESS_RATE = 100;
 
 /**
  * The minimum value settlement influence can have.
@@ -234,7 +234,7 @@ civitas.MAX_ESPIONAGE_SUCESS_RATE = 100;
  * @default
  * @type {Number}
  */
-civitas.MIN_INFLUENCE_VALUE = 1;
+game.MIN_INFLUENCE_VALUE = 1;
 
 /**
  * The maximum value settlement influence can have.
@@ -243,7 +243,7 @@ civitas.MIN_INFLUENCE_VALUE = 1;
  * @default
  * @type {Number}
  */
-civitas.MAX_INFLUENCE_VALUE = 100;
+game.MAX_INFLUENCE_VALUE = 100;
 
 /**
  * Amount of influence your settlement loses each year.
@@ -252,7 +252,7 @@ civitas.MAX_INFLUENCE_VALUE = 100;
  * @default
  * @type {Number}
  */
-civitas.YEARLY_INFLUENCE_LOSS = 2;
+game.YEARLY_INFLUENCE_LOSS = 2;
 
 /**
  * Amount of influence your settlement gains each year.
@@ -261,7 +261,7 @@ civitas.YEARLY_INFLUENCE_LOSS = 2;
  * @default
  * @type {Number}
  */
-civitas.YEARLY_INFLUENCE_GAIN = 2;
+game.YEARLY_INFLUENCE_GAIN = 2;
 
 /**
  * List of game diplomacy options.
@@ -270,7 +270,7 @@ civitas.YEARLY_INFLUENCE_GAIN = 2;
  * @default
  * @type {Array}
  */
-civitas.SPY_MISSIONS = [
+game.SPY_MISSIONS = [
 	'none',
 	'adopt religion',
 	'influence settlement',
@@ -286,7 +286,7 @@ civitas.SPY_MISSIONS = [
  * @default
  * @type {Number}
  */
-civitas.SPY_MISSION_NONE = 0;
+game.SPY_MISSION_NONE = 0;
 
 /**
  * Spy mission to persuade the target city to take the same religion
@@ -296,7 +296,7 @@ civitas.SPY_MISSION_NONE = 0;
  * @default
  * @type {Number}
  */
-civitas.SPY_MISSION_RELIGION = 1;
+game.SPY_MISSION_RELIGION = 1;
 
 /**
  * Spy mission to raise the influence of the spy's home city with the
@@ -306,7 +306,7 @@ civitas.SPY_MISSION_RELIGION = 1;
  * @default
  * @type {Number}
  */
-civitas.SPY_MISSION_INFLUENCE = 2;
+game.SPY_MISSION_INFLUENCE = 2;
 
 /**
  * Spy mission to steal resources from the target city.
@@ -315,7 +315,7 @@ civitas.SPY_MISSION_INFLUENCE = 2;
  * @default
  * @type {Number}
  */
-civitas.SPY_MISSION_STEAL_RESOURCES = 3;
+game.SPY_MISSION_STEAL_RESOURCES = 3;
 
 /**
  * Spy mission to instigate turmoil in the target city.
@@ -324,7 +324,7 @@ civitas.SPY_MISSION_STEAL_RESOURCES = 3;
  * @default
  * @type {Number}
  */
-civitas.SPY_MISSION_INSTIGATE = 4;
+game.SPY_MISSION_INSTIGATE = 4;
 
 /**
  * Initial resource costs for sending a caravan.
@@ -333,7 +333,7 @@ civitas.SPY_MISSION_INSTIGATE = 4;
  * @default
  * @type {Object}
  */
-civitas.CARAVAN_COSTS = {
+game.CARAVAN_COSTS = {
 	coins: 100,
 	donkeys: 10,
 	wood: 10,
@@ -348,7 +348,7 @@ civitas.CARAVAN_COSTS = {
  * @default
  * @type {Object}
  */
-civitas.SPY_COSTS = {
+game.SPY_COSTS = {
 	coins: 50,
 	spyglasses: 1,
 	weapons: 1,
@@ -362,7 +362,7 @@ civitas.SPY_COSTS = {
  * @default
  * @type {Object}
  */
-civitas.SCOUT_COSTS = {
+game.SCOUT_COSTS = {
 	coins: 50,
 	spyglasses: 1,
 	provisions: 1
@@ -375,7 +375,7 @@ civitas.SCOUT_COSTS = {
  * @default
  * @type {Number}
  */
-civitas.SCOUT_MISSION_INFO = 1;
+game.SCOUT_MISSION_INFO = 1;
 
 /**
  * Initial resource costs for sending an army.
@@ -384,7 +384,7 @@ civitas.SCOUT_MISSION_INFO = 1;
  * @default
  * @type {Object}
  */
-civitas.ARMY_COSTS = {
+game.ARMY_COSTS = {
 	coins: 200,
 	provisions: 1
 }
@@ -397,7 +397,7 @@ civitas.ARMY_COSTS = {
  * @default
  * @type {Number}
  */
-civitas.CARAVAN_INFLUENCE = 5;
+game.CARAVAN_INFLUENCE = 5;
 
 /**
  * Diplomacy proposal action.
@@ -406,7 +406,7 @@ civitas.CARAVAN_INFLUENCE = 5;
  * @default
  * @type {Number}
  */
-civitas.ACTION_DIPLOMACY = 0;
+game.ACTION_DIPLOMACY = 0;
 
 /**
  * Campaign action.
@@ -415,7 +415,7 @@ civitas.ACTION_DIPLOMACY = 0;
  * @default
  * @type {Number}
  */
-civitas.ACTION_CAMPAIGN = 1;
+game.ACTION_CAMPAIGN = 1;
 
 /**
  * Research action.
@@ -424,7 +424,7 @@ civitas.ACTION_CAMPAIGN = 1;
  * @default
  * @type {Number}
  */
-civitas.ACTION_RESEARCH = 2;
+game.ACTION_RESEARCH = 2;
 
 /**
  * Build a special place action.
@@ -433,4 +433,4 @@ civitas.ACTION_RESEARCH = 2;
  * @default
  * @type {Number}
  */
-civitas.ACTION_BUILD_PLACE = 2;
+game.ACTION_BUILD_PLACE = 2;

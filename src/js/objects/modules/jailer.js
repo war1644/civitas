@@ -3,32 +3,23 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.modules.jailer
- * @returns {civitas.modules.jailer}
+ * @class jailer
+ * @returns {jailer}
  */
-civitas.modules.jailer = function (params) {
-
-	/**
-	 * Reference to the core object.
-	 *
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
+class jailer {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.modules.jailer}
+	 * @returns {jailer}
 	 * @param {Object} params
 	 */
-	this.__init = function (params) {
+	constructor (params) {
 		this._core = params.core;
-		// Todo
 		return this;
-	};
+	}
 
 	/**
 	 * Perform an actual security audit.
@@ -36,21 +27,18 @@ civitas.modules.jailer = function (params) {
 	 * @public
 	 * @returns {Boolean}
 	 */
-	this.check = function () {
+	check () {
 		// Todo
 		return true;
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

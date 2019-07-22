@@ -3,59 +3,44 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.controls.modal
- * @returns {civitas.controls.modal}
+ * @class ui_modal
+ * @returns {ui_modal}
  */
-civitas.controls.modal = function (params) {
-
-	/**
-	 * Reference to the core object.
-	 *
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
-
-	/**
-	 * Template of the modal window.
-	 *
-	 * @private
-	 * @type {String}
-	 */
-	this._template = '<div class="modal-overlay">' +
-						'<div class="modal">' +
-							'<header></header>' +
-							'<section></section>' +
-							'<footer></footer>' +
-						'</div>' +
-					'</div>';
+class ui_modal {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.controls.modal}
+	 * @returns {ui_modal}
 	 * @param {Object} params
 	 */
-	this.__init = function(params) {
+	constructor (params) {
 		this._core = params.core;
+		this.template = '<div class="modal-overlay">' +
+				'<div class="modal">' +
+					'<header></header>' +
+					'<section></section>' +
+					'<footer></footer>' +
+				'</div>' +
+			'</div>';
 		let self = this;
-		$('body').append(this._template);
+		$('body').append(this.template);
 		$(window).bind('resize', function() {
 			self._resize();
 		});
 		return this;
-	};
+	}
 
 	/**
 	 * Main method to show the modal window.
 	 *
 	 * @public
 	 * @param {Object} options
-	 * @returns {civitas.objects.modal}
+	 * @returns {ui_modal}
 	 */
-	this.alert = function(options) {
+	alert (options) {
 		let self = this;
 		let settlement = false;
 		if (this.core().settlements.length > 0) {
@@ -71,7 +56,7 @@ civitas.controls.modal = function (params) {
 		this._resize();
 		$('.modal header').html(options.title);
 		$('.modal footer').html('<a data-id="yes" href="#" class="btn float-right">Yes</a><a data-id="no" href="#" class="btn">No</a>');
-		$('.modal section').html((settlement ? '<img class="avatar right" src="' + civitas.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
+		$('.modal section').html((settlement ? '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
 		$('.modal footer').on('click', 'a', function() {
 			self._action($(this).data('id'));
 			return false;
@@ -81,7 +66,7 @@ civitas.controls.modal = function (params) {
 			this.on_click = options.on_click;
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Internal method to check out if the modal window is already open.
@@ -89,9 +74,9 @@ civitas.controls.modal = function (params) {
 	 * @private
 	 * @returns {Boolean}
 	 */
-	this._is_open = function() {
+	_is_open () {
 		return $('.modal').css('display') === "block";
-	};
+	}
 
 	/**
 	 * Internal method for resetting the modal window.
@@ -99,13 +84,13 @@ civitas.controls.modal = function (params) {
 	 * @private
 	 * @returns {Boolean}
 	 */
-	this._clear = function() {
+	_clear () {
 		$('.modal-overlay').remove();
 		// $('body').append(this._template);
 		this.core().ui().hide_loader();
 		// this._resize();
 		return true;
-	};
+	}
 
 	/**
 	 * Internal method for triggering the click event on the buttons.
@@ -113,19 +98,19 @@ civitas.controls.modal = function (params) {
 	 * @private
 	 * @param {String} key
 	 */
-	this._action = function(key) {
+	_action (key) {
 		this._clear();
 		this.on_click(key);
 		$(window).unbind('resize');
-	};
+	}
 
 	/**
 	 * Internal method for resizing the modal window.
 	 *
 	 * @private
-	 * @returns {civitas.objects.modal}
+	 * @returns {ui_modal}
 	 */
-	this._resize = function() {
+	_resize () {
 		let lbox = $('.modal');
 		if (lbox) {
 			//let height = parseInt((lbox.css('height')).replace('px', ''));
@@ -136,26 +121,26 @@ civitas.controls.modal = function (params) {
 			});
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Callback function.
 	 *
 	 * @public
 	 */
-	this.on_click = function() {
+	on_click () {
 		// nothing here, move along.
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
+	}
 
 	/**
 	 * Object destructor.
@@ -163,12 +148,9 @@ civitas.controls.modal = function (params) {
 	 * @private
 	 * @returns {Boolean}
 	 */
-	this.__destroy = function() {
+	destructor () {
 		$('.modal-overlay').remove();
 		$(window).unbind('resize');
 		return false;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

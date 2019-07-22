@@ -3,176 +3,30 @@
  * 
  * @param {Object} params
  * @license GPLv3
- * @class civitas.objects.battleground
- * @returns {civitas.objects.battleground}
+ * @class battleground
+ * @returns {battleground}
  */
-civitas.objects.battleground = function (params) {
-
-	/**
-	 * Reference to the core object.
-	 *
-	 * @private
-	 * @type {civitas.game}
-	 */
-	this._core = null;
-
-	/**
-	 * Battleground properties.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._properties = {
-		width: 0,
-		height: 0
-	};
-
-	/**
-	* DOM elements for external output.
-	*
-	* @private
-	* @type {Object}
-	*/
-	this._elements = {
-		container: null,
-		console: null,
-		attack: null,
-		defense: null
-	};
-
-	/**
-	 * Callback when the user wins.
-	 *
-	 * public
-	 */
-	this.on_win = function() {};
-
-	/**
-	 * Callback when the user loses.
-	 *
-	 * public
-	 */
-	this.on_lose = function() {};
-
-	/**
-	 * Callback when the user selects a cell.
-	 *
-	 * public
-	 */
-	this.on_select = function() {};
-
-	/**
-	 * Callback when the user moves a cell.
-	 *
-	 * public
-	 */
-	this.on_move = function() {};
-
-	/**
-	 * Callback when the user attacks another cell.
-	 *
-	 * public
-	 */
-	this.on_attack = function() {};
-
-	/**
-	 * Callback when the turn ends.
-	 *
-	 * public
-	 */
-	this.on_end_turn = function() {};
-
-	/**
-	 * Grid containing info about all battleground units and their properties.
-	 *
-	 * @type {Array}
-	 * @private
-	 */
-	this._grid = [];
-
-	/**
-	 * Object containing the attacking side.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._attack = null;
-
-	/**
-	 * Object containing the defending side.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._defense = null;
-
-	/**
-	 * Property that contains the coords of the currently clicked cell.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._from = null;
-
-	/**
-	 * Flag if the battleground is over.
-	 *
-	 * @private
-	 * @type {Boolean}
-	 */
-	this.done = false;
-
-	/**
-	 * Battleground statistics.
-	 *
-	 * @private
-	 * @type {Object}
-	 */
-	this._stats = {
-		attacking: {
-			attack: 0,
-			defense: 0
-		},
-		defending: {
-			attack: 0,
-			defense: 0
-		}
-	};
-
-	/**
-	 * Current turn for this battleground.
-	 *
-	 * @private
-	 * @type {Number}
-	 */
-	this._current_turn = 1;
-
-	/**
-	 * The side of the player (left attacking, right defending).
-	 *
-	 * @private
-	 * @type {Number}
-	 */
-	this._player = null;
-
-	/**
-	 * The side of the computer (left attacking, right defending).
-	 *
-	 * @private
-	 * @type {Number}
-	 */
-	this._computer = null;
+class battleground {
 
 	/**
 	 * Object constructor.
 	 * 
 	 * @private
 	 * @constructor
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 * @param {Object} params
 	 */
-	this.__init = function (params) {
+	constructor (params) {
 		this._core = params.core;
+		this._properties = {};
+		this._elements = {};
+		this._grid = [];
+		this.done = false;
+		this._stats = {
+			attacking: {},
+			defending: {}
+		};
+		this._current_turn = 1;
 		this._properties.width = params.width;
 		this._properties.height = params.height;
 		this._elements.container = params.elements.container;
@@ -209,7 +63,7 @@ civitas.objects.battleground = function (params) {
 		this._setup();
 		this.show_stats();
 		return this;
-	};
+	}
 
 	/**
 	 * Attack a hex cell.
@@ -218,63 +72,63 @@ civitas.objects.battleground = function (params) {
 	 * @param {Object} cell
 	 * @returns {Boolean}
 	 */
-	this.attack = function(cell) {
+	attack (cell) {
 		let sx = this._from.x;
 		let sy = this._from.y;
 		let source = this._grid[sy][sx];
 		let destination = this._grid[cell.y][cell.x];
-		let is_ranged = civitas.SOLDIERS[source.item].ranged;
+		let is_ranged = game.SOLDIERS[source.item].ranged;
 		let city = this.core().get_settlement(source.city);
 		let city2 = this.core().get_settlement(destination.city);
 		let remaining = 0;
 		let _a;
 		if (city && source.moved) {
-			this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
+			this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 			return false;
 		}
 		if (source !== null && destination !== null && city && city2) {
-			if (destination.side === civitas.BATTLEGROUND_DEFENSE) {
+			if (destination.side === game.BATTLEGROUND_DEFENSE) {
 				_a = '_defense';
 			} else {
 				_a = '_attack';
 			}
 			if (is_ranged !== undefined) {
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > is_ranged) {
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> is not close enough for a ranged attack.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is not close enough for a ranged attack.');
 					return false;
 				}
 				let attack = Math.ceil(source.attack / 2);
 				let defense = destination.defense;
 				if (defense - attack < 0) {
 					this[_a].army[destination.item] = 0;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range and killed its opponent.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range and killed its opponent.');
 					this._cell_empty(cell);
 				} else {
-					remaining = Math.ceil((defense - attack) / civitas.SOLDIERS[destination.item].defense);
+					remaining = Math.ceil((defense - attack) / game.SOLDIERS[destination.item].defense);
 					destination.total = remaining;
 					this[_a].army[destination.item] = remaining;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range.');
 				}
 				this._cell_under_attack(cell);
 				source.moved = true;
 				this.redraw();
 			} else {
-				let can_move = civitas.SOLDIERS[this._grid[sy][sx].item].moves;
+				let can_move = game.SOLDIERS[this._grid[sy][sx].item].moves;
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > can_move) {
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> doesn`t have a ranged attack.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> doesn`t have a ranged attack.');
 					return false;
 				}
 				let attack = Math.ceil(source.attack / 2);
 				let defense = destination.defense;
 				if (defense - attack < 0) {
 					this[_a].army[destination.item] = 0;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage in melee and killed its opponent.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage in melee and killed its opponent.');
 					this._cell_empty(cell);
 				} else {
-					remaining = Math.ceil((defense - attack) / civitas.SOLDIERS[destination.item].defense);
+					remaining = Math.ceil((defense - attack) / game.SOLDIERS[destination.item].defense);
 					destination.total = remaining;
 					this[_a].army[destination.item] = remaining;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + civitas.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage in melee.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage in melee.');
 				}
 				this._cell_under_attack(cell);
 				source.moved = true;
@@ -283,15 +137,15 @@ civitas.objects.battleground = function (params) {
 		}
 		this._from = null;
 		return true;
-	};
+	}
 
 	/**
 	 * End the current turn.
 	 *
 	 * @public
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this.end_turn = function() {
+	end_turn () {
 		this._from = null;
 		this._do_computer();
 		for (let y = 0; y < this._grid.length; y++) {
@@ -308,7 +162,7 @@ civitas.objects.battleground = function (params) {
 			this.log('Turn <strong>' + this._current_turn + '</strong> started now.');
 		}
 		return this;
-	};
+	}
 
 	/**
 	* Check the status of the current game.
@@ -316,7 +170,7 @@ civitas.objects.battleground = function (params) {
 	* @private
 	* @returns {Boolean}
 	*/
-	this._check_status = function() {
+	_check_status () {
 		let city;
 		if (!this._done) {
 			if (this._stats.attacking.attack <= 0 || this._stats.attacking.defense <= 0 ||
@@ -349,7 +203,7 @@ civitas.objects.battleground = function (params) {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Display the battleground stats.
@@ -357,34 +211,34 @@ civitas.objects.battleground = function (params) {
 	 * @public
 	 * @returns {Object}
 	 */
-	this.show_stats = function() {
+	show_stats () {
 		$(this._elements.attack).empty().append(this.core().get_settlement(this._attack.city).name() + ' ' + this._stats.attacking.attack + ' / ' + this._stats.attacking.defense);
 		$(this._elements.defense).empty().append(this.core().get_settlement(this._defense.city).name() + ' ' + this._stats.defending.attack + ' / ' + this._stats.defending.defense);
 		return {
 			attack: this._attack,
 			defense: this._defense
 		}
-	};
+	}
 
 	/**
 	 * Log a message to the battleground status.
 	 *
 	 * @public
 	 * @param {String} message
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this.log = function(message) {
+	log (message) {
 		$(this._elements.console).prepend('<p>' + message + '</p>');
 		return this;
-	};
+	}
 
 	/**
 	 * Reset and rebuild the battleground hex cell grid.
 	 *
 	 * @private
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._reset = function() {
+	_reset () {
 		let mode = 'even';
 		let template = '';
 		for (let y = 0; y <= this._properties.height - 1; y++) {
@@ -403,7 +257,7 @@ civitas.objects.battleground = function (params) {
 		}
 		$(this._elements.container).empty().append(template);
 		return this;
-	};
+	}
 
 	/**
 	 * Return the current hex cell grid.
@@ -411,9 +265,9 @@ civitas.objects.battleground = function (params) {
 	 * @public
 	 * @returns {Array}
 	 */
-	this.grid = function() {
+	grid () {
 		return this._grid;
-	};
+	}
 
 	/**
 	 * Get the current turn.
@@ -421,19 +275,19 @@ civitas.objects.battleground = function (params) {
 	 * @public
 	 * @returns {Number}
 	 */
-	this.num_turns = function() {
+	num_turns () {
 		return this._current_turn;
-	};
+	}
 
 	/**
 	 * Return a pointer to the game core.
 	 * 
 	 * @public
-	 * @returns {civitas.game}
+	 * @returns {game}
 	 */
-	this.core = function() {
+	core () {
 		return this._core;
-	};
+	}
 
 	/**
 	* Get the properties of this battleground.
@@ -441,9 +295,9 @@ civitas.objects.battleground = function (params) {
 	* @public
 	* @returns {Object}
 	*/
-	this.properties = function() {
+	properties () {
 		return this._properties;
-	};
+	}
 
 	/**
 	 * Move closer to the enemy.
@@ -452,20 +306,20 @@ civitas.objects.battleground = function (params) {
 	 * @param {Object} cell
 	 * @returns {Boolean}
 	 */
-	this._move_to_enemy = function(cell) {
+	_move_to_enemy (cell) {
 		/*
 		let sx = cell.x;
 		let sy = cell.y;
 		let source = this._grid[sy][sx];
-		let can_move = civitas.SOLDIERS[source.item].moves;
+		let can_move = game.SOLDIERS[source.item].moves;
 		if (this._computer === 2) {
 			// TODO
 		}
 		*/
 		return false;
-	};
+	}
 
-	this._do_computer = function() {
+	_do_computer () {
 		for (let y = 0; y < this._grid.length; y++) {
 			for (let x = 0; x < this._grid[y].length; x++) {
 				if (this._grid[y][x] !== null && this._grid[y][x].side === this._computer) {
@@ -475,7 +329,7 @@ civitas.objects.battleground = function (params) {
 						y: y
 					};
 					this._cell_select(this._from);
-					if (civitas.SOLDIERS[source.item].ranged) {
+					if (game.SOLDIERS[source.item].ranged) {
 						this._check_for_ranged_target(this._player);
 					} else {
 						this._check_for_melee_target(this._player);
@@ -486,7 +340,7 @@ civitas.objects.battleground = function (params) {
 			}
 		}
 		return true;
-	};
+	}
 
 	/**
 	 * Computer check if there are any targets in melee.
@@ -495,10 +349,10 @@ civitas.objects.battleground = function (params) {
 	 * @param {Number} type
 	 * @returns {Boolean}
 	 */
-	this._check_for_melee_target = function(type) {
+	_check_for_melee_target (type) {
 		if (this._from !== null) {
 			let source = this._grid[this._from.y][this._from.x];
-			let can_move = civitas.SOLDIERS[source.item].moves;
+			let can_move = game.SOLDIERS[source.item].moves;
 			for (let y = 0; y < this._grid.length; y++) {
 				for (let x = 0; x < this._grid[y].length; x++) {
 					if (source !== null && !source.moved && can_move &&
@@ -515,7 +369,7 @@ civitas.objects.battleground = function (params) {
 			}
 		}
 		return false;
-	};
+	}
 
 	/**
 	 * Check if there are any targets in range.
@@ -524,7 +378,7 @@ civitas.objects.battleground = function (params) {
 	 * @param {Number} type
 	 * @returns {Boolean}
 	 */
-	this._check_for_ranged_target = function(type) {
+	_check_for_ranged_target (type) {
 		if (this._from !== null) {
 			for (let y = 0; y < this._grid.length; y++) {
 				for (let x = 0; x < this._grid[y].length; x++) {
@@ -539,16 +393,17 @@ civitas.objects.battleground = function (params) {
 			}
 		}
 		return false;
-	};
+	}
+
 	/**
 	 * Internal callback for when someone wins the battleground.
 	 *
 	 * @private
 	 * @param {Object} winner
 	 * @param {Object} winner
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._on_win = function(winner, loser) {
+	_on_win (winner, loser) {
 		let my_settlement = this.core().get_settlement(winner.city);
 		let settlement = this.core().get_settlement(loser.city);
 		if (this._attack.city === winner.city) {
@@ -556,7 +411,7 @@ civitas.objects.battleground = function (params) {
 			settlement.army = settlement.load_army(loser.army);
 			settlement.navy = settlement.load_navy(loser.navy);
 			let spoils = settlement.get_spoils();
-			this.core().queue_add(settlement, my_settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+			this.core().queue_add(settlement, my_settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
 				army: winner.army,
 				navy: winner.navy,
 				resources: spoils
@@ -568,7 +423,7 @@ civitas.objects.battleground = function (params) {
 			let has_loser_army = settlement.num_soldiers(loser.army);
 			let has_loser_navy = settlement.num_ships(loser.navy);
 			if (has_loser_army > 0 || has_loser_navy > 0) {
-				this.core().queue_add(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+				this.core().queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
 					army: loser.army,
 					navy: loser.navy,
 					resources: {}
@@ -576,7 +431,7 @@ civitas.objects.battleground = function (params) {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Internal callback for when someone loses the battleground.
@@ -584,9 +439,9 @@ civitas.objects.battleground = function (params) {
 	 * @private
 	 * @param {Object} winner
 	 * @param {Object} winner
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._on_lose = function(winner, loser) {
+	_on_lose (winner, loser) {
 		let settlement = this.core().get_settlement(winner.city);
 		let my_settlement = this.core().get_settlement(loser.city);
 		if (this._attack.city === loser.city) {
@@ -596,7 +451,7 @@ civitas.objects.battleground = function (params) {
 			let has_loser_army = settlement.num_soldiers(loser.army);
 			let has_loser_navy = settlement.num_ships(loser.navy);
 			if (has_loser_army > 0 || has_loser_navy > 0) {
-				this.core().queue_add(settlement, my_settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+				this.core().queue_add(settlement, my_settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
 					army: loser.army,
 					navy: loser.navy,
 					resources: {}
@@ -607,14 +462,15 @@ civitas.objects.battleground = function (params) {
 			my_settlement.army = my_settlement.load_army(loser.army);
 			my_settlement.navy = my_settlement.load_navy(loser.navy);
 			let spoils = my_settlement.get_spoils();
-			this.core().queue_add(my_settlement, settlement, civitas.ACTION_CAMPAIGN, civitas.CAMPAIGN_ARMY_RETURN, {
+			this.core().queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
 				army: winner.army,
 				navy: winner.navy,
 				resources: spoils
 			});
 		}
 		return this;
-	};
+	}
+
 	/**
 	 * Get the distance between two cells.
 	 *
@@ -623,11 +479,11 @@ civitas.objects.battleground = function (params) {
 	 * @param {Object} cell2
 	 * @returns {Number}
 	 */
-	this.distance = function(cell1, cell2) {
+	distance (cell1, cell2) {
 		let delta_x = cell1.x - cell2.x;  
 	    let delta_y = cell1.y - cell2.y;  
 	    return ((Math.abs(delta_x) + Math.abs(delta_y) + Math.abs(delta_x - delta_y)) / 2);
-	};
+	}
 
 	/**
 	 * Move the contents of one cell to another cell.
@@ -636,7 +492,7 @@ civitas.objects.battleground = function (params) {
 	 * @param {Object} cell
 	 * @returns {Boolean}
 	 */
-	this.move = function(cell) {
+	move (cell) {
 		let sx = this._from.x;
 		let sy = this._from.y;
 		if (this._from !== null && cell !== null) {
@@ -644,41 +500,41 @@ civitas.objects.battleground = function (params) {
 			let destination = this._grid[cell.y][cell.x];
 			let city = this.core().get_settlement(source.city);
 			if (source !== null && source.moved) {
-				this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> already used up its turn.');
+				this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> already used up its turn.');
 				return false;
 			}
 			if (source !== null && destination === null && city) {
-				let can_move = civitas.SOLDIERS[this._grid[sy][sx].item].moves;
+				let can_move = game.SOLDIERS[this._grid[sy][sx].item].moves;
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) <= can_move) {
 					this._grid[cell.y][cell.x] = this._grid[sy][sx];
 					this._cell_empty(this._from);
 					this._from = null;
 					this._grid[cell.y][cell.x].moved = true;
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> moved to ' + (cell.x + 1) + 'x' + (cell.y + 1) + '.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> moved to ' + (cell.x + 1) + 'x' + (cell.y + 1) + '.');
 					this.redraw();
 					return true;
 				} else {
-					this.log(city.name() + '`s <strong>' + civitas.SOLDIERS[source.item].name + '</strong> is unable to move to the specified location.');
+					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is unable to move to the specified location.');
 					return false;
 				}
 			}
 		}
-	};
+	}
 
 	/**
 	 * Highlight the cells around the currently selected (or hovered) cell.
 	 *
 	 * @public
 	 * @param {Object} cell
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this.highlight_cells = function(cell) {
+	highlight_cells (cell) {
 		this._cells_empty();
 		let sx = cell.x;
 		let sy = cell.y;
 		let source = this._grid[sy][sx];
 		if (source !== null) {
-			let can_move = civitas.SOLDIERS[source.item].moves;
+			let can_move = game.SOLDIERS[source.item].moves;
 			for (let y = 0; y < this._grid.length; y++) {
 				for (let x = 0; x < this._grid[y].length; x++) {
 					if (!source.moved && can_move && (Math.abs(y - sy) +
@@ -689,7 +545,7 @@ civitas.objects.battleground = function (params) {
 					}
 				}
 			}
-			let is_ranged = civitas.SOLDIERS[source.item].ranged;
+			let is_ranged = game.SOLDIERS[source.item].ranged;
 			for (let y = 0; y < this._grid.length; y++) {
 				for (let x = 0; x < this._grid[y].length; x++) {
 					if (!source.moved && (Math.abs(y - sy) + Math.abs(x - sx)) <= is_ranged) {
@@ -701,29 +557,29 @@ civitas.objects.battleground = function (params) {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Do a nice effect when a cell is under attack.
 	 *
 	 * @private
 	 * @param {Object} cell
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._cell_under_attack = function(cell) {
+	_cell_under_attack (cell) {
 		$(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').addClass('scale').delay(1000).queue(function() {
 			$(this).removeClass('scale').dequeue();
 		});
 		return this;
-	};
+	}
 
 	/**
 	 * Empty all the cells that are already empty.
 	 *
 	 * @private
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._cells_empty = function() {
+	_cells_empty () {
 		for (let y = 0; y < this._grid.length; y++) {
 			for (let x = 0; x < this._grid[y].length; x++) {
 				if (this._grid[y][x] === null) {
@@ -735,16 +591,16 @@ civitas.objects.battleground = function (params) {
 			}
 		}
 		return this;
-	};
+	}
 
 	/**
 	 * Empty one cell.
 	 *
 	 * @private
 	 * @param {Object} cell
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._cell_empty = function(cell) {
+	_cell_empty (cell) {
 		this._grid[cell.y][cell.x] = null;
 		$(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']')
 			.removeData('side')
@@ -754,22 +610,22 @@ civitas.objects.battleground = function (params) {
 			.removeClass('canmove canattack selected')
 			.empty();
 		return this;
-	};
+	}
 
 	/**
 	 * Select a cell.
 	 *
 	 * @private
 	 * @param {Object} cell
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._cell_select = function(cell) {
+	_cell_select (cell) {
 		$(this._elements.container + ' .cell').removeClass('selected canmove canattack');
 		$(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').addClass('selected');
 		this._from = cell;
 		this.highlight_cells(cell);
 		return this;
-	};
+	}
 
 	/**
 	 * Add a cell to the battleground grid.
@@ -778,9 +634,9 @@ civitas.objects.battleground = function (params) {
 	 * @param {Number} x
 	 * @param {Number} y
 	 * @param {Object} army
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._cell_add = function(x, y, army) {
+	_cell_add (x, y, army) {
 		this._grid[y][x] = army;
 		$(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']')
 			.removeData('side')
@@ -791,9 +647,9 @@ civitas.objects.battleground = function (params) {
 			.attr('data-soldier', army.item)
 			.removeClass('empty canmove canattack selected')
 			.empty()
-			.append('<span class="moves' + (army.moved === false ? ' has' : '') + '"></span><img class="tips" title="' + civitas.SOLDIERS[army.item].name + '" src="' + civitas.ASSETS_URL + 'images/assets/army/' + army.item + '.png" />' + '<span class="amount">' + army.total + '</span>');
+			.append('<span class="moves' + (army.moved === false ? ' has' : '') + '"></span><img class="tips" title="' + game.SOLDIERS[army.item].name + '" src="' + game.ASSETS_URL + 'images/assets/army/' + army.item + '.png" />' + '<span class="amount">' + army.total + '</span>');
 		return this;
-	};
+	}
 
 	/**
 	 * Redraw the grid.
@@ -801,7 +657,7 @@ civitas.objects.battleground = function (params) {
 	 * @public
 	 * @returns {Boolean}
 	 */
-	this.redraw = function() {
+	redraw () {
 		let a_attack = 0;
 		let a_defense = 0;
 		let d_attack = 0;
@@ -810,9 +666,9 @@ civitas.objects.battleground = function (params) {
 			for (let x = 0; x < this._grid[y].length; x++) {
 				let army = this._grid[y][x];
 				if (army !== null && army.total > 0) {
-					army.attack = army.total * civitas.SOLDIERS[army.item].attack;
-					army.defense = army.total * civitas.SOLDIERS[army.item].defense;
-					if (army.side === civitas.BATTLEGROUND_ATTACK) {
+					army.attack = army.total * game.SOLDIERS[army.item].attack;
+					army.defense = army.total * game.SOLDIERS[army.item].defense;
+					if (army.side === game.BATTLEGROUND_ATTACK) {
 						a_attack += army.attack;
 						a_defense += army.defense;
 					} else {
@@ -840,15 +696,15 @@ civitas.objects.battleground = function (params) {
 			html: true
 		});
 		return true;
-	};
+	}
 
 	/**
 	 * Setup the battleground hex grid.
 	 *
 	 * @private
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this._setup = function() {
+	_setup () {
 		let self = this;
 		this._reset();
 		let xx = 0;
@@ -856,7 +712,7 @@ civitas.objects.battleground = function (params) {
 		let yy;
 		for (let item in this._attack.army) {
 			if (this._attack.army[item] > 0) {
-				if (civitas.SOLDIERS[item].siege === true) {
+				if (game.SOLDIERS[item].siege === true) {
 					yy = 0;
 					xx = xxx;
 					xxx++;
@@ -871,7 +727,7 @@ civitas.objects.battleground = function (params) {
 		xx = 0;
 		for (let item in this._defense.army) {
 			if (this._defense.army[item] > 0) {
-				if (civitas.SOLDIERS[item].siege === true) {
+				if (game.SOLDIERS[item].siege === true) {
 					yy = this._properties.width - 1;
 					xx = xxx;
 					xxx++;
@@ -928,7 +784,7 @@ civitas.objects.battleground = function (params) {
 			return false;
 		});
 		return this;
-	};
+	}
 
 	/**
 	 * Add a hex cell to the battleground grid.
@@ -939,21 +795,18 @@ civitas.objects.battleground = function (params) {
 	 * @param {Number} side
 	 * @param {String} soldier
 	 * @param {Object} settlement
-	 * @returns {civitas.objects.battleground}
+	 * @returns {battleground}
 	 */
-	this.add = function(x, y, side, soldier, settlement) {
+	add (x, y, side, soldier, settlement) {
 		this._cell_add(y, x, {
 			item: soldier,
 			city: settlement.city,
 			total: settlement.army[soldier],
-			attack: civitas.SOLDIERS[soldier].attack * settlement.army[soldier],
-			defense: civitas.SOLDIERS[soldier].defense * settlement.army[soldier],
+			attack: game.SOLDIERS[soldier].attack * settlement.army[soldier],
+			defense: game.SOLDIERS[soldier].defense * settlement.army[soldier],
 			side: side,
 			moved: false
 		});
 		return this;
-	};
-
-	// Fire up the constructor
-	return this.__init(params);
-};
+	}
+}

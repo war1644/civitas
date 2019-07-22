@@ -1,43 +1,34 @@
 /**
  * Building panel data.
  *
- * @type {Object}
- * @mixin
+ * @param {Object} params
+ * @license GPLv3
+ * @class ui_panel_building
+ * @extends ui_panel
+ * @returns {ui_panel_building}
  */
-civitas.PANEL_BUILDING = {
+class ui_panel_building extends ui_panel {
 
 	/**
-	 * Internal id of the panel.
-	 *
-	 * @type {String}
-	 * @constant
-	 * @default
+	 * Object constructor.
+	 * 
+	 * @private
+	 * @constructor
+	 * @returns {ui_panel_building}
+	 * @param {Object} params
 	 */
-	id: 'building',
-	
-	/**
-	 * Callback function for creating the panel.
-	 *
-	 * @type {Function}
-	 * @public
-	 */
-	on_create: function(params) {
-		this.template = this.core().ui().building_panel_template();
-	},
-
-	/**
-	 * Callback function for refreshing the panel.
-	 *
-	 * @type {Function}
-	 * @public
-	 */
-	on_refresh: function() {
-		let core = this.core();
-		let building = core.get_settlement().get_building(this.params_data.handle);
-		if (building) {
-			$(this.handle + ' section').empty().append(core.ui().building_panel(this.params_data, building.get_level()));
-		} else {
-			this.destroy();
+	constructor (params) {
+		params.id = 'building';
+		params.template = ui.building_panel_template();
+		params.on_refresh = function() {
+			let core = this.core();
+			let building = core.get_settlement().get_building(this.params_data.handle);
+			if (building) {
+				$(this.handle + ' section').empty().append(core.ui().building_panel(this.params_data, building.level));
+			} else {
+				this.destroy();
+			}
 		}
+		super(params);
 	}
-};
+}

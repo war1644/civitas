@@ -4,7 +4,7 @@
  * @constant
  * @type {Array}
  */
-civitas.ACHIEVEMENTS = [
+game.ACHIEVEMENTS = [
 	{
 		description: 'Develop your settlement to level 10.',
 		name: 'Kiddo',
@@ -43,7 +43,7 @@ civitas.ACHIEVEMENTS = [
 		handle: 'chapman',
 		conditions: {
 			resources: {
-				espionage: civitas.MAX_ESPIONAGE_VALUE
+				espionage: game.MAX_ESPIONAGE_VALUE
 			}
 		},
 		points: 100
@@ -53,7 +53,7 @@ civitas.ACHIEVEMENTS = [
 		handle: 'jesus',
 		conditions: {
 			resources: {
-				faith: civitas.MAX_FAITH_VALUE
+				faith: game.MAX_FAITH_VALUE
 			}
 		},
 		points: 100
@@ -63,7 +63,7 @@ civitas.ACHIEVEMENTS = [
 		handle: 'highness',
 		conditions: {
 			resources: {
-				espionage: civitas.MAX_PRESTIGE_VALUE
+				espionage: game.MAX_PRESTIGE_VALUE
 			}
 		},
 		points: 100
@@ -73,7 +73,7 @@ civitas.ACHIEVEMENTS = [
 		handle: 'eistein',
 		conditions: {
 			resources: {
-				research: civitas.MAX_RESEARCH_VALUE
+				research: game.MAX_RESEARCH_VALUE
 			}
 		},
 		points: 100

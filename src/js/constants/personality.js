@@ -5,7 +5,7 @@
  * @default
  * @type {Array}
  */
-civitas.PERSONALITIES = [
+game.PERSONALITIES = [
     'none',
     'balanced',
     'diplomat',
@@ -20,7 +20,7 @@ civitas.PERSONALITIES = [
  * @default
  * @type {Number}
  */
-civitas.PERSONALITY_BALANCED = 1;
+game.PERSONALITY_BALANCED = 1;
 
 /**
  * The ruler will always consider diplomacy before going to war.
@@ -29,7 +29,7 @@ civitas.PERSONALITY_BALANCED = 1;
  * @default
  * @type {Number}
  */
-civitas.PERSONALITY_DIPLOMAT = 2;
+game.PERSONALITY_DIPLOMAT = 2;
 
 /**
  * If you upset this ruler, he will go to war and give you hell.
@@ -38,4 +38,4 @@ civitas.PERSONALITY_DIPLOMAT = 2;
  * @default
  * @type {Number}
  */
-civitas.PERSONALITY_WARLORD = 3;
+game.PERSONALITY_WARLORD = 3;

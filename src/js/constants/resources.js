@@ -6,7 +6,7 @@
  * @default
  * @type {Array}
  */
-civitas.RESOURCE_CATEGORIES = [
+game.RESOURCE_CATEGORIES = [
 	'food',
 	'construction',
 	'animals',
@@ -22,7 +22,7 @@ civitas.RESOURCE_CATEGORIES = [
  * @constant
  * @type {Object}
  */
-civitas.RESOURCES = {
+game.RESOURCES = {
 	coins: {
 		name: 'Coins',
 		category: 'virtual',

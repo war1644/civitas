@@ -1,69 +1,53 @@
 /**
  * Storage panel data.
  *
- * @type {Object}
- * @mixin
+ * @param {Object} params
+ * @license GPLv3
+ * @class ui_panel_storage
+ * @extends ui_panel
+ * @returns {ui_panel_storage}
  */
-civitas.PANEL_STORAGE = {
+class ui_panel_storage extends ui_panel {
 
 	/**
-	 * Internal id of the panel.
-	 *
-	 * @type {String}
-	 * @constant
-	 * @default
+	 * Object constructor.
+	 * 
+	 * @private
+	 * @constructor
+	 * @returns {ui_panel_storage}
+	 * @param {Object} params
 	 */
-	id: 'storage',
-	
-	/**
-	 * Callback function for creating the panel.
-	 *
-	 * @type {Function}
-	 * @public
-	 */
-	on_create: function(params) {
-		this.template = this.core().ui().generic_panel_template('City Storage');
-	},
-
-	/**
-	 * Callback function for showing the panel.
-	 *
-	 * @type {Function}
-	 * @public
-	 */
-	on_show: function(params) {
-		let core = this.core();
-		let settlement = core.get_settlement();
-		let storage_space = settlement.storage();
-		let resources = settlement.get_resources();
-		$(this.handle + ' section').append(core.ui().tabs(civitas.RESOURCE_CATEGORIES));
-		$(this.handle + ' section').append('<p>Total storage space: <span class="total-storage">' + storage_space.all + '</span>, used: <span class="used-storage">' + storage_space.occupied + '</span></p>');
-		for (let i = 0; i < civitas.RESOURCE_CATEGORIES.length; i++) {
-			$(this.handle + ' #tab-' + civitas.RESOURCE_CATEGORIES[i]).append('<div class="storage-board"></div>');
-		}
-		for (let resource in resources) {
-			if (!civitas.utils.is_virtual_resource(resource)) {
-				$(this.handle + ' #tab-' + civitas.RESOURCES[resource].category + ' .storage-board').append(core.ui().resource_storage_el(resource, resources[resource]));
+	constructor (params) {
+		params.id = 'storage';
+		params.template = ui.generic_panel_template('City Storage');
+		params.on_show = function(params) {
+			let core = this.core();
+			let settlement = core.get_settlement();
+			let storage_space = settlement.storage();
+			let resources = settlement.get_resources();
+			$(this.handle + ' section').append(core.ui().tabs(game.RESOURCE_CATEGORIES));
+			$(this.handle + ' section').append('<p>Total storage space: <span class="total-storage">' + storage_space.all + '</span>, used: <span class="used-storage">' + storage_space.occupied + '</span></p>');
+			for (let i = 0; i < game.RESOURCE_CATEGORIES.length; i++) {
+				$(this.handle + ' #tab-' + game.RESOURCE_CATEGORIES[i]).append('<div class="storage-board"></div>');
+			}
+			for (let resource in resources) {
+				if (!game.is_virtual_resource(resource)) {
+					$(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board').append(core.ui().resource_storage_el(resource, resources[resource]));
+				}
 			}
 		}
-	},
-	
-	/**
-	 * Callback function for refreshing the panel.
-	 *
-	 * @type {Function}
-	 * @public
-	 */
-	on_refresh: function() {
-		let settlement = this.core().get_settlement();
-		let resources = settlement.get_resources();
-		let storage_space = settlement.storage();
-		for (let resource in resources) {
-			if (!civitas.utils.is_virtual_resource(resource)) {
-				$(this.handle + ' #tab-' + civitas.RESOURCES[resource].category + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
+		params.on_refresh = function() {
+			let settlement = this.core().get_settlement();
+			let resources = settlement.get_resources();
+			let storage_space = settlement.storage();
+			for (let resource in resources) {
+				if (!game.is_virtual_resource(resource)) {
+					$(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
+				}
 			}
+			$(this.handle + ' .total-storage').empty().append(storage_space.all);
+			$(this.handle + ' .used-storage').empty().append(storage_space.occupied);
 		}
-		$(this.handle + ' .total-storage').empty().append(storage_space.all);
-		$(this.handle + ' .used-storage').empty().append(storage_space.occupied);
+		super(params);
 	}
-};
+}

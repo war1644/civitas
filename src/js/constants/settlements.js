@@ -5,7 +5,7 @@
  * @default
  * @type {Array}
  */
-civitas.SETTLEMENTS = [
+game.SETTLEMENTS = [
 	'city',
 	'village',
 	'metropolis',
@@ -19,7 +19,7 @@ civitas.SETTLEMENTS = [
  * @default
  * @type {Number}
  */
-civitas.CITY = 0;
+game.CITY = 0;
 
 /**
  * Village settlement.
@@ -28,7 +28,7 @@ civitas.CITY = 0;
  * @default
  * @type {Number}
  */
-civitas.VILLAGE = 1;
+game.VILLAGE = 1;
 
 /**
  * Metropolis settlement.
@@ -37,7 +37,7 @@ civitas.VILLAGE = 1;
  * @default
  * @type {Number}
  */
-civitas.METROPOLIS = 2;
+game.METROPOLIS = 2;
 
 /**
  * Raider camp settlement.
@@ -46,7 +46,7 @@ civitas.METROPOLIS = 2;
  * @default
  * @type {Number}
  */
-civitas.CAMP = 3;
+game.CAMP = 3;
 
 /**
  * Max number of settlements on a map.
@@ -55,7 +55,7 @@ civitas.CAMP = 3;
  * @default
  * @type {Number}
  */
-civitas.MAX_SETTLEMENTS = 100;
+game.MAX_SETTLEMENTS = 100;
 
 /**
  * Max number of settlement icons.
@@ -64,7 +64,7 @@ civitas.MAX_SETTLEMENTS = 100;
  * @default
  * @type {Number}
  */
-civitas.MAX_SETTLEMENT_ICONS = 3;
+game.MAX_SETTLEMENT_ICONS = 3;
 
 /**
  * Max level a settlement can have.
@@ -73,16 +73,16 @@ civitas.MAX_SETTLEMENT_ICONS = 3;
  * @default
  * @type {Number}
  */
-civitas.MAX_SETTLEMENT_LEVEL = 99;
+game.MAX_SETTLEMENT_LEVEL = 99;
 
 /**
- * Getting total city population is city_level * civitas.POPULATION_PER_LEVEL.
+ * Getting total city population is city_level * game.POPULATION_PER_LEVEL.
  *
  * @constant
  * @default
  * @type {Number}
  */
-civitas.POPULATION_PER_LEVEL = 2300;
+game.POPULATION_PER_LEVEL = 2300;
 
 /**
  * The minimum value settlement fame can have.
@@ -91,7 +91,7 @@ civitas.POPULATION_PER_LEVEL = 2300;
  * @default
  * @type {Number}
  */
-civitas.MIN_FAME_VALUE = 1;
+game.MIN_FAME_VALUE = 1;
 
 /**
  * List of possible world settlement names.
@@ -99,7 +99,7 @@ civitas.MIN_FAME_VALUE = 1;
  * @constant
  * @type {Array}
  */
-civitas.SETTLEMENT_NAMES = [
+game.SETTLEMENT_NAMES = [
 	'Alexandria',
 	'Rome',
 	'Carthage',
@@ -301,7 +301,7 @@ civitas.SETTLEMENT_NAMES = [
  * @type {Array}
  * @constant
  */
-civitas.NAMES = [
+game.NAMES = [
 	'Caesar',
 	'Cronus',
 	'Dido',

@@ -1,8 +1,8 @@
 /*
- * Items in Civitas
+ * Items in game
  * ================
  *
- * The items in Civitas follow a very simple rule: common is the worst type,
+ * The items in game follow a very simple rule: common is the worst type,
  * rare is good, epic is very good, legendary is for the gods and heroes.
  *
  * That's it for now.
@@ -14,7 +14,7 @@
  * @constant
  * @type {Number}
  */
-civitas.ITEM_TYPE_ARMOR = 1;
+game.ITEM_TYPE_ARMOR = 1;
 
 /**
  * Weapon
@@ -22,7 +22,7 @@ civitas.ITEM_TYPE_ARMOR = 1;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_TYPE_WEAPON = 2;
+game.ITEM_TYPE_WEAPON = 2;
 
 /**
  * Other
@@ -30,7 +30,7 @@ civitas.ITEM_TYPE_WEAPON = 2;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_TYPE_OTHER = 3
+game.ITEM_TYPE_OTHER = 3
 
 /**
  * Cloth armor
@@ -38,7 +38,7 @@ civitas.ITEM_TYPE_OTHER = 3
  * @constant
  * @type {Number}
  */
-civitas.ARMOR_TYPE_CLOTH = 1;
+game.ARMOR_TYPE_CLOTH = 1;
 
 /**
  * Leather armor
@@ -46,7 +46,7 @@ civitas.ARMOR_TYPE_CLOTH = 1;
  * @constant
  * @type {Number}
  */
-civitas.ARMOR_TYPE_LEATHER = 2;
+game.ARMOR_TYPE_LEATHER = 2;
 
 /**
  * Mail armor
@@ -54,7 +54,7 @@ civitas.ARMOR_TYPE_LEATHER = 2;
  * @constant
  * @type {Number}
  */
-civitas.ARMOR_TYPE_MAIL = 3;
+game.ARMOR_TYPE_MAIL = 3;
 
 /**
  * Plate armor
@@ -62,7 +62,7 @@ civitas.ARMOR_TYPE_MAIL = 3;
  * @constant
  * @type {Number}
  */
-civitas.ARMOR_TYPE_PLATE = 4;
+game.ARMOR_TYPE_PLATE = 4;
 
 /**
  * Melee weapon
@@ -70,7 +70,7 @@ civitas.ARMOR_TYPE_PLATE = 4;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE = 1;
+game.WEAPON_TYPE_MELEE = 1;
 
 /**
  * Ranged weapon
@@ -78,7 +78,7 @@ civitas.WEAPON_TYPE_MELEE = 1;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_RANGED = 2;
+game.WEAPON_TYPE_RANGED = 2;
 
 /**
  * Bow ranged weapon
@@ -86,7 +86,7 @@ civitas.WEAPON_TYPE_RANGED = 2;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_RANGED_BOW = 1;
+game.WEAPON_TYPE_RANGED_BOW = 1;
 
 /**
  * Crossbow ranged weapon
@@ -94,7 +94,7 @@ civitas.WEAPON_TYPE_RANGED_BOW = 1;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_RANGED_CROSSBOW = 2;
+game.WEAPON_TYPE_RANGED_CROSSBOW = 2;
 
 /**
  * Gun ranged weapon
@@ -102,7 +102,7 @@ civitas.WEAPON_TYPE_RANGED_CROSSBOW = 2;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_RANGED_GUN = 3;
+game.WEAPON_TYPE_RANGED_GUN = 3;
 
 /**
  * Thrown ranged weapon
@@ -110,7 +110,7 @@ civitas.WEAPON_TYPE_RANGED_GUN = 3;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_RANGED_THROWN = 4;
+game.WEAPON_TYPE_RANGED_THROWN = 4;
 
 /**
  * Dagger melee weapon
@@ -118,7 +118,7 @@ civitas.WEAPON_TYPE_RANGED_THROWN = 4;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_DAGGER = 1;
+game.WEAPON_TYPE_MELEE_DAGGER = 1;
 
 /**
  * One-handed axe melee weapon
@@ -126,7 +126,7 @@ civitas.WEAPON_TYPE_MELEE_DAGGER = 1;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_AXE_ONE_HAND = 2;
+game.WEAPON_TYPE_MELEE_AXE_ONE_HAND = 2;
 
 /**
  * Two-handed axe melee weapon
@@ -134,7 +134,7 @@ civitas.WEAPON_TYPE_MELEE_AXE_ONE_HAND = 2;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_AXE_TWO_HAND = 3;
+game.WEAPON_TYPE_MELEE_AXE_TWO_HAND = 3;
 
 /**
  * Fist melee weapon
@@ -142,7 +142,7 @@ civitas.WEAPON_TYPE_MELEE_AXE_TWO_HAND = 3;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_FIST = 4;
+game.WEAPON_TYPE_MELEE_FIST = 4;
 
 /**
  * One-handed mace melee weapon
@@ -150,7 +150,7 @@ civitas.WEAPON_TYPE_MELEE_FIST = 4;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_MACE_ONE_HAND = 5;
+game.WEAPON_TYPE_MELEE_MACE_ONE_HAND = 5;
 
 /**
  * Two-handed mace melee weapon
@@ -158,7 +158,7 @@ civitas.WEAPON_TYPE_MELEE_MACE_ONE_HAND = 5;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_MACE_TWO_HAND = 6;
+game.WEAPON_TYPE_MELEE_MACE_TWO_HAND = 6;
 
 /**
  * Polearm melee weapon
@@ -166,7 +166,7 @@ civitas.WEAPON_TYPE_MELEE_MACE_TWO_HAND = 6;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_POLEARM = 7;
+game.WEAPON_TYPE_MELEE_POLEARM = 7;
 
 /**
  * Staff melee weapon
@@ -174,7 +174,7 @@ civitas.WEAPON_TYPE_MELEE_POLEARM = 7;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_STAFF = 8;
+game.WEAPON_TYPE_MELEE_STAFF = 8;
 
 /**
  * One-handed sword melee weapon
@@ -182,7 +182,7 @@ civitas.WEAPON_TYPE_MELEE_STAFF = 8;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_SWORD_ONE_HAND = 9;
+game.WEAPON_TYPE_MELEE_SWORD_ONE_HAND = 9;
 
 /**
  * Two-handed sword melee weapon
@@ -190,7 +190,7 @@ civitas.WEAPON_TYPE_MELEE_SWORD_ONE_HAND = 9;
  * @constant
  * @type {Number}
  */
-civitas.WEAPON_TYPE_MELEE_SWORD_TWO_HAND = 10;
+game.WEAPON_TYPE_MELEE_SWORD_TWO_HAND = 10;
 
 /**
  * Common quality, bad
@@ -198,7 +198,7 @@ civitas.WEAPON_TYPE_MELEE_SWORD_TWO_HAND = 10;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_QUALITY_COMMON = 1;
+game.ITEM_QUALITY_COMMON = 1;
 
 /**
  * Rare quality, good
@@ -206,7 +206,7 @@ civitas.ITEM_QUALITY_COMMON = 1;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_QUALITY_RARE = 2;
+game.ITEM_QUALITY_RARE = 2;
 
 /**
  * Epic quality, very good
@@ -214,7 +214,7 @@ civitas.ITEM_QUALITY_RARE = 2;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_QUALITY_EPIC = 3;
+game.ITEM_QUALITY_EPIC = 3;
 
 /**
  * Legendary quality, legen-wait for it-dary!
@@ -222,7 +222,7 @@ civitas.ITEM_QUALITY_EPIC = 3;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_QUALITY_LEGENDARY = 4;
+game.ITEM_QUALITY_LEGENDARY = 4;
 
 /**
  * Names of the types of item quality
@@ -230,7 +230,7 @@ civitas.ITEM_QUALITY_LEGENDARY = 4;
  * @constant
  * @type {Array}
  */
-civitas.ITEM_QUALITY_LIST = [
+game.ITEM_QUALITY_LIST = [
 	'',
 	'Common',
 	'Rare',
@@ -244,7 +244,7 @@ civitas.ITEM_QUALITY_LIST = [
  * @constant
  * @type {Array}
  */
-civitas.ITEM_QUALITY_COLORS = [
+game.ITEM_QUALITY_COLORS = [
 	'',
 	'#00ff00',
 	'#0070ff',
@@ -258,7 +258,7 @@ civitas.ITEM_QUALITY_COLORS = [
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_NONE = 0;
+game.ITEM_SLOT_NONE = 0;
 
 /**
  * Neck item slot
@@ -266,7 +266,7 @@ civitas.ITEM_SLOT_NONE = 0;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_NECK = 1;
+game.ITEM_SLOT_NECK = 1;
 
 /**
  * Head item slot
@@ -274,7 +274,7 @@ civitas.ITEM_SLOT_NECK = 1;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_HEAD = 2;
+game.ITEM_SLOT_HEAD = 2;
 
 /**
  * Ring item slot
@@ -282,7 +282,7 @@ civitas.ITEM_SLOT_HEAD = 2;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_RING = 3;
+game.ITEM_SLOT_RING = 3;
 
 /**
  * Shoulder item slot
@@ -290,7 +290,7 @@ civitas.ITEM_SLOT_RING = 3;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_SHOULDER = 4;
+game.ITEM_SLOT_SHOULDER = 4;
 
 /**
  * Chestpiece item slot
@@ -298,7 +298,7 @@ civitas.ITEM_SLOT_SHOULDER = 4;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_CHEST = 5;
+game.ITEM_SLOT_CHEST = 5;
 
 /**
  * Leggings item slot
@@ -306,7 +306,7 @@ civitas.ITEM_SLOT_CHEST = 5;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_LEGS = 6;
+game.ITEM_SLOT_LEGS = 6;
 
 /**
  * Hands item slot
@@ -314,7 +314,7 @@ civitas.ITEM_SLOT_LEGS = 6;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_HANDS = 7;
+game.ITEM_SLOT_HANDS = 7;
 
 /**
  * Waist item slot
@@ -322,7 +322,7 @@ civitas.ITEM_SLOT_HANDS = 7;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_WAIST = 8;
+game.ITEM_SLOT_WAIST = 8;
 
 /**
  * Feet item slot
@@ -330,7 +330,7 @@ civitas.ITEM_SLOT_WAIST = 8;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_FEET = 9;
+game.ITEM_SLOT_FEET = 9;
 
 /**
  * Main hand item slot
@@ -338,7 +338,7 @@ civitas.ITEM_SLOT_FEET = 9;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_MAIN_HAND = 10;
+game.ITEM_SLOT_MAIN_HAND = 10;
 
 /**
  * Off hand item slot
@@ -346,7 +346,7 @@ civitas.ITEM_SLOT_MAIN_HAND = 10;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_OFF_HAND = 11;
+game.ITEM_SLOT_OFF_HAND = 11;
 
 /**
  * Any hand item slot
@@ -354,7 +354,7 @@ civitas.ITEM_SLOT_OFF_HAND = 11;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOT_ANY_HAND = 12;
+game.ITEM_SLOT_ANY_HAND = 12;
 
 /**
  * Number of item slots
@@ -362,7 +362,7 @@ civitas.ITEM_SLOT_ANY_HAND = 12;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_SLOTS_NUM = 12;
+game.ITEM_SLOTS_NUM = 12;
 
 /**
  * Number of backpack slots
@@ -370,7 +370,7 @@ civitas.ITEM_SLOTS_NUM = 12;
  * @constant
  * @type {Number}
  */
-civitas.ITEM_BACKPACK_NUM = 6;
+game.ITEM_BACKPACK_NUM = 6;
 
 /**
  * Name of item slots
@@ -378,7 +378,7 @@ civitas.ITEM_BACKPACK_NUM = 6;
  * @constant
  * @type {Array}
  */
-civitas.ITEM_SLOTS_LIST = [
+game.ITEM_SLOTS_LIST = [
 	'',
 	'Neck',
 	'Head',
@@ -400,7 +400,7 @@ civitas.ITEM_SLOTS_LIST = [
  * @constant
  * @type {Array}
  */
-civitas.RANDOM_UNCOMMON = [
+game.RANDOM_UNCOMMON = [
 	{
 		name: 'ITEM of Spirit',
 		stats: {
@@ -509,7 +509,7 @@ civitas.RANDOM_UNCOMMON = [
  * @constant
  * @type {Object}
  */
-civitas.ITEM_WEAPON_DAGGER_WICKED = {
+game.ITEM_WEAPON_DAGGER_WICKED = {
 	name: 'Wicked Dagger',
 	id: 1,
 	stats: {
@@ -517,13 +517,13 @@ civitas.ITEM_WEAPON_DAGGER_WICKED = {
 		damageMax: 2,
 		speed: 1.60
 	},
-	slot: civitas.ITEM_SLOT_ANY_HAND,
-	type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_COMMON,
+	slot: game.ITEM_SLOT_ANY_HAND,
+	type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_COMMON,
 	cost: 1
 };
 
-civitas.ITEM_WEAPON_DAGGER_DIRK = {
+game.ITEM_WEAPON_DAGGER_DIRK = {
 	name: 'Wicked Dirk',
 	id: 2,
 	stats: {
@@ -531,13 +531,13 @@ civitas.ITEM_WEAPON_DAGGER_DIRK = {
 		damageMax: 3,
 		speed: 1.60
 	},
-	slot: civitas.ITEM_SLOT_ANY_HAND,
-	type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_COMMON,
+	slot: game.ITEM_SLOT_ANY_HAND,
+	type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_COMMON,
 	cost: 1.2
 };
 
-civitas.ITEM_WEAPON_AXE_SMALL = {
+game.ITEM_WEAPON_AXE_SMALL = {
 	name: 'Small Axe',
 	id: 3,
 	stats: {
@@ -545,13 +545,13 @@ civitas.ITEM_WEAPON_AXE_SMALL = {
 		damageMax: 10,
 		speed: 1.60
 	},
-	slot: civitas.ITEM_SLOT_ANY_HAND,
-	type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_COMMON,
+	slot: game.ITEM_SLOT_ANY_HAND,
+	type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_COMMON,
 	cost: 2.2
 };
 
-civitas.ITEM_WEAPON_SWORD_SMALL = {
+game.ITEM_WEAPON_SWORD_SMALL = {
 	name: 'Small Sword',
 	id: 4,
 	stats: {
@@ -559,24 +559,24 @@ civitas.ITEM_WEAPON_SWORD_SMALL = {
 		damageMax: 4,
 		speed: 1.60
 	},
-	slot: civitas.ITEM_SLOT_ANY_HAND,
-	type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_COMMON,
+	slot: game.ITEM_SLOT_ANY_HAND,
+	type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_COMMON,
 	cost: 2.2
 };
 
-civitas.ITEM_WEAPON_BUCKLER_SMALL = {
+game.ITEM_WEAPON_BUCKLER_SMALL = {
 	name: 'Small Buckler',
 	id: 5,
 	stats: {
 		armor: 10
 	},
-	slot: civitas.ITEM_SLOT_OFF_HAND,
-	quality: civitas.ITEM_QUALITY_COMMON,
+	slot: game.ITEM_SLOT_OFF_HAND,
+	quality: game.ITEM_QUALITY_COMMON,
 	cost: 2.2
 };
 
-civitas.ITEM_EXCALIBUR = {
+game.ITEM_EXCALIBUR = {
 	name: 'Excalibur',
 	id: 6,
 	stats: {
@@ -587,14 +587,14 @@ civitas.ITEM_EXCALIBUR = {
 		stamina: 10,
 		strength: 30
 	},
-	slot: civitas.ITEM_SLOT_MAIN_HAND,
-	type: civitas.ITEM_TYPE_WEAPON,
-	secondary_type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_LEGENDARY,
+	slot: game.ITEM_SLOT_MAIN_HAND,
+	type: game.ITEM_TYPE_WEAPON,
+	secondary_type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_LEGENDARY,
 	cost: 1
 };
 
-civitas.ITEM_CROWN_OF_KINGS = {
+game.ITEM_CROWN_OF_KINGS = {
 	name: 'Crown of Kings',
 	id: 7,
 	stats: {
@@ -602,14 +602,14 @@ civitas.ITEM_CROWN_OF_KINGS = {
 		stamina: 10,
 		strength: 30
 	},
-	slot: civitas.ITEM_SLOT_HEAD,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_RARE,
+	slot: game.ITEM_SLOT_HEAD,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_RARE,
 	cost: 1
 };
 
-civitas.ITEM_BULWARK_OF_GODS = {
+game.ITEM_BULWARK_OF_GODS = {
 	name: 'The Bulwark of Gods',
 	id: 8,
 	stats: {
@@ -617,14 +617,14 @@ civitas.ITEM_BULWARK_OF_GODS = {
 		stamina: 20,
 		strength: 50
 	},
-	slot: civitas.ITEM_SLOT_OFF_HAND,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_EPIC,
+	slot: game.ITEM_SLOT_OFF_HAND,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_EPIC,
 	cost: 1
 };
 
-civitas.ITEM_CHESTPIECE_OF_ZEUS = {
+game.ITEM_CHESTPIECE_OF_ZEUS = {
 	name: 'Chestpiece of Zeus',
 	id: 9,
 	stats: {
@@ -633,14 +633,14 @@ civitas.ITEM_CHESTPIECE_OF_ZEUS = {
 		agility: 20,
 		strength: 20
 	},
-	slot: civitas.ITEM_SLOT_CHEST,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_EPIC,
+	slot: game.ITEM_SLOT_CHEST,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_EPIC,
 	cost: 1
 };
 
-civitas.ITEM_ARCHAIC_WAIST_BAND = {
+game.ITEM_ARCHAIC_WAIST_BAND = {
 	name: 'Archaic Waist Band',
 	id: 10,
 	stats: {
@@ -649,14 +649,14 @@ civitas.ITEM_ARCHAIC_WAIST_BAND = {
 		strength: 2,
 		intellect: 2
 	},
-	slot: civitas.ITEM_SLOT_WAIST,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_RARE,
+	slot: game.ITEM_SLOT_WAIST,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_RARE,
 	cost: 1
 };
 
-civitas.ITEM_ALCMENE_BAND = {
+game.ITEM_ALCMENE_BAND = {
 	name: 'Alcmene Band',
 	id: 11,
 	stats: {
@@ -667,14 +667,14 @@ civitas.ITEM_ALCMENE_BAND = {
 		intellect: 1,
 		spirit: 10
 	},
-	slot: civitas.ITEM_SLOT_RING,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_EPIC,
+	slot: game.ITEM_SLOT_RING,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_EPIC,
 	cost: 1
 };
 
-civitas.ITEM_SUN_NECKLACE = {
+game.ITEM_SUN_NECKLACE = {
 	name: 'Sun Necklace',
 	flavour: 'From Amun Ra to his beloved son.',
 	id: 11,
@@ -685,14 +685,14 @@ civitas.ITEM_SUN_NECKLACE = {
 		intellect: 10,
 		spirit: 1
 	},
-	slot: civitas.ITEM_SLOT_NECK,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_LEGENDARY,
+	slot: game.ITEM_SLOT_NECK,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_LEGENDARY,
 	cost: 1
 };
 
-civitas.ITEM_TROJAN_BASTARD_SWORD = {
+game.ITEM_TROJAN_BASTARD_SWORD = {
 	name: 'Trojan Bastard Sword',
 	flavour: 'Hector`s sword, dropped by the fallen Trojan prince.',
 	id: 12,
@@ -703,14 +703,14 @@ civitas.ITEM_TROJAN_BASTARD_SWORD = {
 		stamina: 15,
 		strength: 10
 	},
-	slot: civitas.ITEM_SLOT_MAIN_HAND,
-	type: civitas.ITEM_TYPE_WEAPON,
-	secondary_type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_LEGENDARY,
+	slot: game.ITEM_SLOT_MAIN_HAND,
+	type: game.ITEM_TYPE_WEAPON,
+	secondary_type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_LEGENDARY,
 	cost: 1
 };
 
-civitas.ITEM_SPEAR_OF_DESTINY = {
+game.ITEM_SPEAR_OF_DESTINY = {
 	name: 'Spear of Destiny',
 	flavour: 'The spear that befell the Trojan prince, Hector.',
 	id: 13,
@@ -721,14 +721,14 @@ civitas.ITEM_SPEAR_OF_DESTINY = {
 		stamina: 40,
 		strength: 3
 	},
-	slot: civitas.ITEM_SLOT_MAIN_HAND,
-	type: civitas.ITEM_TYPE_WEAPON,
-	secondary_type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_LEGENDARY,
+	slot: game.ITEM_SLOT_MAIN_HAND,
+	type: game.ITEM_TYPE_WEAPON,
+	secondary_type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_LEGENDARY,
 	cost: 1
 };
 
-civitas.ITEM_GOLDEN_KATANA = {
+game.ITEM_GOLDEN_KATANA = {
 	name: 'Golden Katana',
 	id: 14,
 	stats: {
@@ -739,14 +739,14 @@ civitas.ITEM_GOLDEN_KATANA = {
 		agility: 20,
 		strength: 5
 	},
-	slot: civitas.ITEM_SLOT_OFF_HAND,
-	type: civitas.ITEM_TYPE_WEAPON,
-	secondary_type: civitas.WEAPON_TYPE_MELEE,
-	quality: civitas.ITEM_QUALITY_RARE,
+	slot: game.ITEM_SLOT_OFF_HAND,
+	type: game.ITEM_TYPE_WEAPON,
+	secondary_type: game.WEAPON_TYPE_MELEE,
+	quality: game.ITEM_QUALITY_RARE,
 	cost: 1
 };
 
-civitas.ITEM_ETHEREAL_BOOTS = {
+game.ITEM_ETHEREAL_BOOTS = {
 	name: 'Ethereal Boots',
 	id: 15,
 	stats: {
@@ -754,14 +754,14 @@ civitas.ITEM_ETHEREAL_BOOTS = {
 		strength: 10,
 		agility: 10
 	},
-	slot: civitas.ITEM_SLOT_FEET,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_RARE,
+	slot: game.ITEM_SLOT_FEET,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_RARE,
 	cost: 1
 };
 
-civitas.ITEM_SHOULDERPADS_OF_VALOR = {
+game.ITEM_SHOULDERPADS_OF_VALOR = {
 	name: 'Shoulderpads of Valor',
 	id: 16,
 	stats: {
@@ -769,14 +769,14 @@ civitas.ITEM_SHOULDERPADS_OF_VALOR = {
 		strength: 20,
 		stamina: 10
 	},
-	slot: civitas.ITEM_SLOT_SHOULDER,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_COMMON,
+	slot: game.ITEM_SLOT_SHOULDER,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_COMMON,
 	cost: 1
 };
 
-civitas.ITEM_MOUNTAIN_TROLLS = {
+game.ITEM_MOUNTAIN_TROLLS = {
 	name: 'Mountain Trolls',
 	id: 17,
 	stats: {
@@ -784,14 +784,14 @@ civitas.ITEM_MOUNTAIN_TROLLS = {
 		agility: 10,
 		stamina: 30
 	},
-	slot: civitas.ITEM_SLOT_LEGS,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_EPIC,
+	slot: game.ITEM_SLOT_LEGS,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_EPIC,
 	cost: 1
 };
 
-civitas.ITEM_GAUNTLETS_OF_GHASTLY_GLARE = {
+game.ITEM_GAUNTLETS_OF_GHASTLY_GLARE = {
 	name: 'Gauntlets of Ghastly Glare',
 	flavour: 'Ghastly indeed ...',
 	id: 18,
@@ -801,9 +801,9 @@ civitas.ITEM_GAUNTLETS_OF_GHASTLY_GLARE = {
 		stamina: 2,
 		intellect: 30
 	},
-	slot: civitas.ITEM_SLOT_HANDS,
-	type: civitas.ITEM_TYPE_ARMOR,
-	secondary_type: civitas.ARMOR_TYPE_PLATE,
-	quality: civitas.ITEM_QUALITY_EPIC,
+	slot: game.ITEM_SLOT_HANDS,
+	type: game.ITEM_TYPE_ARMOR,
+	secondary_type: game.ARMOR_TYPE_PLATE,
+	quality: game.ITEM_QUALITY_EPIC,
 	cost: 1
 };
