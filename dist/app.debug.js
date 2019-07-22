@@ -4203,7 +4203,7 @@ class event {
 			const building = game.get_random(1, buildings.length);
 			const _building = buildings[building];
 			if (typeof _building !== 'undefined') {
-				const name = _building.get_name();
+				const name = _building.name;
 				buildings[building].demolish();
 				let replace = new RegExp('BUILDING', 'g');
 				description = description.replace(replace, name);
@@ -8855,7 +8855,7 @@ class game {
 			for (let i = 0; i < buildings.length; i++) {
 				if (typeof buildings[i] !== 'undefined') {
 					if (buildings[i].has_problems()) {
-						problem_buildings.push(buildings[i].get_name());
+						problem_buildings.push(buildings[i].name);
 					}
 				}
 			}
@@ -9924,6 +9924,32 @@ game.NOTIFY_WAR = 6;
  * @type {Number}
  */
 game.MAX_CONSOLE_LINES = 5000;
+
+/**
+ * Game API version to connect to.
+ *
+ * @constant
+ * @type {String}
+ * @default
+ */
+game.API_VERSION = '0.3';
+
+/**
+ * URL of the main Game API entry point.
+ * 
+ * @constant
+ * @default
+ * @type {String}
+ */
+game.API_ENTRY_POINT = 'https://civitas-api.test/api/';
+
+/**
+ * Main Game API entry point + the API version
+ *
+ * @constant
+ * @type {String}
+ */
+game.API_URL = game.API_ENTRY_POINT + game.API_VERSION + '/';
 
 /**
  * List of the possible seasons.

@@ -32,9 +32,7 @@ gulp.task('app', function() {
 		'src/js/objects/ui/ui.js',
 		'src/js/objects/core/game.js',
 		'src/js/constants/default.js',
-		/*
 		'src/js/constants/api.js',
-		*/
 		'src/js/constants/timeline.js',
 		'src/js/constants/religion.js',
 		'src/js/constants/diplomacy.js',

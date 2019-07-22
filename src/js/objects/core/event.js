@@ -73,7 +73,7 @@ class event {
 			const building = game.get_random(1, buildings.length);
 			const _building = buildings[building];
 			if (typeof _building !== 'undefined') {
-				const name = _building.get_name();
+				const name = _building.name;
 				buildings[building].demolish();
 				let replace = new RegExp('BUILDING', 'g');
 				description = description.replace(replace, name);

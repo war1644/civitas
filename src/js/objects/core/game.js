@@ -2075,7 +2075,7 @@ class game {
 			for (let i = 0; i < buildings.length; i++) {
 				if (typeof buildings[i] !== 'undefined') {
 					if (buildings[i].has_problems()) {
-						problem_buildings.push(buildings[i].get_name());
+						problem_buildings.push(buildings[i].name);
 					}
 				}
 			}
