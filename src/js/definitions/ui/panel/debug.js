@@ -155,7 +155,7 @@ class ui_panel_debug extends ui_panel {
 				return false;
 			}).on('click', '.load', function() {
 				let save_game = $(handle + ' .storage-data').val();
-				if (save_game != '') {
+				if (save_game !== '') {
 					core.ui().open_modal(
 						function(button) {
 							if (button === 'yes') {
@@ -172,7 +172,7 @@ class ui_panel_debug extends ui_panel {
 				return false;
 			}).on('click', '.save', function() {
 				let save_game = $(handle + ' .storage-data').val();
-				if (save_game == '') {
+				if (save_game === '') {
 					save_game = core.get_storage_data('live', true);
 				}
 				let a = document.createElement("a");

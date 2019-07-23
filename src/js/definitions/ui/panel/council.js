@@ -115,7 +115,7 @@ class ui_panel_council extends ui_panel {
 				espionage: 0,
 				research: 0,
 				faith: 0
-			}
+			};
 			let mercenary = settlement.mercenary();
 			let _t = '<p>Mercenary armies are available to hire for a fixed price, they do not cost additional resources but they are only available for raiding and campaign missions, they do not participate in the defense of your city.</p>' +
 				'<p>Also, keep in mind that once a mercenary army is hired, they are at your disposal until the end of the current year.</p>' +

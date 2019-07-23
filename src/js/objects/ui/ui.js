@@ -124,6 +124,12 @@ class ui {
 			}
 		}
 		$('.resource-panel').append(_t);
+		let update_scroll_pos = function (event) {
+			$('.viewport').scrollTop($('.viewport').scrollTop() + (clickY - event.pageY));
+			$('.viewport').scrollLeft($('.viewport').scrollLeft() + (clickX - event.pageX));
+			clickY = event.pageY;
+			clickX = event.pageX;
+		};
 		$('.game').on({
 			mousemove (event) {
 				clicked && update_scroll_pos(event);
@@ -139,12 +145,6 @@ class ui {
 				$('html').css('cursor', 'auto');
 			}
 		});
-		let update_scroll_pos = function (event) {
-			$('.viewport').scrollTop($('.viewport').scrollTop() + (clickY - event.pageY));
-			$('.viewport').scrollLeft($('.viewport').scrollLeft() + (clickX - event.pageX));
-			clickY = event.pageY;
-			clickX = event.pageX;
-		};
 		return this;
 	}
 
@@ -454,7 +454,7 @@ class ui {
 	 * @returns {Boolean}
 	 */
 	window_exists (id) {
-		if ($(id).length == 0) {
+		if ($(id).length === 0) {
 			return false;
 		}
 		return true;
@@ -467,7 +467,7 @@ class ui {
 	 * @returns {Boolean}
 	 */
 	panel_exists (id) {
-		if ($(id).length == 0) {
+		if ($(id).length === 0) {
 			return false;
 		}
 		return true;
@@ -678,7 +678,7 @@ class ui {
 			if (typeof requires.buildings !== 'undefined') {
 				for (let item in requires.buildings) {
 					let b = this.core().get_building_config_data(item);
-					out += b.name + ' level ' + requires.buildings[item] + '<br />'
+					out += b.name + ' level ' + requires.buildings[item] + '<br />';
 				}
 			}
 			if (typeof requires.research !== 'undefined') {
@@ -781,10 +781,10 @@ class ui {
 		let container, notty, hide, image, right, left, inner, _container;
 		let notty_type = 'normal';
 		settings = $.extend({
-			title: undefined,
-			content: undefined,
+			title: null,
+			content: null,
 			timeout: 15000,
-			img: undefined,
+			img: null,
 			mode: game.NOTIFY_NORMAL
 		}, settings);
 		if (settings.mode === game.NOTIFY_ACHIEVEMENT) {
@@ -996,7 +996,7 @@ class ui {
 		});
 		modal.alert({
 			title: typeof title !== 'undefined' ? title : 'City Council',
-			text: text,
+			text,
 			on_click: callback
 		});
 		return this;

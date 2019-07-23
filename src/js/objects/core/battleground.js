@@ -92,7 +92,7 @@ class battleground {
 			} else {
 				_a = '_attack';
 			}
-			if (is_ranged !== undefined) {
+			if (typeof is_ranged !== 'undefined') {
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > is_ranged) {
 					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is not close enough for a ranged attack.');
 					return false;
@@ -217,7 +217,7 @@ class battleground {
 		return {
 			attack: this._attack,
 			defense: this._defense
-		}
+		};
 	}
 
 	/**
@@ -325,8 +325,8 @@ class battleground {
 				if (this._grid[y][x] !== null && this._grid[y][x].side === this._computer) {
 					let source = this._grid[y][x];
 					this._from = {
-						x: x,
-						y: y
+						x,
+						y
 					};
 					this._cell_select(this._from);
 					if (game.SOLDIERS[source.item].ranged) {
@@ -359,8 +359,8 @@ class battleground {
 						(Math.abs(y - this._from.y) + Math.abs(x - this._from.x)) <= can_move) {
 						if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
 							this.attack({
-								x: x,
-								y: y
+								x,
+								y
 							});
 							return true;
 						}
@@ -384,8 +384,8 @@ class battleground {
 				for (let x = 0; x < this._grid[y].length; x++) {
 					if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
 						this.attack({
-							x: x,
-							y: y
+							x,
+							y
 						});
 						return true;
 					}
@@ -584,8 +584,8 @@ class battleground {
 			for (let x = 0; x < this._grid[y].length; x++) {
 				if (this._grid[y][x] === null) {
 					this._cell_empty({
-						x: x,
-						y: y
+						x,
+						y
 					});
 				}
 			}
@@ -678,8 +678,8 @@ class battleground {
 					this._cell_add(x, y, army);
 				} else {
 					this._cell_empty({
-						x: x,
-						y: y
+						x,
+						y
 					});
 				}
 			}
@@ -804,7 +804,7 @@ class battleground {
 			total: settlement.army[soldier],
 			attack: game.SOLDIERS[soldier].attack * settlement.army[soldier],
 			defense: game.SOLDIERS[soldier].defense * settlement.army[soldier],
-			side: side,
+			side,
 			moved: false
 		});
 		return this;

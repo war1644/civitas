@@ -615,25 +615,25 @@ class game {
 			if (typeof this._auctioneer[resource] !== 'undefined') {
 				const old = this._auctioneer[resource];
 				this._auctioneer[resource] = {
-					resource: resource,
+					resource,
 					amount: old.amount + amount,
 					price: old.price + price
 				};
 			} else {
 				this._auctioneer[resource] = {
-					resource: resource,
-					amount: amount,
-					price: price
+					resource,
+					amount,
+					price
 				};
 			}
 			this.ui().refresh();
 			this.ui().notify(settlement.name() + ' placed an order for ' + amount + ' ' + game.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
 			return {
 				buyer: settlement.name(),
-				amount: amount,
+				amount,
 				goods: game.get_resource_name(resource),
-				price: price,
-				discount: discount
+				price,
+				discount
 			};
 		}
 		return false;
@@ -677,25 +677,25 @@ class game {
 			if (typeof this._black_market[resource] !== 'undefined') {
 				const old = this._black_market[resource];
 				this._black_market[resource] = {
-					resource: resource,
+					resource,
 					amount: old.amount + amount,
 					price: old.price + price
 				};
 			} else {
 				this._black_market[resource] = {
-					resource: resource,
-					amount: amount,
-					price: price
+					resource,
+					amount,
+					price
 				};
 			}
 			this.ui().refresh();
 			this.ui().notify(settlement.name() + ' placed ' + amount + ' ' + game.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + game.get_resource_name('coins') + ' next month.', 'Black Market');
 			return {
 				seller: settlement.name(),
-				amount: amount,
+				amount,
 				goods: game.get_resource_name(resource),
-				price: price,
-				discount: discount
+				price,
+				discount
 			};
 		}
 		return false;
@@ -2144,7 +2144,7 @@ class game {
 			}
 		}, 1000);
 		$(document).keyup(function(event) {
-			if (event.keyCode == 27 && !ui.window_exists('#window-options')) {
+			if (event.keyCode === 27 && !ui.window_exists('#window-options')) {
 				ui.show_loader();
 				ui.open_window('options');
 			}

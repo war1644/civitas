@@ -30,7 +30,7 @@ class api {
 	login (data) {
 		return this.request({
 			url: 'login',
-			data: data
+			data
 		});
 	}
 
@@ -87,7 +87,7 @@ class api {
 	register (data) {
 		return this.request({
 			url: 'register',
-			data: data
+			data
 		});
 	}
 
@@ -100,7 +100,7 @@ class api {
 	do_export (data) {
 		return this.request({
 			url: 'export',
-			data: data
+			data
 		});
 	}
 
@@ -113,7 +113,7 @@ class api {
 	do_import (data) {
 		return this.request({
 			url: 'import',
-			data: data
+			data
 		});
 	}
 
@@ -134,7 +134,7 @@ class api {
 			crossDomain: true,
 			data: data.data,
 			url: game.API_URL + data.url,
-			async: (typeof data.async === 'undefined' || data.async == true) ? true : false,
+			async: (typeof data.async === 'undefined' || data.async === true) ? true : false,
 			success: data.success instanceof Function ? data.success : function () {
 				// TODO
 			},

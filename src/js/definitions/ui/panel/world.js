@@ -27,6 +27,12 @@ class ui_panel_world extends ui_panel {
 			core.world().draw();
 			let clicked = false;
 			let clickY, clickX;
+			let update_scroll_pos = function (event) {
+				$('.worldmap').scrollTop($('.worldmap').scrollTop() + (clickY - event.pageY));
+				$('.worldmap').scrollLeft($('.worldmap').scrollLeft() + (clickX - event.pageX));
+				clickY = event.pageY;
+				clickX = event.pageX;
+			};
 			$('.worldmap').on({
 				mousemove (event) {
 					clicked && update_scroll_pos(event);
@@ -42,12 +48,6 @@ class ui_panel_world extends ui_panel {
 					$('html').css('cursor', 'auto');
 				}
 			});
-			let update_scroll_pos = function (event) {
-				$('.worldmap').scrollTop($('.worldmap').scrollTop() + (clickY - event.pageY));
-				$('.worldmap').scrollLeft($('.worldmap').scrollLeft() + (clickX - event.pageX));
-				clickY = event.pageY;
-				clickX = event.pageX;
-			};
 			$(this.handle).on('click', '.settlement', function () {
 				let _settlement_name = $(this).data('name');
 				if (_settlement_name === settlement.name()) {

@@ -529,21 +529,21 @@ class world {
 			return [
 				{
 					x: x+1,
-					y: y
+					y
 				}, {
 					x: x+1,
 					y: y-1
 				}, {
-					x: x,
+					x,
 					y: y-1
 				}, {
 					x: x-1,
-					y: y
+					y
 				}, {
 					x: x-1,
 					y: y-1
 				}, {
-					x: x,
+					x,
 					y: y+1
 				}
 			]
@@ -551,24 +551,24 @@ class world {
 			return [
 				{
 					x: x+1,
-					y: y
+					y
 				}, {
 					x: x+1,
 					y: y+1
 				}, {
-					x: x,
+					x,
 					y: y-1
 				}, {
 					x: x-1,
-					y: y
+					y
 				}, {
 					x: x-1,
 					y: y+1
 				}, {
-					x: x,
+					x,
 					y: y+1
 				}
-			]
+			];
 		}
 	}
 
@@ -695,7 +695,7 @@ class world {
 			ctx.globalAlpha = opacity;
 			ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
 			ctx.globalAlpha = 1;
-		}
+		};
 		imageObject.src = game.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
 		return this;
 	}

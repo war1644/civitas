@@ -118,7 +118,7 @@ class api {
 	login (data) {
 		return this.request({
 			url: 'login',
-			data: data
+			data
 		});
 	}
 
@@ -175,7 +175,7 @@ class api {
 	register (data) {
 		return this.request({
 			url: 'register',
-			data: data
+			data
 		});
 	}
 
@@ -188,7 +188,7 @@ class api {
 	do_export (data) {
 		return this.request({
 			url: 'export',
-			data: data
+			data
 		});
 	}
 
@@ -201,7 +201,7 @@ class api {
 	do_import (data) {
 		return this.request({
 			url: 'import',
-			data: data
+			data
 		});
 	}
 
@@ -222,7 +222,7 @@ class api {
 			crossDomain: true,
 			data: data.data,
 			url: game.API_URL + data.url,
-			async: (typeof data.async === 'undefined' || data.async == true) ? true : false,
+			async: (typeof data.async === 'undefined' || data.async === true) ? true : false,
 			success: data.success instanceof Function ? data.success : function () {
 				// TODO
 			},
@@ -915,21 +915,21 @@ class world {
 			return [
 				{
 					x: x+1,
-					y: y
+					y
 				}, {
 					x: x+1,
 					y: y-1
 				}, {
-					x: x,
+					x,
 					y: y-1
 				}, {
 					x: x-1,
-					y: y
+					y
 				}, {
 					x: x-1,
 					y: y-1
 				}, {
-					x: x,
+					x,
 					y: y+1
 				}
 			]
@@ -937,24 +937,24 @@ class world {
 			return [
 				{
 					x: x+1,
-					y: y
+					y
 				}, {
 					x: x+1,
 					y: y+1
 				}, {
-					x: x,
+					x,
 					y: y-1
 				}, {
 					x: x-1,
-					y: y
+					y
 				}, {
 					x: x-1,
 					y: y+1
 				}, {
-					x: x,
+					x,
 					y: y+1
 				}
-			]
+			];
 		}
 	}
 
@@ -1081,7 +1081,7 @@ class world {
 			ctx.globalAlpha = opacity;
 			ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
 			ctx.globalAlpha = 1;
-		}
+		};
 		imageObject.src = game.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
 		return this;
 	}
@@ -4317,7 +4317,7 @@ class battleground {
 			} else {
 				_a = '_attack';
 			}
-			if (is_ranged !== undefined) {
+			if (typeof is_ranged !== 'undefined') {
 				if ((Math.abs(cell.y - sy) + Math.abs(cell.x - sx)) > is_ranged) {
 					this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is not close enough for a ranged attack.');
 					return false;
@@ -4442,7 +4442,7 @@ class battleground {
 		return {
 			attack: this._attack,
 			defense: this._defense
-		}
+		};
 	}
 
 	/**
@@ -4550,8 +4550,8 @@ class battleground {
 				if (this._grid[y][x] !== null && this._grid[y][x].side === this._computer) {
 					let source = this._grid[y][x];
 					this._from = {
-						x: x,
-						y: y
+						x,
+						y
 					};
 					this._cell_select(this._from);
 					if (game.SOLDIERS[source.item].ranged) {
@@ -4584,8 +4584,8 @@ class battleground {
 						(Math.abs(y - this._from.y) + Math.abs(x - this._from.x)) <= can_move) {
 						if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
 							this.attack({
-								x: x,
-								y: y
+								x,
+								y
 							});
 							return true;
 						}
@@ -4609,8 +4609,8 @@ class battleground {
 				for (let x = 0; x < this._grid[y].length; x++) {
 					if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
 						this.attack({
-							x: x,
-							y: y
+							x,
+							y
 						});
 						return true;
 					}
@@ -4809,8 +4809,8 @@ class battleground {
 			for (let x = 0; x < this._grid[y].length; x++) {
 				if (this._grid[y][x] === null) {
 					this._cell_empty({
-						x: x,
-						y: y
+						x,
+						y
 					});
 				}
 			}
@@ -4903,8 +4903,8 @@ class battleground {
 					this._cell_add(x, y, army);
 				} else {
 					this._cell_empty({
-						x: x,
-						y: y
+						x,
+						y
 					});
 				}
 			}
@@ -5029,7 +5029,7 @@ class battleground {
 			total: settlement.army[soldier],
 			attack: game.SOLDIERS[soldier].attack * settlement.army[soldier],
 			defense: game.SOLDIERS[soldier].defense * settlement.army[soldier],
-			side: side,
+			side,
 			moved: false
 		});
 		return this;
@@ -5672,6 +5672,12 @@ class ui {
 			}
 		}
 		$('.resource-panel').append(_t);
+		let update_scroll_pos = function (event) {
+			$('.viewport').scrollTop($('.viewport').scrollTop() + (clickY - event.pageY));
+			$('.viewport').scrollLeft($('.viewport').scrollLeft() + (clickX - event.pageX));
+			clickY = event.pageY;
+			clickX = event.pageX;
+		};
 		$('.game').on({
 			mousemove (event) {
 				clicked && update_scroll_pos(event);
@@ -5687,12 +5693,6 @@ class ui {
 				$('html').css('cursor', 'auto');
 			}
 		});
-		let update_scroll_pos = function (event) {
-			$('.viewport').scrollTop($('.viewport').scrollTop() + (clickY - event.pageY));
-			$('.viewport').scrollLeft($('.viewport').scrollLeft() + (clickX - event.pageX));
-			clickY = event.pageY;
-			clickX = event.pageX;
-		};
 		return this;
 	}
 
@@ -6002,7 +6002,7 @@ class ui {
 	 * @returns {Boolean}
 	 */
 	window_exists (id) {
-		if ($(id).length == 0) {
+		if ($(id).length === 0) {
 			return false;
 		}
 		return true;
@@ -6015,7 +6015,7 @@ class ui {
 	 * @returns {Boolean}
 	 */
 	panel_exists (id) {
-		if ($(id).length == 0) {
+		if ($(id).length === 0) {
 			return false;
 		}
 		return true;
@@ -6226,7 +6226,7 @@ class ui {
 			if (typeof requires.buildings !== 'undefined') {
 				for (let item in requires.buildings) {
 					let b = this.core().get_building_config_data(item);
-					out += b.name + ' level ' + requires.buildings[item] + '<br />'
+					out += b.name + ' level ' + requires.buildings[item] + '<br />';
 				}
 			}
 			if (typeof requires.research !== 'undefined') {
@@ -6329,10 +6329,10 @@ class ui {
 		let container, notty, hide, image, right, left, inner, _container;
 		let notty_type = 'normal';
 		settings = $.extend({
-			title: undefined,
-			content: undefined,
+			title: null,
+			content: null,
 			timeout: 15000,
-			img: undefined,
+			img: null,
 			mode: game.NOTIFY_NORMAL
 		}, settings);
 		if (settings.mode === game.NOTIFY_ACHIEVEMENT) {
@@ -6544,7 +6544,7 @@ class ui {
 		});
 		modal.alert({
 			title: typeof title !== 'undefined' ? title : 'City Council',
-			text: text,
+			text,
 			on_click: callback
 		});
 		return this;
@@ -7385,25 +7385,25 @@ class game {
 			if (typeof this._auctioneer[resource] !== 'undefined') {
 				const old = this._auctioneer[resource];
 				this._auctioneer[resource] = {
-					resource: resource,
+					resource,
 					amount: old.amount + amount,
 					price: old.price + price
 				};
 			} else {
 				this._auctioneer[resource] = {
-					resource: resource,
-					amount: amount,
-					price: price
+					resource,
+					amount,
+					price
 				};
 			}
 			this.ui().refresh();
 			this.ui().notify(settlement.name() + ' placed an order for ' + amount + ' ' + game.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
 			return {
 				buyer: settlement.name(),
-				amount: amount,
+				amount,
 				goods: game.get_resource_name(resource),
-				price: price,
-				discount: discount
+				price,
+				discount
 			};
 		}
 		return false;
@@ -7447,25 +7447,25 @@ class game {
 			if (typeof this._black_market[resource] !== 'undefined') {
 				const old = this._black_market[resource];
 				this._black_market[resource] = {
-					resource: resource,
+					resource,
 					amount: old.amount + amount,
 					price: old.price + price
 				};
 			} else {
 				this._black_market[resource] = {
-					resource: resource,
-					amount: amount,
-					price: price
+					resource,
+					amount,
+					price
 				};
 			}
 			this.ui().refresh();
 			this.ui().notify(settlement.name() + ' placed ' + amount + ' ' + game.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + game.get_resource_name('coins') + ' next month.', 'Black Market');
 			return {
 				seller: settlement.name(),
-				amount: amount,
+				amount,
 				goods: game.get_resource_name(resource),
-				price: price,
-				discount: discount
+				price,
+				discount
 			};
 		}
 		return false;
@@ -8914,7 +8914,7 @@ class game {
 			}
 		}, 1000);
 		$(document).keyup(function(event) {
-			if (event.keyCode == 27 && !ui.window_exists('#window-options')) {
+			if (event.keyCode === 27 && !ui.window_exists('#window-options')) {
 				ui.show_loader();
 				ui.open_window('options');
 			}
@@ -18170,7 +18170,7 @@ class ui_panel_debug extends ui_panel {
 				return false;
 			}).on('click', '.load', function() {
 				let save_game = $(handle + ' .storage-data').val();
-				if (save_game != '') {
+				if (save_game !== '') {
 					core.ui().open_modal(
 						function(button) {
 							if (button === 'yes') {
@@ -18187,7 +18187,7 @@ class ui_panel_debug extends ui_panel {
 				return false;
 			}).on('click', '.save', function() {
 				let save_game = $(handle + ' .storage-data').val();
-				if (save_game == '') {
+				if (save_game === '') {
 					save_game = core.get_storage_data('live', true);
 				}
 				let a = document.createElement("a");
@@ -18494,6 +18494,12 @@ class ui_panel_world extends ui_panel {
 			core.world().draw();
 			let clicked = false;
 			let clickY, clickX;
+			let update_scroll_pos = function (event) {
+				$('.worldmap').scrollTop($('.worldmap').scrollTop() + (clickY - event.pageY));
+				$('.worldmap').scrollLeft($('.worldmap').scrollLeft() + (clickX - event.pageX));
+				clickY = event.pageY;
+				clickX = event.pageX;
+			};
 			$('.worldmap').on({
 				mousemove (event) {
 					clicked && update_scroll_pos(event);
@@ -18509,12 +18515,6 @@ class ui_panel_world extends ui_panel {
 					$('html').css('cursor', 'auto');
 				}
 			});
-			let update_scroll_pos = function (event) {
-				$('.worldmap').scrollTop($('.worldmap').scrollTop() + (clickY - event.pageY));
-				$('.worldmap').scrollLeft($('.worldmap').scrollLeft() + (clickX - event.pageX));
-				clickY = event.pageY;
-				clickX = event.pageX;
-			};
 			$(this.handle).on('click', '.settlement', function () {
 				let _settlement_name = $(this).data('name');
 				if (_settlement_name === settlement.name()) {
@@ -19348,7 +19348,7 @@ class ui_panel_council extends ui_panel {
 				espionage: 0,
 				research: 0,
 				faith: 0
-			}
+			};
 			let mercenary = settlement.mercenary();
 			let _t = '<p>Mercenary armies are available to hire for a fixed price, they do not cost additional resources but they are only available for raiding and campaign missions, they do not participate in the defense of your city.</p>' +
 				'<p>Also, keep in mind that once a mercenary army is hired, they are at your disposal until the end of the current year.</p>' +
@@ -20703,7 +20703,7 @@ class ui_panel_tavern extends ui_panel {
 					for (let i = 0; i < game.ITEM_BACKPACK_NUM; i++) {
 						$(self.handle + ' .hero-items').append('<div class="slot" data-backpack-slot="' + i + '"></div>');
 					}
-				}
+				};
 				self.empty_items();
 				for (let i = 0; i < game.HEROES.length; i++) {
 					_t += '<p><a href="#" data-hero="' + game.HEROES[i].handle + '">' + game.HEROES[i].name + '</a></p>';
