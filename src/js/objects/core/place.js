@@ -39,7 +39,7 @@ class place {
 		} else {
 			return this.properties.sid;
 		}
-	};
+	}
 
 	is_scouted () {
 		return this.properties.scouted;
