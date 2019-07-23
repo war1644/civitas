@@ -16,27 +16,6 @@
  * @author Michael Baczynski, www.polygonal.de
  * @author Alexander Veenendaal, opendoorgonorth.com
  */
-(function (definition) {
-
-    // This file will function properly as a <script> tag, or a module
-    // using CommonJS and NodeJS or RequireJS module formats.  In
-    // Common/Node/RequireJS, the module exports the PM_PRNG API and when
-    // executed as a simple <script>, it creates a PM_PRNG global instead.
-
-    // RequireJS
-    if (typeof define === "function") {
-        define(definition);
-
-    // CommonJS
-    } else if (typeof exports === "object") {
-        definition(void 0, exports);
-
-    // <script>
-    } else {
-        definition(void 0, PM_PRNG = {});
-    }
-
-})(function (require, exports) {
 
 var PM_PRNG = function(){
     this.seed = 1;
@@ -102,12 +81,3 @@ PM_PRNG.prototype.gen = function(){
     // var lo = 16807 * (this.seed & 0xFFFF) + ((hi & 0x7FFF) << 16) + (hi >> 15);
     // return this.seed = (lo > 0x7FFFFFFF ? lo - 0x7FFFFFFF : lo);
 }
-
-
-exports.create = function(seed){
-    var result = new PM_PRNG();
-    result.seed = (typeof seed === "undefined") ? 1 : seed;
-    return result;
-}
-
-});

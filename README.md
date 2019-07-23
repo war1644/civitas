@@ -85,7 +85,7 @@ Always sign your commits and make sure you read the [coding style](CODING-STYLE.
 
 ## Source code
 
-Civitas is written using Javascript, has ~15000 lines of code, ~250Kb minified and can be [downloaded from GitHub.com](https://github.com/sizeofcat/civitas/archive/master.zip), [Gitee.com](https://gitee.com/sizeofcat/civitas/repository/archive/master.zip) or by using git to clone the repository:
+Civitas is written using Javascript, has ~22000 lines of code (including comments and whitespace), ~340Kb minified and can be [downloaded from GitHub.com](https://github.com/sizeofcat/civitas/archive/master.zip), [Gitee.com](https://gitee.com/sizeofcat/civitas/repository/archive/master.zip) or by using git to clone the repository:
 
 GitHub:
 

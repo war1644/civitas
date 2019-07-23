@@ -24,10 +24,6 @@
 	font-size: 12px;
 	background-color: #DCDCE6;
 	box-shadow: 0 0 2px #000;
-	-webkit-box-shadow: 0 0 2px #000;
-	-moz-box-shadow: 0 0 2px #000;
-	-ms-box-shadow: 0 0 2px #000;
-	-o-box-shadow: 0 0 2px #000;
 	position: relative;
 	overflow: hidden;
 	opacity: 0.9;
@@ -37,10 +33,6 @@
 	border-radius: 4px;
 	background-color: #c6c438;
 	background-image: linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -webkit-linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -moz-linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -ms-linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -o-linear-gradient(to bottom, #f5f36b, #c6c438);
 }
 
 .achievement {
@@ -70,25 +62,13 @@
 	border-radius: 60px;
 	background: #e5e5e5;
 	background: linear-gradient(to bottom, #e5e5e5 0%,#8e8e8e 100%);
-	background: -webkit-linear-gradient(to bottom, #e5e5e5 0%,#8e8e8e 100%);
-	background: -moz-linear-gradient(to bottom, #e5e5e5 0%,#8e8e8e 100%);
-	background: -ms-linear-gradient(to bottom, #e5e5e5 0%,#8e8e8e 100%);
-	background: -o-linear-gradient(to bottom, #e5e5e5 0%,#8e8e8e 100%);
 }
 
 .achievements-notifications .notty {
 	border-radius: 60px;
 	background-color: #c6c438;
 	background-image: linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -webkit-linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -moz-linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -ms-linear-gradient(to bottom, #f5f36b, #c6c438);
-	background-image: -o-linear-gradient(to bottom, #f5f36b, #c6c438);
 	box-shadow: 0 0 2px #000;
-	-webkit-box-shadow: 0 0 2px #000;
-	-moz-box-shadow: 0 0 2px #000;
-	-ms-box-shadow: 0 0 2px #000;
-	-o-box-shadow: 0 0 2px #000;
 }
 
 .notifications .notty.error {
@@ -171,10 +151,6 @@
 	content: '';
 	background: #000;
 	background: linear-gradient(transparent, rgba(0, 0, 0, 0.6), transparent);
-	background: -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.6), transparent);
-	background: -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.6), transparent);
-	background: -ms-linear-gradient(transparent, rgba(0, 0, 0, 0.6), transparent);
-	background: -o-linear-gradient(transparent, rgba(0, 0, 0, 0.6), transparent);
 	width: 1px;
 	height: 50px;
 	position: absolute;

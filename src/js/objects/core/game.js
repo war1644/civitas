@@ -1815,7 +1815,7 @@ class game {
 					title: '',
 					avatar: p_data.avatar,
 					personality: game.PERSONALITY_BALANCED
-				}
+				};
 			}
 			new_settlement = new settlement({
 				core: this,
@@ -1938,7 +1938,7 @@ class game {
 		let _place = new place({
 			core: this,
 			properties: {
-				id: id,
+				id,
 				sid: null,
 				name: null,
 				scouted: false

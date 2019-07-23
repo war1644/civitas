@@ -441,8 +441,13 @@ class world {
 	 * @returns {world}
 	 */
 	_generate () {
-		let rng1 = PM_PRNG.create(this.seeds.elevation);
-		let rng2 = PM_PRNG.create(this.seeds.moisture);
+		function PMPRNG_create(seed) {
+			var result = new PM_PRNG();
+			result.seed = (typeof seed === "undefined") ? 1 : seed;
+			return result;
+		}
+		let rng1 = PMPRNG_create(this.seeds.elevation);
+		let rng2 = PMPRNG_create(this.seeds.moisture);
 		let gen1 = new SimplexNoise(rng1.nextDouble.bind(rng1));
 		let gen2 = new SimplexNoise(rng2.nextDouble.bind(rng2));
 		function noise1(nx, ny) {

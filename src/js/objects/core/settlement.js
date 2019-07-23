@@ -2232,7 +2232,7 @@ class settlement {
 					}
 					return {
 						seller: this.name(),
-						amount: amount,
+						amount,
 						goods: game.get_resource_name(item),
 						buyer: settlement,
 						price: Math.round(game.RESOURCES[item].price - discount),

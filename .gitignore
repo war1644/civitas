@@ -1,5 +1,6 @@
 *.log
 *.tmp
+*.map
 Thumbs.db
 node_modules
 images/assets/**/*
