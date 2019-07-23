@@ -1020,8 +1020,8 @@ class settlement {
 				settlement: this,
 				type: handle,
 				data: building_data,
-				hidden: hidden,
-				stopped: stopped
+				hidden,
+				stopped
 			});
 			this._buildings.push(new_building);
 			return true;
@@ -2117,7 +2117,7 @@ class settlement {
 					}
 					return {
 						buyer: this.name(),
-						amount: amount,
+						amount,
 						goods: game.get_resource_name(item),
 						seller: settlement,
 						price: Math.round(game.RESOURCES[item].price + discount),

@@ -1651,8 +1651,8 @@ class game {
 			}
 		}
 		return {
-			resources: resources,
-			trades: trades
+			resources,
+			trades
 		};
 	}
 
@@ -1701,7 +1701,7 @@ class game {
 			name: game.get_random_unique(game.SETTLEMENT_NAMES),
 			religion: s_type === game.CAMP ? game.RELIGION_NONE : this.get_random_religion(),
 			nationality: this.get_random_nationality(),
-			level: level,
+			level,
 			resources: resources.resources,
 			army: this.generate_random_army(s_type),
 			navy: this.generate_random_navy(s_type)
@@ -1757,8 +1757,8 @@ class game {
 		const difficulty = this.difficulty();
 		this.add_settlement({
 			name: cityname,
-			climate: climate,
-			avatar: avatar,
+			climate,
+			avatar,
 			religion: game.RELIGION_NONE,
 			nationality: nation,
 			army: game.INITIAL_SEED[difficulty - 1].military.army,
@@ -1766,8 +1766,8 @@ class game {
 			resources: game.INITIAL_SEED[difficulty - 1].resources,
 			core: this
 		}, 0, {
-			name: name,
-			avatar: avatar
+			name,
+			avatar
 		}).setup_initial_buildings(game.INITIAL_SEED[difficulty - 1].buildings);
 		return this;
 	}
@@ -1820,14 +1820,14 @@ class game {
 			new_settlement = new settlement({
 				core: this,
 				properties: {
-					id: id,
+					id,
 					type: typeof s_data.type !== 'undefined' ? s_data.type : game.CITY,
 					name: typeof s_data.name !== 'undefined' ? s_data.name : game.get_random_unique(game.SETTLEMENT_NAMES),
-					player: player,
+					player,
 					level: typeof s_data.level !== 'undefined' ? s_data.level : 1,
-					climate: climate,
+					climate,
 					religion: typeof s_data.religion !== 'undefined' ? s_data.religion : game.RELIGION_CHRISTIANITY,
-					ruler: ruler,
+					ruler,
 					nationality: s_data.nationality,
 					icon: typeof s_data.icon !== 'undefined' ? s_data.icon : 1
 				},
@@ -1835,7 +1835,7 @@ class game {
 				army: typeof s_data.army !== 'undefined' ? s_data.army : {},
 				navy: typeof s_data.navy !== 'undefined' ? s_data.navy : {},
 				trades: typeof s_data.trades !== 'undefined' ? s_data.trades : {},
-				location: location
+				location
 			});
 			if (player === false) {
 				this.get_settlement().status(id, {
@@ -1949,7 +1949,7 @@ class game {
 				},
 				required: this.generate_random_place_resources()
 			},
-			location: location
+			location
 		});
 		this._places.push(_place);
 		return _place;
@@ -2588,7 +2588,7 @@ class game {
 	static is_virtual_resource (resource) {
 		if (typeof game.RESOURCES[resource] !== 'undefined') {
 			if (game.RESOURCES[resource].category === 'virtual') {
- 				return true;
+				return true;
 			}
 		}
 		return false;
@@ -2625,7 +2625,7 @@ class game {
 			value: damage_val,
 			min: damage_min !== 0 ? damage_min : 1,
 			max: damage_max !== 0 ? damage_max : damage_val
-		}
+		};
 	}
 
 	/**
@@ -2798,7 +2798,7 @@ class game {
 	 * @returns {Number}
 	 */
 	static get_random (min, max) {
-	    return Math.floor(Math.random() * (max - min + 1)) + min;
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
 	/**

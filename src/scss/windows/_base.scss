@@ -6,9 +6,9 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	color: #fff;
+	color: $window-foreground;
 	z-index: 99999;
-	background: #45484d;
+	background: $window-background;
 	background: radial-gradient(ellipse at center, #45484d 0%, #000 100%);
 	background: -webkit-radial-gradient(ellipse at center, #45484d 0%, #000 100%);
 	background: -moz-radial-gradient(ellipse at center, #45484d 0%, #000 100%);
