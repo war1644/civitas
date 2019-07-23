@@ -29,7 +29,7 @@ class ui_panel_embassy extends ui_panel {
 			]));
 			$(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
 			$(this.handle).on('click', '.view', function () {
-				let _settlement_id = parseInt($(this).data('id'));
+				let _settlement_id = parseInt($(this).data('id'), 10);
 				let _settlement = core.get_settlement(_settlement_id);
 				if (_settlement) {
 					core.ui().open_panel('settlement', _settlement);

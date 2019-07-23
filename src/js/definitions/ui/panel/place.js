@@ -140,7 +140,7 @@ class ui_panel_place extends ui_panel {
 				core.ui().open_panel('new_caravan', place);
 				return false;
 			}).on('click', '.view', function () {
-				let _settlement_id = parseInt($(this).data('id'));
+				let _settlement_id = parseInt($(this).data('id'), 10);
 				let _settlement = core.get_settlement(_settlement_id);
 				if (_settlement) {
 					if (_settlement.id() === my_settlement.id()) {

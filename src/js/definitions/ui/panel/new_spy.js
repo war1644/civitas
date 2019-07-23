@@ -81,11 +81,11 @@ class ui_panel_new_spy extends ui_panel {
 			'</fieldset>';
 			$(this.handle + ' section').empty().append(_t);
 			$(this.handle).on('change', '.espionage-range', function() {
-				let value = parseInt($(this).val());
+				let value = parseInt($(this).val(), 10);
 				$(self.handle + ' .espionage-value').val(value);
 				$(self.handle + ' .espionage-chance').val(Math.ceil(value / 100) + '%');
 			}).on('change', '.espionage-mission', function() {
-				let value = parseInt($(this).val());
+				let value = parseInt($(this).val(), 10);
 				if (value === game.SPY_MISSION_RELIGION) {
 					$(self.handle + ' .espionage-rel').show();
 				} else {
@@ -96,9 +96,9 @@ class ui_panel_new_spy extends ui_panel {
 					core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
 					return false;
 				}
-				let _espionage = parseInt($(self.handle + ' .espionage-value').val());
-				let destination = parseInt($(self.handle + ' .espionage-destination').val());
-				let mission = parseInt($(self.handle + ' .espionage-mission').val());
+				let _espionage = parseInt($(self.handle + ' .espionage-value').val(), 10);
+				let destination = parseInt($(self.handle + ' .espionage-destination').val(), 10);
+				let mission = parseInt($(self.handle + ' .espionage-mission').val(), 10);
 				if ((settlement && settlement.id() !== destination) || !settlement) {
 					settlement = core.get_settlement(destination);
 				}
@@ -111,7 +111,7 @@ class ui_panel_new_spy extends ui_panel {
 					mission: mission
 				};
 				if (mission === game.SPY_MISSION_RELIGION) {
-					data.religion = parseInt($(self.handle + ' .espionage-religion').val());
+					data.religion = parseInt($(self.handle + ' .espionage-religion').val(), 10);
 				}
 				if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_SPY, data)) {
 					core.do_achievement('jamesbond');

@@ -910,11 +910,11 @@ class ui {
 	 * @returns {ui}
 	 */
 	resize () {
-		const window_width = parseInt($(window).width());
-		const window_height = parseInt($(window).height());
-		const header_height = parseInt($('.ui > header').height());
-		const sidebar_width = parseInt($('.ui > aside').width());
-		const footer_width = parseInt($('.ui > footer').width());
+		const window_width = parseInt($(window).width(), 10);
+		const window_height = parseInt($(window).height(), 10);
+		const header_height = parseInt($('.ui > header').height(), 10);
+		const sidebar_width = parseInt($('.ui > aside').width(), 10);
+		const footer_width = parseInt($('.ui > footer').width(), 10);
 		$('.ui > footer').css({
 			left: (window_width / 2) - (footer_width / 2)
 		});
@@ -1184,8 +1184,8 @@ class ui {
 	 */
 	citymap_scrollto_building (building) {
 		const location = building.position;
-		const view_width = parseInt($('.ui > .viewport').width());
-		const view_height = parseInt($('.ui > .viewport').height());
+		const view_width = parseInt($('.ui > .viewport').width(), 10);
+		const view_height = parseInt($('.ui > .viewport').height(), 10);
 		$('.viewport').scrollTop(location.y - ((view_height - 260) / 2));
 		$('.viewport').scrollLeft(location.x - ((view_width - 260) / 2));
 		return this;

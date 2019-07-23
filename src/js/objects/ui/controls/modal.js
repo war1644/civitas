@@ -113,8 +113,8 @@ class ui_modal {
 	_resize () {
 		let lbox = $('.modal');
 		if (lbox) {
-			//let height = parseInt((lbox.css('height')).replace('px', ''));
-			let width = parseInt((lbox.css('width')).replace('px', ''));
+			//let height = parseInt((lbox.css('height')).replace('px', ''), 10);
+			let width = parseInt((lbox.css('width')).replace('px', ''), 10);
 			lbox.css({
 				top: ($(window).height() / 2) - 100 + 'px',
 				left: ($(window).width() - width) / 2 + 'px'

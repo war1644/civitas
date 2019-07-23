@@ -50,7 +50,7 @@ class ui_panel_council extends ui_panel {
 			_t += '</div>';
 			$(this.handle + ' #tab-achievements').empty().append(_t);
 			$(this.handle).on('click', '.view-merc', function () {
-				let _army = parseInt($(this).data('id'));
+				let _army = parseInt($(this).data('id'), 10);
 				let data = game.MERCENARIES[_army];
 				core.ui().open_panel('army', data);
 				return false;
@@ -61,7 +61,7 @@ class ui_panel_council extends ui_panel {
 				core.ui().open_modal(
 					function(button) {
 						if (button === 'yes') {
-							let _army = parseInt($(this).data('id'));
+							let _army = parseInt($(this).data('id'), 10);
 							core.get_settlement().release_mercenary(_army);
 							core.save_and_refresh();
 						}

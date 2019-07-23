@@ -96,7 +96,7 @@ class ui_panel_new_caravan extends ui_panel {
 				$(this.handle + ' .caravan-resources').empty().append(_t);
 			};
 			$(this.handle).on('click', '.caravan-resources-add', function() {
-				let amount = parseInt($(self.handle + ' .caravan-resources-amount').val());
+				let amount = parseInt($(self.handle + ' .caravan-resources-amount').val(), 10);
 				let resource = $(self.handle + ' .caravan-resources-select').val();
 				if (resource !== '0') {
 					if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
@@ -124,7 +124,7 @@ class ui_panel_new_caravan extends ui_panel {
 					core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 					return false;
 				}
-				let destination = parseInt($(self.handle + ' .caravan-destination').val());
+				let destination = parseInt($(self.handle + ' .caravan-destination').val(), 10);
 				if ((settlement && settlement.id() !== destination) || !settlement) {
 					settlement = core.get_settlement(destination);
 				}

@@ -118,9 +118,9 @@ class ui_panel_new_army extends ui_panel {
 			_t += '</div>';
 			$(this.handle + ' section').empty().append(_t);
 			$(this.handle).on('click', '.navy-item-inc', function() {
-				let max = parseInt($(this).data('max'));
+				let max = parseInt($(this).data('max'), 10);
 				let ship = $(this).data('ship');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current + 1 <= max) {
 					self.assigned_navy[ship] = current + 1;
 					$(this).parent().children('.amount').html(current + 1);
@@ -128,16 +128,16 @@ class ui_panel_new_army extends ui_panel {
 				return false;
 			}).on('click', '.navy-item-dec', function() {
 				let ship = $(this).data('ship');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current - 1 >= 0) {
 					self.assigned_navy[ship] = current - 1;
 					$(this).parent().children('.amount').html(current - 1);
 				}
 				return false;
 			}).on('click', '.army-item-inc', function() {
-				let max = parseInt($(this).data('max'));
+				let max = parseInt($(this).data('max'), 10);
 				let soldier = $(this).data('soldier');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current + 1 <= max) {
 					self.assigned_army[soldier] = current + 1;
 					$(this).parent().children('.amount').html(current + 1);
@@ -145,7 +145,7 @@ class ui_panel_new_army extends ui_panel {
 				return false;
 			}).on('click', '.army-item-dec', function() {
 				let soldier = $(this).data('soldier');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current - 1 >= 0) {
 					self.assigned_army[soldier] = current - 1;
 					$(this).parent().children('.amount').html(current - 1);
@@ -156,7 +156,7 @@ class ui_panel_new_army extends ui_panel {
 					core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
 					return false;
 				}
-				let destination = parseInt($(self.handle + ' .army-destination').val());
+				let destination = parseInt($(self.handle + ' .army-destination').val(), 10);
 				if ((settlement && settlement.id() !== destination) || !settlement) {
 					settlement = core.get_settlement(destination);
 				}

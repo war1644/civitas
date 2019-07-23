@@ -741,8 +741,8 @@ class battleground {
 		$(this._elements.container).on('mouseover', '.cell', function () {
 			if (self._from === null) {
 				let from = {
-					x: parseInt($(this).data('x')),
-					y: parseInt($(this).data('y'))
+					x: parseInt($(this).data('x'), 10),
+					y: parseInt($(this).data('y'), 10)
 				};
 				self.highlight_cells(from);
 			}
@@ -751,18 +751,18 @@ class battleground {
 			if ($(this).hasClass('empty')) {
 				if (self._from !== null) {
 					let to = {
-						x: parseInt($(this).data('x')),
-						y: parseInt($(this).data('y'))
+						x: parseInt($(this).data('x'), 10),
+						y: parseInt($(this).data('y'), 10)
 					};
 					self.move(to);
 					self.on_move.call(self, self._from, to);
 				}
 			} else {
-				if (parseInt($(this).data('side')) === self._player) {
+				if (parseInt($(this).data('side'), 10) === self._player) {
 					if (!$(this).hasClass('selected')) {
 						let from = {
-							x: parseInt($(this).data('x')),
-							y: parseInt($(this).data('y'))
+							x: parseInt($(this).data('x'), 10),
+							y: parseInt($(this).data('y'), 10)
 						};
 						self._cell_select(from);
 						self.on_select.call(self, from);
@@ -770,11 +770,11 @@ class battleground {
 						self._from = null;
 						$(self._elements.container + ' .cell').removeClass('selected canmove canattack');
 					}
-				} else if (parseInt($(this).data('side')) === self._computer) {
+				} else if (parseInt($(this).data('side'), 10) === self._computer) {
 					if (self._from !== null) {
 						let to = {
-							x: parseInt($(this).data('x')),
-							y: parseInt($(this).data('y'))
+							x: parseInt($(this).data('x'), 10),
+							y: parseInt($(this).data('y'), 10)
 						};
 						self.attack(to);
 						self.on_attack.call(self, self._from, to);

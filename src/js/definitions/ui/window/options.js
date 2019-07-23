@@ -116,7 +116,7 @@ class ui_window_options extends ui_window {
 				core.save();
 				return false;
 			}).on('change', '.music-volume', function () {
-				let value = parseInt($(this).val());
+				let value = parseInt($(this).val(), 10);
 				core.music.volume = value;
 				core.save();
 				return false;

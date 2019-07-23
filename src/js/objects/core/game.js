@@ -2173,7 +2173,7 @@ class game {
 		if (game.ENCRYPTION === true) {
 			this.encryption.key = password;
 		}
-		this.properties.difficulty = parseInt(difficulty);
+		this.properties.difficulty = parseInt(difficulty, 10);
 		this._world = new world({
 			core: this
 		});

@@ -136,7 +136,7 @@ class ui_panel_trades extends ui_panel {
 				let resource = $('.auc-materials').val();
 				let auto_amount = $('.auc-quantity').val();
 				let manual_amount = $('.auc-qty-manual').val();
-				let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
+				let amount = manual_amount === '' ? parseInt(auto_amount, 10) : parseInt(manual_amount, 10);
 				if (resource !== '0' && amount > 0 && amount <= 10000) {
 					if (core.auctioneer_add(resource, amount)) {
 						self.on_refresh();
@@ -150,7 +150,7 @@ class ui_panel_trades extends ui_panel {
 				let resource = $('.bm-materials').val();
 				let auto_amount = $('.bm-quantity').val();
 				let manual_amount = $('.bm-qty-manual').val();
-				let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
+				let amount = manual_amount === '' ? parseInt(auto_amount, 10) : parseInt(manual_amount, 10);
 				if (resource !== '0' && amount > 0) {
 					if (core.black_market_add(resource, amount)) {
 						self.on_refresh();
@@ -172,7 +172,7 @@ class ui_panel_trades extends ui_panel {
 				}
 				return false;
 			}).on('click', '.view-army:not(.disabled)', function () {
-				let army = parseInt($(this).data('id'));
+				let army = parseInt($(this).data('id'), 10);
 				let army_data = game.MERCENARIES[army];
 				core.ui().open_panel('army', army_data);
 				return false;

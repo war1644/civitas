@@ -91,9 +91,9 @@ class ui_window_signup extends ui_window {
 				}
 				let name = $(handle + ' .name').val();
 				let cityname = $(handle + ' .cityname').val();
-				let nation = parseInt($(handle + ' .nation').val());
-				let climate = parseInt($(handle + ' .climate').val());
-				let difficulty = parseInt($(handle + ' .difficulty').val());
+				let nation = parseInt($(handle + ' .nation').val(), 10);
+				let climate = parseInt($(handle + ' .climate').val(), 10);
+				let difficulty = parseInt($(handle + ' .difficulty').val(), 10);
 				if (name.length > 12) {
 					name = name.substring(0, 12);
 				}
@@ -124,7 +124,7 @@ class ui_window_signup extends ui_window {
 			}).on('click', '.avatar', function () {
 				$(handle + ' img.avatar').removeClass('selected');
 				$(this).addClass('selected');
-				let new_avatar = parseInt($(this).data('avatar'));
+				let new_avatar = parseInt($(this).data('avatar'), 10);
 				if (new_avatar >= 1 && new_avatar <= game.AVATARS) {
 					avatar = new_avatar;
 				}

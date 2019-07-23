@@ -57,11 +57,11 @@ class ui_panel_world extends ui_panel {
 				}
 				return false;
 			}).on('click', '.place', function () {
-				let place_id = parseInt($(this).data('id'));
+				let place_id = parseInt($(this).data('id'), 10);
 				core.ui().open_panel('place', core.get_place(place_id));
 				return false;
 			}).on('click', '.troop', function () {
-				let _action_id = parseInt($(this).data('id'));
+				let _action_id = parseInt($(this).data('id'), 10);
 				if (core._queue[_action_id].mode === game.ACTION_CAMPAIGN) {
 					core.ui().open_panel('campaign', core._queue[_action_id]);
 				}

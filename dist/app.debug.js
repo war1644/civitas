@@ -4976,8 +4976,8 @@ class battleground {
 		$(this._elements.container).on('mouseover', '.cell', function () {
 			if (self._from === null) {
 				let from = {
-					x: parseInt($(this).data('x')),
-					y: parseInt($(this).data('y'))
+					x: parseInt($(this).data('x'), 10),
+					y: parseInt($(this).data('y'), 10)
 				};
 				self.highlight_cells(from);
 			}
@@ -4986,18 +4986,18 @@ class battleground {
 			if ($(this).hasClass('empty')) {
 				if (self._from !== null) {
 					let to = {
-						x: parseInt($(this).data('x')),
-						y: parseInt($(this).data('y'))
+						x: parseInt($(this).data('x'), 10),
+						y: parseInt($(this).data('y'), 10)
 					};
 					self.move(to);
 					self.on_move.call(self, self._from, to);
 				}
 			} else {
-				if (parseInt($(this).data('side')) === self._player) {
+				if (parseInt($(this).data('side'), 10) === self._player) {
 					if (!$(this).hasClass('selected')) {
 						let from = {
-							x: parseInt($(this).data('x')),
-							y: parseInt($(this).data('y'))
+							x: parseInt($(this).data('x'), 10),
+							y: parseInt($(this).data('y'), 10)
 						};
 						self._cell_select(from);
 						self.on_select.call(self, from);
@@ -5005,11 +5005,11 @@ class battleground {
 						self._from = null;
 						$(self._elements.container + ' .cell').removeClass('selected canmove canattack');
 					}
-				} else if (parseInt($(this).data('side')) === self._computer) {
+				} else if (parseInt($(this).data('side'), 10) === self._computer) {
 					if (self._from !== null) {
 						let to = {
-							x: parseInt($(this).data('x')),
-							y: parseInt($(this).data('y'))
+							x: parseInt($(this).data('x'), 10),
+							y: parseInt($(this).data('y'), 10)
 						};
 						self.attack(to);
 						self.on_attack.call(self, self._from, to);
@@ -5286,8 +5286,8 @@ class ui_modal {
 	_resize () {
 		let lbox = $('.modal');
 		if (lbox) {
-			//let height = parseInt((lbox.css('height')).replace('px', ''));
-			let width = parseInt((lbox.css('width')).replace('px', ''));
+			//let height = parseInt((lbox.css('height')).replace('px', ''), 10);
+			let width = parseInt((lbox.css('width')).replace('px', ''), 10);
 			lbox.css({
 				top: ($(window).height() / 2) - 100 + 'px',
 				left: ($(window).width() - width) / 2 + 'px'
@@ -6468,11 +6468,11 @@ class ui {
 	 * @returns {ui}
 	 */
 	resize () {
-		const window_width = parseInt($(window).width());
-		const window_height = parseInt($(window).height());
-		const header_height = parseInt($('.ui > header').height());
-		const sidebar_width = parseInt($('.ui > aside').width());
-		const footer_width = parseInt($('.ui > footer').width());
+		const window_width = parseInt($(window).width(), 10);
+		const window_height = parseInt($(window).height(), 10);
+		const header_height = parseInt($('.ui > header').height(), 10);
+		const sidebar_width = parseInt($('.ui > aside').width(), 10);
+		const footer_width = parseInt($('.ui > footer').width(), 10);
 		$('.ui > footer').css({
 			left: (window_width / 2) - (footer_width / 2)
 		});
@@ -6742,8 +6742,8 @@ class ui {
 	 */
 	citymap_scrollto_building (building) {
 		const location = building.position;
-		const view_width = parseInt($('.ui > .viewport').width());
-		const view_height = parseInt($('.ui > .viewport').height());
+		const view_width = parseInt($('.ui > .viewport').width(), 10);
+		const view_height = parseInt($('.ui > .viewport').height(), 10);
 		$('.viewport').scrollTop(location.y - ((view_height - 260) / 2));
 		$('.viewport').scrollLeft(location.x - ((view_width - 260) / 2));
 		return this;
@@ -8953,7 +8953,7 @@ class game {
 		if (game.ENCRYPTION === true) {
 			this.encryption.key = password;
 		}
-		this.properties.difficulty = parseInt(difficulty);
+		this.properties.difficulty = parseInt(difficulty, 10);
 		this._world = new world({
 			core: this
 		});
@@ -17568,7 +17568,7 @@ class ui_panel_place extends ui_panel {
 				core.ui().open_panel('new_caravan', place);
 				return false;
 			}).on('click', '.view', function () {
-				let _settlement_id = parseInt($(this).data('id'));
+				let _settlement_id = parseInt($(this).data('id'), 10);
 				let _settlement = core.get_settlement(_settlement_id);
 				if (_settlement) {
 					if (_settlement.id() === my_settlement.id()) {
@@ -18534,11 +18534,11 @@ class ui_panel_world extends ui_panel {
 				}
 				return false;
 			}).on('click', '.place', function () {
-				let place_id = parseInt($(this).data('id'));
+				let place_id = parseInt($(this).data('id'), 10);
 				core.ui().open_panel('place', core.get_place(place_id));
 				return false;
 			}).on('click', '.troop', function () {
-				let _action_id = parseInt($(this).data('id'));
+				let _action_id = parseInt($(this).data('id'), 10);
 				if (core._queue[_action_id].mode === game.ACTION_CAMPAIGN) {
 					core.ui().open_panel('campaign', core._queue[_action_id]);
 				}
@@ -18820,9 +18820,9 @@ class ui_panel_new_army extends ui_panel {
 			_t += '</div>';
 			$(this.handle + ' section').empty().append(_t);
 			$(this.handle).on('click', '.navy-item-inc', function() {
-				let max = parseInt($(this).data('max'));
+				let max = parseInt($(this).data('max'), 10);
 				let ship = $(this).data('ship');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current + 1 <= max) {
 					self.assigned_navy[ship] = current + 1;
 					$(this).parent().children('.amount').html(current + 1);
@@ -18830,16 +18830,16 @@ class ui_panel_new_army extends ui_panel {
 				return false;
 			}).on('click', '.navy-item-dec', function() {
 				let ship = $(this).data('ship');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current - 1 >= 0) {
 					self.assigned_navy[ship] = current - 1;
 					$(this).parent().children('.amount').html(current - 1);
 				}
 				return false;
 			}).on('click', '.army-item-inc', function() {
-				let max = parseInt($(this).data('max'));
+				let max = parseInt($(this).data('max'), 10);
 				let soldier = $(this).data('soldier');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current + 1 <= max) {
 					self.assigned_army[soldier] = current + 1;
 					$(this).parent().children('.amount').html(current + 1);
@@ -18847,7 +18847,7 @@ class ui_panel_new_army extends ui_panel {
 				return false;
 			}).on('click', '.army-item-dec', function() {
 				let soldier = $(this).data('soldier');
-				let current = parseInt($(this).parent().children('.amount').html());
+				let current = parseInt($(this).parent().children('.amount').html(), 10);
 				if (current - 1 >= 0) {
 					self.assigned_army[soldier] = current - 1;
 					$(this).parent().children('.amount').html(current - 1);
@@ -18858,7 +18858,7 @@ class ui_panel_new_army extends ui_panel {
 					core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
 					return false;
 				}
-				let destination = parseInt($(self.handle + ' .army-destination').val());
+				let destination = parseInt($(self.handle + ' .army-destination').val(), 10);
 				if ((settlement && settlement.id() !== destination) || !settlement) {
 					settlement = core.get_settlement(destination);
 				}
@@ -18966,11 +18966,11 @@ class ui_panel_new_spy extends ui_panel {
 			'</fieldset>';
 			$(this.handle + ' section').empty().append(_t);
 			$(this.handle).on('change', '.espionage-range', function() {
-				let value = parseInt($(this).val());
+				let value = parseInt($(this).val(), 10);
 				$(self.handle + ' .espionage-value').val(value);
 				$(self.handle + ' .espionage-chance').val(Math.ceil(value / 100) + '%');
 			}).on('change', '.espionage-mission', function() {
-				let value = parseInt($(this).val());
+				let value = parseInt($(this).val(), 10);
 				if (value === game.SPY_MISSION_RELIGION) {
 					$(self.handle + ' .espionage-rel').show();
 				} else {
@@ -18981,9 +18981,9 @@ class ui_panel_new_spy extends ui_panel {
 					core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
 					return false;
 				}
-				let _espionage = parseInt($(self.handle + ' .espionage-value').val());
-				let destination = parseInt($(self.handle + ' .espionage-destination').val());
-				let mission = parseInt($(self.handle + ' .espionage-mission').val());
+				let _espionage = parseInt($(self.handle + ' .espionage-value').val(), 10);
+				let destination = parseInt($(self.handle + ' .espionage-destination').val(), 10);
+				let mission = parseInt($(self.handle + ' .espionage-mission').val(), 10);
 				if ((settlement && settlement.id() !== destination) || !settlement) {
 					settlement = core.get_settlement(destination);
 				}
@@ -18996,7 +18996,7 @@ class ui_panel_new_spy extends ui_panel {
 					mission: mission
 				};
 				if (mission === game.SPY_MISSION_RELIGION) {
-					data.religion = parseInt($(self.handle + ' .espionage-religion').val());
+					data.religion = parseInt($(self.handle + ' .espionage-religion').val(), 10);
 				}
 				if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_SPY, data)) {
 					core.do_achievement('jamesbond');
@@ -19073,7 +19073,7 @@ class ui_panel_new_scout extends ui_panel {
 					core.ui().error('You will need to construct an Embassy before being able to send scouts to other settlements.');
 					return false;
 				}
-				//let destination = parseInt($(self.handle + ' .scout-destination').val());
+				//let destination = parseInt($(self.handle + ' .scout-destination').val(), 10);
 				let data = {
 					// Todo
 				};
@@ -19190,7 +19190,7 @@ class ui_panel_new_caravan extends ui_panel {
 				$(this.handle + ' .caravan-resources').empty().append(_t);
 			};
 			$(this.handle).on('click', '.caravan-resources-add', function() {
-				let amount = parseInt($(self.handle + ' .caravan-resources-amount').val());
+				let amount = parseInt($(self.handle + ' .caravan-resources-amount').val(), 10);
 				let resource = $(self.handle + ' .caravan-resources-select').val();
 				if (resource !== '0') {
 					if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
@@ -19218,7 +19218,7 @@ class ui_panel_new_caravan extends ui_panel {
 					core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
 					return false;
 				}
-				let destination = parseInt($(self.handle + ' .caravan-destination').val());
+				let destination = parseInt($(self.handle + ' .caravan-destination').val(), 10);
 				if ((settlement && settlement.id() !== destination) || !settlement) {
 					settlement = core.get_settlement(destination);
 				}
@@ -19293,7 +19293,7 @@ class ui_panel_council extends ui_panel {
 			_t += '</div>';
 			$(this.handle + ' #tab-achievements').empty().append(_t);
 			$(this.handle).on('click', '.view-merc', function () {
-				let _army = parseInt($(this).data('id'));
+				let _army = parseInt($(this).data('id'), 10);
 				let data = game.MERCENARIES[_army];
 				core.ui().open_panel('army', data);
 				return false;
@@ -19304,7 +19304,7 @@ class ui_panel_council extends ui_panel {
 				core.ui().open_modal(
 					function(button) {
 						if (button === 'yes') {
-							let _army = parseInt($(this).data('id'));
+							let _army = parseInt($(this).data('id'), 10);
 							core.get_settlement().release_mercenary(_army);
 							core.save_and_refresh();
 						}
@@ -20064,7 +20064,7 @@ class ui_panel_trades extends ui_panel {
 				let resource = $('.auc-materials').val();
 				let auto_amount = $('.auc-quantity').val();
 				let manual_amount = $('.auc-qty-manual').val();
-				let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
+				let amount = manual_amount === '' ? parseInt(auto_amount, 10) : parseInt(manual_amount, 10);
 				if (resource !== '0' && amount > 0 && amount <= 10000) {
 					if (core.auctioneer_add(resource, amount)) {
 						self.on_refresh();
@@ -20078,7 +20078,7 @@ class ui_panel_trades extends ui_panel {
 				let resource = $('.bm-materials').val();
 				let auto_amount = $('.bm-quantity').val();
 				let manual_amount = $('.bm-qty-manual').val();
-				let amount = manual_amount === '' ? parseInt(auto_amount) : parseInt(manual_amount);
+				let amount = manual_amount === '' ? parseInt(auto_amount, 10) : parseInt(manual_amount, 10);
 				if (resource !== '0' && amount > 0) {
 					if (core.black_market_add(resource, amount)) {
 						self.on_refresh();
@@ -20100,7 +20100,7 @@ class ui_panel_trades extends ui_panel {
 				}
 				return false;
 			}).on('click', '.view-army:not(.disabled)', function () {
-				let army = parseInt($(this).data('id'));
+				let army = parseInt($(this).data('id'), 10);
 				let army_data = game.MERCENARIES[army];
 				core.ui().open_panel('army', army_data);
 				return false;
@@ -20517,7 +20517,7 @@ class ui_panel_church extends ui_panel {
 				'Religion'
 			]));
 			$(this.handle).on('click', '.religion', function() {
-				let id = parseInt($(this).data('id'));
+				let id = parseInt($(this).data('id'), 10);
 				core.ui().open_modal(
 					function(button) {
 						if (button === 'yes') {
@@ -20587,7 +20587,7 @@ class ui_panel_embassy extends ui_panel {
 			]));
 			$(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
 			$(this.handle).on('click', '.view', function () {
-				let _settlement_id = parseInt($(this).data('id'));
+				let _settlement_id = parseInt($(this).data('id'), 10);
 				let _settlement = core.get_settlement(_settlement_id);
 				if (_settlement) {
 					core.ui().open_panel('settlement', _settlement);
@@ -21179,9 +21179,9 @@ class ui_window_signup extends ui_window {
 				}
 				let name = $(handle + ' .name').val();
 				let cityname = $(handle + ' .cityname').val();
-				let nation = parseInt($(handle + ' .nation').val());
-				let climate = parseInt($(handle + ' .climate').val());
-				let difficulty = parseInt($(handle + ' .difficulty').val());
+				let nation = parseInt($(handle + ' .nation').val(), 10);
+				let climate = parseInt($(handle + ' .climate').val(), 10);
+				let difficulty = parseInt($(handle + ' .difficulty').val(), 10);
 				if (name.length > 12) {
 					name = name.substring(0, 12);
 				}
@@ -21212,7 +21212,7 @@ class ui_window_signup extends ui_window {
 			}).on('click', '.avatar', function () {
 				$(handle + ' img.avatar').removeClass('selected');
 				$(this).addClass('selected');
-				let new_avatar = parseInt($(this).data('avatar'));
+				let new_avatar = parseInt($(this).data('avatar'), 10);
 				if (new_avatar >= 1 && new_avatar <= game.AVATARS) {
 					avatar = new_avatar;
 				}
@@ -21406,7 +21406,7 @@ class ui_window_options extends ui_window {
 				core.save();
 				return false;
 			}).on('change', '.music-volume', function () {
-				let value = parseInt($(this).val());
+				let value = parseInt($(this).val(), 10);
 				core.music.volume = value;
 				core.save();
 				return false;

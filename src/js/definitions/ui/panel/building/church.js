@@ -29,7 +29,7 @@ class ui_panel_church extends ui_panel {
 				'Religion'
 			]));
 			$(this.handle).on('click', '.religion', function() {
-				let id = parseInt($(this).data('id'));
+				let id = parseInt($(this).data('id'), 10);
 				core.ui().open_modal(
 					function(button) {
 						if (button === 'yes') {

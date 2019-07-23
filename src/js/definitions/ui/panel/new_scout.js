@@ -54,7 +54,7 @@ class ui_panel_new_scout extends ui_panel {
 					core.ui().error('You will need to construct an Embassy before being able to send scouts to other settlements.');
 					return false;
 				}
-				//let destination = parseInt($(self.handle + ' .scout-destination').val());
+				//let destination = parseInt($(self.handle + ' .scout-destination').val(), 10);
 				let data = {
 					// Todo
 				};
