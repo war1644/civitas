@@ -28,7 +28,7 @@ class ui_panel_building extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }

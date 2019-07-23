@@ -40,7 +40,7 @@ class ui_panel_church extends ui_panel {
 				);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -63,7 +63,7 @@ class ui_panel_church extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }

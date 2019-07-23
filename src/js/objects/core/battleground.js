@@ -480,9 +480,9 @@ class battleground {
 	 * @returns {Number}
 	 */
 	distance (cell1, cell2) {
-		let delta_x = cell1.x - cell2.x;  
-	    let delta_y = cell1.y - cell2.y;  
-	    return ((Math.abs(delta_x) + Math.abs(delta_y) + Math.abs(delta_x - delta_y)) / 2);
+		let delta_x = cell1.x - cell2.x;
+		let delta_y = cell1.y - cell2.y;
+		return ((Math.abs(delta_x) + Math.abs(delta_y) + Math.abs(delta_x - delta_y)) / 2);
 	}
 
 	/**

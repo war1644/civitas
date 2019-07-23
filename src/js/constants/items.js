@@ -30,7 +30,7 @@ game.ITEM_TYPE_WEAPON = 2;
  * @constant
  * @type {Number}
  */
-game.ITEM_TYPE_OTHER = 3
+game.ITEM_TYPE_OTHER = 3;
 
 /**
  * Cloth armor

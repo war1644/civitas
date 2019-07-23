@@ -22,7 +22,7 @@ class ui_panel_ranks extends ui_panel {
 		params.template = ui.generic_panel_template('World Ranks');
 		params.on_show = function(params) {
 			$(this.handle + ' section').append('<div class="ranks-list"></div>');
-		}
+		};
 		params.on_refresh = function() {
 			let ranking_list = [];
 			let settlements = this.core().get_settlements();
@@ -64,7 +64,7 @@ class ui_panel_ranks extends ui_panel {
 			_t += '</tbody>' +
 				'</table>';
 			$(this.handle + ' .ranks-list').empty().append(_t);
-		}
+		};
 		super(params);
 	}
 }

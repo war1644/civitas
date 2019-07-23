@@ -121,10 +121,10 @@ class ui_window_options extends ui_window {
 				core.save();
 				return false;
 			});
-		}
+		};
 		params.on_hide = function () {
 			this.core().ui().hide_loader();
-		}
+		};
 		super(params);
 	}
 }

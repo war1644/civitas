@@ -170,7 +170,7 @@ class ui_panel_settlement extends ui_panel {
 				core.ui().open_panel('new_army', settlement);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
@@ -285,7 +285,7 @@ class ui_panel_settlement extends ui_panel {
 					$(this.handle + ' footer .join').css('display','none');
 				}
 			}
-		}
+		};
 		super(params);
 	}
 }

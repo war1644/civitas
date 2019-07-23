@@ -108,7 +108,7 @@ class ui_panel_new_spy extends ui_panel {
 				}
 				let data = {
 					espionage: _espionage,
-					mission: mission
+					mission
 				};
 				if (mission === game.SPY_MISSION_RELIGION) {
 					data.religion = parseInt($(self.handle + ' .espionage-religion').val(), 10);
@@ -121,13 +121,13 @@ class ui_panel_new_spy extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
 			let espionage = my_settlement.espionage();
 			$(this.handle + ' .espionage-range').attr('max', espionage);
-		}
+		};
 		super(params);
 	}
 }

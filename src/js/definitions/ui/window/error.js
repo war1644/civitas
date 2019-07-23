@@ -49,10 +49,10 @@ class ui_window_error extends ui_window {
 				);
 				return false;
 			});
-		}
+		};
 		params.on_hide = function() {
 			this.core().ui().hide_loader();
-		}
+		};
 		super(params);
 	}
 }

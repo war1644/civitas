@@ -125,16 +125,16 @@ class ui {
 		}
 		$('.resource-panel').append(_t);
 		$('.game').on({
-			mousemove: function (event) {
+			mousemove (event) {
 				clicked && update_scroll_pos(event);
 			},
-			mousedown: function (event) {
+			mousedown (event) {
 				clicked = true;
 				clickY = event.pageY;
 				clickX = event.pageX;
 				$('html').css('cursor', 'grab');
 			},
-			mouseup: function () {
+			mouseup () {
 				clicked = false;
 				$('html').css('cursor', 'auto');
 			}
@@ -804,13 +804,13 @@ class ui {
 		notty = $('<div>');
 		notty.addClass('notty');
 		hide = $("<div>", {
-			click: function () {
+			click () {
 				$(this).parent().delay(300).queue(function () {
 					$(this).clearQueue();
 					$(this).remove();
 				});
 			},
-			touchstart: function () {
+			touchstart () {
 				$(this).parent().delay(300).queue(function () {
 					$(this).clearQueue();
 					$(this).remove();

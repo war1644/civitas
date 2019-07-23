@@ -38,7 +38,7 @@ class ui_window_battle extends ui_window {
 			let handle = this.handle;
 			core.pause();
 			this.battleground = new battleground({
-				core: core,
+				core,
 				width: 15,
 				height: 9,
 				elements: {
@@ -57,17 +57,17 @@ class ui_window_battle extends ui_window {
 					army: this.params_data.destination.army,
 					navy: this.params_data.destination.navy
 				},
-				on_win: function(winner, loser) {
+				on_win (winner, loser) {
 					core.do_achievement('conqueror');
 					$(handle + ' .end').hide();
 					$(handle + ' .close').show();
 				},
-				on_lose: function(winner, loser) {
+				on_lose (winner, loser) {
 					core.do_achievement('foolish');
 					$(handle + ' .end').hide();
 					$(handle + ' .close').show();
 				},
-				on_end_turn: function(turn) {
+				on_end_turn (turn) {
 					$(handle + ' .turns').html(turn);
 				}
 			});
@@ -80,7 +80,7 @@ class ui_window_battle extends ui_window {
 				self.battleground.end_turn();
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }

@@ -28,16 +28,16 @@ class ui_panel_world extends ui_panel {
 			let clicked = false;
 			let clickY, clickX;
 			$('.worldmap').on({
-				mousemove: function (event) {
+				mousemove (event) {
 					clicked && update_scroll_pos(event);
 				},
-				mousedown: function (event) {
+				mousedown (event) {
 					clicked = true;
 					clickY = event.pageY;
 					clickX = event.pageX;
 					$('html').css('cursor', 'grab');
 				},
-				mouseup: function () {
+				mouseup () {
 					clicked = false;
 					$('html').css('cursor', 'auto');
 				}
@@ -71,7 +71,7 @@ class ui_panel_world extends ui_panel {
 				return false;
 			});
 			core.ui().worldmap_scrollto(settlement.location());
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -118,7 +118,7 @@ class ui_panel_world extends ui_panel {
 				let title = '';
 				let troop_type = 'troop';
 				let _source = core.get_settlement(source.id);
-				let _destination = core.get_settlement(destination.id)
+				let _destination = core.get_settlement(destination.id);
 				let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
 				let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
 				//let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
@@ -147,7 +147,7 @@ class ui_panel_world extends ui_panel {
 				let coords = core.ui().get_cell_middle_coords(y, x);
 				$('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + i + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
 			}
-		}
+		};
 		super(params);
 	}
 }

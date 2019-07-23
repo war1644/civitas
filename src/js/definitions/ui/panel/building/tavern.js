@@ -104,10 +104,10 @@ class ui_panel_tavern extends ui_panel {
 			} else {
 				self.destroy();
 			}
-		}
+		};
 		params.on_refresh = function() {
 			// TODO
-		}
+		};
 		super(params);
 	}
 }

@@ -57,7 +57,7 @@ class ui_panel_campaign extends ui_panel {
 				tabs.push('Resources');
 			}
 			$(this.handle + ' section').append(core.ui().tabs(tabs));
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
@@ -160,7 +160,7 @@ class ui_panel_campaign extends ui_panel {
 				}
 				$(this.handle + ' #tab-resources').empty().append(out);
 			}
-		}
+		};
 		super(params);
 	}
 }

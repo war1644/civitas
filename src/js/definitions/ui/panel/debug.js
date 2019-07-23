@@ -189,7 +189,7 @@ class ui_panel_debug extends ui_panel {
 				document.body.removeChild(a);
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }

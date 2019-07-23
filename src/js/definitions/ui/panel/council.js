@@ -98,7 +98,7 @@ class ui_panel_council extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -389,7 +389,7 @@ class ui_panel_council extends ui_panel {
 					'</tfoot>' +
 				'</table>';
 			$(this.handle + ' #tab-production').empty().append(_t);
-		}
+		};
 		super(params);
 	}
 }

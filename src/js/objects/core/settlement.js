@@ -59,7 +59,7 @@ class settlement {
 			};
 		if (!this.is_player()) {
 			this.resources.fame = this.core().level_to_fame(this.level());
-			this._ai = new ai({
+			this.ai = new ai({
 				core: this,
 				type: this._properties.ruler.personality
 			});
@@ -79,16 +79,6 @@ class settlement {
 		}
 		this._properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.level() * game.POPULATION_PER_LEVEL;
 		return this;
-	}
-
-	/**
-	 * Get a reference to the AI module.
-	 *
-	 * @public
-	 * @returns {ai}
-	 */
-	ai () {
-		return this._ai;
 	}
 
 	/**

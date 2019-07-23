@@ -65,10 +65,10 @@ class ui_panel_new_scout extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			// Todo
-		}
+		};
 		super(params);
 	}
 }

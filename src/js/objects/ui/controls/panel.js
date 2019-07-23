@@ -190,12 +190,12 @@ class ui_panel {
 			$(this.handle).draggable({
 				handle: 'header',
 				containment: 'window',
-				start: function() {
+				start () {
 					$(this).css({
 						height: 'auto'
 					});
 				},
-				stop: function() {
+				stop () {
 					$(this).css({
 						height: 'auto'
 					});

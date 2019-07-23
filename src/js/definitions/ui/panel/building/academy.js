@@ -107,7 +107,7 @@ class ui_panel_academy extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -137,7 +137,7 @@ class ui_panel_academy extends ui_panel {
 					$(this.handle + ' .technology[data-technology=' + technologies[f].handle + ']').addClass('has');
 				}
 			}
-		}
+		};
 		super(params);
 	}
 }

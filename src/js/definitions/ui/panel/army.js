@@ -40,7 +40,7 @@ class ui_panel_army extends ui_panel {
 			if (my_settlement.num_ships(army.navy) > 0) {
 				$(this.handle + ' #tab-ships').append(core.ui().navy_list(army.navy));
 			}
-		}
+		};
 		super(params);
 	}
 }

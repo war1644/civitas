@@ -176,7 +176,7 @@ class ui_panel_new_army extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }

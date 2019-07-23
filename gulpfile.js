@@ -83,10 +83,10 @@ gulp.task('app', function() {
 	])
 	.pipe(concat('app.debug.js'))
 	.pipe(header(fs.readFileSync('HEADER', 'utf8'), {
-		pkg: pkg
+		pkg
 	}))
 	.pipe(replace('__VERSION_NUMBER__', pkg.version + '.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + (new Date()).getFullYear()))
-	.pipe(gulp.dest('dist/'))
+	.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('app_minify', gulp.series(gulp.parallel('app'), function() {
@@ -96,10 +96,10 @@ gulp.task('app_minify', gulp.series(gulp.parallel('app'), function() {
 	.pipe(concat('app.min.js'))
 	.pipe(terser())
 	.pipe(header(fs.readFileSync('HEADER', 'utf8'), {
-		pkg: pkg
+		pkg
 	}))
 	.pipe(replace('__VERSION_NUMBER__', pkg.version + '.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + (new Date()).getFullYear()))
-	.pipe(gulp.dest('dist/'))
+	.pipe(gulp.dest('dist/'));
 }));
 
 gulp.task('lib', function() {
@@ -116,7 +116,7 @@ gulp.task('lib', function() {
 		'vendor/js/simplexnoise.js',
 	])
 	.pipe(concat('libs.debug.js'))
-	.pipe(gulp.dest('dist/'))
+	.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('lib_minify', gulp.series(gulp.parallel('lib'), function() {
@@ -125,7 +125,7 @@ gulp.task('lib_minify', gulp.series(gulp.parallel('lib'), function() {
 	])
 	.pipe(concat('libs.min.js'))
 	.pipe(terser())
-	.pipe(gulp.dest('dist/'))
+	.pipe(gulp.dest('dist/'));
 }));
 
 gulp.task('css', function() {
@@ -147,12 +147,12 @@ gulp.task('css', function() {
 	])
 	.pipe(concat('app.debug.css'))
 	.pipe(header(fs.readFileSync('HEADER', 'utf8'), {
-		pkg: pkg
+		pkg
 	}))
 	.pipe(replace('__VERSION_NUMBER__', pkg.version +
 		'.' + ((new Date()).getMonth() + 1) + '' +
 		(new Date()).getDate() + '' + (new Date()).getFullYear()))
-	.pipe(gulp.dest('dist/'))
+	.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('doc', function (cb) {
@@ -172,7 +172,7 @@ gulp.task('css_minify', gulp.series(gulp.parallel('css'), function() {
 	])
 	.pipe(concat('app.min.css'))
 	.pipe(cleanCSS())
-	.pipe(gulp.dest('dist/'))
+	.pipe(gulp.dest('dist/'));
 }));
 
 gulp.task('minify', gulp.series(gulp.parallel(['app_minify', 'lib_minify', 'css_minify'], 'doc'), async function() {

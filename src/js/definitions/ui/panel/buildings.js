@@ -235,7 +235,7 @@ class ui_panel_buildings extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }

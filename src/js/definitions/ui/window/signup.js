@@ -133,10 +133,10 @@ class ui_window_signup extends ui_window {
 				$(handle + ' .about-game').slideToggle();
 				return false;
 			});
-		}
+		};
 		params.on_hide = function() {
 			this.core().ui().hide_loader();
-		}
+		};
 		super(params);
 	}
 }

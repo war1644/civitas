@@ -111,7 +111,7 @@ class game {
 		});
 		const iv = CryptoJS.lib.WordArray.random(128 / 8);
 		const encrypted = CryptoJS.AES.encrypt(data, key, { 
-			iv: iv,
+			iv,
 			padding: this.encryption.padding,
 			mode: this.encryption.mode
 		});
@@ -127,14 +127,14 @@ class game {
 	 */
 	decrypt (data) {
 		const salt = CryptoJS.enc.Hex.parse(data.substr(0, 32));
-		const iv = CryptoJS.enc.Hex.parse(data.substr(32, 32))
+		const iv = CryptoJS.enc.Hex.parse(data.substr(32, 32));
 		const encrypted = data.substring(64);
 		const key = CryptoJS.PBKDF2(this.encryption.key, salt, {
 			keySize: this.encryption.key_size / 32,
 			iterations: this.encryption.iterations
 		});
 		let decrypted = CryptoJS.AES.decrypt(encrypted, key, { 
-			iv: iv, 
+			iv, 
 			padding: this.encryption.padding,
 			mode: this.encryption.mode
 		});
@@ -283,7 +283,7 @@ class game {
 		if (to_local_storage === true) {
 			const new_data = {
 				date: Number(new Date()),
-				data: data,
+				data,
 				hash: hash.toString(CryptoJS.enc.Hex)
 			}
 			this.set_storage_data('live', new_data, true);
@@ -1346,16 +1346,16 @@ class game {
 			this.ui().notify('Your city`s Academy started researching ' + data.name + ' and will finish it in ' + duration + ' days.');
 		}
 		action = {
-			mode: mode,
+			mode,
 			source: {
 				x: s_loc.x,
 				y: s_loc.y,
 				id: source_settlement.id()
 			},
-			duration: duration,
+			duration,
 			passed: 0,
-			type: type,
-			data: data
+			type,
+			data
 		};
 		if (destination_settlement !== null) {
 			action.destination = {
@@ -1400,8 +1400,8 @@ class game {
 		for (let i = 0; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
 				if (!settlements[i].is_player()) {
-					if (settlements[i].ai() !== null) {
-						if (settlements[i].ai().process()) {
+					if (settlements[i].ai !== null) {
+						if (settlements[i].ai.process()) {
 							// Todo
 							this.ui().log('ai', 'Processed AI with id `' + i + '` for the ' + settlements[i].nice_name());
 						}

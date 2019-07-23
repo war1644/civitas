@@ -116,7 +116,7 @@ class ui_panel_help extends ui_panel {
 				'</ul>');
 			$(this.handle + ' #tab-research').empty().append('<h2>Research</h2>');
 			$(this.handle + ' #tab-diplomacy').empty().append('<h2>Diplomacy</h2>');
-		}
+		};
 		super(params);
 	}
 }

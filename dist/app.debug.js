@@ -1417,7 +1417,7 @@ class building {
 				if (this.settlement.is_building_built(item, required[item])) {
 					parent = this.settlement.get_building(item);
 					if (parent && !parent.is_stopped()) {
-						good = parent.has_building_requirements() && parent.has_settlement_requirements()
+						good = parent.has_building_requirements() && parent.has_settlement_requirements();
 						if (good === false) {
 							return false;
 						}
@@ -1839,7 +1839,7 @@ class settlement {
 			};
 		if (!this.is_player()) {
 			this.resources.fame = this.core().level_to_fame(this.level());
-			this._ai = new ai({
+			this.ai = new ai({
 				core: this,
 				type: this._properties.ruler.personality
 			});
@@ -1859,16 +1859,6 @@ class settlement {
 		}
 		this._properties.population = (typeof params.properties.population !== 'undefined') ? params.properties.population : this.level() * game.POPULATION_PER_LEVEL;
 		return this;
-	}
-
-	/**
-	 * Get a reference to the AI module.
-	 *
-	 * @public
-	 * @returns {ai}
-	 */
-	ai () {
-		return this._ai;
 	}
 
 	/**
@@ -4715,9 +4705,9 @@ class battleground {
 	 * @returns {Number}
 	 */
 	distance (cell1, cell2) {
-		let delta_x = cell1.x - cell2.x;  
-	    let delta_y = cell1.y - cell2.y;  
-	    return ((Math.abs(delta_x) + Math.abs(delta_y) + Math.abs(delta_x - delta_y)) / 2);
+		let delta_x = cell1.x - cell2.x;
+		let delta_y = cell1.y - cell2.y;
+		return ((Math.abs(delta_x) + Math.abs(delta_y) + Math.abs(delta_x - delta_y)) / 2);
 	}
 
 	/**
@@ -5520,12 +5510,12 @@ class ui_panel {
 			$(this.handle).draggable({
 				handle: 'header',
 				containment: 'window',
-				start: function() {
+				start () {
 					$(this).css({
 						height: 'auto'
 					});
 				},
-				stop: function() {
+				stop () {
 					$(this).css({
 						height: 'auto'
 					});
@@ -5683,16 +5673,16 @@ class ui {
 		}
 		$('.resource-panel').append(_t);
 		$('.game').on({
-			mousemove: function (event) {
+			mousemove (event) {
 				clicked && update_scroll_pos(event);
 			},
-			mousedown: function (event) {
+			mousedown (event) {
 				clicked = true;
 				clickY = event.pageY;
 				clickX = event.pageX;
 				$('html').css('cursor', 'grab');
 			},
-			mouseup: function () {
+			mouseup () {
 				clicked = false;
 				$('html').css('cursor', 'auto');
 			}
@@ -6362,13 +6352,13 @@ class ui {
 		notty = $('<div>');
 		notty.addClass('notty');
 		hide = $("<div>", {
-			click: function () {
+			click () {
 				$(this).parent().delay(300).queue(function () {
 					$(this).clearQueue();
 					$(this).remove();
 				});
 			},
-			touchstart: function () {
+			touchstart () {
 				$(this).parent().delay(300).queue(function () {
 					$(this).clearQueue();
 					$(this).remove();
@@ -6891,7 +6881,7 @@ class game {
 		});
 		const iv = CryptoJS.lib.WordArray.random(128 / 8);
 		const encrypted = CryptoJS.AES.encrypt(data, key, { 
-			iv: iv,
+			iv,
 			padding: this.encryption.padding,
 			mode: this.encryption.mode
 		});
@@ -6907,14 +6897,14 @@ class game {
 	 */
 	decrypt (data) {
 		const salt = CryptoJS.enc.Hex.parse(data.substr(0, 32));
-		const iv = CryptoJS.enc.Hex.parse(data.substr(32, 32))
+		const iv = CryptoJS.enc.Hex.parse(data.substr(32, 32));
 		const encrypted = data.substring(64);
 		const key = CryptoJS.PBKDF2(this.encryption.key, salt, {
 			keySize: this.encryption.key_size / 32,
 			iterations: this.encryption.iterations
 		});
 		let decrypted = CryptoJS.AES.decrypt(encrypted, key, { 
-			iv: iv, 
+			iv, 
 			padding: this.encryption.padding,
 			mode: this.encryption.mode
 		});
@@ -7063,7 +7053,7 @@ class game {
 		if (to_local_storage === true) {
 			const new_data = {
 				date: Number(new Date()),
-				data: data,
+				data,
 				hash: hash.toString(CryptoJS.enc.Hex)
 			}
 			this.set_storage_data('live', new_data, true);
@@ -8126,16 +8116,16 @@ class game {
 			this.ui().notify('Your city`s Academy started researching ' + data.name + ' and will finish it in ' + duration + ' days.');
 		}
 		action = {
-			mode: mode,
+			mode,
 			source: {
 				x: s_loc.x,
 				y: s_loc.y,
 				id: source_settlement.id()
 			},
-			duration: duration,
+			duration,
 			passed: 0,
-			type: type,
-			data: data
+			type,
+			data
 		};
 		if (destination_settlement !== null) {
 			action.destination = {
@@ -8180,8 +8170,8 @@ class game {
 		for (let i = 0; i < settlements.length; i++) {
 			if (typeof settlements[i] !== 'undefined') {
 				if (!settlements[i].is_player()) {
-					if (settlements[i].ai() !== null) {
-						if (settlements[i].ai().process()) {
+					if (settlements[i].ai !== null) {
+						if (settlements[i].ai.process()) {
 							// Todo
 							this.ui().log('ai', 'Processed AI with id `' + i + '` for the ' + settlements[i].nice_name());
 						}
@@ -10450,7 +10440,7 @@ game.CARAVAN_COSTS = {
 	wood: 10,
 	ropes: 2,
 	provisions: 1
-}
+};
 
 /**
  * Initial resource costs for sending a spy mission.
@@ -10464,7 +10454,7 @@ game.SPY_COSTS = {
 	spyglasses: 1,
 	weapons: 1,
 	provisions: 1
-}
+};
 
 /**
  * Initial resource costs for sending a scout mission.
@@ -10477,7 +10467,7 @@ game.SCOUT_COSTS = {
 	coins: 50,
 	spyglasses: 1,
 	provisions: 1
-}
+};
 
 /**
  * Scouting mission to reveal information about the target.
@@ -10498,7 +10488,7 @@ game.SCOUT_MISSION_INFO = 1;
 game.ARMY_COSTS = {
 	coins: 200,
 	provisions: 1
-}
+};
 
 /**
  * Amount of influence a settlement gains when sending a caravan
@@ -16235,7 +16225,7 @@ game.ITEM_TYPE_WEAPON = 2;
  * @constant
  * @type {Number}
  */
-game.ITEM_TYPE_OTHER = 3
+game.ITEM_TYPE_OTHER = 3;
 
 /**
  * Cloth armor
@@ -17586,7 +17576,7 @@ class ui_panel_place extends ui_panel {
 				core.ui().open_panel('new_scout', place);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let place = this.params_data.data;
@@ -17603,7 +17593,7 @@ class ui_panel_place extends ui_panel {
 					$(this.handle + ' #tab-resources .required').empty().append(out);
 				}
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -17780,7 +17770,7 @@ class ui_panel_settlement extends ui_panel {
 				core.ui().open_panel('new_army', settlement);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
@@ -17895,7 +17885,7 @@ class ui_panel_settlement extends ui_panel {
 					$(this.handle + ' footer .join').css('display','none');
 				}
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -18018,7 +18008,7 @@ class ui_panel_help extends ui_panel {
 				'</ul>');
 			$(this.handle + ' #tab-research').empty().append('<h2>Research</h2>');
 			$(this.handle + ' #tab-diplomacy').empty().append('<h2>Diplomacy</h2>');
-		}
+		};
 		super(params);
 	}
 }
@@ -18214,7 +18204,7 @@ class ui_panel_debug extends ui_panel {
 				document.body.removeChild(a);
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }
@@ -18249,7 +18239,7 @@ class ui_panel_building extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -18313,7 +18303,7 @@ class ui_panel_campaign extends ui_panel {
 				tabs.push('Resources');
 			}
 			$(this.handle + ' section').append(core.ui().tabs(tabs));
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
@@ -18416,7 +18406,7 @@ class ui_panel_campaign extends ui_panel {
 				}
 				$(this.handle + ' #tab-resources').empty().append(out);
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -18458,7 +18448,7 @@ class ui_panel_storage extends ui_panel {
 					$(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board').append(core.ui().resource_storage_el(resource, resources[resource]));
 				}
 			}
-		}
+		};
 		params.on_refresh = function() {
 			let settlement = this.core().get_settlement();
 			let resources = settlement.get_resources();
@@ -18470,7 +18460,7 @@ class ui_panel_storage extends ui_panel {
 			}
 			$(this.handle + ' .total-storage').empty().append(storage_space.all);
 			$(this.handle + ' .used-storage').empty().append(storage_space.occupied);
-		}
+		};
 		super(params);
 	}
 }
@@ -18505,16 +18495,16 @@ class ui_panel_world extends ui_panel {
 			let clicked = false;
 			let clickY, clickX;
 			$('.worldmap').on({
-				mousemove: function (event) {
+				mousemove (event) {
 					clicked && update_scroll_pos(event);
 				},
-				mousedown: function (event) {
+				mousedown (event) {
 					clicked = true;
 					clickY = event.pageY;
 					clickX = event.pageX;
 					$('html').css('cursor', 'grab');
 				},
-				mouseup: function () {
+				mouseup () {
 					clicked = false;
 					$('html').css('cursor', 'auto');
 				}
@@ -18548,7 +18538,7 @@ class ui_panel_world extends ui_panel {
 				return false;
 			});
 			core.ui().worldmap_scrollto(settlement.location());
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -18595,7 +18585,7 @@ class ui_panel_world extends ui_panel {
 				let title = '';
 				let troop_type = 'troop';
 				let _source = core.get_settlement(source.id);
-				let _destination = core.get_settlement(destination.id)
+				let _destination = core.get_settlement(destination.id);
 				let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
 				let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
 				//let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
@@ -18624,7 +18614,7 @@ class ui_panel_world extends ui_panel {
 				let coords = core.ui().get_cell_middle_coords(y, x);
 				$('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + i + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -18653,7 +18643,7 @@ class ui_panel_ranks extends ui_panel {
 		params.template = ui.generic_panel_template('World Ranks');
 		params.on_show = function(params) {
 			$(this.handle + ' section').append('<div class="ranks-list"></div>');
-		}
+		};
 		params.on_refresh = function() {
 			let ranking_list = [];
 			let settlements = this.core().get_settlements();
@@ -18695,7 +18685,7 @@ class ui_panel_ranks extends ui_panel {
 			_t += '</tbody>' +
 				'</table>';
 			$(this.handle + ' .ranks-list').empty().append(_t);
-		}
+		};
 		super(params);
 	}
 }
@@ -18878,7 +18868,7 @@ class ui_panel_new_army extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }
@@ -18993,7 +18983,7 @@ class ui_panel_new_spy extends ui_panel {
 				}
 				let data = {
 					espionage: _espionage,
-					mission: mission
+					mission
 				};
 				if (mission === game.SPY_MISSION_RELIGION) {
 					data.religion = parseInt($(self.handle + ' .espionage-religion').val(), 10);
@@ -19006,13 +18996,13 @@ class ui_panel_new_spy extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
 			let espionage = my_settlement.espionage();
 			$(this.handle + ' .espionage-range').attr('max', espionage);
-		}
+		};
 		super(params);
 	}
 }
@@ -19084,10 +19074,10 @@ class ui_panel_new_scout extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			// Todo
-		}
+		};
 		super(params);
 	}
 }
@@ -19236,7 +19226,7 @@ class ui_panel_new_caravan extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }
@@ -19341,7 +19331,7 @@ class ui_panel_council extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -19632,7 +19622,7 @@ class ui_panel_council extends ui_panel {
 					'</tfoot>' +
 				'</table>';
 			$(this.handle + ' #tab-production').empty().append(_t);
-		}
+		};
 		super(params);
 	}
 }
@@ -19679,7 +19669,7 @@ class ui_panel_army extends ui_panel {
 			if (my_settlement.num_ships(army.navy) > 0) {
 				$(this.handle + ' #tab-ships').append(core.ui().navy_list(army.navy));
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -19921,7 +19911,7 @@ class ui_panel_buildings extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }
@@ -20105,7 +20095,7 @@ class ui_panel_trades extends ui_panel {
 				core.ui().open_panel('army', army_data);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
@@ -20309,7 +20299,7 @@ class ui_panel_trades extends ui_panel {
 					'</tfoot>' +
 				'</table>';
 			$('#tab-prices > .contents').empty().append(out);
-		}
+		};
 		super(params);
 	}
 }
@@ -20382,7 +20372,7 @@ class ui_panel_barracks extends ui_panel {
 				core.ui().error('You don`t have enough resources to recruit a ' + game.SOLDIERS[soldier].name + '.');
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -20395,7 +20385,7 @@ class ui_panel_barracks extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -20468,7 +20458,7 @@ class ui_panel_shipyard extends ui_panel {
 				core.ui().error('You don`t have enough resources to recruit a ' + game.SHIPS[ship].name + '.');
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -20481,7 +20471,7 @@ class ui_panel_shipyard extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -20528,7 +20518,7 @@ class ui_panel_church extends ui_panel {
 				);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -20551,7 +20541,7 @@ class ui_panel_church extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -20594,7 +20584,7 @@ class ui_panel_embassy extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -20657,7 +20647,7 @@ class ui_panel_embassy extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -20768,10 +20758,10 @@ class ui_panel_tavern extends ui_panel {
 			} else {
 				self.destroy();
 			}
-		}
+		};
 		params.on_refresh = function() {
 			// TODO
-		}
+		};
 		super(params);
 	}
 }
@@ -20885,7 +20875,7 @@ class ui_panel_academy extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -20915,7 +20905,7 @@ class ui_panel_academy extends ui_panel {
 					$(this.handle + ' .technology[data-technology=' + technologies[f].handle + ']').addClass('has');
 				}
 			}
-		}
+		};
 		super(params);
 	}
 }
@@ -20991,10 +20981,10 @@ class ui_window_signin extends ui_window {
 				$(handle + ' .about-game').slideToggle();
 				return false;
 			});
-		}
+		};
 		params.on_hide = function() {
 			this.core().ui().hide_loader();
-		}
+		};
 		super(params);
 	}
 }
@@ -21039,7 +21029,7 @@ class ui_window_battle extends ui_window {
 			let handle = this.handle;
 			core.pause();
 			this.battleground = new battleground({
-				core: core,
+				core,
 				width: 15,
 				height: 9,
 				elements: {
@@ -21058,17 +21048,17 @@ class ui_window_battle extends ui_window {
 					army: this.params_data.destination.army,
 					navy: this.params_data.destination.navy
 				},
-				on_win: function(winner, loser) {
+				on_win (winner, loser) {
 					core.do_achievement('conqueror');
 					$(handle + ' .end').hide();
 					$(handle + ' .close').show();
 				},
-				on_lose: function(winner, loser) {
+				on_lose (winner, loser) {
 					core.do_achievement('foolish');
 					$(handle + ' .end').hide();
 					$(handle + ' .close').show();
 				},
-				on_end_turn: function(turn) {
+				on_end_turn (turn) {
 					$(handle + ' .turns').html(turn);
 				}
 			});
@@ -21081,7 +21071,7 @@ class ui_window_battle extends ui_window {
 				self.battleground.end_turn();
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }
@@ -21221,10 +21211,10 @@ class ui_window_signup extends ui_window {
 				$(handle + ' .about-game').slideToggle();
 				return false;
 			});
-		}
+		};
 		params.on_hide = function() {
 			this.core().ui().hide_loader();
-		}
+		};
 		super(params);
 	}
 }
@@ -21280,10 +21270,10 @@ class ui_window_error extends ui_window {
 				);
 				return false;
 			});
-		}
+		};
 		params.on_hide = function() {
 			this.core().ui().hide_loader();
-		}
+		};
 		super(params);
 	}
 }
@@ -21411,10 +21401,10 @@ class ui_window_options extends ui_window {
 				core.save();
 				return false;
 			});
-		}
+		};
 		params.on_hide = function () {
 			this.core().ui().hide_loader();
-		}
+		};
 		super(params);
 	}
 }

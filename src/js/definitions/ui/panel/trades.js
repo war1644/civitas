@@ -177,7 +177,7 @@ class ui_panel_trades extends ui_panel {
 				core.ui().open_panel('army', army_data);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let my_settlement = core.get_settlement();
@@ -381,7 +381,7 @@ class ui_panel_trades extends ui_panel {
 					'</tfoot>' +
 				'</table>';
 			$('#tab-prices > .contents').empty().append(out);
-		}
+		};
 		super(params);
 	}
 }

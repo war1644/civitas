@@ -142,7 +142,7 @@ class ui_panel_new_caravan extends ui_panel {
 				}
 				return false;
 			});
-		}
+		};
 		super(params);
 	}
 }

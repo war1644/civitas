@@ -158,7 +158,7 @@ class ui_panel_place extends ui_panel {
 				core.ui().open_panel('new_scout', place);
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let place = this.params_data.data;
@@ -175,7 +175,7 @@ class ui_panel_place extends ui_panel {
 					$(this.handle + ' #tab-resources .required').empty().append(out);
 				}
 			}
-		}
+		};
 		super(params);
 	}
 }

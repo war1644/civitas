@@ -339,7 +339,7 @@ game.CARAVAN_COSTS = {
 	wood: 10,
 	ropes: 2,
 	provisions: 1
-}
+};
 
 /**
  * Initial resource costs for sending a spy mission.
@@ -353,7 +353,7 @@ game.SPY_COSTS = {
 	spyglasses: 1,
 	weapons: 1,
 	provisions: 1
-}
+};
 
 /**
  * Initial resource costs for sending a scout mission.
@@ -366,7 +366,7 @@ game.SCOUT_COSTS = {
 	coins: 50,
 	spyglasses: 1,
 	provisions: 1
-}
+};
 
 /**
  * Scouting mission to reveal information about the target.
@@ -387,7 +387,7 @@ game.SCOUT_MISSION_INFO = 1;
 game.ARMY_COSTS = {
 	coins: 200,
 	provisions: 1
-}
+};
 
 /**
  * Amount of influence a settlement gains when sending a caravan

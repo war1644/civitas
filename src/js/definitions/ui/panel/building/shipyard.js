@@ -66,7 +66,7 @@ class ui_panel_shipyard extends ui_panel {
 				core.ui().error('You don`t have enough resources to recruit a ' + game.SHIPS[ship].name + '.');
 				return false;
 			});
-		}
+		};
 		params.on_refresh = function() {
 			let core = this.core();
 			let settlement = core.get_settlement();
@@ -79,7 +79,7 @@ class ui_panel_shipyard extends ui_panel {
 			} else {
 				this.destroy();
 			}
-		}
+		};
 		super(params);
 	}
 }

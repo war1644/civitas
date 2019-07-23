@@ -35,7 +35,7 @@ class ui_panel_storage extends ui_panel {
 					$(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board').append(core.ui().resource_storage_el(resource, resources[resource]));
 				}
 			}
-		}
+		};
 		params.on_refresh = function() {
 			let settlement = this.core().get_settlement();
 			let resources = settlement.get_resources();
@@ -47,7 +47,7 @@ class ui_panel_storage extends ui_panel {
 			}
 			$(this.handle + ' .total-storage').empty().append(storage_space.all);
 			$(this.handle + ' .used-storage').empty().append(storage_space.occupied);
-		}
+		};
 		super(params);
 	}
 }

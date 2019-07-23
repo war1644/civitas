@@ -328,7 +328,7 @@ class building {
 				if (this.settlement.is_building_built(item, required[item])) {
 					parent = this.settlement.get_building(item);
 					if (parent && !parent.is_stopped()) {
-						good = parent.has_building_requirements() && parent.has_settlement_requirements()
+						good = parent.has_building_requirements() && parent.has_settlement_requirements();
 						if (good === false) {
 							return false;
 						}
