@@ -1,0 +1,13 @@
+/* World Trades panel */
+
+#panel-trades {
+	width: 800px;
+	max-width: 800px;
+	max-height: 500px;
+	height: auto;
+}
+
+#panel-trades table.mercenaries td:nth-child(3) {
+	width: 20%;
+	text-align: right;
+}

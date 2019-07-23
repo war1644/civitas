@@ -1,0 +1,34 @@
+/* Help panel */
+
+#panel-help {
+	max-width: 800px;
+	width: 800px;
+	height: auto;
+	max-height: 620px;
+}
+
+#panel-help fieldset {
+	float: right;
+	width: 200px;
+	margin: 20px;
+}
+
+#panel-help fieldset li {
+	font-size: 14px;
+	line-height: 24px;
+}
+
+#panel-help .ui-tabs-panel {
+	max-height: 550px;
+	overflow: auto;
+}
+
+#panel-help .ui-tabs-panel p,
+#panel-help .ui-tabs-panel li {
+	font-size: 13px;
+	line-height: 20px;
+}
+
+#panel-help img.help {
+	width: 200px;
+}

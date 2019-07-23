@@ -1,0 +1,153 @@
+/* Windows */
+
+.window {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	color: #fff;
+	z-index: 99999;
+	background: #45484d;
+	background: radial-gradient(ellipse at center, #45484d 0%, #000 100%);
+	background: -webkit-radial-gradient(ellipse at center, #45484d 0%, #000 100%);
+	background: -moz-radial-gradient(ellipse at center, #45484d 0%, #000 100%);
+	background: -ms-radial-gradient(ellipse at center, #45484d 0%, #000 100%);
+	background: -o-radial-gradient(ellipse at center, #45484d 0%, #000 100%);
+}
+
+.window .logo {
+	margin: 3% auto 0 auto;
+	width: 300px;
+	text-align: center;
+	font-size: 62px;
+}
+
+.window fieldset > p {
+	font-size: 12px;
+}
+
+.window ul {
+	margin-left: 20px;
+}
+
+.window .about-game,
+.window .options-game {
+	position: relative;
+	display: none;
+	padding: 10px 0;
+	margin: 0;
+}
+
+.window li > a,
+.window p > a {
+	text-decoration: underline;
+}
+
+.window .ui-tabs-panel > div {
+	padding: 20px;
+}
+
+.window .tabs ul li a {
+	text-decoration: none;
+}
+
+.window .tabs ul li.ui-tabs-active {
+	background-color: #777;
+}
+
+.window .tabs > div {
+	border: 1px solid #777;
+}
+
+.window fieldset {
+	margin: 20px auto 0 auto;
+	width: 360px;
+	border: 0;
+}
+
+.window input[type=password],
+.window input[type=text],
+.window select {
+	border: 1px solid #908c68;
+	background: transparent;
+	color: #fff;
+	padding: 5px 10px;
+	font-size: 14px;
+}
+
+.window select option {
+	color: #000;
+}
+
+.window select {
+	width: 122px;
+}
+
+.window input[type=password],
+.window input[type=text] {
+	width: 100px;
+}
+
+.window .button {
+	display: block;
+	margin-top: 5px;
+	border-radius: 3px;
+	padding: 10px;
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+	color: #fff;
+	border: 1px solid #908c68;
+	background-color: #a9a588;
+	background-image: linear-gradient(to bottom, #a9a588, #8e865b);
+	background-image: -webkit-linear-gradient(to bottom, #a9a588, #8e865b);
+	background-image: -moz-linear-gradient(to bottom, #a9a588, #8e865b);
+	background-image: -ms-linear-gradient(to bottom, #a9a588, #8e865b);
+	background-image: -o-linear-gradient(to bottom, #a9a588, #8e865b);
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.window .button:hover {
+	border: 1px solid #767255;
+	background-color: #938e6b;
+	background-image: linear-gradient(to bottom, #938e6b, #6f6947);
+	background-image: -webkit-linear-gradient(to bottom, #938e6b, #6f6947);
+	background-image: -moz-linear-gradient(to bottom, #938e6b, #6f6947);
+	background-image: -ms-linear-gradient(to bottom, #938e6b, #6f6947);
+	background-image: -o-linear-gradient(to bottom, #938e6b, #6f6947);
+}
+
+.window .avatar-select {
+	width: 100%;
+	height: 180px;
+	overflow: auto;
+	padding: 0;
+	margin: 0;
+}
+
+.window .avatar-select img.avatar {
+	cursor: pointer;
+	border-radius: 100%;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.window .avatar-select img.avatar.selected {
+	box-shadow: inset 0 0 20px 0 rgba(0, 0, 0, 0.75);
+	-webkit-box-shadow: inset 0 0 20px 0 rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: inset 0 0 20px 0 rgba(0, 0, 0, 0.75);
+	-ms-box-shadow: inset 0 0 20px 0 rgba(0, 0, 0, 0.75);
+	-o-box-shadow: inset 0 0 20px 0 rgba(0, 0, 0, 0.75);
+}
+
+.window dt {
+	line-height: 28px;
+}
+
+.window dl {
+	width: 360px;
+}

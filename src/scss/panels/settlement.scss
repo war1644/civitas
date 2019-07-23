@@ -1,0 +1,35 @@
+/* Settlement info panel */
+
+#panel-settlement {
+	width: 470px;
+	max-width: 470px;
+	max-height: 600px;
+	height: auto;
+}
+
+#panel-settlement .ui-tabs-panel {
+	padding: 0 10px;
+}
+
+#panel-building {
+	max-height: 600px;
+	max-width: 1400px;
+}
+
+#panel-settlement footer a.attack,
+#panel-settlement footer a.caravan,
+#panel-settlement footer a.spy,
+#panel-settlement footer a.alliance,
+#panel-settlement footer a.pact,
+#panel-settlement footer a.join,
+#panel-settlement footer a.war,
+#panel-settlement footer a.ceasefire {
+	display: none;
+}
+
+#panel-settlement .pact,
+#panel-settlement .alliance,
+#panel-settlement .war,
+#panel-settlement .ceasefire {
+	display: none;
+}

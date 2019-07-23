@@ -888,7 +888,7 @@ class game {
 			const achievement = this.get_achievement_config_data(handle);
 			if (achievement) {
 				this._achievements.push({
-					handle: handle,
+					handle,
 					date: + new Date()
 				});
 				this._achievement_points += achievement.points;
@@ -945,7 +945,7 @@ class game {
 			const research = this.get_research_config_data(handle);
 			if (research !== false) {
 				this._research.push({
-					handle: handle
+					handle
 				});
 				this.ui().notify(research.description, 'Research: ' + research.name, false, game.NOTIFY_RESEARCH);
 				this.save_and_refresh();

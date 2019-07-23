@@ -8,6 +8,8 @@ var pkg = require('./package.json');
 var fs = require('fs');
 var replace = require('gulp-replace');
 var jsdoc = require('gulp-jsdoc3');
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('app', function() {
 	del([
@@ -132,20 +134,11 @@ gulp.task('css', function() {
 	del([
 		'dist/app.*.css'
 	]);
-	return gulp.src([
-		'src/css/animation.css',
-		'src/css/main.css',
-		'src/css/modal.css',
-		'src/css/notification.css',
-		'src/css/panel.css',
-		'src/css/progress.css',
-		'src/css/resources.css',
-		'src/css/table.css',
-		'src/css/tabs.css',
-		'src/css/tips.css',
-		'src/css/window.css'
-	])
+	return gulp.src('src/scss/**/*.scss')
 	.pipe(concat('app.debug.css'))
+	.pipe(sourcemaps.init())
+	.pipe(sass().on('error', sass.logError))
+	.pipe(sourcemaps.write())
 	.pipe(header(fs.readFileSync('HEADER', 'utf8'), {
 		pkg
 	}))
@@ -180,8 +173,8 @@ gulp.task('minify', gulp.series(gulp.parallel(['app_minify', 'lib_minify', 'css_
 }));
 
 gulp.task('watch', function () {
-	gulp.watch("src/**/*.js", gulp.series(['app']));
-	gulp.watch("src/**/*.css", gulp.parallel('css'));
+	gulp.watch("src/js/**/*.js", gulp.series(['app']));
+	gulp.watch("src/scss/**/*.scss", gulp.parallel('css'));
 	gulp.watch("vendor/**/*.js", gulp.parallel('lib'));
 });
 

@@ -1,0 +1,35 @@
+/* Worldmap panel */
+
+#panel-world {
+	max-width: 1184px;
+	max-height: 700px;
+	width: 1184px;
+	height: 700px;
+	box-sizing: border-box;
+}
+
+#panel-world .worldmap {
+	width: 1164px;
+	height: 640px;
+	background-size: auto 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+#panel-world .worldmap .place,
+#panel-world .worldmap .settlement,
+#panel-world .worldmap .troop {
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	cursor: pointer;
+}
+
+#panel-world .w-t-p {
+	opacity: 0.3;
+}
+/*
+#panel-world .worldmap > img {
+	pointer-events: none;
+}
+*/

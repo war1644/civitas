@@ -585,7 +585,7 @@ class world {
 		const hex = {
 			x: game.get_random(0, game.WORLD_SIZE_WIDTH - 1),
 			y: game.get_random(0, game.WORLD_SIZE_HEIGHT - 1)
-		}
+		};
 		if (typeof terrain !== 'undefined') {
 			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
 				//if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
@@ -911,7 +911,7 @@ class world {
 	}
 
 	get_neighbouring_hexes (y, x) {
-		if (x % 2 == 0) {
+		if (x % 2 === 0) {
 			return [
 				{
 					x: x+1,
@@ -932,7 +932,7 @@ class world {
 					x,
 					y: y+1
 				}
-			]
+			];
 		} else {
 			return [
 				{
@@ -6752,7 +6752,7 @@ class ui {
 		return {
 			x: Math.round((1.5 * column) * game.WORLD_HEX_SIZE),
 			y: Math.round(height * (row * 2 + (column % 2)))
-		}
+		};
 	}
 
 	/**
@@ -7658,7 +7658,7 @@ class game {
 			const achievement = this.get_achievement_config_data(handle);
 			if (achievement) {
 				this._achievements.push({
-					handle: handle,
+					handle,
 					date: + new Date()
 				});
 				this._achievement_points += achievement.points;
@@ -7715,7 +7715,7 @@ class game {
 			const research = this.get_research_config_data(handle);
 			if (research !== false) {
 				this._research.push({
-					handle: handle
+					handle
 				});
 				this.ui().notify(research.description, 'Research: ' + research.name, false, game.NOTIFY_RESEARCH);
 				this.save_and_refresh();

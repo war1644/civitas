@@ -1204,7 +1204,7 @@ class ui {
 		return {
 			x: Math.round((1.5 * column) * game.WORLD_HEX_SIZE),
 			y: Math.round(height * (row * 2 + (column % 2)))
-		}
+		};
 	}
 
 	/**
