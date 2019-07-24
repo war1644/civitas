@@ -2,7 +2,7 @@
  * Main Game AI (Artificial Intelligence) object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ai
  * @returns {ai}
  */

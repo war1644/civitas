@@ -2,7 +2,7 @@
  * Main Game UI object.
  * 
  * @param {Object} core
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui
  * @returns {ui}
  */

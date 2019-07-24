@@ -2,7 +2,7 @@
  * Academy panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_academy
  * @extends ui_panel
  * @returns {ui_panel_academy}

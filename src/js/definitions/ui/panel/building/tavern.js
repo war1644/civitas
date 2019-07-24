@@ -2,7 +2,7 @@
  * Tavern panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_tavern
  * @extends ui_panel
  * @returns {ui_panel_tavern}

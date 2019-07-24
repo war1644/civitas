@@ -21,6 +21,7 @@ const header = require('gulp-header');
 const fs = require('fs');
 const jsdoc = require('gulp-jsdoc3');
 const replace = require('gulp-replace');
+const jsdoc_config = require('./jsdoc');
 
 const BROWSERS_LIST = [
 	'last 2 versions',
@@ -35,7 +36,7 @@ const errorHandler = r => {
 
 const browsersync = done => {
 	browserSync.init({
-		proxy: 'https://civitas.test',
+		proxy: 'http://civitas.test',
 		open: true,
 		injectChanges: true,
 		watchEvents: [
@@ -255,16 +256,22 @@ gulp.task('app', () => {
 		}));
 });
 
-gulp.task('doc', function (cb) {
-	let config = require('./jsdoc');
-	gulp.src(['README.md', './src/**/*.js'], {
-		read: false
-	})
-	.pipe(jsdoc(config, cb));
+gulp.task('doc', () => {
+	return gulp
+		.src([
+			'README.md',
+			'./src/**/*.js'
+		], {
+			read: false
+		})
+		.pipe(jsdoc(jsdoc_config))
+		.pipe(notify({
+				message: '\n\n----- Documentation generated -----\n',
+				onLast: true
+		}));
 });
 
-gulp.task(
-	'default',
+gulp.task('default',
 	gulp.parallel('css', 'lib', 'app', 'doc', browsersync, () => {
 		gulp.watch('./src/scss/**/*.scss', gulp.parallel('css'));
 		gulp.watch('./vendor/js/**/*.js', gulp.series('lib', reload));

@@ -33,7 +33,7 @@ String.prototype.capitalize = function () {
  * Boot up the core.
  */
 $(document).ready(function () {
-  var civitas = new game();
+  new game();
 });
 "use strict";
 
@@ -47,7 +47,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game AI (Artificial Intelligence) object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ai
  * @returns {ai}
  */
@@ -112,7 +112,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game API object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class api
  * @returns {api}
  */
@@ -301,7 +301,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Game jailer (enforcing security) object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class jailer
  * @returns {jailer}
  */
@@ -364,7 +364,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game place object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class place
  * @returns {place}
  */
@@ -484,7 +484,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * World object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class world
  * @returns {world}
  */
@@ -1275,7 +1275,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game building object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class building
  * @returns {building}
  */
@@ -2118,7 +2118,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game settlement object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class settlement
  * @returns {settlement}
  */
@@ -4966,7 +4966,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game event object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class event
  * @returns {event}
  */
@@ -5103,7 +5103,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Battleground object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class battleground
  * @returns {battleground}
  */
@@ -6059,7 +6059,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Hero object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class hero
  * @returns {hero}
  */
@@ -6111,7 +6111,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game window object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_window
  * @returns {ui_window}
  */
@@ -6228,7 +6228,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main modal object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_modal
  * @returns {ui_modal}
  */
@@ -6419,7 +6419,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game panel object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel
  * @returns {ui_panel}
  */
@@ -6684,7 +6684,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * Main Game UI object.
  * 
  * @param {Object} core
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui
  * @returns {ui}
  */
@@ -8027,7 +8027,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Main Game core object, responsible with the game events.
  * 
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class game
  * @returns {game}
  */
@@ -18443,7 +18443,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Place panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_place
  * @extends ui_panel
  * @returns {ui_panel_place}
@@ -18626,7 +18626,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Settlement panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_settlement
  * @extends ui_panel
  * @returns {ui_panel_settlement}
@@ -18916,7 +18916,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Help panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_help
  * @extends ui_panel
  * @returns {ui_panel_help}
@@ -18976,7 +18976,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Debug panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_debug
  * @extends ui_panel
  * @returns {ui_panel_debug}
@@ -19179,7 +19179,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Building panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_building
  * @extends ui_panel
  * @returns {ui_panel_building}
@@ -19239,7 +19239,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Campaign panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_campaign
  * @extends ui_panel
  * @returns {ui_panel_campaign}
@@ -19421,7 +19421,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Storage panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_storage
  * @extends ui_panel
  * @returns {ui_panel_storage}
@@ -19504,7 +19504,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * World panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_world
  * @extends ui_panel
  * @returns {ui_panel_world}
@@ -19703,7 +19703,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Ranks panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_ranks
  * @extends ui_panel
  * @returns {ui_panel_ranks}
@@ -19794,7 +19794,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Create a new army panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_new_army
  * @extends ui_panel
  * @returns {ui_panel_new_army}
@@ -20010,7 +20010,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Create a new spy panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_new_spy
  * @extends ui_panel
  * @returns {ui_panel_new_spy}
@@ -20164,7 +20164,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Create a new scout panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_new_scout
  * @extends ui_panel
  * @returns {ui_panel_new_scout}
@@ -20262,7 +20262,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Create a new caravan panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_new_caravan
  * @extends ui_panel
  * @returns {ui_panel_new_caravan}
@@ -20424,7 +20424,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * City Council panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_council
  * @extends ui_panel
  * @returns {ui_panel_council}
@@ -20744,7 +20744,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Army panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_army
  * @extends ui_panel
  * @returns {ui_panel_army}
@@ -20820,7 +20820,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Buildings panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_buildings
  * @extends ui_panel
  * @returns {ui_panel_buildings}
@@ -21059,7 +21059,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Trades panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_trades
  * @extends ui_panel
  * @returns {ui_panel_trades}
@@ -21338,7 +21338,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Barracks panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_barracks
  * @extends ui_panel
  * @returns {ui_panel_barracks}
@@ -21439,7 +21439,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Shipyard panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_shipyard
  * @extends ui_panel
  * @returns {ui_panel_shipyard}
@@ -21539,7 +21539,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Church panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_church
  * @extends ui_panel
  * @returns {ui_panel_church}
@@ -21626,7 +21626,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Embassy panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_embassy
  * @extends ui_panel
  * @returns {ui_panel_embassy}
@@ -21716,7 +21716,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Tavern panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_tavern
  * @extends ui_panel
  * @returns {ui_panel_tavern}
@@ -21833,7 +21833,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Academy panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_academy
  * @extends ui_panel
  * @returns {ui_panel_academy}
@@ -21997,7 +21997,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Login window data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_window_signin
  * @extends ui_window
  * @returns {ui_window_signin}
@@ -22084,7 +22084,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Battle window data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_window_battle
  * @extends ui_window
  * @returns {ui_window_battle}
@@ -22183,7 +22183,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Sign Up window data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_window_signup
  * @extends ui_window
  * @returns {ui_window_signup}
@@ -22317,7 +22317,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Options window data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_window_error
  * @extends ui_window
  * @returns {ui_window_error}
@@ -22386,7 +22386,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * Options window data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_window_options
  * @extends ui_window
  * @returns {ui_window_options}

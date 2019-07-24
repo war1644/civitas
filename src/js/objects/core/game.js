@@ -1,7 +1,7 @@
 /**
  * Main Game core object, responsible with the game events.
  * 
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class game
  * @returns {game}
  */
@@ -1705,7 +1705,7 @@ class game {
 			resources: resources.resources,
 			army: this.generate_random_army(s_type),
 			navy: this.generate_random_navy(s_type)
-		}
+		};
 		if (s_type === game.CITY || s_type === game.METROPOLIS) {
 			settlement.trades = resources.trades;
 		}
