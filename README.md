@@ -81,7 +81,7 @@ I am always thrilled to receive pull requests, and do my best to process them as
 
 If your pull request is not accepted on the first try, don't be discouraged! If there's a problem with the implementation, hopefully you received feedback on what to improve.
 
-Always sign your commits and make sure you read the [coding style](CODING-STYLE.md).
+Always sign your commits and make sure you read the [Coding Style](CODING-STYLE.md) and the [Code of Conduct](CODE-OF-CONDUCT.md).
 
 ## Source code
 
@@ -102,6 +102,8 @@ Gitee
 - [jQuery Tipsy 1.0.0a](https://github.com/jaz303/tipsy)
 - [jQuery scrollTo 1.4.14](https://github.com/flesler/jquery.scrollTo)
 - [CryptoJS 3.1.9](https://github.com/brix/crypto-js)
+- [simplex-noise.js](https://github.com/jwagner/simplex-noise.js)
+- [PRNG.js](https://github.com/odogono/prng-parkmiller-js)
 
 ## Thanks
 
