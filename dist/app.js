@@ -18385,7 +18385,7 @@ function () {
   }], [{
     key: "window_about_section",
     value: function window_about_section() {
-      var out = '<a href="#" class="do-about button">About</a>' + '<div class="about-game">' + '<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + game.ASSETS_URL + '/images/ui/github.png" /></a>' + '<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' + '<p>Big thanks to:</p>' + '<ul>' + '<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' + '<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' + '</ul>' + '</div>';
+      var out = '<a href="#" class="do-about button">About</a>' + '<div class="about-game">' + '<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"></a>' + '<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' + '<p>Big thanks to:</p>' + '<ul>' + '<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' + '<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' + '</ul>' + '</div>';
       return out;
     }
     /**

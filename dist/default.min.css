@@ -56,7 +56,6 @@ input[type=text],input[type=number],select{border:1px solid #918d69;background:#
 .ui span.green{color:#008a0b}
 .ui span.red{color:#f00000}
 .ui span.blue{color:#5d5def}
-.ui a.wikipedia{width:20px;height:20px;display:inline-block}
 .ui>aside{position:fixed;top:48px;right:0;background-color:#eccfb6;bottom:0;z-index:999;padding-left:6px}
 .ui>aside:empty{display:none}
 .ui .viewport{top:48px;position:relative;overflow:hidden}
@@ -72,6 +71,8 @@ p.title,p span.title{font-size:14px}
 p.description,p span.description{font-size:10px}
 dl.nomg{margin:0 !important}
 td.icon{width:60px}
+a.github{width:32px;height:32px;display:inline-block}
+a.wikipedia{width:20px;height:20px;display:inline-block}
 .modal-overlay{width:100%;height:100%;position:fixed;top:0;display:none;z-index:999998;background-position:0 0;background-repeat:repeat;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiOAMAANUAz5n+TlUAAAAASUVORK5CYII=)}
 .modal-overlay .modal{width:500px;margin-left:auto;margin-right:auto;z-index:999999;position:absolute;color:#666;display:none;-webkit-box-shadow:0 0 5px black;box-shadow:0 0 5px black}
 .modal-overlay .modal>header{background-image:-webkit-gradient(linear,left top,left bottom,from(#9b6b46),to(#6a4324));background-image:linear-gradient(to bottom,#9b6b46,#6a4324);color:white;font-size:18px;padding:4px 10px;text-align:left;text-transform:uppercase}
@@ -129,7 +130,7 @@ footer a[data-panel=world]{background-image:url(../images/assets/ui/toolbar/worl
 footer a[data-panel=ranks]{background-image:url(../images/assets/ui/toolbar/ranks.png)}
 footer a[data-panel=debug]{background-image:url(../images/assets/ui/toolbar/debug.png)}
 footer a[data-panel=help]{background-image:url(../images/assets/ui/toolbar/help.png)}
-.panel header .close{background:transparent url(../images/ui/close.png) no-repeat}
+.panel header .close{background:transparent url(../images/default/ui/close.png) no-repeat}
 .panel footer .attack{background:transparent url(../images/assets/ui/icons/attack.png) no-repeat}
 .panel footer .spy{background:transparent url(../images/assets/ui/icons/spy.png) no-repeat}
 .panel footer .scout{background:transparent url(../images/assets/ui/icons/spy.png) no-repeat}
@@ -150,17 +151,18 @@ footer a[data-panel=help]{background-image:url(../images/assets/ui/toolbar/help.
 .game .building .notification.paused{background:transparent url(../images/assets/ui/icons/notify-pause.png) no-repeat}
 .game .building .notification.requirements{background:transparent url(../images/assets/ui/icons/notify-missing.png) no-repeat}
 .ach.img{background:transparent url(../images/assets/ui/icon_achievement.png) no-repeat}
-.loading{background:transparent url(../images/ui/loading.svg) no-repeat}
-.notifications .notty .hide,.achievements-notifications .notty .hide{background:transparent url(../images/ui/close.png) no-repeat}
-.panel ul.advices li{background:transparent url(../images/ui/check.png) no-repeat left top}
+.loading{background:transparent url(../images/default/ui/loading.svg) no-repeat}
+.notifications .notty .hide,.achievements-notifications .notty .hide{background:transparent url(../images/default/ui/close.png) no-repeat}
+.panel ul.advices li{background:transparent url(../images/default/ui/check.png) no-repeat left top}
 .religion-list .religion{background:transparent url(../images/assets/ui/religion.png) no-repeat center}
 .game{background:black url(../images/city/map.jpg) no-repeat}
 .panel td a.btn.start{background:transparent url(../images/assets/ui/icons/start.png) no-repeat}
 .panel td a.btn.pause{background:transparent url(../images/assets/ui/icons/stop.png) no-repeat}
 #window-battle .battleground{background:transparent url(../images/battle/bg2.png) no-repeat}
-.ui>aside{background:#eccfb6 url(../images/ui/sidebar.png) repeat-y left top}
-a.wikipedia{background:transparent url(../images/ui/wikipedia.png) no-repeat}
-.ui>header{background:transparent url(../images/ui/resource-panel.png) repeat-x}
+.ui>aside{background:#eccfb6 url(../images/default/ui/sidebar.png) repeat-y left top}
+a.wikipedia{background:transparent url(../images/default/ui/wikipedia.png) no-repeat}
+a.github{background:transparent url(../images/default/ui/github.png) no-repeat}
+.ui>header{background:transparent url(../images/default/ui/resource-panel.png) repeat-x}
 table{width:100%;padding:0;border-spacing:1px;border-collapse:separate}
 table td{text-align:left;vertical-align:middle;padding:10px}
 table thead td,table tfoot td{padding:10px}

@@ -194,7 +194,7 @@ class ui {
 	static window_about_section () {
 		let out = '<a href="#" class="do-about button">About</a>' +
 			'<div class="about-game">' +
-				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"><img class="tips" title="Visit the project page on GitHub" src="' + game.ASSETS_URL + '/images/ui/github.png" /></a>' +
+				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"></a>' +
 				'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
 				'<p>Big thanks to:</p>' +
 				'<ul>' +

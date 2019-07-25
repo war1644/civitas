@@ -35,7 +35,7 @@ footer a[data-panel=help] {
 /* Panel footer icons */
 
 .panel header .close {
-	background: transparent url(../images/ui/close.png) no-repeat;
+	background: transparent url(../images/default/ui/close.png) no-repeat;
 }
 
 .panel footer .attack {
@@ -123,16 +123,16 @@ footer a[data-panel=help] {
 }
 
 .loading {
-	background: transparent url(../images/ui/loading.svg) no-repeat;
+	background: transparent url(../images/default/ui/loading.svg) no-repeat;
 }
 
 .notifications .notty .hide,
 .achievements-notifications .notty .hide {
-	background: transparent url(../images/ui/close.png) no-repeat;
+	background: transparent url(../images/default/ui/close.png) no-repeat;
 }
 
 .panel ul.advices li {
-	background: transparent url(../images/ui/check.png) no-repeat left top;
+	background: transparent url(../images/default/ui/check.png) no-repeat left top;
 }
 
 .religion-list .religion {
@@ -156,13 +156,17 @@ footer a[data-panel=help] {
 }
 
 .ui > aside {
-	background: $aside-bg url(../images/ui/sidebar.png) repeat-y left top;
+	background: $aside-bg url(../images/default/ui/sidebar.png) repeat-y left top;
 }
 
 a.wikipedia {
-	background: transparent url(../images/ui/wikipedia.png) no-repeat;
+	background: transparent url(../images/default/ui/wikipedia.png) no-repeat;
+}
+
+a.github {
+	background: transparent url(../images/default/ui/github.png) no-repeat;
 }
 
 .ui > header {
-	background: transparent url(../images/ui/resource-panel.png) repeat-x;
+	background: transparent url(../images/default/ui/resource-panel.png) repeat-x;
 }
