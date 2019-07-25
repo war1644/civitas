@@ -29,1948 +29,6 @@ String.prototype.capitalize = function () {
 };
 "use strict";
 
-/**
- * Boot up the core.
- */
-$(document).ready(function () {
-  var civitas = new game();
-});
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Battleground object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class battleground
- * @returns {battleground}
- */
-var battleground =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {battleground}
-   * @param {Object} params
-   */
-  function battleground(params) {
-    _classCallCheck(this, battleground);
-
-    this._core = params.core;
-    this._properties = {};
-    this._elements = {};
-    this._grid = [];
-    this.done = false;
-    this._stats = {
-      attacking: {},
-      defending: {}
-    };
-    this._current_turn = 1;
-    this._properties.width = params.width;
-    this._properties.height = params.height;
-    this._elements.container = params.elements.container;
-    this._elements.console = params.elements.console;
-    this._elements.attack = params.elements.attack;
-    this._elements.defense = params.elements.defense;
-    this._attack = params.attack;
-    this._defense = params.defense;
-
-    if (params.on_win instanceof Function) {
-      this.on_win = params.on_win;
-    }
-
-    if (params.on_lose instanceof Function) {
-      this.on_lose = params.on_lose;
-    }
-
-    if (params.on_select instanceof Function) {
-      this.on_select = params.on_select;
-    }
-
-    if (params.on_move instanceof Function) {
-      this.on_move = params.on_move;
-    }
-
-    if (params.on_attack instanceof Function) {
-      this.on_attack = params.on_attack;
-    }
-
-    if (params.on_end_turn instanceof Function) {
-      this.on_end_turn = params.on_end_turn;
-    }
-
-    if (this._attack.city === this.core().get_settlement().id()) {
-      this._player = 1;
-      this._computer = 2;
-    } else {
-      this._player = 2;
-      this._computer = 1;
-    }
-
-    this._setup();
-
-    this.show_stats();
-    return this;
-  }
-  /**
-   * Attack a hex cell.
-   *
-   * @public
-   * @param {Object} cell
-   * @returns {Boolean}
-   */
-
-
-  _createClass(battleground, [{
-    key: "attack",
-    value: function attack(cell) {
-      var sx = this._from.x;
-      var sy = this._from.y;
-      var source = this._grid[sy][sx];
-      var destination = this._grid[cell.y][cell.x];
-      var is_ranged = game.SOLDIERS[source.item].ranged;
-      var city = this.core().get_settlement(source.city);
-      var city2 = this.core().get_settlement(destination.city);
-      var remaining = 0;
-
-      var _a;
-
-      if (city && source.moved) {
-        this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> already used up its turn.');
-        return false;
-      }
-
-      if (source !== null && destination !== null && city && city2) {
-        if (destination.side === game.BATTLEGROUND_DEFENSE) {
-          _a = '_defense';
-        } else {
-          _a = '_attack';
-        }
-
-        if (typeof is_ranged !== 'undefined') {
-          if (Math.abs(cell.y - sy) + Math.abs(cell.x - sx) > is_ranged) {
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is not close enough for a ranged attack.');
-            return false;
-          }
-
-          var attack = Math.ceil(source.attack / 2);
-          var defense = destination.defense;
-
-          if (defense - attack < 0) {
-            this[_a].army[destination.item] = 0;
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range and killed its opponent.');
-
-            this._cell_empty(cell);
-          } else {
-            remaining = Math.ceil((defense - attack) / game.SOLDIERS[destination.item].defense);
-            destination.total = remaining;
-            this[_a].army[destination.item] = remaining;
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range.');
-          }
-
-          this._cell_under_attack(cell);
-
-          source.moved = true;
-          this.redraw();
-        } else {
-          var can_move = game.SOLDIERS[this._grid[sy][sx].item].moves;
-
-          if (Math.abs(cell.y - sy) + Math.abs(cell.x - sx) > can_move) {
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> doesn`t have a ranged attack.');
-            return false;
-          }
-
-          var _attack = Math.ceil(source.attack / 2);
-
-          var _defense = destination.defense;
-
-          if (_defense - _attack < 0) {
-            this[_a].army[destination.item] = 0;
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + _attack + ' damage in melee and killed its opponent.');
-
-            this._cell_empty(cell);
-          } else {
-            remaining = Math.ceil((_defense - _attack) / game.SOLDIERS[destination.item].defense);
-            destination.total = remaining;
-            this[_a].army[destination.item] = remaining;
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + _attack + ' damage in melee.');
-          }
-
-          this._cell_under_attack(cell);
-
-          source.moved = true;
-          this.redraw();
-        }
-      }
-
-      this._from = null;
-      return true;
-    }
-    /**
-     * End the current turn.
-     *
-     * @public
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "end_turn",
-    value: function end_turn() {
-      this._from = null;
-
-      this._do_computer();
-
-      for (var y = 0; y < this._grid.length; y++) {
-        for (var x = 0; x < this._grid[y].length; x++) {
-          if (this._grid[y][x] !== null) {
-            this._grid[y][x].moved = false;
-          }
-        }
-      }
-
-      this._current_turn++;
-      this.on_end_turn.call(self, this.num_turns());
-      this.redraw();
-
-      if (!this._done) {
-        this.log('Turn <strong>' + this._current_turn + '</strong> started now.');
-      }
-
-      return this;
-    }
-    /**
-    * Check the status of the current game.
-    *
-    * @private
-    * @returns {Boolean}
-    */
-
-  }, {
-    key: "_check_status",
-    value: function _check_status() {
-      var city;
-
-      if (!this._done) {
-        if (this._stats.attacking.attack <= 0 || this._stats.attacking.defense <= 0 || this._stats.defending.attack <= 0 || this._stats.defending.defense <= 0) {
-          this._done = true;
-
-          this._reset();
-        }
-
-        if (this._stats.attacking.attack <= 0 || this._stats.attacking.defense <= 0) {
-          if (this._defense.city === this.core().get_settlement().id()) {
-            this._on_win.call(this, this._defense, this._attack);
-
-            this.on_win.call(this, this._defense, this._attack);
-          } else {
-            this._on_lose.call(this, this._defense, this._attack);
-
-            this.on_lose.call(this, this._defense, this._attack);
-          }
-
-          city = this.core().get_settlement(this._defense.city);
-        } else if (this._stats.defending.attack <= 0 || this._stats.defending.defense <= 0) {
-          if (this._attack.city === this.core().get_settlement().id()) {
-            this._on_win.call(this, this._attack, this._defense);
-
-            this.on_win.call(this, this._attack, this._defense);
-          } else {
-            this._on_lose.call(this, this._attack, this._defense);
-
-            this.on_lose.call(this, this._attack, this._defense);
-          }
-
-          city = this.core().get_settlement(this._attack.city);
-        }
-
-        if (this._done) {
-          this.log(city.name() + ' won this battle!');
-          this.show_stats();
-        }
-      }
-
-      return false;
-    }
-    /**
-     * Display the battleground stats.
-     *
-     * @public
-     * @returns {Object}
-     */
-
-  }, {
-    key: "show_stats",
-    value: function show_stats() {
-      $(this._elements.attack).empty().append(this.core().get_settlement(this._attack.city).name() + ' ' + this._stats.attacking.attack + ' / ' + this._stats.attacking.defense);
-      $(this._elements.defense).empty().append(this.core().get_settlement(this._defense.city).name() + ' ' + this._stats.defending.attack + ' / ' + this._stats.defending.defense);
-      return {
-        attack: this._attack,
-        defense: this._defense
-      };
-    }
-    /**
-     * Log a message to the battleground status.
-     *
-     * @public
-     * @param {String} message
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "log",
-    value: function log(message) {
-      $(this._elements.console).prepend('<p>' + message + '</p>');
-      return this;
-    }
-    /**
-     * Reset and rebuild the battleground hex cell grid.
-     *
-     * @private
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_reset",
-    value: function _reset() {
-      var mode = 'even';
-      var template = '';
-
-      for (var y = 0; y <= this._properties.height - 1; y++) {
-        this._grid[y] = [];
-        template += '<ol class="' + mode + '">';
-
-        for (var x = 0; x <= this._properties.width - 1; x++) {
-          this._grid[y][x] = null;
-          template += '<li data-pos="' + x + '-' + y + '" data-x="' + x + '" data-y="' + y + '" class="cell empty"></li>';
-        }
-
-        template += '</ol>';
-
-        if (mode === 'even') {
-          mode = 'odd';
-        } else {
-          mode = 'even';
-        }
-      }
-
-      $(this._elements.container).empty().append(template);
-      return this;
-    }
-    /**
-     * Return the current hex cell grid.
-     *
-     * @public
-     * @returns {Array}
-     */
-
-  }, {
-    key: "grid",
-    value: function grid() {
-      return this._grid;
-    }
-    /**
-     * Get the current turn.
-     *
-     * @public
-     * @returns {Number}
-     */
-
-  }, {
-    key: "num_turns",
-    value: function num_turns() {
-      return this._current_turn;
-    }
-    /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-    /**
-    * Get the properties of this battleground.
-    *
-    * @public
-    * @returns {Object}
-    */
-
-  }, {
-    key: "properties",
-    value: function properties() {
-      return this._properties;
-    }
-    /**
-     * Move closer to the enemy.
-     *
-     * @private
-     * @param {Object} cell
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "_move_to_enemy",
-    value: function _move_to_enemy(cell) {
-      /*
-      let sx = cell.x;
-      let sy = cell.y;
-      let source = this._grid[sy][sx];
-      let can_move = game.SOLDIERS[source.item].moves;
-      if (this._computer === 2) {
-      	// TODO
-      }
-      */
-      return false;
-    }
-  }, {
-    key: "_do_computer",
-    value: function _do_computer() {
-      for (var y = 0; y < this._grid.length; y++) {
-        for (var x = 0; x < this._grid[y].length; x++) {
-          if (this._grid[y][x] !== null && this._grid[y][x].side === this._computer) {
-            var source = this._grid[y][x];
-            this._from = {
-              x: x,
-              y: y
-            };
-
-            this._cell_select(this._from);
-
-            if (game.SOLDIERS[source.item].ranged) {
-              this._check_for_ranged_target(this._player);
-            } else {
-              this._check_for_melee_target(this._player);
-            }
-
-            this._move_to_enemy(this._from);
-
-            this._from = null;
-          }
-        }
-      }
-
-      return true;
-    }
-    /**
-     * Computer check if there are any targets in melee.
-     *
-     * @private
-     * @param {Number} type
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "_check_for_melee_target",
-    value: function _check_for_melee_target(type) {
-      if (this._from !== null) {
-        var source = this._grid[this._from.y][this._from.x];
-        var can_move = game.SOLDIERS[source.item].moves;
-
-        for (var y = 0; y < this._grid.length; y++) {
-          for (var x = 0; x < this._grid[y].length; x++) {
-            if (source !== null && !source.moved && can_move && Math.abs(y - this._from.y) + Math.abs(x - this._from.x) <= can_move) {
-              if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
-                this.attack({
-                  x: x,
-                  y: y
-                });
-                return true;
-              }
-            }
-          }
-        }
-      }
-
-      return false;
-    }
-    /**
-     * Check if there are any targets in range.
-     *
-     * @private
-     * @param {Number} type
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "_check_for_ranged_target",
-    value: function _check_for_ranged_target(type) {
-      if (this._from !== null) {
-        for (var y = 0; y < this._grid.length; y++) {
-          for (var x = 0; x < this._grid[y].length; x++) {
-            if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
-              this.attack({
-                x: x,
-                y: y
-              });
-              return true;
-            }
-          }
-        }
-      }
-
-      return false;
-    }
-    /**
-     * Internal callback for when someone wins the battleground.
-     *
-     * @private
-     * @param {Object} winner
-     * @param {Object} winner
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_on_win",
-    value: function _on_win(winner, loser) {
-      var my_settlement = this.core().get_settlement(winner.city);
-      var settlement = this.core().get_settlement(loser.city);
-
-      if (this._attack.city === winner.city) {
-        // player was attacking and won.
-        settlement.army = settlement.load_army(loser.army);
-        settlement.navy = settlement.load_navy(loser.navy);
-        var spoils = settlement.get_spoils();
-        this.core().queue_add(settlement, my_settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
-          army: winner.army,
-          navy: winner.navy,
-          resources: spoils
-        });
-      } else if (this._defense.city === winner.city) {
-        // player was defending and won.
-        my_settlement.army = my_settlement.load_army(winner.army);
-        my_settlement.navy = my_settlement.load_navy(winner.navy);
-        var has_loser_army = settlement.num_soldiers(loser.army);
-        var has_loser_navy = settlement.num_ships(loser.navy);
-
-        if (has_loser_army > 0 || has_loser_navy > 0) {
-          this.core().queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
-            army: loser.army,
-            navy: loser.navy,
-            resources: {}
-          });
-        }
-      }
-
-      return this;
-    }
-    /**
-     * Internal callback for when someone loses the battleground.
-     *
-     * @private
-     * @param {Object} winner
-     * @param {Object} winner
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_on_lose",
-    value: function _on_lose(winner, loser) {
-      var settlement = this.core().get_settlement(winner.city);
-      var my_settlement = this.core().get_settlement(loser.city);
-
-      if (this._attack.city === loser.city) {
-        // player was attacking and lost.
-        settlement.army = settlement.load_army(winner.army);
-        settlement.navy = settlement.load_navy(winner.navy);
-        var has_loser_army = settlement.num_soldiers(loser.army);
-        var has_loser_navy = settlement.num_ships(loser.navy);
-
-        if (has_loser_army > 0 || has_loser_navy > 0) {
-          this.core().queue_add(settlement, my_settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
-            army: loser.army,
-            navy: loser.navy,
-            resources: {}
-          });
-        }
-      } else if (this._defense.city === loser.city) {
-        // player was defending and lost.
-        my_settlement.army = my_settlement.load_army(loser.army);
-        my_settlement.navy = my_settlement.load_navy(loser.navy);
-        var spoils = my_settlement.get_spoils();
-        this.core().queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
-          army: winner.army,
-          navy: winner.navy,
-          resources: spoils
-        });
-      }
-
-      return this;
-    }
-    /**
-     * Get the distance between two cells.
-     *
-     * @public
-     * @param {Object} cell1
-     * @param {Object} cell2
-     * @returns {Number}
-     */
-
-  }, {
-    key: "distance",
-    value: function distance(cell1, cell2) {
-      var delta_x = cell1.x - cell2.x;
-      var delta_y = cell1.y - cell2.y;
-      return (Math.abs(delta_x) + Math.abs(delta_y) + Math.abs(delta_x - delta_y)) / 2;
-    }
-    /**
-     * Move the contents of one cell to another cell.
-     *
-     * @public
-     * @param {Object} cell
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "move",
-    value: function move(cell) {
-      var sx = this._from.x;
-      var sy = this._from.y;
-
-      if (this._from !== null && cell !== null) {
-        var source = this._grid[sy][sx];
-        var destination = this._grid[cell.y][cell.x];
-        var city = this.core().get_settlement(source.city);
-
-        if (source !== null && source.moved) {
-          this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> already used up its turn.');
-          return false;
-        }
-
-        if (source !== null && destination === null && city) {
-          var can_move = game.SOLDIERS[this._grid[sy][sx].item].moves;
-
-          if (Math.abs(cell.y - sy) + Math.abs(cell.x - sx) <= can_move) {
-            this._grid[cell.y][cell.x] = this._grid[sy][sx];
-
-            this._cell_empty(this._from);
-
-            this._from = null;
-            this._grid[cell.y][cell.x].moved = true;
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> moved to ' + (cell.x + 1) + 'x' + (cell.y + 1) + '.');
-            this.redraw();
-            return true;
-          } else {
-            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is unable to move to the specified location.');
-            return false;
-          }
-        }
-      }
-    }
-    /**
-     * Highlight the cells around the currently selected (or hovered) cell.
-     *
-     * @public
-     * @param {Object} cell
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "highlight_cells",
-    value: function highlight_cells(cell) {
-      this._cells_empty();
-
-      var sx = cell.x;
-      var sy = cell.y;
-      var source = this._grid[sy][sx];
-
-      if (source !== null) {
-        var can_move = game.SOLDIERS[source.item].moves;
-
-        for (var y = 0; y < this._grid.length; y++) {
-          for (var x = 0; x < this._grid[y].length; x++) {
-            if (!source.moved && can_move && Math.abs(y - sy) + Math.abs(x - sx) <= can_move) {
-              if (this._grid[y][x] === null) {
-                $(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']').addClass('canmove');
-              }
-            }
-          }
-        }
-
-        var is_ranged = game.SOLDIERS[source.item].ranged;
-
-        for (var _y = 0; _y < this._grid.length; _y++) {
-          for (var _x = 0; _x < this._grid[_y].length; _x++) {
-            if (!source.moved && Math.abs(_y - sy) + Math.abs(_x - sx) <= is_ranged) {
-              if (this._grid[_y][_x] === null) {
-                $(this._elements.container + ' .cell[data-pos=' + _x + '-' + _y + ']').addClass('canattack');
-              }
-            }
-          }
-        }
-      }
-
-      return this;
-    }
-    /**
-     * Do a nice effect when a cell is under attack.
-     *
-     * @private
-     * @param {Object} cell
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_cell_under_attack",
-    value: function _cell_under_attack(cell) {
-      $(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').addClass('scale').delay(1000).queue(function () {
-        $(this).removeClass('scale').dequeue();
-      });
-      return this;
-    }
-    /**
-     * Empty all the cells that are already empty.
-     *
-     * @private
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_cells_empty",
-    value: function _cells_empty() {
-      for (var y = 0; y < this._grid.length; y++) {
-        for (var x = 0; x < this._grid[y].length; x++) {
-          if (this._grid[y][x] === null) {
-            this._cell_empty({
-              x: x,
-              y: y
-            });
-          }
-        }
-      }
-
-      return this;
-    }
-    /**
-     * Empty one cell.
-     *
-     * @private
-     * @param {Object} cell
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_cell_empty",
-    value: function _cell_empty(cell) {
-      this._grid[cell.y][cell.x] = null;
-      $(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').removeData('side').removeData('amount').removeData('soldier').addClass('empty').removeClass('canmove canattack selected').empty();
-      return this;
-    }
-    /**
-     * Select a cell.
-     *
-     * @private
-     * @param {Object} cell
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_cell_select",
-    value: function _cell_select(cell) {
-      $(this._elements.container + ' .cell').removeClass('selected canmove canattack');
-      $(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').addClass('selected');
-      this._from = cell;
-      this.highlight_cells(cell);
-      return this;
-    }
-    /**
-     * Add a cell to the battleground grid.
-     *
-     * @private
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Object} army
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_cell_add",
-    value: function _cell_add(x, y, army) {
-      this._grid[y][x] = army;
-      $(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']').removeData('side').removeData('amount').removeData('soldier').attr('data-side', army.side).attr('data-amount', army.total).attr('data-soldier', army.item).removeClass('empty canmove canattack selected').empty().append('<span class="moves' + (army.moved === false ? ' has' : '') + '"></span><img class="tips" title="' + game.SOLDIERS[army.item].name + '" src="' + game.ASSETS_URL + 'images/assets/army/' + army.item + '.png" />' + '<span class="amount">' + army.total + '</span>');
-      return this;
-    }
-    /**
-     * Redraw the grid.
-     *
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "redraw",
-    value: function redraw() {
-      var a_attack = 0;
-      var a_defense = 0;
-      var d_attack = 0;
-      var d_defense = 0;
-
-      for (var y = 0; y < this._grid.length; y++) {
-        for (var x = 0; x < this._grid[y].length; x++) {
-          var army = this._grid[y][x];
-
-          if (army !== null && army.total > 0) {
-            army.attack = army.total * game.SOLDIERS[army.item].attack;
-            army.defense = army.total * game.SOLDIERS[army.item].defense;
-
-            if (army.side === game.BATTLEGROUND_ATTACK) {
-              a_attack += army.attack;
-              a_defense += army.defense;
-            } else {
-              d_attack += army.attack;
-              d_defense += army.defense;
-            }
-
-            this._cell_add(x, y, army);
-          } else {
-            this._cell_empty({
-              x: x,
-              y: y
-            });
-          }
-        }
-      }
-
-      this._stats.attacking.attack = a_attack;
-      this._stats.attacking.defense = a_defense;
-      this._stats.defending.attack = d_attack;
-      this._stats.defending.defense = d_defense;
-      this.show_stats();
-
-      this._check_status();
-
-      $('.tipsy').remove();
-      $('.tips').tipsy({
-        gravity: $.fn.tipsy.autoNS,
-        html: true
-      });
-      return true;
-    }
-    /**
-     * Setup the battleground hex grid.
-     *
-     * @private
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "_setup",
-    value: function _setup() {
-      var self = this;
-
-      this._reset();
-
-      var xx = 0;
-      var xxx = 3;
-      var yy;
-
-      for (var item in this._attack.army) {
-        if (this._attack.army[item] > 0) {
-          if (game.SOLDIERS[item].siege === true) {
-            yy = 0;
-            xx = xxx;
-            xxx++;
-          } else {
-            yy = 2;
-          }
-
-          this.add(xx, yy, 1, item, this._attack);
-          xx++;
-        }
-      }
-
-      xxx = 3;
-      xx = 0;
-
-      for (var _item in this._defense.army) {
-        if (this._defense.army[_item] > 0) {
-          if (game.SOLDIERS[_item].siege === true) {
-            yy = this._properties.width - 1;
-            xx = xxx;
-            xxx++;
-          } else {
-            yy = this._properties.width - 3;
-          }
-
-          this.add(xx, yy, 2, _item, this._defense);
-          xx++;
-        }
-      }
-
-      $(this._elements.container).on('mouseover', '.cell', function () {
-        if (self._from === null) {
-          var from = {
-            x: parseInt($(this).data('x'), 10),
-            y: parseInt($(this).data('y'), 10)
-          };
-          self.highlight_cells(from);
-        }
-
-        return false;
-      }).on('click', '.cell', function () {
-        if ($(this).hasClass('empty')) {
-          if (self._from !== null) {
-            var to = {
-              x: parseInt($(this).data('x'), 10),
-              y: parseInt($(this).data('y'), 10)
-            };
-            self.move(to);
-            self.on_move.call(self, self._from, to);
-          }
-        } else {
-          if (parseInt($(this).data('side'), 10) === self._player) {
-            if (!$(this).hasClass('selected')) {
-              var from = {
-                x: parseInt($(this).data('x'), 10),
-                y: parseInt($(this).data('y'), 10)
-              };
-
-              self._cell_select(from);
-
-              self.on_select.call(self, from);
-            } else {
-              self._from = null;
-              $(self._elements.container + ' .cell').removeClass('selected canmove canattack');
-            }
-          } else if (parseInt($(this).data('side'), 10) === self._computer) {
-            if (self._from !== null) {
-              var _to = {
-                x: parseInt($(this).data('x'), 10),
-                y: parseInt($(this).data('y'), 10)
-              };
-              self.attack(_to);
-              self.on_attack.call(self, self._from, _to);
-            }
-          }
-        }
-
-        return false;
-      });
-      return this;
-    }
-    /**
-     * Add a hex cell to the battleground grid.
-     *
-     * @public
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} side
-     * @param {String} soldier
-     * @param {Object} settlement
-     * @returns {battleground}
-     */
-
-  }, {
-    key: "add",
-    value: function add(x, y, side, soldier, settlement) {
-      this._cell_add(y, x, {
-        item: soldier,
-        city: settlement.city,
-        total: settlement.army[soldier],
-        attack: game.SOLDIERS[soldier].attack * settlement.army[soldier],
-        defense: game.SOLDIERS[soldier].defense * settlement.army[soldier],
-        side: side,
-        moved: false
-      });
-
-      return this;
-    }
-  }]);
-
-  return battleground;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main Game building object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class building
- * @returns {building}
- */
-var building =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {building}
-   * @param {Object} params
-   */
-  function building(params) {
-    _classCallCheck(this, building);
-
-    var self = this;
-    this.settlement = params.settlement;
-    this.type = params.type;
-    this.name = params.data.name;
-    this.problems = false;
-    this.is_production = typeof params.data.production !== 'undefined' ? true : false;
-    this.is_municipal = typeof params.data.is_municipal !== 'undefined' && params.data.is_municipal === true ? true : false;
-    this.is_housing = typeof params.data.tax !== 'undefined' ? true : false;
-    this.level = typeof params.data.level !== 'undefined' ? params.data.level : 1;
-    this.position = typeof params.data.position !== 'undefined' ? params.data.position : {
-      x: 0,
-      y: 0
-    };
-    this.stopped = typeof params.stopped !== 'undefined' ? params.stopped : false;
-    this.handle = params.data.handle;
-    params.data.level = this.level;
-
-    if (params.hidden !== true && this.settlement.is_player()) {
-      $('section.game').append(self.core().ui().building_element(params)).on('click', '#building-' + this.handle, function () {
-        var panel = self.core().ui().panel_class_names[self.handle];
-
-        if (typeof panel !== 'undefined') {
-          self.core().ui().open_panel(self.handle, params.data);
-        } else {
-          self.core().ui().open_panel('building', params.data, true);
-        }
-
-        return false;
-      });
-
-      if (this.stopped === true) {
-        this.notify(game.NOTIFICATION_PAUSED);
-      } else {
-        this.notify();
-      }
-
-      this.core().ui().refresh();
-    }
-
-    if (typeof params.data.storage !== 'undefined') {
-      this.settlement.storage(this.settlement.storage().all + params.data.storage * this.level);
-    }
-
-    return this;
-  }
-  /**
-   * Check if the building can be upgraded.
-   *
-   * @returns {Boolean}
-   * @public
-   */
-
-
-  _createClass(building, [{
-    key: "is_upgradable",
-    value: function is_upgradable() {
-      var building = this.get_building_data();
-
-      if (this.level < building.levels) {
-        return true;
-      }
-
-      return false;
-    }
-    /**
-     * Check if the building can be downgraded.
-     *
-     * @returns {Boolean}
-     * @public
-     */
-
-  }, {
-    key: "is_downgradable",
-    value: function is_downgradable() {
-      if (this.level > 1) {
-        return true;
-      }
-
-      return false;
-    }
-    /**
-     * Calculate the upgrade costs according to the next level.
-     *
-     * @public
-     * @returns {Object|Boolean}
-     */
-
-  }, {
-    key: "get_upgrade_costs",
-    value: function get_upgrade_costs() {
-      if (this.is_upgradable()) {
-        var next_level = this.level + 1;
-        var costs = {};
-        var data = this.get_building_data(this.type);
-
-        for (var item in data.cost) {
-          costs[item] = data.cost[item] * next_level;
-        }
-
-        return costs;
-      }
-
-      return false;
-    }
-    /**
-     * Upgrade this building.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "upgrade",
-    value: function upgrade() {
-      var core = this.core();
-      var settlement = this.settlement;
-      var next_level = this.level + 1;
-      var data = this.get_building_data(this.type);
-      var building_image = this.type;
-      var costs = this.get_upgrade_costs();
-
-      if (data && this.is_upgradable() && settlement.is_building_built(this.type)) {
-        if (costs && this.settlement.has_resources(costs)) {
-          this.settlement.remove_resources(costs);
-          this.set_level(next_level);
-
-          if (settlement.is_player()) {
-            if (this.type.slice(0, 5) === 'house') {
-              building_image = this.type.slice(0, 5);
-            }
-
-            $('section.game .building[data-type=' + this.type + ']').css({
-              'background-image': 'url(' + game.ASSETS_URL + 'images/assets/buildings/' + (typeof data.visible_upgrades === 'undefined' || data.visible_upgrades === false ? building_image : building_image + this.level) + '.png)'
-            });
-          }
-
-          if (typeof data.storage !== 'undefined') {
-            settlement.storage(settlement.storage().all + data.storage);
-          }
-
-          if (settlement.is_player()) {
-            core.save_and_refresh();
-            core.ui().notify(this.name + ' upgraded to level ' + this.level);
-          }
-
-          return true;
-        } else {
-          if (settlement.is_player()) {
-            core.ui().error('You don`t have enough resources to upgrade your ' + this.name + '.');
-          }
-
-          return false;
-        }
-      }
-
-      return false;
-    }
-    /**
-     * Downgrade this building.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "downgrade",
-    value: function downgrade() {
-      var settlement = this.settlement;
-      var data = this.get_building_data(this.type);
-      var building_image = this.type;
-      var next_level = this.level - 1;
-
-      if (data && this.is_downgradable() && settlement.is_building_built(this.type)) {
-        this.set_level(next_level);
-
-        if (settlement.is_player()) {
-          if (this.type.slice(0, 5) === 'house') {
-            building_image = this.type.slice(0, 5);
-          }
-
-          $('section.game .building[data-type=' + this.type + ']').css({
-            'background-image': 'url(' + game.ASSETS_URL + 'images/assets/buildings/' + (typeof data.visible_upgrades === 'undefined' || data.visible_upgrades === false ? building_image + '1' : building_image + this.level) + '.png)'
-          });
-
-          if (typeof data.storage !== 'undefined') {
-            settlement.storage(settlement.storage().all - data.storage);
-          }
-
-          this.core().save_and_refresh();
-          this.core().ui().notify(this.name + ' downgraded to level ' + this.level);
-        }
-
-        return true;
-      }
-
-      return false;
-    }
-    /**
-     * Check if this building is a housing building.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "is_housing_building",
-    value: function is_housing_building() {
-      return this.is_housing;
-    }
-    /**
-     * Check if this building is a municipal building.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "is_municipal_building",
-    value: function is_municipal_building() {
-      return this.is_municipal;
-    }
-    /**
-     * Check if this building is a production building (its production can be
-     * started and stopped).
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "is_production_building",
-    value: function is_production_building() {
-      return this.is_production;
-    }
-    /**
-     * Check if this building's production is started or stopped.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "is_stopped",
-    value: function is_stopped() {
-      return this.stopped;
-    }
-    /**
-     * Start this building's production
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "start_production",
-    value: function start_production() {
-      if (this.settlement.is_building_built(this.type) && this.is_production_building()) {
-        if (this.settlement.is_player()) {
-          this.core().ui().notify(this.name + '`s production started.');
-        }
-
-        this.notify();
-        this.stopped = false;
-        this.core().save_and_refresh();
-        return true;
-      }
-
-      return false;
-    }
-    /**
-     * Stop this building's production
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "stop_production",
-    value: function stop_production() {
-      if (this.settlement.is_building_built(this.type) && this.is_production_building()) {
-        if (this.settlement.is_player()) {
-          this.core().ui().notify(this.name + '`s production stopped.');
-        }
-
-        this.notify(game.NOTIFICATION_PAUSED);
-        this.stopped = true;
-        this.core().save_and_refresh();
-        return true;
-      }
-
-      return false;
-    }
-    /**
-     * Demolish this building and remove it from the DOM.
-     * 
-     * @public
-     * @param {Boolean} notify
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "demolish",
-    value: function demolish(notify) {
-      var settlement = this.settlement;
-
-      if (this.type !== 'marketplace') {
-        for (var i = 0; i < settlement.buildings.length; i++) {
-          if (settlement.buildings[i].type === this.type) {
-            settlement.buildings.splice(i, 1);
-          }
-        }
-
-        if (settlement.is_player()) {
-          $('section.game > .building[data-type=' + this.type + ']').remove();
-
-          if (notify === true) {
-            this.core().ui().notify(this.name + ' demolished successfully!');
-          }
-        }
-
-        return true;
-      } else {
-        if (settlement.is_player()) {
-          if (notify === true) {
-            this.core().ui().error('Unable to demolish the specified building `' + this.name + '`!');
-          }
-        }
-
-        return false;
-      }
-    }
-    /**
-     * Get building data from the main configuration array.
-     * 
-     * @public
-     * @returns {Object}
-     */
-
-  }, {
-    key: "get_building_data",
-    value: function get_building_data(type) {
-      if (typeof type === 'undefined') {
-        type = this.type;
-      }
-
-      return this.core().get_building_config_data(type);
-    }
-    /**
-     * Get the settlement resources object
-     * 
-     * @public
-     * @returns {Object}
-     */
-
-  }, {
-    key: "get_settlement_resources",
-    value: function get_settlement_resources() {
-      return this.settlement.get_resources();
-    }
-    /**
-     * Check if this building has all the buildings requirements.
-     *
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "has_building_requirements",
-    value: function has_building_requirements() {
-      var good = true;
-      var parent;
-      var building = this.get_building_data();
-
-      if (typeof building.requires.buildings !== 'undefined') {
-        var required = building.requires.buildings;
-
-        for (var item in required) {
-          if (this.settlement.is_building_built(item, required[item])) {
-            parent = this.settlement.get_building(item);
-
-            if (parent && !parent.is_stopped()) {
-              good = parent.has_building_requirements() && parent.has_settlement_requirements();
-
-              if (good === false) {
-                return false;
-              }
-            } else {
-              return false;
-            }
-          }
-        }
-      }
-
-      return good;
-    }
-    /**
-     * Check if this building has all the research requirements.
-     *
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "has_research_requirements",
-    value: function has_research_requirements() {
-      var building = this.get_building_data();
-
-      if (typeof building.requires.research !== 'undefined') {
-        if (!this.core().has_research(building.requires.research)) {
-          return false;
-        }
-      }
-
-      return true;
-    }
-    /**
-     * Check if this building has all the settlement level requirements.
-     *
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "has_settlement_requirements",
-    value: function has_settlement_requirements() {
-      var building = this.get_building_data();
-
-      if (typeof building.requires.settlement_level !== 'undefined') {
-        if (building.requires.settlement_level > this.settlement.level()) {
-          return false;
-        }
-      }
-
-      return true;
-    }
-    /**
-     * Check if this building has all the requirements.
-     *
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "has_requirements",
-    value: function has_requirements() {
-      return this.has_building_requirements() && this.has_settlement_requirements() && this.has_research_requirements();
-    }
-    /**
-     * Tax this building.
-     *
-     * @public
-     * @param {Number} amount
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "tax",
-    value: function tax(amount) {
-      var _amount = this.get_tax_amount(amount);
-
-      this.settlement.inc_coins(_amount);
-      return this;
-    }
-    /**
-     * Return the amount of taxation based on the settlement research.
-     *
-     * @public
-     * @param {Number}
-     * @returns {Number}
-     */
-
-  }, {
-    key: "get_tax_amount",
-    value: function get_tax_amount(amount) {
-      return amount * this.level + this.core().get_tax_modifier(this.handle);
-    }
-    /**
-     * Produce the resources.
-     *
-     * @public
-     * @param {Object} materials
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "produce",
-    value: function produce(materials) {
-      if (!this.settlement.has_storage_space_for(materials)) {
-        return false;
-      }
-
-      var settlement = this.settlement;
-      var chance;
-      var amount;
-      var building = this.get_building_data();
-      var random_amount;
-
-      for (var item in materials) {
-        amount = materials[item] * this.level;
-
-        if (item === 'faith') {
-          settlement.raise_faith(amount);
-        } else if (item === 'research') {
-          settlement.raise_research(amount);
-        } else if (item === 'espionage') {
-          settlement.raise_espionage(amount);
-        } else if (item === 'fame') {
-          settlement.raise_fame(amount);
-        } else if (item === 'prestige') {
-          settlement.raise_prestige(amount);
-        } else {
-          amount += this.core().get_prod_modifier(building);
-          settlement.add_to_storage(item, amount);
-
-          if (typeof building.chance !== 'undefined') {
-            for (var itemo in building.chance) {
-              chance = Math.random();
-
-              if (chance * this.level < building.chance[itemo]) {
-                random_amount = game.get_random(1, 5);
-                settlement.add_to_storage(itemo, random_amount);
-              }
-            }
-          }
-        }
-      }
-
-      return true;
-    }
-    /**
-     * Main threading method for the building, this does the actual processing each turn.
-     * 
-     * @public
-     * @returns {building}
-     */
-
-  }, {
-    key: "process",
-    value: function process() {
-      var building = this.get_building_data();
-      var materials = building.materials;
-      var settlement = this.settlement;
-
-      if (this.is_housing_building()) {
-        if (typeof materials !== 'undefined') {
-          if (settlement.has_resources(materials)) {
-            settlement.remove_resources(materials);
-            this.tax(building.tax);
-            this.log_to_console();
-          } else {
-            this.notify(game.NOTIFICATION_MISSING_RES);
-            return false;
-          }
-        }
-      } else if (this.is_production_building()) {
-        if (!this.is_stopped()) {
-          var products = building.production;
-
-          if (this.has_requirements()) {
-            if (typeof materials !== 'undefined') {
-              if (Array.isArray(materials)) {
-                var all_good = true;
-                var removable = {};
-
-                for (var i = 0; i < materials.length; i++) {
-                  var res = settlement.has_any_resources(materials[i]);
-
-                  if (res !== false) {
-                    removable[res] = materials[i][res];
-                  } else {
-                    all_good = false;
-                  }
-                }
-
-                if (all_good === true) {
-                  if (settlement.has_storage_space_for(products)) {
-                    settlement.remove_resources(removable);
-
-                    if (this.produce(products)) {
-                      this.log_to_console();
-                    }
-                  } else {
-                    this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
-                    this.problems = true;
-                    return false;
-                  }
-                } else {
-                  this.notify(game.NOTIFICATION_MISSING_RES);
-                  this.problems = true;
-                  return false;
-                }
-              } else {
-                if (settlement.has_resources(materials)) {
-                  if (settlement.has_storage_space_for(products)) {
-                    settlement.remove_resources(materials);
-
-                    if (this.produce(products)) {
-                      this.log_to_console();
-                    }
-                  } else {
-                    this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
-                    this.problems = true;
-                    return false;
-                  }
-                } else {
-                  this.notify(game.NOTIFICATION_MISSING_RES);
-                  return false;
-                }
-              }
-            } else {
-              if (settlement.has_storage_space_for(products)) {
-                if (this.produce(products)) {
-                  this.log_to_console();
-                }
-              } else {
-                this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
-                this.problems = true;
-                return false;
-              }
-            }
-          } else {
-            this.notify(game.NOTIFICATION_MISSING_REQ);
-            return false;
-          }
-        } else {
-          this.notify(game.NOTIFICATION_PAUSED);
-          return false;
-        }
-      }
-
-      return true;
-    }
-    /**
-     * Check if this building is the marketplace.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "is_marketplace",
-    value: function is_marketplace() {
-      if (this.type === 'marketplace') {
-        return true;
-      }
-
-      return false;
-    }
-    /**
-     * Get a pointer to the game core
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this.settlement.core();
-    }
-    /**
-     * Check whether this building has problems producing its goods.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "has_problems",
-    value: function has_problems() {
-      return this.problems;
-    }
-    /**
-     * Set the level of this building
-     * 
-     * @public
-     * @param {Number} value
-     * @returns {building}
-     */
-
-  }, {
-    key: "set_level",
-    value: function set_level(value) {
-      this.level = value;
-      return this;
-    }
-    /**
-     * Get the level of this building
-     * 
-     * @public
-     * @returns {Number}
-     */
-
-  }, {
-    key: "get_level",
-    value: function get_level() {
-      return this.level;
-    }
-    /**
-     * Log production data to the game console.
-     *
-     * @public
-     * @returns {building}
-     */
-
-  }, {
-    key: "log_to_console",
-    value: function log_to_console() {
-      this.notify();
-      var building = this.get_building_data();
-      var _p = '';
-      var _m = '';
-
-      if (typeof building.production !== 'undefined') {
-        for (var item in building.production) {
-          _p += building.production[item] * this.level + this.core().get_prod_modifier(building) + ' ' + item + ', ';
-        }
-
-        _p = _p.substring(0, _p.length - 2);
-      }
-
-      if (typeof building.materials !== 'undefined') {
-        if (Array.isArray(building.materials)) {
-          var removable = {};
-
-          for (var i = 0; i < building.materials.length; i++) {
-            var res = this.settlement.has_any_resources(building.materials[i]);
-
-            if (res !== false) {
-              removable[res] = building.materials[i][res];
-            }
-          }
-
-          for (var _item in removable) {
-            _m += removable[_item] + ' ' + _item + ', ';
-          }
-
-          _m = _m.substring(0, _m.length - 2);
-        } else {
-          for (var _item2 in building.materials) {
-            _m += building.materials[_item2] + ' ' + _item2 + ', ';
-          }
-
-          _m = _m.substring(0, _m.length - 2);
-        }
-      }
-
-      if (typeof building.tax !== 'undefined') {
-        this.core().ui().log('game', this.name + ' used ' + _m + ' and got taxed for ' + this.get_tax_amount(building.tax) + ' coins.');
-      } else if (typeof building.production !== 'undefined' && typeof building.materials === 'undefined') {
-        this.core().ui().log('game', this.name + ' produced ' + _p + '.');
-      } else {
-        this.core().ui().log('game', this.name + ' used ' + _m + ' and produced ' + _p + '.');
-      }
-
-      return this;
-    }
-    /**
-     * Perform building notifications.
-     *
-     * @public
-     * @param {Number} notification_type
-     * @returns {building}
-     */
-
-  }, {
-    key: "notify",
-    value: function notify(notification_type) {
-      if (typeof notification_type !== 'undefined') {
-        this.problems = true;
-
-        if (this.settlement.is_player()) {
-          var handle = $('section.game > #building-' + this.handle);
-
-          switch (notification_type) {
-            case game.NOTIFICATION_MISSING_REQ:
-              this.core().ui().log('game', this.name + ' doesn`t have one of the buildings required to be operational.', true);
-              handle.empty().append('<span class="notification requirements"></span>');
-              break;
-
-            case game.NOTIFICATION_PAUSED:
-              this.core().ui().log('game', this.name + '`s production is stopped.', true);
-              handle.empty().append('<span class="notification paused"></span>');
-              break;
-
-            case game.NOTIFICATION_SETTLEMENT_LOW_LEVEL:
-              this.core().ui().log('game', 'Your settlement level is too low for ' + this.name + ' to be active.', true);
-              handle.empty().append('<span class="notification lowlevel"></span>');
-              break;
-
-            case game.NOTIFICATION_MISSING_RES:
-            default:
-              this.core().ui().log('game', this.name + ' is missing materials for production.', true);
-              handle.empty().append('<span class="notification error"></span>');
-              break;
-          }
-        }
-      } else {
-        this.problems = false;
-
-        if (this.settlement.is_player()) {
-          $('section.game > #building-' + this.handle).empty();
-        }
-      }
-
-      return this;
-    }
-  }]);
-
-  return building;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main Game event object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class event
- * @returns {event}
- */
-var event =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {event}
-   * @param {Object} params
-   */
-  function event(params) {
-    _classCallCheck(this, event);
-
-    this._core = params.core;
-    this.name = params.name;
-    this.chance = typeof params.chance !== 'undefined' ? params.chance : 0.001;
-    this.description = params.description;
-    this.raise = typeof params.raise !== 'undefined' ? params.raise : null;
-    this.lower = typeof params.lower !== 'undefined' ? params.lower : null;
-    this.destroy = typeof params.destroy !== 'undefined' ? params.destroy : null;
-    this.build = typeof params.build !== 'undefined' ? params.build : null;
-    this.process();
-    return this;
-  }
-  /**
-   * Process the event data.
-   * 
-   * @public
-   * @returns {event}
-   */
-
-
-  _createClass(event, [{
-    key: "process",
-    value: function process() {
-      var core = this.core();
-      var random_s_id = game.get_random(1, core.settlements.length);
-      var with_settlement = core.get_settlement(random_s_id);
-      var settlement = core.get_settlement();
-      var description = '';
-
-      if (with_settlement !== false) {
-        description = this.description.replace(/SETTLEMENT/g, with_settlement.name());
-
-        if (this.raise !== null) {
-          for (var item in this.raise) {
-            if (item === 'influence') {
-              settlement.raise_influence(with_settlement.id(), this.raise[item]);
-            } else {
-              if (settlement.has_storage_space_for(item, this.raise[item])) {
-                settlement.add_to_storage(item, this.raise[item]);
-              }
-            }
-
-            var replace = new RegExp(item.toUpperCase(), 'g');
-            description = description.replace(replace, this.raise[item]);
-          }
-        }
-
-        if (this.lower !== null) {
-          for (var _item in this.lower) {
-            if (_item === 'influence') {
-              settlement.lower_influence(with_settlement.id(), this.lower[_item]);
-            } else {
-              settlement.remove_resource(_item, this.lower[_item]);
-            }
-
-            var _replace = new RegExp(_item.toUpperCase(), 'g');
-
-            description = description.replace(_replace, this.lower[_item]);
-          }
-        }
-      }
-
-      if (this.destroy !== null) {
-        var buildings = settlement.get_buildings();
-        var building = game.get_random(1, buildings.length);
-        var _building = buildings[building];
-
-        if (typeof _building !== 'undefined') {
-          var _name = _building.name;
-          buildings[building].demolish();
-
-          var _replace2 = new RegExp('BUILDING', 'g');
-
-          description = description.replace(_replace2, _name);
-        }
-      }
-
-      if (this.build !== null) {
-        //const buildings = settlement.get_buildings();
-        // Todo
-        var _replace3 = new RegExp('BUILDING', 'g');
-
-        description = description.replace(_replace3, name);
-      }
-
-      if (settlement.is_player()) {
-        core.ui().notify(description, 'Event: ' + this.name, false, game.NOTIFY_EVENT);
-      }
-
-      core.ui().log('event', this.name);
-      return this;
-    }
-    /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-  }]);
-
-  return event;
-}();
-"use strict";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -2015,7 +73,8 @@ function () {
     this.settings = {
       worldmap_beautify: game.WORLD_BEAUTIFY,
       worldmap_grid: game.WORLD_GRID,
-      music: false
+      music: false,
+      theme: 'default'
     };
     this.encryption = {
       key: null,
@@ -4480,6 +2539,10 @@ function () {
         this.settings[key] = value;
       }
 
+      if (this.settings.theme !== 'default') {
+        $('#theme').attr('href', 'dist/' + this.settings.theme + '.css');
+      }
+
       return this;
     }
     /**
@@ -5366,6 +3429,7026 @@ function () {
 }();
 "use strict";
 
+/**
+ * Boot up the core.
+ */
+$(document).ready(function () {
+  var civitas = new game();
+});
+"use strict";
+
+/**
+ * Autostart music or not.
+ * 
+ * @constant
+ * @default
+ * @type {Boolean}
+ */
+game.AUTOSTART_MUSIC = false;
+/**
+ * Enable encryption or not.
+ * 
+ * @constant
+ * @default
+ * @type {Boolean}
+ */
+
+game.ENCRYPTION = false;
+/**
+ * URL to the game assets
+ * 
+ * @constant
+ * @default
+ * @type {String}
+ */
+
+game.ASSETS_URL = './';
+/**
+ * How many real seconds has a game day.
+ *
+ * constant
+ * @default
+ * @type {Number}
+ */
+
+game.SECONDS_TO_DAY = 10;
+/**
+ * Number of city ruler avatars available to choose.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.AVATARS = 99;
+/**
+ * Application version.
+ * 
+ * @constant
+ * @type {String}
+ */
+
+game.VERSION = '0.3.0.' + (new Date().getMonth() + 1) + '' + new Date().getDate() + '' + new Date().getFullYear();
+/**
+ * Whether the application is in debug mode.
+ * 
+ * @default
+ * @constant
+ * @type {Boolean}
+ */
+
+game.DEBUG = true;
+/**
+ * Browser localStorage key to store game data into.
+ *
+ * @constant
+ * @default
+ * @type {String}
+ */
+
+game.STORAGE_KEY = 'civitas';
+/**
+ * Difficulty level of the game is easy.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIFFICULTY_EASY = 1;
+/**
+ * Difficulty level of the game is medium.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIFFICULTY_MEDIUM = 2;
+/**
+ * Difficulty level of the game is hard.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIFFICULTY_HARD = 3;
+/**
+ * Difficulty level of the game is hardcore.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIFFICULTY_HARDCORE = 4;
+/**
+ * When a building is notifying the player it's out of resources (the
+ * building, not the player).
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFICATION_MISSING_RES = 1;
+/**
+ * When a building is notifying the player its production is paused
+ * manually by the player.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFICATION_PAUSED = 2;
+/**
+ * When a building is notifying the player it is missing its requirements.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFICATION_MISSING_REQ = 3;
+/**
+ * When a building is notifying the player the level of the city is too low.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFICATION_SETTLEMENT_LOW_LEVEL = 4;
+/**
+ * Game type as single player (campaign, local).
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MODE_SINGLEPLAYER = 1;
+/**
+ * Game type as multi player (sandbox, networked).
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MODE_MULTIPLAYER = 2;
+/**
+ * Error notification
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFY_ERROR = 0;
+/**
+ * Achievement notification
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFY_ACHIEVEMENT = 1;
+/**
+ * Normal notification
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFY_NORMAL = 2;
+/**
+ * Event notification.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFY_EVENT = 3;
+/**
+ * Research notification.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFY_RESEARCH = 4;
+/**
+ * Religion notification.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFY_RELIGION = 5;
+/**
+ * War notification.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NOTIFY_WAR = 6;
+/**
+ * Max numbers of lines to show in the console. Too many will overload the DOM.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_CONSOLE_LINES = 5000;
+"use strict";
+
+/**
+ * Game API version to connect to.
+ *
+ * @constant
+ * @type {String}
+ * @default
+ */
+game.API_VERSION = '0.3';
+/**
+ * URL of the main Game API entry point.
+ * 
+ * @constant
+ * @default
+ * @type {String}
+ */
+
+game.API_ENTRY_POINT = 'https://civitas-api.test/api/';
+/**
+ * Main Game API entry point + the API version
+ *
+ * @constant
+ * @type {String}
+ */
+
+game.API_URL = game.API_ENTRY_POINT + game.API_VERSION + '/';
+"use strict";
+
+/**
+ * List of the possible seasons.
+ * 
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.SEASONS = ['spring', 'summer', 'autumn', 'winter'];
+/**
+ * Spring season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SEASON_SPRING = 0;
+/**
+ * Summer season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SEASON_SUMMER = 1;
+/**
+ * Autumn season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SEASON_AUTUMN = 2;
+/**
+ * Winter season.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SEASON_WINTER = 3;
+"use strict";
+
+/**
+ * List of the possible religion types.
+ * 
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.RELIGIONS = ['none', 'christianity', 'islam', 'judaism', 'buddhism', 'hinduism', 'confucianism', 'taoism'];
+/**
+ * No religion
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_NONE = 0;
+/**
+ * Christianity
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_CHRISTIANITY = 1;
+/**
+ * Islam
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_ISLAM = 2;
+/**
+ * Judaism
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_JUDAISM = 3;
+/**
+ * Buddhism
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_BUDDHISM = 4;
+/**
+ * Hinduism
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_HINDUISM = 5;
+/**
+ * Confucianism
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_CONFUCIANISM = 6;
+/**
+ * Taoism
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RELIGION_TAOISM = 7;
+/**
+ * The minimum value settlement faith can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MIN_FAITH_VALUE = 1;
+/**
+ * The maximum value settlement faith can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_FAITH_VALUE = 1000;
+"use strict";
+
+/**
+ * List of game diplomacy options.
+ *
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.DIPLOMACIES = ['truce', 'war', 'pact', 'alliance', 'cease fire', 'pact proposed', 'alliance proposed', 'cease fire proposed', 'proposed to join you', 'vassal'];
+/**
+ * The campaign is an army.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CAMPAIGN_ARMY = 1;
+/**
+ * The campaign is a caravan.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CAMPAIGN_CARAVAN = 2;
+/**
+ * The campaign is a spy.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CAMPAIGN_SPY = 3;
+/**
+ * The campaign is an army returning home with spoils of war.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CAMPAIGN_ARMY_RETURN = 4;
+/**
+ * Just met, temporary truce, can declare war, can trade.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_TRUCE = 0;
+/**
+ * At war, no trades possible.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_WAR = 1;
+/**
+ * In a pact, can declare war, can trade.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_PACT = 2;
+/**
+ * In an alliance, cannot declare war, can trade with discounts,
+ * can share armies.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_ALLIANCE = 3;
+/**
+ * A cease fire means a temporary peace.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_CEASE_FIRE = 4;
+/**
+ * Propose pact.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_PROPOSE_PACT = 5;
+/**
+ * Propose alliance.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_PROPOSE_ALLIANCE = 6;
+/**
+ * Propose cease fire.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
+/**
+ * Propose to join your settlement.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_PROPOSE_JOIN = 8;
+/**
+ * Vassal villages count as part of your empire.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.DIPLOMACY_VASSAL = 9;
+/**
+ * Influence gained when selling goods to a settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.EXPORT_INFLUENCE = 2;
+/**
+ * Influence gained when buying goods from a settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.IMPORT_INFLUENCE = 1;
+/**
+ * Prestige gained when selling goods to a settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.EXPORT_PRESTIGE = 2;
+/**
+ * Prestige gained when buying goods from a settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.IMPORT_PRESTIGE = 1;
+/**
+ * The minimum value settlement prestige can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MIN_PRESTIGE_VALUE = 1;
+/**
+ * The maximum value settlement prestige can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_PRESTIGE_VALUE = 10000;
+/**
+ * The minimum value settlement espionage can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MIN_ESPIONAGE_VALUE = 1;
+/**
+ * The maximum value settlement espionage can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_ESPIONAGE_VALUE = 1000;
+/**
+ * The success rate of an espionage mission is the espionage points
+ * assigned to the mission divided by this value.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_ESPIONAGE_SUCESS_RATE = 100;
+/**
+ * The minimum value settlement influence can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MIN_INFLUENCE_VALUE = 1;
+/**
+ * The maximum value settlement influence can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_INFLUENCE_VALUE = 100;
+/**
+ * Amount of influence your settlement loses each year.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.YEARLY_INFLUENCE_LOSS = 2;
+/**
+ * Amount of influence your settlement gains each year.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.YEARLY_INFLUENCE_GAIN = 2;
+/**
+ * List of game diplomacy options.
+ *
+ * @constant
+ * @default
+ * @type {Array}
+ */
+
+game.SPY_MISSIONS = ['none', 'adopt religion', 'influence settlement', 'steal resources', 'instigate turmoil'];
+/**
+ * Spy mission to do absolutely nothing in the target city (except
+ * maybe get noticed?).
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SPY_MISSION_NONE = 0;
+/**
+ * Spy mission to persuade the target city to take the same religion
+ * as the spy home city.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SPY_MISSION_RELIGION = 1;
+/**
+ * Spy mission to raise the influence of the spy's home city with the
+ * target city.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SPY_MISSION_INFLUENCE = 2;
+/**
+ * Spy mission to steal resources from the target city.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SPY_MISSION_STEAL_RESOURCES = 3;
+/**
+ * Spy mission to instigate turmoil in the target city.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SPY_MISSION_INSTIGATE = 4;
+/**
+ * Initial resource costs for sending a caravan.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+
+game.CARAVAN_COSTS = {
+  coins: 100,
+  donkeys: 10,
+  wood: 10,
+  ropes: 2,
+  provisions: 1
+};
+/**
+ * Initial resource costs for sending a spy mission.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+
+game.SPY_COSTS = {
+  coins: 50,
+  spyglasses: 1,
+  weapons: 1,
+  provisions: 1
+};
+/**
+ * Initial resource costs for sending a scout mission.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+
+game.SCOUT_COSTS = {
+  coins: 50,
+  spyglasses: 1,
+  provisions: 1
+};
+/**
+ * Scouting mission to reveal information about the target.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.SCOUT_MISSION_INFO = 1;
+/**
+ * Initial resource costs for sending an army.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+
+game.ARMY_COSTS = {
+  coins: 200,
+  provisions: 1
+};
+/**
+ * Amount of influence a settlement gains when sending a caravan
+ * to another settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CARAVAN_INFLUENCE = 5;
+/**
+ * Diplomacy proposal action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.ACTION_DIPLOMACY = 0;
+/**
+ * Campaign action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.ACTION_CAMPAIGN = 1;
+/**
+ * Research action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.ACTION_RESEARCH = 2;
+/**
+ * Build a special place action.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.ACTION_BUILD_PLACE = 2;
+"use strict";
+
+/**
+ * List of the possible nation types.
+ * 
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.NATIONS = ['none', 'phoenician', 'carthaginian', 'greek', 'egyptian', 'assyrian', 'roman', 'thracian', 'sudanese', 'spanish', 'sumerian', 'chinese', 'indian', 'franks', 'russian', 'nigerian', 'malinese', 'mongolian', 'tibetan', 'persan', 'khmer', 'japanese', 'french'];
+/**
+ * Phoenicians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_PHOENICIAN = 1;
+/**
+ * Carthaginans
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_CARTHAGINIAN = 2;
+/**
+ * Greeks
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_GREEK = 3;
+/**
+ * Egyptians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_EGYPTIAN = 4;
+/**
+ * Assyrians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_ASSYRIAN = 5;
+/**
+ * Romans
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_ROMAN = 6;
+/**
+ * Thracians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_THRACIAN = 7;
+/**
+ * Sudanese
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_SUDANESE = 8;
+/**
+ * Spanish
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_SPANISH = 9;
+/**
+ * Sumerians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_SUMERIAN = 10;
+/**
+ * Chinese
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_CHINESE = 11;
+/**
+ * Indian
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_INDIAN = 12;
+/**
+ * Franks
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_FRANKS = 13;
+/**
+ * Russians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_RUSSIAN = 14;
+/**
+ * Nigerians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_NIGERIAN = 15;
+/**
+ * Malinese
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_MALINESE = 16;
+/**
+ * Mongolians
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_MONGOLIAN = 17;
+/**
+ * Tibetans
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_TIBETAN = 18;
+/**
+ * Persans
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_PERSAN = 19;
+/**
+ * Khmer
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_KHMER = 20;
+/**
+ * Japanese
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_JAPANESE = 21;
+/**
+ * French
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.NATION_FRENCH = 22;
+"use strict";
+
+/**
+ * List of the possible climate types.
+ * 
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.CLIMATES = ['none', 'temperate', 'tropical', 'arid', 'polar'];
+/**
+ * Temperate climate, all balanced.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CLIMATE_TEMPERATE = 1;
+/**
+ * Tropical climate, favoring farms and exotic goods.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CLIMATE_TROPICAL = 2;
+/**
+ * Arid climate, favoring ore mines.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CLIMATE_ARID = 3;
+/**
+ * Polar climate, very extreme.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CLIMATE_POLAR = 4;
+"use strict";
+
+/**
+ * List of the possible ruler personality types.
+ * 
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.PERSONALITIES = ['none', 'balanced', 'diplomat', 'warlord'];
+/**
+ * Balanced type, the ruler weights in all the possibilities before deciding
+ * whether to go to war or let diplomacy win.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.PERSONALITY_BALANCED = 1;
+/**
+ * The ruler will always consider diplomacy before going to war.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.PERSONALITY_DIPLOMAT = 2;
+/**
+ * If you upset this ruler, he will go to war and give you hell.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.PERSONALITY_WARLORD = 3;
+"use strict";
+
+/**
+ * The attacking side (left) in a battleground.
+ *
+ * @type {Number}
+ * @default
+ * @constant
+ */
+game.BATTLEGROUND_ATTACK = 1;
+/**
+ * The defending side (right) in a battleground.
+ *
+ * @type {Number}
+ * @default
+ * @constant
+ */
+
+game.BATTLEGROUND_DEFENSE = 2;
+/**
+ * List of soldier types, their attributes and cost.
+ * 
+ * @type {Object}
+ * @constant
+ */
+
+game.SOLDIERS = {
+  militia: {
+    name: 'Militia',
+    attack: 1,
+    defense: 1,
+    moves: 1,
+    cost: {
+      coins: 100,
+      bread: 1,
+      weapons: 1
+    }
+  },
+  swordsman: {
+    name: 'Swordsman',
+    attack: 2,
+    defense: 2,
+    moves: 2,
+    cost: {
+      coins: 300,
+      bread: 1,
+      meat: 1,
+      weapons: 2
+    }
+  },
+  axeman: {
+    name: 'Axeman',
+    attack: 3,
+    defense: 1,
+    moves: 2,
+    cost: {
+      coins: 400,
+      bread: 1,
+      meat: 3,
+      weapons: 2
+    }
+  },
+  bowman: {
+    name: 'Bowman',
+    attack: 3,
+    defense: 1,
+    ranged: 5,
+    moves: 3,
+    cost: {
+      coins: 500,
+      bread: 1,
+      meat: 3,
+      weapons: 4
+    }
+  },
+  pikeman: {
+    name: 'Pikeman',
+    attack: 2,
+    defense: 4,
+    moves: 2,
+    cost: {
+      coins: 700,
+      provisions: 1,
+      iron: 1,
+      weapons: 5,
+      armor: 1
+    }
+  },
+  crossbowman: {
+    name: 'Crossbowman',
+    attack: 5,
+    defense: 2,
+    moves: 3,
+    ranged: 8,
+    cost: {
+      coins: 1000,
+      provisions: 2,
+      iron: 1,
+      weapons: 7,
+      armor: 1
+    }
+  },
+  knight: {
+    name: 'Knight',
+    attack: 6,
+    defense: 6,
+    moves: 4,
+    cost: {
+      coins: 1500,
+      provisions: 3,
+      iron: 1,
+      weapons: 9,
+      armor: 4
+    }
+  },
+  legionnaire: {
+    name: 'Legionnaire',
+    attack: 7,
+    defense: 7,
+    moves: 2,
+    cost: {
+      coins: 2500,
+      provisions: 6,
+      iron: 2,
+      weapons: 12,
+      armor: 12
+    }
+  },
+  crusader: {
+    name: 'Crusader',
+    attack: 9,
+    defense: 9,
+    moves: 4,
+    cost: {
+      coins: 3000,
+      provisions: 8,
+      iron: 4,
+      weapons: 15,
+      armor: 15
+    }
+  },
+  cannon: {
+    name: 'Cannon',
+    attack: 15,
+    defense: 1,
+    moves: 0,
+    siege: true,
+    ranged: 20,
+    cost: {
+      coins: 25000,
+      provisions: 30,
+      gunpowder: 30,
+      iron: 40,
+      steel: 20,
+      cannons: 1
+    }
+  },
+  catapult: {
+    name: 'Catapult',
+    attack: 50,
+    defense: 1,
+    ranged: 20,
+    siege: true,
+    moves: 0,
+    cost: {
+      coins: 100000,
+      provisions: 100,
+      gunpowder: 150,
+      iron: 140,
+      catapults: 1
+    }
+  }
+};
+/**
+ * List of mercenary armies available for hire.
+ * 
+ * @constant
+ * @type {Object}
+ */
+
+game.MERCENARIES = [{
+  name: 'Legio I Adiutrix',
+  description: 'Legio prima Adiutrix is a Roman legion.',
+  handle: 'legio1',
+  icon: 1,
+  army: {
+    axeman: 300,
+    knight: 100,
+    crossbowman: 220,
+    pikeman: 200,
+    legionnaire: 100
+  },
+  cost: 120000
+}, {
+  name: 'Legio II Augusta',
+  description: 'Legio secunda Augusta is a Roman legion.',
+  handle: 'legio2',
+  icon: 8,
+  army: {
+    axeman: 220,
+    knight: 100,
+    crossbowman: 300,
+    pikeman: 100,
+    legionnaire: 100
+  },
+  cost: 130000
+}, {
+  name: 'Legio III Cyrenaica',
+  description: 'Legio tertia Cyrenaica is a Roman legion.',
+  handle: 'legio3',
+  icon: 15,
+  army: {
+    axeman: 280,
+    crossbowman: 500,
+    pikeman: 180,
+    legionnaire: 100
+  },
+  cost: 100000
+}, {
+  name: 'Legio IV Flavia Felix',
+  description: 'Legio quarta Flavia Felix is a Roman legion.',
+  handle: 'legio4',
+  icon: 9,
+  army: {
+    militia: 140,
+    axeman: 190,
+    knight: 90,
+    bowman: 20,
+    crossbowman: 100,
+    pikeman: 180,
+    legionnaire: 100
+  },
+  cost: 190000
+}, {
+  name: 'Legio V Alaudae',
+  description: 'Legio quinta Alaudae is a Roman legion.',
+  handle: 'legio5',
+  icon: 16,
+  army: {
+    militia: 100,
+    axeman: 200,
+    bowman: 190,
+    legionnaire: 130
+  },
+  cost: 110000
+}, {
+  name: 'Legio VI Victrix',
+  description: 'Legio sexta Victrix is a Roman legion.',
+  handle: 'legio6',
+  icon: 22,
+  army: {
+    militia: 330,
+    axeman: 230,
+    knight: 100,
+    bowman: 100,
+    legionnaire: 100
+  },
+  cost: 140000
+}, {
+  name: 'Varangian Guard',
+  description: 'The Varangian Guard is an elite unit of the Byzantine Army.',
+  handle: 'varangian',
+  icon: 18,
+  army: {
+    militia: 410,
+    axeman: 210,
+    bowman: 190,
+    crossbowman: 100,
+    pikeman: 220
+  },
+  cost: 120000
+}, {
+  name: 'Magna Societas Catalanorum',
+  description: 'The Catalan Company of the East, officially the Magna ' + 'Societas Catalanorum is a company of mercenaries founded by Roger de ' + 'Flor.',
+  handle: 'catalan',
+  icon: 23,
+  army: {
+    axeman: 310,
+    knight: 120,
+    bowman: 210,
+    pikeman: 310
+  },
+  cost: 100000
+}, {
+  name: 'Army of the Western Garden',
+  description: 'The Army of the Western Garden is an army established ' + 'during the reign of Emperor Ling in the Eastern Han Dynasty.',
+  handle: 'western',
+  icon: 27,
+  army: {
+    axeman: 290,
+    knight: 40,
+    bowman: 170,
+    pikeman: 300
+  },
+  cost: 90000
+}, {
+  name: 'Scholae Palatinae',
+  description: 'The Scholae Palatinae are an elite military guard unit, ' + 'usually ascribed to the Roman Emperor Constantine the Great as a ' + 'replacement for the equites singulares Augusti, the cavalry arm ' + 'of the Praetorian Guard.',
+  handle: 'scholae',
+  icon: 26,
+  army: {
+    axeman: 10,
+    knight: 200,
+    bowman: 100,
+    pikeman: 210
+  },
+  cost: 290000
+}, {
+  name: 'Imperial Guards',
+  description: 'The Imperial Guards of the Tang Dynasty, also known as ' + 'the Forbidden Troops were initially honor guards of the emperor ' + 'and garrisons of the imperial capitals during the Tang`s dinasty ' + 'formation in early 7th century.',
+  handle: 'forbidden',
+  icon: 25,
+  army: {
+    axeman: 290,
+    knight: 80,
+    bowman: 100,
+    pikeman: 210
+  },
+  cost: 130000
+}, {
+  name: 'Navy of the Order of Saint John',
+  description: 'The navy of the Order of Saint John, also known as the ' + 'Maltese Navy, was the first navy of a chivalric order, established ' + 'in the Middle Ages, around the late 12th century.',
+  handle: 'maltesenavy',
+  icon: 28,
+  navy: {
+    corsair: 19,
+    caravel: 14,
+    warship: 12,
+    shipoftheline: 10
+  },
+  cost: 1500000
+}];
+/**
+ * List of ship types, their attributes and cost.
+ * 
+ * @type {Object}
+ * @constant
+ */
+
+game.SHIPS = {
+  corsair: {
+    name: 'Corsair',
+    attack: 5,
+    defense: 5,
+    cost: {
+      coins: 1000,
+      wood: 200,
+      iron: 50,
+      provisions: 50,
+      ropes: 10,
+      cottonfabric: 5,
+      cannons: 5,
+      gunpowder: 2
+    }
+  },
+  caravel: {
+    name: 'Caravel',
+    attack: 10,
+    defense: 10,
+    cost: {
+      coins: 3000,
+      wood: 400,
+      iron: 80,
+      provisions: 60,
+      ropes: 30,
+      cottonfabric: 10,
+      cannons: 20,
+      gunpowder: 5,
+      weapons: 10
+    }
+  },
+  frigatte: {
+    name: 'Frigatte',
+    attack: 17,
+    defense: 8,
+    cost: {
+      coins: 3000,
+      wood: 400,
+      iron: 80,
+      provisions: 60,
+      ropes: 30,
+      cottonfabric: 20,
+      cannons: 30,
+      gunpowder: 10,
+      weapons: 10
+    }
+  },
+  galleon: {
+    name: 'Galleon',
+    attack: 15,
+    defense: 15,
+    cost: {
+      coins: 5000,
+      wood: 300,
+      woodplanks: 600,
+      iron: 150,
+      provisions: 100,
+      ropes: 80,
+      cottonfabric: 30,
+      cannons: 20,
+      gunpowder: 15,
+      weapons: 15
+    }
+  },
+  warship: {
+    name: 'Warship',
+    attack: 35,
+    defense: 30,
+    cost: {
+      coins: 10000,
+      wood: 400,
+      woodplanks: 800,
+      iron: 500,
+      steel: 100,
+      provisions: 200,
+      ropes: 100,
+      cottonfabric: 40,
+      cannons: 50,
+      weapons: 20,
+      gunpowder: 20,
+      carpets: 10
+    }
+  },
+  shipoftheline: {
+    name: 'Ship of the Line',
+    attack: 55,
+    defense: 50,
+    cost: {
+      coins: 15000,
+      wood: 500,
+      woodplanks: 1000,
+      coal: 500,
+      iron: 1500,
+      steel: 400,
+      provisions: 200,
+      barrels: 100,
+      ropes: 100,
+      cottonfabric: 50,
+      cannons: 100,
+      gunpowder: 30,
+      weapons: 50
+    }
+  }
+};
+"use strict";
+
+/**
+ * The minimum value settlement research can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+game.MIN_RESEARCH_VALUE = 1;
+/**
+ * The maximum value settlement research can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_RESEARCH_VALUE = 1000;
+/**
+ * List of all game research technologies.
+ * 
+ * @constant
+ * @type {Array}
+ */
+
+game.TECHNOLOGIES = [{
+  name: 'Agriculture',
+  handle: 'agriculture',
+  description: 'The development of agriculture enables the human population to grow many times larger than could be sustained by hunting and gathering.',
+  duration: 80,
+  cost: {
+    research: 500,
+    coins: 500000,
+    woodplanks: 200,
+    wheat: 100,
+    tools: 10
+  },
+  effect: {
+    buildings: {
+      cottonfarm: 1,
+      grainfarm: 1,
+      grapesfarm: 1,
+      rosenursery: 1,
+      tobaccofarm: 1,
+      almondsfarm: 1,
+      coffeefarm: 1,
+      datesfarm: 1,
+      indigofarm: 1,
+      sugarfarm: 1
+    }
+  }
+}, {
+  name: 'Animal Enclosures',
+  handle: 'animalenclosure',
+  description: 'Animal enclosures will allow your animal farms to raise more livestock.',
+  duration: 70,
+  cost: {
+    research: 400,
+    coins: 300000,
+    woodplanks: 100,
+    iron: 100
+  },
+  effect: {
+    buildings: {
+      cattlefarm: 1,
+      pigfarm: 1,
+      goatfarm: 1,
+      apiary: 1
+    }
+  }
+}, {
+  name: 'Archeology',
+  handle: 'archeology',
+  description: '',
+  duration: 96,
+  cost: {
+    research: game.MAX_RESEARCH_VALUE,
+    coins: 200000,
+    prestige: 100
+  },
+  effect: {}
+}, {
+  name: 'Canned Food',
+  handle: 'cannedfood',
+  description: 'Canning is a method of preserving food in which the food contents are processed and sealed in an airtight container (jars like Mason jars, and steel and tin cans).',
+  duration: 50,
+  cost: {
+    research: 500,
+    coins: 200000,
+    meals: 100,
+    bread: 50,
+    meat: 50,
+    iron: 20
+  },
+  effect: {
+    buildings: {
+      cookhouse: 1,
+      butcher: 1,
+      bakery: 1
+    }
+  }
+}, {
+  name: 'Circular Saw',
+  handle: 'circularsaw',
+  description: 'The circular saw was invented around the end of the 18th century as a rip-saw to convert logs into lumber in sawmills and various claims have been made as to who invented the circular saw.',
+  duration: 120,
+  cost: {
+    research: 300,
+    coins: 200000,
+    wood: 200,
+    woodplanks: 100
+  },
+  effect: {
+    buildings: {
+      carpenter: 2,
+      lumberjack: 2
+    }
+  }
+}, {
+  name: 'Diplomacy',
+  handle: 'diplomacy',
+  description: 'Researching diplomacy will give a boost to your Embassy`s production of fame and espionage.',
+  duration: 320,
+  cost: {
+    research: game.MAX_RESEARCH_VALUE,
+    coins: 500000,
+    soap: 100,
+    jewelery: 100,
+    alcohol: 10,
+    perfume: 10,
+    donkeys: 50
+  },
+  effect: {
+    buildings: {
+      embassy: 10
+    }
+  }
+}, {
+  name: 'Distillery',
+  handle: 'distillery',
+  description: 'If you need more beer or wine in your settlement, research this technology.',
+  duration: 120,
+  cost: {
+    research: 500,
+    coins: 500000,
+    alcohol: 200,
+    barrels: 100,
+    bottles: 100,
+    wine: 100,
+    coal: 400,
+    copper: 100
+  },
+  effect: {
+    buildings: {
+      winery: 1,
+      brewery: 1
+    }
+  }
+}, {
+  name: 'Minerals',
+  handle: 'minerals',
+  description: 'Digging deeper into the mountains, your settlers will find more minerals if you research this technology.',
+  duration: 120,
+  cost: {
+    research: 700,
+    coins: 500000,
+    steel: 200,
+    glass: 1000,
+    iron: 100
+  },
+  effect: {
+    buildings: {
+      ironmine: 1,
+      coppermine: 1,
+      goldmine: 1
+    }
+  }
+}, {
+  name: 'Projectiles',
+  handle: 'projectiles',
+  description: 'Researching heavy projectiles will give a production boost to your Cannon Foundry and Catapult Workshop.',
+  duration: 200,
+  cost: {
+    research: game.MAX_RESEARCH_VALUE,
+    coins: 800000,
+    steel: 200,
+    gunpowder: 100,
+    coal: 300,
+    copper: 50,
+    sulphur: 100,
+    glass: 1000
+  },
+  effect: {
+    buildings: {
+      cannonfoundry: 1,
+      catapultworkshop: 1
+    }
+  }
+}, {
+  name: 'Railway',
+  handle: 'railway',
+  description: 'Researching the railway will break in half the time required to travel from one city to another.',
+  duration: 300,
+  cost: {
+    research: game.MAX_RESEARCH_VALUE,
+    coins: 1000000,
+    steel: 1000,
+    glass: 1000,
+    gunpowder: 500,
+    iron: 1000,
+    woodplanks: 100
+  },
+  effect: {
+    distance: 2
+  }
+}, {
+  name: 'Sewing machine',
+  handle: 'sewingmachine',
+  description: 'Sewing machine technology will give a boost to your buildings responsible with manufacturing clothes and textile goods.',
+  duration: 36,
+  cost: {
+    research: 500,
+    coins: 100000,
+    cottonfabric: 100,
+    cotton: 100,
+    leather: 100,
+    steel: 100,
+    copper: 20,
+    glass: 100
+  },
+  effect: {
+    buildings: {
+      clothingfactory: 2,
+      weaver: 2,
+      furrier: 2
+    }
+  }
+}, {
+  name: 'Taxation',
+  handle: 'taxation',
+  description: 'Researching taxation will provide an extra 100 coins from each of your houses, regardless of their level.',
+  duration: 260,
+  cost: {
+    research: game.MAX_RESEARCH_VALUE,
+    coins: 1000000,
+    gold: 1000,
+    silver: 1000
+  },
+  effect: {
+    tax: 100
+  }
+}, {
+  name: 'Trawlers',
+  handle: 'trawlers',
+  description: 'Researching this technology will provide your ships with better trawl nets, therefore giving a boost to your settlement`s Shipyard.',
+  duration: 36,
+  cost: {
+    research: 200,
+    coins: 100000,
+    cottonfabric: 100,
+    cotton: 100
+  },
+  effect: {
+    buildings: {
+      shipyard: 1,
+      fisherman: 1
+    }
+  }
+}];
+"use strict";
+
+/**
+ * All the buildings for a city.
+ * 
+ * @constant
+ * @type {Array}
+ */
+game.BUILDINGS_ALL = ['marketplace', 'lumberjack', 'barracks', 'warehouse', 'mill', 'castle', 'stonequarry', 'claymine', 'ironmine', 'trapper', 'almondsfarm', 'almondsfield', 'tavern', 'shipyard', 'pigfarm', 'cattlefarm', 'pigfield', 'cattlefield', 'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'datesfarm', 'datesfield', 'house8', 'house9', 'house10', 'house11', 'church', 'bakery', 'butcher', 'grainfarm', 'grainfield', 'ironsmelter', 'tannery', 'furrier', 'coppermine', 'goldmine', 'goldsmelter', 'coppersmelter', 'armory', 'coffeefarm', 'coffeefield', 'cottonfarm', 'cottonfield', 'sugarfarm', 'spicefarm', 'spicefield', 'sugarfield', 'silkfarm', 'silkfield', 'coffeeroaster', 'quartzmine', 'grapesfarm', 'grapesfield', 'winery', 'carpenter', 'pottery', 'jeweler', 'toolmaker', 'saltprocessor', 'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'redsmithsworkshop', 'ropeyard', 'glassworks', 'provisions', 'silkweaver', 'gunpowdermill', 'goatfarm', 'goatfield', 'coalmine', 'carpetmanufacturer', 'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'indigofarm', 'indigofield', 'sugarmill', 'rosenursery', 'rosefield', 'fisherman', 'catapultworkshop', 'cannonfoundry', 'cosmetics', 'tradingpost', 'clothingfactory', 'weaver', 'embassy', 'academy', 'marzipanworkshop', 'brickworks', 'tobaccofarm', 'tobaccofield', 'cookhouse'];
+/**
+ * Buildings' categories.
+ * 
+ * @constant
+ * @type {Object}
+ */
+
+game.BUILDINGS_CATEGORIES = {
+  'Municipal': ['academy', 'church', 'embassy', 'marketplace', 'shipyard', 'tavern', 'tradingpost', 'warehouse'],
+  'Housing': ['house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'house8', 'house9', 'house10', 'house11'],
+  'Food': ['bakery', 'butcher', 'cookhouse', 'fisherman', 'mill'],
+  'Mines': ['claymine', 'coalmine', 'coppermine', 'goldmine', 'ironmine', 'quartzmine', 'stonequarry'],
+  'Farms': ['almondsfarm', 'almondsfield', 'apiary', 'beehive', 'cattlefarm', 'cattlefield', 'coffeefarm', 'coffeefield', 'cottonfarm', 'cottonfield', 'datesfarm', 'datesfield', 'goatfarm', 'goatfield', 'grainfarm', 'grainfield', 'grapesfarm', 'grapesfield', 'indigofarm', 'indigofield', 'pigfarm', 'pigfield', 'rosenursery', 'rosefield', 'silkfarm', 'silkfield', 'spicefarm', 'spicefield', 'sugarfarm', 'sugarfield', 'tobaccofarm', 'tobaccofield'],
+  'Industry': ['barrelcooperage', 'brewery', 'brickworks', 'candlemakersworkshop', 'carpenter', 'charcoalburnerhut', 'clothingfactory', 'coppersmelter', 'furrier', 'glassworks', 'goldsmelter', 'gunpowdermill', 'ironsmelter', 'lumberjack', 'pottery', 'ropeyard', 'saltprocessor', 'trapper', 'tannery', 'toolmaker', 'weaver'],
+  'Luxury': ['carpetmanufacturer', 'coffeeroaster', 'jeweler', 'marzipanworkshop', 'opticiansworkshop', 'papermill', 'cosmetics', 'printingpress', 'redsmithsworkshop', 'silkweaver', 'sugarmill', 'winery'],
+  'Military': ['armory', 'cannonfoundry', 'castle', 'catapultworkshop', 'barracks', 'provisions']
+};
+/**
+ * List of all game buildings.
+ * 
+ * @constant
+ * @type {Array}
+ */
+
+game.BUILDINGS = [{
+  name: 'Marketplace',
+  handle: 'marketplace',
+  description: 'The Marketplace is the main building of your settlement and provides a place for the settlers to gather. It cannot be demolished.',
+  storage: 50000,
+  is_municipal: true,
+  levels: 5,
+  large: true,
+  visible_upgrades: true,
+  position: {
+    x: 1600,
+    y: 500
+  },
+  production: {
+    fame: 3
+  },
+  cost: {
+    coins: 100000
+  },
+  requires: {
+    settlement_level: 1
+  }
+}, {
+  name: 'Warehouse',
+  handle: 'warehouse',
+  description: 'The Warehouse is a trade building that provides market carts that pick up goods from production buildings. A Warehouse also adds extra storage space for the materials in your city.',
+  storage: 100000,
+  levels: 10,
+  visible_upgrades: true,
+  position: {
+    x: 670,
+    y: 970
+  },
+  cost: {
+    coins: 150000,
+    wood: 500,
+    bricks: 30,
+    woodplanks: 200,
+    stones: 500,
+    tools: 50
+  },
+  requires: {
+    settlement_level: 16
+  }
+}, {
+  name: 'Church',
+  handle: 'church',
+  description: 'A Church provides a massive fame boost to your settlement by using coins and converting them to fame, as well as providing faith for free. Faith allows you to choose a religion for your settlement.',
+  is_municipal: true,
+  levels: 3,
+  large: true,
+  position: {
+    x: 1600,
+    y: 820
+  },
+  production: {
+    fame: 5,
+    faith: 1
+  },
+  materials: {
+    coins: 50
+  },
+  cost: {
+    coins: 10000,
+    wood: 20,
+    woodplanks: 20,
+    stones: 20,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 3
+  }
+}, {
+  name: 'Trading Post',
+  handle: 'tradingpost',
+  description: 'The Trading Post is a merchant building that allows you to trade resources with the other settlements in the world. Also allows you to use the powerful Auctioneer.',
+  is_municipal: true,
+  storage: 10000,
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 2300,
+    y: 1370
+  },
+  cost: {
+    coins: 15000,
+    wood: 40,
+    woodplanks: 40,
+    stones: 40
+  },
+  requires: {
+    settlement_level: 4
+  }
+}, {
+  name: 'Academy',
+  handle: 'academy',
+  description: 'The Academy provides a minor amount of fame each day as well as research for this settlement at the expense of coins. All technologies will be researched here by your settlement`s scholars.',
+  is_municipal: true,
+  visible_upgrades: true,
+  large: true,
+  levels: 5,
+  position: {
+    x: 1320,
+    y: 640
+  },
+  production: {
+    fame: 5,
+    research: 1
+  },
+  materials: {
+    coins: 100
+  },
+  cost: {
+    coins: 100000,
+    woodplanks: 500,
+    stones: 500,
+    tools: 20
+  },
+  requires: {
+    settlement_level: 10
+  }
+}, {
+  name: 'Embassy',
+  handle: 'embassy',
+  description: 'An Embassy is required to propose pacts, declare war, send spies to other settlements, basically any diplomacy.',
+  is_municipal: true,
+  large: true,
+  levels: 3,
+  position: {
+    x: 1840,
+    y: 740
+  },
+  production: {
+    fame: 5,
+    espionage: 1
+  },
+  materials: {
+    coins: 50
+  },
+  cost: {
+    coins: 100000,
+    woodplanks: 100,
+    stones: 100,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 10
+  }
+}, {
+  name: 'Provision House',
+  handle: 'provisions',
+  description: 'The Provision House requires various goods to produce provisions for military units and expeditions.',
+  levels: 3,
+  position: {
+    x: 290,
+    y: 780
+  },
+  production: {
+    provisions: 2
+  },
+  materials: {
+    meals: 1,
+    clothes: 1,
+    leather: 1,
+    pottery: 1,
+    ropes: 1
+  },
+  cost: {
+    coins: 100000,
+    wood: 200,
+    stones: 200,
+    woodplanks: 100
+  },
+  requires: {
+    settlement_level: 8
+  }
+}, {
+  name: 'Tavern',
+  handle: 'tavern',
+  description: 'The Tavern is the place where heroes of the known (and unknown) world hang around. If you are looking to recruit Achilles, build a Tavern and he might show up.',
+  is_municipal: true,
+  levels: 3,
+  position: {
+    x: 1920,
+    y: 550
+  },
+  materials: {
+    coins: 20,
+    meals: 1
+  },
+  cost: {
+    coins: 100000,
+    woodplanks: 200,
+    stones: 200,
+    wood: 200,
+    wine: 100,
+    bricks: 10,
+    meat: 100,
+    tools: 50
+  },
+  requires: {
+    settlement_level: 16,
+    buildings: {
+      academy: 2
+    }
+  }
+}, {
+  name: 'Shipyard',
+  handle: 'shipyard',
+  description: 'The Shipyard helps you expand your settlement overseas by housing your ships and providing you with fish, oil and an ultra-small chance to gather pearls.',
+  large: true,
+  levels: 5,
+  position: {
+    x: 2430,
+    y: 900
+  },
+  chance: {
+    pearls: 0.005
+  },
+  cost: {
+    coins: 200000,
+    wood: 200,
+    woodplanks: 200,
+    stones: 100,
+    ropes: 10,
+    barrels: 10,
+    tools: 20
+  },
+  production: {
+    fish: 3,
+    oil: 1
+  },
+  requires: {
+    settlement_level: 10
+  }
+}, {
+  name: 'Barracks',
+  handle: 'barracks',
+  description: 'The Barracks is your main base of defense and attack. If you plan on going to war, you will need one. It also raises your settlement`s prestige.',
+  levels: 5,
+  visible_upgrades: true,
+  large: true,
+  position: {
+    x: 1970,
+    y: 950
+  },
+  production: {
+    prestige: 1
+  },
+  cost: {
+    coins: 50000,
+    wood: 200,
+    woodplanks: 200,
+    stones: 160,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 8,
+    buildings: {
+      provisions: 1
+    }
+  }
+}, {
+  name: 'Castle',
+  handle: 'castle',
+  description: 'The Castle is your main base of operations. It houses your settlement`s soldiers and provides you with prestige and some extra fame.',
+  is_municipal: true,
+  large: true,
+  levels: 2,
+  position: {
+    x: 700,
+    y: 1200
+  },
+  production: {
+    fame: 100,
+    prestige: 1
+  },
+  materials: {
+    coins: 200
+  },
+  cost: {
+    coins: 1000000,
+    wood: 500,
+    iron: 500,
+    woodplanks: 500,
+    stones: 500,
+    bricks: 500,
+    steel: 50,
+    tools: 100
+  },
+  requires: {
+    settlement_level: 20,
+    buildings: {
+      barracks: 1,
+      provisions: 2
+    }
+  }
+}, {
+  name: 'Lumberjack',
+  handle: 'lumberjack',
+  description: 'A Lumberjack provides you with wood which you can use for creating additional buildings, resources or sell to other settlements.',
+  levels: 5,
+  position: {
+    x: 1840,
+    y: 340
+  },
+  production: {
+    wood: 4
+  },
+  cost: {
+    coins: 2000,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 1
+  }
+}, {
+  name: 'Carpenter',
+  handle: 'carpenter',
+  description: 'The Carpenter processes the wood from the Lumberjack into wood planks that are required for more advanced buildings.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 2060,
+    y: 460
+  },
+  materials: {
+    wood: 2
+  },
+  production: {
+    woodplanks: 2
+  },
+  cost: {
+    coins: 5000,
+    wood: 10,
+    stones: 10
+  },
+  requires: {
+    settlement_level: 3
+  }
+}, {
+  name: 'Stone Quarry',
+  handle: 'stonequarry',
+  description: 'A Stone Quarry produces stone blocks that are essential for the construction of any settlement`s buildings.',
+  visible_upgrades: true,
+  levels: 6,
+  position: {
+    x: 930,
+    y: 290
+  },
+  production: {
+    stones: 1
+  },
+  cost: {
+    coins: 2000,
+    wood: 20
+  },
+  chance: {
+    mosaic: 0.001,
+    limestone: 0.01,
+    sand: 0.05
+  },
+  requires: {
+    settlement_level: 1
+  }
+}, {
+  name: 'Gold Mine',
+  handle: 'goldmine',
+  description: 'The Gold Mine extracts gold ore, that can be smelted later into gold bars.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1010,
+    y: 200
+  },
+  production: {
+    goldore: 3
+  },
+  chance: {
+    gems: 0.0004,
+    diamonds: 0.0004
+  },
+  cost: {
+    coins: 10000,
+    woodplanks: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 6
+  }
+}, {
+  name: 'Coal Mine',
+  handle: 'coalmine',
+  description: 'The Coal Mine extracts coal from the mountains you own (provided you own some).',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1180,
+    y: 240
+  },
+  production: {
+    coal: 4
+  },
+  chance: {
+    gems: 0.0001,
+    diamonds: 0.0001
+  },
+  cost: {
+    coins: 10000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 7
+  }
+}, {
+  name: 'Iron Mine',
+  handle: 'ironmine',
+  description: 'The Iron Mine extracts iron ore, that can be smelted later into iron bars.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 380,
+    y: 620
+  },
+  production: {
+    ironore: 3
+  },
+  chance: {
+    gems: 0.0002,
+    diamonds: 0.0002
+  },
+  cost: {
+    coins: 10000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 3
+  }
+}, {
+  name: 'Salt Processor',
+  handle: 'saltprocessor',
+  description: 'A Salt Processor processes seawater and retrieves salt.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 500,
+    y: 540
+  },
+  production: {
+    salt: 3
+  },
+  cost: {
+    coins: 8000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 5
+  }
+}, {
+  name: 'Clay Mine',
+  handle: 'claymine',
+  description: 'The Clay Mine produces clay which is required later for bricks and pottery.',
+  levels: 5,
+  position: {
+    x: 2900,
+    y: 800
+  },
+  production: {
+    clay: 2
+  },
+  cost: {
+    coins: 5000,
+    wood: 20,
+    stones: 20
+  },
+  chance: {
+    limestone: 0.01,
+    sand: 0.1
+  },
+  requires: {
+    settlement_level: 2
+  }
+}, {
+  name: 'Copper Mine',
+  handle: 'coppermine',
+  description: 'The copper mine extracts copper ore, that can be smelted later into copper bars.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1310,
+    y: 110
+  },
+  production: {
+    copperore: 3
+  },
+  chance: {
+    gems: 0.0001,
+    diamonds: 0.0002
+  },
+  cost: {
+    coins: 10000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 5
+  }
+}, {
+  name: 'Flour Mill',
+  handle: 'mill',
+  description: 'The Flour Mill produces flour from the wheat cultivated by your Grain Farm.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1360,
+    y: 1180
+  },
+  production: {
+    flour: 2
+  },
+  materials: {
+    wheat: 2
+  },
+  cost: {
+    coins: 10000,
+    woodplanks: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 3
+  }
+}, {
+  name: 'Bakery',
+  handle: 'bakery',
+  description: 'The Bakery creates bread from flour, therefore providing your settlers with basic food.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 550,
+    y: 910
+  },
+  production: {
+    bread: 3
+  },
+  materials: {
+    flour: 2
+  },
+  cost: {
+    coins: 15000,
+    woodplanks: 30,
+    stones: 30
+  },
+  requires: {
+    settlement_level: 4
+  }
+}, {
+  name: 'Pottery Workshop',
+  handle: 'pottery',
+  description: 'The Pottery Workshop uses a high-temperature kiln and clay to create pottery for the inhabitants of your settlement.',
+  levels: 3,
+  position: {
+    x: 1740,
+    y: 1240
+  },
+  production: {
+    pottery: 4
+  },
+  materials: {
+    clay: 3
+  },
+  cost: {
+    coins: 30000,
+    woodplanks: 30,
+    stones: 30,
+    clay: 100
+  },
+  requires: {
+    settlement_level: 8
+  }
+}, {
+  name: 'Gunpowder Mill',
+  handle: 'gunpowdermill',
+  description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder from the sulphur found in your Charcoal Burner`s Hut.',
+  levels: 3,
+  position: {
+    x: 500,
+    y: 1370
+  },
+  production: {
+    gunpowder: 1
+  },
+  materials: {
+    sulphur: 10
+  },
+  cost: {
+    coins: 30000,
+    woodplanks: 30,
+    stones: 30,
+    bricks: 50,
+    clay: 50,
+    tools: 20
+  },
+  requires: {
+    settlement_level: 26
+  }
+}, {
+  name: 'Armory',
+  handle: 'armory',
+  description: 'The Armory is a major building that produces weapons and armor for your soldiers. If you want to conquer other settlements, you will need to build one and keep it stocked with materials.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1820,
+    y: 180
+  },
+  production: {
+    weapons: 1,
+    armor: 1
+  },
+  materials: {
+    iron: 10,
+    wood: 2,
+    leather: 8,
+    copper: 4
+  },
+  cost: {
+    coins: 50000,
+    woodplanks: 100,
+    stones: 100,
+    tools: 20
+  },
+  requires: {
+    settlement_level: 9
+  }
+}, {
+  name: 'Butcher',
+  handle: 'butcher',
+  description: 'The Butcher slaughters cattle, pigs or goats for meat, providing meat, a food type that is more nutritious. Hides will be processed further at the Tannery.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 420,
+    y: 850
+  },
+  production: {
+    meat: 3,
+    hides: 2,
+    tallow: 1
+  },
+  materials: [{
+    pig: 1,
+    cattle: 1,
+    goat: 1
+  }, {
+    salt: 1
+  }],
+  cost: {
+    coins: 20000,
+    woodplanks: 40,
+    stones: 40
+  },
+  requires: {
+    settlement_level: 5
+  }
+}, {
+  name: 'Iron smelter',
+  handle: 'ironsmelter',
+  description: 'The Iron Smelter (or foundry) smelts iron ore into iron bars using coal.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1140,
+    y: 100
+  },
+  production: {
+    iron: 4
+  },
+  materials: {
+    ironore: 4,
+    coal: 2
+  },
+  chance: {
+    steel: 0.05
+  },
+  cost: {
+    coins: 30000,
+    woodplanks: 40,
+    stones: 50
+  },
+  requires: {
+    settlement_level: 7
+  }
+}, {
+  name: 'Copper smelter',
+  handle: 'coppersmelter',
+  description: 'The Copper Smelter smelts copper ore into copper bars using coal.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1480,
+    y: 150
+  },
+  production: {
+    copper: 2
+  },
+  materials: {
+    copperore: 4,
+    coal: 1
+  },
+  cost: {
+    coins: 40000,
+    woodplanks: 50,
+    stones: 50
+  },
+  requires: {
+    settlement_level: 8
+  }
+}, {
+  name: 'Gold smelter',
+  handle: 'goldsmelter',
+  description: 'The Gold Smelter smelts gold ore into gold bars using coal.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1680,
+    y: 230
+  },
+  production: {
+    gold: 1
+  },
+  materials: {
+    goldore: 4,
+    coal: 1
+  },
+  cost: {
+    coins: 40000,
+    woodplanks: 55,
+    bricks: 5,
+    stones: 55
+  },
+  requires: {
+    settlement_level: 12
+  }
+}, {
+  name: 'Trapper`s Lodge',
+  handle: 'trapper',
+  description: 'The trapper captures wild animals and slaughters them, gathering their furs and some meat.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 790,
+    y: 410
+  },
+  production: {
+    furs: 2,
+    meat: 1
+  },
+  cost: {
+    coins: 15000,
+    wood: 40,
+    stones: 40
+  },
+  requires: {
+    settlement_level: 6
+  }
+}, {
+  name: 'Furrier`s Workshop',
+  handle: 'furrier',
+  description: 'The furrier uses furs from the Trapper`s Lodge mixed with salt and processes them into fur coats that will help your settlers during the cold winters.',
+  levels: 3,
+  position: {
+    x: 1640,
+    y: 1140
+  },
+  production: {
+    furcoats: 1
+  },
+  materials: {
+    furs: 2,
+    salt: 2
+  },
+  cost: {
+    coins: 15000,
+    woodplanks: 30,
+    stones: 40
+  },
+  requires: {
+    settlement_level: 9
+  }
+}, {
+  name: 'Clothing Factory',
+  handle: 'clothingfactory',
+  description: 'The Clothing Factory produces clothes for your settlement. You don`t want naked citizens, do you?',
+  levels: 3,
+  position: {
+    x: 1580,
+    y: 1280
+  },
+  production: {
+    clothes: 1
+  },
+  materials: {
+    cottonfabric: 2
+  },
+  cost: {
+    coins: 15000,
+    wood: 40,
+    bricks: 10,
+    stones: 40
+  },
+  requires: {
+    settlement_level: 15
+  }
+}, {
+  name: 'Weaver`s Hut',
+  handle: 'weaver',
+  description: 'The weaver uses a hefty amount of cotton to produce cotton fabric for your settlers` clothes.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1230,
+    y: 1250
+  },
+  production: {
+    cottonfabric: 2
+  },
+  materials: {
+    cotton: 4
+  },
+  cost: {
+    coins: 10000,
+    wood: 30,
+    stones: 30
+  },
+  requires: {
+    settlement_level: 12
+  }
+}, {
+  name: 'Tannery',
+  handle: 'tannery',
+  description: 'The Tannery produces leather from processed animal hides.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 930,
+    y: 1110
+  },
+  production: {
+    leather: 2
+  },
+  materials: {
+    hides: 4,
+    salt: 1
+  },
+  cost: {
+    coins: 20000,
+    wood: 35,
+    stones: 40
+  },
+  requires: {
+    settlement_level: 8
+  }
+}, {
+  name: 'Coffee roaster',
+  handle: 'coffeeroaster',
+  description: 'The Coffee Roaster uses the coffee beans from your Coffee Farm and processes them into coffee.',
+  levels: 3,
+  position: {
+    x: 2150,
+    y: 1430
+  },
+  production: {
+    coffee: 1
+  },
+  materials: {
+    coffeebeans: 4
+  },
+  cost: {
+    coins: 70000,
+    woodplanks: 80,
+    stones: 60,
+    bricks: 30,
+    tools: 20
+  },
+  requires: {
+    settlement_level: 28,
+    buildings: {
+      tradingpost: 1
+    }
+  }
+}, {
+  name: 'Sugar Mill',
+  handle: 'sugarmill',
+  description: 'The Sugar Mill processes any sugar cane you have in storage into sugar.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 2700,
+    y: 880
+  },
+  production: {
+    sugar: 1
+  },
+  materials: {
+    sugarcane: 4
+  },
+  cost: {
+    coins: 70000,
+    woodplanks: 80,
+    stones: 60,
+    bricks: 30,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 26,
+    buildings: {
+      tradingpost: 1
+    }
+  }
+}, {
+  name: 'Winery',
+  handle: 'winery',
+  description: 'The Winery uses the grapes from your Grapes Farm and processes them into wine. It uses either barrels or bottles, depending on what you have in storage.',
+  levels: 5,
+  position: {
+    x: 2520,
+    y: 510
+  },
+  production: {
+    wine: 2
+  },
+  materials: [{
+    barrels: 1,
+    bottles: 1
+  }, {
+    grapes: 4
+  }],
+  chance: {
+    alcohol: 0.01
+  },
+  cost: {
+    coins: 50000,
+    wood: 50,
+    bricks: 10,
+    stones: 40,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 14
+  }
+}, {
+  name: 'Optician`s Shop',
+  handle: 'opticiansworkshop',
+  description: 'The optician uses copper and glass to create glasses for your settlers.',
+  levels: 3,
+  position: {
+    x: 1280,
+    y: 330
+  },
+  production: {
+    glasses: 1
+  },
+  materials: {
+    copper: 2,
+    glass: 2
+  },
+  cost: {
+    coins: 81000,
+    woodplanks: 70,
+    stones: 70,
+    bricks: 30,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 24
+  }
+}, {
+  name: 'Paper Mill',
+  handle: 'papermill',
+  description: 'The Paper Mill uses wood to produce paper, which is used together with indigo to produce books at the Printing House.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1080,
+    y: 340
+  },
+  production: {
+    paper: 2
+  },
+  materials: {
+    wood: 1
+  },
+  cost: {
+    coins: 83000,
+    woodplanks: 60,
+    stones: 50,
+    bricks: 30,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 22
+  }
+}, {
+  name: 'Printing Press',
+  handle: 'printingpress',
+  description: 'The Printing Press produces books from paper using indigo ink.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1540,
+    y: 430
+  },
+  production: {
+    books: 1
+  },
+  materials: {
+    paper: 4,
+    indigo: 1
+  },
+  cost: {
+    coins: 84000,
+    woodplanks: 100,
+    stones: 100,
+    bricks: 30,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 28
+  }
+}, {
+  name: 'Cosmetics',
+  handle: 'cosmetics',
+  description: 'The Cosmetics manufacturer produces soap and perfume.',
+  levels: 3,
+  position: {
+    x: 1500,
+    y: 1170
+  },
+  production: {
+    perfume: 1,
+    soap: 1
+  },
+  materials: {
+    roses: 8,
+    tallow: 8,
+    honey: 1,
+    cocoa: 1,
+    alcohol: 1
+  },
+  cost: {
+    coins: 90000,
+    woodplanks: 80,
+    stones: 40,
+    bricks: 20,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 30,
+    buildings: {
+      tradingpost: 1
+    }
+  }
+}, {
+  name: 'Redsmith`s Workshop',
+  handle: 'redsmithsworkshop',
+  description: 'The Redsmith`s Workshop processes copper and candles into candlesticks.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 520,
+    y: 720
+  },
+  production: {
+    candlesticks: 1
+  },
+  materials: {
+    copper: 3,
+    candles: 2
+  },
+  cost: {
+    coins: 75000,
+    wood: 70,
+    bricks: 30,
+    stones: 50,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 22
+  }
+}, {
+  name: 'Ropeyard',
+  handle: 'ropeyard',
+  description: 'The Ropeyard produces ropes that are needed for your city`s ships.',
+  levels: 3,
+  position: {
+    x: 3000,
+    y: 1030
+  },
+  production: {
+    ropes: 1
+  },
+  materials: {
+    cotton: 2
+  },
+  cost: {
+    coins: 15000,
+    wood: 70,
+    stones: 60,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 10
+  }
+}, {
+  name: 'Glassworks',
+  handle: 'glassworks',
+  description: 'The Glassworks processes quartz, sand and coal into glass.',
+  levels: 3,
+  position: {
+    x: 1400,
+    y: 1320
+  },
+  production: {
+    glass: 1
+  },
+  materials: {
+    quartz: 2,
+    sand: 3,
+    coal: 1
+  },
+  chance: {
+    bottles: 0.2
+  },
+  cost: {
+    coins: 50000,
+    wood: 50,
+    bricks: 10,
+    stones: 80
+  },
+  requires: {
+    settlement_level: 22
+  }
+}, {
+  name: 'Carpet Mill',
+  handle: 'carpetmanufacturer',
+  description: 'The Carpet Mill produces carpets.',
+  levels: 3,
+  position: {
+    x: 2020,
+    y: 1370
+  },
+  production: {
+    carpets: 1
+  },
+  materials: {
+    cottonfabric: 4,
+    indigo: 2
+  },
+  cost: {
+    coins: 50000,
+    wood: 50,
+    bricks: 30,
+    stones: 80,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 26,
+    buildings: {
+      tradingpost: 1
+    }
+  }
+}, {
+  name: 'Marzipan Workshop',
+  handle: 'marzipanworkshop',
+  description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage to create delicious marzipan. Your settlers will definitely appreciate it.',
+  levels: 3,
+  position: {
+    x: 1090,
+    y: 850
+  },
+  production: {
+    marzipan: 1
+  },
+  materials: {
+    almonds: 2,
+    sugar: 2,
+    milk: 4
+  },
+  cost: {
+    coins: 50000,
+    wood: 50,
+    bricks: 40,
+    stones: 80,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 26,
+    buildings: {
+      tradingpost: 1
+    }
+  }
+}, {
+  name: 'Silk Weaver',
+  handle: 'silkweaver',
+  description: 'The Silk Weaver requires cotton, gold and silk and produces brocade robes.',
+  levels: 3,
+  position: {
+    x: 1220,
+    y: 970
+  },
+  production: {
+    robes: 1
+  },
+  materials: {
+    silk: 2,
+    cotton: 1,
+    gold: 2
+  },
+  cost: {
+    coins: 50000,
+    wood: 50,
+    bricks: 30,
+    stones: 80,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 23,
+    buildings: {
+      tradingpost: 1
+    }
+  }
+}, {
+  name: 'Quartz Mine',
+  handle: 'quartzmine',
+  description: 'The Quartz Mine provides your city with quartz.',
+  levels: 3,
+  position: {
+    x: 700,
+    y: 710
+  },
+  production: {
+    quartz: 2
+  },
+  cost: {
+    coins: 40000,
+    wood: 50,
+    bricks: 30,
+    stones: 90
+  },
+  requires: {
+    settlement_level: 16,
+    climate: [game.CLIMATE_ARID]
+  }
+}, {
+  name: 'Apiary',
+  handle: 'apiary',
+  description: 'The Apiary produces honey and bees wax for use in candles.',
+  levels: 3,
+  position: {
+    x: 1140,
+    y: 1150
+  },
+  production: {
+    wax: 2,
+    honey: 1
+  },
+  cost: {
+    coins: 40000,
+    wood: 50,
+    bricks: 30,
+    stones: 40
+  },
+  requires: {
+    settlement_level: 16,
+    buildings: {
+      beehive: 1
+    },
+    climate: [game.CLIMATE_TROPICAL, game.CLIMATE_TEMPERATE]
+  }
+}, {
+  name: 'Bee Hive',
+  handle: 'beehive',
+  description: 'The Bee Hive is required for an Apiary to produce bees wax and honey.',
+  position: {
+    x: 1260,
+    y: 1100
+  },
+  cost: {
+    coins: 2000,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 16,
+    climate: [game.CLIMATE_TROPICAL, game.CLIMATE_TEMPERATE]
+  }
+}, {
+  name: 'Barrel Cooperage',
+  handle: 'barrelcooperage',
+  description: 'The Barrel Cooperage creates barrels from wood and iron.',
+  levels: 3,
+  position: {
+    x: 910,
+    y: 430
+  },
+  production: {
+    barrels: 2
+  },
+  materials: {
+    wood: 3,
+    iron: 1
+  },
+  cost: {
+    coins: 25000,
+    wood: 80,
+    stones: 70,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 9
+  }
+}, {
+  name: 'Brewery',
+  handle: 'brewery',
+  description: 'The Brewery brews beer from wheat. Beer is needed for higher-level houses or your city`s navy.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 650,
+    y: 1120
+  },
+  production: {
+    beer: 2
+  },
+  materials: {
+    barrels: 1,
+    wheat: 2
+  },
+  chance: {
+    alcohol: 0.01
+  },
+  cost: {
+    coins: 25000,
+    wood: 60,
+    stones: 70
+  },
+  requires: {
+    settlement_level: 9
+  }
+}, {
+  name: 'Candlemaker`s Hut',
+  handle: 'candlemakersworkshop',
+  description: 'The Candlemaker Hut produces candles for your settlers` houses.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 640,
+    y: 480
+  },
+  production: {
+    candles: 1
+  },
+  materials: {
+    wax: 2,
+    cotton: 1
+  },
+  cost: {
+    coins: 45000,
+    woodplanks: 80,
+    stones: 60,
+    bricks: 20,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 20
+  }
+}, {
+  name: 'Catapult Workshop',
+  handle: 'catapultworkshop',
+  description: 'The Catapult Workshop builds catapults, the ultimate siege weapon.',
+  levels: 3,
+  position: {
+    x: 1400,
+    y: 1050
+  },
+  production: {
+    catapults: 1
+  },
+  materials: {
+    wood: 100,
+    steel: 12,
+    iron: 20,
+    stones: 30,
+    coal: 5,
+    woodplanks: 40,
+    ropes: 10
+  },
+  cost: {
+    coins: 250000,
+    woodplanks: 200,
+    stones: 300,
+    bricks: 30,
+    tools: 20
+  },
+  requires: {
+    settlement_level: 20
+  }
+}, {
+  name: 'Cannon Foundry',
+  handle: 'cannonfoundry',
+  description: 'The Cannon Foundry is responsable with the manufacture of the city cannons.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 760,
+    y: 560
+  },
+  production: {
+    cannons: 1
+  },
+  materials: {
+    wood: 70,
+    copper: 30,
+    iron: 10,
+    coal: 20,
+    steel: 15,
+    woodplanks: 10,
+    ropes: 2,
+    gunpowder: 6
+  },
+  cost: {
+    coins: 200000,
+    woodplanks: 200,
+    stones: 300,
+    bricks: 30,
+    tools: 20
+  },
+  requires: {
+    settlement_level: 18
+  }
+}, {
+  name: 'Charcoal Burner`s Hut',
+  handle: 'charcoalburnerhut',
+  description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which is needed by all your smelters.',
+  levels: 3,
+  position: {
+    x: 1370,
+    y: 230
+  },
+  production: {
+    coal: 4,
+    sulphur: 1
+  },
+  materials: {
+    wood: 2
+  },
+  cost: {
+    coins: 25000,
+    wood: 50,
+    stones: 50,
+    bricks: 50
+  },
+  requires: {
+    settlement_level: 15
+  }
+}, {
+  name: 'House',
+  handle: 'house1',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 5,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1200,
+    y: 770
+  },
+  cost: {
+    wood: 10,
+    coins: 1000
+  },
+  materials: {
+    bread: 1
+  },
+  requires: {
+    settlement_level: 1
+  }
+}, {
+  name: 'House',
+  handle: 'house2',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 10,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1080,
+    y: 680
+  },
+  cost: {
+    wood: 10,
+    coins: 2000
+  },
+  materials: {
+    bread: 1
+  },
+  requires: {
+    settlement_level: 1
+  }
+}, {
+  name: 'House',
+  handle: 'house3',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 15,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 960,
+    y: 590
+  },
+  cost: {
+    woodplanks: 10,
+    stones: 20,
+    coins: 3000
+  },
+  materials: {
+    bread: 1,
+    meat: 1
+  },
+  requires: {
+    settlement_level: 3
+  }
+}, {
+  name: 'House',
+  handle: 'house4',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 20,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1200,
+    y: 580
+  },
+  cost: {
+    woodplanks: 10,
+    stones: 20,
+    coins: 4000
+  },
+  materials: {
+    bread: 1,
+    meat: 1,
+    pottery: 1
+  },
+  requires: {
+    settlement_level: 6,
+    buildings: {
+      church: 1
+    }
+  }
+}, {
+  name: 'House',
+  handle: 'house5',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 25,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1080,
+    y: 500
+  },
+  cost: {
+    woodplanks: 25,
+    stones: 35,
+    coins: 5000
+  },
+  materials: {
+    fish: 1,
+    meat: 2,
+    pottery: 1,
+    beer: 1
+  },
+  requires: {
+    settlement_level: 10,
+    buildings: {
+      church: 1
+    }
+  }
+}, {
+  name: 'House',
+  handle: 'house6',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 30,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1300,
+    y: 840
+  },
+  cost: {
+    woodplanks: 30,
+    stones: 45,
+    bricks: 10,
+    coins: 6000
+  },
+  materials: {
+    meals: 1,
+    pottery: 1
+  },
+  requires: {
+    settlement_level: 16,
+    buildings: {
+      church: 2
+    }
+  }
+}, {
+  name: 'House',
+  handle: 'house7',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 35,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1470,
+    y: 780
+  },
+  cost: {
+    woodplanks: 40,
+    stones: 80,
+    bricks: 15,
+    coins: 7000
+  },
+  materials: {
+    meals: 1,
+    pottery: 1,
+    candlesticks: 1
+  },
+  requires: {
+    settlement_level: 20,
+    buildings: {
+      academy: 1
+    }
+  }
+}, {
+  name: 'House',
+  handle: 'house8',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 40,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1700,
+    y: 390
+  },
+  cost: {
+    woodplanks: 50,
+    stones: 100,
+    bricks: 20,
+    coins: 8000
+  },
+  materials: {
+    meals: 1,
+    milk: 1,
+    pottery: 1,
+    candlesticks: 1,
+    furcoats: 1
+  },
+  requires: {
+    settlement_level: 25,
+    buildings: {
+      academy: 2
+    }
+  }
+}, {
+  name: 'House',
+  handle: 'house9',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 50,
+  levels: 6,
+  visible_upgrades: true,
+  position: {
+    x: 1840,
+    y: 480
+  },
+  cost: {
+    woodplanks: 100,
+    stones: 200,
+    bricks: 25,
+    coins: 10000
+  },
+  materials: {
+    meals: 1,
+    milk: 1,
+    pottery: 1,
+    candlesticks: 1,
+    furcoats: 1,
+    perfume: 1,
+    soap: 1
+  },
+  requires: {
+    settlement_level: 30,
+    buildings: {
+      academy: 2
+    }
+  }
+}, {
+  name: 'House',
+  handle: 'house10',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 60,
+  cost: {
+    woodplanks: 100,
+    stones: 200,
+    bricks: 30,
+    coins: 10000
+  },
+  materials: {
+    meals: 2,
+    milk: 1,
+    pottery: 1,
+    candlesticks: 1,
+    furcoats: 1,
+    perfume: 1,
+    soap: 1,
+    robes: 1
+  },
+  position: {
+    x: 1390,
+    y: 550
+  },
+  levels: 6,
+  visible_upgrades: true,
+  requires: {
+    settlement_level: 32,
+    buildings: {
+      church: 2,
+      academy: 2
+    }
+  }
+}, {
+  name: 'House',
+  handle: 'house11',
+  description: 'Houses provide coins through taxes and space for your settlers.',
+  tax: 80,
+  cost: {
+    woodplanks: 100,
+    stones: 200,
+    bricks: 35,
+    coins: 10000
+  },
+  materials: {
+    meals: 2,
+    milk: 1,
+    pottery: 1,
+    candlesticks: 1,
+    furcoats: 1,
+    perfume: 1,
+    robes: 1,
+    soap: 1,
+    marzipan: 1
+  },
+  position: {
+    x: 1400,
+    y: 910
+  },
+  levels: 6,
+  visible_upgrades: true,
+  requires: {
+    settlement_level: 36,
+    buildings: {
+      church: 2,
+      academy: 2
+    }
+  }
+}, {
+  name: 'Dates farm',
+  handle: 'datesfarm',
+  description: 'The Dates Farm cultivates dates.',
+  production: {
+    dates: 1
+  },
+  levels: 3,
+  position: {
+    x: 2480,
+    y: 770
+  },
+  cost: {
+    coins: 40000,
+    wood: 30,
+    stones: 30
+  },
+  requires: {
+    settlement_level: 36,
+    buildings: {
+      datesfield: 1
+    },
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Dates field',
+  handle: 'datesfield',
+  description: 'An Dates Field is required for the Dates Farm to operate.',
+  position: {
+    x: 2380,
+    y: 660
+  },
+  cost: {
+    coins: 5000,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 36,
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Almonds farm',
+  handle: 'almondsfarm',
+  description: 'The Almonds Farm cultivates almonds for marzipan manufacture or export.',
+  production: {
+    almonds: 1
+  },
+  levels: 3,
+  position: {
+    x: 2050,
+    y: 1610
+  },
+  cost: {
+    coins: 40000,
+    wood: 30,
+    stones: 30
+  },
+  requires: {
+    settlement_level: 36,
+    buildings: {
+      almondsfield: 1
+    },
+    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Almonds field',
+  handle: 'almondsfield',
+  description: 'An Almonds Field is required for the Almonds Farm to operate.',
+  position: {
+    x: 2190,
+    y: 1570
+  },
+  cost: {
+    coins: 5000,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 36,
+    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Cattle Farm',
+  handle: 'cattlefarm',
+  description: 'A Cattle Farm grows cattle so your settlers can eat food that is more nutritious than bread. Also produces milk and has a low chance for producing cheese.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1510,
+    y: 1470
+  },
+  production: {
+    cattle: 1,
+    milk: 1
+  },
+  chance: {
+    cheese: 0.01
+  },
+  cost: {
+    coins: 10000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 3,
+    buildings: {
+      cattlefield: 1
+    }
+  }
+}, {
+  name: 'Cattle field',
+  handle: 'cattlefield',
+  description: 'A Cattle Field is required for the Cattle Farm to operate.',
+  position: {
+    x: 1630,
+    y: 1420
+  },
+  cost: {
+    coins: 1000,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 3
+  }
+}, {
+  name: 'Pig Farm',
+  handle: 'pigfarm',
+  description: 'A Pig Farm grows pigs so your settlers can eat food that is more nutritious than bread.',
+  visible_upgrades: true,
+  production: {
+    pig: 1
+  },
+  levels: 5,
+  position: {
+    x: 1900,
+    y: 1150
+  },
+  cost: {
+    coins: 15000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 3,
+    buildings: {
+      pigfield: 1
+    }
+  }
+}, {
+  name: 'Pig field',
+  handle: 'pigfield',
+  description: 'A Pig Field is required for the Pig Farm to operate.',
+  position: {
+    x: 1900,
+    y: 1270
+  },
+  cost: {
+    coins: 1500,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 3
+  }
+}, {
+  name: 'Goat Farm',
+  handle: 'goatfarm',
+  description: 'A Goat Farm grows cattle so your settlers can eat food that is more nutritious than bread. Also produces milk and has a low chance for producing cheese.',
+  visible_upgrades: true,
+  production: {
+    goat: 1,
+    milk: 1
+  },
+  chance: {
+    cheese: 0.01
+  },
+  levels: 5,
+  position: {
+    x: 2300,
+    y: 900
+  },
+  cost: {
+    coins: 15000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 10,
+    buildings: {
+      goatfield: 1
+    }
+  }
+}, {
+  name: 'Goat field',
+  handle: 'goatfield',
+  description: 'A Goat Field is required for the Goat Farm to operate.',
+  position: {
+    x: 2150,
+    y: 900
+  },
+  cost: {
+    coins: 1500,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 10
+  }
+}, {
+  name: 'Grain farm',
+  handle: 'grainfarm',
+  description: 'A Grain Farm cultivates wheat that will be later transformed into bread, and your settlers will live happily ever after.',
+  visible_upgrades: true,
+  production: {
+    wheat: 2
+  },
+  levels: 6,
+  position: {
+    x: 2660,
+    y: 590
+  },
+  cost: {
+    coins: 10000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 2,
+    buildings: {
+      grainfield: 1
+    }
+  }
+}, {
+  name: 'Grain field',
+  handle: 'grainfield',
+  description: 'A Grain Field is required for the Grain Farm to operate.',
+  position: {
+    x: 2550,
+    y: 670
+  },
+  cost: {
+    coins: 1000,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 2
+  }
+}, {
+  name: 'Grapes farm',
+  handle: 'grapesfarm',
+  description: 'A Grapes Farm provides your city with grapes for wine processing.',
+  levels: 3,
+  position: {
+    x: 2380,
+    y: 460
+  },
+  production: {
+    grapes: 2
+  },
+  cost: {
+    coins: 15000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 16,
+    buildings: {
+      grapesfield: 1
+    },
+    climate: [game.CLIMATE_TEMPERATE]
+  }
+}, {
+  name: 'Grapes field',
+  handle: 'grapesfield',
+  description: 'A Grapes Field is required for the Grapes Farm to operate.',
+  position: {
+    x: 2290,
+    y: 530
+  },
+  cost: {
+    coins: 1500,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 16,
+    climate: [game.CLIMATE_TEMPERATE]
+  }
+}, {
+  name: 'Coffee farm',
+  handle: 'coffeefarm',
+  description: 'A Coffee Farm cultivates coffee beans in your city, ready to be processed into coffee.',
+  levels: 3,
+  position: {
+    x: 1840,
+    y: 1000
+  },
+  production: {
+    coffeebeans: 2
+  },
+  cost: {
+    coins: 60000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 36,
+    buildings: {
+      coffeefield: 1
+    },
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Coffee field',
+  handle: 'coffeefield',
+  description: 'A Coffee Field is required for the Coffee Farm to operate.',
+  position: {
+    x: 1740,
+    y: 1080
+  },
+  cost: {
+    coins: 6000,
+    wood: 10,
+    clay: 40
+  },
+  requires: {
+    settlement_level: 36,
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Cotton farm',
+  handle: 'cottonfarm',
+  description: 'A Cotton Farm provides your city with cotton.',
+  levels: 3,
+  position: {
+    x: 1870,
+    y: 1590
+  },
+  production: {
+    cotton: 3
+  },
+  cost: {
+    coins: 20000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    research: 'agriculture',
+    settlement_level: 10,
+    buildings: {
+      cottonfield: 1
+    },
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Cotton field',
+  handle: 'cottonfield',
+  description: 'A Cotton Field is required for the Cotton Farm to operate.',
+  position: {
+    x: 1970,
+    y: 1530
+  },
+  cost: {
+    coins: 2000,
+    wood: 10,
+    clay: 20
+  },
+  requires: {
+    research: 'agriculture',
+    settlement_level: 10,
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Silk farm',
+  handle: 'silkfarm',
+  description: 'A Silk Farm provides your city with silk.',
+  levels: 3,
+  position: {
+    x: 1450,
+    y: 340
+  },
+  production: {
+    silk: 1
+  },
+  cost: {
+    coins: 80000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    research: 'agriculture',
+    settlement_level: 28,
+    buildings: {
+      silkfield: 1
+    },
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Silk field',
+  handle: 'silkfield',
+  description: 'A Silk Field is required for the Silk Farm to operate.',
+  position: {
+    x: 1600,
+    y: 320
+  },
+  cost: {
+    coins: 8000,
+    wood: 10,
+    clay: 100
+  },
+  requires: {
+    research: 'agriculture',
+    settlement_level: 28,
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Sugar Cane Farm',
+  handle: 'sugarfarm',
+  description: 'A Sugar Cane Farm provides your city with sugar cane.',
+  levels: 3,
+  position: {
+    x: 2280,
+    y: 780
+  },
+  production: {
+    sugarcane: 2
+  },
+  cost: {
+    coins: 100000,
+    wood: 20,
+    stones: 20
+  },
+  requires: {
+    settlement_level: 24,
+    buildings: {
+      academy: 1,
+      sugarfield: 1
+    },
+    climate: [game.CLIMATE_TEMPERATE]
+  }
+}, {
+  name: 'Sugar field',
+  handle: 'sugarfield',
+  description: 'A Sugar Field is required for the Sugar Farm to operate.',
+  position: {
+    x: 2100,
+    y: 720
+  },
+  cost: {
+    coins: 10000,
+    wood: 10,
+    clay: 100
+  },
+  requires: {
+    settlement_level: 24,
+    climate: [game.CLIMATE_TEMPERATE]
+  }
+}, {
+  name: 'Indigo farm',
+  handle: 'indigofarm',
+  description: 'The Indigo Farm produces indigo that can be turned to ink and used to create books.',
+  levels: 5,
+  visible_upgrades: true,
+  position: {
+    x: 2440,
+    y: 1440
+  },
+  production: {
+    indigo: 1
+  },
+  cost: {
+    coins: 200000,
+    wood: 30,
+    stones: 30,
+    clay: 30
+  },
+  requires: {
+    settlement_level: 20,
+    buildings: {
+      indigofield: 1
+    },
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Indigo field',
+  handle: 'indigofield',
+  description: 'An Indigo Field is required for the Indigo Farm to operate.',
+  position: {
+    x: 2320,
+    y: 1500
+  },
+  cost: {
+    coins: 10000,
+    wood: 10,
+    clay: 100
+  },
+  requires: {
+    settlement_level: 20,
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Tobacco farm',
+  handle: 'tobaccofarm',
+  description: 'A Tobacco Farm produces cigars from tobacco.',
+  levels: 3,
+  position: {
+    x: 1750,
+    y: 1500
+  },
+  production: {
+    cigars: 1
+  },
+  materials: {
+    tobacco: 2
+  },
+  cost: {
+    coins: 200000,
+    wood: 30,
+    stones: 30,
+    bricks: 30
+  },
+  requires: {
+    settlement_level: 25,
+    buildings: {
+      tobaccofield: 1
+    },
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Tobacco field',
+  handle: 'tobaccofield',
+  description: 'The Tobacco Field produces tobacco that will be further processed by the Tobacco Farm',
+  position: {
+    x: 1870,
+    y: 1460
+  },
+  production: {
+    tobacco: 1
+  },
+  cost: {
+    coins: 10000,
+    wood: 10,
+    clay: 100
+  },
+  requires: {
+    settlement_level: 20,
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Rose Farm',
+  handle: 'rosenursery',
+  description: 'The Rose Farm produces roses which are needed to manufacture perfume.',
+  levels: 3,
+  position: {
+    x: 2780,
+    y: 670
+  },
+  production: {
+    roses: 1
+  },
+  cost: {
+    coins: 20000,
+    wood: 50,
+    stones: 50,
+    clay: 50
+  },
+  requires: {
+    research: 'agriculture',
+    settlement_level: 26,
+    buildings: {
+      academy: 1,
+      rosefield: 1
+    },
+    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Roses field',
+  handle: 'rosefield',
+  description: 'A Roses Field is required for the Rose Farm to operate.',
+  position: {
+    x: 2650,
+    y: 740
+  },
+  cost: {
+    coins: 10000,
+    wood: 10,
+    clay: 100
+  },
+  requires: {
+    research: 'agriculture',
+    settlement_level: 26,
+    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Spice Farm',
+  handle: 'spicefarm',
+  description: 'The Spice Farm is responsable for the production of spices.',
+  levels: 3,
+  position: {
+    x: 1500,
+    y: 970
+  },
+  production: {
+    spices: 1
+  },
+  cost: {
+    coins: 200000,
+    wood: 60,
+    stones: 60,
+    clay: 60
+  },
+  requires: {
+    settlement_level: 32,
+    buildings: {
+      academy: 1,
+      spicefield: 1
+    },
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Spice field',
+  handle: 'spicefield',
+  description: 'A Spice Field is required for the Spice Farm to operate.',
+  position: {
+    x: 1600,
+    y: 1030
+  },
+  cost: {
+    coins: 20000,
+    wood: 40,
+    clay: 300
+  },
+  requires: {
+    settlement_level: 32,
+    climate: [game.CLIMATE_TROPICAL]
+  }
+}, {
+  name: 'Toolmaker Workshop',
+  handle: 'toolmaker',
+  description: 'Tools are needed to construct higher-level buildings, and a Toolmaker Workshop will create those for your settlement.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 1640,
+    y: 110
+  },
+  production: {
+    tools: 2
+  },
+  materials: {
+    wood: 1,
+    iron: 1,
+    coal: 1,
+    copper: 1
+  },
+  cost: {
+    coins: 30000,
+    wood: 80,
+    stones: 80,
+    clay: 60
+  },
+  requires: {
+    settlement_level: 8
+  }
+}, {
+  name: 'Jeweler',
+  handle: 'jeweler',
+  description: 'The Jeweler processes pearls into jewelery for your settlers (and traders).',
+  levels: 3,
+  position: {
+    x: 1780,
+    y: 1350
+  },
+  production: {
+    jewelery: 1
+  },
+  materials: {
+    pearls: 10
+  },
+  cost: {
+    coins: 55000,
+    wood: 60,
+    stones: 60,
+    bricks: 60,
+    tools: 10
+  },
+  requires: {
+    settlement_level: 20
+  }
+}, {
+  name: 'Brickworks',
+  handle: 'brickworks',
+  description: 'The Brickworks uses coal and clay to manufacture bricks, needed for higher-level buildings in your settlement.',
+  levels: 5,
+  position: {
+    x: 620,
+    y: 640
+  },
+  production: {
+    bricks: 2
+  },
+  materials: {
+    clay: 3,
+    coal: 1
+  },
+  cost: {
+    coins: 10000,
+    wood: 20,
+    stones: 20,
+    clay: 20
+  },
+  requires: {
+    settlement_level: 12,
+    buildings: {
+      claymine: 1
+    }
+  }
+}, {
+  name: 'Cookhouse',
+  handle: 'cookhouse',
+  description: 'The Cookhouse makes meals for your houses, army, navy and expeditions.',
+  levels: 3,
+  position: {
+    x: 1020,
+    y: 970
+  },
+  production: {
+    meals: 2
+  },
+  materials: {
+    bread: 2,
+    meat: 2,
+    fish: 2,
+    wine: 1
+  },
+  cost: {
+    coins: 20000,
+    wood: 100,
+    stones: 20,
+    bricks: 20,
+    woodplanks: 10
+  },
+  requires: {
+    settlement_level: 10
+  }
+}, {
+  name: 'Fisherman',
+  handle: 'fisherman',
+  description: 'The fisherman reels in fish from the waters surrounding your settlement.',
+  visible_upgrades: true,
+  levels: 5,
+  position: {
+    x: 2830,
+    y: 970
+  },
+  chance: {
+    pearls: 0.003
+  },
+  production: {
+    fish: 1
+  },
+  cost: {
+    coins: 15000,
+    wood: 100,
+    stones: 20,
+    bricks: 20,
+    woodplanks: 10
+  },
+  requires: {
+    settlement_level: 8
+  }
+}];
+"use strict";
+
+/**
+ * Width of the world in hexes.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+game.WORLD_SIZE_WIDTH = 64;
+/**
+ * Height of the world in hexes.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.WORLD_SIZE_HEIGHT = 64;
+/**
+ * Size of a world hex.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.WORLD_HEX_SIZE = 24;
+/**
+ * Whether to beautify the worldmap terrain.
+ *
+ * @constant
+ * @default
+ * @type {Boolean}
+ */
+
+game.WORLD_BEAUTIFY = true;
+/**
+ * Whether to display the worldmap grid.
+ *
+ * @constant
+ * @default
+ * @type {Boolean}
+ */
+
+game.WORLD_GRID = true;
+/**
+ * World generator roughness.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.WORLD_EROSION = 1.8;
+"use strict";
+
+/**
+ * Goods importance, vital.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+game.IMPORTANCE_VITAL = 50;
+/**
+ * Goods importance, high.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.IMPORTANCE_HIGH = 30;
+/**
+ * Goods importance, medium.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.IMPORTANCE_MEDIUM = 20;
+/**
+ * Goods importance, low.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.IMPORTANCE_LOW = 10;
+/**
+ * Tax discount for buying resources.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.TRADES_ADDITION = 10;
+/**
+ * Tax percent for selling resources.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.TRADES_DISCOUNT = 20;
+/**
+ * Amount of fame your settlement gets for each successful trade.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.FAME_PER_TRADE = 50;
+/**
+ * The black market discount.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.BLACK_MARKET_DISCOUNT = 80;
+/**
+ * The auctioneer discount.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.AUCTIONEER_DISCOUNT = 20;
+"use strict";
+
+/**
+ * Special place.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+game.SPECIAL_PLACE = 99;
+/**
+ * Days it takes to complete a world project.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.PLACE_TIME_TO_BUILD = 7200;
+/**
+ * Resources required to complete atage 2 or builging a world project.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+
+game.PLACE_RESOURCES_REQ = {
+  coins: 100000000,
+  wood: 10000,
+  woodplanks: 50000,
+  stones: 50000,
+  limestone: 10000,
+  mosaic: 1000,
+  meals: 10000,
+  tools: 1000,
+  bricks: 50000,
+  sand: 1000,
+  steel: 10000,
+  gold: 10000,
+  silver: 10000,
+  clothes: 10000,
+  furcoats: 10000,
+  gems: 1000,
+  diamonds: 1000,
+  champagne: 1000,
+  cigars: 1000,
+  jewelery: 1000,
+  robes: 1000,
+  perfume: 1000,
+  soap: 1000,
+  silk: 1000
+};
+game.PLACES_NAMES = ['Aria', 'Zeffari', 'Laenteglos', 'Eastborne', 'Larton', 'Nantgarw', 'Kingcardine', 'Swindlincote', 'Cewmann', 'Rochdale', 'Malrton', 'Falcon Haven', 'Rotherham', 'Ironforge', 'Halivaara', 'Ularee', 'Snake Canyon', 'Dornwich', 'Stawford', 'Eastborne', 'Dry Gulch', 'Tamworth', 'Ferncombe', 'Rutherglen', 'Dewhurst', 'Haedleigh', 'Chepstow'];
+"use strict";
+
+/**
+ * List of settlement types
+ *
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.SETTLEMENTS = ['city', 'village', 'metropolis', 'camp'];
+/**
+ * City settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CITY = 0;
+/**
+ * Village settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.VILLAGE = 1;
+/**
+ * Metropolis settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.METROPOLIS = 2;
+/**
+ * Raider camp settlement.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.CAMP = 3;
+/**
+ * Max number of settlements on a map.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_SETTLEMENTS = 100;
+/**
+ * Max number of settlement icons.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_SETTLEMENT_ICONS = 3;
+/**
+ * Max level a settlement can have.
+ * 
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MAX_SETTLEMENT_LEVEL = 99;
+/**
+ * Getting total city population is city_level * game.POPULATION_PER_LEVEL.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.POPULATION_PER_LEVEL = 2300;
+/**
+ * The minimum value settlement fame can have.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.MIN_FAME_VALUE = 1;
+/**
+ * List of possible world settlement names.
+ *
+ * @constant
+ * @type {Array}
+ */
+
+game.SETTLEMENT_NAMES = ['Alexandria', 'Rome', 'Carthage', 'Constantinople', 'Karakorum', 'Niniveh', 'Damascus', 'Thebes', 'Men-nefer', 'Peshawar', 'Uruk', 'Abydos', 'Actium', 'Tripolis', 'Troia', 'Chengdu', 'Mombasa', 'Apullum', 'Byblos', 'Abu', 'Pi-Ramesses', 'Djedu', 'Kyrene', 'Athens', 'Menat Khufu', 'Niani', 'Novgorod', 'Sarmizegetusa', 'Sigiriya', 'Selima Oasis', 'Tournai', 'Taruga', 'Amarna', 'Toledo', 'Mogadishu', 'Xinjiang', 'Yinxu', 'Bublidrus', 'Mylyra', 'Ialezus', 'Thebeia', 'Demaphos', 'Smyrnione', 'Dimonassa', 'Cyrarnassus', 'Posigeneia', 'Kasmigeneia', 'Khemdjumunein', 'Sakpi', 'Kersatennu', 'Farsou', 'Dehsa', 'Djasumar', 'Absaitunis', 'Avsi', 'Wasvarmeru', 'Behdju', 'Galamia', 'Pekies', 'VyVyrodari', 'Viasseto', 'Messibria', 'Molfeserta', 'Quanes', 'Braga', 'Seicer', 'Legara', 'Albadolid', 'Getastela', 'Drepanum', 'Canusium', 'Mogontiacum', 'Leucarum', 'Pautalia', 'Scallabis', 'Chernogan', 'Yelatrov', 'Novomoksary', 'Chistongelsk', 'Timaryevsk', 'Naberkuta', 'Koloyevka', 'Obnirodvinsk', 'Beloredimir', 'Kaspikarino', 'Troten', 'Neunsee', 'Weveltals', 'Oudenhout', 'Plailimar', 'Puciennes', 'Bernsloh', 'Geiselkau', 'Waterlina', 'Clonkenny', 'Terbommel', 'Drachnisse', 'Werdenthal', 'Erzell', 'Arrabona', 'Ugernum', 'Bulla Regia', 'Umbracum', 'Aquae Armenetiae', 'Isara', 'Regium Lepidum', 'Aquisgranium', 'Saint Petersburg', 'Gerasa', 'Besontio', 'Rhegium', 'Argentoratum', 'Apamea', 'Hadrianopolis', 'Byzantium', 'Ravenna', 'Carnotum', 'Podium Aniciense', 'Beroe Augusta Trajana', 'Dubris', 'Avenio', 'Luentinum', 'Castra Nicia', 'Crotona', 'Concordia Sagittaria', 'Vibo Valentia', 'Portus', 'Faventia', 'Tchidimbo', 'Concala', 'Berlowa', 'Bagangoua', 'Bangamo', 'Bossemlindao', 'Boti', 'Bonnamar', 'Dilobunda', 'Lupugani', 'Mimomo', 'Nkolabo', 'Mindo', 'Kindamno', 'Kanyesisi', 'Mwinirenje', 'Tbouleang', 'Kamphon', 'Jamya', 'Yogtar', 'Ambu', 'Kubak', 'Wainlet', 'Shwebyu', 'Gaguio', 'Cartangas', 'Surakham', 'Kratai', 'Sa Pha', 'My Tinh', 'Neurau', 'Hollatrenk', 'Woluten', 'Forwerpen', 'Sarsir', 'Pérission', 'Alsfeld', 'Goldburg', 'Thurway', 'Watertowel', 'Hengeloopen', 'Alkningen', 'Mornach', 'Gorpen', 'Novoupa', 'Ozyosinsk', 'Cheregansk', 'Sibanovsk', 'Vserodvinsk', 'Polelensk', 'Novokugadan', 'Belgovgrad', 'Chelyakala', 'Tovodsk', 'Kensato', 'Kurishiri', 'Aridakoshi', 'Pingguan', 'Zoajiang', 'Ulaanteeg', 'Nomsai', 'Tangye', 'Chuncheon', 'Ikju'];
+/**
+ * List of possible ruler names for settlements and various other obscure
+ * reasons.
+ *
+ * @type {Array}
+ * @constant
+ */
+
+game.NAMES = ['Caesar', 'Cronus', 'Dido', 'Genghis', 'Khufu', 'Musa I', 'Sennacherib', 'Pepi', 'Hatshepsut', 'Clovis', 'Gilgamesh', 'Dalai Lama', 'Ashoka', 'Charlemagne', 'Darius', 'Ivan III', 'Qin Shi Huang', 'Ozymandias', 'Timur', 'Pol Pot', 'Napoleon', 'Hirohito', 'Ivan Sirko', 'Peter the Great', 'Pan', 'Victor', 'Lekan', 'Sheamus', 'Itumeleng', 'Varya', 'Gervas', 'Stefanija', 'Meera', 'Sethunya', 'Soupi', 'Vestmar', 'Numi', 'Marteinn', 'Saithor', 'Haki', 'Ragnar', 'Qiao', 'Zeng', 'Zhan', 'Guo', 'Yan', 'Zarpiya', 'Hada', 'Kikarnahsu', 'Tarhuntapiya', 'Karnapaka', 'Dambi', 'Silalluhi', 'Zuwahallati', 'Sakkummilla', 'Hapu', 'Ammalli', 'Kawiya', 'Nisasar', 'Abba', 'Rishabha', 'Sena', 'Kalpana', 'Nupur', 'Anu', 'Parvati', 'Rani', 'Chandrama', 'Dhani', 'Gallus', 'Flavius', 'Decimus', 'Titus', 'Papia', 'Aburia', 'Volusia', 'Macrinia', 'Lucia', 'Lucretia', 'Dubov', 'Filimonov', 'Mikhail', 'Larissa', 'Zenaide', 'Lenora', 'Natasha', 'Muhammet', 'Haydar', 'Hizir', 'Orhan', 'Huriye', 'Fehime', 'Seher', 'Qadir', 'Lim', 'Yami', 'Veasna', 'Baadur', 'Sharar', 'Yuuta', 'Hallie', 'Anson', 'Davis', 'Ondina', 'Zan', 'Gibs', 'Soth', 'Naoki', 'Hachirou', 'Irmhild', 'Thiago', 'Stefano', 'Gerardo', 'Alonso', 'Mario', 'Consuela', 'Graciela', 'Alicia', 'Mariangel', 'Qimmiabruk', 'Qajak', 'Akrittok', 'Kuk`uq', 'Noahtakmiut', 'Kinaktok', 'Iluliaq', 'Taktuq', 'Aquutaq', 'Tulugaq', 'Uyarak', 'Onartok', 'Karpok', 'Husain', 'Farhan', 'Umar', 'Safiyya', 'Yanduza', 'Fatimah', 'Tasufin', 'Hammad'];
+"use strict";
+
+/**
+ * List of all available in-game events.
+ * 
+ * @constant
+ * @type {Array}
+ */
+game.EVENTS = [{
+  name: 'Great earthquake',
+  description: 'A great earthquake sweeps across your city destroying the settlement`s BUILDING in the process.',
+  chance: 0.00001,
+  destroy: true
+}, {
+  name: 'Royal marriage',
+  description: 'A marriage was arranged between a member of your family ' + 'and the royal family of SETTLEMENT. This raises your influence on ' + 'SETTLEMENT by INFLUENCE. Good job!',
+  chance: 0.0001,
+  raise: {
+    influence: 10
+  }
+}, {
+  name: 'Raiders attack',
+  description: 'A band of raiders attacked the outskirts of your ' + 'settlement. Repairing the affected buildings costs your settlement ' + 'COINS coins.',
+  chance: 0.0002,
+  lower: {
+    coins: 1000
+  }
+}, {
+  name: 'Discovery',
+  description: 'The engineers in your settlement made a great discovery ' + 'which made you more famous, thus gaining FAME fame and RESEARCH ' + 'research.',
+  chance: 0.0004,
+  raise: {
+    fame: 100,
+    research: 10
+  }
+}, {
+  name: 'Foreign spy discovered',
+  description: 'A spy from SETTLEMENT was found hiding in your ' + 'settlement, as a reward for finding him you gain ESPIONAGE ' + 'espionage.',
+  chance: 0.002,
+  raise: {
+    espionage: 10
+  }
+}, {
+  name: 'Your spy uncovered',
+  description: 'One of your spies in SETTLEMENT was discovered, ' + 'SETTLEMENT`s ruler is angry so you lose PRESTIGE prestige.',
+  chance: 0.003,
+  lower: {
+    prestige: 10
+  }
+}];
+"use strict";
+
+/**
+ * List of resource categories.
+ * 
+ * @constant
+ * @default
+ * @type {Array}
+ */
+game.RESOURCE_CATEGORIES = ['food', 'construction', 'animals', 'industry', 'military', 'luxury', 'exotic'];
+/**
+ * List of all the resources available in-game.
+ * 
+ * @constant
+ * @type {Object}
+ */
+
+game.RESOURCES = {
+  coins: {
+    name: 'Coins',
+    category: 'virtual',
+    toolbar: true
+  },
+  fame: {
+    name: 'Fame',
+    category: 'virtual'
+  },
+  prestige: {
+    name: 'Prestige',
+    category: 'virtual'
+  },
+  espionage: {
+    name: 'Espionage',
+    category: 'virtual'
+  },
+  research: {
+    name: 'Research',
+    category: 'virtual'
+  },
+  faith: {
+    name: 'Faith',
+    category: 'virtual'
+  },
+  alcohol: {
+    name: 'Alcohol',
+    price: 80,
+    category: 'industry'
+  },
+  almonds: {
+    name: 'Almonds',
+    price: 180,
+    category: 'exotic'
+  },
+  armor: {
+    name: 'Armor',
+    price: 220,
+    category: 'military'
+  },
+  barrels: {
+    name: 'Barrels',
+    price: 60,
+    category: 'industry'
+  },
+  beer: {
+    name: 'Beer',
+    price: 30,
+    category: 'industry'
+  },
+  books: {
+    name: 'Books',
+    price: 100,
+    category: 'luxury'
+  },
+  bottles: {
+    name: 'Bottles',
+    price: 10,
+    category: 'industry'
+  },
+  bread: {
+    name: 'Bread',
+    price: 30,
+    category: 'food',
+    toolbar: true
+  },
+  bricks: {
+    name: 'Bricks',
+    price: 40,
+    category: 'construction'
+  },
+  candles: {
+    name: 'Candles',
+    price: 100,
+    category: 'luxury'
+  },
+  candlesticks: {
+    name: 'Candlesticks',
+    price: 170,
+    category: 'luxury'
+  },
+  cannons: {
+    name: 'Cannons',
+    price: 700,
+    category: 'military'
+  },
+  carpets: {
+    name: 'Carpets',
+    price: 400,
+    category: 'luxury'
+  },
+  catapults: {
+    name: 'Catapults',
+    price: 1200,
+    category: 'military'
+  },
+  cattle: {
+    name: 'Cattle',
+    price: 43,
+    category: 'animals'
+  },
+  champagne: {
+    name: 'Champagne',
+    price: 300,
+    imported: true,
+    category: 'luxury'
+  },
+  cheese: {
+    name: 'Cheese',
+    price: 130,
+    category: 'food'
+  },
+  cigars: {
+    name: 'Cigars',
+    price: 290,
+    category: 'luxury'
+  },
+  clay: {
+    name: 'Clay',
+    price: 20,
+    category: 'construction',
+    toolbar: true
+  },
+  clothes: {
+    name: 'Clothes',
+    price: 104,
+    category: 'industry'
+  },
+  coal: {
+    name: 'Coal',
+    price: 36,
+    category: 'industry'
+  },
+  cocoa: {
+    name: 'Cocoa',
+    price: 210,
+    category: 'exotic'
+  },
+  coffee: {
+    name: 'Coffee',
+    price: 300,
+    category: 'exotic'
+  },
+  coffeebeans: {
+    name: 'Coffee Beans',
+    price: 220,
+    category: 'exotic'
+  },
+  copper: {
+    name: 'Copper',
+    price: 60,
+    category: 'industry',
+    toolbar: true
+  },
+  copperore: {
+    name: 'Copper Ore',
+    price: 43,
+    category: 'industry'
+  },
+  corn: {
+    name: 'Corn',
+    price: 50,
+    category: 'food'
+  },
+  cotton: {
+    name: 'Cotton',
+    price: 146,
+    category: 'industry'
+  },
+  cottonfabric: {
+    name: 'Fabric',
+    price: 246,
+    category: 'industry'
+  },
+  dates: {
+    name: 'Dates',
+    price: 160,
+    category: 'exotic'
+  },
+  diamonds: {
+    name: 'Diamonds',
+    price: 900,
+    category: 'luxury'
+  },
+  donkeys: {
+    name: 'Donkeys',
+    price: 90,
+    imported: true,
+    category: 'animals'
+  },
+  elephants: {
+    name: 'Elephants',
+    price: 150,
+    imported: true,
+    category: 'animals'
+  },
+  essentialoil: {
+    name: 'Essential Oil',
+    price: 370,
+    imported: true,
+    category: 'luxury'
+  },
+  fish: {
+    name: 'Fish',
+    price: 16,
+    category: 'food'
+  },
+  flour: {
+    name: 'Flour',
+    price: 40,
+    category: 'food'
+  },
+  furcoats: {
+    name: 'Fur coats',
+    price: 105,
+    category: 'industry'
+  },
+  furs: {
+    name: 'Furs',
+    price: 78,
+    category: 'industry'
+  },
+  gems: {
+    name: 'Gems',
+    price: 460,
+    category: 'luxury'
+  },
+  glass: {
+    name: 'Glass',
+    price: 86,
+    category: 'industry'
+  },
+  glasses: {
+    name: 'Glasses',
+    price: 140,
+    category: 'luxury'
+  },
+  goat: {
+    name: 'Goat',
+    price: 55,
+    category: 'animals'
+  },
+  gold: {
+    name: 'Gold',
+    price: 260,
+    category: 'industry',
+    toolbar: true
+  },
+  goldore: {
+    name: 'Gold Ore',
+    price: 80,
+    category: 'industry'
+  },
+  grapes: {
+    name: 'Grapes',
+    price: 35,
+    category: 'industry'
+  },
+  gunpowder: {
+    name: 'Gunpowder',
+    price: 420,
+    category: 'military'
+  },
+  hides: {
+    name: 'Hides',
+    price: 25,
+    category: 'industry'
+  },
+  honey: {
+    name: 'Honey',
+    price: 180,
+    category: 'luxury'
+  },
+  horses: {
+    name: 'Horses',
+    price: 100,
+    imported: true,
+    category: 'animals'
+  },
+  indigo: {
+    name: 'Indigo',
+    price: 80,
+    category: 'exotic'
+  },
+  iron: {
+    name: 'Iron',
+    price: 82,
+    category: 'industry',
+    toolbar: true
+  },
+  ironore: {
+    name: 'Iron Ore',
+    price: 42,
+    category: 'industry'
+  },
+  jewelery: {
+    name: 'Jewelery',
+    price: 900,
+    category: 'luxury'
+  },
+  leather: {
+    name: 'Leather',
+    price: 60,
+    category: 'industry'
+  },
+  limestone: {
+    name: 'Limestone',
+    price: 20,
+    category: 'construction'
+  },
+  lithium: {
+    name: 'Lithium',
+    price: 260,
+    imported: true,
+    category: 'exotic'
+  },
+  marzipan: {
+    name: 'Marzipan',
+    price: 150,
+    category: 'luxury'
+  },
+  meals: {
+    name: 'Meals',
+    price: 120,
+    category: 'food'
+  },
+  meat: {
+    name: 'Meat',
+    price: 30,
+    category: 'food',
+    toolbar: true
+  },
+  milk: {
+    name: 'Milk',
+    price: 30,
+    category: 'industry'
+  },
+  mosaic: {
+    name: 'Mosaic',
+    price: 200,
+    category: 'construction'
+  },
+  oil: {
+    name: 'Oil',
+    price: 200,
+    category: 'industry'
+  },
+  paper: {
+    name: 'Paper',
+    price: 70,
+    category: 'luxury'
+  },
+  pearls: {
+    name: 'Pearls',
+    price: 450,
+    category: 'luxury'
+  },
+  perfume: {
+    name: 'Perfume',
+    price: 305,
+    category: 'luxury'
+  },
+  pig: {
+    name: 'Pig',
+    price: 55,
+    category: 'animals'
+  },
+  pottery: {
+    name: 'Pottery',
+    price: 55,
+    category: 'industry'
+  },
+  provisions: {
+    name: 'Provisions',
+    price: 300,
+    category: 'military'
+  },
+  quartz: {
+    name: 'Quartz',
+    price: 18,
+    category: 'industry'
+  },
+  robes: {
+    name: 'Robes',
+    price: 400,
+    category: 'luxury'
+  },
+  ropes: {
+    name: 'Ropes',
+    price: 42,
+    category: 'industry'
+  },
+  roses: {
+    name: 'Roses',
+    price: 70,
+    category: 'luxury'
+  },
+  salt: {
+    name: 'Salt',
+    price: 20,
+    category: 'industry',
+    toolbar: true
+  },
+  sand: {
+    name: 'Sand',
+    price: 10,
+    category: 'construction'
+  },
+  silk: {
+    name: 'Silk',
+    price: 320,
+    category: 'exotic'
+  },
+  silverore: {
+    name: 'Silver Ore',
+    price: 120,
+    imported: true,
+    category: 'luxury'
+  },
+  silver: {
+    name: 'Silver',
+    price: 300,
+    imported: true,
+    category: 'luxury'
+  },
+  spices: {
+    name: 'Spices',
+    price: 285,
+    category: 'exotic'
+  },
+  spyglasses: {
+    name: 'Spyglasses',
+    price: 280,
+    imported: true,
+    category: 'military'
+  },
+  soap: {
+    name: 'Soap',
+    price: 220,
+    category: 'luxury'
+  },
+  statues: {
+    name: 'Statues',
+    price: 1200,
+    imported: true,
+    category: 'industry'
+  },
+  steel: {
+    name: 'Steel',
+    price: 160,
+    imported: true,
+    category: 'industry'
+  },
+  stones: {
+    name: 'Stones',
+    price: 16,
+    category: 'construction',
+    toolbar: true
+  },
+  sugar: {
+    name: 'Sugar',
+    price: 145,
+    category: 'luxury'
+  },
+  sugarcane: {
+    name: 'Sugarcane',
+    price: 120,
+    category: 'luxury'
+  },
+  sulphur: {
+    name: 'Sulphur',
+    price: 180,
+    category: 'industry'
+  },
+  tallow: {
+    name: 'Tallow',
+    price: 10,
+    category: 'industry'
+  },
+  tobacco: {
+    name: 'Tobacco',
+    price: 190,
+    category: 'exotic'
+  },
+  tools: {
+    name: 'Tools',
+    price: 135,
+    category: 'construction'
+  },
+  wax: {
+    name: 'Wax',
+    price: 40,
+    category: 'luxury'
+  },
+  weapons: {
+    name: 'Weapons',
+    price: 220,
+    category: 'military'
+  },
+  wheat: {
+    name: 'Wheat',
+    price: 25,
+    category: 'food'
+  },
+  wine: {
+    name: 'Wine',
+    price: 95,
+    category: 'luxury'
+  },
+  wood: {
+    name: 'Wood',
+    price: 20,
+    category: 'construction',
+    toolbar: true
+  },
+  woodplanks: {
+    name: 'Wood Planks',
+    price: 30,
+    category: 'construction',
+    toolbar: true
+  }
+};
+"use strict";
+
+/**
+ * List of all obtainable game achievements.
+ *
+ * @constant
+ * @type {Array}
+ */
+game.ACHIEVEMENTS = [{
+  description: 'Develop your settlement to level 10.',
+  name: 'Kiddo',
+  handle: 'kiddo',
+  conditions: {
+    settlement_level: 10
+  },
+  points: 100
+}, {
+  description: 'Develop your settlement to level 20.',
+  name: 'Teen',
+  handle: 'teen',
+  conditions: {
+    settlement_level: 20
+  },
+  points: 200
+}, {
+  description: 'Develop your settlement to level 30.',
+  name: 'On my own',
+  handle: 'onmyown',
+  conditions: {
+    settlement_level: 30
+  },
+  points: 500
+}, {
+  description: 'Develop your settlement to level 40.',
+  name: 'Fear me',
+  handle: 'fearme',
+  conditions: {
+    settlement_level: 40
+  },
+  points: 1000
+}, {
+  description: 'Gather maximum espionage.',
+  name: 'Anna Chapman',
+  handle: 'chapman',
+  conditions: {
+    resources: {
+      espionage: game.MAX_ESPIONAGE_VALUE
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather maximum faith.',
+  name: 'Jesus Christ',
+  handle: 'jesus',
+  conditions: {
+    resources: {
+      faith: game.MAX_FAITH_VALUE
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather maximum prestige.',
+  name: 'Your highness',
+  handle: 'highness',
+  conditions: {
+    resources: {
+      espionage: game.MAX_PRESTIGE_VALUE
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather maximum research.',
+  name: 'Albert Einstein',
+  handle: 'eistein',
+  conditions: {
+    resources: {
+      research: game.MAX_RESEARCH_VALUE
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 100k coins in your settlement.',
+  name: 'Gatherer',
+  handle: 'gatherer',
+  conditions: {
+    resources: {
+      coins: 100000
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 500k coins in your settlement.',
+  name: 'Ba dum tss',
+  handle: 'badumtss',
+  conditions: {
+    resources: {
+      coins: 500000
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 1M coins in your settlement.',
+  name: 'Milionaire',
+  handle: 'milionaire',
+  conditions: {
+    resources: {
+      coins: 1000000
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 10M coins in your settlement.',
+  name: 'Rockefeller',
+  handle: 'rockefeller',
+  conditions: {
+    resources: {
+      coins: 10000000
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 100M coins in your settlement.',
+  name: 'Rottschild',
+  handle: 'rottschild',
+  conditions: {
+    resources: {
+      coins: 100000000
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 10k stones in your settlement.',
+  name: 'Stone Age',
+  handle: 'stoneage',
+  conditions: {
+    resources: {
+      stones: 10000
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 10k wood in your settlement.',
+  name: 'Woody the Woodpecker',
+  handle: 'woody',
+  conditions: {
+    resources: {
+      wood: 10000
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 10k meat in your settlement.',
+  name: 'Animal killer',
+  handle: 'animalkiller',
+  conditions: {
+    resources: {
+      meat: 10000
+    }
+  },
+  points: 100
+}, {
+  description: 'Recruit 100 soldiers in your settlement.',
+  name: 'Armed to the teeth',
+  handle: 'armedteeth',
+  conditions: {
+    soldiers: 100
+  },
+  points: 100
+}, {
+  description: 'Recruit 500 soldiers in your settlement.',
+  name: 'Warfiend',
+  handle: 'warfiend',
+  conditions: {
+    soldiers: 500
+  },
+  points: 200
+}, {
+  description: 'Recruit 1000 soldiers in your settlement',
+  name: 'Warlord',
+  handle: 'warlord',
+  conditions: {
+    soldiers: 1000
+  },
+  points: 1000
+}, {
+  description: 'Recruit 10 ships in your settlement.',
+  name: 'Shipwrecked',
+  handle: 'shipwrecked',
+  conditions: {
+    ships: 10
+  },
+  points: 100
+}, {
+  description: 'Recruit 50 ships in your settlement.',
+  name: 'Ship has sailed',
+  handle: 'shipsailed',
+  conditions: {
+    ships: 50
+  },
+  points: 100
+}, {
+  description: 'Recruit 100 ships in your settlement.',
+  name: 'Captain Ahab',
+  handle: 'ahab',
+  conditions: {
+    ships: 100
+  },
+  points: 1000
+}, {
+  description: 'Gather 100 prestige.',
+  name: 'Prestigious',
+  handle: 'prestigious',
+  conditions: {
+    resources: {
+      prestige: 100
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 500 prestige.',
+  name: 'The God King',
+  handle: 'godking',
+  conditions: {
+    resources: {
+      prestige: 500
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 10 espionage.',
+  name: 'You got Mossad-ed!',
+  handle: 'mossad',
+  conditions: {
+    resources: {
+      espionage: 10
+    }
+  },
+  points: 10
+}, {
+  description: 'Gather 100 espionage.',
+  name: 'You got Snowden-ed!',
+  handle: 'snowden',
+  conditions: {
+    resources: {
+      espionage: 100
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 500 espionage.',
+  name: 'I spy with my own eye',
+  handle: 'ispy',
+  conditions: {
+    resources: {
+      espionage: 500
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 10 research.',
+  name: 'Initiate',
+  handle: 'initiate',
+  conditions: {
+    resources: {
+      research: 10
+    }
+  },
+  points: 10
+}, {
+  description: 'Gather 100 research.',
+  name: 'Researcher',
+  handle: 'researcher',
+  conditions: {
+    resources: {
+      research: 100
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 500 research.',
+  name: 'Searching',
+  handle: 'searching',
+  conditions: {
+    resources: {
+      research: 500
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 100 faith.',
+  name: 'Faithful',
+  handle: 'faithful',
+  conditions: {
+    resources: {
+      faith: 100
+    }
+  },
+  points: 100
+}, {
+  description: 'Gather 500 faith.',
+  name: 'Disciple',
+  handle: 'disciple',
+  conditions: {
+    resources: {
+      faith: 500
+    }
+  },
+  points: 100
+}, {
+  description: 'Build a Castle in your settlement.',
+  name: 'Castlevania',
+  handle: 'castlevania',
+  conditions: {
+    buildings: {
+      castle: 1
+    }
+  },
+  points: 400
+}, {
+  description: 'Build a Church in your settlement.',
+  name: 'Winston Churchill',
+  handle: 'churchill',
+  conditions: {
+    buildings: {
+      church: 1
+    }
+  },
+  points: 100
+}, {
+  description: 'Build an Academy in your settlement.',
+  name: 'Academician',
+  handle: 'academician',
+  conditions: {
+    buildings: {
+      academy: 1
+    }
+  },
+  points: 100
+}, {
+  description: 'Build each of the mines (Iron, Gold, Copper and Salt).',
+  name: 'All mine!',
+  handle: 'allmine',
+  conditions: {
+    buildings: {
+      ironmine: 1,
+      goldmine: 1,
+      coppermine: 1,
+      saltmine: 1
+    }
+  },
+  points: 200
+}, {
+  description: 'Fill out all your storage space.',
+  name: 'All filled up',
+  handle: 'allfilledup',
+  conditions: {
+    storage: 0
+  },
+  points: 500
+}, {
+  description: 'Build 10 catapults in your settlement.',
+  name: 'Cat-a-pulter',
+  handle: 'catapulter',
+  conditions: {
+    resources: {
+      catapults: 10
+    }
+  },
+  points: 200
+}, {
+  description: 'Build an Embassy in your settlement.',
+  name: 'Gandhi',
+  handle: 'gandhi',
+  conditions: {
+    buildings: {
+      embassy: 1
+    }
+  },
+  points: 100
+}, {
+  description: 'Get 100 achievements.',
+  name: 'Sir Achievealot',
+  handle: 'achievelot',
+  conditions: {
+    achievements: 100
+  },
+  points: 100
+}, {
+  description: 'Recruit a mercenary army.',
+  name: 'Merc',
+  handle: 'merc',
+  conditions: {
+    mercenary: 1
+  },
+  points: 100
+}, {
+  description: 'Reach 10 milion people in your settlement.',
+  name: 'Megalopolis',
+  handle: 'megalopolis',
+  conditions: {
+    population: 10000000
+  },
+  points: 200
+}, {
+  description: 'Upgrade your settlement`s Academy to level 3.',
+  name: 'Too much research',
+  handle: 'toomuchresearch',
+  conditions: {
+    buildings: {
+      academy: 3
+    }
+  },
+  points: 200
+}, {
+  description: 'Upgrade your settlement`s Castle to level 3.',
+  name: 'Goldilocks',
+  handle: 'goldilocks',
+  conditions: {
+    buildings: {
+      castle: 3
+    }
+  },
+  points: 500
+}, {
+  description: 'Upgrade your settlement`s Church to level 3.',
+  name: 'Cathedral',
+  handle: 'cathedral',
+  conditions: {
+    buildings: {
+      church: 3
+    }
+  },
+  points: 300
+}, {
+  description: 'Build a Tournir Area in your settlement.',
+  name: 'Richard Lionheart',
+  handle: 'lionheart',
+  conditions: {
+    buildings: {
+      tournir: 1
+    }
+  },
+  points: 1000
+}, {
+  description: 'Send a caravan to another settlement.',
+  name: 'Donkey Lord',
+  handle: 'donkeylord',
+  points: 100
+}, {
+  description: 'Send a spy to another settlement.',
+  name: 'Bond. James Bond.',
+  handle: 'jamesbond',
+  points: 100
+}, {
+  description: 'Send an army to another settlement.',
+  name: 'Warrior',
+  handle: 'sendarmy',
+  points: 100
+}, {
+  description: 'Declare war to another settlement.',
+  name: 'Warlord',
+  handle: 'declarewar',
+  points: 100
+}, {
+  description: 'Propose to another settlement to join you.',
+  name: 'The One to Rule Them All',
+  handle: 'rulethemall',
+  points: 100
+}, {
+  description: 'Propose a pact to another settlement.',
+  name: 'The Friendly',
+  handle: 'friendly',
+  points: 100
+}, {
+  description: 'Propose an alliance to another settlement.',
+  name: 'The Pacifist',
+  handle: 'pacifist',
+  points: 100
+}, {
+  description: 'Win a battleground.',
+  name: 'Conqueror',
+  handle: 'conqueror',
+  points: 20
+}, {
+  description: 'Lose a battleground.',
+  name: 'Foolish!',
+  handle: 'foolish',
+  points: 10
+}, {
+  description: 'Convince another settlement to accept an alliance.',
+  name: 'I got your back',
+  handle: 'gotyourback',
+  points: 200
+}, {
+  description: 'Convince another settlement to accept a pact.',
+  name: 'Pactish',
+  handle: 'pactish',
+  points: 200
+}, {
+  description: 'Convince another settlement to join your settlement.',
+  name: 'You are mine!',
+  handle: 'youaremine',
+  points: 500
+}, {
+  description: 'Adopt Christianity as the religion of your settlement.',
+  name: 'Church of Nativity',
+  handle: 'nativity',
+  conditions: {
+    religion: 'christianity'
+  },
+  points: 100
+}, {
+  description: 'Adopt Islam as the religion of your settlement.',
+  name: 'Kaaba',
+  handle: 'kaaba',
+  conditions: {
+    religion: 'islam'
+  },
+  points: 100
+}, {
+  description: 'Adopt Judaism as the religion of your settlement.',
+  name: 'Hanukkah',
+  handle: 'hanukkah',
+  conditions: {
+    religion: 'judaism'
+  },
+  points: 100
+}, {
+  description: 'Adopt Buddhism as the religion of your settlement.',
+  name: 'Bodhisattva',
+  handle: 'bodhisattva',
+  conditions: {
+    religion: 'buddhism'
+  },
+  points: 100
+}, {
+  description: 'Adopt Hinduism as the religion of your settlement.',
+  name: 'Bhagavad Gita',
+  handle: 'gita',
+  conditions: {
+    religion: 'hinduism'
+  },
+  points: 100
+}, {
+  description: 'Adopt Confucianism as the religion of your settlement.',
+  name: 'Tiān',
+  handle: 'tian',
+  conditions: {
+    religion: 'confucianism'
+  },
+  points: 100
+}, {
+  description: 'Adopt Taoism as the religion of your settlement.',
+  name: 'Laozi',
+  handle: 'laozi',
+  conditions: {
+    religion: 'taoism'
+  },
+  points: 100
+}];
+"use strict";
+
+/*
+ * Items in game
+ * ================
+ *
+ * The items in game follow a very simple rule: common is the worst type,
+ * rare is good, epic is very good, legendary is for the gods and heroes.
+ *
+ * That's it for now.
+ */
+
+/**
+ * Armor
+ *
+ * @constant
+ * @type {Number}
+ */
+game.ITEM_TYPE_ARMOR = 1;
+/**
+ * Weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_TYPE_WEAPON = 2;
+/**
+ * Other
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_TYPE_OTHER = 3;
+/**
+ * Cloth armor
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ARMOR_TYPE_CLOTH = 1;
+/**
+ * Leather armor
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ARMOR_TYPE_LEATHER = 2;
+/**
+ * Mail armor
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ARMOR_TYPE_MAIL = 3;
+/**
+ * Plate armor
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ARMOR_TYPE_PLATE = 4;
+/**
+ * Melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE = 1;
+/**
+ * Ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_RANGED = 2;
+/**
+ * Bow ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_RANGED_BOW = 1;
+/**
+ * Crossbow ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_RANGED_CROSSBOW = 2;
+/**
+ * Gun ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_RANGED_GUN = 3;
+/**
+ * Thrown ranged weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_RANGED_THROWN = 4;
+/**
+ * Dagger melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_DAGGER = 1;
+/**
+ * One-handed axe melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_AXE_ONE_HAND = 2;
+/**
+ * Two-handed axe melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_AXE_TWO_HAND = 3;
+/**
+ * Fist melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_FIST = 4;
+/**
+ * One-handed mace melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_MACE_ONE_HAND = 5;
+/**
+ * Two-handed mace melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_MACE_TWO_HAND = 6;
+/**
+ * Polearm melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_POLEARM = 7;
+/**
+ * Staff melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_STAFF = 8;
+/**
+ * One-handed sword melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_SWORD_ONE_HAND = 9;
+/**
+ * Two-handed sword melee weapon
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.WEAPON_TYPE_MELEE_SWORD_TWO_HAND = 10;
+/**
+ * Common quality, bad
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_QUALITY_COMMON = 1;
+/**
+ * Rare quality, good
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_QUALITY_RARE = 2;
+/**
+ * Epic quality, very good
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_QUALITY_EPIC = 3;
+/**
+ * Legendary quality, legen-wait for it-dary!
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_QUALITY_LEGENDARY = 4;
+/**
+ * Names of the types of item quality
+ *
+ * @constant
+ * @type {Array}
+ */
+
+game.ITEM_QUALITY_LIST = ['', 'Common', 'Rare', 'Epic', 'Legendary'];
+/**
+ * List of colors for each type of item quality
+ *
+ * @constant
+ * @type {Array}
+ */
+
+game.ITEM_QUALITY_COLORS = ['', '#00ff00', '#0070ff', '#a335ee', '#ff8000'];
+/**
+ * No actual slot, reserved
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_NONE = 0;
+/**
+ * Neck item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_NECK = 1;
+/**
+ * Head item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_HEAD = 2;
+/**
+ * Ring item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_RING = 3;
+/**
+ * Shoulder item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_SHOULDER = 4;
+/**
+ * Chestpiece item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_CHEST = 5;
+/**
+ * Leggings item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_LEGS = 6;
+/**
+ * Hands item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_HANDS = 7;
+/**
+ * Waist item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_WAIST = 8;
+/**
+ * Feet item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_FEET = 9;
+/**
+ * Main hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_MAIN_HAND = 10;
+/**
+ * Off hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_OFF_HAND = 11;
+/**
+ * Any hand item slot
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOT_ANY_HAND = 12;
+/**
+ * Number of item slots
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_SLOTS_NUM = 12;
+/**
+ * Number of backpack slots
+ *
+ * @constant
+ * @type {Number}
+ */
+
+game.ITEM_BACKPACK_NUM = 6;
+/**
+ * Name of item slots
+ *
+ * @constant
+ * @type {Array}
+ */
+
+game.ITEM_SLOTS_LIST = ['', 'Neck', 'Head', 'Ring', 'Shoulder', 'Chest', 'Legs', 'Hands', 'Waist', 'Feet', 'Main Hand', 'Off Hand', ''];
+/**
+ * Random items
+ *
+ * @constant
+ * @type {Array}
+ */
+
+game.RANDOM_UNCOMMON = [{
+  name: 'ITEM of Spirit',
+  stats: {
+    spirit: 0
+  }
+}, {
+  name: 'ITEM of Intellect',
+  stats: {
+    intellect: 0
+  }
+}, {
+  name: 'ITEM of Strength',
+  stats: {
+    strength: 0
+  }
+}, {
+  name: 'ITEM of Stamina',
+  stats: {
+    spirit: 0
+  }
+}, {
+  name: 'ITEM of Agility',
+  stats: {
+    agility: 0
+  }
+}, {
+  name: 'ITEM of the Tiger',
+  stats: {
+    strength: 0,
+    agility: 0
+  }
+}, {
+  name: 'ITEM of the Bear',
+  stats: {
+    strength: 0,
+    stamina: 0
+  }
+}, {
+  name: 'ITEM of the Gorilla',
+  stats: {
+    strength: 0,
+    intellect: 0
+  }
+}, {
+  name: 'ITEM of the Boar',
+  stats: {
+    strength: 0,
+    spirit: 0
+  }
+}, {
+  name: 'ITEM of the Monkey',
+  stats: {
+    agility: 0,
+    stamina: 0
+  }
+}, {
+  name: 'ITEM of the Falcon',
+  stats: {
+    agility: 0,
+    intellect: 0
+  }
+}, {
+  name: 'ITEM of the Wolf',
+  stats: {
+    agility: 0,
+    spirit: 0
+  }
+}, {
+  name: 'ITEM of the Eagle',
+  stats: {
+    stamina: 0,
+    intellect: 0
+  }
+}, {
+  name: 'ITEM of the Whale',
+  stats: {
+    stamina: 0,
+    spirit: 0
+  }
+}, {
+  name: 'ITEM of the Owl',
+  stats: {
+    intellect: 0,
+    spirit: 0
+  }
+}, {
+  name: 'ITEM of the Bandit',
+  stats: {
+    agility: 0,
+    stamina: 0,
+    attackPower: 0
+  }
+}, {
+  name: 'ITEM of the Beast',
+  stats: {
+    agility: 0,
+    strength: 0,
+    stamina: 0
+  }
+}];
+/**
+ * Weapon items
+ *
+ * @constant
+ * @type {Object}
+ */
+
+game.ITEM_WEAPON_DAGGER_WICKED = {
+  name: 'Wicked Dagger',
+  id: 1,
+  stats: {
+    damageMin: 0,
+    damageMax: 2,
+    speed: 1.60
+  },
+  slot: game.ITEM_SLOT_ANY_HAND,
+  type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_COMMON,
+  cost: 1
+};
+game.ITEM_WEAPON_DAGGER_DIRK = {
+  name: 'Wicked Dirk',
+  id: 2,
+  stats: {
+    damageMin: 1,
+    damageMax: 3,
+    speed: 1.60
+  },
+  slot: game.ITEM_SLOT_ANY_HAND,
+  type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_COMMON,
+  cost: 1.2
+};
+game.ITEM_WEAPON_AXE_SMALL = {
+  name: 'Small Axe',
+  id: 3,
+  stats: {
+    damageMin: 3,
+    damageMax: 10,
+    speed: 1.60
+  },
+  slot: game.ITEM_SLOT_ANY_HAND,
+  type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_COMMON,
+  cost: 2.2
+};
+game.ITEM_WEAPON_SWORD_SMALL = {
+  name: 'Small Sword',
+  id: 4,
+  stats: {
+    damageMin: 2,
+    damageMax: 4,
+    speed: 1.60
+  },
+  slot: game.ITEM_SLOT_ANY_HAND,
+  type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_COMMON,
+  cost: 2.2
+};
+game.ITEM_WEAPON_BUCKLER_SMALL = {
+  name: 'Small Buckler',
+  id: 5,
+  stats: {
+    armor: 10
+  },
+  slot: game.ITEM_SLOT_OFF_HAND,
+  quality: game.ITEM_QUALITY_COMMON,
+  cost: 2.2
+};
+game.ITEM_EXCALIBUR = {
+  name: 'Excalibur',
+  id: 6,
+  stats: {
+    damageMin: 10,
+    damageMax: 50,
+    speed: 1.0,
+    agility: 20,
+    stamina: 10,
+    strength: 30
+  },
+  slot: game.ITEM_SLOT_MAIN_HAND,
+  type: game.ITEM_TYPE_WEAPON,
+  secondary_type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_LEGENDARY,
+  cost: 1
+};
+game.ITEM_CROWN_OF_KINGS = {
+  name: 'Crown of Kings',
+  id: 7,
+  stats: {
+    armor: 10,
+    stamina: 10,
+    strength: 30
+  },
+  slot: game.ITEM_SLOT_HEAD,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_RARE,
+  cost: 1
+};
+game.ITEM_BULWARK_OF_GODS = {
+  name: 'The Bulwark of Gods',
+  id: 8,
+  stats: {
+    armor: 100,
+    stamina: 20,
+    strength: 50
+  },
+  slot: game.ITEM_SLOT_OFF_HAND,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_EPIC,
+  cost: 1
+};
+game.ITEM_CHESTPIECE_OF_ZEUS = {
+  name: 'Chestpiece of Zeus',
+  id: 9,
+  stats: {
+    armor: 200,
+    stamina: 30,
+    agility: 20,
+    strength: 20
+  },
+  slot: game.ITEM_SLOT_CHEST,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_EPIC,
+  cost: 1
+};
+game.ITEM_ARCHAIC_WAIST_BAND = {
+  name: 'Archaic Waist Band',
+  id: 10,
+  stats: {
+    armor: 5,
+    stamina: 3,
+    strength: 2,
+    intellect: 2
+  },
+  slot: game.ITEM_SLOT_WAIST,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_RARE,
+  cost: 1
+};
+game.ITEM_ALCMENE_BAND = {
+  name: 'Alcmene Band',
+  id: 11,
+  stats: {
+    armor: 2,
+    stamina: 2,
+    strength: 1,
+    agility: 2,
+    intellect: 1,
+    spirit: 10
+  },
+  slot: game.ITEM_SLOT_RING,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_EPIC,
+  cost: 1
+};
+game.ITEM_SUN_NECKLACE = {
+  name: 'Sun Necklace',
+  flavour: 'From Amun Ra to his beloved son.',
+  id: 11,
+  stats: {
+    armor: 4,
+    stamina: 2,
+    strength: 1,
+    intellect: 10,
+    spirit: 1
+  },
+  slot: game.ITEM_SLOT_NECK,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_LEGENDARY,
+  cost: 1
+};
+game.ITEM_TROJAN_BASTARD_SWORD = {
+  name: 'Trojan Bastard Sword',
+  flavour: 'Hector`s sword, dropped by the fallen Trojan prince.',
+  id: 12,
+  stats: {
+    damageMin: 8,
+    damageMax: 34,
+    speed: 1.3,
+    stamina: 15,
+    strength: 10
+  },
+  slot: game.ITEM_SLOT_MAIN_HAND,
+  type: game.ITEM_TYPE_WEAPON,
+  secondary_type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_LEGENDARY,
+  cost: 1
+};
+game.ITEM_SPEAR_OF_DESTINY = {
+  name: 'Spear of Destiny',
+  flavour: 'The spear that befell the Trojan prince, Hector.',
+  id: 13,
+  stats: {
+    damageMin: 25,
+    damageMax: 90,
+    speed: 2,
+    stamina: 40,
+    strength: 3
+  },
+  slot: game.ITEM_SLOT_MAIN_HAND,
+  type: game.ITEM_TYPE_WEAPON,
+  secondary_type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_LEGENDARY,
+  cost: 1
+};
+game.ITEM_GOLDEN_KATANA = {
+  name: 'Golden Katana',
+  id: 14,
+  stats: {
+    damageMin: 10,
+    damageMax: 20,
+    speed: 1.1,
+    stamina: 10,
+    agility: 20,
+    strength: 5
+  },
+  slot: game.ITEM_SLOT_OFF_HAND,
+  type: game.ITEM_TYPE_WEAPON,
+  secondary_type: game.WEAPON_TYPE_MELEE,
+  quality: game.ITEM_QUALITY_RARE,
+  cost: 1
+};
+game.ITEM_ETHEREAL_BOOTS = {
+  name: 'Ethereal Boots',
+  id: 15,
+  stats: {
+    armor: 6,
+    strength: 10,
+    agility: 10
+  },
+  slot: game.ITEM_SLOT_FEET,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_RARE,
+  cost: 1
+};
+game.ITEM_SHOULDERPADS_OF_VALOR = {
+  name: 'Shoulderpads of Valor',
+  id: 16,
+  stats: {
+    armor: 15,
+    strength: 20,
+    stamina: 10
+  },
+  slot: game.ITEM_SLOT_SHOULDER,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_COMMON,
+  cost: 1
+};
+game.ITEM_MOUNTAIN_TROLLS = {
+  name: 'Mountain Trolls',
+  id: 17,
+  stats: {
+    armor: 25,
+    agility: 10,
+    stamina: 30
+  },
+  slot: game.ITEM_SLOT_LEGS,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_EPIC,
+  cost: 1
+};
+game.ITEM_GAUNTLETS_OF_GHASTLY_GLARE = {
+  name: 'Gauntlets of Ghastly Glare',
+  flavour: 'Ghastly indeed ...',
+  id: 18,
+  stats: {
+    armor: 10,
+    strength: 20,
+    stamina: 2,
+    intellect: 30
+  },
+  slot: game.ITEM_SLOT_HANDS,
+  type: game.ITEM_TYPE_ARMOR,
+  secondary_type: game.ARMOR_TYPE_PLATE,
+  quality: game.ITEM_QUALITY_EPIC,
+  cost: 1
+};
+"use strict";
+
+/**
+ * Warrior class
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+game.HERO_CLASS_WARRIOR = 1;
+/**
+ * Mage class
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.HERO_CLASS_MAGE = 2;
+/**
+ * Druid class
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.HERO_CLASS_DRUID = 3;
+/**
+ * Priest class
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.HERO_CLASS_PRIEST = 4;
+/**
+ * Rogue class
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.HERO_CLASS_ROGUE = 5;
+/**
+ * Shaman class
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.HERO_CLASS_SHAMAN = 6;
+/**
+ * List of names for hero classes
+ *
+ * @constant
+ * @default
+ * @type {Array}
+ */
+
+game.HERO_CLASS_LIST = ['', 'Warrior', 'Mage', 'Druid', 'Priest', 'Rogue', 'Shaman'];
+/**
+ * List of in-game heroes.
+ *
+ * @constant
+ * @type {Object}
+ */
+
+game.HEROES = [{
+  name: 'Achilles',
+  handle: 'achilles',
+  description: 'Achilles is a Greek hero of the Trojan War and the central character and greatest warrior of Homer`s Iliad. His mother is the immortal nymph Thetis, and his father, the mortal Peleus, is the king of the Myrmidons.',
+  price: 5000000,
+  link: 'https://en.wikipedia.org/wiki/Achilles',
+  stats: {
+    strength: 10,
+    stamina: 10,
+    agility: 10,
+    spirit: 5,
+    intellect: 7
+  },
+  class: game.HERO_CLASS_WARRIOR,
+  items: [game.ITEM_TROJAN_BASTARD_SWORD],
+  backpack: []
+}, {
+  name: 'Hector',
+  handle: 'hector',
+  description: 'In Greek mythology and Roman Mythology, Hector is a Trojan prince and the greatest fighter for Troy in the Trojan War. As the first-born son of King Priam and Queen Hecuba, who was a descendant of Dardanus and Tros, the founder of Troy, he is a prince of the royal house and the heir apparent to his father`s throne.',
+  price: 4000000,
+  link: 'https://en.wikipedia.org/wiki/Hector',
+  stats: {
+    strength: 8,
+    stamina: 10,
+    agility: 6,
+    spirit: 4,
+    intellect: 6
+  },
+  class: game.HERO_CLASS_WARRIOR,
+  items: [game.ITEM_EXCALIBUR, game.ITEM_GOLDEN_KATANA],
+  backpack: []
+}, {
+  name: 'Hannibal',
+  handle: 'hannibal',
+  description: 'Hannibal Barca is a Carthaginian general, considered one of the greatest military commanders in history.',
+  price: 3000000,
+  link: 'https://en.wikipedia.org/wiki/Hannibal',
+  stats: {
+    strength: 7,
+    stamina: 7,
+    agility: 4,
+    spirit: 2,
+    intellect: 9
+  },
+  class: game.HERO_CLASS_WARRIOR,
+  items: [],
+  backpack: []
+}, {
+  name: 'Heracles',
+  handle: 'heracles',
+  description: 'Heracles is a divine hero in Greek mythology, the son of Zeus and Alcmene, foster son of Amphitryon and great-grandson and half-brother (as they are both sired by the god Zeus) of Perseus.<br /><br />He is the greatest of the Greek heroes, a paragon of masculinity, the ancestor of royal clans who claim to be Heracleidae, and a champion of the Olympian order against chthonic monsters.',
+  price: 5000000,
+  link: 'https://en.wikipedia.org/wiki/Heracles',
+  stats: {
+    strength: 9,
+    stamina: 9,
+    agility: 6,
+    spirit: 7,
+    intellect: 9
+  },
+  class: game.HERO_CLASS_WARRIOR,
+  items: [game.ITEM_SPEAR_OF_DESTINY, game.ITEM_CROWN_OF_KINGS, game.ITEM_BULWARK_OF_GODS, game.ITEM_CHESTPIECE_OF_ZEUS, game.ITEM_ARCHAIC_WAIST_BAND, game.ITEM_ALCMENE_BAND, game.ITEM_SUN_NECKLACE, game.ITEM_ETHEREAL_BOOTS, game.ITEM_SHOULDERPADS_OF_VALOR, game.ITEM_MOUNTAIN_TROLLS, game.ITEM_GAUNTLETS_OF_GHASTLY_GLARE],
+  backpack: []
+}, {
+  name: 'Akhenaten',
+  handle: 'akhenaten',
+  description: 'Akhenaten, known before the fifth year of his reign as Amenhotep IV (sometimes given its Greek form, Amenophis IV, and meaning "Amun Is Satisfied"), is an Ancient Egyptian pharaoh of the 18th Dynasty who ruled for 17 years.',
+  price: 1000000,
+  link: 'https://en.wikipedia.org/wiki/Akhenaten',
+  stats: {
+    strength: 4,
+    stamina: 4,
+    agility: 8,
+    spirit: 9,
+    intellect: 9
+  },
+  class: game.HERO_CLASS_PRIEST,
+  items: [],
+  backpack: []
+}];
+"use strict";
+
+/**
+ * Initial state of the game, based on the selected difficulty.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+game.INITIAL_SEED = [
+/* Easy difficulty */
+{
+  /* Roughness of the world generator */
+  roughness: 5,
+
+  /* Number of settlements to build initially */
+  settlements: {
+    /* Cities */
+    0: 8,
+    //5,
+
+    /* Villages */
+    1: 5,
+
+    /* Metropolis */
+    2: 6,
+    //1,
+
+    /* Raider camps */
+    3: 6 //0
+
+  },
+  places: 6,
+
+  /* Number of soldiers and ships to build initially */
+  military: {
+    army: {
+      militia: 10,
+      axeman: 2,
+      bowman: 4
+    },
+    navy: {
+      corsair: 2,
+      caravel: 1
+    }
+  },
+  resources: {
+    coins: 55000,
+    fame: game.MIN_FAME_VALUE,
+    faith: game.MIN_FAITH_VALUE,
+    prestige: game.MIN_PRESTIGE_VALUE,
+    espionage: game.MIN_ESPIONAGE_VALUE,
+    research: game.MIN_RESEARCH_VALUE,
+    bread: 400,
+    meat: 100,
+    stones: 100,
+    weapons: 100,
+    wheat: 40,
+    wood: 100,
+    woodplanks: 50,
+    tools: 40
+  },
+  buildings: [{
+    handle: 'marketplace',
+    level: 1
+  }, {
+    handle: 'lumberjack',
+    level: 1
+  }, {
+    handle: 'stonequarry',
+    level: 1
+  }, {
+    handle: 'house1',
+    level: 1
+  }, {
+    handle: 'house2',
+    level: 1
+  }]
+},
+/* Medium difficulty */
+{
+  roughness: 6,
+  settlements: {
+    0: 5,
+    1: 10,
+    2: 5,
+    3: 3
+  },
+  places: 4,
+  military: {
+    army: {
+      militia: 5,
+      axeman: 1,
+      bowman: 2
+    },
+    navy: {
+      corsair: 1,
+      caravel: 1
+    }
+  },
+  resources: {
+    coins: 20000,
+    fame: game.MIN_FAME_VALUE,
+    faith: game.MIN_FAITH_VALUE,
+    prestige: game.MIN_PRESTIGE_VALUE,
+    espionage: game.MIN_ESPIONAGE_VALUE,
+    research: game.MIN_RESEARCH_VALUE,
+    bread: 300,
+    meat: 100,
+    stones: 100,
+    weapons: 60,
+    wheat: 40,
+    wood: 100,
+    woodplanks: 30,
+    tools: 20
+  },
+  buildings: [{
+    handle: 'marketplace',
+    level: 1
+  }, {
+    handle: 'lumberjack',
+    level: 1
+  }, {
+    handle: 'stonequarry',
+    level: 1
+  }, {
+    handle: 'house1',
+    level: 1
+  }, {
+    handle: 'house2',
+    level: 1
+  }]
+},
+/* Hard difficulty */
+{
+  roughness: 8,
+  settlements: {
+    0: 10,
+    1: 10,
+    2: 6,
+    3: 10
+  },
+  places: 3,
+  military: {
+    army: {
+      militia: 3,
+      bowman: 2
+    },
+    navy: {
+      corsair: 1
+    }
+  },
+  resources: {
+    coins: 10000,
+    fame: game.MIN_FAME_VALUE,
+    faith: game.MIN_FAITH_VALUE,
+    prestige: game.MIN_PRESTIGE_VALUE,
+    espionage: game.MIN_ESPIONAGE_VALUE,
+    research: game.MIN_RESEARCH_VALUE,
+    bread: 300,
+    meat: 100,
+    stones: 70,
+    wheat: 40,
+    wood: 70,
+    woodplanks: 20,
+    tools: 10
+  },
+  buildings: [{
+    handle: 'marketplace',
+    level: 1
+  }, {
+    handle: 'lumberjack',
+    level: 1
+  }, {
+    handle: 'stonequarry',
+    level: 1
+  }, {
+    handle: 'house1',
+    level: 1
+  }, {
+    handle: 'house2',
+    level: 1
+  }]
+},
+/* Hardcore difficulty */
+{
+  roughness: 1,
+  settlements: {
+    0: 10,
+    1: 20,
+    2: 20,
+    3: 20
+  },
+  places: 1,
+  military: {
+    army: {},
+    navy: {}
+  },
+  resources: {
+    coins: 5000,
+    fame: game.MIN_FAME_VALUE,
+    faith: game.MIN_FAITH_VALUE,
+    prestige: game.MIN_PRESTIGE_VALUE,
+    espionage: game.MIN_ESPIONAGE_VALUE,
+    research: game.MIN_RESEARCH_VALUE,
+    bread: 100,
+    meat: 50,
+    stones: 50,
+    wheat: 40,
+    wood: 50
+  },
+  buildings: [{
+    handle: 'marketplace',
+    level: 1
+  }, {
+    handle: 'lumberjack',
+    level: 1
+  }, {
+    handle: 'stonequarry',
+    level: 1
+  }, {
+    handle: 'house1',
+    level: 1
+  }, {
+    handle: 'house2',
+    level: 1
+  }]
+}];
+"use strict";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -5373,14 +10456,14 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
- * Hero object.
+ * Main Game AI (Artificial Intelligence) object.
  * 
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class hero
- * @returns {hero}
+ * @class ai
+ * @returns {ai}
  */
-var hero =
+var ai =
 /*#__PURE__*/
 function () {
   /**
@@ -5388,33 +10471,46 @@ function () {
    * 
    * @private
    * @constructor
-   * @returns {hero}
+   * @returns {ai}
    * @param {Object} params
    */
-  function hero(params) {
-    _classCallCheck(this, hero);
+  function ai(params) {
+    _classCallCheck(this, ai);
 
     this._core = params.core;
-    this.name = params.name;
-    this.description = params.description;
+    this.type = params.type; // Todo
+
     return this;
   }
   /**
-   * Return a pointer to the game core.
-   * 
+   * Perform the actual data processing for this AI.
+   *
    * @public
-   * @returns {game}
+   * @returns {Boolean}
    */
 
 
-  _createClass(hero, [{
+  _createClass(ai, [{
+    key: "process",
+    value: function process() {
+      // Todo
+      return true;
+    }
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
     key: "core",
     value: function core() {
       return this._core;
     }
   }]);
 
-  return hero;
+  return ai;
 }();
 "use strict";
 
@@ -5425,14 +10521,14 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
- * Main Game place object.
+ * Main Game API object.
  * 
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class place
- * @returns {place}
+ * @class api
+ * @returns {api}
  */
-var place =
+var api =
 /*#__PURE__*/
 function () {
   /**
@@ -5440,68 +10536,468 @@ function () {
    * 
    * @private
    * @constructor
-   * @returns {place}
+   * @returns {api}
    * @param {Object} params
    */
-  function place(params) {
-    _classCallCheck(this, place);
+  function api(params) {
+    _classCallCheck(this, api);
 
     this._core = params.core;
-    this.resources = {
-      current: {},
-      required: {}
-    };
-    this.properties = {};
-    this.properties.id = params.properties.id;
-    this.properties.sid = params.properties.sid;
-    this.properties.scouted = params.properties.scouted;
-    this.properties.name = typeof params.properties.name !== 'undefined' ? params.properties.name : game.get_random_unique(game.PLACES_NAMES);
-    this.location = params.location;
-    this.resources = params.resources;
-    this.core().world().add_place(this);
     return this;
   }
+  /**
+   * Sign in a visitor using the specified data.
+   * 
+   * @param {Object} data
+   * @returns {api}
+   */
 
-  _createClass(place, [{
-    key: "is_claimed",
-    value: function is_claimed() {
-      if (this.properties.sid === null) {
-        return false;
+
+  _createClass(api, [{
+    key: "login",
+    value: function login(data) {
+      return this.request({
+        url: 'login',
+        data: data
+      });
+    }
+    /**
+     * Sign out the currently logged in user.
+     * 
+     * @returns {api}
+     */
+
+  }, {
+    key: "logout",
+    value: function logout() {
+      return this.request({
+        url: 'logout'
+      });
+    }
+    /**
+     * Get information about the application and API version.
+     *
+     * @returns {api}
+     */
+
+  }, {
+    key: "api_version",
+    value: function api_version() {
+      return this.request({
+        url: 'version'
+      });
+    }
+    /**
+     * Get information about the currently logged in user's city.
+     *
+     * @returns {api}
+     */
+
+  }, {
+    key: "city_info",
+    value: function city_info() {
+      return this.request({
+        url: 'city'
+      });
+    }
+    /**
+     * Perform a heartbeat request and get data about it.
+     *
+     * @returns {api}
+     */
+
+  }, {
+    key: "heartbeat",
+    value: function heartbeat() {
+      return this.request({
+        url: 'heartbeat'
+      });
+    }
+    /**
+     * Register a visitor using the specified data.
+     * 
+     * @param {Object} data
+     * @returns {api}
+     */
+
+  }, {
+    key: "register",
+    value: function register(data) {
+      return this.request({
+        url: 'register',
+        data: data
+      });
+    }
+    /**
+     * Export the specified data to the API endpoint.
+     * 
+     * @param {Object} data
+     * @returns {api}
+     */
+
+  }, {
+    key: "do_export",
+    value: function do_export(data) {
+      return this.request({
+        url: 'export',
+        data: data
+      });
+    }
+    /**
+     * Import the specified data from the API endpoint.
+     * 
+     * @param {Object} data
+     * @returns {api}
+     */
+
+  }, {
+    key: "do_import",
+    value: function do_import(data) {
+      return this.request({
+        url: 'import',
+        data: data
+      });
+    }
+    /**
+     * Internal function for performing an API AJAX request.
+     * 
+     * @param {Object} data
+     * @returns {api}
+     */
+
+  }, {
+    key: "_request",
+    value: function _request(data) {
+      $.ajax({
+        type: typeof data.requestType !== 'undefined' ? data.requestType : 'POST',
+        dataType: typeof data.dataType !== 'undefined' ? data.dataType : 'jsonp',
+        xhrFields: {
+          withCredentials: typeof data.auth === 'undefined' || data.auth === true ? true : false
+        },
+        crossDomain: true,
+        data: data.data,
+        url: game.API_URL + data.url,
+        async: typeof data.async === 'undefined' || data.async === true ? true : false,
+        success: data.success instanceof Function ? data.success : function () {// TODO
+        },
+        error: data.error instanceof Function ? data.error : function () {// TODO
+        }
+      });
+      return this;
+    }
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+  }]);
+
+  return api;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Game jailer (enforcing security) object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class jailer
+ * @returns {jailer}
+ */
+var jailer =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {jailer}
+   * @param {Object} params
+   */
+  function jailer(params) {
+    _classCallCheck(this, jailer);
+
+    this._core = params.core;
+    return this;
+  }
+  /**
+   * Perform an actual security audit.
+   * 
+   * @public
+   * @returns {Boolean}
+   */
+
+
+  _createClass(jailer, [{
+    key: "check",
+    value: function check() {
+      // Todo
+      return true;
+    }
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+  }]);
+
+  return jailer;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * World object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class world
+ * @returns {world}
+ */
+var world =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {world}
+   * @param {Object} params
+   */
+  function world(params) {
+    _classCallCheck(this, world);
+
+    this._core = params.core;
+    this.seeds = {};
+    this.colors = {
+      background: '#64B4E1',
+      ocean: '#64B5E1',
+      grass: '#E6F59A',
+      subtropical_desert: '#F2CD63',
+      temperate_desert: '#F2CD63',
+      taiga: '#E1C85A',
+      shrubland: '#E1C859',
+      beach: '#FFF899',
+      scorched: '#E5F59A',
+      bare: '#D1BE79',
+      tundra: '#E5F59A',
+      snow: '#DCDCE6',
+      temperate_deciduous_forest: '#78AA46',
+      temperate_rain_forest: '#78AA46',
+      tropical_rain_forest: '#549D65',
+      tropical_seasonal_forest: '#549D65',
+      hills: '#E1C859',
+      mountains: '#B37D1A',
+      mountains_ice: '#DCDCE6'
+    };
+    this.seeds.moisture = typeof params.moisture !== 'undefined' && params.moisture !== null ? params.moisture : this.seed();
+    this.seeds.elevation = typeof params.elevation !== 'undefined' && params.elevation !== null ? params.elevation : this.seed();
+    this.data = typeof params.data !== 'undefined' ? params.data : [];
+
+    if (this.data.length === 0) {
+      this._create_array();
+
+      this._generate();
+    }
+
+    return this;
+  }
+  /**
+   * Get a random number to seed the generator.
+   *
+   * @public
+   * @returns {Number}
+   */
+
+
+  _createClass(world, [{
+    key: "seed",
+    value: function seed() {
+      return Math.random() * (2147483646 - 1) + 1;
+    }
+    /**
+     * Get the terrain data as a string based on the elevation.
+     * 
+     * @public
+     * @param {Object} hex
+     * @returns {String}
+     */
+
+  }, {
+    key: "get_hex_terrain",
+    value: function get_hex_terrain(hex) {
+      var elevation = this.data[hex.y][hex.x].e;
+      var moisture = this.data[hex.y][hex.x].m;
+
+      if (elevation <= 0.1) {
+        return 'ocean';
+      } else if (elevation > 0.1 && elevation <= 0.15) {
+        return 'beach';
+      } else if (elevation > 0.15 && elevation <= 0.35) {
+        if (moisture <= 0.30) {
+          return 'subtropical_desert';
+        } else if (moisture > 0.30 && moisture <= 0.45) {
+          return 'grass';
+        } else if (moisture > 0.45 && moisture <= 0.66) {
+          return 'tropical_seasonal_forest';
+        } else {
+          return 'tropical_rain_forest';
+        }
+      } else if (elevation > 0.35 && elevation <= 0.75) {
+        if (moisture <= 0.20) {
+          return 'temperate_desert';
+        } else if (moisture > 0.20 && moisture <= 0.50) {
+          return 'grass';
+        } else if (moisture > 0.50 && moisture <= 0.83) {
+          return 'temperate_deciduous_forest';
+        } else {
+          return 'temperate_rain_forest';
+        }
+      } else if (elevation > 0.75 && elevation <= 0.8) {
+        if (moisture <= 0.33) {
+          return 'temperate_desert';
+        } else if (moisture > 0.33 && moisture <= 0.66) {
+          return 'shrubland';
+        } else {
+          return 'taiga';
+        }
+      } else if (elevation > 0.8 && elevation <= 0.85) {
+        return 'hills';
       } else {
-        return this.properties.sid;
+        if (moisture >= 0.8) {
+          return 'mountains_ice';
+        } else {
+          return 'mountains';
+        }
       }
     }
-  }, {
-    key: "is_scouted",
-    value: function is_scouted() {
-      return this.properties.scouted;
-    }
-  }, {
-    key: "scout",
-    value: function scout() {
-      this.properties.scouted = true;
-    }
-  }, {
-    key: "claim",
-    value: function claim(settlement) {
-      if (this.properties.sid === null) {
-        this.properties.sid = settlement.id();
-        this.core().world().lock_hex(this.location(), settlement.id());
-        return true;
-      }
+    /**
+     * Convert a terrain type into climate type.
+     *
+     * @param {String} terrain
+     * @public
+     * @returns {Boolean|Object}
+     */
 
-      return false;
-    }
   }, {
-    key: "unclaim",
-    value: function unclaim(settlement) {
-      if (settlement.id() === this.properties.sid) {
-        this.properties.sid = null;
-        this.core().world().unlock_hex(this.location());
-        return true;
+    key: "get_climate_from_terrain",
+    value: function get_climate_from_terrain(terrain) {
+      if (terrain === 'tropical_rain_forest' || terrain === 'tropical_seasonal_forest') {
+        return {
+          id: game.CLIMATE_TROPICAL,
+          name: game.CLIMATES[game.CLIMATE_TROPICAL]
+        };
+      } else if (terrain === 'subtropical_desert' || terrain === 'temperate_desert') {
+        return {
+          id: game.CLIMATE_ARID,
+          name: game.CLIMATES[game.CLIMATE_ARID]
+        };
+      } else if (terrain === 'mountains_ice' || terrain === 'snow') {
+        return {
+          id: game.CLIMATE_POLAR,
+          name: game.CLIMATES[game.CLIMATE_POLAR]
+        };
+      } else if (terrain === 'grass' || terrain === 'temperate_deciduous_forest' || terrain === 'temperate_rain_forest' || terrain === 'hills' || terrain === 'mountains' || terrain === 'taiga' || terrain === 'shrubland' || terrain === 'beach' || terrain === 'scorched' || terrain === 'tundra' || terrain === 'bare') {
+        return {
+          id: game.CLIMATE_TEMPERATE,
+          name: game.CLIMATES[game.CLIMATE_TEMPERATE]
+        };
+      } else {
+        return false;
       }
+    }
+    /**
+     * Convert a climate type into terrain type.
+     *
+     * @param {Number} climate
+     * @public
+     * @returns {Boolean|Array}
+     */
 
-      return false;
+  }, {
+    key: "get_terrain_from_climate",
+    value: function get_terrain_from_climate(climate) {
+      if (climate === game.CLIMATE_TROPICAL) {
+        return ['tropical_rain_forest', 'tropical_seasonal_forest'];
+      } else if (climate === game.CLIMATE_ARID) {
+        return ['subtropical_desert', 'temperate_desert'];
+      } else if (climate === game.CLIMATE_POLAR) {
+        return ['mountains_ice', 'snow'];
+      } else if (climate === game.CLIMATE_TEMPERATE) {
+        return ['grass', 'temperate_deciduous_forest', 'temperate_rain_forest', 'hills', 'mountains', 'taiga', 'shrubland', 'beach', 'scorched', 'tundra', 'bare'];
+      } else {
+        return false;
+      }
+    }
+    /**
+     * Get a random world location
+     * 
+     * @public
+     * @param {String} terrain
+     * @returns {Object}
+     */
+
+  }, {
+    key: "get_random_location",
+    value: function get_random_location(terrain) {
+      var hex = {
+        x: game.get_random(0, game.WORLD_SIZE_WIDTH - 1),
+        y: game.get_random(0, game.WORLD_SIZE_HEIGHT - 1)
+      };
+
+      if (typeof terrain !== 'undefined') {
+        if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+          //if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
+          return hex; //}
+        }
+
+        return this.get_random_location(terrain);
+      } else {
+        if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
+          return hex;
+        }
+
+        return this.get_random_location(terrain);
+      }
+    }
+    /**
+     * Get the world properties.
+     *
+     * @public
+     * @returns {Object}
+     */
+
+  }, {
+    key: "properties",
+    value: function properties() {
+      return this._properties;
     }
     /**
      * Return a pointer to the game core.
@@ -5516,25 +11012,548 @@ function () {
       return this._core;
     }
     /**
-     * Export place data.
+     * Check if the specified hex is ocean.
      *
+     * @public
+     * @param {Object} hex
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "hex_is_water",
+    value: function hex_is_water(hex) {
+      if (this.get_hex_terrain(hex) === 'ocean') {
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Lock the specified hex as being inside the borders of a settlement.
+     *
+     * @public
+     * @param {Object} hex
+     * @returns {String}
+     */
+
+  }, {
+    key: "lock_hex",
+    value: function lock_hex(hex, lid) {
+      this.set_hex(hex, 'l', true);
+      this.set_hex(hex, 'lid', lid);
+    }
+    /**
+     * Unlock the specified hex.
+     *
+     * @public
+     * @param {Object} hex
+     * @returns {String}
+     */
+
+  }, {
+    key: "unlock_hex",
+    value: function unlock_hex(hex) {
+      this.set_hex(hex, 'l', false);
+      this.set_hex(hex, 'lid', null);
+    }
+    /**
+     * Check if the specified hex is locked.
+     *
+     * @public
+     * @param {Object} hex
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "hex_is_locked",
+    value: function hex_is_locked(hex) {
+      return this.get_hex(hex.x, hex.y).l;
+    }
+    /**
+     * Lock the specified hex by the settlement id.
+     *
+     * @public
+     * @param {Object} hex
      * @returns {Object}
+     */
+
+  }, {
+    key: "hex_locked_by",
+    value: function hex_locked_by(hex) {
+      return this.get_hex(hex.x, hex.y).lid;
+    }
+    /**
+     * Return the moisture data for the specified hex.
+     *
+     * @public
+     * @param {Object} hex
+     * @returns {Number}
+     */
+
+  }, {
+    key: "get_hex_moisture",
+    value: function get_hex_moisture(hex) {
+      return this.get_hex(hex.x, hex.y).m;
+    }
+    /**
+     * Return the elevation data for the specified hex.
+     *
+     * @public
+     * @param {Object} hex
+     * @returns {Number}
+     */
+
+  }, {
+    key: "get_hex_elevation",
+    value: function get_hex_elevation(hex) {
+      return this.get_hex(hex.x, hex.y).e;
+    }
+    /**
+     * Return the specified hex raw data.
+     *
+     * @public
+     * @param {Number} x
+     * @param {Number} y
+     * @returns {Object}
+     */
+
+  }, {
+    key: "get_hex",
+    value: function get_hex(x, y) {
+      return this.data[y][x];
+    }
+    /**
+     * Set the specified hex data.
+     *
+     * @public
+     * @param {Object} hex
+     * @param {String} key
+     * @param {String|Number|Array|Object} value
+     * @returns {Object}
+     */
+
+  }, {
+    key: "set_hex",
+    value: function set_hex(hex, key, value) {
+      return this.data[hex.y][hex.x][key] = value;
+    }
+    /**
+     * Add a place into the world data.
+     *
+     * @public
+     * @param {place} place
+     * @returns {world}
+     */
+
+  }, {
+    key: "add_place",
+    value: function add_place(place) {
+      var location = place.location;
+      this.set_hex(location, 'p', place.properties.id);
+
+      if (place.is_claimed() === false) {
+        this.lock_hex(location, place.properties.id);
+      } else {
+        this.lock_hex(location, place.is_claimed());
+      }
+
+      return this;
+    }
+    /**
+     * Add a settlement into the world data.
+     *
+     * @public
+     * @param {settlement} settlement
+     * @returns {world}
+     */
+
+  }, {
+    key: "add_settlement",
+    value: function add_settlement(settlement) {
+      var location = settlement.location();
+      this.set_hex(location, 's', settlement.id());
+      this.set_hex(location, 'n', settlement.name());
+      this.lock_hex(location, settlement.id());
+      this.calc_neighbours(settlement);
+      return this;
+    }
+    /**
+     * Remove a settlement from the world data.
+     *
+     * @public
+     * @param {settlement} settlement
+     * @returns {world}
+     */
+
+  }, {
+    key: "remove_city",
+    value: function remove_city(settlement) {
+      var location = settlement.location();
+      var id = settlement.id();
+      this.data[location.y][location.x].s = null;
+      this.data[location.y][location.x].n = null;
+
+      for (var x = 0; x < game.WORLD_SIZE_WIDTH; x++) {
+        for (var y = 0; y < game.WORLD_SIZE_HEIGHT; y++) {
+          if (this.data[y][x].lid === id) {
+            this.data[y][x].lid = null;
+            this.data[y][x].l = false;
+          }
+        }
+      } //$('#worldmap-city-image' + location.y + '-' + location.x).remove();
+
+
+      return this;
+    }
+    /**
+     * Create the raw multidimensional array.
+     *
+     * @private
+     * @returns {world}
+     */
+
+  }, {
+    key: "_create_array",
+    value: function _create_array() {
+      this.data = new Array(game.WORLD_SIZE_WIDTH);
+
+      for (var i = 0; i < game.WORLD_SIZE_WIDTH; i += 1) {
+        this.data[i] = new Array(game.WORLD_SIZE_HEIGHT);
+      }
+
+      for (var _i = 0; _i < game.WORLD_SIZE_WIDTH; _i += 1) {
+        for (var j = 0; j < game.WORLD_SIZE_HEIGHT; j += 1) {
+          this.data[_i][j] = {
+            /* Elevation */
+            e: 0,
+
+            /* Moisture */
+            m: 0,
+
+            /* Place id */
+            p: null,
+
+            /* Settlement id */
+            s: null,
+
+            /* Settlement name */
+            n: null,
+
+            /* Locked */
+            l: false,
+
+            /* Locked to settlement id */
+            lid: null
+          };
+        }
+      }
+
+      return this;
+    }
+    /**
+     * Generate the elevation and moisture maps.
+     *
+     * @private
+     * @returns {world}
+     */
+
+  }, {
+    key: "_generate",
+    value: function _generate() {
+      function PMPRNG_create(seed) {
+        var result = new PM_PRNG();
+        result.seed = typeof seed === "undefined" ? 1 : seed;
+        return result;
+      }
+
+      var rng1 = PMPRNG_create(this.seeds.elevation);
+      var rng2 = PMPRNG_create(this.seeds.moisture);
+      var gen1 = new SimplexNoise(rng1.nextDouble.bind(rng1));
+      var gen2 = new SimplexNoise(rng2.nextDouble.bind(rng2));
+
+      function noise1(nx, ny) {
+        return gen1.noise2D(nx, ny) / 2 + 0.5;
+      }
+
+      function noise2(nx, ny) {
+        return gen2.noise2D(nx, ny) / 2 + 0.5;
+      }
+
+      for (var x = 0; x < game.WORLD_SIZE_HEIGHT; x++) {
+        for (var y = 0; y < game.WORLD_SIZE_WIDTH; y++) {
+          var nx = x / game.WORLD_SIZE_HEIGHT - 0.5;
+          var ny = y / game.WORLD_SIZE_WIDTH - 0.5;
+          var e = 1.00 * noise1(1 * nx, 1 * ny) + 0.77 * noise1(2 * nx, 2 * ny) + 0.00 * noise1(4 * nx, 4 * ny) + 0.00 * noise1(8 * nx, 8 * ny) + 0.00 * noise1(16 * nx, 16 * ny) + 0.00 * noise1(32 * nx, 32 * ny);
+          e /= 1.00 + 0.77 + 0.00 + 0.00 + 0.00 + 0.00;
+          e = Math.pow(e, game.WORLD_EROSION);
+          this.data[y][x].e = e;
+          var m = 1.00 * noise2(1 * nx, 1 * ny) + 0.75 * noise2(2 * nx, 2 * ny) + 0.33 * noise2(4 * nx, 4 * ny) + 0.33 * noise2(8 * nx, 8 * ny) + 0.33 * noise2(16 * nx, 16 * ny) + 0.50 * noise2(32 * nx, 32 * ny);
+          m /= 1.00 + 0.75 + 0.33 + 0.33 + 0.33 + 0.50;
+          this.data[y][x].m = m;
+        }
+      }
+
+      return this;
+    }
+    /**
+     * Get the list of all the neighbouring hexes to the specified settlement.
+     *
+     * @returns {Array}
      * @public
      */
 
   }, {
-    key: "export",
-    value: function _export() {
-      var data = {
-        properties: this.properties,
-        location: this.location,
-        resources: this.resources
+    key: "get_neighbours",
+    value: function get_neighbours(settlement) {
+      var hexes = [];
+      var location = settlement.location();
+      var neighbours = this.get_neighbouring_hexes(location.y, location.x);
+
+      if (settlement.is_city()) {
+        for (var z = 0; z < neighbours.length; z++) {
+          hexes.push(neighbours[z]);
+        }
+      } else if (settlement.is_metropolis()) {
+        for (var _z = 0; _z < neighbours.length; _z++) {
+          hexes.push(neighbours[_z]);
+          var new_neighbours = this.get_neighbouring_hexes(neighbours[_z].y, neighbours[_z].x);
+
+          for (var u = 0; u < new_neighbours.length; u++) {
+            hexes.push(new_neighbours[u]);
+          }
+        }
+      }
+
+      return hexes;
+    }
+    /**
+     * Lock neighbouring hexes.
+     *
+     * @public
+     * @returns {world}
+     */
+
+  }, {
+    key: "calc_neighbours",
+    value: function calc_neighbours(settlement) {
+      var terrain;
+      var neighbours = this.get_neighbours(settlement);
+
+      for (var i = 0; i < neighbours.length; i++) {
+        if (neighbours[i].x >= 0 && neighbours[i].x < game.WORLD_SIZE_WIDTH && neighbours[i].y >= 0 && neighbours[i].y < game.WORLD_SIZE_HEIGHT) {
+          terrain = this.get_hex_terrain(neighbours[i]);
+          this.lock_hex(neighbours[i], settlement.id());
+
+          if (terrain === 'ocean') {
+            settlement.waterside(true);
+          }
+        }
+      }
+
+      return this;
+    }
+  }, {
+    key: "get_neighbouring_hexes",
+    value: function get_neighbouring_hexes(y, x) {
+      if (x % 2 === 0) {
+        return [{
+          x: x + 1,
+          y: y
+        }, {
+          x: x + 1,
+          y: y - 1
+        }, {
+          x: x,
+          y: y - 1
+        }, {
+          x: x - 1,
+          y: y
+        }, {
+          x: x - 1,
+          y: y - 1
+        }, {
+          x: x,
+          y: y + 1
+        }];
+      } else {
+        return [{
+          x: x + 1,
+          y: y
+        }, {
+          x: x + 1,
+          y: y + 1
+        }, {
+          x: x,
+          y: y - 1
+        }, {
+          x: x - 1,
+          y: y
+        }, {
+          x: x - 1,
+          y: y + 1
+        }, {
+          x: x,
+          y: y + 1
+        }];
+      }
+    }
+    /**
+     * Get the distance between two points.
+     *
+     * @param {Number} source
+     * @param {Number} destination
+     * @returns {Number}
+     */
+
+  }, {
+    key: "get_distance",
+    value: function get_distance(source, destination) {
+      return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2))) * 100;
+    }
+    /**
+     * Get the distance between two points in days
+     *
+     * @param {Number} source
+     * @param {Number} destination
+     * @returns {Number}
+     */
+
+  }, {
+    key: "get_distance_in_days",
+    value: function get_distance_in_days(source, destination) {
+      return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100 / 15);
+    }
+    /**
+     * Draw the worldmap data to a HTML5 canvas.
+     *
+     * @public
+     * @returns {world}
+     */
+
+  }, {
+    key: "draw",
+    value: function draw() {
+      var settlements = this.core().get_settlements();
+      var height = Math.sqrt(3) / 2 * game.WORLD_HEX_SIZE;
+      var image_width = (1.5 * game.WORLD_SIZE_WIDTH + 0.5) * game.WORLD_HEX_SIZE;
+      var image_height = (2 * game.WORLD_SIZE_HEIGHT + 1) * height;
+      $('.worldmap').empty().append('<canvas class="canvas-map"></canvas>');
+      var canvas = $('.canvas-map').get(0);
+      var currentHexX;
+      var currentHexY;
+      var offsetColumn = false;
+
+      var __height = Math.sqrt(3) * game.WORLD_HEX_SIZE;
+
+      var __width = 2 * game.WORLD_HEX_SIZE;
+
+      var __side = 3 / 2 * game.WORLD_HEX_SIZE;
+
+      canvas.width = image_width;
+      canvas.height = image_height;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = this.colors.background;
+      ctx.fillRect(0, 0, image_width, image_height);
+
+      for (var i = 0; i < game.WORLD_SIZE_WIDTH; ++i) {
+        for (var j = 0; j < game.WORLD_SIZE_HEIGHT; ++j) {
+          if (!offsetColumn) {
+            currentHexX = i * __side;
+            currentHexY = j * __height;
+          } else {
+            currentHexX = i * __side;
+            currentHexY = j * __height + __height * 0.5;
+          }
+
+          var terrain = this.get_hex_terrain({
+            x: i,
+            y: j
+          });
+          var color = this.colors[terrain];
+          var opacity = 0.6;
+
+          if (this.data[j][i].l === true) {
+            var lid = this.data[j][i].lid;
+            var pid = this.data[j][i].p;
+
+            if (lid !== null && pid === null) {
+              if (typeof settlements[lid] !== 'undefined') {
+                color = settlements[lid].color();
+              }
+            } else if (lid !== null && pid !== null) {
+              var place = this.core().get_place(pid);
+
+              if (place) {
+                if (place.is_claimed() !== false) {
+                  color = settlements[lid].color();
+                }
+              }
+            }
+
+            opacity = 0.2;
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(currentHexX + __width - __side, currentHexY);
+          ctx.lineTo(currentHexX + __side, currentHexY);
+          ctx.lineTo(currentHexX + __width, currentHexY + __height / 2);
+          ctx.lineTo(currentHexX + __side, currentHexY + __height);
+          ctx.lineTo(currentHexX + __width - __side, currentHexY + __height);
+          ctx.lineTo(currentHexX, currentHexY + __height / 2);
+          ctx.closePath();
+
+          if (game.WORLD_GRID === true) {
+            ctx.strokeStyle = "#666";
+          } else {
+            ctx.strokeStyle = color;
+          }
+
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.fillStyle = color;
+          ctx.fill();
+
+          if (game.WORLD_BEAUTIFY === true) {
+            this._apply_terrain(currentHexX, currentHexY, canvas, terrain, opacity);
+          }
+        }
+
+        offsetColumn = !offsetColumn;
+      }
+
+      return this;
+    }
+    /**
+     * Apply the terrain features.
+     *
+     * @private
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Object} canvas
+     * @param {String} terrain
+     * @param {Number} opacity
+     * @returns {world}
+     */
+
+  }, {
+    key: "_apply_terrain",
+    value: function _apply_terrain(x, y, canvas, terrain, opacity) {
+      var ctx = canvas.getContext('2d');
+      var imageObject = new Image();
+      var image_size = game.WORLD_HEX_SIZE * 36 / 24;
+
+      imageObject.onload = function () {
+        ctx.globalAlpha = opacity;
+        ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
+        ctx.globalAlpha = 1;
       };
-      return data;
+
+      imageObject.src = game.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
+      return this;
     }
   }]);
 
-  return place;
+  return world;
 }();
 "use strict";
 
@@ -8395,14 +14414,14 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /**
- * World object.
+ * Main Game place object.
  * 
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class world
- * @returns {world}
+ * @class place
+ * @returns {place}
  */
-var world =
+var place =
 /*#__PURE__*/
 function () {
   /**
@@ -8410,211 +14429,1452 @@ function () {
    * 
    * @private
    * @constructor
-   * @returns {world}
+   * @returns {place}
    * @param {Object} params
    */
-  function world(params) {
-    _classCallCheck(this, world);
+  function place(params) {
+    _classCallCheck(this, place);
 
     this._core = params.core;
-    this.seeds = {};
-    this.colors = {
-      background: '#64B4E1',
-      ocean: '#64B5E1',
-      grass: '#E6F59A',
-      subtropical_desert: '#F2CD63',
-      temperate_desert: '#F2CD63',
-      taiga: '#E1C85A',
-      shrubland: '#E1C859',
-      beach: '#FFF899',
-      scorched: '#E5F59A',
-      bare: '#D1BE79',
-      tundra: '#E5F59A',
-      snow: '#DCDCE6',
-      temperate_deciduous_forest: '#78AA46',
-      temperate_rain_forest: '#78AA46',
-      tropical_rain_forest: '#549D65',
-      tropical_seasonal_forest: '#549D65',
-      hills: '#E1C859',
-      mountains: '#B37D1A',
-      mountains_ice: '#DCDCE6'
+    this.resources = {
+      current: {},
+      required: {}
     };
-    this.seeds.moisture = typeof params.moisture !== 'undefined' && params.moisture !== null ? params.moisture : this.seed();
-    this.seeds.elevation = typeof params.elevation !== 'undefined' && params.elevation !== null ? params.elevation : this.seed();
-    this.data = typeof params.data !== 'undefined' ? params.data : [];
+    this.properties = {};
+    this.properties.id = params.properties.id;
+    this.properties.sid = params.properties.sid;
+    this.properties.scouted = params.properties.scouted;
+    this.properties.name = typeof params.properties.name !== 'undefined' ? params.properties.name : game.get_random_unique(game.PLACES_NAMES);
+    this.location = params.location;
+    this.resources = params.resources;
+    this.core().world().add_place(this);
+    return this;
+  }
 
-    if (this.data.length === 0) {
-      this._create_array();
+  _createClass(place, [{
+    key: "is_claimed",
+    value: function is_claimed() {
+      if (this.properties.sid === null) {
+        return false;
+      } else {
+        return this.properties.sid;
+      }
+    }
+  }, {
+    key: "is_scouted",
+    value: function is_scouted() {
+      return this.properties.scouted;
+    }
+  }, {
+    key: "scout",
+    value: function scout() {
+      this.properties.scouted = true;
+    }
+  }, {
+    key: "claim",
+    value: function claim(settlement) {
+      if (this.properties.sid === null) {
+        this.properties.sid = settlement.id();
+        this.core().world().lock_hex(this.location(), settlement.id());
+        return true;
+      }
 
-      this._generate();
+      return false;
+    }
+  }, {
+    key: "unclaim",
+    value: function unclaim(settlement) {
+      if (settlement.id() === this.properties.sid) {
+        this.properties.sid = null;
+        this.core().world().unlock_hex(this.location());
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+    /**
+     * Export place data.
+     *
+     * @returns {Object}
+     * @public
+     */
+
+  }, {
+    key: "export",
+    value: function _export() {
+      var data = {
+        properties: this.properties,
+        location: this.location,
+        resources: this.resources
+      };
+      return data;
+    }
+  }]);
+
+  return place;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Main Game event object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class event
+ * @returns {event}
+ */
+var event =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {event}
+   * @param {Object} params
+   */
+  function event(params) {
+    _classCallCheck(this, event);
+
+    this._core = params.core;
+    this.name = params.name;
+    this.chance = typeof params.chance !== 'undefined' ? params.chance : 0.001;
+    this.description = params.description;
+    this.raise = typeof params.raise !== 'undefined' ? params.raise : null;
+    this.lower = typeof params.lower !== 'undefined' ? params.lower : null;
+    this.destroy = typeof params.destroy !== 'undefined' ? params.destroy : null;
+    this.build = typeof params.build !== 'undefined' ? params.build : null;
+    this.process();
+    return this;
+  }
+  /**
+   * Process the event data.
+   * 
+   * @public
+   * @returns {event}
+   */
+
+
+  _createClass(event, [{
+    key: "process",
+    value: function process() {
+      var core = this.core();
+      var random_s_id = game.get_random(1, core.settlements.length);
+      var with_settlement = core.get_settlement(random_s_id);
+      var settlement = core.get_settlement();
+      var description = '';
+
+      if (with_settlement !== false) {
+        description = this.description.replace(/SETTLEMENT/g, with_settlement.name());
+
+        if (this.raise !== null) {
+          for (var item in this.raise) {
+            if (item === 'influence') {
+              settlement.raise_influence(with_settlement.id(), this.raise[item]);
+            } else {
+              if (settlement.has_storage_space_for(item, this.raise[item])) {
+                settlement.add_to_storage(item, this.raise[item]);
+              }
+            }
+
+            var replace = new RegExp(item.toUpperCase(), 'g');
+            description = description.replace(replace, this.raise[item]);
+          }
+        }
+
+        if (this.lower !== null) {
+          for (var _item in this.lower) {
+            if (_item === 'influence') {
+              settlement.lower_influence(with_settlement.id(), this.lower[_item]);
+            } else {
+              settlement.remove_resource(_item, this.lower[_item]);
+            }
+
+            var _replace = new RegExp(_item.toUpperCase(), 'g');
+
+            description = description.replace(_replace, this.lower[_item]);
+          }
+        }
+      }
+
+      if (this.destroy !== null) {
+        var buildings = settlement.get_buildings();
+        var building = game.get_random(1, buildings.length);
+        var _building = buildings[building];
+
+        if (typeof _building !== 'undefined') {
+          var _name = _building.name;
+          buildings[building].demolish();
+
+          var _replace2 = new RegExp('BUILDING', 'g');
+
+          description = description.replace(_replace2, _name);
+        }
+      }
+
+      if (this.build !== null) {
+        //const buildings = settlement.get_buildings();
+        // Todo
+        var _replace3 = new RegExp('BUILDING', 'g');
+
+        description = description.replace(_replace3, name);
+      }
+
+      if (settlement.is_player()) {
+        core.ui().notify(description, 'Event: ' + this.name, false, game.NOTIFY_EVENT);
+      }
+
+      core.ui().log('event', this.name);
+      return this;
+    }
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+  }]);
+
+  return event;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Main Game building object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class building
+ * @returns {building}
+ */
+var building =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {building}
+   * @param {Object} params
+   */
+  function building(params) {
+    _classCallCheck(this, building);
+
+    var self = this;
+    this.settlement = params.settlement;
+    this.type = params.type;
+    this.name = params.data.name;
+    this.problems = false;
+    this.is_production = typeof params.data.production !== 'undefined' ? true : false;
+    this.is_municipal = typeof params.data.is_municipal !== 'undefined' && params.data.is_municipal === true ? true : false;
+    this.is_housing = typeof params.data.tax !== 'undefined' ? true : false;
+    this.level = typeof params.data.level !== 'undefined' ? params.data.level : 1;
+    this.position = typeof params.data.position !== 'undefined' ? params.data.position : {
+      x: 0,
+      y: 0
+    };
+    this.stopped = typeof params.stopped !== 'undefined' ? params.stopped : false;
+    this.handle = params.data.handle;
+    params.data.level = this.level;
+
+    if (params.hidden !== true && this.settlement.is_player()) {
+      $('section.game').append(self.core().ui().building_element(params)).on('click', '#building-' + this.handle, function () {
+        var panel = self.core().ui().panel_class_names[self.handle];
+
+        if (typeof panel !== 'undefined') {
+          self.core().ui().open_panel(self.handle, params.data);
+        } else {
+          self.core().ui().open_panel('building', params.data, true);
+        }
+
+        return false;
+      });
+
+      if (this.stopped === true) {
+        this.notify(game.NOTIFICATION_PAUSED);
+      } else {
+        this.notify();
+      }
+
+      this.core().ui().refresh();
+    }
+
+    if (typeof params.data.storage !== 'undefined') {
+      this.settlement.storage(this.settlement.storage().all + params.data.storage * this.level);
     }
 
     return this;
   }
   /**
-   * Get a random number to seed the generator.
+   * Check if the building can be upgraded.
    *
+   * @returns {Boolean}
    * @public
-   * @returns {Number}
    */
 
 
-  _createClass(world, [{
-    key: "seed",
-    value: function seed() {
-      return Math.random() * (2147483646 - 1) + 1;
+  _createClass(building, [{
+    key: "is_upgradable",
+    value: function is_upgradable() {
+      var building = this.get_building_data();
+
+      if (this.level < building.levels) {
+        return true;
+      }
+
+      return false;
     }
     /**
-     * Get the terrain data as a string based on the elevation.
+     * Check if the building can be downgraded.
+     *
+     * @returns {Boolean}
+     * @public
+     */
+
+  }, {
+    key: "is_downgradable",
+    value: function is_downgradable() {
+      if (this.level > 1) {
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Calculate the upgrade costs according to the next level.
+     *
+     * @public
+     * @returns {Object|Boolean}
+     */
+
+  }, {
+    key: "get_upgrade_costs",
+    value: function get_upgrade_costs() {
+      if (this.is_upgradable()) {
+        var next_level = this.level + 1;
+        var costs = {};
+        var data = this.get_building_data(this.type);
+
+        for (var item in data.cost) {
+          costs[item] = data.cost[item] * next_level;
+        }
+
+        return costs;
+      }
+
+      return false;
+    }
+    /**
+     * Upgrade this building.
      * 
      * @public
-     * @param {Object} hex
-     * @returns {String}
+     * @returns {Boolean}
      */
 
   }, {
-    key: "get_hex_terrain",
-    value: function get_hex_terrain(hex) {
-      var elevation = this.data[hex.y][hex.x].e;
-      var moisture = this.data[hex.y][hex.x].m;
+    key: "upgrade",
+    value: function upgrade() {
+      var core = this.core();
+      var settlement = this.settlement;
+      var next_level = this.level + 1;
+      var data = this.get_building_data(this.type);
+      var building_image = this.type;
+      var costs = this.get_upgrade_costs();
 
-      if (elevation <= 0.1) {
-        return 'ocean';
-      } else if (elevation > 0.1 && elevation <= 0.15) {
-        return 'beach';
-      } else if (elevation > 0.15 && elevation <= 0.35) {
-        if (moisture <= 0.30) {
-          return 'subtropical_desert';
-        } else if (moisture > 0.30 && moisture <= 0.45) {
-          return 'grass';
-        } else if (moisture > 0.45 && moisture <= 0.66) {
-          return 'tropical_seasonal_forest';
+      if (data && this.is_upgradable() && settlement.is_building_built(this.type)) {
+        if (costs && this.settlement.has_resources(costs)) {
+          this.settlement.remove_resources(costs);
+          this.set_level(next_level);
+
+          if (settlement.is_player()) {
+            if (this.type.slice(0, 5) === 'house') {
+              building_image = this.type.slice(0, 5);
+            }
+
+            $('section.game .building[data-type=' + this.type + ']').css({
+              'background-image': 'url(' + game.ASSETS_URL + 'images/assets/buildings/' + (typeof data.visible_upgrades === 'undefined' || data.visible_upgrades === false ? building_image : building_image + this.level) + '.png)'
+            });
+          }
+
+          if (typeof data.storage !== 'undefined') {
+            settlement.storage(settlement.storage().all + data.storage);
+          }
+
+          if (settlement.is_player()) {
+            core.save_and_refresh();
+            core.ui().notify(this.name + ' upgraded to level ' + this.level);
+          }
+
+          return true;
         } else {
-          return 'tropical_rain_forest';
-        }
-      } else if (elevation > 0.35 && elevation <= 0.75) {
-        if (moisture <= 0.20) {
-          return 'temperate_desert';
-        } else if (moisture > 0.20 && moisture <= 0.50) {
-          return 'grass';
-        } else if (moisture > 0.50 && moisture <= 0.83) {
-          return 'temperate_deciduous_forest';
-        } else {
-          return 'temperate_rain_forest';
-        }
-      } else if (elevation > 0.75 && elevation <= 0.8) {
-        if (moisture <= 0.33) {
-          return 'temperate_desert';
-        } else if (moisture > 0.33 && moisture <= 0.66) {
-          return 'shrubland';
-        } else {
-          return 'taiga';
-        }
-      } else if (elevation > 0.8 && elevation <= 0.85) {
-        return 'hills';
-      } else {
-        if (moisture >= 0.8) {
-          return 'mountains_ice';
-        } else {
-          return 'mountains';
+          if (settlement.is_player()) {
+            core.ui().error('You don`t have enough resources to upgrade your ' + this.name + '.');
+          }
+
+          return false;
         }
       }
+
+      return false;
     }
     /**
-     * Convert a terrain type into climate type.
-     *
-     * @param {String} terrain
+     * Downgrade this building.
+     * 
      * @public
-     * @returns {Boolean|Object}
+     * @returns {Boolean}
      */
 
   }, {
-    key: "get_climate_from_terrain",
-    value: function get_climate_from_terrain(terrain) {
-      if (terrain === 'tropical_rain_forest' || terrain === 'tropical_seasonal_forest') {
-        return {
-          id: game.CLIMATE_TROPICAL,
-          name: game.CLIMATES[game.CLIMATE_TROPICAL]
-        };
-      } else if (terrain === 'subtropical_desert' || terrain === 'temperate_desert') {
-        return {
-          id: game.CLIMATE_ARID,
-          name: game.CLIMATES[game.CLIMATE_ARID]
-        };
-      } else if (terrain === 'mountains_ice' || terrain === 'snow') {
-        return {
-          id: game.CLIMATE_POLAR,
-          name: game.CLIMATES[game.CLIMATE_POLAR]
-        };
-      } else if (terrain === 'grass' || terrain === 'temperate_deciduous_forest' || terrain === 'temperate_rain_forest' || terrain === 'hills' || terrain === 'mountains' || terrain === 'taiga' || terrain === 'shrubland' || terrain === 'beach' || terrain === 'scorched' || terrain === 'tundra' || terrain === 'bare') {
-        return {
-          id: game.CLIMATE_TEMPERATE,
-          name: game.CLIMATES[game.CLIMATE_TEMPERATE]
-        };
+    key: "downgrade",
+    value: function downgrade() {
+      var settlement = this.settlement;
+      var data = this.get_building_data(this.type);
+      var building_image = this.type;
+      var next_level = this.level - 1;
+
+      if (data && this.is_downgradable() && settlement.is_building_built(this.type)) {
+        this.set_level(next_level);
+
+        if (settlement.is_player()) {
+          if (this.type.slice(0, 5) === 'house') {
+            building_image = this.type.slice(0, 5);
+          }
+
+          $('section.game .building[data-type=' + this.type + ']').css({
+            'background-image': 'url(' + game.ASSETS_URL + 'images/assets/buildings/' + (typeof data.visible_upgrades === 'undefined' || data.visible_upgrades === false ? building_image + '1' : building_image + this.level) + '.png)'
+          });
+
+          if (typeof data.storage !== 'undefined') {
+            settlement.storage(settlement.storage().all - data.storage);
+          }
+
+          this.core().save_and_refresh();
+          this.core().ui().notify(this.name + ' downgraded to level ' + this.level);
+        }
+
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Check if this building is a housing building.
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "is_housing_building",
+    value: function is_housing_building() {
+      return this.is_housing;
+    }
+    /**
+     * Check if this building is a municipal building.
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "is_municipal_building",
+    value: function is_municipal_building() {
+      return this.is_municipal;
+    }
+    /**
+     * Check if this building is a production building (its production can be
+     * started and stopped).
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "is_production_building",
+    value: function is_production_building() {
+      return this.is_production;
+    }
+    /**
+     * Check if this building's production is started or stopped.
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "is_stopped",
+    value: function is_stopped() {
+      return this.stopped;
+    }
+    /**
+     * Start this building's production
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "start_production",
+    value: function start_production() {
+      if (this.settlement.is_building_built(this.type) && this.is_production_building()) {
+        if (this.settlement.is_player()) {
+          this.core().ui().notify(this.name + '`s production started.');
+        }
+
+        this.notify();
+        this.stopped = false;
+        this.core().save_and_refresh();
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Stop this building's production
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "stop_production",
+    value: function stop_production() {
+      if (this.settlement.is_building_built(this.type) && this.is_production_building()) {
+        if (this.settlement.is_player()) {
+          this.core().ui().notify(this.name + '`s production stopped.');
+        }
+
+        this.notify(game.NOTIFICATION_PAUSED);
+        this.stopped = true;
+        this.core().save_and_refresh();
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Demolish this building and remove it from the DOM.
+     * 
+     * @public
+     * @param {Boolean} notify
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "demolish",
+    value: function demolish(notify) {
+      var settlement = this.settlement;
+
+      if (this.type !== 'marketplace') {
+        for (var i = 0; i < settlement.buildings.length; i++) {
+          if (settlement.buildings[i].type === this.type) {
+            settlement.buildings.splice(i, 1);
+          }
+        }
+
+        if (settlement.is_player()) {
+          $('section.game > .building[data-type=' + this.type + ']').remove();
+
+          if (notify === true) {
+            this.core().ui().notify(this.name + ' demolished successfully!');
+          }
+        }
+
+        return true;
       } else {
+        if (settlement.is_player()) {
+          if (notify === true) {
+            this.core().ui().error('Unable to demolish the specified building `' + this.name + '`!');
+          }
+        }
+
         return false;
       }
     }
     /**
-     * Convert a climate type into terrain type.
-     *
-     * @param {Number} climate
-     * @public
-     * @returns {Boolean|Array}
-     */
-
-  }, {
-    key: "get_terrain_from_climate",
-    value: function get_terrain_from_climate(climate) {
-      if (climate === game.CLIMATE_TROPICAL) {
-        return ['tropical_rain_forest', 'tropical_seasonal_forest'];
-      } else if (climate === game.CLIMATE_ARID) {
-        return ['subtropical_desert', 'temperate_desert'];
-      } else if (climate === game.CLIMATE_POLAR) {
-        return ['mountains_ice', 'snow'];
-      } else if (climate === game.CLIMATE_TEMPERATE) {
-        return ['grass', 'temperate_deciduous_forest', 'temperate_rain_forest', 'hills', 'mountains', 'taiga', 'shrubland', 'beach', 'scorched', 'tundra', 'bare'];
-      } else {
-        return false;
-      }
-    }
-    /**
-     * Get a random world location
+     * Get building data from the main configuration array.
      * 
      * @public
-     * @param {String} terrain
      * @returns {Object}
      */
 
   }, {
-    key: "get_random_location",
-    value: function get_random_location(terrain) {
-      var hex = {
-        x: game.get_random(0, game.WORLD_SIZE_WIDTH - 1),
-        y: game.get_random(0, game.WORLD_SIZE_HEIGHT - 1)
+    key: "get_building_data",
+    value: function get_building_data(type) {
+      if (typeof type === 'undefined') {
+        type = this.type;
+      }
+
+      return this.core().get_building_config_data(type);
+    }
+    /**
+     * Get the settlement resources object
+     * 
+     * @public
+     * @returns {Object}
+     */
+
+  }, {
+    key: "get_settlement_resources",
+    value: function get_settlement_resources() {
+      return this.settlement.get_resources();
+    }
+    /**
+     * Check if this building has all the buildings requirements.
+     *
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "has_building_requirements",
+    value: function has_building_requirements() {
+      var good = true;
+      var parent;
+      var building = this.get_building_data();
+
+      if (typeof building.requires.buildings !== 'undefined') {
+        var required = building.requires.buildings;
+
+        for (var item in required) {
+          if (this.settlement.is_building_built(item, required[item])) {
+            parent = this.settlement.get_building(item);
+
+            if (parent && !parent.is_stopped()) {
+              good = parent.has_building_requirements() && parent.has_settlement_requirements();
+
+              if (good === false) {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
+        }
+      }
+
+      return good;
+    }
+    /**
+     * Check if this building has all the research requirements.
+     *
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "has_research_requirements",
+    value: function has_research_requirements() {
+      var building = this.get_building_data();
+
+      if (typeof building.requires.research !== 'undefined') {
+        if (!this.core().has_research(building.requires.research)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+    /**
+     * Check if this building has all the settlement level requirements.
+     *
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "has_settlement_requirements",
+    value: function has_settlement_requirements() {
+      var building = this.get_building_data();
+
+      if (typeof building.requires.settlement_level !== 'undefined') {
+        if (building.requires.settlement_level > this.settlement.level()) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+    /**
+     * Check if this building has all the requirements.
+     *
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "has_requirements",
+    value: function has_requirements() {
+      return this.has_building_requirements() && this.has_settlement_requirements() && this.has_research_requirements();
+    }
+    /**
+     * Tax this building.
+     *
+     * @public
+     * @param {Number} amount
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "tax",
+    value: function tax(amount) {
+      var _amount = this.get_tax_amount(amount);
+
+      this.settlement.inc_coins(_amount);
+      return this;
+    }
+    /**
+     * Return the amount of taxation based on the settlement research.
+     *
+     * @public
+     * @param {Number}
+     * @returns {Number}
+     */
+
+  }, {
+    key: "get_tax_amount",
+    value: function get_tax_amount(amount) {
+      return amount * this.level + this.core().get_tax_modifier(this.handle);
+    }
+    /**
+     * Produce the resources.
+     *
+     * @public
+     * @param {Object} materials
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "produce",
+    value: function produce(materials) {
+      if (!this.settlement.has_storage_space_for(materials)) {
+        return false;
+      }
+
+      var settlement = this.settlement;
+      var chance;
+      var amount;
+      var building = this.get_building_data();
+      var random_amount;
+
+      for (var item in materials) {
+        amount = materials[item] * this.level;
+
+        if (item === 'faith') {
+          settlement.raise_faith(amount);
+        } else if (item === 'research') {
+          settlement.raise_research(amount);
+        } else if (item === 'espionage') {
+          settlement.raise_espionage(amount);
+        } else if (item === 'fame') {
+          settlement.raise_fame(amount);
+        } else if (item === 'prestige') {
+          settlement.raise_prestige(amount);
+        } else {
+          amount += this.core().get_prod_modifier(building);
+          settlement.add_to_storage(item, amount);
+
+          if (typeof building.chance !== 'undefined') {
+            for (var itemo in building.chance) {
+              chance = Math.random();
+
+              if (chance * this.level < building.chance[itemo]) {
+                random_amount = game.get_random(1, 5);
+                settlement.add_to_storage(itemo, random_amount);
+              }
+            }
+          }
+        }
+      }
+
+      return true;
+    }
+    /**
+     * Main threading method for the building, this does the actual processing each turn.
+     * 
+     * @public
+     * @returns {building}
+     */
+
+  }, {
+    key: "process",
+    value: function process() {
+      var building = this.get_building_data();
+      var materials = building.materials;
+      var settlement = this.settlement;
+
+      if (this.is_housing_building()) {
+        if (typeof materials !== 'undefined') {
+          if (settlement.has_resources(materials)) {
+            settlement.remove_resources(materials);
+            this.tax(building.tax);
+            this.log_to_console();
+          } else {
+            this.notify(game.NOTIFICATION_MISSING_RES);
+            return false;
+          }
+        }
+      } else if (this.is_production_building()) {
+        if (!this.is_stopped()) {
+          var products = building.production;
+
+          if (this.has_requirements()) {
+            if (typeof materials !== 'undefined') {
+              if (Array.isArray(materials)) {
+                var all_good = true;
+                var removable = {};
+
+                for (var i = 0; i < materials.length; i++) {
+                  var res = settlement.has_any_resources(materials[i]);
+
+                  if (res !== false) {
+                    removable[res] = materials[i][res];
+                  } else {
+                    all_good = false;
+                  }
+                }
+
+                if (all_good === true) {
+                  if (settlement.has_storage_space_for(products)) {
+                    settlement.remove_resources(removable);
+
+                    if (this.produce(products)) {
+                      this.log_to_console();
+                    }
+                  } else {
+                    this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
+                    this.problems = true;
+                    return false;
+                  }
+                } else {
+                  this.notify(game.NOTIFICATION_MISSING_RES);
+                  this.problems = true;
+                  return false;
+                }
+              } else {
+                if (settlement.has_resources(materials)) {
+                  if (settlement.has_storage_space_for(products)) {
+                    settlement.remove_resources(materials);
+
+                    if (this.produce(products)) {
+                      this.log_to_console();
+                    }
+                  } else {
+                    this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
+                    this.problems = true;
+                    return false;
+                  }
+                } else {
+                  this.notify(game.NOTIFICATION_MISSING_RES);
+                  return false;
+                }
+              }
+            } else {
+              if (settlement.has_storage_space_for(products)) {
+                if (this.produce(products)) {
+                  this.log_to_console();
+                }
+              } else {
+                this.core().ui().log('game', 'There is no storage space in ' + settlement.name() + ' to accomodate the new goods.', true);
+                this.problems = true;
+                return false;
+              }
+            }
+          } else {
+            this.notify(game.NOTIFICATION_MISSING_REQ);
+            return false;
+          }
+        } else {
+          this.notify(game.NOTIFICATION_PAUSED);
+          return false;
+        }
+      }
+
+      return true;
+    }
+    /**
+     * Check if this building is the marketplace.
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "is_marketplace",
+    value: function is_marketplace() {
+      if (this.type === 'marketplace') {
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Get a pointer to the game core
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this.settlement.core();
+    }
+    /**
+     * Check whether this building has problems producing its goods.
+     * 
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "has_problems",
+    value: function has_problems() {
+      return this.problems;
+    }
+    /**
+     * Set the level of this building
+     * 
+     * @public
+     * @param {Number} value
+     * @returns {building}
+     */
+
+  }, {
+    key: "set_level",
+    value: function set_level(value) {
+      this.level = value;
+      return this;
+    }
+    /**
+     * Get the level of this building
+     * 
+     * @public
+     * @returns {Number}
+     */
+
+  }, {
+    key: "get_level",
+    value: function get_level() {
+      return this.level;
+    }
+    /**
+     * Log production data to the game console.
+     *
+     * @public
+     * @returns {building}
+     */
+
+  }, {
+    key: "log_to_console",
+    value: function log_to_console() {
+      this.notify();
+      var building = this.get_building_data();
+      var _p = '';
+      var _m = '';
+
+      if (typeof building.production !== 'undefined') {
+        for (var item in building.production) {
+          _p += building.production[item] * this.level + this.core().get_prod_modifier(building) + ' ' + item + ', ';
+        }
+
+        _p = _p.substring(0, _p.length - 2);
+      }
+
+      if (typeof building.materials !== 'undefined') {
+        if (Array.isArray(building.materials)) {
+          var removable = {};
+
+          for (var i = 0; i < building.materials.length; i++) {
+            var res = this.settlement.has_any_resources(building.materials[i]);
+
+            if (res !== false) {
+              removable[res] = building.materials[i][res];
+            }
+          }
+
+          for (var _item in removable) {
+            _m += removable[_item] + ' ' + _item + ', ';
+          }
+
+          _m = _m.substring(0, _m.length - 2);
+        } else {
+          for (var _item2 in building.materials) {
+            _m += building.materials[_item2] + ' ' + _item2 + ', ';
+          }
+
+          _m = _m.substring(0, _m.length - 2);
+        }
+      }
+
+      if (typeof building.tax !== 'undefined') {
+        this.core().ui().log('game', this.name + ' used ' + _m + ' and got taxed for ' + this.get_tax_amount(building.tax) + ' coins.');
+      } else if (typeof building.production !== 'undefined' && typeof building.materials === 'undefined') {
+        this.core().ui().log('game', this.name + ' produced ' + _p + '.');
+      } else {
+        this.core().ui().log('game', this.name + ' used ' + _m + ' and produced ' + _p + '.');
+      }
+
+      return this;
+    }
+    /**
+     * Perform building notifications.
+     *
+     * @public
+     * @param {Number} notification_type
+     * @returns {building}
+     */
+
+  }, {
+    key: "notify",
+    value: function notify(notification_type) {
+      if (typeof notification_type !== 'undefined') {
+        this.problems = true;
+
+        if (this.settlement.is_player()) {
+          var handle = $('section.game > #building-' + this.handle);
+
+          switch (notification_type) {
+            case game.NOTIFICATION_MISSING_REQ:
+              this.core().ui().log('game', this.name + ' doesn`t have one of the buildings required to be operational.', true);
+              handle.empty().append('<span class="notification requirements"></span>');
+              break;
+
+            case game.NOTIFICATION_PAUSED:
+              this.core().ui().log('game', this.name + '`s production is stopped.', true);
+              handle.empty().append('<span class="notification paused"></span>');
+              break;
+
+            case game.NOTIFICATION_SETTLEMENT_LOW_LEVEL:
+              this.core().ui().log('game', 'Your settlement level is too low for ' + this.name + ' to be active.', true);
+              handle.empty().append('<span class="notification lowlevel"></span>');
+              break;
+
+            case game.NOTIFICATION_MISSING_RES:
+            default:
+              this.core().ui().log('game', this.name + ' is missing materials for production.', true);
+              handle.empty().append('<span class="notification error"></span>');
+              break;
+          }
+        }
+      } else {
+        this.problems = false;
+
+        if (this.settlement.is_player()) {
+          $('section.game > #building-' + this.handle).empty();
+        }
+      }
+
+      return this;
+    }
+  }]);
+
+  return building;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Battleground object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class battleground
+ * @returns {battleground}
+ */
+var battleground =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {battleground}
+   * @param {Object} params
+   */
+  function battleground(params) {
+    _classCallCheck(this, battleground);
+
+    this._core = params.core;
+    this._properties = {};
+    this._elements = {};
+    this._grid = [];
+    this.done = false;
+    this._stats = {
+      attacking: {},
+      defending: {}
+    };
+    this._current_turn = 1;
+    this._properties.width = params.width;
+    this._properties.height = params.height;
+    this._elements.container = params.elements.container;
+    this._elements.console = params.elements.console;
+    this._elements.attack = params.elements.attack;
+    this._elements.defense = params.elements.defense;
+    this._attack = params.attack;
+    this._defense = params.defense;
+
+    if (params.on_win instanceof Function) {
+      this.on_win = params.on_win;
+    }
+
+    if (params.on_lose instanceof Function) {
+      this.on_lose = params.on_lose;
+    }
+
+    if (params.on_select instanceof Function) {
+      this.on_select = params.on_select;
+    }
+
+    if (params.on_move instanceof Function) {
+      this.on_move = params.on_move;
+    }
+
+    if (params.on_attack instanceof Function) {
+      this.on_attack = params.on_attack;
+    }
+
+    if (params.on_end_turn instanceof Function) {
+      this.on_end_turn = params.on_end_turn;
+    }
+
+    if (this._attack.city === this.core().get_settlement().id()) {
+      this._player = 1;
+      this._computer = 2;
+    } else {
+      this._player = 2;
+      this._computer = 1;
+    }
+
+    this._setup();
+
+    this.show_stats();
+    return this;
+  }
+  /**
+   * Attack a hex cell.
+   *
+   * @public
+   * @param {Object} cell
+   * @returns {Boolean}
+   */
+
+
+  _createClass(battleground, [{
+    key: "attack",
+    value: function attack(cell) {
+      var sx = this._from.x;
+      var sy = this._from.y;
+      var source = this._grid[sy][sx];
+      var destination = this._grid[cell.y][cell.x];
+      var is_ranged = game.SOLDIERS[source.item].ranged;
+      var city = this.core().get_settlement(source.city);
+      var city2 = this.core().get_settlement(destination.city);
+      var remaining = 0;
+
+      var _a;
+
+      if (city && source.moved) {
+        this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> already used up its turn.');
+        return false;
+      }
+
+      if (source !== null && destination !== null && city && city2) {
+        if (destination.side === game.BATTLEGROUND_DEFENSE) {
+          _a = '_defense';
+        } else {
+          _a = '_attack';
+        }
+
+        if (typeof is_ranged !== 'undefined') {
+          if (Math.abs(cell.y - sy) + Math.abs(cell.x - sx) > is_ranged) {
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is not close enough for a ranged attack.');
+            return false;
+          }
+
+          var attack = Math.ceil(source.attack / 2);
+          var defense = destination.defense;
+
+          if (defense - attack < 0) {
+            this[_a].army[destination.item] = 0;
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range and killed its opponent.');
+
+            this._cell_empty(cell);
+          } else {
+            remaining = Math.ceil((defense - attack) / game.SOLDIERS[destination.item].defense);
+            destination.total = remaining;
+            this[_a].army[destination.item] = remaining;
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + attack + ' damage from range.');
+          }
+
+          this._cell_under_attack(cell);
+
+          source.moved = true;
+          this.redraw();
+        } else {
+          var can_move = game.SOLDIERS[this._grid[sy][sx].item].moves;
+
+          if (Math.abs(cell.y - sy) + Math.abs(cell.x - sx) > can_move) {
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> doesn`t have a ranged attack.');
+            return false;
+          }
+
+          var _attack = Math.ceil(source.attack / 2);
+
+          var _defense = destination.defense;
+
+          if (_defense - _attack < 0) {
+            this[_a].army[destination.item] = 0;
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + _attack + ' damage in melee and killed its opponent.');
+
+            this._cell_empty(cell);
+          } else {
+            remaining = Math.ceil((_defense - _attack) / game.SOLDIERS[destination.item].defense);
+            destination.total = remaining;
+            this[_a].army[destination.item] = remaining;
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> attacked ' + city2.name() + '`s <strong>' + game.SOLDIERS[destination.item].name + '</strong> for ' + _attack + ' damage in melee.');
+          }
+
+          this._cell_under_attack(cell);
+
+          source.moved = true;
+          this.redraw();
+        }
+      }
+
+      this._from = null;
+      return true;
+    }
+    /**
+     * End the current turn.
+     *
+     * @public
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "end_turn",
+    value: function end_turn() {
+      this._from = null;
+
+      this._do_computer();
+
+      for (var y = 0; y < this._grid.length; y++) {
+        for (var x = 0; x < this._grid[y].length; x++) {
+          if (this._grid[y][x] !== null) {
+            this._grid[y][x].moved = false;
+          }
+        }
+      }
+
+      this._current_turn++;
+      this.on_end_turn.call(self, this.num_turns());
+      this.redraw();
+
+      if (!this._done) {
+        this.log('Turn <strong>' + this._current_turn + '</strong> started now.');
+      }
+
+      return this;
+    }
+    /**
+    * Check the status of the current game.
+    *
+    * @private
+    * @returns {Boolean}
+    */
+
+  }, {
+    key: "_check_status",
+    value: function _check_status() {
+      var city;
+
+      if (!this._done) {
+        if (this._stats.attacking.attack <= 0 || this._stats.attacking.defense <= 0 || this._stats.defending.attack <= 0 || this._stats.defending.defense <= 0) {
+          this._done = true;
+
+          this._reset();
+        }
+
+        if (this._stats.attacking.attack <= 0 || this._stats.attacking.defense <= 0) {
+          if (this._defense.city === this.core().get_settlement().id()) {
+            this._on_win.call(this, this._defense, this._attack);
+
+            this.on_win.call(this, this._defense, this._attack);
+          } else {
+            this._on_lose.call(this, this._defense, this._attack);
+
+            this.on_lose.call(this, this._defense, this._attack);
+          }
+
+          city = this.core().get_settlement(this._defense.city);
+        } else if (this._stats.defending.attack <= 0 || this._stats.defending.defense <= 0) {
+          if (this._attack.city === this.core().get_settlement().id()) {
+            this._on_win.call(this, this._attack, this._defense);
+
+            this.on_win.call(this, this._attack, this._defense);
+          } else {
+            this._on_lose.call(this, this._attack, this._defense);
+
+            this.on_lose.call(this, this._attack, this._defense);
+          }
+
+          city = this.core().get_settlement(this._attack.city);
+        }
+
+        if (this._done) {
+          this.log(city.name() + ' won this battle!');
+          this.show_stats();
+        }
+      }
+
+      return false;
+    }
+    /**
+     * Display the battleground stats.
+     *
+     * @public
+     * @returns {Object}
+     */
+
+  }, {
+    key: "show_stats",
+    value: function show_stats() {
+      $(this._elements.attack).empty().append(this.core().get_settlement(this._attack.city).name() + ' ' + this._stats.attacking.attack + ' / ' + this._stats.attacking.defense);
+      $(this._elements.defense).empty().append(this.core().get_settlement(this._defense.city).name() + ' ' + this._stats.defending.attack + ' / ' + this._stats.defending.defense);
+      return {
+        attack: this._attack,
+        defense: this._defense
       };
-
-      if (typeof terrain !== 'undefined') {
-        if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
-          //if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
-          return hex; //}
-        }
-
-        return this.get_random_location(terrain);
-      } else {
-        if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
-          return hex;
-        }
-
-        return this.get_random_location(terrain);
-      }
     }
     /**
-     * Get the world properties.
+     * Log a message to the battleground status.
      *
      * @public
-     * @returns {Object}
+     * @param {String} message
+     * @returns {battleground}
      */
+
+  }, {
+    key: "log",
+    value: function log(message) {
+      $(this._elements.console).prepend('<p>' + message + '</p>');
+      return this;
+    }
+    /**
+     * Reset and rebuild the battleground hex cell grid.
+     *
+     * @private
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_reset",
+    value: function _reset() {
+      var mode = 'even';
+      var template = '';
+
+      for (var y = 0; y <= this._properties.height - 1; y++) {
+        this._grid[y] = [];
+        template += '<ol class="' + mode + '">';
+
+        for (var x = 0; x <= this._properties.width - 1; x++) {
+          this._grid[y][x] = null;
+          template += '<li data-pos="' + x + '-' + y + '" data-x="' + x + '" data-y="' + y + '" class="cell empty"></li>';
+        }
+
+        template += '</ol>';
+
+        if (mode === 'even') {
+          mode = 'odd';
+        } else {
+          mode = 'even';
+        }
+      }
+
+      $(this._elements.container).empty().append(template);
+      return this;
+    }
+    /**
+     * Return the current hex cell grid.
+     *
+     * @public
+     * @returns {Array}
+     */
+
+  }, {
+    key: "grid",
+    value: function grid() {
+      return this._grid;
+    }
+    /**
+     * Get the current turn.
+     *
+     * @public
+     * @returns {Number}
+     */
+
+  }, {
+    key: "num_turns",
+    value: function num_turns() {
+      return this._current_turn;
+    }
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+    /**
+    * Get the properties of this battleground.
+    *
+    * @public
+    * @returns {Object}
+    */
 
   }, {
     key: "properties",
@@ -8622,877 +15882,1207 @@ function () {
       return this._properties;
     }
     /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-    /**
-     * Check if the specified hex is ocean.
+     * Move closer to the enemy.
      *
-     * @public
-     * @param {Object} hex
+     * @private
+     * @param {Object} cell
      * @returns {Boolean}
      */
 
   }, {
-    key: "hex_is_water",
-    value: function hex_is_water(hex) {
-      if (this.get_hex_terrain(hex) === 'ocean') {
-        return true;
+    key: "_move_to_enemy",
+    value: function _move_to_enemy(cell) {
+      /*
+      let sx = cell.x;
+      let sy = cell.y;
+      let source = this._grid[sy][sx];
+      let can_move = game.SOLDIERS[source.item].moves;
+      if (this._computer === 2) {
+      	// TODO
+      }
+      */
+      return false;
+    }
+  }, {
+    key: "_do_computer",
+    value: function _do_computer() {
+      for (var y = 0; y < this._grid.length; y++) {
+        for (var x = 0; x < this._grid[y].length; x++) {
+          if (this._grid[y][x] !== null && this._grid[y][x].side === this._computer) {
+            var source = this._grid[y][x];
+            this._from = {
+              x: x,
+              y: y
+            };
+
+            this._cell_select(this._from);
+
+            if (game.SOLDIERS[source.item].ranged) {
+              this._check_for_ranged_target(this._player);
+            } else {
+              this._check_for_melee_target(this._player);
+            }
+
+            this._move_to_enemy(this._from);
+
+            this._from = null;
+          }
+        }
+      }
+
+      return true;
+    }
+    /**
+     * Computer check if there are any targets in melee.
+     *
+     * @private
+     * @param {Number} type
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "_check_for_melee_target",
+    value: function _check_for_melee_target(type) {
+      if (this._from !== null) {
+        var source = this._grid[this._from.y][this._from.x];
+        var can_move = game.SOLDIERS[source.item].moves;
+
+        for (var y = 0; y < this._grid.length; y++) {
+          for (var x = 0; x < this._grid[y].length; x++) {
+            if (source !== null && !source.moved && can_move && Math.abs(y - this._from.y) + Math.abs(x - this._from.x) <= can_move) {
+              if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
+                this.attack({
+                  x: x,
+                  y: y
+                });
+                return true;
+              }
+            }
+          }
+        }
       }
 
       return false;
     }
     /**
-     * Lock the specified hex as being inside the borders of a settlement.
+     * Check if there are any targets in range.
      *
-     * @public
-     * @param {Object} hex
-     * @returns {String}
-     */
-
-  }, {
-    key: "lock_hex",
-    value: function lock_hex(hex, lid) {
-      this.set_hex(hex, 'l', true);
-      this.set_hex(hex, 'lid', lid);
-    }
-    /**
-     * Unlock the specified hex.
-     *
-     * @public
-     * @param {Object} hex
-     * @returns {String}
-     */
-
-  }, {
-    key: "unlock_hex",
-    value: function unlock_hex(hex) {
-      this.set_hex(hex, 'l', false);
-      this.set_hex(hex, 'lid', null);
-    }
-    /**
-     * Check if the specified hex is locked.
-     *
-     * @public
-     * @param {Object} hex
+     * @private
+     * @param {Number} type
      * @returns {Boolean}
      */
 
   }, {
-    key: "hex_is_locked",
-    value: function hex_is_locked(hex) {
-      return this.get_hex(hex.x, hex.y).l;
+    key: "_check_for_ranged_target",
+    value: function _check_for_ranged_target(type) {
+      if (this._from !== null) {
+        for (var y = 0; y < this._grid.length; y++) {
+          for (var x = 0; x < this._grid[y].length; x++) {
+            if (this._grid[y][x] !== null && this._grid[y][x].side === type) {
+              this.attack({
+                x: x,
+                y: y
+              });
+              return true;
+            }
+          }
+        }
+      }
+
+      return false;
     }
     /**
-     * Lock the specified hex by the settlement id.
+     * Internal callback for when someone wins the battleground.
      *
-     * @public
-     * @param {Object} hex
-     * @returns {Object}
+     * @private
+     * @param {Object} winner
+     * @param {Object} winner
+     * @returns {battleground}
      */
 
   }, {
-    key: "hex_locked_by",
-    value: function hex_locked_by(hex) {
-      return this.get_hex(hex.x, hex.y).lid;
+    key: "_on_win",
+    value: function _on_win(winner, loser) {
+      var my_settlement = this.core().get_settlement(winner.city);
+      var settlement = this.core().get_settlement(loser.city);
+
+      if (this._attack.city === winner.city) {
+        // player was attacking and won.
+        settlement.army = settlement.load_army(loser.army);
+        settlement.navy = settlement.load_navy(loser.navy);
+        var spoils = settlement.get_spoils();
+        this.core().queue_add(settlement, my_settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
+          army: winner.army,
+          navy: winner.navy,
+          resources: spoils
+        });
+      } else if (this._defense.city === winner.city) {
+        // player was defending and won.
+        my_settlement.army = my_settlement.load_army(winner.army);
+        my_settlement.navy = my_settlement.load_navy(winner.navy);
+        var has_loser_army = settlement.num_soldiers(loser.army);
+        var has_loser_navy = settlement.num_ships(loser.navy);
+
+        if (has_loser_army > 0 || has_loser_navy > 0) {
+          this.core().queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
+            army: loser.army,
+            navy: loser.navy,
+            resources: {}
+          });
+        }
+      }
+
+      return this;
     }
     /**
-     * Return the moisture data for the specified hex.
+     * Internal callback for when someone loses the battleground.
+     *
+     * @private
+     * @param {Object} winner
+     * @param {Object} winner
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_on_lose",
+    value: function _on_lose(winner, loser) {
+      var settlement = this.core().get_settlement(winner.city);
+      var my_settlement = this.core().get_settlement(loser.city);
+
+      if (this._attack.city === loser.city) {
+        // player was attacking and lost.
+        settlement.army = settlement.load_army(winner.army);
+        settlement.navy = settlement.load_navy(winner.navy);
+        var has_loser_army = settlement.num_soldiers(loser.army);
+        var has_loser_navy = settlement.num_ships(loser.navy);
+
+        if (has_loser_army > 0 || has_loser_navy > 0) {
+          this.core().queue_add(settlement, my_settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
+            army: loser.army,
+            navy: loser.navy,
+            resources: {}
+          });
+        }
+      } else if (this._defense.city === loser.city) {
+        // player was defending and lost.
+        my_settlement.army = my_settlement.load_army(loser.army);
+        my_settlement.navy = my_settlement.load_navy(loser.navy);
+        var spoils = my_settlement.get_spoils();
+        this.core().queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY_RETURN, {
+          army: winner.army,
+          navy: winner.navy,
+          resources: spoils
+        });
+      }
+
+      return this;
+    }
+    /**
+     * Get the distance between two cells.
      *
      * @public
-     * @param {Object} hex
+     * @param {Object} cell1
+     * @param {Object} cell2
      * @returns {Number}
      */
 
   }, {
-    key: "get_hex_moisture",
-    value: function get_hex_moisture(hex) {
-      return this.get_hex(hex.x, hex.y).m;
+    key: "distance",
+    value: function distance(cell1, cell2) {
+      var delta_x = cell1.x - cell2.x;
+      var delta_y = cell1.y - cell2.y;
+      return (Math.abs(delta_x) + Math.abs(delta_y) + Math.abs(delta_x - delta_y)) / 2;
     }
     /**
-     * Return the elevation data for the specified hex.
+     * Move the contents of one cell to another cell.
      *
      * @public
-     * @param {Object} hex
-     * @returns {Number}
+     * @param {Object} cell
+     * @returns {Boolean}
      */
 
   }, {
-    key: "get_hex_elevation",
-    value: function get_hex_elevation(hex) {
-      return this.get_hex(hex.x, hex.y).e;
+    key: "move",
+    value: function move(cell) {
+      var sx = this._from.x;
+      var sy = this._from.y;
+
+      if (this._from !== null && cell !== null) {
+        var source = this._grid[sy][sx];
+        var destination = this._grid[cell.y][cell.x];
+        var city = this.core().get_settlement(source.city);
+
+        if (source !== null && source.moved) {
+          this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> already used up its turn.');
+          return false;
+        }
+
+        if (source !== null && destination === null && city) {
+          var can_move = game.SOLDIERS[this._grid[sy][sx].item].moves;
+
+          if (Math.abs(cell.y - sy) + Math.abs(cell.x - sx) <= can_move) {
+            this._grid[cell.y][cell.x] = this._grid[sy][sx];
+
+            this._cell_empty(this._from);
+
+            this._from = null;
+            this._grid[cell.y][cell.x].moved = true;
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> moved to ' + (cell.x + 1) + 'x' + (cell.y + 1) + '.');
+            this.redraw();
+            return true;
+          } else {
+            this.log(city.name() + '`s <strong>' + game.SOLDIERS[source.item].name + '</strong> is unable to move to the specified location.');
+            return false;
+          }
+        }
+      }
     }
     /**
-     * Return the specified hex raw data.
+     * Highlight the cells around the currently selected (or hovered) cell.
+     *
+     * @public
+     * @param {Object} cell
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "highlight_cells",
+    value: function highlight_cells(cell) {
+      this._cells_empty();
+
+      var sx = cell.x;
+      var sy = cell.y;
+      var source = this._grid[sy][sx];
+
+      if (source !== null) {
+        var can_move = game.SOLDIERS[source.item].moves;
+
+        for (var y = 0; y < this._grid.length; y++) {
+          for (var x = 0; x < this._grid[y].length; x++) {
+            if (!source.moved && can_move && Math.abs(y - sy) + Math.abs(x - sx) <= can_move) {
+              if (this._grid[y][x] === null) {
+                $(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']').addClass('canmove');
+              }
+            }
+          }
+        }
+
+        var is_ranged = game.SOLDIERS[source.item].ranged;
+
+        for (var _y = 0; _y < this._grid.length; _y++) {
+          for (var _x = 0; _x < this._grid[_y].length; _x++) {
+            if (!source.moved && Math.abs(_y - sy) + Math.abs(_x - sx) <= is_ranged) {
+              if (this._grid[_y][_x] === null) {
+                $(this._elements.container + ' .cell[data-pos=' + _x + '-' + _y + ']').addClass('canattack');
+              }
+            }
+          }
+        }
+      }
+
+      return this;
+    }
+    /**
+     * Do a nice effect when a cell is under attack.
+     *
+     * @private
+     * @param {Object} cell
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_cell_under_attack",
+    value: function _cell_under_attack(cell) {
+      $(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').addClass('scale').delay(1000).queue(function () {
+        $(this).removeClass('scale').dequeue();
+      });
+      return this;
+    }
+    /**
+     * Empty all the cells that are already empty.
+     *
+     * @private
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_cells_empty",
+    value: function _cells_empty() {
+      for (var y = 0; y < this._grid.length; y++) {
+        for (var x = 0; x < this._grid[y].length; x++) {
+          if (this._grid[y][x] === null) {
+            this._cell_empty({
+              x: x,
+              y: y
+            });
+          }
+        }
+      }
+
+      return this;
+    }
+    /**
+     * Empty one cell.
+     *
+     * @private
+     * @param {Object} cell
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_cell_empty",
+    value: function _cell_empty(cell) {
+      this._grid[cell.y][cell.x] = null;
+      $(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').removeData('side').removeData('amount').removeData('soldier').addClass('empty').removeClass('canmove canattack selected').empty();
+      return this;
+    }
+    /**
+     * Select a cell.
+     *
+     * @private
+     * @param {Object} cell
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_cell_select",
+    value: function _cell_select(cell) {
+      $(this._elements.container + ' .cell').removeClass('selected canmove canattack');
+      $(this._elements.container + ' .cell[data-pos=' + cell.x + '-' + cell.y + ']').addClass('selected');
+      this._from = cell;
+      this.highlight_cells(cell);
+      return this;
+    }
+    /**
+     * Add a cell to the battleground grid.
+     *
+     * @private
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Object} army
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_cell_add",
+    value: function _cell_add(x, y, army) {
+      this._grid[y][x] = army;
+      $(this._elements.container + ' .cell[data-pos=' + x + '-' + y + ']').removeData('side').removeData('amount').removeData('soldier').attr('data-side', army.side).attr('data-amount', army.total).attr('data-soldier', army.item).removeClass('empty canmove canattack selected').empty().append('<span class="moves' + (army.moved === false ? ' has' : '') + '"></span><img class="tips" title="' + game.SOLDIERS[army.item].name + '" src="' + game.ASSETS_URL + 'images/assets/army/' + army.item + '.png" />' + '<span class="amount">' + army.total + '</span>');
+      return this;
+    }
+    /**
+     * Redraw the grid.
+     *
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "redraw",
+    value: function redraw() {
+      var a_attack = 0;
+      var a_defense = 0;
+      var d_attack = 0;
+      var d_defense = 0;
+
+      for (var y = 0; y < this._grid.length; y++) {
+        for (var x = 0; x < this._grid[y].length; x++) {
+          var army = this._grid[y][x];
+
+          if (army !== null && army.total > 0) {
+            army.attack = army.total * game.SOLDIERS[army.item].attack;
+            army.defense = army.total * game.SOLDIERS[army.item].defense;
+
+            if (army.side === game.BATTLEGROUND_ATTACK) {
+              a_attack += army.attack;
+              a_defense += army.defense;
+            } else {
+              d_attack += army.attack;
+              d_defense += army.defense;
+            }
+
+            this._cell_add(x, y, army);
+          } else {
+            this._cell_empty({
+              x: x,
+              y: y
+            });
+          }
+        }
+      }
+
+      this._stats.attacking.attack = a_attack;
+      this._stats.attacking.defense = a_defense;
+      this._stats.defending.attack = d_attack;
+      this._stats.defending.defense = d_defense;
+      this.show_stats();
+
+      this._check_status();
+
+      $('.tipsy').remove();
+      $('.tips').tipsy({
+        gravity: $.fn.tipsy.autoNS,
+        html: true
+      });
+      return true;
+    }
+    /**
+     * Setup the battleground hex grid.
+     *
+     * @private
+     * @returns {battleground}
+     */
+
+  }, {
+    key: "_setup",
+    value: function _setup() {
+      var self = this;
+
+      this._reset();
+
+      var xx = 0;
+      var xxx = 3;
+      var yy;
+
+      for (var item in this._attack.army) {
+        if (this._attack.army[item] > 0) {
+          if (game.SOLDIERS[item].siege === true) {
+            yy = 0;
+            xx = xxx;
+            xxx++;
+          } else {
+            yy = 2;
+          }
+
+          this.add(xx, yy, 1, item, this._attack);
+          xx++;
+        }
+      }
+
+      xxx = 3;
+      xx = 0;
+
+      for (var _item in this._defense.army) {
+        if (this._defense.army[_item] > 0) {
+          if (game.SOLDIERS[_item].siege === true) {
+            yy = this._properties.width - 1;
+            xx = xxx;
+            xxx++;
+          } else {
+            yy = this._properties.width - 3;
+          }
+
+          this.add(xx, yy, 2, _item, this._defense);
+          xx++;
+        }
+      }
+
+      $(this._elements.container).on('mouseover', '.cell', function () {
+        if (self._from === null) {
+          var from = {
+            x: parseInt($(this).data('x'), 10),
+            y: parseInt($(this).data('y'), 10)
+          };
+          self.highlight_cells(from);
+        }
+
+        return false;
+      }).on('click', '.cell', function () {
+        if ($(this).hasClass('empty')) {
+          if (self._from !== null) {
+            var to = {
+              x: parseInt($(this).data('x'), 10),
+              y: parseInt($(this).data('y'), 10)
+            };
+            self.move(to);
+            self.on_move.call(self, self._from, to);
+          }
+        } else {
+          if (parseInt($(this).data('side'), 10) === self._player) {
+            if (!$(this).hasClass('selected')) {
+              var from = {
+                x: parseInt($(this).data('x'), 10),
+                y: parseInt($(this).data('y'), 10)
+              };
+
+              self._cell_select(from);
+
+              self.on_select.call(self, from);
+            } else {
+              self._from = null;
+              $(self._elements.container + ' .cell').removeClass('selected canmove canattack');
+            }
+          } else if (parseInt($(this).data('side'), 10) === self._computer) {
+            if (self._from !== null) {
+              var _to = {
+                x: parseInt($(this).data('x'), 10),
+                y: parseInt($(this).data('y'), 10)
+              };
+              self.attack(_to);
+              self.on_attack.call(self, self._from, _to);
+            }
+          }
+        }
+
+        return false;
+      });
+      return this;
+    }
+    /**
+     * Add a hex cell to the battleground grid.
      *
      * @public
      * @param {Number} x
      * @param {Number} y
-     * @returns {Object}
+     * @param {Number} side
+     * @param {String} soldier
+     * @param {Object} settlement
+     * @returns {battleground}
      */
 
   }, {
-    key: "get_hex",
-    value: function get_hex(x, y) {
-      return this.data[y][x];
+    key: "add",
+    value: function add(x, y, side, soldier, settlement) {
+      this._cell_add(y, x, {
+        item: soldier,
+        city: settlement.city,
+        total: settlement.army[soldier],
+        attack: game.SOLDIERS[soldier].attack * settlement.army[soldier],
+        defense: game.SOLDIERS[soldier].defense * settlement.army[soldier],
+        side: side,
+        moved: false
+      });
+
+      return this;
+    }
+  }]);
+
+  return battleground;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Hero object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class hero
+ * @returns {hero}
+ */
+var hero =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {hero}
+   * @param {Object} params
+   */
+  function hero(params) {
+    _classCallCheck(this, hero);
+
+    this._core = params.core;
+    this.name = params.name;
+    this.description = params.description;
+    return this;
+  }
+  /**
+   * Return a pointer to the game core.
+   * 
+   * @public
+   * @returns {game}
+   */
+
+
+  _createClass(hero, [{
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+  }]);
+
+  return hero;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Main Game window object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_window
+ * @returns {ui_window}
+ */
+var ui_window =
+/*#__PURE__*/
+function () {
+  _createClass(ui_window, [{
+    key: "destructor",
+
+    /**
+     * Object destructor.
+     * 
+     * @private
+     * @returns {Boolean}
+     */
+    value: function destructor() {
+      this.core().ui().log('ui', 'Destroying window with id `' + this.id + '`');
+      $(this.handle).remove();
+      $('.tipsy').remove();
+      this.on_hide.call(this);
+      return false;
     }
     /**
-     * Set the specified hex data.
-     *
+     * Method for destroying the window.
+     * 
      * @public
-     * @param {Object} hex
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      return this.destructor();
+    }
+    /**
+     * Object constructor.
+     * 
+     * @private
+     * @constructor
+     * @returns {ui_window}
+     * @param {Object} params
+     */
+
+  }]);
+
+  function ui_window(params) {
+    _classCallCheck(this, ui_window);
+
+    this._core = params.core;
+    this.id = params.id;
+    this.handle = '#window-' + this.id;
+    this.params_data = params.data;
+    this.template = typeof params.template !== 'undefined' ? params.template : '';
+
+    if (params.on_create instanceof Function) {
+      this.on_create = params.on_create;
+    } else {
+      this.on_create = function () {};
+    }
+
+    if (params.on_show instanceof Function) {
+      this.on_show = params.on_show;
+    } else {
+      this.on_show = function () {};
+    }
+
+    if (params.on_hide instanceof Function) {
+      this.on_hide = params.on_hide;
+    } else {
+      this.on_hide = function () {};
+    }
+
+    if (this.core().ui().window_exists(this.handle)) {
+      this.destroy();
+    }
+
+    this.core().ui().log('ui', 'Creating window with id `' + this.id + '`');
+    this.on_create.call(this, params);
+    $('body').append(this.template.replace(/{ID}/g, this.id));
+    this.on_show.call(this);
+    $('.tipsy').remove();
+    $('.tips').tipsy({
+      gravity: $.fn.tipsy.autoNS,
+      html: true
+    });
+    return this;
+  }
+  /**
+   * Return a pointer to the game core.
+   *
+   * @public
+   * @returns {game}
+   */
+
+
+  _createClass(ui_window, [{
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+  }]);
+
+  return ui_window;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Main modal object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_modal
+ * @returns {ui_modal}
+ */
+var ui_modal =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_modal}
+   * @param {Object} params
+   */
+  function ui_modal(params) {
+    _classCallCheck(this, ui_modal);
+
+    this._core = params.core;
+    this.template = '<div class="modal-overlay">' + '<div class="modal">' + '<header></header>' + '<section></section>' + '<footer></footer>' + '</div>' + '</div>';
+    var self = this;
+    $('body').append(this.template);
+    $(window).bind('resize', function () {
+      self._resize();
+    });
+    return this;
+  }
+  /**
+   * Main method to show the modal window.
+   *
+   * @public
+   * @param {Object} options
+   * @returns {ui_modal}
+   */
+
+
+  _createClass(ui_modal, [{
+    key: "alert",
+    value: function alert(options) {
+      var self = this;
+      var settlement = false;
+
+      if (this.core().settlements.length > 0) {
+        settlement = this.core().get_settlement();
+      }
+
+      if (this._is_open()) {
+        return false;
+      }
+
+      this.core().ui().show_loader();
+      $('.modal').css({
+        width: '400px'
+      });
+
+      this._resize();
+
+      $('.modal header').html(options.title);
+      $('.modal footer').html('<a data-id="yes" href="#" class="btn float-right">Yes</a><a data-id="no" href="#" class="btn">No</a>');
+      $('.modal section').html((settlement ? '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
+      $('.modal footer').on('click', 'a', function () {
+        self._action($(this).data('id'));
+
+        return false;
+      });
+      $('.modal-overlay, .modal').show();
+
+      if (typeof options.on_click === 'function') {
+        this.on_click = options.on_click;
+      }
+
+      return this;
+    }
+    /**
+     * Internal method to check out if the modal window is already open.
+     *
+     * @private
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "_is_open",
+    value: function _is_open() {
+      return $('.modal').css('display') === "block";
+    }
+    /**
+     * Internal method for resetting the modal window.
+     *
+     * @private
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "_clear",
+    value: function _clear() {
+      $('.modal-overlay').remove(); // $('body').append(this._template);
+
+      this.core().ui().hide_loader(); // this._resize();
+
+      return true;
+    }
+    /**
+     * Internal method for triggering the click event on the buttons.
+     *
+     * @private
      * @param {String} key
-     * @param {String|Number|Array|Object} value
-     * @returns {Object}
      */
 
   }, {
-    key: "set_hex",
-    value: function set_hex(hex, key, value) {
-      return this.data[hex.y][hex.x][key] = value;
+    key: "_action",
+    value: function _action(key) {
+      this._clear();
+
+      this.on_click(key);
+      $(window).unbind('resize');
     }
     /**
-     * Add a place into the world data.
-     *
-     * @public
-     * @param {place} place
-     * @returns {world}
-     */
-
-  }, {
-    key: "add_place",
-    value: function add_place(place) {
-      var location = place.location;
-      this.set_hex(location, 'p', place.properties.id);
-
-      if (place.is_claimed() === false) {
-        this.lock_hex(location, place.properties.id);
-      } else {
-        this.lock_hex(location, place.is_claimed());
-      }
-
-      return this;
-    }
-    /**
-     * Add a settlement into the world data.
-     *
-     * @public
-     * @param {settlement} settlement
-     * @returns {world}
-     */
-
-  }, {
-    key: "add_settlement",
-    value: function add_settlement(settlement) {
-      var location = settlement.location();
-      this.set_hex(location, 's', settlement.id());
-      this.set_hex(location, 'n', settlement.name());
-      this.lock_hex(location, settlement.id());
-      this.calc_neighbours(settlement);
-      return this;
-    }
-    /**
-     * Remove a settlement from the world data.
-     *
-     * @public
-     * @param {settlement} settlement
-     * @returns {world}
-     */
-
-  }, {
-    key: "remove_city",
-    value: function remove_city(settlement) {
-      var location = settlement.location();
-      var id = settlement.id();
-      this.data[location.y][location.x].s = null;
-      this.data[location.y][location.x].n = null;
-
-      for (var x = 0; x < game.WORLD_SIZE_WIDTH; x++) {
-        for (var y = 0; y < game.WORLD_SIZE_HEIGHT; y++) {
-          if (this.data[y][x].lid === id) {
-            this.data[y][x].lid = null;
-            this.data[y][x].l = false;
-          }
-        }
-      } //$('#worldmap-city-image' + location.y + '-' + location.x).remove();
-
-
-      return this;
-    }
-    /**
-     * Create the raw multidimensional array.
+     * Internal method for resizing the modal window.
      *
      * @private
-     * @returns {world}
+     * @returns {ui_modal}
      */
 
   }, {
-    key: "_create_array",
-    value: function _create_array() {
-      this.data = new Array(game.WORLD_SIZE_WIDTH);
+    key: "_resize",
+    value: function _resize() {
+      var lbox = $('.modal');
 
-      for (var i = 0; i < game.WORLD_SIZE_WIDTH; i += 1) {
-        this.data[i] = new Array(game.WORLD_SIZE_HEIGHT);
-      }
-
-      for (var _i = 0; _i < game.WORLD_SIZE_WIDTH; _i += 1) {
-        for (var j = 0; j < game.WORLD_SIZE_HEIGHT; j += 1) {
-          this.data[_i][j] = {
-            /* Elevation */
-            e: 0,
-
-            /* Moisture */
-            m: 0,
-
-            /* Place id */
-            p: null,
-
-            /* Settlement id */
-            s: null,
-
-            /* Settlement name */
-            n: null,
-
-            /* Locked */
-            l: false,
-
-            /* Locked to settlement id */
-            lid: null
-          };
-        }
+      if (lbox) {
+        //let height = parseInt((lbox.css('height')).replace('px', ''), 10);
+        var width = parseInt(lbox.css('width').replace('px', ''), 10);
+        lbox.css({
+          top: $(window).height() / 2 - 100 + 'px',
+          left: ($(window).width() - width) / 2 + 'px'
+        });
       }
 
       return this;
     }
     /**
-     * Generate the elevation and moisture maps.
+     * Callback function.
      *
+     * @public
+     */
+
+  }, {
+    key: "on_click",
+    value: function on_click() {} // nothing here, move along.
+
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+    /**
+     * Object destructor.
+     * 
      * @private
-     * @returns {world}
+     * @returns {Boolean}
      */
 
   }, {
-    key: "_generate",
-    value: function _generate() {
-      function PMPRNG_create(seed) {
-        var result = new PM_PRNG();
-        result.seed = typeof seed === "undefined" ? 1 : seed;
-        return result;
-      }
+    key: "destructor",
+    value: function destructor() {
+      $('.modal-overlay').remove();
+      $(window).unbind('resize');
+      return false;
+    }
+  }]);
 
-      var rng1 = PMPRNG_create(this.seeds.elevation);
-      var rng2 = PMPRNG_create(this.seeds.moisture);
-      var gen1 = new SimplexNoise(rng1.nextDouble.bind(rng1));
-      var gen2 = new SimplexNoise(rng2.nextDouble.bind(rng2));
+  return ui_modal;
+}();
+"use strict";
 
-      function noise1(nx, ny) {
-        return gen1.noise2D(nx, ny) / 2 + 0.5;
-      }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-      function noise2(nx, ny) {
-        return gen2.noise2D(nx, ny) / 2 + 0.5;
-      }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-      for (var x = 0; x < game.WORLD_SIZE_HEIGHT; x++) {
-        for (var y = 0; y < game.WORLD_SIZE_WIDTH; y++) {
-          var nx = x / game.WORLD_SIZE_HEIGHT - 0.5;
-          var ny = y / game.WORLD_SIZE_WIDTH - 0.5;
-          var e = 1.00 * noise1(1 * nx, 1 * ny) + 0.77 * noise1(2 * nx, 2 * ny) + 0.00 * noise1(4 * nx, 4 * ny) + 0.00 * noise1(8 * nx, 8 * ny) + 0.00 * noise1(16 * nx, 16 * ny) + 0.00 * noise1(32 * nx, 32 * ny);
-          e /= 1.00 + 0.77 + 0.00 + 0.00 + 0.00 + 0.00;
-          e = Math.pow(e, game.WORLD_EROSION);
-          this.data[y][x].e = e;
-          var m = 1.00 * noise2(1 * nx, 1 * ny) + 0.75 * noise2(2 * nx, 2 * ny) + 0.33 * noise2(4 * nx, 4 * ny) + 0.33 * noise2(8 * nx, 8 * ny) + 0.33 * noise2(16 * nx, 16 * ny) + 0.50 * noise2(32 * nx, 32 * ny);
-          m /= 1.00 + 0.75 + 0.33 + 0.33 + 0.33 + 0.50;
-          this.data[y][x].m = m;
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Main Game panel object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel
+ * @returns {ui_panel}
+ */
+var ui_panel =
+/*#__PURE__*/
+function () {
+  _createClass(ui_panel, [{
+    key: "destructor",
+
+    /**
+     * Object destructor.
+     * 
+     * @private
+     * @returns {Boolean}
+     */
+    value: function destructor() {
+      this.core().ui().log('ui', 'Destroying panel with id `' + this.id + '`');
+      $(this.handle).remove();
+      var panels = this.core().ui().get_panels();
+
+      for (var i = 0; i < panels.length; i++) {
+        if (panels[i].id === this.id) {
+          panels.splice(i, 1);
         }
       }
 
-      return this;
+      $('.ui > .viewport').width($(window).width() - $('.ui > aside').width());
+      $('.tipsy').remove();
+      this.on_hide.call(this);
+      return false;
     }
     /**
-     * Get the list of all the neighbouring hexes to the specified settlement.
-     *
-     * @returns {Array}
+     * Method for destroying the panel.
+     * 
      * @public
+     * @returns {Boolean}
      */
 
   }, {
-    key: "get_neighbours",
-    value: function get_neighbours(settlement) {
-      var hexes = [];
-      var location = settlement.location();
-      var neighbours = this.get_neighbouring_hexes(location.y, location.x);
-
-      if (settlement.is_city()) {
-        for (var z = 0; z < neighbours.length; z++) {
-          hexes.push(neighbours[z]);
-        }
-      } else if (settlement.is_metropolis()) {
-        for (var _z = 0; _z < neighbours.length; _z++) {
-          hexes.push(neighbours[_z]);
-          var new_neighbours = this.get_neighbouring_hexes(neighbours[_z].y, neighbours[_z].x);
-
-          for (var u = 0; u < new_neighbours.length; u++) {
-            hexes.push(new_neighbours[u]);
-          }
-        }
-      }
-
-      return hexes;
+    key: "destroy",
+    value: function destroy() {
+      return this.destructor();
     }
     /**
-     * Lock neighbouring hexes.
-     *
-     * @public
-     * @returns {world}
+     * Object constructor.
+     * 
+     * @private
+     * @constructor
+     * @returns {ui_panel}
+     * @param {Object} params
      */
 
-  }, {
-    key: "calc_neighbours",
-    value: function calc_neighbours(settlement) {
-      var terrain;
-      var neighbours = this.get_neighbours(settlement);
+  }]);
 
-      for (var i = 0; i < neighbours.length; i++) {
-        if (neighbours[i].x >= 0 && neighbours[i].x < game.WORLD_SIZE_WIDTH && neighbours[i].y >= 0 && neighbours[i].y < game.WORLD_SIZE_HEIGHT) {
-          terrain = this.get_hex_terrain(neighbours[i]);
-          this.lock_hex(neighbours[i], settlement.id());
+  function ui_panel(params) {
+    _classCallCheck(this, ui_panel);
 
-          if (terrain === 'ocean') {
-            settlement.waterside(true);
-          }
-        }
-      }
+    var self = this;
+    this._core = params.core;
+    this.id = params.id;
+    this.handle = '#panel-' + this.id;
+    this.params_data = params.data;
+    this.template = typeof params.template !== 'undefined' ? params.template : '';
 
-      return this;
+    if (params.on_create instanceof Function) {
+      this.on_create = params.on_create;
+    } else {
+      this.on_create = function () {};
     }
-  }, {
-    key: "get_neighbouring_hexes",
-    value: function get_neighbouring_hexes(y, x) {
-      if (x % 2 === 0) {
-        return [{
-          x: x + 1,
-          y: y
-        }, {
-          x: x + 1,
-          y: y - 1
-        }, {
-          x: x,
-          y: y - 1
-        }, {
-          x: x - 1,
-          y: y
-        }, {
-          x: x - 1,
-          y: y - 1
-        }, {
-          x: x,
-          y: y + 1
-        }];
+
+    if (params.on_show instanceof Function) {
+      this.on_show = params.on_show;
+    } else {
+      this.on_show = function () {};
+    }
+
+    if (params.on_hide instanceof Function) {
+      this.on_hide = params.on_hide;
+    } else {
+      this.on_hide = function () {};
+    }
+
+    if (params.on_refresh instanceof Function) {
+      this.on_refresh = params.on_refresh;
+    } else {
+      this.on_refresh = function () {};
+    }
+
+    if (this.core().ui().panel_exists(this.handle)) {
+      this.destroy();
+    }
+
+    this.core().ui().log('ui', 'Creating panel with id `' + this.id + '`');
+    this.on_create.call(this, params);
+    var tpl = this.template.replace(/{ID}/g, params.id);
+
+    if (typeof this.params_data !== 'undefined' && typeof this.params_data.name !== 'undefined' && typeof this.params_data.name !== 'function') {
+      tpl = tpl.replace(/{BUILDING}/g, this.params_data.handle);
+
+      if (this.params_data.sidebar === true) {
+        $('.ui > aside').empty().append(tpl);
+        $('.ui > .viewport').width($(window).width() - $('.ui > aside').width());
       } else {
-        return [{
-          x: x + 1,
-          y: y
-        }, {
-          x: x + 1,
-          y: y + 1
-        }, {
-          x: x,
-          y: y - 1
-        }, {
-          x: x - 1,
-          y: y
-        }, {
-          x: x - 1,
-          y: y + 1
-        }, {
-          x: x,
-          y: y + 1
-        }];
+        $('.ui').append(tpl);
       }
+
+      $(this.handle + ' header').append(this.params_data.name);
+    } else {
+      $('.ui').append(tpl);
     }
-    /**
-     * Get the distance between two points.
-     *
-     * @param {Number} source
-     * @param {Number} destination
-     * @returns {Number}
-     */
 
-  }, {
-    key: "get_distance",
-    value: function get_distance(source, destination) {
-      return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2))) * 100;
-    }
-    /**
-     * Get the distance between two points in days
-     *
-     * @param {Number} source
-     * @param {Number} destination
-     * @returns {Number}
-     */
+    this.on_show.call(this, params);
+    this.on_refresh.call(this, params);
 
-  }, {
-    key: "get_distance_in_days",
-    value: function get_distance_in_days(source, destination) {
-      return Math.floor(Math.sqrt(Math.pow(destination.x - source.x, 2) + Math.pow(destination.y - source.y, 2)) * 100 / 15);
-    }
-    /**
-     * Draw the worldmap data to a HTML5 canvas.
-     *
-     * @public
-     * @returns {world}
-     */
+    if (typeof params.data !== 'undefined') {
+      var building = this.core().get_settlement().get_building(params.data.handle);
 
-  }, {
-    key: "draw",
-    value: function draw() {
-      var settlements = this.core().get_settlements();
-      var height = Math.sqrt(3) / 2 * game.WORLD_HEX_SIZE;
-      var image_width = (1.5 * game.WORLD_SIZE_WIDTH + 0.5) * game.WORLD_HEX_SIZE;
-      var image_height = (2 * game.WORLD_SIZE_HEIGHT + 1) * height;
-      $('.worldmap').empty().append('<canvas class="canvas-map"></canvas>');
-      var canvas = $('.canvas-map').get(0);
-      var currentHexX;
-      var currentHexY;
-      var offsetColumn = false;
+      if (building !== false) {
+        if (!building.is_upgradable()) {
+          $(this.handle + ' footer .upgrade').hide();
+        }
 
-      var __height = Math.sqrt(3) * game.WORLD_HEX_SIZE;
+        if (!building.is_downgradable()) {
+          $(this.handle + ' footer .downgrade').hide();
+        }
 
-      var __width = 2 * game.WORLD_HEX_SIZE;
+        if (building.is_marketplace()) {
+          $(this.handle + ' footer .demolish').hide();
+        }
 
-      var __side = 3 / 2 * game.WORLD_HEX_SIZE;
-
-      canvas.width = image_width;
-      canvas.height = image_height;
-      var ctx = canvas.getContext('2d');
-      ctx.fillStyle = this.colors.background;
-      ctx.fillRect(0, 0, image_width, image_height);
-
-      for (var i = 0; i < game.WORLD_SIZE_WIDTH; ++i) {
-        for (var j = 0; j < game.WORLD_SIZE_HEIGHT; ++j) {
-          if (!offsetColumn) {
-            currentHexX = i * __side;
-            currentHexY = j * __height;
+        if (building.is_production_building()) {
+          if (!building.is_stopped()) {
+            $(this.handle + ' .pause').removeClass('start').attr('title', 'Stop production');
           } else {
-            currentHexX = i * __side;
-            currentHexY = j * __height + __height * 0.5;
+            $(this.handle + ' .start').removeClass('pause').attr('title', 'Start production');
           }
+        } else {
+          $(this.handle + ' .start, ' + this.handle + ' .pause').hide();
+        }
 
-          var terrain = this.get_hex_terrain({
-            x: i,
-            y: j
-          });
-          var color = this.colors[terrain];
-          var opacity = 0.6;
-
-          if (this.data[j][i].l === true) {
-            var lid = this.data[j][i].lid;
-            var pid = this.data[j][i].p;
-
-            if (lid !== null && pid === null) {
-              if (typeof settlements[lid] !== 'undefined') {
-                color = settlements[lid].color();
-              }
-            } else if (lid !== null && pid !== null) {
-              var place = this.core().get_place(pid);
-
-              if (place) {
-                if (place.is_claimed() !== false) {
-                  color = settlements[lid].color();
+        $(this.handle).on('click', '.upgrade', function () {
+          self.core().ui().open_modal(function (button) {
+            if (button === 'yes') {
+              if (building.upgrade()) {
+                if (!building.is_upgradable()) {
+                  $(self.handle + ' footer .upgrade').hide();
+                } else {
+                  $(self.handle + ' footer .downgrade').show();
                 }
               }
             }
-
-            opacity = 0.2;
+          }, 'Are you sure you want to upgrade this building?');
+          return false;
+        }).on('click', '.downgrade', function () {
+          self.core().ui().open_modal(function (button) {
+            if (button === 'yes') {
+              if (building.downgrade()) {
+                if (!building.is_downgradable()) {
+                  $(self.handle + ' footer .downgrade').hide();
+                } else {
+                  $(self.handle + ' footer .upgrade').show();
+                }
+              }
+            }
+          }, 'Are you sure you want to downgrade this building?');
+          return false;
+        }).on('click', '.demolish', function () {
+          self.core().ui().open_modal(function (button) {
+            if (button === 'yes') {
+              if (building.demolish(true)) {
+                self.destroy();
+                self.core().save_and_refresh();
+              }
+            }
+          }, 'Are you sure you want to demolish this building?');
+          return false;
+        }).on('click', '.pause', function () {
+          if (building.stop_production()) {
+            $(this).removeClass('pause').addClass('start');
+            $(this).attr('title', 'Start production');
           }
 
-          ctx.beginPath();
-          ctx.moveTo(currentHexX + __width - __side, currentHexY);
-          ctx.lineTo(currentHexX + __side, currentHexY);
-          ctx.lineTo(currentHexX + __width, currentHexY + __height / 2);
-          ctx.lineTo(currentHexX + __side, currentHexY + __height);
-          ctx.lineTo(currentHexX + __width - __side, currentHexY + __height);
-          ctx.lineTo(currentHexX, currentHexY + __height / 2);
-          ctx.closePath();
-
-          if (game.WORLD_GRID === true) {
-            ctx.strokeStyle = "#666";
-          } else {
-            ctx.strokeStyle = color;
+          return false;
+        }).on('click', '.start', function () {
+          if (building.start_production()) {
+            $(this).removeClass('start').addClass('pause');
+            $(this).attr('title', 'Stop production');
           }
 
-          ctx.lineWidth = 1;
-          ctx.stroke();
-          ctx.fillStyle = color;
-          ctx.fill();
-
-          if (game.WORLD_BEAUTIFY === true) {
-            this._apply_terrain(currentHexX, currentHexY, canvas, terrain, opacity);
-          }
-        }
-
-        offsetColumn = !offsetColumn;
+          return false;
+        });
       }
-
-      return this;
     }
-    /**
-     * Apply the terrain features.
-     *
-     * @private
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Object} canvas
-     * @param {String} terrain
-     * @param {Number} opacity
-     * @returns {world}
-     */
 
-  }, {
-    key: "_apply_terrain",
-    value: function _apply_terrain(x, y, canvas, terrain, opacity) {
-      var ctx = canvas.getContext('2d');
-      var imageObject = new Image();
-      var image_size = game.WORLD_HEX_SIZE * 36 / 24;
+    $(this.handle).on('click', 'header', function () {
+      $('.ui .panel').css({
+        'z-index': 99996
+      });
+      $(self.handle).css({
+        'z-index': 99997
+      });
+    }).on('click', '.close', function () {
+      self.destroy();
+      return false;
+    });
 
-      imageObject.onload = function () {
-        ctx.globalAlpha = opacity;
-        ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
-        ctx.globalAlpha = 1;
-      };
-
-      imageObject.src = game.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
-      return this;
+    if (typeof this.params_data === 'undefined' || typeof this.params_data !== 'undefined' && this.params_data.sidebar !== true) {
+      $(this.handle).draggable({
+        handle: 'header',
+        containment: 'window',
+        start: function start() {
+          $(this).css({
+            height: 'auto'
+          });
+        },
+        stop: function stop() {
+          $(this).css({
+            height: 'auto'
+          });
+        }
+      });
     }
-  }]);
 
-  return world;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main Game AI (Artificial Intelligence) object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ai
- * @returns {ai}
- */
-var ai =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ai}
-   * @param {Object} params
-   */
-  function ai(params) {
-    _classCallCheck(this, ai);
-
-    this._core = params.core;
-    this.type = params.type; // Todo
-
+    $(this.handle + ' .tabs').tabs();
+    $(this.handle).css({
+      'left': $(window).width() / 2 - $(this.handle).width() / 2,
+      'top': $(window).height() / 2 - $(this.handle).height() / 2
+    });
+    $('.tipsy').remove();
+    $('.tips').tipsy({
+      gravity: $.fn.tipsy.autoNS,
+      html: true
+    });
     return this;
   }
   /**
-   * Perform the actual data processing for this AI.
+   * Return a pointer to the game core.
    *
    * @public
-   * @returns {Boolean}
+   * @returns {game}
    */
 
 
-  _createClass(ai, [{
-    key: "process",
-    value: function process() {
-      // Todo
-      return true;
-    }
-    /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
+  _createClass(ui_panel, [{
     key: "core",
     value: function core() {
       return this._core;
     }
   }]);
 
-  return ai;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main Game API object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class api
- * @returns {api}
- */
-var api =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {api}
-   * @param {Object} params
-   */
-  function api(params) {
-    _classCallCheck(this, api);
-
-    this._core = params.core;
-    return this;
-  }
-  /**
-   * Sign in a visitor using the specified data.
-   * 
-   * @param {Object} data
-   * @returns {api}
-   */
-
-
-  _createClass(api, [{
-    key: "login",
-    value: function login(data) {
-      return this.request({
-        url: 'login',
-        data: data
-      });
-    }
-    /**
-     * Sign out the currently logged in user.
-     * 
-     * @returns {api}
-     */
-
-  }, {
-    key: "logout",
-    value: function logout() {
-      return this.request({
-        url: 'logout'
-      });
-    }
-    /**
-     * Get information about the application and API version.
-     *
-     * @returns {api}
-     */
-
-  }, {
-    key: "api_version",
-    value: function api_version() {
-      return this.request({
-        url: 'version'
-      });
-    }
-    /**
-     * Get information about the currently logged in user's city.
-     *
-     * @returns {api}
-     */
-
-  }, {
-    key: "city_info",
-    value: function city_info() {
-      return this.request({
-        url: 'city'
-      });
-    }
-    /**
-     * Perform a heartbeat request and get data about it.
-     *
-     * @returns {api}
-     */
-
-  }, {
-    key: "heartbeat",
-    value: function heartbeat() {
-      return this.request({
-        url: 'heartbeat'
-      });
-    }
-    /**
-     * Register a visitor using the specified data.
-     * 
-     * @param {Object} data
-     * @returns {api}
-     */
-
-  }, {
-    key: "register",
-    value: function register(data) {
-      return this.request({
-        url: 'register',
-        data: data
-      });
-    }
-    /**
-     * Export the specified data to the API endpoint.
-     * 
-     * @param {Object} data
-     * @returns {api}
-     */
-
-  }, {
-    key: "do_export",
-    value: function do_export(data) {
-      return this.request({
-        url: 'export',
-        data: data
-      });
-    }
-    /**
-     * Import the specified data from the API endpoint.
-     * 
-     * @param {Object} data
-     * @returns {api}
-     */
-
-  }, {
-    key: "do_import",
-    value: function do_import(data) {
-      return this.request({
-        url: 'import',
-        data: data
-      });
-    }
-    /**
-     * Internal function for performing an API AJAX request.
-     * 
-     * @param {Object} data
-     * @returns {api}
-     */
-
-  }, {
-    key: "_request",
-    value: function _request(data) {
-      $.ajax({
-        type: typeof data.requestType !== 'undefined' ? data.requestType : 'POST',
-        dataType: typeof data.dataType !== 'undefined' ? data.dataType : 'jsonp',
-        xhrFields: {
-          withCredentials: typeof data.auth === 'undefined' || data.auth === true ? true : false
-        },
-        crossDomain: true,
-        data: data.data,
-        url: game.API_URL + data.url,
-        async: typeof data.async === 'undefined' || data.async === true ? true : false,
-        success: data.success instanceof Function ? data.success : function () {// TODO
-        },
-        error: data.error instanceof Function ? data.error : function () {// TODO
-        }
-      });
-      return this;
-    }
-    /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-  }]);
-
-  return api;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Game jailer (enforcing security) object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class jailer
- * @returns {jailer}
- */
-var jailer =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {jailer}
-   * @param {Object} params
-   */
-  function jailer(params) {
-    _classCallCheck(this, jailer);
-
-    this._core = params.core;
-    return this;
-  }
-  /**
-   * Perform an actual security audit.
-   * 
-   * @public
-   * @returns {Boolean}
-   */
-
-
-  _createClass(jailer, [{
-    key: "check",
-    value: function check() {
-      // Todo
-      return true;
-    }
-    /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-  }]);
-
-  return jailer;
+  return ui_panel;
 }();
 "use strict";
 
@@ -10774,6 +18364,24 @@ function () {
       var colors = Math.random() * 255;
       return "hsl(" + color * (360 / colors) % 360 + ", 50%, 50%)";
     }
+    /**
+     * Set the game theme.
+     *
+     * @public
+     * @param {String} name
+     * @returns {ui}
+     */
+
+  }, {
+    key: "theme",
+    value: function theme(name) {
+      if (name === 'default' || name === 'second') {
+        $('#theme').attr('href', 'dist/' + name + '.css');
+      }
+
+      this.core().set_settings('theme', name);
+      return this;
+    }
   }], [{
     key: "window_about_section",
     value: function window_about_section() {
@@ -10840,7591 +18448,6 @@ function () {
 }();
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main modal object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_modal
- * @returns {ui_modal}
- */
-var ui_modal =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_modal}
-   * @param {Object} params
-   */
-  function ui_modal(params) {
-    _classCallCheck(this, ui_modal);
-
-    this._core = params.core;
-    this.template = '<div class="modal-overlay">' + '<div class="modal">' + '<header></header>' + '<section></section>' + '<footer></footer>' + '</div>' + '</div>';
-    var self = this;
-    $('body').append(this.template);
-    $(window).bind('resize', function () {
-      self._resize();
-    });
-    return this;
-  }
-  /**
-   * Main method to show the modal window.
-   *
-   * @public
-   * @param {Object} options
-   * @returns {ui_modal}
-   */
-
-
-  _createClass(ui_modal, [{
-    key: "alert",
-    value: function alert(options) {
-      var self = this;
-      var settlement = false;
-
-      if (this.core().settlements.length > 0) {
-        settlement = this.core().get_settlement();
-      }
-
-      if (this._is_open()) {
-        return false;
-      }
-
-      this.core().ui().show_loader();
-      $('.modal').css({
-        width: '400px'
-      });
-
-      this._resize();
-
-      $('.modal header').html(options.title);
-      $('.modal footer').html('<a data-id="yes" href="#" class="btn float-right">Yes</a><a data-id="no" href="#" class="btn">No</a>');
-      $('.modal section').html((settlement ? '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
-      $('.modal footer').on('click', 'a', function () {
-        self._action($(this).data('id'));
-
-        return false;
-      });
-      $('.modal-overlay, .modal').show();
-
-      if (typeof options.on_click === 'function') {
-        this.on_click = options.on_click;
-      }
-
-      return this;
-    }
-    /**
-     * Internal method to check out if the modal window is already open.
-     *
-     * @private
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "_is_open",
-    value: function _is_open() {
-      return $('.modal').css('display') === "block";
-    }
-    /**
-     * Internal method for resetting the modal window.
-     *
-     * @private
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "_clear",
-    value: function _clear() {
-      $('.modal-overlay').remove(); // $('body').append(this._template);
-
-      this.core().ui().hide_loader(); // this._resize();
-
-      return true;
-    }
-    /**
-     * Internal method for triggering the click event on the buttons.
-     *
-     * @private
-     * @param {String} key
-     */
-
-  }, {
-    key: "_action",
-    value: function _action(key) {
-      this._clear();
-
-      this.on_click(key);
-      $(window).unbind('resize');
-    }
-    /**
-     * Internal method for resizing the modal window.
-     *
-     * @private
-     * @returns {ui_modal}
-     */
-
-  }, {
-    key: "_resize",
-    value: function _resize() {
-      var lbox = $('.modal');
-
-      if (lbox) {
-        //let height = parseInt((lbox.css('height')).replace('px', ''), 10);
-        var width = parseInt(lbox.css('width').replace('px', ''), 10);
-        lbox.css({
-          top: $(window).height() / 2 - 100 + 'px',
-          left: ($(window).width() - width) / 2 + 'px'
-        });
-      }
-
-      return this;
-    }
-    /**
-     * Callback function.
-     *
-     * @public
-     */
-
-  }, {
-    key: "on_click",
-    value: function on_click() {} // nothing here, move along.
-
-    /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-    /**
-     * Object destructor.
-     * 
-     * @private
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "destructor",
-    value: function destructor() {
-      $('.modal-overlay').remove();
-      $(window).unbind('resize');
-      return false;
-    }
-  }]);
-
-  return ui_modal;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main Game panel object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel
- * @returns {ui_panel}
- */
-var ui_panel =
-/*#__PURE__*/
-function () {
-  _createClass(ui_panel, [{
-    key: "destructor",
-
-    /**
-     * Object destructor.
-     * 
-     * @private
-     * @returns {Boolean}
-     */
-    value: function destructor() {
-      this.core().ui().log('ui', 'Destroying panel with id `' + this.id + '`');
-      $(this.handle).remove();
-      var panels = this.core().ui().get_panels();
-
-      for (var i = 0; i < panels.length; i++) {
-        if (panels[i].id === this.id) {
-          panels.splice(i, 1);
-        }
-      }
-
-      $('.ui > .viewport').width($(window).width() - $('.ui > aside').width());
-      $('.tipsy').remove();
-      this.on_hide.call(this);
-      return false;
-    }
-    /**
-     * Method for destroying the panel.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      return this.destructor();
-    }
-    /**
-     * Object constructor.
-     * 
-     * @private
-     * @constructor
-     * @returns {ui_panel}
-     * @param {Object} params
-     */
-
-  }]);
-
-  function ui_panel(params) {
-    _classCallCheck(this, ui_panel);
-
-    var self = this;
-    this._core = params.core;
-    this.id = params.id;
-    this.handle = '#panel-' + this.id;
-    this.params_data = params.data;
-    this.template = typeof params.template !== 'undefined' ? params.template : '';
-
-    if (params.on_create instanceof Function) {
-      this.on_create = params.on_create;
-    } else {
-      this.on_create = function () {};
-    }
-
-    if (params.on_show instanceof Function) {
-      this.on_show = params.on_show;
-    } else {
-      this.on_show = function () {};
-    }
-
-    if (params.on_hide instanceof Function) {
-      this.on_hide = params.on_hide;
-    } else {
-      this.on_hide = function () {};
-    }
-
-    if (params.on_refresh instanceof Function) {
-      this.on_refresh = params.on_refresh;
-    } else {
-      this.on_refresh = function () {};
-    }
-
-    if (this.core().ui().panel_exists(this.handle)) {
-      this.destroy();
-    }
-
-    this.core().ui().log('ui', 'Creating panel with id `' + this.id + '`');
-    this.on_create.call(this, params);
-    var tpl = this.template.replace(/{ID}/g, params.id);
-
-    if (typeof this.params_data !== 'undefined' && typeof this.params_data.name !== 'undefined' && typeof this.params_data.name !== 'function') {
-      tpl = tpl.replace(/{BUILDING}/g, this.params_data.handle);
-
-      if (this.params_data.sidebar === true) {
-        $('.ui > aside').empty().append(tpl);
-        $('.ui > .viewport').width($(window).width() - $('.ui > aside').width());
-      } else {
-        $('.ui').append(tpl);
-      }
-
-      $(this.handle + ' header').append(this.params_data.name);
-    } else {
-      $('.ui').append(tpl);
-    }
-
-    this.on_show.call(this, params);
-    this.on_refresh.call(this, params);
-
-    if (typeof params.data !== 'undefined') {
-      var building = this.core().get_settlement().get_building(params.data.handle);
-
-      if (building !== false) {
-        if (!building.is_upgradable()) {
-          $(this.handle + ' footer .upgrade').hide();
-        }
-
-        if (!building.is_downgradable()) {
-          $(this.handle + ' footer .downgrade').hide();
-        }
-
-        if (building.is_marketplace()) {
-          $(this.handle + ' footer .demolish').hide();
-        }
-
-        if (building.is_production_building()) {
-          if (!building.is_stopped()) {
-            $(this.handle + ' .pause').removeClass('start').attr('title', 'Stop production');
-          } else {
-            $(this.handle + ' .start').removeClass('pause').attr('title', 'Start production');
-          }
-        } else {
-          $(this.handle + ' .start, ' + this.handle + ' .pause').hide();
-        }
-
-        $(this.handle).on('click', '.upgrade', function () {
-          self.core().ui().open_modal(function (button) {
-            if (button === 'yes') {
-              if (building.upgrade()) {
-                if (!building.is_upgradable()) {
-                  $(self.handle + ' footer .upgrade').hide();
-                } else {
-                  $(self.handle + ' footer .downgrade').show();
-                }
-              }
-            }
-          }, 'Are you sure you want to upgrade this building?');
-          return false;
-        }).on('click', '.downgrade', function () {
-          self.core().ui().open_modal(function (button) {
-            if (button === 'yes') {
-              if (building.downgrade()) {
-                if (!building.is_downgradable()) {
-                  $(self.handle + ' footer .downgrade').hide();
-                } else {
-                  $(self.handle + ' footer .upgrade').show();
-                }
-              }
-            }
-          }, 'Are you sure you want to downgrade this building?');
-          return false;
-        }).on('click', '.demolish', function () {
-          self.core().ui().open_modal(function (button) {
-            if (button === 'yes') {
-              if (building.demolish(true)) {
-                self.destroy();
-                self.core().save_and_refresh();
-              }
-            }
-          }, 'Are you sure you want to demolish this building?');
-          return false;
-        }).on('click', '.pause', function () {
-          if (building.stop_production()) {
-            $(this).removeClass('pause').addClass('start');
-            $(this).attr('title', 'Start production');
-          }
-
-          return false;
-        }).on('click', '.start', function () {
-          if (building.start_production()) {
-            $(this).removeClass('start').addClass('pause');
-            $(this).attr('title', 'Stop production');
-          }
-
-          return false;
-        });
-      }
-    }
-
-    $(this.handle).on('click', 'header', function () {
-      $('.ui .panel').css({
-        'z-index': 99996
-      });
-      $(self.handle).css({
-        'z-index': 99997
-      });
-    }).on('click', '.close', function () {
-      self.destroy();
-      return false;
-    });
-
-    if (typeof this.params_data === 'undefined' || typeof this.params_data !== 'undefined' && this.params_data.sidebar !== true) {
-      $(this.handle).draggable({
-        handle: 'header',
-        containment: 'window',
-        start: function start() {
-          $(this).css({
-            height: 'auto'
-          });
-        },
-        stop: function stop() {
-          $(this).css({
-            height: 'auto'
-          });
-        }
-      });
-    }
-
-    $(this.handle + ' .tabs').tabs();
-    $(this.handle).css({
-      'left': $(window).width() / 2 - $(this.handle).width() / 2,
-      'top': $(window).height() / 2 - $(this.handle).height() / 2
-    });
-    $('.tipsy').remove();
-    $('.tips').tipsy({
-      gravity: $.fn.tipsy.autoNS,
-      html: true
-    });
-    return this;
-  }
-  /**
-   * Return a pointer to the game core.
-   *
-   * @public
-   * @returns {game}
-   */
-
-
-  _createClass(ui_panel, [{
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-  }]);
-
-  return ui_panel;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main Game window object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_window
- * @returns {ui_window}
- */
-var ui_window =
-/*#__PURE__*/
-function () {
-  _createClass(ui_window, [{
-    key: "destructor",
-
-    /**
-     * Object destructor.
-     * 
-     * @private
-     * @returns {Boolean}
-     */
-    value: function destructor() {
-      this.core().ui().log('ui', 'Destroying window with id `' + this.id + '`');
-      $(this.handle).remove();
-      $('.tipsy').remove();
-      this.on_hide.call(this);
-      return false;
-    }
-    /**
-     * Method for destroying the window.
-     * 
-     * @public
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      return this.destructor();
-    }
-    /**
-     * Object constructor.
-     * 
-     * @private
-     * @constructor
-     * @returns {ui_window}
-     * @param {Object} params
-     */
-
-  }]);
-
-  function ui_window(params) {
-    _classCallCheck(this, ui_window);
-
-    this._core = params.core;
-    this.id = params.id;
-    this.handle = '#window-' + this.id;
-    this.params_data = params.data;
-    this.template = typeof params.template !== 'undefined' ? params.template : '';
-
-    if (params.on_create instanceof Function) {
-      this.on_create = params.on_create;
-    } else {
-      this.on_create = function () {};
-    }
-
-    if (params.on_show instanceof Function) {
-      this.on_show = params.on_show;
-    } else {
-      this.on_show = function () {};
-    }
-
-    if (params.on_hide instanceof Function) {
-      this.on_hide = params.on_hide;
-    } else {
-      this.on_hide = function () {};
-    }
-
-    if (this.core().ui().window_exists(this.handle)) {
-      this.destroy();
-    }
-
-    this.core().ui().log('ui', 'Creating window with id `' + this.id + '`');
-    this.on_create.call(this, params);
-    $('body').append(this.template.replace(/{ID}/g, this.id));
-    this.on_show.call(this);
-    $('.tipsy').remove();
-    $('.tips').tipsy({
-      gravity: $.fn.tipsy.autoNS,
-      html: true
-    });
-    return this;
-  }
-  /**
-   * Return a pointer to the game core.
-   *
-   * @public
-   * @returns {game}
-   */
-
-
-  _createClass(ui_window, [{
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-  }]);
-
-  return ui_window;
-}();
-"use strict";
-
-/**
- * List of all obtainable game achievements.
- *
- * @constant
- * @type {Array}
- */
-game.ACHIEVEMENTS = [{
-  description: 'Develop your settlement to level 10.',
-  name: 'Kiddo',
-  handle: 'kiddo',
-  conditions: {
-    settlement_level: 10
-  },
-  points: 100
-}, {
-  description: 'Develop your settlement to level 20.',
-  name: 'Teen',
-  handle: 'teen',
-  conditions: {
-    settlement_level: 20
-  },
-  points: 200
-}, {
-  description: 'Develop your settlement to level 30.',
-  name: 'On my own',
-  handle: 'onmyown',
-  conditions: {
-    settlement_level: 30
-  },
-  points: 500
-}, {
-  description: 'Develop your settlement to level 40.',
-  name: 'Fear me',
-  handle: 'fearme',
-  conditions: {
-    settlement_level: 40
-  },
-  points: 1000
-}, {
-  description: 'Gather maximum espionage.',
-  name: 'Anna Chapman',
-  handle: 'chapman',
-  conditions: {
-    resources: {
-      espionage: game.MAX_ESPIONAGE_VALUE
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather maximum faith.',
-  name: 'Jesus Christ',
-  handle: 'jesus',
-  conditions: {
-    resources: {
-      faith: game.MAX_FAITH_VALUE
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather maximum prestige.',
-  name: 'Your highness',
-  handle: 'highness',
-  conditions: {
-    resources: {
-      espionage: game.MAX_PRESTIGE_VALUE
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather maximum research.',
-  name: 'Albert Einstein',
-  handle: 'eistein',
-  conditions: {
-    resources: {
-      research: game.MAX_RESEARCH_VALUE
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 100k coins in your settlement.',
-  name: 'Gatherer',
-  handle: 'gatherer',
-  conditions: {
-    resources: {
-      coins: 100000
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 500k coins in your settlement.',
-  name: 'Ba dum tss',
-  handle: 'badumtss',
-  conditions: {
-    resources: {
-      coins: 500000
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 1M coins in your settlement.',
-  name: 'Milionaire',
-  handle: 'milionaire',
-  conditions: {
-    resources: {
-      coins: 1000000
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 10M coins in your settlement.',
-  name: 'Rockefeller',
-  handle: 'rockefeller',
-  conditions: {
-    resources: {
-      coins: 10000000
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 100M coins in your settlement.',
-  name: 'Rottschild',
-  handle: 'rottschild',
-  conditions: {
-    resources: {
-      coins: 100000000
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 10k stones in your settlement.',
-  name: 'Stone Age',
-  handle: 'stoneage',
-  conditions: {
-    resources: {
-      stones: 10000
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 10k wood in your settlement.',
-  name: 'Woody the Woodpecker',
-  handle: 'woody',
-  conditions: {
-    resources: {
-      wood: 10000
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 10k meat in your settlement.',
-  name: 'Animal killer',
-  handle: 'animalkiller',
-  conditions: {
-    resources: {
-      meat: 10000
-    }
-  },
-  points: 100
-}, {
-  description: 'Recruit 100 soldiers in your settlement.',
-  name: 'Armed to the teeth',
-  handle: 'armedteeth',
-  conditions: {
-    soldiers: 100
-  },
-  points: 100
-}, {
-  description: 'Recruit 500 soldiers in your settlement.',
-  name: 'Warfiend',
-  handle: 'warfiend',
-  conditions: {
-    soldiers: 500
-  },
-  points: 200
-}, {
-  description: 'Recruit 1000 soldiers in your settlement',
-  name: 'Warlord',
-  handle: 'warlord',
-  conditions: {
-    soldiers: 1000
-  },
-  points: 1000
-}, {
-  description: 'Recruit 10 ships in your settlement.',
-  name: 'Shipwrecked',
-  handle: 'shipwrecked',
-  conditions: {
-    ships: 10
-  },
-  points: 100
-}, {
-  description: 'Recruit 50 ships in your settlement.',
-  name: 'Ship has sailed',
-  handle: 'shipsailed',
-  conditions: {
-    ships: 50
-  },
-  points: 100
-}, {
-  description: 'Recruit 100 ships in your settlement.',
-  name: 'Captain Ahab',
-  handle: 'ahab',
-  conditions: {
-    ships: 100
-  },
-  points: 1000
-}, {
-  description: 'Gather 100 prestige.',
-  name: 'Prestigious',
-  handle: 'prestigious',
-  conditions: {
-    resources: {
-      prestige: 100
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 500 prestige.',
-  name: 'The God King',
-  handle: 'godking',
-  conditions: {
-    resources: {
-      prestige: 500
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 10 espionage.',
-  name: 'You got Mossad-ed!',
-  handle: 'mossad',
-  conditions: {
-    resources: {
-      espionage: 10
-    }
-  },
-  points: 10
-}, {
-  description: 'Gather 100 espionage.',
-  name: 'You got Snowden-ed!',
-  handle: 'snowden',
-  conditions: {
-    resources: {
-      espionage: 100
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 500 espionage.',
-  name: 'I spy with my own eye',
-  handle: 'ispy',
-  conditions: {
-    resources: {
-      espionage: 500
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 10 research.',
-  name: 'Initiate',
-  handle: 'initiate',
-  conditions: {
-    resources: {
-      research: 10
-    }
-  },
-  points: 10
-}, {
-  description: 'Gather 100 research.',
-  name: 'Researcher',
-  handle: 'researcher',
-  conditions: {
-    resources: {
-      research: 100
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 500 research.',
-  name: 'Searching',
-  handle: 'searching',
-  conditions: {
-    resources: {
-      research: 500
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 100 faith.',
-  name: 'Faithful',
-  handle: 'faithful',
-  conditions: {
-    resources: {
-      faith: 100
-    }
-  },
-  points: 100
-}, {
-  description: 'Gather 500 faith.',
-  name: 'Disciple',
-  handle: 'disciple',
-  conditions: {
-    resources: {
-      faith: 500
-    }
-  },
-  points: 100
-}, {
-  description: 'Build a Castle in your settlement.',
-  name: 'Castlevania',
-  handle: 'castlevania',
-  conditions: {
-    buildings: {
-      castle: 1
-    }
-  },
-  points: 400
-}, {
-  description: 'Build a Church in your settlement.',
-  name: 'Winston Churchill',
-  handle: 'churchill',
-  conditions: {
-    buildings: {
-      church: 1
-    }
-  },
-  points: 100
-}, {
-  description: 'Build an Academy in your settlement.',
-  name: 'Academician',
-  handle: 'academician',
-  conditions: {
-    buildings: {
-      academy: 1
-    }
-  },
-  points: 100
-}, {
-  description: 'Build each of the mines (Iron, Gold, Copper and Salt).',
-  name: 'All mine!',
-  handle: 'allmine',
-  conditions: {
-    buildings: {
-      ironmine: 1,
-      goldmine: 1,
-      coppermine: 1,
-      saltmine: 1
-    }
-  },
-  points: 200
-}, {
-  description: 'Fill out all your storage space.',
-  name: 'All filled up',
-  handle: 'allfilledup',
-  conditions: {
-    storage: 0
-  },
-  points: 500
-}, {
-  description: 'Build 10 catapults in your settlement.',
-  name: 'Cat-a-pulter',
-  handle: 'catapulter',
-  conditions: {
-    resources: {
-      catapults: 10
-    }
-  },
-  points: 200
-}, {
-  description: 'Build an Embassy in your settlement.',
-  name: 'Gandhi',
-  handle: 'gandhi',
-  conditions: {
-    buildings: {
-      embassy: 1
-    }
-  },
-  points: 100
-}, {
-  description: 'Get 100 achievements.',
-  name: 'Sir Achievealot',
-  handle: 'achievelot',
-  conditions: {
-    achievements: 100
-  },
-  points: 100
-}, {
-  description: 'Recruit a mercenary army.',
-  name: 'Merc',
-  handle: 'merc',
-  conditions: {
-    mercenary: 1
-  },
-  points: 100
-}, {
-  description: 'Reach 10 milion people in your settlement.',
-  name: 'Megalopolis',
-  handle: 'megalopolis',
-  conditions: {
-    population: 10000000
-  },
-  points: 200
-}, {
-  description: 'Upgrade your settlement`s Academy to level 3.',
-  name: 'Too much research',
-  handle: 'toomuchresearch',
-  conditions: {
-    buildings: {
-      academy: 3
-    }
-  },
-  points: 200
-}, {
-  description: 'Upgrade your settlement`s Castle to level 3.',
-  name: 'Goldilocks',
-  handle: 'goldilocks',
-  conditions: {
-    buildings: {
-      castle: 3
-    }
-  },
-  points: 500
-}, {
-  description: 'Upgrade your settlement`s Church to level 3.',
-  name: 'Cathedral',
-  handle: 'cathedral',
-  conditions: {
-    buildings: {
-      church: 3
-    }
-  },
-  points: 300
-}, {
-  description: 'Build a Tournir Area in your settlement.',
-  name: 'Richard Lionheart',
-  handle: 'lionheart',
-  conditions: {
-    buildings: {
-      tournir: 1
-    }
-  },
-  points: 1000
-}, {
-  description: 'Send a caravan to another settlement.',
-  name: 'Donkey Lord',
-  handle: 'donkeylord',
-  points: 100
-}, {
-  description: 'Send a spy to another settlement.',
-  name: 'Bond. James Bond.',
-  handle: 'jamesbond',
-  points: 100
-}, {
-  description: 'Send an army to another settlement.',
-  name: 'Warrior',
-  handle: 'sendarmy',
-  points: 100
-}, {
-  description: 'Declare war to another settlement.',
-  name: 'Warlord',
-  handle: 'declarewar',
-  points: 100
-}, {
-  description: 'Propose to another settlement to join you.',
-  name: 'The One to Rule Them All',
-  handle: 'rulethemall',
-  points: 100
-}, {
-  description: 'Propose a pact to another settlement.',
-  name: 'The Friendly',
-  handle: 'friendly',
-  points: 100
-}, {
-  description: 'Propose an alliance to another settlement.',
-  name: 'The Pacifist',
-  handle: 'pacifist',
-  points: 100
-}, {
-  description: 'Win a battleground.',
-  name: 'Conqueror',
-  handle: 'conqueror',
-  points: 20
-}, {
-  description: 'Lose a battleground.',
-  name: 'Foolish!',
-  handle: 'foolish',
-  points: 10
-}, {
-  description: 'Convince another settlement to accept an alliance.',
-  name: 'I got your back',
-  handle: 'gotyourback',
-  points: 200
-}, {
-  description: 'Convince another settlement to accept a pact.',
-  name: 'Pactish',
-  handle: 'pactish',
-  points: 200
-}, {
-  description: 'Convince another settlement to join your settlement.',
-  name: 'You are mine!',
-  handle: 'youaremine',
-  points: 500
-}, {
-  description: 'Adopt Christianity as the religion of your settlement.',
-  name: 'Church of Nativity',
-  handle: 'nativity',
-  conditions: {
-    religion: 'christianity'
-  },
-  points: 100
-}, {
-  description: 'Adopt Islam as the religion of your settlement.',
-  name: 'Kaaba',
-  handle: 'kaaba',
-  conditions: {
-    religion: 'islam'
-  },
-  points: 100
-}, {
-  description: 'Adopt Judaism as the religion of your settlement.',
-  name: 'Hanukkah',
-  handle: 'hanukkah',
-  conditions: {
-    religion: 'judaism'
-  },
-  points: 100
-}, {
-  description: 'Adopt Buddhism as the religion of your settlement.',
-  name: 'Bodhisattva',
-  handle: 'bodhisattva',
-  conditions: {
-    religion: 'buddhism'
-  },
-  points: 100
-}, {
-  description: 'Adopt Hinduism as the religion of your settlement.',
-  name: 'Bhagavad Gita',
-  handle: 'gita',
-  conditions: {
-    religion: 'hinduism'
-  },
-  points: 100
-}, {
-  description: 'Adopt Confucianism as the religion of your settlement.',
-  name: 'Tiān',
-  handle: 'tian',
-  conditions: {
-    religion: 'confucianism'
-  },
-  points: 100
-}, {
-  description: 'Adopt Taoism as the religion of your settlement.',
-  name: 'Laozi',
-  handle: 'laozi',
-  conditions: {
-    religion: 'taoism'
-  },
-  points: 100
-}];
-"use strict";
-
-/**
- * Game API version to connect to.
- *
- * @constant
- * @type {String}
- * @default
- */
-game.API_VERSION = '0.3';
-/**
- * URL of the main Game API entry point.
- * 
- * @constant
- * @default
- * @type {String}
- */
-
-game.API_ENTRY_POINT = 'https://civitas-api.test/api/';
-/**
- * Main Game API entry point + the API version
- *
- * @constant
- * @type {String}
- */
-
-game.API_URL = game.API_ENTRY_POINT + game.API_VERSION + '/';
-"use strict";
-
-/**
- * All the buildings for a city.
- * 
- * @constant
- * @type {Array}
- */
-game.BUILDINGS_ALL = ['marketplace', 'lumberjack', 'barracks', 'warehouse', 'mill', 'castle', 'stonequarry', 'claymine', 'ironmine', 'trapper', 'almondsfarm', 'almondsfield', 'tavern', 'shipyard', 'pigfarm', 'cattlefarm', 'pigfield', 'cattlefield', 'house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'datesfarm', 'datesfield', 'house8', 'house9', 'house10', 'house11', 'church', 'bakery', 'butcher', 'grainfarm', 'grainfield', 'ironsmelter', 'tannery', 'furrier', 'coppermine', 'goldmine', 'goldsmelter', 'coppersmelter', 'armory', 'coffeefarm', 'coffeefield', 'cottonfarm', 'cottonfield', 'sugarfarm', 'spicefarm', 'spicefield', 'sugarfield', 'silkfarm', 'silkfield', 'coffeeroaster', 'quartzmine', 'grapesfarm', 'grapesfield', 'winery', 'carpenter', 'pottery', 'jeweler', 'toolmaker', 'saltprocessor', 'charcoalburnerhut', 'opticiansworkshop', 'papermill', 'printingpress', 'redsmithsworkshop', 'ropeyard', 'glassworks', 'provisions', 'silkweaver', 'gunpowdermill', 'goatfarm', 'goatfield', 'coalmine', 'carpetmanufacturer', 'apiary', 'beehive', 'barrelcooperage', 'brewery', 'candlemakersworkshop', 'indigofarm', 'indigofield', 'sugarmill', 'rosenursery', 'rosefield', 'fisherman', 'catapultworkshop', 'cannonfoundry', 'cosmetics', 'tradingpost', 'clothingfactory', 'weaver', 'embassy', 'academy', 'marzipanworkshop', 'brickworks', 'tobaccofarm', 'tobaccofield', 'cookhouse'];
-/**
- * Buildings' categories.
- * 
- * @constant
- * @type {Object}
- */
-
-game.BUILDINGS_CATEGORIES = {
-  'Municipal': ['academy', 'church', 'embassy', 'marketplace', 'shipyard', 'tavern', 'tradingpost', 'warehouse'],
-  'Housing': ['house1', 'house2', 'house3', 'house4', 'house5', 'house6', 'house7', 'house8', 'house9', 'house10', 'house11'],
-  'Food': ['bakery', 'butcher', 'cookhouse', 'fisherman', 'mill'],
-  'Mines': ['claymine', 'coalmine', 'coppermine', 'goldmine', 'ironmine', 'quartzmine', 'stonequarry'],
-  'Farms': ['almondsfarm', 'almondsfield', 'apiary', 'beehive', 'cattlefarm', 'cattlefield', 'coffeefarm', 'coffeefield', 'cottonfarm', 'cottonfield', 'datesfarm', 'datesfield', 'goatfarm', 'goatfield', 'grainfarm', 'grainfield', 'grapesfarm', 'grapesfield', 'indigofarm', 'indigofield', 'pigfarm', 'pigfield', 'rosenursery', 'rosefield', 'silkfarm', 'silkfield', 'spicefarm', 'spicefield', 'sugarfarm', 'sugarfield', 'tobaccofarm', 'tobaccofield'],
-  'Industry': ['barrelcooperage', 'brewery', 'brickworks', 'candlemakersworkshop', 'carpenter', 'charcoalburnerhut', 'clothingfactory', 'coppersmelter', 'furrier', 'glassworks', 'goldsmelter', 'gunpowdermill', 'ironsmelter', 'lumberjack', 'pottery', 'ropeyard', 'saltprocessor', 'trapper', 'tannery', 'toolmaker', 'weaver'],
-  'Luxury': ['carpetmanufacturer', 'coffeeroaster', 'jeweler', 'marzipanworkshop', 'opticiansworkshop', 'papermill', 'cosmetics', 'printingpress', 'redsmithsworkshop', 'silkweaver', 'sugarmill', 'winery'],
-  'Military': ['armory', 'cannonfoundry', 'castle', 'catapultworkshop', 'barracks', 'provisions']
-};
-/**
- * List of all game buildings.
- * 
- * @constant
- * @type {Array}
- */
-
-game.BUILDINGS = [{
-  name: 'Marketplace',
-  handle: 'marketplace',
-  description: 'The Marketplace is the main building of your settlement and provides a place for the settlers to gather. It cannot be demolished.',
-  storage: 50000,
-  is_municipal: true,
-  levels: 5,
-  large: true,
-  visible_upgrades: true,
-  position: {
-    x: 1600,
-    y: 500
-  },
-  production: {
-    fame: 3
-  },
-  cost: {
-    coins: 100000
-  },
-  requires: {
-    settlement_level: 1
-  }
-}, {
-  name: 'Warehouse',
-  handle: 'warehouse',
-  description: 'The Warehouse is a trade building that provides market carts that pick up goods from production buildings. A Warehouse also adds extra storage space for the materials in your city.',
-  storage: 100000,
-  levels: 10,
-  visible_upgrades: true,
-  position: {
-    x: 670,
-    y: 970
-  },
-  cost: {
-    coins: 150000,
-    wood: 500,
-    bricks: 30,
-    woodplanks: 200,
-    stones: 500,
-    tools: 50
-  },
-  requires: {
-    settlement_level: 16
-  }
-}, {
-  name: 'Church',
-  handle: 'church',
-  description: 'A Church provides a massive fame boost to your settlement by using coins and converting them to fame, as well as providing faith for free. Faith allows you to choose a religion for your settlement.',
-  is_municipal: true,
-  levels: 3,
-  large: true,
-  position: {
-    x: 1600,
-    y: 820
-  },
-  production: {
-    fame: 5,
-    faith: 1
-  },
-  materials: {
-    coins: 50
-  },
-  cost: {
-    coins: 10000,
-    wood: 20,
-    woodplanks: 20,
-    stones: 20,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 3
-  }
-}, {
-  name: 'Trading Post',
-  handle: 'tradingpost',
-  description: 'The Trading Post is a merchant building that allows you to trade resources with the other settlements in the world. Also allows you to use the powerful Auctioneer.',
-  is_municipal: true,
-  storage: 10000,
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 2300,
-    y: 1370
-  },
-  cost: {
-    coins: 15000,
-    wood: 40,
-    woodplanks: 40,
-    stones: 40
-  },
-  requires: {
-    settlement_level: 4
-  }
-}, {
-  name: 'Academy',
-  handle: 'academy',
-  description: 'The Academy provides a minor amount of fame each day as well as research for this settlement at the expense of coins. All technologies will be researched here by your settlement`s scholars.',
-  is_municipal: true,
-  visible_upgrades: true,
-  large: true,
-  levels: 5,
-  position: {
-    x: 1320,
-    y: 640
-  },
-  production: {
-    fame: 5,
-    research: 1
-  },
-  materials: {
-    coins: 100
-  },
-  cost: {
-    coins: 100000,
-    woodplanks: 500,
-    stones: 500,
-    tools: 20
-  },
-  requires: {
-    settlement_level: 10
-  }
-}, {
-  name: 'Embassy',
-  handle: 'embassy',
-  description: 'An Embassy is required to propose pacts, declare war, send spies to other settlements, basically any diplomacy.',
-  is_municipal: true,
-  large: true,
-  levels: 3,
-  position: {
-    x: 1840,
-    y: 740
-  },
-  production: {
-    fame: 5,
-    espionage: 1
-  },
-  materials: {
-    coins: 50
-  },
-  cost: {
-    coins: 100000,
-    woodplanks: 100,
-    stones: 100,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 10
-  }
-}, {
-  name: 'Provision House',
-  handle: 'provisions',
-  description: 'The Provision House requires various goods to produce provisions for military units and expeditions.',
-  levels: 3,
-  position: {
-    x: 290,
-    y: 780
-  },
-  production: {
-    provisions: 2
-  },
-  materials: {
-    meals: 1,
-    clothes: 1,
-    leather: 1,
-    pottery: 1,
-    ropes: 1
-  },
-  cost: {
-    coins: 100000,
-    wood: 200,
-    stones: 200,
-    woodplanks: 100
-  },
-  requires: {
-    settlement_level: 8
-  }
-}, {
-  name: 'Tavern',
-  handle: 'tavern',
-  description: 'The Tavern is the place where heroes of the known (and unknown) world hang around. If you are looking to recruit Achilles, build a Tavern and he might show up.',
-  is_municipal: true,
-  levels: 3,
-  position: {
-    x: 1920,
-    y: 550
-  },
-  materials: {
-    coins: 20,
-    meals: 1
-  },
-  cost: {
-    coins: 100000,
-    woodplanks: 200,
-    stones: 200,
-    wood: 200,
-    wine: 100,
-    bricks: 10,
-    meat: 100,
-    tools: 50
-  },
-  requires: {
-    settlement_level: 16,
-    buildings: {
-      academy: 2
-    }
-  }
-}, {
-  name: 'Shipyard',
-  handle: 'shipyard',
-  description: 'The Shipyard helps you expand your settlement overseas by housing your ships and providing you with fish, oil and an ultra-small chance to gather pearls.',
-  large: true,
-  levels: 5,
-  position: {
-    x: 2430,
-    y: 900
-  },
-  chance: {
-    pearls: 0.005
-  },
-  cost: {
-    coins: 200000,
-    wood: 200,
-    woodplanks: 200,
-    stones: 100,
-    ropes: 10,
-    barrels: 10,
-    tools: 20
-  },
-  production: {
-    fish: 3,
-    oil: 1
-  },
-  requires: {
-    settlement_level: 10
-  }
-}, {
-  name: 'Barracks',
-  handle: 'barracks',
-  description: 'The Barracks is your main base of defense and attack. If you plan on going to war, you will need one. It also raises your settlement`s prestige.',
-  levels: 5,
-  visible_upgrades: true,
-  large: true,
-  position: {
-    x: 1970,
-    y: 950
-  },
-  production: {
-    prestige: 1
-  },
-  cost: {
-    coins: 50000,
-    wood: 200,
-    woodplanks: 200,
-    stones: 160,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 8,
-    buildings: {
-      provisions: 1
-    }
-  }
-}, {
-  name: 'Castle',
-  handle: 'castle',
-  description: 'The Castle is your main base of operations. It houses your settlement`s soldiers and provides you with prestige and some extra fame.',
-  is_municipal: true,
-  large: true,
-  levels: 2,
-  position: {
-    x: 700,
-    y: 1200
-  },
-  production: {
-    fame: 100,
-    prestige: 1
-  },
-  materials: {
-    coins: 200
-  },
-  cost: {
-    coins: 1000000,
-    wood: 500,
-    iron: 500,
-    woodplanks: 500,
-    stones: 500,
-    bricks: 500,
-    steel: 50,
-    tools: 100
-  },
-  requires: {
-    settlement_level: 20,
-    buildings: {
-      barracks: 1,
-      provisions: 2
-    }
-  }
-}, {
-  name: 'Lumberjack',
-  handle: 'lumberjack',
-  description: 'A Lumberjack provides you with wood which you can use for creating additional buildings, resources or sell to other settlements.',
-  levels: 5,
-  position: {
-    x: 1840,
-    y: 340
-  },
-  production: {
-    wood: 4
-  },
-  cost: {
-    coins: 2000,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 1
-  }
-}, {
-  name: 'Carpenter',
-  handle: 'carpenter',
-  description: 'The Carpenter processes the wood from the Lumberjack into wood planks that are required for more advanced buildings.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 2060,
-    y: 460
-  },
-  materials: {
-    wood: 2
-  },
-  production: {
-    woodplanks: 2
-  },
-  cost: {
-    coins: 5000,
-    wood: 10,
-    stones: 10
-  },
-  requires: {
-    settlement_level: 3
-  }
-}, {
-  name: 'Stone Quarry',
-  handle: 'stonequarry',
-  description: 'A Stone Quarry produces stone blocks that are essential for the construction of any settlement`s buildings.',
-  visible_upgrades: true,
-  levels: 6,
-  position: {
-    x: 930,
-    y: 290
-  },
-  production: {
-    stones: 1
-  },
-  cost: {
-    coins: 2000,
-    wood: 20
-  },
-  chance: {
-    mosaic: 0.001,
-    limestone: 0.01,
-    sand: 0.05
-  },
-  requires: {
-    settlement_level: 1
-  }
-}, {
-  name: 'Gold Mine',
-  handle: 'goldmine',
-  description: 'The Gold Mine extracts gold ore, that can be smelted later into gold bars.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1010,
-    y: 200
-  },
-  production: {
-    goldore: 3
-  },
-  chance: {
-    gems: 0.0004,
-    diamonds: 0.0004
-  },
-  cost: {
-    coins: 10000,
-    woodplanks: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 6
-  }
-}, {
-  name: 'Coal Mine',
-  handle: 'coalmine',
-  description: 'The Coal Mine extracts coal from the mountains you own (provided you own some).',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1180,
-    y: 240
-  },
-  production: {
-    coal: 4
-  },
-  chance: {
-    gems: 0.0001,
-    diamonds: 0.0001
-  },
-  cost: {
-    coins: 10000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 7
-  }
-}, {
-  name: 'Iron Mine',
-  handle: 'ironmine',
-  description: 'The Iron Mine extracts iron ore, that can be smelted later into iron bars.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 380,
-    y: 620
-  },
-  production: {
-    ironore: 3
-  },
-  chance: {
-    gems: 0.0002,
-    diamonds: 0.0002
-  },
-  cost: {
-    coins: 10000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 3
-  }
-}, {
-  name: 'Salt Processor',
-  handle: 'saltprocessor',
-  description: 'A Salt Processor processes seawater and retrieves salt.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 500,
-    y: 540
-  },
-  production: {
-    salt: 3
-  },
-  cost: {
-    coins: 8000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 5
-  }
-}, {
-  name: 'Clay Mine',
-  handle: 'claymine',
-  description: 'The Clay Mine produces clay which is required later for bricks and pottery.',
-  levels: 5,
-  position: {
-    x: 2900,
-    y: 800
-  },
-  production: {
-    clay: 2
-  },
-  cost: {
-    coins: 5000,
-    wood: 20,
-    stones: 20
-  },
-  chance: {
-    limestone: 0.01,
-    sand: 0.1
-  },
-  requires: {
-    settlement_level: 2
-  }
-}, {
-  name: 'Copper Mine',
-  handle: 'coppermine',
-  description: 'The copper mine extracts copper ore, that can be smelted later into copper bars.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1310,
-    y: 110
-  },
-  production: {
-    copperore: 3
-  },
-  chance: {
-    gems: 0.0001,
-    diamonds: 0.0002
-  },
-  cost: {
-    coins: 10000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 5
-  }
-}, {
-  name: 'Flour Mill',
-  handle: 'mill',
-  description: 'The Flour Mill produces flour from the wheat cultivated by your Grain Farm.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1360,
-    y: 1180
-  },
-  production: {
-    flour: 2
-  },
-  materials: {
-    wheat: 2
-  },
-  cost: {
-    coins: 10000,
-    woodplanks: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 3
-  }
-}, {
-  name: 'Bakery',
-  handle: 'bakery',
-  description: 'The Bakery creates bread from flour, therefore providing your settlers with basic food.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 550,
-    y: 910
-  },
-  production: {
-    bread: 3
-  },
-  materials: {
-    flour: 2
-  },
-  cost: {
-    coins: 15000,
-    woodplanks: 30,
-    stones: 30
-  },
-  requires: {
-    settlement_level: 4
-  }
-}, {
-  name: 'Pottery Workshop',
-  handle: 'pottery',
-  description: 'The Pottery Workshop uses a high-temperature kiln and clay to create pottery for the inhabitants of your settlement.',
-  levels: 3,
-  position: {
-    x: 1740,
-    y: 1240
-  },
-  production: {
-    pottery: 4
-  },
-  materials: {
-    clay: 3
-  },
-  cost: {
-    coins: 30000,
-    woodplanks: 30,
-    stones: 30,
-    clay: 100
-  },
-  requires: {
-    settlement_level: 8
-  }
-}, {
-  name: 'Gunpowder Mill',
-  handle: 'gunpowdermill',
-  description: 'A Gunpowder Mill is creating highly useful (and unstable) gunpowder from the sulphur found in your Charcoal Burner`s Hut.',
-  levels: 3,
-  position: {
-    x: 500,
-    y: 1370
-  },
-  production: {
-    gunpowder: 1
-  },
-  materials: {
-    sulphur: 10
-  },
-  cost: {
-    coins: 30000,
-    woodplanks: 30,
-    stones: 30,
-    bricks: 50,
-    clay: 50,
-    tools: 20
-  },
-  requires: {
-    settlement_level: 26
-  }
-}, {
-  name: 'Armory',
-  handle: 'armory',
-  description: 'The Armory is a major building that produces weapons and armor for your soldiers. If you want to conquer other settlements, you will need to build one and keep it stocked with materials.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1820,
-    y: 180
-  },
-  production: {
-    weapons: 1,
-    armor: 1
-  },
-  materials: {
-    iron: 10,
-    wood: 2,
-    leather: 8,
-    copper: 4
-  },
-  cost: {
-    coins: 50000,
-    woodplanks: 100,
-    stones: 100,
-    tools: 20
-  },
-  requires: {
-    settlement_level: 9
-  }
-}, {
-  name: 'Butcher',
-  handle: 'butcher',
-  description: 'The Butcher slaughters cattle, pigs or goats for meat, providing meat, a food type that is more nutritious. Hides will be processed further at the Tannery.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 420,
-    y: 850
-  },
-  production: {
-    meat: 3,
-    hides: 2,
-    tallow: 1
-  },
-  materials: [{
-    pig: 1,
-    cattle: 1,
-    goat: 1
-  }, {
-    salt: 1
-  }],
-  cost: {
-    coins: 20000,
-    woodplanks: 40,
-    stones: 40
-  },
-  requires: {
-    settlement_level: 5
-  }
-}, {
-  name: 'Iron smelter',
-  handle: 'ironsmelter',
-  description: 'The Iron Smelter (or foundry) smelts iron ore into iron bars using coal.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1140,
-    y: 100
-  },
-  production: {
-    iron: 4
-  },
-  materials: {
-    ironore: 4,
-    coal: 2
-  },
-  chance: {
-    steel: 0.05
-  },
-  cost: {
-    coins: 30000,
-    woodplanks: 40,
-    stones: 50
-  },
-  requires: {
-    settlement_level: 7
-  }
-}, {
-  name: 'Copper smelter',
-  handle: 'coppersmelter',
-  description: 'The Copper Smelter smelts copper ore into copper bars using coal.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1480,
-    y: 150
-  },
-  production: {
-    copper: 2
-  },
-  materials: {
-    copperore: 4,
-    coal: 1
-  },
-  cost: {
-    coins: 40000,
-    woodplanks: 50,
-    stones: 50
-  },
-  requires: {
-    settlement_level: 8
-  }
-}, {
-  name: 'Gold smelter',
-  handle: 'goldsmelter',
-  description: 'The Gold Smelter smelts gold ore into gold bars using coal.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1680,
-    y: 230
-  },
-  production: {
-    gold: 1
-  },
-  materials: {
-    goldore: 4,
-    coal: 1
-  },
-  cost: {
-    coins: 40000,
-    woodplanks: 55,
-    bricks: 5,
-    stones: 55
-  },
-  requires: {
-    settlement_level: 12
-  }
-}, {
-  name: 'Trapper`s Lodge',
-  handle: 'trapper',
-  description: 'The trapper captures wild animals and slaughters them, gathering their furs and some meat.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 790,
-    y: 410
-  },
-  production: {
-    furs: 2,
-    meat: 1
-  },
-  cost: {
-    coins: 15000,
-    wood: 40,
-    stones: 40
-  },
-  requires: {
-    settlement_level: 6
-  }
-}, {
-  name: 'Furrier`s Workshop',
-  handle: 'furrier',
-  description: 'The furrier uses furs from the Trapper`s Lodge mixed with salt and processes them into fur coats that will help your settlers during the cold winters.',
-  levels: 3,
-  position: {
-    x: 1640,
-    y: 1140
-  },
-  production: {
-    furcoats: 1
-  },
-  materials: {
-    furs: 2,
-    salt: 2
-  },
-  cost: {
-    coins: 15000,
-    woodplanks: 30,
-    stones: 40
-  },
-  requires: {
-    settlement_level: 9
-  }
-}, {
-  name: 'Clothing Factory',
-  handle: 'clothingfactory',
-  description: 'The Clothing Factory produces clothes for your settlement. You don`t want naked citizens, do you?',
-  levels: 3,
-  position: {
-    x: 1580,
-    y: 1280
-  },
-  production: {
-    clothes: 1
-  },
-  materials: {
-    cottonfabric: 2
-  },
-  cost: {
-    coins: 15000,
-    wood: 40,
-    bricks: 10,
-    stones: 40
-  },
-  requires: {
-    settlement_level: 15
-  }
-}, {
-  name: 'Weaver`s Hut',
-  handle: 'weaver',
-  description: 'The weaver uses a hefty amount of cotton to produce cotton fabric for your settlers` clothes.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1230,
-    y: 1250
-  },
-  production: {
-    cottonfabric: 2
-  },
-  materials: {
-    cotton: 4
-  },
-  cost: {
-    coins: 10000,
-    wood: 30,
-    stones: 30
-  },
-  requires: {
-    settlement_level: 12
-  }
-}, {
-  name: 'Tannery',
-  handle: 'tannery',
-  description: 'The Tannery produces leather from processed animal hides.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 930,
-    y: 1110
-  },
-  production: {
-    leather: 2
-  },
-  materials: {
-    hides: 4,
-    salt: 1
-  },
-  cost: {
-    coins: 20000,
-    wood: 35,
-    stones: 40
-  },
-  requires: {
-    settlement_level: 8
-  }
-}, {
-  name: 'Coffee roaster',
-  handle: 'coffeeroaster',
-  description: 'The Coffee Roaster uses the coffee beans from your Coffee Farm and processes them into coffee.',
-  levels: 3,
-  position: {
-    x: 2150,
-    y: 1430
-  },
-  production: {
-    coffee: 1
-  },
-  materials: {
-    coffeebeans: 4
-  },
-  cost: {
-    coins: 70000,
-    woodplanks: 80,
-    stones: 60,
-    bricks: 30,
-    tools: 20
-  },
-  requires: {
-    settlement_level: 28,
-    buildings: {
-      tradingpost: 1
-    }
-  }
-}, {
-  name: 'Sugar Mill',
-  handle: 'sugarmill',
-  description: 'The Sugar Mill processes any sugar cane you have in storage into sugar.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 2700,
-    y: 880
-  },
-  production: {
-    sugar: 1
-  },
-  materials: {
-    sugarcane: 4
-  },
-  cost: {
-    coins: 70000,
-    woodplanks: 80,
-    stones: 60,
-    bricks: 30,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 26,
-    buildings: {
-      tradingpost: 1
-    }
-  }
-}, {
-  name: 'Winery',
-  handle: 'winery',
-  description: 'The Winery uses the grapes from your Grapes Farm and processes them into wine. It uses either barrels or bottles, depending on what you have in storage.',
-  levels: 5,
-  position: {
-    x: 2520,
-    y: 510
-  },
-  production: {
-    wine: 2
-  },
-  materials: [{
-    barrels: 1,
-    bottles: 1
-  }, {
-    grapes: 4
-  }],
-  chance: {
-    alcohol: 0.01
-  },
-  cost: {
-    coins: 50000,
-    wood: 50,
-    bricks: 10,
-    stones: 40,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 14
-  }
-}, {
-  name: 'Optician`s Shop',
-  handle: 'opticiansworkshop',
-  description: 'The optician uses copper and glass to create glasses for your settlers.',
-  levels: 3,
-  position: {
-    x: 1280,
-    y: 330
-  },
-  production: {
-    glasses: 1
-  },
-  materials: {
-    copper: 2,
-    glass: 2
-  },
-  cost: {
-    coins: 81000,
-    woodplanks: 70,
-    stones: 70,
-    bricks: 30,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 24
-  }
-}, {
-  name: 'Paper Mill',
-  handle: 'papermill',
-  description: 'The Paper Mill uses wood to produce paper, which is used together with indigo to produce books at the Printing House.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1080,
-    y: 340
-  },
-  production: {
-    paper: 2
-  },
-  materials: {
-    wood: 1
-  },
-  cost: {
-    coins: 83000,
-    woodplanks: 60,
-    stones: 50,
-    bricks: 30,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 22
-  }
-}, {
-  name: 'Printing Press',
-  handle: 'printingpress',
-  description: 'The Printing Press produces books from paper using indigo ink.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1540,
-    y: 430
-  },
-  production: {
-    books: 1
-  },
-  materials: {
-    paper: 4,
-    indigo: 1
-  },
-  cost: {
-    coins: 84000,
-    woodplanks: 100,
-    stones: 100,
-    bricks: 30,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 28
-  }
-}, {
-  name: 'Cosmetics',
-  handle: 'cosmetics',
-  description: 'The Cosmetics manufacturer produces soap and perfume.',
-  levels: 3,
-  position: {
-    x: 1500,
-    y: 1170
-  },
-  production: {
-    perfume: 1,
-    soap: 1
-  },
-  materials: {
-    roses: 8,
-    tallow: 8,
-    honey: 1,
-    cocoa: 1,
-    alcohol: 1
-  },
-  cost: {
-    coins: 90000,
-    woodplanks: 80,
-    stones: 40,
-    bricks: 20,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 30,
-    buildings: {
-      tradingpost: 1
-    }
-  }
-}, {
-  name: 'Redsmith`s Workshop',
-  handle: 'redsmithsworkshop',
-  description: 'The Redsmith`s Workshop processes copper and candles into candlesticks.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 520,
-    y: 720
-  },
-  production: {
-    candlesticks: 1
-  },
-  materials: {
-    copper: 3,
-    candles: 2
-  },
-  cost: {
-    coins: 75000,
-    wood: 70,
-    bricks: 30,
-    stones: 50,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 22
-  }
-}, {
-  name: 'Ropeyard',
-  handle: 'ropeyard',
-  description: 'The Ropeyard produces ropes that are needed for your city`s ships.',
-  levels: 3,
-  position: {
-    x: 3000,
-    y: 1030
-  },
-  production: {
-    ropes: 1
-  },
-  materials: {
-    cotton: 2
-  },
-  cost: {
-    coins: 15000,
-    wood: 70,
-    stones: 60,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 10
-  }
-}, {
-  name: 'Glassworks',
-  handle: 'glassworks',
-  description: 'The Glassworks processes quartz, sand and coal into glass.',
-  levels: 3,
-  position: {
-    x: 1400,
-    y: 1320
-  },
-  production: {
-    glass: 1
-  },
-  materials: {
-    quartz: 2,
-    sand: 3,
-    coal: 1
-  },
-  chance: {
-    bottles: 0.2
-  },
-  cost: {
-    coins: 50000,
-    wood: 50,
-    bricks: 10,
-    stones: 80
-  },
-  requires: {
-    settlement_level: 22
-  }
-}, {
-  name: 'Carpet Mill',
-  handle: 'carpetmanufacturer',
-  description: 'The Carpet Mill produces carpets.',
-  levels: 3,
-  position: {
-    x: 2020,
-    y: 1370
-  },
-  production: {
-    carpets: 1
-  },
-  materials: {
-    cottonfabric: 4,
-    indigo: 2
-  },
-  cost: {
-    coins: 50000,
-    wood: 50,
-    bricks: 30,
-    stones: 80,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 26,
-    buildings: {
-      tradingpost: 1
-    }
-  }
-}, {
-  name: 'Marzipan Workshop',
-  handle: 'marzipanworkshop',
-  description: 'The Marzipan Workshop uses milk, almonds and sugar from city storage to create delicious marzipan. Your settlers will definitely appreciate it.',
-  levels: 3,
-  position: {
-    x: 1090,
-    y: 850
-  },
-  production: {
-    marzipan: 1
-  },
-  materials: {
-    almonds: 2,
-    sugar: 2,
-    milk: 4
-  },
-  cost: {
-    coins: 50000,
-    wood: 50,
-    bricks: 40,
-    stones: 80,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 26,
-    buildings: {
-      tradingpost: 1
-    }
-  }
-}, {
-  name: 'Silk Weaver',
-  handle: 'silkweaver',
-  description: 'The Silk Weaver requires cotton, gold and silk and produces brocade robes.',
-  levels: 3,
-  position: {
-    x: 1220,
-    y: 970
-  },
-  production: {
-    robes: 1
-  },
-  materials: {
-    silk: 2,
-    cotton: 1,
-    gold: 2
-  },
-  cost: {
-    coins: 50000,
-    wood: 50,
-    bricks: 30,
-    stones: 80,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 23,
-    buildings: {
-      tradingpost: 1
-    }
-  }
-}, {
-  name: 'Quartz Mine',
-  handle: 'quartzmine',
-  description: 'The Quartz Mine provides your city with quartz.',
-  levels: 3,
-  position: {
-    x: 700,
-    y: 710
-  },
-  production: {
-    quartz: 2
-  },
-  cost: {
-    coins: 40000,
-    wood: 50,
-    bricks: 30,
-    stones: 90
-  },
-  requires: {
-    settlement_level: 16,
-    climate: [game.CLIMATE_ARID]
-  }
-}, {
-  name: 'Apiary',
-  handle: 'apiary',
-  description: 'The Apiary produces honey and bees wax for use in candles.',
-  levels: 3,
-  position: {
-    x: 1140,
-    y: 1150
-  },
-  production: {
-    wax: 2,
-    honey: 1
-  },
-  cost: {
-    coins: 40000,
-    wood: 50,
-    bricks: 30,
-    stones: 40
-  },
-  requires: {
-    settlement_level: 16,
-    buildings: {
-      beehive: 1
-    },
-    climate: [game.CLIMATE_TROPICAL, game.CLIMATE_TEMPERATE]
-  }
-}, {
-  name: 'Bee Hive',
-  handle: 'beehive',
-  description: 'The Bee Hive is required for an Apiary to produce bees wax and honey.',
-  position: {
-    x: 1260,
-    y: 1100
-  },
-  cost: {
-    coins: 2000,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 16,
-    climate: [game.CLIMATE_TROPICAL, game.CLIMATE_TEMPERATE]
-  }
-}, {
-  name: 'Barrel Cooperage',
-  handle: 'barrelcooperage',
-  description: 'The Barrel Cooperage creates barrels from wood and iron.',
-  levels: 3,
-  position: {
-    x: 910,
-    y: 430
-  },
-  production: {
-    barrels: 2
-  },
-  materials: {
-    wood: 3,
-    iron: 1
-  },
-  cost: {
-    coins: 25000,
-    wood: 80,
-    stones: 70,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 9
-  }
-}, {
-  name: 'Brewery',
-  handle: 'brewery',
-  description: 'The Brewery brews beer from wheat. Beer is needed for higher-level houses or your city`s navy.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 650,
-    y: 1120
-  },
-  production: {
-    beer: 2
-  },
-  materials: {
-    barrels: 1,
-    wheat: 2
-  },
-  chance: {
-    alcohol: 0.01
-  },
-  cost: {
-    coins: 25000,
-    wood: 60,
-    stones: 70
-  },
-  requires: {
-    settlement_level: 9
-  }
-}, {
-  name: 'Candlemaker`s Hut',
-  handle: 'candlemakersworkshop',
-  description: 'The Candlemaker Hut produces candles for your settlers` houses.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 640,
-    y: 480
-  },
-  production: {
-    candles: 1
-  },
-  materials: {
-    wax: 2,
-    cotton: 1
-  },
-  cost: {
-    coins: 45000,
-    woodplanks: 80,
-    stones: 60,
-    bricks: 20,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 20
-  }
-}, {
-  name: 'Catapult Workshop',
-  handle: 'catapultworkshop',
-  description: 'The Catapult Workshop builds catapults, the ultimate siege weapon.',
-  levels: 3,
-  position: {
-    x: 1400,
-    y: 1050
-  },
-  production: {
-    catapults: 1
-  },
-  materials: {
-    wood: 100,
-    steel: 12,
-    iron: 20,
-    stones: 30,
-    coal: 5,
-    woodplanks: 40,
-    ropes: 10
-  },
-  cost: {
-    coins: 250000,
-    woodplanks: 200,
-    stones: 300,
-    bricks: 30,
-    tools: 20
-  },
-  requires: {
-    settlement_level: 20
-  }
-}, {
-  name: 'Cannon Foundry',
-  handle: 'cannonfoundry',
-  description: 'The Cannon Foundry is responsable with the manufacture of the city cannons.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 760,
-    y: 560
-  },
-  production: {
-    cannons: 1
-  },
-  materials: {
-    wood: 70,
-    copper: 30,
-    iron: 10,
-    coal: 20,
-    steel: 15,
-    woodplanks: 10,
-    ropes: 2,
-    gunpowder: 6
-  },
-  cost: {
-    coins: 200000,
-    woodplanks: 200,
-    stones: 300,
-    bricks: 30,
-    tools: 20
-  },
-  requires: {
-    settlement_level: 18
-  }
-}, {
-  name: 'Charcoal Burner`s Hut',
-  handle: 'charcoalburnerhut',
-  description: 'The Charcoal Burner`s Hut burns wood into coal and sulphur, which is needed by all your smelters.',
-  levels: 3,
-  position: {
-    x: 1370,
-    y: 230
-  },
-  production: {
-    coal: 4,
-    sulphur: 1
-  },
-  materials: {
-    wood: 2
-  },
-  cost: {
-    coins: 25000,
-    wood: 50,
-    stones: 50,
-    bricks: 50
-  },
-  requires: {
-    settlement_level: 15
-  }
-}, {
-  name: 'House',
-  handle: 'house1',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 5,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1200,
-    y: 770
-  },
-  cost: {
-    wood: 10,
-    coins: 1000
-  },
-  materials: {
-    bread: 1
-  },
-  requires: {
-    settlement_level: 1
-  }
-}, {
-  name: 'House',
-  handle: 'house2',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 10,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1080,
-    y: 680
-  },
-  cost: {
-    wood: 10,
-    coins: 2000
-  },
-  materials: {
-    bread: 1
-  },
-  requires: {
-    settlement_level: 1
-  }
-}, {
-  name: 'House',
-  handle: 'house3',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 15,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 960,
-    y: 590
-  },
-  cost: {
-    woodplanks: 10,
-    stones: 20,
-    coins: 3000
-  },
-  materials: {
-    bread: 1,
-    meat: 1
-  },
-  requires: {
-    settlement_level: 3
-  }
-}, {
-  name: 'House',
-  handle: 'house4',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 20,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1200,
-    y: 580
-  },
-  cost: {
-    woodplanks: 10,
-    stones: 20,
-    coins: 4000
-  },
-  materials: {
-    bread: 1,
-    meat: 1,
-    pottery: 1
-  },
-  requires: {
-    settlement_level: 6,
-    buildings: {
-      church: 1
-    }
-  }
-}, {
-  name: 'House',
-  handle: 'house5',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 25,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1080,
-    y: 500
-  },
-  cost: {
-    woodplanks: 25,
-    stones: 35,
-    coins: 5000
-  },
-  materials: {
-    fish: 1,
-    meat: 2,
-    pottery: 1,
-    beer: 1
-  },
-  requires: {
-    settlement_level: 10,
-    buildings: {
-      church: 1
-    }
-  }
-}, {
-  name: 'House',
-  handle: 'house6',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 30,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1300,
-    y: 840
-  },
-  cost: {
-    woodplanks: 30,
-    stones: 45,
-    bricks: 10,
-    coins: 6000
-  },
-  materials: {
-    meals: 1,
-    pottery: 1
-  },
-  requires: {
-    settlement_level: 16,
-    buildings: {
-      church: 2
-    }
-  }
-}, {
-  name: 'House',
-  handle: 'house7',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 35,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1470,
-    y: 780
-  },
-  cost: {
-    woodplanks: 40,
-    stones: 80,
-    bricks: 15,
-    coins: 7000
-  },
-  materials: {
-    meals: 1,
-    pottery: 1,
-    candlesticks: 1
-  },
-  requires: {
-    settlement_level: 20,
-    buildings: {
-      academy: 1
-    }
-  }
-}, {
-  name: 'House',
-  handle: 'house8',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 40,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1700,
-    y: 390
-  },
-  cost: {
-    woodplanks: 50,
-    stones: 100,
-    bricks: 20,
-    coins: 8000
-  },
-  materials: {
-    meals: 1,
-    milk: 1,
-    pottery: 1,
-    candlesticks: 1,
-    furcoats: 1
-  },
-  requires: {
-    settlement_level: 25,
-    buildings: {
-      academy: 2
-    }
-  }
-}, {
-  name: 'House',
-  handle: 'house9',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 50,
-  levels: 6,
-  visible_upgrades: true,
-  position: {
-    x: 1840,
-    y: 480
-  },
-  cost: {
-    woodplanks: 100,
-    stones: 200,
-    bricks: 25,
-    coins: 10000
-  },
-  materials: {
-    meals: 1,
-    milk: 1,
-    pottery: 1,
-    candlesticks: 1,
-    furcoats: 1,
-    perfume: 1,
-    soap: 1
-  },
-  requires: {
-    settlement_level: 30,
-    buildings: {
-      academy: 2
-    }
-  }
-}, {
-  name: 'House',
-  handle: 'house10',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 60,
-  cost: {
-    woodplanks: 100,
-    stones: 200,
-    bricks: 30,
-    coins: 10000
-  },
-  materials: {
-    meals: 2,
-    milk: 1,
-    pottery: 1,
-    candlesticks: 1,
-    furcoats: 1,
-    perfume: 1,
-    soap: 1,
-    robes: 1
-  },
-  position: {
-    x: 1390,
-    y: 550
-  },
-  levels: 6,
-  visible_upgrades: true,
-  requires: {
-    settlement_level: 32,
-    buildings: {
-      church: 2,
-      academy: 2
-    }
-  }
-}, {
-  name: 'House',
-  handle: 'house11',
-  description: 'Houses provide coins through taxes and space for your settlers.',
-  tax: 80,
-  cost: {
-    woodplanks: 100,
-    stones: 200,
-    bricks: 35,
-    coins: 10000
-  },
-  materials: {
-    meals: 2,
-    milk: 1,
-    pottery: 1,
-    candlesticks: 1,
-    furcoats: 1,
-    perfume: 1,
-    robes: 1,
-    soap: 1,
-    marzipan: 1
-  },
-  position: {
-    x: 1400,
-    y: 910
-  },
-  levels: 6,
-  visible_upgrades: true,
-  requires: {
-    settlement_level: 36,
-    buildings: {
-      church: 2,
-      academy: 2
-    }
-  }
-}, {
-  name: 'Dates farm',
-  handle: 'datesfarm',
-  description: 'The Dates Farm cultivates dates.',
-  production: {
-    dates: 1
-  },
-  levels: 3,
-  position: {
-    x: 2480,
-    y: 770
-  },
-  cost: {
-    coins: 40000,
-    wood: 30,
-    stones: 30
-  },
-  requires: {
-    settlement_level: 36,
-    buildings: {
-      datesfield: 1
-    },
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Dates field',
-  handle: 'datesfield',
-  description: 'An Dates Field is required for the Dates Farm to operate.',
-  position: {
-    x: 2380,
-    y: 660
-  },
-  cost: {
-    coins: 5000,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 36,
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Almonds farm',
-  handle: 'almondsfarm',
-  description: 'The Almonds Farm cultivates almonds for marzipan manufacture or export.',
-  production: {
-    almonds: 1
-  },
-  levels: 3,
-  position: {
-    x: 2050,
-    y: 1610
-  },
-  cost: {
-    coins: 40000,
-    wood: 30,
-    stones: 30
-  },
-  requires: {
-    settlement_level: 36,
-    buildings: {
-      almondsfield: 1
-    },
-    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Almonds field',
-  handle: 'almondsfield',
-  description: 'An Almonds Field is required for the Almonds Farm to operate.',
-  position: {
-    x: 2190,
-    y: 1570
-  },
-  cost: {
-    coins: 5000,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 36,
-    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Cattle Farm',
-  handle: 'cattlefarm',
-  description: 'A Cattle Farm grows cattle so your settlers can eat food that is more nutritious than bread. Also produces milk and has a low chance for producing cheese.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1510,
-    y: 1470
-  },
-  production: {
-    cattle: 1,
-    milk: 1
-  },
-  chance: {
-    cheese: 0.01
-  },
-  cost: {
-    coins: 10000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 3,
-    buildings: {
-      cattlefield: 1
-    }
-  }
-}, {
-  name: 'Cattle field',
-  handle: 'cattlefield',
-  description: 'A Cattle Field is required for the Cattle Farm to operate.',
-  position: {
-    x: 1630,
-    y: 1420
-  },
-  cost: {
-    coins: 1000,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 3
-  }
-}, {
-  name: 'Pig Farm',
-  handle: 'pigfarm',
-  description: 'A Pig Farm grows pigs so your settlers can eat food that is more nutritious than bread.',
-  visible_upgrades: true,
-  production: {
-    pig: 1
-  },
-  levels: 5,
-  position: {
-    x: 1900,
-    y: 1150
-  },
-  cost: {
-    coins: 15000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 3,
-    buildings: {
-      pigfield: 1
-    }
-  }
-}, {
-  name: 'Pig field',
-  handle: 'pigfield',
-  description: 'A Pig Field is required for the Pig Farm to operate.',
-  position: {
-    x: 1900,
-    y: 1270
-  },
-  cost: {
-    coins: 1500,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 3
-  }
-}, {
-  name: 'Goat Farm',
-  handle: 'goatfarm',
-  description: 'A Goat Farm grows cattle so your settlers can eat food that is more nutritious than bread. Also produces milk and has a low chance for producing cheese.',
-  visible_upgrades: true,
-  production: {
-    goat: 1,
-    milk: 1
-  },
-  chance: {
-    cheese: 0.01
-  },
-  levels: 5,
-  position: {
-    x: 2300,
-    y: 900
-  },
-  cost: {
-    coins: 15000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 10,
-    buildings: {
-      goatfield: 1
-    }
-  }
-}, {
-  name: 'Goat field',
-  handle: 'goatfield',
-  description: 'A Goat Field is required for the Goat Farm to operate.',
-  position: {
-    x: 2150,
-    y: 900
-  },
-  cost: {
-    coins: 1500,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 10
-  }
-}, {
-  name: 'Grain farm',
-  handle: 'grainfarm',
-  description: 'A Grain Farm cultivates wheat that will be later transformed into bread, and your settlers will live happily ever after.',
-  visible_upgrades: true,
-  production: {
-    wheat: 2
-  },
-  levels: 6,
-  position: {
-    x: 2660,
-    y: 590
-  },
-  cost: {
-    coins: 10000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 2,
-    buildings: {
-      grainfield: 1
-    }
-  }
-}, {
-  name: 'Grain field',
-  handle: 'grainfield',
-  description: 'A Grain Field is required for the Grain Farm to operate.',
-  position: {
-    x: 2550,
-    y: 670
-  },
-  cost: {
-    coins: 1000,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 2
-  }
-}, {
-  name: 'Grapes farm',
-  handle: 'grapesfarm',
-  description: 'A Grapes Farm provides your city with grapes for wine processing.',
-  levels: 3,
-  position: {
-    x: 2380,
-    y: 460
-  },
-  production: {
-    grapes: 2
-  },
-  cost: {
-    coins: 15000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 16,
-    buildings: {
-      grapesfield: 1
-    },
-    climate: [game.CLIMATE_TEMPERATE]
-  }
-}, {
-  name: 'Grapes field',
-  handle: 'grapesfield',
-  description: 'A Grapes Field is required for the Grapes Farm to operate.',
-  position: {
-    x: 2290,
-    y: 530
-  },
-  cost: {
-    coins: 1500,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 16,
-    climate: [game.CLIMATE_TEMPERATE]
-  }
-}, {
-  name: 'Coffee farm',
-  handle: 'coffeefarm',
-  description: 'A Coffee Farm cultivates coffee beans in your city, ready to be processed into coffee.',
-  levels: 3,
-  position: {
-    x: 1840,
-    y: 1000
-  },
-  production: {
-    coffeebeans: 2
-  },
-  cost: {
-    coins: 60000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 36,
-    buildings: {
-      coffeefield: 1
-    },
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Coffee field',
-  handle: 'coffeefield',
-  description: 'A Coffee Field is required for the Coffee Farm to operate.',
-  position: {
-    x: 1740,
-    y: 1080
-  },
-  cost: {
-    coins: 6000,
-    wood: 10,
-    clay: 40
-  },
-  requires: {
-    settlement_level: 36,
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Cotton farm',
-  handle: 'cottonfarm',
-  description: 'A Cotton Farm provides your city with cotton.',
-  levels: 3,
-  position: {
-    x: 1870,
-    y: 1590
-  },
-  production: {
-    cotton: 3
-  },
-  cost: {
-    coins: 20000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    research: 'agriculture',
-    settlement_level: 10,
-    buildings: {
-      cottonfield: 1
-    },
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Cotton field',
-  handle: 'cottonfield',
-  description: 'A Cotton Field is required for the Cotton Farm to operate.',
-  position: {
-    x: 1970,
-    y: 1530
-  },
-  cost: {
-    coins: 2000,
-    wood: 10,
-    clay: 20
-  },
-  requires: {
-    research: 'agriculture',
-    settlement_level: 10,
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Silk farm',
-  handle: 'silkfarm',
-  description: 'A Silk Farm provides your city with silk.',
-  levels: 3,
-  position: {
-    x: 1450,
-    y: 340
-  },
-  production: {
-    silk: 1
-  },
-  cost: {
-    coins: 80000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    research: 'agriculture',
-    settlement_level: 28,
-    buildings: {
-      silkfield: 1
-    },
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Silk field',
-  handle: 'silkfield',
-  description: 'A Silk Field is required for the Silk Farm to operate.',
-  position: {
-    x: 1600,
-    y: 320
-  },
-  cost: {
-    coins: 8000,
-    wood: 10,
-    clay: 100
-  },
-  requires: {
-    research: 'agriculture',
-    settlement_level: 28,
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Sugar Cane Farm',
-  handle: 'sugarfarm',
-  description: 'A Sugar Cane Farm provides your city with sugar cane.',
-  levels: 3,
-  position: {
-    x: 2280,
-    y: 780
-  },
-  production: {
-    sugarcane: 2
-  },
-  cost: {
-    coins: 100000,
-    wood: 20,
-    stones: 20
-  },
-  requires: {
-    settlement_level: 24,
-    buildings: {
-      academy: 1,
-      sugarfield: 1
-    },
-    climate: [game.CLIMATE_TEMPERATE]
-  }
-}, {
-  name: 'Sugar field',
-  handle: 'sugarfield',
-  description: 'A Sugar Field is required for the Sugar Farm to operate.',
-  position: {
-    x: 2100,
-    y: 720
-  },
-  cost: {
-    coins: 10000,
-    wood: 10,
-    clay: 100
-  },
-  requires: {
-    settlement_level: 24,
-    climate: [game.CLIMATE_TEMPERATE]
-  }
-}, {
-  name: 'Indigo farm',
-  handle: 'indigofarm',
-  description: 'The Indigo Farm produces indigo that can be turned to ink and used to create books.',
-  levels: 5,
-  visible_upgrades: true,
-  position: {
-    x: 2440,
-    y: 1440
-  },
-  production: {
-    indigo: 1
-  },
-  cost: {
-    coins: 200000,
-    wood: 30,
-    stones: 30,
-    clay: 30
-  },
-  requires: {
-    settlement_level: 20,
-    buildings: {
-      indigofield: 1
-    },
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Indigo field',
-  handle: 'indigofield',
-  description: 'An Indigo Field is required for the Indigo Farm to operate.',
-  position: {
-    x: 2320,
-    y: 1500
-  },
-  cost: {
-    coins: 10000,
-    wood: 10,
-    clay: 100
-  },
-  requires: {
-    settlement_level: 20,
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Tobacco farm',
-  handle: 'tobaccofarm',
-  description: 'A Tobacco Farm produces cigars from tobacco.',
-  levels: 3,
-  position: {
-    x: 1750,
-    y: 1500
-  },
-  production: {
-    cigars: 1
-  },
-  materials: {
-    tobacco: 2
-  },
-  cost: {
-    coins: 200000,
-    wood: 30,
-    stones: 30,
-    bricks: 30
-  },
-  requires: {
-    settlement_level: 25,
-    buildings: {
-      tobaccofield: 1
-    },
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Tobacco field',
-  handle: 'tobaccofield',
-  description: 'The Tobacco Field produces tobacco that will be further processed by the Tobacco Farm',
-  position: {
-    x: 1870,
-    y: 1460
-  },
-  production: {
-    tobacco: 1
-  },
-  cost: {
-    coins: 10000,
-    wood: 10,
-    clay: 100
-  },
-  requires: {
-    settlement_level: 20,
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Rose Farm',
-  handle: 'rosenursery',
-  description: 'The Rose Farm produces roses which are needed to manufacture perfume.',
-  levels: 3,
-  position: {
-    x: 2780,
-    y: 670
-  },
-  production: {
-    roses: 1
-  },
-  cost: {
-    coins: 20000,
-    wood: 50,
-    stones: 50,
-    clay: 50
-  },
-  requires: {
-    research: 'agriculture',
-    settlement_level: 26,
-    buildings: {
-      academy: 1,
-      rosefield: 1
-    },
-    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Roses field',
-  handle: 'rosefield',
-  description: 'A Roses Field is required for the Rose Farm to operate.',
-  position: {
-    x: 2650,
-    y: 740
-  },
-  cost: {
-    coins: 10000,
-    wood: 10,
-    clay: 100
-  },
-  requires: {
-    research: 'agriculture',
-    settlement_level: 26,
-    climate: [game.CLIMATE_ARID, game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Spice Farm',
-  handle: 'spicefarm',
-  description: 'The Spice Farm is responsable for the production of spices.',
-  levels: 3,
-  position: {
-    x: 1500,
-    y: 970
-  },
-  production: {
-    spices: 1
-  },
-  cost: {
-    coins: 200000,
-    wood: 60,
-    stones: 60,
-    clay: 60
-  },
-  requires: {
-    settlement_level: 32,
-    buildings: {
-      academy: 1,
-      spicefield: 1
-    },
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Spice field',
-  handle: 'spicefield',
-  description: 'A Spice Field is required for the Spice Farm to operate.',
-  position: {
-    x: 1600,
-    y: 1030
-  },
-  cost: {
-    coins: 20000,
-    wood: 40,
-    clay: 300
-  },
-  requires: {
-    settlement_level: 32,
-    climate: [game.CLIMATE_TROPICAL]
-  }
-}, {
-  name: 'Toolmaker Workshop',
-  handle: 'toolmaker',
-  description: 'Tools are needed to construct higher-level buildings, and a Toolmaker Workshop will create those for your settlement.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 1640,
-    y: 110
-  },
-  production: {
-    tools: 2
-  },
-  materials: {
-    wood: 1,
-    iron: 1,
-    coal: 1,
-    copper: 1
-  },
-  cost: {
-    coins: 30000,
-    wood: 80,
-    stones: 80,
-    clay: 60
-  },
-  requires: {
-    settlement_level: 8
-  }
-}, {
-  name: 'Jeweler',
-  handle: 'jeweler',
-  description: 'The Jeweler processes pearls into jewelery for your settlers (and traders).',
-  levels: 3,
-  position: {
-    x: 1780,
-    y: 1350
-  },
-  production: {
-    jewelery: 1
-  },
-  materials: {
-    pearls: 10
-  },
-  cost: {
-    coins: 55000,
-    wood: 60,
-    stones: 60,
-    bricks: 60,
-    tools: 10
-  },
-  requires: {
-    settlement_level: 20
-  }
-}, {
-  name: 'Brickworks',
-  handle: 'brickworks',
-  description: 'The Brickworks uses coal and clay to manufacture bricks, needed for higher-level buildings in your settlement.',
-  levels: 5,
-  position: {
-    x: 620,
-    y: 640
-  },
-  production: {
-    bricks: 2
-  },
-  materials: {
-    clay: 3,
-    coal: 1
-  },
-  cost: {
-    coins: 10000,
-    wood: 20,
-    stones: 20,
-    clay: 20
-  },
-  requires: {
-    settlement_level: 12,
-    buildings: {
-      claymine: 1
-    }
-  }
-}, {
-  name: 'Cookhouse',
-  handle: 'cookhouse',
-  description: 'The Cookhouse makes meals for your houses, army, navy and expeditions.',
-  levels: 3,
-  position: {
-    x: 1020,
-    y: 970
-  },
-  production: {
-    meals: 2
-  },
-  materials: {
-    bread: 2,
-    meat: 2,
-    fish: 2,
-    wine: 1
-  },
-  cost: {
-    coins: 20000,
-    wood: 100,
-    stones: 20,
-    bricks: 20,
-    woodplanks: 10
-  },
-  requires: {
-    settlement_level: 10
-  }
-}, {
-  name: 'Fisherman',
-  handle: 'fisherman',
-  description: 'The fisherman reels in fish from the waters surrounding your settlement.',
-  visible_upgrades: true,
-  levels: 5,
-  position: {
-    x: 2830,
-    y: 970
-  },
-  chance: {
-    pearls: 0.003
-  },
-  production: {
-    fish: 1
-  },
-  cost: {
-    coins: 15000,
-    wood: 100,
-    stones: 20,
-    bricks: 20,
-    woodplanks: 10
-  },
-  requires: {
-    settlement_level: 8
-  }
-}];
-"use strict";
-
-/**
- * List of the possible climate types.
- * 
- * @constant
- * @default
- * @type {Array}
- */
-game.CLIMATES = ['none', 'temperate', 'tropical', 'arid', 'polar'];
-/**
- * Temperate climate, all balanced.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CLIMATE_TEMPERATE = 1;
-/**
- * Tropical climate, favoring farms and exotic goods.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CLIMATE_TROPICAL = 2;
-/**
- * Arid climate, favoring ore mines.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CLIMATE_ARID = 3;
-/**
- * Polar climate, very extreme.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CLIMATE_POLAR = 4;
-"use strict";
-
-/**
- * Autostart music or not.
- * 
- * @constant
- * @default
- * @type {Boolean}
- */
-game.AUTOSTART_MUSIC = false;
-/**
- * Enable encryption or not.
- * 
- * @constant
- * @default
- * @type {Boolean}
- */
-
-game.ENCRYPTION = false;
-/**
- * URL to the game assets
- * 
- * @constant
- * @default
- * @type {String}
- */
-
-game.ASSETS_URL = './';
-/**
- * How many real seconds has a game day.
- *
- * constant
- * @default
- * @type {Number}
- */
-
-game.SECONDS_TO_DAY = 10;
-/**
- * Number of city ruler avatars available to choose.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.AVATARS = 99;
-/**
- * Application version.
- * 
- * @constant
- * @type {String}
- */
-
-game.VERSION = '0.3.0.' + (new Date().getMonth() + 1) + '' + new Date().getDate() + '' + new Date().getFullYear();
-/**
- * Whether the application is in debug mode.
- * 
- * @default
- * @constant
- * @type {Boolean}
- */
-
-game.DEBUG = true;
-/**
- * Browser localStorage key to store game data into.
- *
- * @constant
- * @default
- * @type {String}
- */
-
-game.STORAGE_KEY = 'civitas';
-/**
- * Difficulty level of the game is easy.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIFFICULTY_EASY = 1;
-/**
- * Difficulty level of the game is medium.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIFFICULTY_MEDIUM = 2;
-/**
- * Difficulty level of the game is hard.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIFFICULTY_HARD = 3;
-/**
- * Difficulty level of the game is hardcore.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIFFICULTY_HARDCORE = 4;
-/**
- * When a building is notifying the player it's out of resources (the
- * building, not the player).
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFICATION_MISSING_RES = 1;
-/**
- * When a building is notifying the player its production is paused
- * manually by the player.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFICATION_PAUSED = 2;
-/**
- * When a building is notifying the player it is missing its requirements.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFICATION_MISSING_REQ = 3;
-/**
- * When a building is notifying the player the level of the city is too low.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFICATION_SETTLEMENT_LOW_LEVEL = 4;
-/**
- * Game type as single player (campaign, local).
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MODE_SINGLEPLAYER = 1;
-/**
- * Game type as multi player (sandbox, networked).
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MODE_MULTIPLAYER = 2;
-/**
- * Error notification
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFY_ERROR = 0;
-/**
- * Achievement notification
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFY_ACHIEVEMENT = 1;
-/**
- * Normal notification
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFY_NORMAL = 2;
-/**
- * Event notification.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFY_EVENT = 3;
-/**
- * Research notification.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFY_RESEARCH = 4;
-/**
- * Religion notification.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFY_RELIGION = 5;
-/**
- * War notification.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NOTIFY_WAR = 6;
-/**
- * Max numbers of lines to show in the console. Too many will overload the DOM.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_CONSOLE_LINES = 5000;
-"use strict";
-
-/**
- * List of game diplomacy options.
- *
- * @constant
- * @default
- * @type {Array}
- */
-game.DIPLOMACIES = ['truce', 'war', 'pact', 'alliance', 'cease fire', 'pact proposed', 'alliance proposed', 'cease fire proposed', 'proposed to join you', 'vassal'];
-/**
- * The campaign is an army.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CAMPAIGN_ARMY = 1;
-/**
- * The campaign is a caravan.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CAMPAIGN_CARAVAN = 2;
-/**
- * The campaign is a spy.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CAMPAIGN_SPY = 3;
-/**
- * The campaign is an army returning home with spoils of war.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CAMPAIGN_ARMY_RETURN = 4;
-/**
- * Just met, temporary truce, can declare war, can trade.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_TRUCE = 0;
-/**
- * At war, no trades possible.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_WAR = 1;
-/**
- * In a pact, can declare war, can trade.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_PACT = 2;
-/**
- * In an alliance, cannot declare war, can trade with discounts,
- * can share armies.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_ALLIANCE = 3;
-/**
- * A cease fire means a temporary peace.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_CEASE_FIRE = 4;
-/**
- * Propose pact.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_PROPOSE_PACT = 5;
-/**
- * Propose alliance.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_PROPOSE_ALLIANCE = 6;
-/**
- * Propose cease fire.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_PROPOSE_CEASE_FIRE = 7;
-/**
- * Propose to join your settlement.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_PROPOSE_JOIN = 8;
-/**
- * Vassal villages count as part of your empire.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.DIPLOMACY_VASSAL = 9;
-/**
- * Influence gained when selling goods to a settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.EXPORT_INFLUENCE = 2;
-/**
- * Influence gained when buying goods from a settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.IMPORT_INFLUENCE = 1;
-/**
- * Prestige gained when selling goods to a settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.EXPORT_PRESTIGE = 2;
-/**
- * Prestige gained when buying goods from a settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.IMPORT_PRESTIGE = 1;
-/**
- * The minimum value settlement prestige can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MIN_PRESTIGE_VALUE = 1;
-/**
- * The maximum value settlement prestige can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_PRESTIGE_VALUE = 10000;
-/**
- * The minimum value settlement espionage can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MIN_ESPIONAGE_VALUE = 1;
-/**
- * The maximum value settlement espionage can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_ESPIONAGE_VALUE = 1000;
-/**
- * The success rate of an espionage mission is the espionage points
- * assigned to the mission divided by this value.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_ESPIONAGE_SUCESS_RATE = 100;
-/**
- * The minimum value settlement influence can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MIN_INFLUENCE_VALUE = 1;
-/**
- * The maximum value settlement influence can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_INFLUENCE_VALUE = 100;
-/**
- * Amount of influence your settlement loses each year.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.YEARLY_INFLUENCE_LOSS = 2;
-/**
- * Amount of influence your settlement gains each year.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.YEARLY_INFLUENCE_GAIN = 2;
-/**
- * List of game diplomacy options.
- *
- * @constant
- * @default
- * @type {Array}
- */
-
-game.SPY_MISSIONS = ['none', 'adopt religion', 'influence settlement', 'steal resources', 'instigate turmoil'];
-/**
- * Spy mission to do absolutely nothing in the target city (except
- * maybe get noticed?).
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SPY_MISSION_NONE = 0;
-/**
- * Spy mission to persuade the target city to take the same religion
- * as the spy home city.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SPY_MISSION_RELIGION = 1;
-/**
- * Spy mission to raise the influence of the spy's home city with the
- * target city.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SPY_MISSION_INFLUENCE = 2;
-/**
- * Spy mission to steal resources from the target city.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SPY_MISSION_STEAL_RESOURCES = 3;
-/**
- * Spy mission to instigate turmoil in the target city.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SPY_MISSION_INSTIGATE = 4;
-/**
- * Initial resource costs for sending a caravan.
- *
- * @constant
- * @default
- * @type {Object}
- */
-
-game.CARAVAN_COSTS = {
-  coins: 100,
-  donkeys: 10,
-  wood: 10,
-  ropes: 2,
-  provisions: 1
-};
-/**
- * Initial resource costs for sending a spy mission.
- *
- * @constant
- * @default
- * @type {Object}
- */
-
-game.SPY_COSTS = {
-  coins: 50,
-  spyglasses: 1,
-  weapons: 1,
-  provisions: 1
-};
-/**
- * Initial resource costs for sending a scout mission.
- *
- * @constant
- * @default
- * @type {Object}
- */
-
-game.SCOUT_COSTS = {
-  coins: 50,
-  spyglasses: 1,
-  provisions: 1
-};
-/**
- * Scouting mission to reveal information about the target.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SCOUT_MISSION_INFO = 1;
-/**
- * Initial resource costs for sending an army.
- *
- * @constant
- * @default
- * @type {Object}
- */
-
-game.ARMY_COSTS = {
-  coins: 200,
-  provisions: 1
-};
-/**
- * Amount of influence a settlement gains when sending a caravan
- * to another settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CARAVAN_INFLUENCE = 5;
-/**
- * Diplomacy proposal action.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.ACTION_DIPLOMACY = 0;
-/**
- * Campaign action.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.ACTION_CAMPAIGN = 1;
-/**
- * Research action.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.ACTION_RESEARCH = 2;
-/**
- * Build a special place action.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.ACTION_BUILD_PLACE = 2;
-"use strict";
-
-/**
- * List of all available in-game events.
- * 
- * @constant
- * @type {Array}
- */
-game.EVENTS = [{
-  name: 'Great earthquake',
-  description: 'A great earthquake sweeps across your city destroying the settlement`s BUILDING in the process.',
-  chance: 0.00001,
-  destroy: true
-}, {
-  name: 'Royal marriage',
-  description: 'A marriage was arranged between a member of your family ' + 'and the royal family of SETTLEMENT. This raises your influence on ' + 'SETTLEMENT by INFLUENCE. Good job!',
-  chance: 0.0001,
-  raise: {
-    influence: 10
-  }
-}, {
-  name: 'Raiders attack',
-  description: 'A band of raiders attacked the outskirts of your ' + 'settlement. Repairing the affected buildings costs your settlement ' + 'COINS coins.',
-  chance: 0.0002,
-  lower: {
-    coins: 1000
-  }
-}, {
-  name: 'Discovery',
-  description: 'The engineers in your settlement made a great discovery ' + 'which made you more famous, thus gaining FAME fame and RESEARCH ' + 'research.',
-  chance: 0.0004,
-  raise: {
-    fame: 100,
-    research: 10
-  }
-}, {
-  name: 'Foreign spy discovered',
-  description: 'A spy from SETTLEMENT was found hiding in your ' + 'settlement, as a reward for finding him you gain ESPIONAGE ' + 'espionage.',
-  chance: 0.002,
-  raise: {
-    espionage: 10
-  }
-}, {
-  name: 'Your spy uncovered',
-  description: 'One of your spies in SETTLEMENT was discovered, ' + 'SETTLEMENT`s ruler is angry so you lose PRESTIGE prestige.',
-  chance: 0.003,
-  lower: {
-    prestige: 10
-  }
-}];
-"use strict";
-
-/**
- * Warrior class
- *
- * @constant
- * @default
- * @type {Number}
- */
-game.HERO_CLASS_WARRIOR = 1;
-/**
- * Mage class
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.HERO_CLASS_MAGE = 2;
-/**
- * Druid class
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.HERO_CLASS_DRUID = 3;
-/**
- * Priest class
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.HERO_CLASS_PRIEST = 4;
-/**
- * Rogue class
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.HERO_CLASS_ROGUE = 5;
-/**
- * Shaman class
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.HERO_CLASS_SHAMAN = 6;
-/**
- * List of names for hero classes
- *
- * @constant
- * @default
- * @type {Array}
- */
-
-game.HERO_CLASS_LIST = ['', 'Warrior', 'Mage', 'Druid', 'Priest', 'Rogue', 'Shaman'];
-/**
- * List of in-game heroes.
- *
- * @constant
- * @type {Object}
- */
-
-game.HEROES = [{
-  name: 'Achilles',
-  handle: 'achilles',
-  description: 'Achilles is a Greek hero of the Trojan War and the central character and greatest warrior of Homer`s Iliad. His mother is the immortal nymph Thetis, and his father, the mortal Peleus, is the king of the Myrmidons.',
-  price: 5000000,
-  link: 'https://en.wikipedia.org/wiki/Achilles',
-  stats: {
-    strength: 10,
-    stamina: 10,
-    agility: 10,
-    spirit: 5,
-    intellect: 7
-  },
-  class: game.HERO_CLASS_WARRIOR,
-  items: [game.ITEM_TROJAN_BASTARD_SWORD],
-  backpack: []
-}, {
-  name: 'Hector',
-  handle: 'hector',
-  description: 'In Greek mythology and Roman Mythology, Hector is a Trojan prince and the greatest fighter for Troy in the Trojan War. As the first-born son of King Priam and Queen Hecuba, who was a descendant of Dardanus and Tros, the founder of Troy, he is a prince of the royal house and the heir apparent to his father`s throne.',
-  price: 4000000,
-  link: 'https://en.wikipedia.org/wiki/Hector',
-  stats: {
-    strength: 8,
-    stamina: 10,
-    agility: 6,
-    spirit: 4,
-    intellect: 6
-  },
-  class: game.HERO_CLASS_WARRIOR,
-  items: [game.ITEM_EXCALIBUR, game.ITEM_GOLDEN_KATANA],
-  backpack: []
-}, {
-  name: 'Hannibal',
-  handle: 'hannibal',
-  description: 'Hannibal Barca is a Carthaginian general, considered one of the greatest military commanders in history.',
-  price: 3000000,
-  link: 'https://en.wikipedia.org/wiki/Hannibal',
-  stats: {
-    strength: 7,
-    stamina: 7,
-    agility: 4,
-    spirit: 2,
-    intellect: 9
-  },
-  class: game.HERO_CLASS_WARRIOR,
-  items: [],
-  backpack: []
-}, {
-  name: 'Heracles',
-  handle: 'heracles',
-  description: 'Heracles is a divine hero in Greek mythology, the son of Zeus and Alcmene, foster son of Amphitryon and great-grandson and half-brother (as they are both sired by the god Zeus) of Perseus.<br /><br />He is the greatest of the Greek heroes, a paragon of masculinity, the ancestor of royal clans who claim to be Heracleidae, and a champion of the Olympian order against chthonic monsters.',
-  price: 5000000,
-  link: 'https://en.wikipedia.org/wiki/Heracles',
-  stats: {
-    strength: 9,
-    stamina: 9,
-    agility: 6,
-    spirit: 7,
-    intellect: 9
-  },
-  class: game.HERO_CLASS_WARRIOR,
-  items: [game.ITEM_SPEAR_OF_DESTINY, game.ITEM_CROWN_OF_KINGS, game.ITEM_BULWARK_OF_GODS, game.ITEM_CHESTPIECE_OF_ZEUS, game.ITEM_ARCHAIC_WAIST_BAND, game.ITEM_ALCMENE_BAND, game.ITEM_SUN_NECKLACE, game.ITEM_ETHEREAL_BOOTS, game.ITEM_SHOULDERPADS_OF_VALOR, game.ITEM_MOUNTAIN_TROLLS, game.ITEM_GAUNTLETS_OF_GHASTLY_GLARE],
-  backpack: []
-}, {
-  name: 'Akhenaten',
-  handle: 'akhenaten',
-  description: 'Akhenaten, known before the fifth year of his reign as Amenhotep IV (sometimes given its Greek form, Amenophis IV, and meaning "Amun Is Satisfied"), is an Ancient Egyptian pharaoh of the 18th Dynasty who ruled for 17 years.',
-  price: 1000000,
-  link: 'https://en.wikipedia.org/wiki/Akhenaten',
-  stats: {
-    strength: 4,
-    stamina: 4,
-    agility: 8,
-    spirit: 9,
-    intellect: 9
-  },
-  class: game.HERO_CLASS_PRIEST,
-  items: [],
-  backpack: []
-}];
-"use strict";
-
-/**
- * Initial state of the game, based on the selected difficulty.
- *
- * @constant
- * @default
- * @type {Object}
- */
-game.INITIAL_SEED = [
-/* Easy difficulty */
-{
-  /* Roughness of the world generator */
-  roughness: 5,
-
-  /* Number of settlements to build initially */
-  settlements: {
-    /* Cities */
-    0: 8,
-    //5,
-
-    /* Villages */
-    1: 5,
-
-    /* Metropolis */
-    2: 6,
-    //1,
-
-    /* Raider camps */
-    3: 6 //0
-
-  },
-  places: 6,
-
-  /* Number of soldiers and ships to build initially */
-  military: {
-    army: {
-      militia: 10,
-      axeman: 2,
-      bowman: 4
-    },
-    navy: {
-      corsair: 2,
-      caravel: 1
-    }
-  },
-  resources: {
-    coins: 55000,
-    fame: game.MIN_FAME_VALUE,
-    faith: game.MIN_FAITH_VALUE,
-    prestige: game.MIN_PRESTIGE_VALUE,
-    espionage: game.MIN_ESPIONAGE_VALUE,
-    research: game.MIN_RESEARCH_VALUE,
-    bread: 400,
-    meat: 100,
-    stones: 100,
-    weapons: 100,
-    wheat: 40,
-    wood: 100,
-    woodplanks: 50,
-    tools: 40
-  },
-  buildings: [{
-    handle: 'marketplace',
-    level: 1
-  }, {
-    handle: 'lumberjack',
-    level: 1
-  }, {
-    handle: 'stonequarry',
-    level: 1
-  }, {
-    handle: 'house1',
-    level: 1
-  }, {
-    handle: 'house2',
-    level: 1
-  }]
-},
-/* Medium difficulty */
-{
-  roughness: 6,
-  settlements: {
-    0: 5,
-    1: 10,
-    2: 5,
-    3: 3
-  },
-  places: 4,
-  military: {
-    army: {
-      militia: 5,
-      axeman: 1,
-      bowman: 2
-    },
-    navy: {
-      corsair: 1,
-      caravel: 1
-    }
-  },
-  resources: {
-    coins: 20000,
-    fame: game.MIN_FAME_VALUE,
-    faith: game.MIN_FAITH_VALUE,
-    prestige: game.MIN_PRESTIGE_VALUE,
-    espionage: game.MIN_ESPIONAGE_VALUE,
-    research: game.MIN_RESEARCH_VALUE,
-    bread: 300,
-    meat: 100,
-    stones: 100,
-    weapons: 60,
-    wheat: 40,
-    wood: 100,
-    woodplanks: 30,
-    tools: 20
-  },
-  buildings: [{
-    handle: 'marketplace',
-    level: 1
-  }, {
-    handle: 'lumberjack',
-    level: 1
-  }, {
-    handle: 'stonequarry',
-    level: 1
-  }, {
-    handle: 'house1',
-    level: 1
-  }, {
-    handle: 'house2',
-    level: 1
-  }]
-},
-/* Hard difficulty */
-{
-  roughness: 8,
-  settlements: {
-    0: 10,
-    1: 10,
-    2: 6,
-    3: 10
-  },
-  places: 3,
-  military: {
-    army: {
-      militia: 3,
-      bowman: 2
-    },
-    navy: {
-      corsair: 1
-    }
-  },
-  resources: {
-    coins: 10000,
-    fame: game.MIN_FAME_VALUE,
-    faith: game.MIN_FAITH_VALUE,
-    prestige: game.MIN_PRESTIGE_VALUE,
-    espionage: game.MIN_ESPIONAGE_VALUE,
-    research: game.MIN_RESEARCH_VALUE,
-    bread: 300,
-    meat: 100,
-    stones: 70,
-    wheat: 40,
-    wood: 70,
-    woodplanks: 20,
-    tools: 10
-  },
-  buildings: [{
-    handle: 'marketplace',
-    level: 1
-  }, {
-    handle: 'lumberjack',
-    level: 1
-  }, {
-    handle: 'stonequarry',
-    level: 1
-  }, {
-    handle: 'house1',
-    level: 1
-  }, {
-    handle: 'house2',
-    level: 1
-  }]
-},
-/* Hardcore difficulty */
-{
-  roughness: 1,
-  settlements: {
-    0: 10,
-    1: 20,
-    2: 20,
-    3: 20
-  },
-  places: 1,
-  military: {
-    army: {},
-    navy: {}
-  },
-  resources: {
-    coins: 5000,
-    fame: game.MIN_FAME_VALUE,
-    faith: game.MIN_FAITH_VALUE,
-    prestige: game.MIN_PRESTIGE_VALUE,
-    espionage: game.MIN_ESPIONAGE_VALUE,
-    research: game.MIN_RESEARCH_VALUE,
-    bread: 100,
-    meat: 50,
-    stones: 50,
-    wheat: 40,
-    wood: 50
-  },
-  buildings: [{
-    handle: 'marketplace',
-    level: 1
-  }, {
-    handle: 'lumberjack',
-    level: 1
-  }, {
-    handle: 'stonequarry',
-    level: 1
-  }, {
-    handle: 'house1',
-    level: 1
-  }, {
-    handle: 'house2',
-    level: 1
-  }]
-}];
-"use strict";
-
-/*
- * Items in game
- * ================
- *
- * The items in game follow a very simple rule: common is the worst type,
- * rare is good, epic is very good, legendary is for the gods and heroes.
- *
- * That's it for now.
- */
-
-/**
- * Armor
- *
- * @constant
- * @type {Number}
- */
-game.ITEM_TYPE_ARMOR = 1;
-/**
- * Weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_TYPE_WEAPON = 2;
-/**
- * Other
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_TYPE_OTHER = 3;
-/**
- * Cloth armor
- *
- * @constant
- * @type {Number}
- */
-
-game.ARMOR_TYPE_CLOTH = 1;
-/**
- * Leather armor
- *
- * @constant
- * @type {Number}
- */
-
-game.ARMOR_TYPE_LEATHER = 2;
-/**
- * Mail armor
- *
- * @constant
- * @type {Number}
- */
-
-game.ARMOR_TYPE_MAIL = 3;
-/**
- * Plate armor
- *
- * @constant
- * @type {Number}
- */
-
-game.ARMOR_TYPE_PLATE = 4;
-/**
- * Melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE = 1;
-/**
- * Ranged weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_RANGED = 2;
-/**
- * Bow ranged weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_RANGED_BOW = 1;
-/**
- * Crossbow ranged weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_RANGED_CROSSBOW = 2;
-/**
- * Gun ranged weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_RANGED_GUN = 3;
-/**
- * Thrown ranged weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_RANGED_THROWN = 4;
-/**
- * Dagger melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_DAGGER = 1;
-/**
- * One-handed axe melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_AXE_ONE_HAND = 2;
-/**
- * Two-handed axe melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_AXE_TWO_HAND = 3;
-/**
- * Fist melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_FIST = 4;
-/**
- * One-handed mace melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_MACE_ONE_HAND = 5;
-/**
- * Two-handed mace melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_MACE_TWO_HAND = 6;
-/**
- * Polearm melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_POLEARM = 7;
-/**
- * Staff melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_STAFF = 8;
-/**
- * One-handed sword melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_SWORD_ONE_HAND = 9;
-/**
- * Two-handed sword melee weapon
- *
- * @constant
- * @type {Number}
- */
-
-game.WEAPON_TYPE_MELEE_SWORD_TWO_HAND = 10;
-/**
- * Common quality, bad
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_QUALITY_COMMON = 1;
-/**
- * Rare quality, good
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_QUALITY_RARE = 2;
-/**
- * Epic quality, very good
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_QUALITY_EPIC = 3;
-/**
- * Legendary quality, legen-wait for it-dary!
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_QUALITY_LEGENDARY = 4;
-/**
- * Names of the types of item quality
- *
- * @constant
- * @type {Array}
- */
-
-game.ITEM_QUALITY_LIST = ['', 'Common', 'Rare', 'Epic', 'Legendary'];
-/**
- * List of colors for each type of item quality
- *
- * @constant
- * @type {Array}
- */
-
-game.ITEM_QUALITY_COLORS = ['', '#00ff00', '#0070ff', '#a335ee', '#ff8000'];
-/**
- * No actual slot, reserved
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_NONE = 0;
-/**
- * Neck item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_NECK = 1;
-/**
- * Head item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_HEAD = 2;
-/**
- * Ring item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_RING = 3;
-/**
- * Shoulder item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_SHOULDER = 4;
-/**
- * Chestpiece item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_CHEST = 5;
-/**
- * Leggings item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_LEGS = 6;
-/**
- * Hands item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_HANDS = 7;
-/**
- * Waist item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_WAIST = 8;
-/**
- * Feet item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_FEET = 9;
-/**
- * Main hand item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_MAIN_HAND = 10;
-/**
- * Off hand item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_OFF_HAND = 11;
-/**
- * Any hand item slot
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOT_ANY_HAND = 12;
-/**
- * Number of item slots
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_SLOTS_NUM = 12;
-/**
- * Number of backpack slots
- *
- * @constant
- * @type {Number}
- */
-
-game.ITEM_BACKPACK_NUM = 6;
-/**
- * Name of item slots
- *
- * @constant
- * @type {Array}
- */
-
-game.ITEM_SLOTS_LIST = ['', 'Neck', 'Head', 'Ring', 'Shoulder', 'Chest', 'Legs', 'Hands', 'Waist', 'Feet', 'Main Hand', 'Off Hand', ''];
-/**
- * Random items
- *
- * @constant
- * @type {Array}
- */
-
-game.RANDOM_UNCOMMON = [{
-  name: 'ITEM of Spirit',
-  stats: {
-    spirit: 0
-  }
-}, {
-  name: 'ITEM of Intellect',
-  stats: {
-    intellect: 0
-  }
-}, {
-  name: 'ITEM of Strength',
-  stats: {
-    strength: 0
-  }
-}, {
-  name: 'ITEM of Stamina',
-  stats: {
-    spirit: 0
-  }
-}, {
-  name: 'ITEM of Agility',
-  stats: {
-    agility: 0
-  }
-}, {
-  name: 'ITEM of the Tiger',
-  stats: {
-    strength: 0,
-    agility: 0
-  }
-}, {
-  name: 'ITEM of the Bear',
-  stats: {
-    strength: 0,
-    stamina: 0
-  }
-}, {
-  name: 'ITEM of the Gorilla',
-  stats: {
-    strength: 0,
-    intellect: 0
-  }
-}, {
-  name: 'ITEM of the Boar',
-  stats: {
-    strength: 0,
-    spirit: 0
-  }
-}, {
-  name: 'ITEM of the Monkey',
-  stats: {
-    agility: 0,
-    stamina: 0
-  }
-}, {
-  name: 'ITEM of the Falcon',
-  stats: {
-    agility: 0,
-    intellect: 0
-  }
-}, {
-  name: 'ITEM of the Wolf',
-  stats: {
-    agility: 0,
-    spirit: 0
-  }
-}, {
-  name: 'ITEM of the Eagle',
-  stats: {
-    stamina: 0,
-    intellect: 0
-  }
-}, {
-  name: 'ITEM of the Whale',
-  stats: {
-    stamina: 0,
-    spirit: 0
-  }
-}, {
-  name: 'ITEM of the Owl',
-  stats: {
-    intellect: 0,
-    spirit: 0
-  }
-}, {
-  name: 'ITEM of the Bandit',
-  stats: {
-    agility: 0,
-    stamina: 0,
-    attackPower: 0
-  }
-}, {
-  name: 'ITEM of the Beast',
-  stats: {
-    agility: 0,
-    strength: 0,
-    stamina: 0
-  }
-}];
-/**
- * Weapon items
- *
- * @constant
- * @type {Object}
- */
-
-game.ITEM_WEAPON_DAGGER_WICKED = {
-  name: 'Wicked Dagger',
-  id: 1,
-  stats: {
-    damageMin: 0,
-    damageMax: 2,
-    speed: 1.60
-  },
-  slot: game.ITEM_SLOT_ANY_HAND,
-  type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_COMMON,
-  cost: 1
-};
-game.ITEM_WEAPON_DAGGER_DIRK = {
-  name: 'Wicked Dirk',
-  id: 2,
-  stats: {
-    damageMin: 1,
-    damageMax: 3,
-    speed: 1.60
-  },
-  slot: game.ITEM_SLOT_ANY_HAND,
-  type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_COMMON,
-  cost: 1.2
-};
-game.ITEM_WEAPON_AXE_SMALL = {
-  name: 'Small Axe',
-  id: 3,
-  stats: {
-    damageMin: 3,
-    damageMax: 10,
-    speed: 1.60
-  },
-  slot: game.ITEM_SLOT_ANY_HAND,
-  type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_COMMON,
-  cost: 2.2
-};
-game.ITEM_WEAPON_SWORD_SMALL = {
-  name: 'Small Sword',
-  id: 4,
-  stats: {
-    damageMin: 2,
-    damageMax: 4,
-    speed: 1.60
-  },
-  slot: game.ITEM_SLOT_ANY_HAND,
-  type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_COMMON,
-  cost: 2.2
-};
-game.ITEM_WEAPON_BUCKLER_SMALL = {
-  name: 'Small Buckler',
-  id: 5,
-  stats: {
-    armor: 10
-  },
-  slot: game.ITEM_SLOT_OFF_HAND,
-  quality: game.ITEM_QUALITY_COMMON,
-  cost: 2.2
-};
-game.ITEM_EXCALIBUR = {
-  name: 'Excalibur',
-  id: 6,
-  stats: {
-    damageMin: 10,
-    damageMax: 50,
-    speed: 1.0,
-    agility: 20,
-    stamina: 10,
-    strength: 30
-  },
-  slot: game.ITEM_SLOT_MAIN_HAND,
-  type: game.ITEM_TYPE_WEAPON,
-  secondary_type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_LEGENDARY,
-  cost: 1
-};
-game.ITEM_CROWN_OF_KINGS = {
-  name: 'Crown of Kings',
-  id: 7,
-  stats: {
-    armor: 10,
-    stamina: 10,
-    strength: 30
-  },
-  slot: game.ITEM_SLOT_HEAD,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_RARE,
-  cost: 1
-};
-game.ITEM_BULWARK_OF_GODS = {
-  name: 'The Bulwark of Gods',
-  id: 8,
-  stats: {
-    armor: 100,
-    stamina: 20,
-    strength: 50
-  },
-  slot: game.ITEM_SLOT_OFF_HAND,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_EPIC,
-  cost: 1
-};
-game.ITEM_CHESTPIECE_OF_ZEUS = {
-  name: 'Chestpiece of Zeus',
-  id: 9,
-  stats: {
-    armor: 200,
-    stamina: 30,
-    agility: 20,
-    strength: 20
-  },
-  slot: game.ITEM_SLOT_CHEST,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_EPIC,
-  cost: 1
-};
-game.ITEM_ARCHAIC_WAIST_BAND = {
-  name: 'Archaic Waist Band',
-  id: 10,
-  stats: {
-    armor: 5,
-    stamina: 3,
-    strength: 2,
-    intellect: 2
-  },
-  slot: game.ITEM_SLOT_WAIST,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_RARE,
-  cost: 1
-};
-game.ITEM_ALCMENE_BAND = {
-  name: 'Alcmene Band',
-  id: 11,
-  stats: {
-    armor: 2,
-    stamina: 2,
-    strength: 1,
-    agility: 2,
-    intellect: 1,
-    spirit: 10
-  },
-  slot: game.ITEM_SLOT_RING,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_EPIC,
-  cost: 1
-};
-game.ITEM_SUN_NECKLACE = {
-  name: 'Sun Necklace',
-  flavour: 'From Amun Ra to his beloved son.',
-  id: 11,
-  stats: {
-    armor: 4,
-    stamina: 2,
-    strength: 1,
-    intellect: 10,
-    spirit: 1
-  },
-  slot: game.ITEM_SLOT_NECK,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_LEGENDARY,
-  cost: 1
-};
-game.ITEM_TROJAN_BASTARD_SWORD = {
-  name: 'Trojan Bastard Sword',
-  flavour: 'Hector`s sword, dropped by the fallen Trojan prince.',
-  id: 12,
-  stats: {
-    damageMin: 8,
-    damageMax: 34,
-    speed: 1.3,
-    stamina: 15,
-    strength: 10
-  },
-  slot: game.ITEM_SLOT_MAIN_HAND,
-  type: game.ITEM_TYPE_WEAPON,
-  secondary_type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_LEGENDARY,
-  cost: 1
-};
-game.ITEM_SPEAR_OF_DESTINY = {
-  name: 'Spear of Destiny',
-  flavour: 'The spear that befell the Trojan prince, Hector.',
-  id: 13,
-  stats: {
-    damageMin: 25,
-    damageMax: 90,
-    speed: 2,
-    stamina: 40,
-    strength: 3
-  },
-  slot: game.ITEM_SLOT_MAIN_HAND,
-  type: game.ITEM_TYPE_WEAPON,
-  secondary_type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_LEGENDARY,
-  cost: 1
-};
-game.ITEM_GOLDEN_KATANA = {
-  name: 'Golden Katana',
-  id: 14,
-  stats: {
-    damageMin: 10,
-    damageMax: 20,
-    speed: 1.1,
-    stamina: 10,
-    agility: 20,
-    strength: 5
-  },
-  slot: game.ITEM_SLOT_OFF_HAND,
-  type: game.ITEM_TYPE_WEAPON,
-  secondary_type: game.WEAPON_TYPE_MELEE,
-  quality: game.ITEM_QUALITY_RARE,
-  cost: 1
-};
-game.ITEM_ETHEREAL_BOOTS = {
-  name: 'Ethereal Boots',
-  id: 15,
-  stats: {
-    armor: 6,
-    strength: 10,
-    agility: 10
-  },
-  slot: game.ITEM_SLOT_FEET,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_RARE,
-  cost: 1
-};
-game.ITEM_SHOULDERPADS_OF_VALOR = {
-  name: 'Shoulderpads of Valor',
-  id: 16,
-  stats: {
-    armor: 15,
-    strength: 20,
-    stamina: 10
-  },
-  slot: game.ITEM_SLOT_SHOULDER,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_COMMON,
-  cost: 1
-};
-game.ITEM_MOUNTAIN_TROLLS = {
-  name: 'Mountain Trolls',
-  id: 17,
-  stats: {
-    armor: 25,
-    agility: 10,
-    stamina: 30
-  },
-  slot: game.ITEM_SLOT_LEGS,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_EPIC,
-  cost: 1
-};
-game.ITEM_GAUNTLETS_OF_GHASTLY_GLARE = {
-  name: 'Gauntlets of Ghastly Glare',
-  flavour: 'Ghastly indeed ...',
-  id: 18,
-  stats: {
-    armor: 10,
-    strength: 20,
-    stamina: 2,
-    intellect: 30
-  },
-  slot: game.ITEM_SLOT_HANDS,
-  type: game.ITEM_TYPE_ARMOR,
-  secondary_type: game.ARMOR_TYPE_PLATE,
-  quality: game.ITEM_QUALITY_EPIC,
-  cost: 1
-};
-"use strict";
-
-/**
- * The attacking side (left) in a battleground.
- *
- * @type {Number}
- * @default
- * @constant
- */
-game.BATTLEGROUND_ATTACK = 1;
-/**
- * The defending side (right) in a battleground.
- *
- * @type {Number}
- * @default
- * @constant
- */
-
-game.BATTLEGROUND_DEFENSE = 2;
-/**
- * List of soldier types, their attributes and cost.
- * 
- * @type {Object}
- * @constant
- */
-
-game.SOLDIERS = {
-  militia: {
-    name: 'Militia',
-    attack: 1,
-    defense: 1,
-    moves: 1,
-    cost: {
-      coins: 100,
-      bread: 1,
-      weapons: 1
-    }
-  },
-  swordsman: {
-    name: 'Swordsman',
-    attack: 2,
-    defense: 2,
-    moves: 2,
-    cost: {
-      coins: 300,
-      bread: 1,
-      meat: 1,
-      weapons: 2
-    }
-  },
-  axeman: {
-    name: 'Axeman',
-    attack: 3,
-    defense: 1,
-    moves: 2,
-    cost: {
-      coins: 400,
-      bread: 1,
-      meat: 3,
-      weapons: 2
-    }
-  },
-  bowman: {
-    name: 'Bowman',
-    attack: 3,
-    defense: 1,
-    ranged: 5,
-    moves: 3,
-    cost: {
-      coins: 500,
-      bread: 1,
-      meat: 3,
-      weapons: 4
-    }
-  },
-  pikeman: {
-    name: 'Pikeman',
-    attack: 2,
-    defense: 4,
-    moves: 2,
-    cost: {
-      coins: 700,
-      provisions: 1,
-      iron: 1,
-      weapons: 5,
-      armor: 1
-    }
-  },
-  crossbowman: {
-    name: 'Crossbowman',
-    attack: 5,
-    defense: 2,
-    moves: 3,
-    ranged: 8,
-    cost: {
-      coins: 1000,
-      provisions: 2,
-      iron: 1,
-      weapons: 7,
-      armor: 1
-    }
-  },
-  knight: {
-    name: 'Knight',
-    attack: 6,
-    defense: 6,
-    moves: 4,
-    cost: {
-      coins: 1500,
-      provisions: 3,
-      iron: 1,
-      weapons: 9,
-      armor: 4
-    }
-  },
-  legionnaire: {
-    name: 'Legionnaire',
-    attack: 7,
-    defense: 7,
-    moves: 2,
-    cost: {
-      coins: 2500,
-      provisions: 6,
-      iron: 2,
-      weapons: 12,
-      armor: 12
-    }
-  },
-  crusader: {
-    name: 'Crusader',
-    attack: 9,
-    defense: 9,
-    moves: 4,
-    cost: {
-      coins: 3000,
-      provisions: 8,
-      iron: 4,
-      weapons: 15,
-      armor: 15
-    }
-  },
-  cannon: {
-    name: 'Cannon',
-    attack: 15,
-    defense: 1,
-    moves: 0,
-    siege: true,
-    ranged: 20,
-    cost: {
-      coins: 25000,
-      provisions: 30,
-      gunpowder: 30,
-      iron: 40,
-      steel: 20,
-      cannons: 1
-    }
-  },
-  catapult: {
-    name: 'Catapult',
-    attack: 50,
-    defense: 1,
-    ranged: 20,
-    siege: true,
-    moves: 0,
-    cost: {
-      coins: 100000,
-      provisions: 100,
-      gunpowder: 150,
-      iron: 140,
-      catapults: 1
-    }
-  }
-};
-/**
- * List of mercenary armies available for hire.
- * 
- * @constant
- * @type {Object}
- */
-
-game.MERCENARIES = [{
-  name: 'Legio I Adiutrix',
-  description: 'Legio prima Adiutrix is a Roman legion.',
-  handle: 'legio1',
-  icon: 1,
-  army: {
-    axeman: 300,
-    knight: 100,
-    crossbowman: 220,
-    pikeman: 200,
-    legionnaire: 100
-  },
-  cost: 120000
-}, {
-  name: 'Legio II Augusta',
-  description: 'Legio secunda Augusta is a Roman legion.',
-  handle: 'legio2',
-  icon: 8,
-  army: {
-    axeman: 220,
-    knight: 100,
-    crossbowman: 300,
-    pikeman: 100,
-    legionnaire: 100
-  },
-  cost: 130000
-}, {
-  name: 'Legio III Cyrenaica',
-  description: 'Legio tertia Cyrenaica is a Roman legion.',
-  handle: 'legio3',
-  icon: 15,
-  army: {
-    axeman: 280,
-    crossbowman: 500,
-    pikeman: 180,
-    legionnaire: 100
-  },
-  cost: 100000
-}, {
-  name: 'Legio IV Flavia Felix',
-  description: 'Legio quarta Flavia Felix is a Roman legion.',
-  handle: 'legio4',
-  icon: 9,
-  army: {
-    militia: 140,
-    axeman: 190,
-    knight: 90,
-    bowman: 20,
-    crossbowman: 100,
-    pikeman: 180,
-    legionnaire: 100
-  },
-  cost: 190000
-}, {
-  name: 'Legio V Alaudae',
-  description: 'Legio quinta Alaudae is a Roman legion.',
-  handle: 'legio5',
-  icon: 16,
-  army: {
-    militia: 100,
-    axeman: 200,
-    bowman: 190,
-    legionnaire: 130
-  },
-  cost: 110000
-}, {
-  name: 'Legio VI Victrix',
-  description: 'Legio sexta Victrix is a Roman legion.',
-  handle: 'legio6',
-  icon: 22,
-  army: {
-    militia: 330,
-    axeman: 230,
-    knight: 100,
-    bowman: 100,
-    legionnaire: 100
-  },
-  cost: 140000
-}, {
-  name: 'Varangian Guard',
-  description: 'The Varangian Guard is an elite unit of the Byzantine Army.',
-  handle: 'varangian',
-  icon: 18,
-  army: {
-    militia: 410,
-    axeman: 210,
-    bowman: 190,
-    crossbowman: 100,
-    pikeman: 220
-  },
-  cost: 120000
-}, {
-  name: 'Magna Societas Catalanorum',
-  description: 'The Catalan Company of the East, officially the Magna ' + 'Societas Catalanorum is a company of mercenaries founded by Roger de ' + 'Flor.',
-  handle: 'catalan',
-  icon: 23,
-  army: {
-    axeman: 310,
-    knight: 120,
-    bowman: 210,
-    pikeman: 310
-  },
-  cost: 100000
-}, {
-  name: 'Army of the Western Garden',
-  description: 'The Army of the Western Garden is an army established ' + 'during the reign of Emperor Ling in the Eastern Han Dynasty.',
-  handle: 'western',
-  icon: 27,
-  army: {
-    axeman: 290,
-    knight: 40,
-    bowman: 170,
-    pikeman: 300
-  },
-  cost: 90000
-}, {
-  name: 'Scholae Palatinae',
-  description: 'The Scholae Palatinae are an elite military guard unit, ' + 'usually ascribed to the Roman Emperor Constantine the Great as a ' + 'replacement for the equites singulares Augusti, the cavalry arm ' + 'of the Praetorian Guard.',
-  handle: 'scholae',
-  icon: 26,
-  army: {
-    axeman: 10,
-    knight: 200,
-    bowman: 100,
-    pikeman: 210
-  },
-  cost: 290000
-}, {
-  name: 'Imperial Guards',
-  description: 'The Imperial Guards of the Tang Dynasty, also known as ' + 'the Forbidden Troops were initially honor guards of the emperor ' + 'and garrisons of the imperial capitals during the Tang`s dinasty ' + 'formation in early 7th century.',
-  handle: 'forbidden',
-  icon: 25,
-  army: {
-    axeman: 290,
-    knight: 80,
-    bowman: 100,
-    pikeman: 210
-  },
-  cost: 130000
-}, {
-  name: 'Navy of the Order of Saint John',
-  description: 'The navy of the Order of Saint John, also known as the ' + 'Maltese Navy, was the first navy of a chivalric order, established ' + 'in the Middle Ages, around the late 12th century.',
-  handle: 'maltesenavy',
-  icon: 28,
-  navy: {
-    corsair: 19,
-    caravel: 14,
-    warship: 12,
-    shipoftheline: 10
-  },
-  cost: 1500000
-}];
-/**
- * List of ship types, their attributes and cost.
- * 
- * @type {Object}
- * @constant
- */
-
-game.SHIPS = {
-  corsair: {
-    name: 'Corsair',
-    attack: 5,
-    defense: 5,
-    cost: {
-      coins: 1000,
-      wood: 200,
-      iron: 50,
-      provisions: 50,
-      ropes: 10,
-      cottonfabric: 5,
-      cannons: 5,
-      gunpowder: 2
-    }
-  },
-  caravel: {
-    name: 'Caravel',
-    attack: 10,
-    defense: 10,
-    cost: {
-      coins: 3000,
-      wood: 400,
-      iron: 80,
-      provisions: 60,
-      ropes: 30,
-      cottonfabric: 10,
-      cannons: 20,
-      gunpowder: 5,
-      weapons: 10
-    }
-  },
-  frigatte: {
-    name: 'Frigatte',
-    attack: 17,
-    defense: 8,
-    cost: {
-      coins: 3000,
-      wood: 400,
-      iron: 80,
-      provisions: 60,
-      ropes: 30,
-      cottonfabric: 20,
-      cannons: 30,
-      gunpowder: 10,
-      weapons: 10
-    }
-  },
-  galleon: {
-    name: 'Galleon',
-    attack: 15,
-    defense: 15,
-    cost: {
-      coins: 5000,
-      wood: 300,
-      woodplanks: 600,
-      iron: 150,
-      provisions: 100,
-      ropes: 80,
-      cottonfabric: 30,
-      cannons: 20,
-      gunpowder: 15,
-      weapons: 15
-    }
-  },
-  warship: {
-    name: 'Warship',
-    attack: 35,
-    defense: 30,
-    cost: {
-      coins: 10000,
-      wood: 400,
-      woodplanks: 800,
-      iron: 500,
-      steel: 100,
-      provisions: 200,
-      ropes: 100,
-      cottonfabric: 40,
-      cannons: 50,
-      weapons: 20,
-      gunpowder: 20,
-      carpets: 10
-    }
-  },
-  shipoftheline: {
-    name: 'Ship of the Line',
-    attack: 55,
-    defense: 50,
-    cost: {
-      coins: 15000,
-      wood: 500,
-      woodplanks: 1000,
-      coal: 500,
-      iron: 1500,
-      steel: 400,
-      provisions: 200,
-      barrels: 100,
-      ropes: 100,
-      cottonfabric: 50,
-      cannons: 100,
-      gunpowder: 30,
-      weapons: 50
-    }
-  }
-};
-"use strict";
-
-/**
- * List of the possible nation types.
- * 
- * @constant
- * @default
- * @type {Array}
- */
-game.NATIONS = ['none', 'phoenician', 'carthaginian', 'greek', 'egyptian', 'assyrian', 'roman', 'thracian', 'sudanese', 'spanish', 'sumerian', 'chinese', 'indian', 'franks', 'russian', 'nigerian', 'malinese', 'mongolian', 'tibetan', 'persan', 'khmer', 'japanese', 'french'];
-/**
- * Phoenicians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_PHOENICIAN = 1;
-/**
- * Carthaginans
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_CARTHAGINIAN = 2;
-/**
- * Greeks
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_GREEK = 3;
-/**
- * Egyptians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_EGYPTIAN = 4;
-/**
- * Assyrians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_ASSYRIAN = 5;
-/**
- * Romans
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_ROMAN = 6;
-/**
- * Thracians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_THRACIAN = 7;
-/**
- * Sudanese
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_SUDANESE = 8;
-/**
- * Spanish
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_SPANISH = 9;
-/**
- * Sumerians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_SUMERIAN = 10;
-/**
- * Chinese
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_CHINESE = 11;
-/**
- * Indian
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_INDIAN = 12;
-/**
- * Franks
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_FRANKS = 13;
-/**
- * Russians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_RUSSIAN = 14;
-/**
- * Nigerians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_NIGERIAN = 15;
-/**
- * Malinese
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_MALINESE = 16;
-/**
- * Mongolians
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_MONGOLIAN = 17;
-/**
- * Tibetans
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_TIBETAN = 18;
-/**
- * Persans
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_PERSAN = 19;
-/**
- * Khmer
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_KHMER = 20;
-/**
- * Japanese
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_JAPANESE = 21;
-/**
- * French
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.NATION_FRENCH = 22;
-"use strict";
-
-/**
- * List of the possible ruler personality types.
- * 
- * @constant
- * @default
- * @type {Array}
- */
-game.PERSONALITIES = ['none', 'balanced', 'diplomat', 'warlord'];
-/**
- * Balanced type, the ruler weights in all the possibilities before deciding
- * whether to go to war or let diplomacy win.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.PERSONALITY_BALANCED = 1;
-/**
- * The ruler will always consider diplomacy before going to war.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.PERSONALITY_DIPLOMAT = 2;
-/**
- * If you upset this ruler, he will go to war and give you hell.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.PERSONALITY_WARLORD = 3;
-"use strict";
-
-/**
- * Special place.
- *
- * @constant
- * @default
- * @type {Number}
- */
-game.SPECIAL_PLACE = 99;
-/**
- * Days it takes to complete a world project.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.PLACE_TIME_TO_BUILD = 7200;
-/**
- * Resources required to complete atage 2 or builging a world project.
- *
- * @constant
- * @default
- * @type {Object}
- */
-
-game.PLACE_RESOURCES_REQ = {
-  coins: 100000000,
-  wood: 10000,
-  woodplanks: 50000,
-  stones: 50000,
-  limestone: 10000,
-  mosaic: 1000,
-  meals: 10000,
-  tools: 1000,
-  bricks: 50000,
-  sand: 1000,
-  steel: 10000,
-  gold: 10000,
-  silver: 10000,
-  clothes: 10000,
-  furcoats: 10000,
-  gems: 1000,
-  diamonds: 1000,
-  champagne: 1000,
-  cigars: 1000,
-  jewelery: 1000,
-  robes: 1000,
-  perfume: 1000,
-  soap: 1000,
-  silk: 1000
-};
-game.PLACES_NAMES = ['Aria', 'Zeffari', 'Laenteglos', 'Eastborne', 'Larton', 'Nantgarw', 'Kingcardine', 'Swindlincote', 'Cewmann', 'Rochdale', 'Malrton', 'Falcon Haven', 'Rotherham', 'Ironforge', 'Halivaara', 'Ularee', 'Snake Canyon', 'Dornwich', 'Stawford', 'Eastborne', 'Dry Gulch', 'Tamworth', 'Ferncombe', 'Rutherglen', 'Dewhurst', 'Haedleigh', 'Chepstow'];
-"use strict";
-
-/**
- * List of the possible religion types.
- * 
- * @constant
- * @default
- * @type {Array}
- */
-game.RELIGIONS = ['none', 'christianity', 'islam', 'judaism', 'buddhism', 'hinduism', 'confucianism', 'taoism'];
-/**
- * No religion
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_NONE = 0;
-/**
- * Christianity
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_CHRISTIANITY = 1;
-/**
- * Islam
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_ISLAM = 2;
-/**
- * Judaism
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_JUDAISM = 3;
-/**
- * Buddhism
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_BUDDHISM = 4;
-/**
- * Hinduism
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_HINDUISM = 5;
-/**
- * Confucianism
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_CONFUCIANISM = 6;
-/**
- * Taoism
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.RELIGION_TAOISM = 7;
-/**
- * The minimum value settlement faith can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MIN_FAITH_VALUE = 1;
-/**
- * The maximum value settlement faith can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_FAITH_VALUE = 1000;
-"use strict";
-
-/**
- * The minimum value settlement research can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-game.MIN_RESEARCH_VALUE = 1;
-/**
- * The maximum value settlement research can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_RESEARCH_VALUE = 1000;
-/**
- * List of all game research technologies.
- * 
- * @constant
- * @type {Array}
- */
-
-game.TECHNOLOGIES = [{
-  name: 'Agriculture',
-  handle: 'agriculture',
-  description: 'The development of agriculture enables the human population to grow many times larger than could be sustained by hunting and gathering.',
-  duration: 80,
-  cost: {
-    research: 500,
-    coins: 500000,
-    woodplanks: 200,
-    wheat: 100,
-    tools: 10
-  },
-  effect: {
-    buildings: {
-      cottonfarm: 1,
-      grainfarm: 1,
-      grapesfarm: 1,
-      rosenursery: 1,
-      tobaccofarm: 1,
-      almondsfarm: 1,
-      coffeefarm: 1,
-      datesfarm: 1,
-      indigofarm: 1,
-      sugarfarm: 1
-    }
-  }
-}, {
-  name: 'Animal Enclosures',
-  handle: 'animalenclosure',
-  description: 'Animal enclosures will allow your animal farms to raise more livestock.',
-  duration: 70,
-  cost: {
-    research: 400,
-    coins: 300000,
-    woodplanks: 100,
-    iron: 100
-  },
-  effect: {
-    buildings: {
-      cattlefarm: 1,
-      pigfarm: 1,
-      goatfarm: 1,
-      apiary: 1
-    }
-  }
-}, {
-  name: 'Archeology',
-  handle: 'archeology',
-  description: '',
-  duration: 96,
-  cost: {
-    research: game.MAX_RESEARCH_VALUE,
-    coins: 200000,
-    prestige: 100
-  },
-  effect: {}
-}, {
-  name: 'Canned Food',
-  handle: 'cannedfood',
-  description: 'Canning is a method of preserving food in which the food contents are processed and sealed in an airtight container (jars like Mason jars, and steel and tin cans).',
-  duration: 50,
-  cost: {
-    research: 500,
-    coins: 200000,
-    meals: 100,
-    bread: 50,
-    meat: 50,
-    iron: 20
-  },
-  effect: {
-    buildings: {
-      cookhouse: 1,
-      butcher: 1,
-      bakery: 1
-    }
-  }
-}, {
-  name: 'Circular Saw',
-  handle: 'circularsaw',
-  description: 'The circular saw was invented around the end of the 18th century as a rip-saw to convert logs into lumber in sawmills and various claims have been made as to who invented the circular saw.',
-  duration: 120,
-  cost: {
-    research: 300,
-    coins: 200000,
-    wood: 200,
-    woodplanks: 100
-  },
-  effect: {
-    buildings: {
-      carpenter: 2,
-      lumberjack: 2
-    }
-  }
-}, {
-  name: 'Diplomacy',
-  handle: 'diplomacy',
-  description: 'Researching diplomacy will give a boost to your Embassy`s production of fame and espionage.',
-  duration: 320,
-  cost: {
-    research: game.MAX_RESEARCH_VALUE,
-    coins: 500000,
-    soap: 100,
-    jewelery: 100,
-    alcohol: 10,
-    perfume: 10,
-    donkeys: 50
-  },
-  effect: {
-    buildings: {
-      embassy: 10
-    }
-  }
-}, {
-  name: 'Distillery',
-  handle: 'distillery',
-  description: 'If you need more beer or wine in your settlement, research this technology.',
-  duration: 120,
-  cost: {
-    research: 500,
-    coins: 500000,
-    alcohol: 200,
-    barrels: 100,
-    bottles: 100,
-    wine: 100,
-    coal: 400,
-    copper: 100
-  },
-  effect: {
-    buildings: {
-      winery: 1,
-      brewery: 1
-    }
-  }
-}, {
-  name: 'Minerals',
-  handle: 'minerals',
-  description: 'Digging deeper into the mountains, your settlers will find more minerals if you research this technology.',
-  duration: 120,
-  cost: {
-    research: 700,
-    coins: 500000,
-    steel: 200,
-    glass: 1000,
-    iron: 100
-  },
-  effect: {
-    buildings: {
-      ironmine: 1,
-      coppermine: 1,
-      goldmine: 1
-    }
-  }
-}, {
-  name: 'Projectiles',
-  handle: 'projectiles',
-  description: 'Researching heavy projectiles will give a production boost to your Cannon Foundry and Catapult Workshop.',
-  duration: 200,
-  cost: {
-    research: game.MAX_RESEARCH_VALUE,
-    coins: 800000,
-    steel: 200,
-    gunpowder: 100,
-    coal: 300,
-    copper: 50,
-    sulphur: 100,
-    glass: 1000
-  },
-  effect: {
-    buildings: {
-      cannonfoundry: 1,
-      catapultworkshop: 1
-    }
-  }
-}, {
-  name: 'Railway',
-  handle: 'railway',
-  description: 'Researching the railway will break in half the time required to travel from one city to another.',
-  duration: 300,
-  cost: {
-    research: game.MAX_RESEARCH_VALUE,
-    coins: 1000000,
-    steel: 1000,
-    glass: 1000,
-    gunpowder: 500,
-    iron: 1000,
-    woodplanks: 100
-  },
-  effect: {
-    distance: 2
-  }
-}, {
-  name: 'Sewing machine',
-  handle: 'sewingmachine',
-  description: 'Sewing machine technology will give a boost to your buildings responsible with manufacturing clothes and textile goods.',
-  duration: 36,
-  cost: {
-    research: 500,
-    coins: 100000,
-    cottonfabric: 100,
-    cotton: 100,
-    leather: 100,
-    steel: 100,
-    copper: 20,
-    glass: 100
-  },
-  effect: {
-    buildings: {
-      clothingfactory: 2,
-      weaver: 2,
-      furrier: 2
-    }
-  }
-}, {
-  name: 'Taxation',
-  handle: 'taxation',
-  description: 'Researching taxation will provide an extra 100 coins from each of your houses, regardless of their level.',
-  duration: 260,
-  cost: {
-    research: game.MAX_RESEARCH_VALUE,
-    coins: 1000000,
-    gold: 1000,
-    silver: 1000
-  },
-  effect: {
-    tax: 100
-  }
-}, {
-  name: 'Trawlers',
-  handle: 'trawlers',
-  description: 'Researching this technology will provide your ships with better trawl nets, therefore giving a boost to your settlement`s Shipyard.',
-  duration: 36,
-  cost: {
-    research: 200,
-    coins: 100000,
-    cottonfabric: 100,
-    cotton: 100
-  },
-  effect: {
-    buildings: {
-      shipyard: 1,
-      fisherman: 1
-    }
-  }
-}];
-"use strict";
-
-/**
- * List of resource categories.
- * 
- * @constant
- * @default
- * @type {Array}
- */
-game.RESOURCE_CATEGORIES = ['food', 'construction', 'animals', 'industry', 'military', 'luxury', 'exotic'];
-/**
- * List of all the resources available in-game.
- * 
- * @constant
- * @type {Object}
- */
-
-game.RESOURCES = {
-  coins: {
-    name: 'Coins',
-    category: 'virtual',
-    toolbar: true
-  },
-  fame: {
-    name: 'Fame',
-    category: 'virtual'
-  },
-  prestige: {
-    name: 'Prestige',
-    category: 'virtual'
-  },
-  espionage: {
-    name: 'Espionage',
-    category: 'virtual'
-  },
-  research: {
-    name: 'Research',
-    category: 'virtual'
-  },
-  faith: {
-    name: 'Faith',
-    category: 'virtual'
-  },
-  alcohol: {
-    name: 'Alcohol',
-    price: 80,
-    category: 'industry'
-  },
-  almonds: {
-    name: 'Almonds',
-    price: 180,
-    category: 'exotic'
-  },
-  armor: {
-    name: 'Armor',
-    price: 220,
-    category: 'military'
-  },
-  barrels: {
-    name: 'Barrels',
-    price: 60,
-    category: 'industry'
-  },
-  beer: {
-    name: 'Beer',
-    price: 30,
-    category: 'industry'
-  },
-  books: {
-    name: 'Books',
-    price: 100,
-    category: 'luxury'
-  },
-  bottles: {
-    name: 'Bottles',
-    price: 10,
-    category: 'industry'
-  },
-  bread: {
-    name: 'Bread',
-    price: 30,
-    category: 'food',
-    toolbar: true
-  },
-  bricks: {
-    name: 'Bricks',
-    price: 40,
-    category: 'construction'
-  },
-  candles: {
-    name: 'Candles',
-    price: 100,
-    category: 'luxury'
-  },
-  candlesticks: {
-    name: 'Candlesticks',
-    price: 170,
-    category: 'luxury'
-  },
-  cannons: {
-    name: 'Cannons',
-    price: 700,
-    category: 'military'
-  },
-  carpets: {
-    name: 'Carpets',
-    price: 400,
-    category: 'luxury'
-  },
-  catapults: {
-    name: 'Catapults',
-    price: 1200,
-    category: 'military'
-  },
-  cattle: {
-    name: 'Cattle',
-    price: 43,
-    category: 'animals'
-  },
-  champagne: {
-    name: 'Champagne',
-    price: 300,
-    imported: true,
-    category: 'luxury'
-  },
-  cheese: {
-    name: 'Cheese',
-    price: 130,
-    category: 'food'
-  },
-  cigars: {
-    name: 'Cigars',
-    price: 290,
-    category: 'luxury'
-  },
-  clay: {
-    name: 'Clay',
-    price: 20,
-    category: 'construction',
-    toolbar: true
-  },
-  clothes: {
-    name: 'Clothes',
-    price: 104,
-    category: 'industry'
-  },
-  coal: {
-    name: 'Coal',
-    price: 36,
-    category: 'industry'
-  },
-  cocoa: {
-    name: 'Cocoa',
-    price: 210,
-    category: 'exotic'
-  },
-  coffee: {
-    name: 'Coffee',
-    price: 300,
-    category: 'exotic'
-  },
-  coffeebeans: {
-    name: 'Coffee Beans',
-    price: 220,
-    category: 'exotic'
-  },
-  copper: {
-    name: 'Copper',
-    price: 60,
-    category: 'industry',
-    toolbar: true
-  },
-  copperore: {
-    name: 'Copper Ore',
-    price: 43,
-    category: 'industry'
-  },
-  corn: {
-    name: 'Corn',
-    price: 50,
-    category: 'food'
-  },
-  cotton: {
-    name: 'Cotton',
-    price: 146,
-    category: 'industry'
-  },
-  cottonfabric: {
-    name: 'Fabric',
-    price: 246,
-    category: 'industry'
-  },
-  dates: {
-    name: 'Dates',
-    price: 160,
-    category: 'exotic'
-  },
-  diamonds: {
-    name: 'Diamonds',
-    price: 900,
-    category: 'luxury'
-  },
-  donkeys: {
-    name: 'Donkeys',
-    price: 90,
-    imported: true,
-    category: 'animals'
-  },
-  elephants: {
-    name: 'Elephants',
-    price: 150,
-    imported: true,
-    category: 'animals'
-  },
-  essentialoil: {
-    name: 'Essential Oil',
-    price: 370,
-    imported: true,
-    category: 'luxury'
-  },
-  fish: {
-    name: 'Fish',
-    price: 16,
-    category: 'food'
-  },
-  flour: {
-    name: 'Flour',
-    price: 40,
-    category: 'food'
-  },
-  furcoats: {
-    name: 'Fur coats',
-    price: 105,
-    category: 'industry'
-  },
-  furs: {
-    name: 'Furs',
-    price: 78,
-    category: 'industry'
-  },
-  gems: {
-    name: 'Gems',
-    price: 460,
-    category: 'luxury'
-  },
-  glass: {
-    name: 'Glass',
-    price: 86,
-    category: 'industry'
-  },
-  glasses: {
-    name: 'Glasses',
-    price: 140,
-    category: 'luxury'
-  },
-  goat: {
-    name: 'Goat',
-    price: 55,
-    category: 'animals'
-  },
-  gold: {
-    name: 'Gold',
-    price: 260,
-    category: 'industry',
-    toolbar: true
-  },
-  goldore: {
-    name: 'Gold Ore',
-    price: 80,
-    category: 'industry'
-  },
-  grapes: {
-    name: 'Grapes',
-    price: 35,
-    category: 'industry'
-  },
-  gunpowder: {
-    name: 'Gunpowder',
-    price: 420,
-    category: 'military'
-  },
-  hides: {
-    name: 'Hides',
-    price: 25,
-    category: 'industry'
-  },
-  honey: {
-    name: 'Honey',
-    price: 180,
-    category: 'luxury'
-  },
-  horses: {
-    name: 'Horses',
-    price: 100,
-    imported: true,
-    category: 'animals'
-  },
-  indigo: {
-    name: 'Indigo',
-    price: 80,
-    category: 'exotic'
-  },
-  iron: {
-    name: 'Iron',
-    price: 82,
-    category: 'industry',
-    toolbar: true
-  },
-  ironore: {
-    name: 'Iron Ore',
-    price: 42,
-    category: 'industry'
-  },
-  jewelery: {
-    name: 'Jewelery',
-    price: 900,
-    category: 'luxury'
-  },
-  leather: {
-    name: 'Leather',
-    price: 60,
-    category: 'industry'
-  },
-  limestone: {
-    name: 'Limestone',
-    price: 20,
-    category: 'construction'
-  },
-  lithium: {
-    name: 'Lithium',
-    price: 260,
-    imported: true,
-    category: 'exotic'
-  },
-  marzipan: {
-    name: 'Marzipan',
-    price: 150,
-    category: 'luxury'
-  },
-  meals: {
-    name: 'Meals',
-    price: 120,
-    category: 'food'
-  },
-  meat: {
-    name: 'Meat',
-    price: 30,
-    category: 'food',
-    toolbar: true
-  },
-  milk: {
-    name: 'Milk',
-    price: 30,
-    category: 'industry'
-  },
-  mosaic: {
-    name: 'Mosaic',
-    price: 200,
-    category: 'construction'
-  },
-  oil: {
-    name: 'Oil',
-    price: 200,
-    category: 'industry'
-  },
-  paper: {
-    name: 'Paper',
-    price: 70,
-    category: 'luxury'
-  },
-  pearls: {
-    name: 'Pearls',
-    price: 450,
-    category: 'luxury'
-  },
-  perfume: {
-    name: 'Perfume',
-    price: 305,
-    category: 'luxury'
-  },
-  pig: {
-    name: 'Pig',
-    price: 55,
-    category: 'animals'
-  },
-  pottery: {
-    name: 'Pottery',
-    price: 55,
-    category: 'industry'
-  },
-  provisions: {
-    name: 'Provisions',
-    price: 300,
-    category: 'military'
-  },
-  quartz: {
-    name: 'Quartz',
-    price: 18,
-    category: 'industry'
-  },
-  robes: {
-    name: 'Robes',
-    price: 400,
-    category: 'luxury'
-  },
-  ropes: {
-    name: 'Ropes',
-    price: 42,
-    category: 'industry'
-  },
-  roses: {
-    name: 'Roses',
-    price: 70,
-    category: 'luxury'
-  },
-  salt: {
-    name: 'Salt',
-    price: 20,
-    category: 'industry',
-    toolbar: true
-  },
-  sand: {
-    name: 'Sand',
-    price: 10,
-    category: 'construction'
-  },
-  silk: {
-    name: 'Silk',
-    price: 320,
-    category: 'exotic'
-  },
-  silverore: {
-    name: 'Silver Ore',
-    price: 120,
-    imported: true,
-    category: 'luxury'
-  },
-  silver: {
-    name: 'Silver',
-    price: 300,
-    imported: true,
-    category: 'luxury'
-  },
-  spices: {
-    name: 'Spices',
-    price: 285,
-    category: 'exotic'
-  },
-  spyglasses: {
-    name: 'Spyglasses',
-    price: 280,
-    imported: true,
-    category: 'military'
-  },
-  soap: {
-    name: 'Soap',
-    price: 220,
-    category: 'luxury'
-  },
-  statues: {
-    name: 'Statues',
-    price: 1200,
-    imported: true,
-    category: 'industry'
-  },
-  steel: {
-    name: 'Steel',
-    price: 160,
-    imported: true,
-    category: 'industry'
-  },
-  stones: {
-    name: 'Stones',
-    price: 16,
-    category: 'construction',
-    toolbar: true
-  },
-  sugar: {
-    name: 'Sugar',
-    price: 145,
-    category: 'luxury'
-  },
-  sugarcane: {
-    name: 'Sugarcane',
-    price: 120,
-    category: 'luxury'
-  },
-  sulphur: {
-    name: 'Sulphur',
-    price: 180,
-    category: 'industry'
-  },
-  tallow: {
-    name: 'Tallow',
-    price: 10,
-    category: 'industry'
-  },
-  tobacco: {
-    name: 'Tobacco',
-    price: 190,
-    category: 'exotic'
-  },
-  tools: {
-    name: 'Tools',
-    price: 135,
-    category: 'construction'
-  },
-  wax: {
-    name: 'Wax',
-    price: 40,
-    category: 'luxury'
-  },
-  weapons: {
-    name: 'Weapons',
-    price: 220,
-    category: 'military'
-  },
-  wheat: {
-    name: 'Wheat',
-    price: 25,
-    category: 'food'
-  },
-  wine: {
-    name: 'Wine',
-    price: 95,
-    category: 'luxury'
-  },
-  wood: {
-    name: 'Wood',
-    price: 20,
-    category: 'construction',
-    toolbar: true
-  },
-  woodplanks: {
-    name: 'Wood Planks',
-    price: 30,
-    category: 'construction',
-    toolbar: true
-  }
-};
-"use strict";
-
-/**
- * List of settlement types
- *
- * @constant
- * @default
- * @type {Array}
- */
-game.SETTLEMENTS = ['city', 'village', 'metropolis', 'camp'];
-/**
- * City settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CITY = 0;
-/**
- * Village settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.VILLAGE = 1;
-/**
- * Metropolis settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.METROPOLIS = 2;
-/**
- * Raider camp settlement.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.CAMP = 3;
-/**
- * Max number of settlements on a map.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_SETTLEMENTS = 100;
-/**
- * Max number of settlement icons.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_SETTLEMENT_ICONS = 3;
-/**
- * Max level a settlement can have.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MAX_SETTLEMENT_LEVEL = 99;
-/**
- * Getting total city population is city_level * game.POPULATION_PER_LEVEL.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.POPULATION_PER_LEVEL = 2300;
-/**
- * The minimum value settlement fame can have.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.MIN_FAME_VALUE = 1;
-/**
- * List of possible world settlement names.
- *
- * @constant
- * @type {Array}
- */
-
-game.SETTLEMENT_NAMES = ['Alexandria', 'Rome', 'Carthage', 'Constantinople', 'Karakorum', 'Niniveh', 'Damascus', 'Thebes', 'Men-nefer', 'Peshawar', 'Uruk', 'Abydos', 'Actium', 'Tripolis', 'Troia', 'Chengdu', 'Mombasa', 'Apullum', 'Byblos', 'Abu', 'Pi-Ramesses', 'Djedu', 'Kyrene', 'Athens', 'Menat Khufu', 'Niani', 'Novgorod', 'Sarmizegetusa', 'Sigiriya', 'Selima Oasis', 'Tournai', 'Taruga', 'Amarna', 'Toledo', 'Mogadishu', 'Xinjiang', 'Yinxu', 'Bublidrus', 'Mylyra', 'Ialezus', 'Thebeia', 'Demaphos', 'Smyrnione', 'Dimonassa', 'Cyrarnassus', 'Posigeneia', 'Kasmigeneia', 'Khemdjumunein', 'Sakpi', 'Kersatennu', 'Farsou', 'Dehsa', 'Djasumar', 'Absaitunis', 'Avsi', 'Wasvarmeru', 'Behdju', 'Galamia', 'Pekies', 'VyVyrodari', 'Viasseto', 'Messibria', 'Molfeserta', 'Quanes', 'Braga', 'Seicer', 'Legara', 'Albadolid', 'Getastela', 'Drepanum', 'Canusium', 'Mogontiacum', 'Leucarum', 'Pautalia', 'Scallabis', 'Chernogan', 'Yelatrov', 'Novomoksary', 'Chistongelsk', 'Timaryevsk', 'Naberkuta', 'Koloyevka', 'Obnirodvinsk', 'Beloredimir', 'Kaspikarino', 'Troten', 'Neunsee', 'Weveltals', 'Oudenhout', 'Plailimar', 'Puciennes', 'Bernsloh', 'Geiselkau', 'Waterlina', 'Clonkenny', 'Terbommel', 'Drachnisse', 'Werdenthal', 'Erzell', 'Arrabona', 'Ugernum', 'Bulla Regia', 'Umbracum', 'Aquae Armenetiae', 'Isara', 'Regium Lepidum', 'Aquisgranium', 'Saint Petersburg', 'Gerasa', 'Besontio', 'Rhegium', 'Argentoratum', 'Apamea', 'Hadrianopolis', 'Byzantium', 'Ravenna', 'Carnotum', 'Podium Aniciense', 'Beroe Augusta Trajana', 'Dubris', 'Avenio', 'Luentinum', 'Castra Nicia', 'Crotona', 'Concordia Sagittaria', 'Vibo Valentia', 'Portus', 'Faventia', 'Tchidimbo', 'Concala', 'Berlowa', 'Bagangoua', 'Bangamo', 'Bossemlindao', 'Boti', 'Bonnamar', 'Dilobunda', 'Lupugani', 'Mimomo', 'Nkolabo', 'Mindo', 'Kindamno', 'Kanyesisi', 'Mwinirenje', 'Tbouleang', 'Kamphon', 'Jamya', 'Yogtar', 'Ambu', 'Kubak', 'Wainlet', 'Shwebyu', 'Gaguio', 'Cartangas', 'Surakham', 'Kratai', 'Sa Pha', 'My Tinh', 'Neurau', 'Hollatrenk', 'Woluten', 'Forwerpen', 'Sarsir', 'Pérission', 'Alsfeld', 'Goldburg', 'Thurway', 'Watertowel', 'Hengeloopen', 'Alkningen', 'Mornach', 'Gorpen', 'Novoupa', 'Ozyosinsk', 'Cheregansk', 'Sibanovsk', 'Vserodvinsk', 'Polelensk', 'Novokugadan', 'Belgovgrad', 'Chelyakala', 'Tovodsk', 'Kensato', 'Kurishiri', 'Aridakoshi', 'Pingguan', 'Zoajiang', 'Ulaanteeg', 'Nomsai', 'Tangye', 'Chuncheon', 'Ikju'];
-/**
- * List of possible ruler names for settlements and various other obscure
- * reasons.
- *
- * @type {Array}
- * @constant
- */
-
-game.NAMES = ['Caesar', 'Cronus', 'Dido', 'Genghis', 'Khufu', 'Musa I', 'Sennacherib', 'Pepi', 'Hatshepsut', 'Clovis', 'Gilgamesh', 'Dalai Lama', 'Ashoka', 'Charlemagne', 'Darius', 'Ivan III', 'Qin Shi Huang', 'Ozymandias', 'Timur', 'Pol Pot', 'Napoleon', 'Hirohito', 'Ivan Sirko', 'Peter the Great', 'Pan', 'Victor', 'Lekan', 'Sheamus', 'Itumeleng', 'Varya', 'Gervas', 'Stefanija', 'Meera', 'Sethunya', 'Soupi', 'Vestmar', 'Numi', 'Marteinn', 'Saithor', 'Haki', 'Ragnar', 'Qiao', 'Zeng', 'Zhan', 'Guo', 'Yan', 'Zarpiya', 'Hada', 'Kikarnahsu', 'Tarhuntapiya', 'Karnapaka', 'Dambi', 'Silalluhi', 'Zuwahallati', 'Sakkummilla', 'Hapu', 'Ammalli', 'Kawiya', 'Nisasar', 'Abba', 'Rishabha', 'Sena', 'Kalpana', 'Nupur', 'Anu', 'Parvati', 'Rani', 'Chandrama', 'Dhani', 'Gallus', 'Flavius', 'Decimus', 'Titus', 'Papia', 'Aburia', 'Volusia', 'Macrinia', 'Lucia', 'Lucretia', 'Dubov', 'Filimonov', 'Mikhail', 'Larissa', 'Zenaide', 'Lenora', 'Natasha', 'Muhammet', 'Haydar', 'Hizir', 'Orhan', 'Huriye', 'Fehime', 'Seher', 'Qadir', 'Lim', 'Yami', 'Veasna', 'Baadur', 'Sharar', 'Yuuta', 'Hallie', 'Anson', 'Davis', 'Ondina', 'Zan', 'Gibs', 'Soth', 'Naoki', 'Hachirou', 'Irmhild', 'Thiago', 'Stefano', 'Gerardo', 'Alonso', 'Mario', 'Consuela', 'Graciela', 'Alicia', 'Mariangel', 'Qimmiabruk', 'Qajak', 'Akrittok', 'Kuk`uq', 'Noahtakmiut', 'Kinaktok', 'Iluliaq', 'Taktuq', 'Aquutaq', 'Tulugaq', 'Uyarak', 'Onartok', 'Karpok', 'Husain', 'Farhan', 'Umar', 'Safiyya', 'Yanduza', 'Fatimah', 'Tasufin', 'Hammad'];
-"use strict";
-
-/**
- * List of the possible seasons.
- * 
- * @constant
- * @default
- * @type {Array}
- */
-game.SEASONS = ['spring', 'summer', 'autumn', 'winter'];
-/**
- * Spring season.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SEASON_SPRING = 0;
-/**
- * Summer season.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SEASON_SUMMER = 1;
-/**
- * Autumn season.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SEASON_AUTUMN = 2;
-/**
- * Winter season.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.SEASON_WINTER = 3;
-"use strict";
-
-/**
- * Goods importance, vital.
- *
- * @constant
- * @default
- * @type {Number}
- */
-game.IMPORTANCE_VITAL = 50;
-/**
- * Goods importance, high.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.IMPORTANCE_HIGH = 30;
-/**
- * Goods importance, medium.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.IMPORTANCE_MEDIUM = 20;
-/**
- * Goods importance, low.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.IMPORTANCE_LOW = 10;
-/**
- * Tax discount for buying resources.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.TRADES_ADDITION = 10;
-/**
- * Tax percent for selling resources.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.TRADES_DISCOUNT = 20;
-/**
- * Amount of fame your settlement gets for each successful trade.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.FAME_PER_TRADE = 50;
-/**
- * The black market discount.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.BLACK_MARKET_DISCOUNT = 80;
-/**
- * The auctioneer discount.
- * 
- * @constant
- * @default
- * @type {Number}
- */
-
-game.AUCTIONEER_DISCOUNT = 20;
-"use strict";
-
-/**
- * Width of the world in hexes.
- *
- * @constant
- * @default
- * @type {Number}
- */
-game.WORLD_SIZE_WIDTH = 64;
-/**
- * Height of the world in hexes.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.WORLD_SIZE_HEIGHT = 64;
-/**
- * Size of a world hex.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.WORLD_HEX_SIZE = 24;
-/**
- * Whether to beautify the worldmap terrain.
- *
- * @constant
- * @default
- * @type {Boolean}
- */
-
-game.WORLD_BEAUTIFY = true;
-/**
- * Whether to display the worldmap grid.
- *
- * @constant
- * @default
- * @type {Boolean}
- */
-
-game.WORLD_GRID = true;
-/**
- * World generator roughness.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.WORLD_EROSION = 1.8;
-"use strict";
-
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18440,647 +18463,171 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
- * Academy panel data.
+ * Place panel data.
  *
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class ui_panel_academy
+ * @class ui_panel_place
  * @extends ui_panel
- * @returns {ui_panel_academy}
+ * @returns {ui_panel_place}
  */
-var ui_panel_academy =
+var ui_panel_place =
 /*#__PURE__*/
 function (_ui_panel) {
-  _inherits(ui_panel_academy, _ui_panel);
+  _inherits(ui_panel_place, _ui_panel);
 
   /**
    * Object constructor.
    * 
    * @private
    * @constructor
-   * @returns {ui_panel_academy}
+   * @returns {ui_panel_place}
    * @param {Object} params
    */
-  function ui_panel_academy(params) {
-    _classCallCheck(this, ui_panel_academy);
+  function ui_panel_place(params) {
+    _classCallCheck(this, ui_panel_place);
 
-    params.id = 'academy';
-    params.template = ui.building_panel_template();
+    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '</footer>' + '</div>', params.params_data = null;
+    params.id = 'place';
 
     params.on_show = function (params) {
-      var _t = '';
       var self = this;
       var core = this.core();
       var my_settlement = core.get_settlement();
-      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Research', 'Technologies', 'Projects']));
-      _t += '<div class="column-left">' + '</div>' + '<div class="column-right">' + '<h2>Technology Tree</h2>' + '<p>Select a technology from the left panel to view information about it.</p>' + '</div>';
-      $(this.handle + ' #tab-technologies').empty().append(_t);
-      _t = '';
+      var location = my_settlement.location();
+      var place = params.data;
+      this.params_data = params;
+      $(this.handle + ' header').append('Place');
+      var tabs = ['Info'];
 
-      for (var i = 0; i < game.TECHNOLOGIES.length; i++) {
-        _t += '<div data-technology="' + game.TECHNOLOGIES[i].handle + '" class="technology"><img src="' + game.ASSETS_URL + 'images/assets/research/' + game.TECHNOLOGIES[i].handle + '.png" /></div>';
+      if (place.is_scouted()) {
+        tabs.push('Resources', 'Construction');
       }
 
-      $(this.handle + ' .column-left').empty().append(_t);
-      $(self.handle + ' #tab-projects').empty().append('<p>Not implemented yet.</p>');
-      $(this.handle).on('click', '.technology', function () {
-        $(self.handle + ' .technology').removeClass('selected');
-        $(this).addClass('selected');
-        var technology_name = $(this).data('technology');
-        var technology = core.get_research_config_data(technology_name);
+      $(this.handle + ' section').append(core.ui().tabs(tabs));
+      var claimed_by = place.is_claimed();
+      var claimed_by_settlement = core.get_settlement(claimed_by);
+      $(this.handle + ' #tab-info').empty().append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' + '<dl>' + (place.is_scouted() || claimed_by !== false && claimed_by_settlement.id() === my_settlement.id() ? '<dt>Name</dt>' + '<dd>' + place.name() + '</dd>' + '<dt>Claimed by</dt>' + '<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>' : '') + '<dt>Scouted</dt>' + '<dd>' + (place.is_scouted() ? 'yes' : 'no') + '</dd>' + '<dt>Time to build</dt>' + '<dd>' + game.PLACE_TIME_TO_BUILD + ' days</dd>' + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, place.location()) + ' miles (' + core.world().get_distance_in_days(location, place.location()) + ' days)</dd>' + '</dl>');
 
-        if (technology) {
-          _t = '<h2>' + technology.name + '</h2>' + '<p>' + technology.description + '</p>' + '<dl>' + '<dt>Duration</dt>' + '<dd>' + technology.duration + ' days</dd>' + '<dt>Cost</dt>';
+      if (place.is_scouted()) {
+        $(this.handle + ' #tab-resources').empty().append('<p>Stage 2: Gather the resources below and use caravans to send them to this place.</p>' + '<p><strong>Note!</strong> If the place is not claimed by anybody, do not send resources or they will be lost.</p>' + '<div class="required">' + '<p>This place has no required resources.</p>' + '</div>');
+        $(this.handle + ' #tab-construction').empty().append('<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>');
 
-          for (var y in technology.cost) {
-            _t += '<dd>' + game.nice_numbers(technology.cost[y]) + ' <img class="small tips" title="' + game.get_resource_name(y) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
-          }
-
-          _t += '<dt>Effect</dt>';
-
-          for (var _y in technology.effect) {
-            if (_y === 'buildings') {
-              for (var b in technology.effect[_y]) {
-                var _z = core.get_building_config_data(b);
-
-                _t += '<dd>' + _z.name + ' +' + technology.effect[_y][b] + '</dd>';
-              }
-            } else if (_y === 'tax') {
-              _t += '<dd>+' + technology.effect[_y] + core.ui().resource_small_img('coins') + ' each house</dd>';
-            } else if (_y === 'distance') {
-              _t += '<dd>Faster world map travel</dd>';
-            }
-          }
-
-          _t += '<div class="toolbar"></div>';
-          $(self.handle + ' .column-right').empty().append(_t);
-
-          if (core.has_research(technology.handle)) {
-            $(self.handle + ' .toolbar').empty().append('You already researched this technology.');
-          } else if (core.in_queue(technology.handle) !== false) {
-            $(self.handle + ' .toolbar').empty().append('You are currently researching this technology.');
-          } else {
-            $(self.handle + ' .toolbar').empty().append('<a href="#" class="btn do-research" data-technology="' + technology.handle + '">Research</a>');
-          }
+        if (claimed_by !== false && claimed_by === my_settlement.id()) {
+          $(this.handle + ' footer').empty().append('<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"></a>' + '<a class="tips caravan" title="Send a caravan to this place." href="#"></a>');
+        } else if (claimed_by === false) {
+          $(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"></a>');
         }
-
-        return false;
-      }).on('click', '.do-research', function () {
-        var technology_name = $(this).data('technology');
-        var technology = core.get_research_config_data(technology_name);
-
-        if (technology) {
-          if (core.has_research_in_queue() === false) {
-            if (core.get_settlement().has_resources(technology.cost)) {
-              if (core.queue_add(my_settlement, null, game.ACTION_RESEARCH, null, {
-                handle: technology.handle,
-                name: technology.name,
-                duration: technology.duration
-              })) {
-                my_settlement.remove_resources(technology.cost);
-                $(self.handle + ' .toolbar').empty();
-                core.save_and_refresh();
-              }
-            } else {
-              core.ui().error('You don`t have enough resources to research this technology.');
-            }
-          } else {
-            core.ui().error('You can research only one technology at a time. Wait for the current research to finish.');
-          }
-        }
-
-        return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      var research = settlement.research();
-      var technologies = core.research();
-      var _t = '';
-      var building = core.get_settlement().get_building(this.params_data.handle);
-
-      if (building) {
-        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
-        _t = '<h2>Research points</h2>' + '<div class="section">' + core.ui().progress(research * 100 / game.MAX_RESEARCH_VALUE, 'large', research + ' / ' + game.MAX_RESEARCH_VALUE) + '</div>';
-        var queue_action = core.has_research_in_queue();
-
-        if (queue_action !== false) {
-          _t += '<h2>Currently researching `' + queue_action.data.name + '`</h2>' + '<div class="section">' + core.ui().progress(queue_action.passed * 100 / queue_action.duration, 'large', queue_action.passed + ' / ' + queue_action.duration + ' days') + '</div>';
-        }
-
-        $(this.handle + ' #tab-research').empty().append(_t);
       } else {
-        this.destroy();
+        $(this.handle + ' footer').empty().append('<a class="tips scout" title="Send a scout to this place." href="#"></a>');
       }
 
-      for (var f = 0; f < technologies.length; f++) {
-        if (typeof technologies[f] !== 'undefined') {
-          $(this.handle + ' .technology[data-technology=' + technologies[f].handle + ']').addClass('has');
-        }
-      }
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_academy).call(this, params));
-  }
-
-  return ui_panel_academy;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Barracks panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_barracks
- * @extends ui_panel
- * @returns {ui_panel_barracks}
- */
-var ui_panel_barracks =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_barracks, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_barracks}
-   * @param {Object} params
-   */
-  function ui_panel_barracks(params) {
-    _classCallCheck(this, ui_panel_barracks);
-
-    params.id = 'barracks';
-    params.template = ui.building_panel_template();
-
-    params.on_show = function (params) {
-      var self = this;
-      var core = this.core();
-      var settlement = core.get_settlement();
-      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Army']));
-
-      var _t = '<div class="army-list"></div>' + '<div class="army-recruiter">';
-
-      for (var item in game.SOLDIERS) {
-        _t += '<fieldset>' + '<legend>' + game.SOLDIERS[item].name + '</legend>' + '<div class="cost">' + '<dl class="nomg">';
-
-        for (var res in game.SOLDIERS[item].cost) {
-          _t += '<dt>' + game.nice_numbers(game.SOLDIERS[item].cost[res]) + '</dt><dd>' + core.ui().resource_small_img(res) + '</dd>';
+      $(this.handle).on('click', '.claim', function () {
+        if (!my_settlement.can_diplomacy() || !my_settlement.can_research()) {
+          core.ui().error('You will need to construct an Embassy and Academy before being able to claim world places.');
+          return false;
         }
 
-        _t += '</dl>' + '</div>' + '<div class="info">' + '<dl class="nomg">' + '<dt>Attack</dt><dd>' + game.SOLDIERS[item].attack + '</dd>' + '<dt>Defense</dt><dd>' + game.SOLDIERS[item].defense + '</dd>' + '</dl>' + '</div>' + '<img data-handle="' + item + '" title="Recruit ' + game.SOLDIERS[item].name + '" class="tips recruit-soldier" src="' + game.ASSETS_URL + 'images/assets/army/' + item.toLowerCase() + '.png" />' + '</fieldset>';
-      }
-
-      _t += '</div>';
-      $(this.handle + ' #tab-army').empty().append(_t);
-      $(this.handle).on('click', '.recruit-soldier', function () {
-        var soldier = $(this).data('handle');
-        var costs = game.SOLDIERS[soldier].cost;
-
-        if (settlement.has_resources(costs)) {
-          if (settlement.remove_resources(costs)) {
-            if (settlement.recruit_soldier(soldier)) {
-              core.ui().notify('A new ' + game.SOLDIERS[soldier].name + ' has been recruited.');
-              self.on_refresh();
-              return false;
-            }
-          }
+        if (place.is_claimed() !== false) {
+          core.ui().error('This place has been claimed by another settlement.');
+          return false;
         }
 
-        core.ui().error('You don`t have enough resources to recruit a ' + game.SOLDIERS[soldier].name + '.');
-        return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      var building = core.get_settlement().get_building(this.params_data.handle);
-
-      if (building) {
-        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
-        $(this.handle + ' .army-list').empty().append('<fieldset>' + '<legend>Current Army</legend>' + core.ui().army_list(settlement.army(), true) + '</fieldset>');
-      } else {
-        this.destroy();
-      }
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_barracks).call(this, params));
-  }
-
-  return ui_panel_barracks;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Church panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_church
- * @extends ui_panel
- * @returns {ui_panel_church}
- */
-var ui_panel_church =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_church, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_church}
-   * @param {Object} params
-   */
-  function ui_panel_church(params) {
-    _classCallCheck(this, ui_panel_church);
-
-    params.id = 'church';
-    params.template = ui.building_panel_template();
-
-    params.on_show = function (params) {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Faith', 'Religion']));
-      $(this.handle).on('click', '.religion', function () {
-        var id = parseInt($(this).data('id'), 10);
         core.ui().open_modal(function (button) {
           if (button === 'yes') {
-            settlement.change_religion(id);
+            if (!place.claim(my_settlement)) {
+              core.ui().error('There was an error claiming this world place, check the data you entered and try again.');
+              return false;
+            } else {
+              core.ui().notify('A place in the world has been claimed by your settlement.');
+              core.save_and_refresh();
+              self.destroy();
+            }
           }
-        }, 'Are you sure you want to switch religions? You will lose all your city`s faith!');
+        }, 'Are you sure you want to claim this world place?');
         return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      var building = core.get_settlement().get_building(this.params_data.handle);
-      var _t = '';
-
-      if (building) {
-        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
-        _t = '<h2>Faith</h2>' + '<div class="section">' + core.ui().progress(settlement.faith() * 100 / game.MAX_FAITH_VALUE, 'large', settlement.faith() + ' / ' + game.MAX_FAITH_VALUE) + '</div>';
-        $(this.handle + ' #tab-faith').empty().append(_t);
-        _t = '<p>Changing your settlement`s religion requires <strong>' + game.MAX_FAITH_VALUE + '</strong> faith, each religion gives you access to different heroes in your Tavern and gives you a boost to the influence with the cities sharing the same religion.</p>' + '<div class="religion-list">';
-
-        for (var i = 0; i < game.RELIGIONS.length; i++) {
-          _t += '<div data-handle="' + game.RELIGIONS[i] + '" data-id="' + i + '" class="religion' + (settlement.religion().id === i ? ' selected' : '') + '"><span>' + game.RELIGIONS[i].capitalize() + '</span></div>';
+      }).on('click', '.unclaim', function () {
+        if (!my_settlement.can_diplomacy() || !my_settlement.can_research()) {
+          core.ui().error('You will need to construct an Embassy and Academy before being able to unclaim world places.');
+          return false;
         }
 
-        _t += '</div>';
-        $(this.handle + ' #tab-religion').empty().append(_t);
-      } else {
-        this.destroy();
-      }
-    };
+        if (place.is_claimed() === false) {
+          core.ui().error('This place is not claimed by your settlement.');
+          return false;
+        }
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_church).call(this, params));
-  }
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            if (!place.unclaim(my_settlement)) {
+              core.ui().error('There was an error unclaiming this world place, check the data you entered and try again.');
+              return false;
+            } else {
+              core.ui().notify('A place in the world has been unclaimed by your settlement.');
+              core.save_and_refresh();
+              self.destroy();
+            }
+          }
+        }, 'Are you sure you want to unclaim this world place?');
+        return false;
+      }).on('click', '.caravan', function () {
+        if (!my_settlement.can_trade()) {
+          core.ui().error('You will need to construct a Trading Post before being able to send caravans to other places.');
+          return false;
+        }
 
-  return ui_panel_church;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Embassy panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_embassy
- * @extends ui_panel
- * @returns {ui_panel_embassy}
- */
-var ui_panel_embassy =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_embassy, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_embassy}
-   * @param {Object} params
-   */
-  function ui_panel_embassy(params) {
-    _classCallCheck(this, ui_panel_embassy);
-
-    params.id = 'embassy';
-    params.template = ui.building_panel_template();
-
-    params.on_show = function (params) {
-      var core = this.core();
-      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Espionage', 'Diplomacy']));
-      $(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
-      $(this.handle).on('click', '.view', function () {
+        core.ui().open_panel('new_caravan', place);
+        return false;
+      }).on('click', '.view', function () {
         var _settlement_id = parseInt($(this).data('id'), 10);
 
         var _settlement = core.get_settlement(_settlement_id);
 
         if (_settlement) {
-          core.ui().open_panel('settlement', _settlement);
+          if (_settlement.id() === my_settlement.id()) {
+            core.ui().open_panel('council');
+          } else {
+            core.ui().open_panel('settlement', _settlement);
+          }
         }
 
         return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      var settlements = core.get_settlements();
-      var status = settlement.status();
-      var building = core.get_settlement().get_building(this.params_data.handle);
-
-      if (building) {
-        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
-        $(this.handle + ' #tab-espionage').empty().append('<h2>Espionage points</h2>' + '<div class="section">' + core.ui().progress(settlement.espionage() * 100 / game.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage() + ' / ' + game.MAX_ESPIONAGE_VALUE) + '</div>');
-
-        var _t = '<table class="normal">' + '<thead>' + '<tr>' + '<td>Settlement</td>' + '<td>Ruler</td>' + '<td>Influence</td>' + '<td>Religion</td>' + '<td>Status</td>' + '<td>Personality</td>' + '</tr>' + '</thead>';
-
-        for (var i = 1; i < settlements.length; i++) {
-          _t += '<tr>' + '<td>' + '<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' + settlements[i].name() + '</a> ' + '</td>' + '<td class="icon">' + '<img class="avatar small" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' + '</td>' + '<td>' + '<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'small') + '</div>' + '</td>' + '<td>' + '<p>' + settlements[i].religion().name + '</p>' + '</td>' + '<td>' + '<p>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</p>' + '</td>' + '<td>' + '<p>' + settlements[i].personality().name + '</p>' + '</td>' + '</tr>';
-        }
-
-        _t += '<tfoot>' + '<tr>' + '<td>Settlement</td>' + '<td>Ruler</td>' + '<td>Influence</td>' + '<td>Religion</td>' + '<td>Status</td>' + '<td>Personality</td>' + '</tr>' + '</tfoot>' + '</table>';
-        $(this.handle + ' .settlements-list').empty().append(_t);
-      } else {
-        this.destroy();
-      }
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_embassy).call(this, params));
-  }
-
-  return ui_panel_embassy;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Shipyard panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_shipyard
- * @extends ui_panel
- * @returns {ui_panel_shipyard}
- */
-var ui_panel_shipyard =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_shipyard, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_shipyard}
-   * @param {Object} params
-   */
-  function ui_panel_shipyard(params) {
-    _classCallCheck(this, ui_panel_shipyard);
-
-    params.id = 'shipyard';
-    params.template = ui.building_panel_template();
-
-    params.on_show = function (params) {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Navy']));
-
-      var _t = '<div class="navy-list"></div>' + '<div class="navy-recruiter">';
-
-      for (var item in game.SHIPS) {
-        _t += '<fieldset>' + '<legend>' + game.SHIPS[item].name + '</legend>' + '<div class="cost">' + '<dl class="nomg">';
-
-        for (var res in game.SHIPS[item].cost) {
-          _t += '<dt>' + game.nice_numbers(game.SHIPS[item].cost[res]) + '</dt><dd>' + core.ui().resource_small_img(res) + '</dd>';
-        }
-
-        _t += '</dl>' + '</div>' + '<div class="info">' + '<dl class="nomg">' + '<dt>Attack</dt><dd>' + game.SHIPS[item].attack + '</dd>' + '<dt>Defense</dt><dd>' + game.SHIPS[item].defense + '</dd>' + '</dl>' + '</div>' + '<img data-handle="' + item + '" title="Recruit ' + game.SHIPS[item].name + '" class="tips recruit-ship" src="' + game.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g, "_") + '.png" />' + '</fieldset>';
-      }
-
-      _t += '</div>';
-      $(this.handle + ' #tab-navy').empty().append(_t);
-      $(this.handle).on('click', '.recruit-ship', function () {
-        var ship = $(this).data('handle');
-        var costs = game.SHIPS[ship].cost;
-
-        if (settlement.has_resources(costs)) {
-          if (settlement.remove_resources(costs)) {
-            if (settlement.recruit_ship(ship)) {
-              core.ui().notify('A new ' + game.SHIPS[ship].name + ' has been recruited.');
-              self.on_refresh();
-              return false;
-            }
-          }
-        }
-
-        core.ui().error('You don`t have enough resources to recruit a ' + game.SHIPS[ship].name + '.');
-        return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      var building = settlement.get_building(this.params_data.handle);
-
-      if (building) {
-        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
-        $(this.handle + ' .navy-list').empty().append('<fieldset>' + '<legend>Current Navy</legend>' + core.ui().navy_list(settlement.navy(), true) + '</fieldset>');
-      } else {
-        this.destroy();
-      }
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_shipyard).call(this, params));
-  }
-
-  return ui_panel_shipyard;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Tavern panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_tavern
- * @extends ui_panel
- * @returns {ui_panel_tavern}
- */
-var ui_panel_tavern =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_tavern, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_tavern}
-   * @param {Object} params
-   */
-  function ui_panel_tavern(params) {
-    _classCallCheck(this, ui_panel_tavern);
-
-    params.id = 'tavern';
-    params.template = ui.building_panel_template();
-
-    params.on_show = function (params) {
-      var self = this;
-      var core = self.core();
-      var _t = '';
-      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Heroes', 'Items', 'Quests']));
-      var building = core.get_settlement().get_building(self.params_data.handle);
-
-      if (building) {
-        $(self.handle + ' #tab-items').empty().append('<p>Not implemented yet.</p>');
-        $(self.handle + ' #tab-quests').empty().append('<p>Not implemented yet.</p>');
-        $(self.handle + ' #tab-heroes').empty().append('<div class="column hero-list"></div>' + '<div class="column hero-info"></div>' + '<div class="column hero-items"></div>');
-        $(self.handle + ' #tab-info').empty().append(core.ui().building_panel(self.params_data, building.level));
-
-        self.empty_items = function () {
-          $(self.handle + ' .hero-items').empty().append('<h3>Equipment</h3>');
-
-          for (var i = 1; i < game.ITEM_SLOTS_NUM; i++) {
-            $(self.handle + ' .hero-items').append('<div class="slot" data-slot="' + i + '"></div>');
-          }
-
-          $(self.handle + ' .hero-items').append('<br class="clearfix" />').append('<h3>Bags</h3>');
-
-          for (var _i = 0; _i < game.ITEM_BACKPACK_NUM; _i++) {
-            $(self.handle + ' .hero-items').append('<div class="slot" data-backpack-slot="' + _i + '"></div>');
-          }
-        };
-
-        self.empty_items();
-
-        for (var i = 0; i < game.HEROES.length; i++) {
-          _t += '<p><a href="#" data-hero="' + game.HEROES[i].handle + '">' + game.HEROES[i].name + '</a></p>';
-        }
-
-        $(self.handle + ' .hero-list').empty().append(_t);
-        $(self.handle).on('click', '.hero-list a', function () {
-          var hero = $(this).data('hero');
-          var hero_data = core.get_hero_config_data(hero);
-
-          if (hero_data) {
-            $(self.handle + ' .hero-info').empty().append('<h3>Info <a title="Information provided by Wikipedia." href="' + hero_data.link + '" class="tips external-link wikipedia"></a></h3>' + hero_data.description + '<br /><br />' + '<h3>Class</h3>' + game.HERO_CLASS_LIST[hero_data.class] + '' + '<br /><br />' + '<h3>Attributes</h3>' + 'Strength: <span class="green">' + hero_data.stats.strength + '</span><br />' + 'Stamina: <span class="green">' + hero_data.stats.stamina + '</span><br />' + 'Agility: <span class="green">' + hero_data.stats.agility + '</span><br />' + 'Intellect: <span class="green">' + hero_data.stats.intellect + '</span><br />' + 'Spirit: <span class="green">' + hero_data.stats.spirit + '</span><br />' + 'Health Points: <span class="blue">' + game.get_health_points(hero_data) + '</span><br />' + 'Mana Points: <span class="blue">' + game.get_mana_points(hero_data) + '</span><br />' + 'Damage: <span class="red">' + game.get_damage_points(hero_data).min + '-' + game.get_damage_points(hero_data).max + '</span>');
-            self.empty_items();
-
-            for (var x = 0; x < hero_data.items.length; x++) {
-              var slot = hero_data.items[x].slot;
-              $(self.handle + ' .hero-items > div.slot[data-slot="' + slot + '"]').empty().append('X').attr('title', core.ui().item_tooltip(hero_data.items[x])).tipsy({
-                className: 'item',
-                html: true
-              });
-            }
-
-            for (var _x = 0; _x < hero_data.backpack.length; _x++) {
-              $(self.handle + ' .hero-items > div.slot[data-backpack-slot="' + _x + '"]').empty().append('X').attr('title', core.ui().item_tooltip(hero_data.backpack[_x])).tipsy({
-                className: 'item',
-                html: true
-              });
-            }
-          }
-
+      }).on('click', '.scout', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to send scouts to other places.');
           return false;
-        });
-      } else {
-        self.destroy();
+        }
+
+        core.ui().open_panel('new_scout', place);
+        return false;
+      });
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var place = this.params_data.data;
+
+      if (place.is_scouted()) {
+        var out = '';
+
+        for (var item in place.resources().required) {
+          if (!game.is_virtual_resource(item)) {
+            if (place._resources.required[item] > 0) {
+              out += core.ui().resource_storage_small_el(item, place._resources.required[item]);
+            }
+          }
+        }
+
+        if (out !== '') {
+          $(this.handle + ' #tab-resources .required').empty().append(out);
+        }
       }
     };
 
-    params.on_refresh = function () {// TODO
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_tavern).call(this, params));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_place).call(this, params));
   }
 
-  return ui_panel_tavern;
+  return ui_panel_place;
 }(ui_panel);
 "use strict";
 
@@ -19099,64 +18646,541 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
- * Army panel data.
+ * Settlement panel data.
  *
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class ui_panel_army
+ * @class ui_panel_settlement
  * @extends ui_panel
- * @returns {ui_panel_army}
+ * @returns {ui_panel_settlement}
  */
-var ui_panel_army =
+var ui_panel_settlement =
 /*#__PURE__*/
 function (_ui_panel) {
-  _inherits(ui_panel_army, _ui_panel);
+  _inherits(ui_panel_settlement, _ui_panel);
 
   /**
    * Object constructor.
    * 
    * @private
    * @constructor
-   * @returns {ui_panel_army}
+   * @returns {ui_panel_settlement}
    * @param {Object} params
    */
-  function ui_panel_army(params) {
-    _classCallCheck(this, ui_panel_army);
+  function ui_panel_settlement(params) {
+    _classCallCheck(this, ui_panel_settlement);
 
-    params.id = 'army';
-    params.template = ui.generic_panel_template('Army');
+    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips attack" title="Attack this settlement." href="#"></a>' + '<a class="tips caravan" title="Send a caravan to this settlement." href="#"></a>' + '<a class="tips spy" title="Send a spy to this settlement." href="#"></a>' + '<a class="tips alliance" title="Propose an alliance to this settlement." href="#"></a>' + '<a class="tips pact" title="Propose a pact to this settlement." href="#"></a>' + '<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"></a>' + '<a class="tips join" title="Ask this settlement to join your city." href="#"></a>' + '<a class="tips war" title="Declare war to this settlement." href="#"></a>' + '</footer>' + '</div>';
+    params.params_data = null;
+    params.id = 'settlement';
 
     params.on_show = function (params) {
       var core = this.core();
       var my_settlement = core.get_settlement();
-      var army = params.data;
-      $(this.handle + ' header').append(army.name);
-      var tabs = ['Info'];
+      var settlement = params.data;
+      this.params_data = params;
+      $(this.handle + ' header').append(settlement.name());
+      var tabs = [];
 
-      if (my_settlement.num_soldiers(army.army) > 0) {
-        tabs.push('Soldiers');
-      }
+      if (settlement.is_urban()) {
+        tabs.push('Info');
 
-      if (my_settlement.num_ships(army.navy) > 0) {
-        tabs.push('Ships');
+        if (my_settlement.can_diplomacy()) {
+          tabs.push('Army');
+
+          if (settlement.waterside() === true) {
+            tabs.push('Navy');
+          }
+        }
+
+        tabs.push('Resources', 'Imports', 'Exports');
+      } else {
+        tabs.push('Info');
+
+        if (my_settlement.can_diplomacy() || settlement.is_camp()) {
+          tabs.push('Army');
+
+          if (settlement.waterside() === true) {
+            tabs.push('Navy');
+          }
+        }
+
+        tabs.push('Resources');
       }
 
       $(this.handle + ' section').append(core.ui().tabs(tabs));
-      $(this.handle + ' #tab-info').append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/emblems/' + (typeof army.icon !== 'undefined' ? army.icon : '22') + '.png" />' + '<p>' + army.description + '</p>');
+      $(this.handle).on('click', '.alliance', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to propose an alliance to other settlements.');
+          return false;
+        }
 
-      if (my_settlement.num_soldiers(army.army) > 0) {
-        $(this.handle + ' #tab-soldiers').append(core.ui().army_list(army.army));
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_ALLIANCE, {})) {
+              core.ui().error('There was an error proposing an alliance to this settlement, check the data you entered and try again.');
+              return false;
+            }
+
+            core.do_achievement('pacifist');
+          }
+        }, 'Are you sure you want to propose an alliance to this settlement?');
+        return false;
+      }).on('click', '.join', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to ask other settlements to join your city.');
+          return false;
+        }
+
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_JOIN, {})) {
+              core.ui().error('There was an error proposing this settlement to join your city, check the data you entered and try again.');
+              return false;
+            }
+
+            core.do_achievement('rulethemall');
+          }
+        }, 'Are you sure you want to propose this this settlement to join you?');
+        return false;
+      }).on('click', '.pact', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to propose a pact to other settlements.');
+          return false;
+        }
+
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_PACT, {})) {
+              core.ui().error('There was an error proposing a pact to this settlement, check the data you entered and try again.');
+              return false;
+            }
+
+            core.do_achievement('friendly');
+          }
+        }, 'Are you sure you want to propose a pact to this settlement?');
+        return false;
+      }).on('click', '.ceasefire', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to propose a cease fire to other settlements.');
+          return false;
+        }
+
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_CEASE_FIRE, {})) {
+              core.ui().error('There was an error proposing a cease fire to this settlement, check the data you entered and try again.');
+              return false;
+            }
+          }
+        }, 'Are you sure you want to propose a cease fire to this settlement?');
+        return false;
+      }).on('click', '.war', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to declare war to other settlements.');
+          return false;
+        }
+
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            my_settlement.diplomacy(settlement.id(), game.DIPLOMACY_WAR);
+          }
+        }, 'Are you sure you want to declare war to this settlement?<br /><br />You will lose all influence over ' + settlement.name() + ' and the settlement might retaliate back!');
+        return false;
+      }).on('click', '.caravan', function () {
+        if (!my_settlement.can_trade()) {
+          core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
+          return false;
+        }
+
+        core.ui().open_panel('new_caravan', settlement);
+        return false;
+      }).on('click', '.spy', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
+          return false;
+        }
+
+        core.ui().open_panel('new_spy', settlement);
+        return false;
+      }).on('click', '.attack', function () {
+        if (!my_settlement.can_recruit_soldiers()) {
+          core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
+          return false;
+        }
+
+        core.ui().open_panel('new_army', settlement);
+        return false;
+      });
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var my_settlement = core.get_settlement();
+      var settlement = this.params_data.data;
+      var trades = settlement.get_trades();
+
+      var _status = my_settlement.get_diplomacy_status(settlement.id());
+
+      var sett_type_text = '';
+      var location = my_settlement.location();
+
+      if (settlement.is_city()) {
+        sett_type_text = 'City';
+      } else if (settlement.is_metropolis()) {
+        sett_type_text = 'Metropolis';
+      } else if (settlement.is_village()) {
+        sett_type_text = 'Village';
+      } else if (settlement.is_camp()) {
+        sett_type_text = 'Raider Camp';
       }
 
-      if (my_settlement.num_ships(army.navy) > 0) {
-        $(this.handle + ' #tab-ships').append(core.ui().navy_list(army.navy));
+      $(this.handle + ' #tab-info').empty().append('' + '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' + '<dl>' + '<dt>' + settlement.ruler().title + '</dt><dd>' + settlement.ruler().name + '</dd>' + '<dt>Settlement Type</dt>' + '<dd>' + sett_type_text + '</dd>' + '<dt>Climate</dt>' + '<dd>' + settlement.climate().name + '</dd>' + (my_settlement.can_diplomacy() ? '<dt>Personality</dt>' + '<dd>' + settlement.personality().name + '</dd>' : '') + '<dt>Nationality</dt>' + '<dd>' + settlement.nationality().name + '</dd>' + (my_settlement.can_diplomacy() && settlement.is_urban() ? '<dt>Level</dt>' + '<dd>' + settlement.level() + '</dd>' + '<dt>Prestige</dt>' + '<dd>' + core.ui().progress(settlement.prestige() * 100 / game.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' : '') + '<dt>Population</dt>' + '<dd>' + game.nice_numbers(settlement.population()) + '</dd>' + (my_settlement.can_diplomacy() ? '<dt>Coins</dt>' + '<dd>' + game.nice_numbers(settlement.coins()) + '</dd>' + '<dt>Religion</dt>' + '<dd>' + settlement.religion().name + '</dd>' + '<dt>Influence</dt>' + '<dd>' + core.ui().progress(my_settlement.get_influence_with_settlement(settlement.id()), 'small') + '</dd>' + '<dt>Diplomatic Status</dt>' + '<dd>' + my_settlement.get_diplomacy_status(settlement.id()).name + '</dd>' : '') + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, settlement.location()) + ' miles (' + core.world().get_distance_in_days(location, settlement.location()) + ' days)</dd>' + '</dl>');
+
+      if (my_settlement.can_diplomacy() || settlement.is_camp()) {
+        $(this.handle + ' #tab-army').empty().append(core.ui().army_list(settlement.army()));
+
+        if (settlement.waterside() === true) {
+          $(this.handle + ' #tab-navy').empty().append(core.ui().navy_list(settlement.navy()));
+        }
+      }
+
+      if (settlement.is_urban()) {
+        $(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + core.ui().trades_list(trades, 'imports'));
+        $(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this city will be selling this year.</p>' + core.ui().trades_list(trades, 'exports'));
+      }
+
+      var out = '';
+      var _out = '<p>This settlement has the the following resources:</p>';
+
+      for (var item in settlement.get_resources()) {
+        if (!game.is_virtual_resource(item)) {
+          if (settlement.resources[item] > 0) {
+            out += core.ui().resource_storage_small_el(item, settlement.resources[item]);
+          }
+        }
+      }
+
+      if (out !== '') {
+        _out += out;
+      } else {
+        _out = '<p>This settlement has no resources.</p>';
+      }
+
+      $(this.handle + ' #tab-resources').empty().append(_out);
+
+      if (_status.id === game.DIPLOMACY_VASSAL) {
+        $(this.handle + ' footer .attack').css('display', 'none');
+      } else {
+        $(this.handle + ' footer .attack').css('display', 'inline-block');
+      }
+
+      if (my_settlement.can_diplomacy()) {
+        if (settlement.is_camp()) {
+          $(this.handle + ' footer .caravan, ' + this.handle + ' footer .spy').hide();
+        } else {
+          $(this.handle + ' footer .caravan, ' + this.handle + ' footer .spy').css('display', 'inline-block');
+        }
+
+        if (_status.id === game.DIPLOMACY_PACT && settlement.is_urban()) {
+          $(this.handle + ' footer .alliance').css('display', 'inline-block');
+        } else if (!settlement.is_camp()) {
+          $(this.handle + ' footer .alliance').css('display', 'none');
+        }
+
+        if ((_status.id === game.DIPLOMACY_TRUCE || _status.id === game.DIPLOMACY_CEASE_FIRE) && !settlement.is_camp()) {
+          $(this.handle + ' footer .pact').css('display', 'inline-block');
+        } else {
+          $(this.handle + ' footer .pact').css('display', 'none');
+        }
+
+        if (_status.id === game.DIPLOMACY_WAR && !settlement.is_camp()) {
+          $(this.handle + ' footer .ceasefire').css('display', 'inline-block');
+        } else {
+          $(this.handle + ' footer .ceasefire').css('display', 'none');
+        }
+
+        if (_status.id !== game.DIPLOMACY_WAR && _status.id !== game.DIPLOMACY_VASSAL && !settlement.is_camp()) {
+          $(this.handle + ' footer .war').css('display', 'inline-block');
+        } else {
+          $(this.handle + ' footer .war').css('display', 'none');
+        }
+
+        if (_status.id === game.DIPLOMACY_PACT && settlement.is_village() && !settlement.is_camp()) {
+          $(this.handle + ' footer .join').css('display', 'inline-block');
+        } else {
+          $(this.handle + ' footer .join').css('display', 'none');
+        }
       }
     };
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_army).call(this, params));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_settlement).call(this, params));
   }
 
-  return ui_panel_army;
+  return ui_panel_settlement;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Help panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_help
+ * @extends ui_panel
+ * @returns {ui_panel_help}
+ */
+var ui_panel_help =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_help, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_help}
+   * @param {Object} params
+   */
+  function ui_panel_help(params) {
+    _classCallCheck(this, ui_panel_help);
+
+    params.id = 'help';
+    params.template = ui.generic_panel_template('Help');
+
+    params.on_show = function (params) {
+      var core = this.core();
+      $(this.handle + ' section').append(core.ui().tabs(['About', 'Buildings', 'Settlements', 'Religion', 'Research']));
+      $(this.handle + ' #tab-buildings').empty().append('<fieldset>' + '<legend>Table of Contents</legend>' + '<ul>' + '<li><a href="#">Intro</a></li>' + '<li><a href="#">Build</a></li>' + '<li><a href="#">Upgrade</a></li>' + '<li><a href="#">Demolish</a></li>' + '<li><a href="#">Production</a></li>' + '<li><a href="#">Housing</a></li>' + '<li><a href="#">Municipal</a></li>' + '<li><a href="#">Storage</a></li>' + '<li><a href="#">Coins</a></li>' + '</ul>' + '</fieldset>' + '<h3>Intro</h3>' + '<p>In Civitas, buildings are the backbone of your city, providing you with goods for export.</p>' + '<h3>Build</h3>' + '<p>Each building has some special requirements to build, whether a required city level or another existing building.</p>' + '<h3>Upgrade</h3>' + '<p>Upgrading one of your buildings has several benefits, besides the obvious estetic one.</p>' + '<img title="Level 1 house" class="help tips" src="' + game.ASSETS_URL + 'images/assets/buildings/house1.png" /> ' + '<img title="Level 3 house" class="help tips" src="' + game.ASSETS_URL + 'images/assets/buildings/house3.png" /> ' + '<img title="Maximum level house" class="help tips" src="' + game.ASSETS_URL + 'images/assets/buildings/house5.png" />' + '<p>Upgrading a building costs the initial building price multiplied by the level. So, if a building initially costs 100 ' + core.ui().resource_small_img('coins') + ' and 20 ' + core.ui().resource_small_img('wood') + ' to construct, upgrading it to level 2 will cost 200 ' + core.ui().resource_small_img('coins') + ' and 40 ' + core.ui().resource_small_img('wood') + ', so on.</p>' + '<p>When a building is upgraded, it produces the inital amount of goods multiplied by the level of the building. Keep in mind that the materials it uses for production are the same as for a building of level 1, so upgrading a building is an easy way of getting double (or triple) the production goods for the same materials as the previous level used.</p>' + '<h3>Demolish</h3>' + '<p>Demolishing a building has no actual benefits except it no longer used the production materials (a better way to adjust that will be to stop the production of the specific building, this way you can restart it when you want).</p>' + '<h3>Production</h3>' + '<p></p>' + '<h3>Housing</h3>' + '<p></p>' + '<h3>Municipal</h3>' + '<p></p>' + '<h3>Storage</h3>' + '<p>The goods you`re producing need a storage place inside your city, the initial Marketplace provides some storage space (100k <img class="small" src="' + game.ASSETS_URL + 'images/assets/resources/storage.png" /> ), and it can be increased even further with upgrading, but you will need to build Warehouses to store all the goods. If you have no free storage space, the produced goods will be lost.</p>' + '<h3>Coins</h3>' + '<p>Your city can only gain coins through trades and taxes.</p>');
+      $(this.handle + ' #tab-religion').empty().append('<h2>Religion</h2>');
+      $(this.handle + ' #tab-settlements').empty().append('<fieldset>' + '<legend>Table of Contents</legend>' + '<ul>' + '<li><a href="#">Intro</a></li>' + '<li><a href="#">Cities and villages</a></li>' + '<li><a href="#">Diplomacy</a></li>' + '<li><a href="#">Fame and levels</a></li>' + '<li><a href="#">Influence</a></li>' + '<li><a href="#">Espionage</a></li>' + '<li><a href="#">Prestige</a></li>' + '<li><a href="#">Pacts and alliances</a></li>' + '<li><a href="#">Wars</a></li>' + '<li><a href="#">Caravans</a></li>' + '</ul>' + '</fieldset>' + '<h3>Intro</h3>' + '<p></p>' + '<h3>Cities and villages</h3>' + '<p></p>' + '<h3>Diplomacy</h3>' + '<p></p>' + '<h3>Fame and levels</h3>' + '<p>Each time you reach a specific fame level, your city gets a new level, thus you never lose your initial fame. There are several ways of getting extra fame (besides your initial Marketplace), there are several municipal buildings that add a small amount of fame to your city each day (this amount can be increased by upgrading the buildings).</p>' + '<p>There is no fixed way in which you can lose fame, except the random events that occur from time to time, or if another city manages to incite your population to revolt.</p>' + '<h3>Influence</h3>' + '<p>All settlements in the game world have an influence rating with each of the other settlements. The influence drops over time (yearly) and needs to be kept above a certain level, else the other cities might attack your city.</p>' + '<p>Maximum influence a settlement can have is <strong>' + game.MAX_INFLUENCE_VALUE + '</strong>.</p>' + '<h3>Espionage</h3>' + '<p>After building your city Embassy, you can start assigning spies to other settlements using your accumulated espionage points. Depending on the amount of espionage you use for a spy mission, that mission has a rate of success. The most points you can assign are <strong>' + game.MAX_ESPIONAGE_VALUE + '</strong> ' + core.ui().resource_small_img('espionage') + ' (maximum espionage points a city can get) and this gives you approximately a <strong>' + game.MAX_ESPIONAGE_VALUE / game.MAX_ESPIONAGE_SUCESS_RATE + '%</strong> success rate.</p>' + '<h3>Prestige</h3>' + '<p>Prestige is a very important feature of your city because it influences the way other settlements see you and they will act upon that information. Low prestige might be good for your city if you plan to lay low and prepare (the other settlements won`t bother to go to war with a city with low prestige unless you manage somehow to piss them off) but usually, your city prestige should raise with the city level.</p>' + '<p>Prestige is gained through trading with other settlements, sending caravans with resources to help them when in need, etc. Random events can also affect your city prestige. The maximum prestige a settlement can get is <strong>' + game.MAX_PRESTIGE_VALUE + '</strong> ' + core.ui().resource_small_img('prestige') + '.</p>' + '<h3>Pacts and alliances</h3>' + '<p></p>' + '<h3>Wars</h3>' + '<p></p>' + '<h3>Caravans</h3>' + '<p></p>');
+      $(this.handle + ' #tab-about').empty().append('<h2>About Civitas</h2>' + '<p>Civitas is an empire-building game written in Javascript with the help of the <a target="_blank" href="https://jquery.com">jQuery</a> library. All the development is done over <a target="_blank" href="https://github.com/sizeofcat/civitas">GitHub</a> and everybody can contribute.</p>' + '<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>, is free and distributed under the <a target="_blank" href="https://raw.githubusercontent.com/sizeofcat/civitas/master/LICENSE">GPLv3 license</a>.</p>' + '<p>Big thanks to:</p>' + '<ul>' + '<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' + '<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' + '</ul>');
+      $(this.handle + ' #tab-research').empty().append('<h2>Research</h2>');
+      $(this.handle + ' #tab-diplomacy').empty().append('<h2>Diplomacy</h2>');
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_help).call(this, params));
+  }
+
+  return ui_panel_help;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Debug panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_debug
+ * @extends ui_panel
+ * @returns {ui_panel_debug}
+ */
+var ui_panel_debug =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_debug, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_debug}
+   * @param {Object} params
+   */
+  function ui_panel_debug(params) {
+    _classCallCheck(this, ui_panel_debug);
+
+    params.id = 'debug';
+    params.template = ui.generic_panel_template('Debugging');
+
+    params.on_show = function (params) {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      var handle = this.handle;
+      $(this.handle + ' section').append(core.ui().tabs(['Data', 'Console', 'Cheats']));
+      $(this.handle + ' #tab-console').empty().append('<div class="console"></div>');
+      $(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' + '<a href="#" class="btn iblock one">+1M coins</a> ' + '<a href="#" class="btn iblock two">+1000 cons. mats</a> ' + '<a href="#" class="btn iblock thirty">+1000 food / wine</a> ' + '<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a> <br /><br />' + '<a href="#" class="btn iblock five">level up</a> ' + '<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a> ' + '<a href="#" class="btn iblock six">+1000 fame</a> ' + '<a href="#" class="btn iblock seven">refresh trades</a> <br /><br />' + '<a href="#" class="btn iblock eleven">random soldiers</a> ' + '<a href="#" class="btn iblock twelve">random ships</a> ' + '<a href="#" class="btn iblock fourty">defend city</a> ' + '<a href="#" class="btn iblock fifty">battle-ready</a> <br /><br />' + '<a href="#" class="btn iblock ninety">add city</a> ' + '</div>');
+      $(this.handle + ' #tab-data').empty().append('<textarea class="storage-data"></textarea>' + '<div class="toolbar">' + '<a href="#" class="btn iblock refresh">Refresh</a> ' + '<a href="#" class="btn iblock load">Load</a> ' + '<a href="#" class="btn iblock save">Save</a> ' + '</div>');
+      $(this.handle).on('click', '.fourty', function () {
+        var city_index = game.get_random(1, core.get_num_settlements() - 1);
+
+        var _settlement = core.get_settlement(city_index);
+
+        core.queue_add(_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY, {
+          army: {
+            militia: 40,
+            axeman: 30,
+            knight: 10,
+            bowman: 20,
+            cannon: 200,
+            catapult: 300,
+            crossbowman: 10,
+            pikeman: 30
+          }
+        });
+        return false;
+      }).on('click', '.fifty', function () {
+        for (var i = 0; i < 9; i++) {
+          core.level_up();
+        }
+
+        settlement.add_to_storage('wood', 1000);
+        settlement.add_to_storage('stones', 1000);
+        settlement.add_to_storage('woodplanks', 1000);
+        settlement.add_to_storage('provisions', 1000);
+        settlement.add_to_storage('ropes', 50);
+        settlement.add_to_storage('barrels', 50);
+        settlement.add_to_storage('tools', 100);
+        settlement.inc_coins(2000000);
+        var army = settlement.army();
+
+        for (var soldier in army) {
+          army[soldier] = game.get_random(1, 100);
+        }
+
+        settlement.build('provisions');
+        settlement.build('barracks');
+        settlement.build('shipyard');
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.eleven', function () {
+        var army = settlement.army();
+
+        for (var soldier in army) {
+          army[soldier] = game.get_random(1, 100);
+        }
+
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.twelve', function () {
+        var navy = settlement.navy();
+
+        for (var ship in navy) {
+          navy[ship] = game.get_random(1, 10);
+        }
+
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.fourteen', function () {
+        settlement.raise_faith(900);
+        settlement.raise_espionage(900);
+        settlement.raise_research(900);
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.one', function () {
+        settlement.inc_coins(1000000);
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.fifteen', function () {
+        settlement.add_to_storage('provisions', 1000);
+        settlement.add_to_storage('donkeys', 1000);
+        settlement.add_to_storage('ropes', 1000);
+        settlement.add_to_storage('spyglasses', 1000);
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.two', function () {
+        settlement.add_to_storage('wood', 1000);
+        settlement.add_to_storage('stones', 1000);
+        settlement.add_to_storage('woodplanks', 1000);
+        settlement.add_to_storage('clay', 1000);
+        settlement.add_to_storage('bricks', 1000);
+        settlement.add_to_storage('tools', 500);
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.thirty', function () {
+        settlement.add_to_storage('bread', 1000);
+        settlement.add_to_storage('meat', 1000);
+        settlement.add_to_storage('wine', 1000);
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.five', function () {
+        core.level_up();
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.six', function () {
+        settlement.raise_fame(1000);
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.seven', function () {
+        core.refresh_trades();
+        core.save_and_refresh();
+        return false;
+      }).on('click', '.refresh', function () {
+        $(handle + ' .storage-data').val(core.get_storage_data('live', true));
+        return false;
+      }).on('click', '.ninety', function () {
+        core.add_random_settlement();
+        return false;
+      }).on('click', '.load', function () {
+        var save_game = $(handle + ' .storage-data').val();
+
+        if (save_game !== '') {
+          core.ui().open_modal(function (button) {
+            if (button === 'yes') {
+              core.set_storage_data('live', save_game, true);
+              document.location.reload();
+            }
+          }, 'Are you sure you want to load a new game? You will lose all progress on the current game!', 'Civitas');
+        } else {
+          core.ui().error('Invalid save game.');
+        }
+
+        return false;
+      }).on('click', '.save', function () {
+        var save_game = $(handle + ' .storage-data').val();
+
+        if (save_game === '') {
+          save_game = core.get_storage_data('live', true);
+        }
+
+        var a = document.createElement("a");
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.href = window.URL.createObjectURL(new Blob([save_game], {
+          type: 'text/plain'
+        }));
+        a.setAttribute("download", 'civitas_savegame.json');
+        a.click();
+        window.URL.revokeObjectURL(a.href);
+        document.body.removeChild(a);
+        return false;
+      });
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_debug).call(this, params));
+  }
+
+  return ui_panel_debug;
 }(ui_panel);
 "use strict";
 
@@ -19217,245 +19241,6 @@ function (_ui_panel) {
   }
 
   return ui_panel_building;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Buildings panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_buildings
- * @extends ui_panel
- * @returns {ui_panel_buildings}
- */
-var ui_panel_buildings =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_buildings, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_buildings}
-   * @param {Object} params
-   */
-  function ui_panel_buildings(params) {
-    _classCallCheck(this, ui_panel_buildings);
-
-    params.id = 'buildings';
-    params.template = ui.generic_panel_template('City Buildings');
-
-    params.on_show = function (params) {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      var el = this.handle;
-      var building;
-      var building_data;
-      var building_image;
-      var _t = '<div class="left buildings">';
-      _t += '<div class="tabs">' + '<ul>';
-
-      for (var category in game.BUILDINGS_CATEGORIES) {
-        _t += '<li><a href="#tab-' + category.toLowerCase() + '">' + category + '</a></li>';
-      }
-
-      _t += '</ul>';
-
-      for (var _category in game.BUILDINGS_CATEGORIES) {
-        _t += '<div id="tab-' + _category.toLowerCase() + '" class="bldg-tabs">';
-
-        for (var i = 0; i < game.BUILDINGS_CATEGORIES[_category].length; i++) {
-          building = game.BUILDINGS_CATEGORIES[_category][i];
-
-          if ($.inArray(building, game['BUILDINGS_ALL']) !== -1) {
-            building_data = core.get_building_config_data(building);
-
-            if (building_data) {
-              var _i = settlement.is_building_built(building_data.handle);
-
-              building_image = building_data.handle;
-
-              if (typeof building_data.tax !== 'undefined') {
-                building_image = building_data.handle.slice(0, 5);
-              }
-
-              var _image = typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false ? building_image : building_image + '1';
-
-              _t += '<div data-handle="' + building_data.handle + '" class="building-item' + (_i === true ? ' disabled' : '') + '">' + '<span class="title">' + building_data.name + '</span>' + '<img class="building" src="' + game.ASSETS_URL + 'images/assets/buildings/' + _image + '.png" />' + '</div>';
-            }
-          }
-        }
-
-        _t += '</div>';
-      }
-
-      _t += '</div>' + '</div>' + '<div class="buildings-info right">' + '<div class="b-desc"></div>' + '<div class="column-small">' + '<fieldset class="levels">' + '<legend>Levels</legend>' + '<div class="b-levels"></div>' + '</fieldset>' + '<fieldset>' + '<legend>Cost</legend>' + '<div class="b-cost"></div>' + '</fieldset>' + '</div>' + '<div class="column-small">' + '<fieldset class="materials">' + '<legend>Materials</legend>' + '<div class="b-mats"></div>' + '</fieldset>' + '<fieldset class="production">' + '<legend>Production</legend>' + '<div class="b-prod"></div>' + '</fieldset>' + '<fieldset class="extra">' + '<legend>Extra materials</legend>' + '<div class="b-chance"></div>' + '</fieldset>' + '<fieldset class="storage">' + '<legend>Storage</legend>' + '<div class="b-store"></div>' + '</fieldset>' + '<fieldset class="taxes">' + '<legend>Taxes</legend>' + '<div class="b-tax"></div>' + '</fieldset>' + '</div>' + '<div class="column-full">' + '<fieldset>' + '<legend>Requirements</legend>' + '<div class="b-req"></div>' + '</fieldset>' + '</div>' + '<div class="toolbar"></div>' + '</div>' + '<div class="clearfix"></div>';
-      $(el + ' section').append(_t);
-      $(el).on('click', '.building-item', function () {
-        $(el).addClass('expanded');
-        $(el + ' .building-item').removeClass('active');
-        $(this).addClass('active');
-        $(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
-        var handle = $(this).data('handle');
-        var building = core.get_building_config_data(handle);
-
-        if (building) {
-          $(el + ' header span').empty().html('City Buildings - ' + building.name);
-          $(el + ' .b-desc').html(building.description);
-          var _z = '<dl class="nomg">';
-
-          for (var y in building.cost) {
-            _z += '<dt>' + game.nice_numbers(building.cost[y]) + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(y) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
-          }
-
-          _z += '</dl>';
-          $(el + ' .b-cost').append(_z);
-
-          if (typeof building.levels !== 'undefined') {
-            $(el + ' .b-levels').empty().append('<dl class="nomg">' + '<dt>Upgrades</dt>' + '<dd>' + building.levels + '</dd>' + '</dl>');
-            $('fieldset.levels').show();
-          } else {
-            $('fieldset.levels').hide();
-          }
-
-          if (typeof building.requires !== 'undefined') {
-            _z = '<dl class="nomg">';
-
-            if (typeof building.requires.buildings !== 'undefined') {
-              for (var item in building.requires.buildings) {
-                _z += '<dt>Building</dt>' + '<dd>' + core.get_building_config_data(item).name + ' (level ' + building.requires.buildings[item] + ')</dd>';
-              }
-            }
-
-            if (typeof building.requires.research !== 'undefined') {
-              _z += '<dt>Research</dt>' + '<dd>' + core.get_research_config_data(building.requires.research).name + '</dd>';
-            }
-
-            if (typeof building.requires.climate !== 'undefined') {
-              var climates = [];
-
-              for (var _i3 = 0; _i3 < building.requires.climate.length; _i3++) {
-                climates.push(game.CLIMATES[building.requires.climate[_i3]].capitalize());
-              }
-
-              _z += '<dt>Climate</dt>' + '<dd>' + climates.join(', ') + '</dd>';
-            }
-
-            _z += '<dt>City level</dt>' + '<dd>' + building.requires.settlement_level + '</dd>' + '</dl>';
-            $(el + ' .b-req').append(_z);
-          }
-
-          if (typeof building.chance !== 'undefined') {
-            _z = '<dl class="nomg">';
-
-            for (var chance in building.chance) {
-              _z += '<dt>' + building.chance[chance] * 100 + '%</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(chance) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + chance + '.png" /></dd>';
-            }
-
-            _z += '</dl>';
-            $(el + ' .b-chance').append(_z);
-            $('fieldset.extra').show();
-          } else {
-            $('fieldset.extra').hide();
-          }
-
-          if (typeof building.production !== 'undefined') {
-            _z = '<dl class="nomg">';
-
-            for (var _y in building.production) {
-              _z += '<dt>' + building.production[_y] + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(_y) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + _y + '.png" /></dd>';
-            }
-
-            _z += '</dl>';
-            $(el + ' .b-prod').append(_z);
-            $('fieldset.production').show();
-          } else {
-            $('fieldset.production').hide();
-          }
-
-          if (typeof building.materials !== 'undefined') {
-            _z = '<dl class="nomg">';
-
-            if (Array.isArray(building.materials)) {
-              for (var _i4 = 0; _i4 < building.materials.length; _i4++) {
-                for (var _y2 in building.materials[_i4]) {
-                  _z += '<dt>' + building.materials[_i4][_y2] + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(_y2) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + _y2 + '.png" /></dd>';
-                }
-              }
-            } else {
-              for (var _y3 in building.materials) {
-                _z += '<dt>' + building.materials[_y3] + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(_y3) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + _y3 + '.png" /></dd>';
-              }
-            }
-
-            _z += '</dl>';
-            $(el + ' .b-mats').append(_z);
-            $('fieldset.materials').show();
-          } else {
-            $('fieldset.materials').hide();
-          }
-
-          if (typeof building.tax !== 'undefined') {
-            _z = '<dl class="nomg">' + '<dt>Tax</dt>' + '<dd>' + building.tax + '<img class="small tips" title="Coins" src="' + game.ASSETS_URL + 'images/assets/resources/coins.png" /></dd>' + '</dl>';
-            $(el + ' .b-tax').append(_z);
-            $('fieldset.taxes').show();
-          } else {
-            $('fieldset.taxes').hide();
-          }
-
-          if (typeof building.storage !== 'undefined') {
-            $('fieldset.taxes, fieldset.materials').hide();
-            _z = '<dl class="nomg">' + '<dt>' + building.storage + '</dt>' + '<dd><img class="small tips" title="Storage Space" src="' + game.ASSETS_URL + 'images/assets/resources/storage.png" /></dd>' + '</dl>';
-            $(el + ' .b-store').append(_z);
-            $('fieldset.storage').show();
-          } else {
-            $('fieldset.storage').hide();
-          }
-
-          var _i2 = settlement.is_building_built(building.handle);
-
-          if (_i2 !== true) {
-            $(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
-          } else {//$(el + ' .toolbar').append('You already constructed this building.');
-          }
-
-          $(el + ' .right').show();
-        }
-
-        return false;
-      }).on('click', '.btn.build', function () {
-        var handle = $(this).data('handle');
-
-        if (settlement.build(handle) !== false) {
-          $(el + ' .building-item[data-handle=' + handle + ']').addClass('disabled');
-          $(el + ' .toolbar').empty(); //.append('You already constructed this building.');
-        }
-
-        return false;
-      });
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_buildings).call(this, params));
-  }
-
-  return ui_panel_buildings;
 }(ui_panel);
 "use strict";
 
@@ -19638,6 +19423,1009 @@ function (_ui_panel) {
   }
 
   return ui_panel_campaign;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Storage panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_storage
+ * @extends ui_panel
+ * @returns {ui_panel_storage}
+ */
+var ui_panel_storage =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_storage, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_storage}
+   * @param {Object} params
+   */
+  function ui_panel_storage(params) {
+    _classCallCheck(this, ui_panel_storage);
+
+    params.id = 'storage';
+    params.template = ui.generic_panel_template('City Storage');
+
+    params.on_show = function (params) {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      var storage_space = settlement.storage();
+      var resources = settlement.get_resources();
+      $(this.handle + ' section').append(core.ui().tabs(game.RESOURCE_CATEGORIES));
+      $(this.handle + ' section').append('<p>Total storage space: <span class="total-storage">' + storage_space.all + '</span>, used: <span class="used-storage">' + storage_space.occupied + '</span></p>');
+
+      for (var i = 0; i < game.RESOURCE_CATEGORIES.length; i++) {
+        $(this.handle + ' #tab-' + game.RESOURCE_CATEGORIES[i]).append('<div class="storage-board"></div>');
+      }
+
+      for (var resource in resources) {
+        if (!game.is_virtual_resource(resource)) {
+          $(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board').append(core.ui().resource_storage_el(resource, resources[resource]));
+        }
+      }
+    };
+
+    params.on_refresh = function () {
+      var settlement = this.core().get_settlement();
+      var resources = settlement.get_resources();
+      var storage_space = settlement.storage();
+
+      for (var resource in resources) {
+        if (!game.is_virtual_resource(resource)) {
+          $(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
+        }
+      }
+
+      $(this.handle + ' .total-storage').empty().append(storage_space.all);
+      $(this.handle + ' .used-storage').empty().append(storage_space.occupied);
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_storage).call(this, params));
+  }
+
+  return ui_panel_storage;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * World panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_world
+ * @extends ui_panel
+ * @returns {ui_panel_world}
+ */
+var ui_panel_world =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_world, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_world}
+   * @param {Object} params
+   */
+  function ui_panel_world(params) {
+    _classCallCheck(this, ui_panel_world);
+
+    params.id = 'world';
+    params.template = ui.generic_panel_template('World Map');
+
+    params.on_show = function (params) {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      $(this.handle + ' section').append('<div class="worldmap"></div>');
+      core.world().draw();
+      var clicked = false;
+      var clickY, clickX;
+
+      var update_scroll_pos = function update_scroll_pos(event) {
+        $('.worldmap').scrollTop($('.worldmap').scrollTop() + (clickY - event.pageY));
+        $('.worldmap').scrollLeft($('.worldmap').scrollLeft() + (clickX - event.pageX));
+        clickY = event.pageY;
+        clickX = event.pageX;
+      };
+
+      $('.worldmap').on({
+        mousemove: function mousemove(event) {
+          clicked && update_scroll_pos(event);
+        },
+        mousedown: function mousedown(event) {
+          clicked = true;
+          clickY = event.pageY;
+          clickX = event.pageX;
+          $('html').css('cursor', 'grab');
+        },
+        mouseup: function mouseup() {
+          clicked = false;
+          $('html').css('cursor', 'auto');
+        }
+      });
+      $(this.handle).on('click', '.settlement', function () {
+        var _settlement_name = $(this).data('name');
+
+        if (_settlement_name === settlement.name()) {
+          core.ui().open_panel('council');
+        } else {
+          core.ui().open_panel('settlement', core.get_settlement(_settlement_name));
+        }
+
+        return false;
+      }).on('click', '.place', function () {
+        var place_id = parseInt($(this).data('id'), 10);
+        core.ui().open_panel('place', core.get_place(place_id));
+        return false;
+      }).on('click', '.troop', function () {
+        var _action_id = parseInt($(this).data('id'), 10);
+
+        if (core._queue[_action_id].mode === game.ACTION_CAMPAIGN) {
+          core.ui().open_panel('campaign', core._queue[_action_id]);
+        }
+
+        return false;
+      }).on('click', '.canvas-map', function () {
+        // Todo
+        return false;
+      });
+      core.ui().worldmap_scrollto(settlement.location());
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      var settlements = core.get_settlements();
+      var places = core.places();
+      var world = core.world();
+      var queue_actions = core.queue();
+      $('.troop, .settlement, .place').remove();
+
+      for (var i = 0; i < settlements.length; i++) {
+        var image = 'village';
+        var name = settlements[i].name();
+        var location = settlements[i].location();
+        var coords = core.ui().get_cell_middle_coords(location.y, location.x);
+
+        if (typeof settlement !== 'undefined' && name === settlement.name()) {
+          image = 'settlement';
+        } else {
+          if (settlements[i].is_metropolis()) {
+            image = 'metropolis' + settlements[i].icon();
+          } else if (settlements[i].is_city()) {
+            image = 'city' + settlements[i].icon();
+          } else if (settlements[i].is_village()) {
+            image = 'village' + settlements[i].icon();
+          } else if (settlements[i].is_camp()) {
+            image = 'camp';
+          }
+        }
+
+        $('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
+      } //if (core.has_research('archeology')) {
+
+
+      for (var _i = 0; _i < places.length; _i++) {
+        var _location = places[_i].location;
+
+        var _coords = core.ui().get_cell_middle_coords(_location.y, _location.x);
+
+        $('.worldmap').append('<img data-x="' + _location.x + '" data-y="' + _location.y + '" title="Ruins of ' + places[_i].name + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + places[_i].properties.id + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
+      } //}
+
+
+      for (var _i2 = 0; _i2 < queue_actions.length; _i2++) {
+        var action = queue_actions[_i2];
+        var source = action.source;
+        var destination = action.destination;
+        var distance_in_days = core.world().get_distance_in_days(source, destination);
+
+        if (action.mode === game.ACTION_DIPLOMACY) {
+          distance_in_days = distance_in_days / 2;
+        }
+
+        var title = '';
+        var troop_type = 'troop';
+
+        var _source = core.get_settlement(source.id);
+
+        var _destination = core.get_settlement(destination.id);
+
+        var x = source.x + Math.floor((destination.x - source.x) / distance_in_days * action.passed);
+        var y = source.y - Math.floor((source.y - destination.y) / distance_in_days * action.passed); //let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
+        //let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
+
+        if (action.mode === game.ACTION_CAMPAIGN) {
+          if (action.type === game.CAMPAIGN_CARAVAN) {
+            troop_type = 'troop_caravan';
+            title = 'Caravan from ' + _source.name() + ' sent to ' + _destination.name() + '.';
+          } else if (action.type === game.CAMPAIGN_SCOUT) {
+            troop_type = 'troop_scout';
+            title = 'Scout from ' + _source.name() + ' going to a specific place.';
+          } else if (action.type === game.CAMPAIGN_SPY) {
+            troop_type = 'troop_spy';
+            title = 'Spy from ' + _source.name() + ' sneaking into ' + _destination.name() + '.';
+          } else if (action.type === game.CAMPAIGN_ARMY_RETURN) {
+            troop_type = 'troop_return';
+            title = _destination.name() + ' army returning from ' + _source.name() + '.';
+          } else {
+            troop_type = 'troop_attack';
+            title = _source.name() + ' army marching to ' + _destination.name() + '.';
+          }
+        } else if (action.mode === game.ACTION_DIPLOMACY) {
+          troop_type = 'troop_diplomatic';
+          title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
+        }
+
+        var _coords2 = core.ui().get_cell_middle_coords(y, x);
+
+        $('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (_coords2.x + 3) + 'px;top:' + _coords2.y + 'px" data-id="' + _i2 + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
+      }
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_world).call(this, params));
+  }
+
+  return ui_panel_world;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Ranks panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_ranks
+ * @extends ui_panel
+ * @returns {ui_panel_ranks}
+ */
+var ui_panel_ranks =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_ranks, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_ranks}
+   * @param {Object} params
+   */
+  function ui_panel_ranks(params) {
+    _classCallCheck(this, ui_panel_ranks);
+
+    params.id = 'ranks';
+    params.template = ui.generic_panel_template('World Ranks');
+
+    params.on_show = function (params) {
+      $(this.handle + ' section').append('<div class="ranks-list"></div>');
+    };
+
+    params.on_refresh = function () {
+      var ranking_list = [];
+      var settlements = this.core().get_settlements();
+
+      for (var i = 0; i < settlements.length; i++) {
+        if (settlements[i].is_urban()) {
+          ranking_list.push({
+            name: settlements[i].name(),
+            data: settlements[i].get_rank()
+          });
+        }
+      }
+
+      ranking_list.sort(function (a, b) {
+        var keyA = new Date(a.data.score);
+        var keyB = new Date(b.data.score);
+
+        if (keyA > keyB) {
+          return -1;
+        }
+
+        if (keyA < keyB) {
+          return 1;
+        }
+
+        return 0;
+      });
+      var _t = '<table class="normal">';
+      _t += '<thead>' + '<tr>' + '<td class="center">Rank</td>' + '<td>City</td>' + '<td class="center">Score</td>' + '</tr>' + '</thead>' + '<tbody>';
+
+      for (var _i = 0; _i < ranking_list.length; _i++) {
+        _t += '<tr>' + '<td class="center">' + (_i + 1) + '</td>' + '<td>' + ranking_list[_i].name + '</td>' + '<td class="center">' + ranking_list[_i].data.score + '</td>' + '</tr>';
+      }
+
+      _t += '</tbody>' + '</table>';
+      $(this.handle + ' .ranks-list').empty().append(_t);
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_ranks).call(this, params));
+  }
+
+  return ui_panel_ranks;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Create a new army panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_new_army
+ * @extends ui_panel
+ * @returns {ui_panel_new_army}
+ */
+var ui_panel_new_army =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_new_army, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_new_army}
+   * @param {Object} params
+   */
+  function ui_panel_new_army(params) {
+    _classCallCheck(this, ui_panel_new_army);
+
+    params.template = ui.campaign_panel_template('New army');
+    params.id = 'new-army';
+
+    params.on_show = function (params) {
+      var self = this;
+      var core = this.core();
+      var my_settlement = core.get_settlement();
+      var settlement = params.data;
+      var settlements = core.get_settlements();
+      var army = my_settlement.army();
+      var location = my_settlement.location();
+      var distance = core.world().get_distance_in_days(location, settlement.location());
+      this.assigned_army = {};
+      this.assigned_navy = {};
+
+      for (var item in army) {
+        this.assigned_army[item] = army[item];
+      }
+
+      if (my_settlement.can_build_ships()) {
+        var _navy = my_settlement.navy();
+
+        for (var _item in _navy) {
+          this.assigned_navy[_item] = _navy[_item];
+        }
+      }
+
+      var _t = '<div class="column">' + '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
+
+      for (var _item2 in game.ARMY_COSTS) {
+        var _cost = 0;
+
+        if (_item2 === 'coins') {
+          _cost = game.ARMY_COSTS[_item2] * distance;
+        } else if (_item2 === 'provisions') {
+          _cost = Math.ceil(game.ARMY_COSTS[_item2] * distance / 4);
+        } else {
+          _cost = game.ARMY_COSTS[_item2];
+        }
+
+        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(_item2) + '</dd>';
+      }
+
+      _t += '</dl>' + '</fieldset>';
+
+      if (typeof army !== 'undefined') {
+        _t += '<fieldset>' + '<legend>Soldiers</legend>';
+
+        for (var _item3 in army) {
+          _t += '<div class="army-item">' + '<a href="#" data-max="' + army[_item3] + '" data-soldier="' + _item3 + '" class="army-item-inc">+</a>' + '<a href="#" data-max="' + army[_item3] + '" data-soldier="' + _item3 + '" class="army-item-dec">-</a>' + '<img class="tips" title="' + game.SOLDIERS[_item3].name + '" src="' + game.ASSETS_URL + 'images/assets/army/' + _item3.toLowerCase().replace(/ /g, "_") + '.png" />' + '<span class="amount">' + army[_item3] + '</span>' + '</div>';
+        }
+
+        _t += '</fieldset>';
+      }
+
+      _t += '<fieldset>' + '<legend>Destination</legend>' + '<select class="army-destination">' + '<option value="0">-- select --</option>';
+
+      for (var i = 1; i < settlements.length; i++) {
+        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+      }
+
+      _t += '</select>' + '</fieldset>' + '</div>' + '<div class="column">';
+
+      if (my_settlement.can_build_ships()) {
+        if (typeof navy !== 'undefined') {
+          _t += '<fieldset>' + '<legend>Ships</legend>';
+
+          for (var _item4 in navy) {
+            _t += '<div class="navy-item">' + '<a href="#" data-max="' + navy[_item4] + '" data-ship="' + _item4 + '" class="navy-item-inc">+</a>' + '<a href="#" data-max="' + navy[_item4] + '" data-ship="' + _item4 + '" class="navy-item-dec">-</a>' + '<img class="tips" title="' + _item4 + '" src="' + game.ASSETS_URL + 'images/assets/army/' + _item4.toLowerCase().replace(/ /g, "_") + '.png" />' + '<span class="amount">' + navy[_item4] + '</span>' + '</div>';
+          }
+
+          _t += '</fieldset>';
+        }
+      }
+
+      if (my_settlement.can_recruit_heroes()) {
+        var heroes = my_settlement.heroes();
+        _t += '<fieldset>' + '<legend>Hero</legend>' + '<select class="army-hero">';
+
+        if ($.isEmptyObject(heroes)) {
+          _t += '<option value="0">-- no heroes available --</option>';
+        } else {
+          _t += '<option value="0">-- select --</option>';
+
+          for (var _item5 in heroes) {
+            _t += '<option value="' + _item5 + '">' + heroes[_item5] + '</option>';
+          }
+        }
+
+        _t += '</select>' + '</fieldset>';
+      } else {
+        _t += '<p><strong>Note!</strong> Build a Tavern to be able to recruit powerful heroes and assign them to your armies.</p>';
+      }
+
+      _t += '</div>';
+      $(this.handle + ' section').empty().append(_t);
+      $(this.handle).on('click', '.navy-item-inc', function () {
+        var max = parseInt($(this).data('max'), 10);
+        var ship = $(this).data('ship');
+        var current = parseInt($(this).parent().children('.amount').html(), 10);
+
+        if (current + 1 <= max) {
+          self.assigned_navy[ship] = current + 1;
+          $(this).parent().children('.amount').html(current + 1);
+        }
+
+        return false;
+      }).on('click', '.navy-item-dec', function () {
+        var ship = $(this).data('ship');
+        var current = parseInt($(this).parent().children('.amount').html(), 10);
+
+        if (current - 1 >= 0) {
+          self.assigned_navy[ship] = current - 1;
+          $(this).parent().children('.amount').html(current - 1);
+        }
+
+        return false;
+      }).on('click', '.army-item-inc', function () {
+        var max = parseInt($(this).data('max'), 10);
+        var soldier = $(this).data('soldier');
+        var current = parseInt($(this).parent().children('.amount').html(), 10);
+
+        if (current + 1 <= max) {
+          self.assigned_army[soldier] = current + 1;
+          $(this).parent().children('.amount').html(current + 1);
+        }
+
+        return false;
+      }).on('click', '.army-item-dec', function () {
+        var soldier = $(this).data('soldier');
+        var current = parseInt($(this).parent().children('.amount').html(), 10);
+
+        if (current - 1 >= 0) {
+          self.assigned_army[soldier] = current - 1;
+          $(this).parent().children('.amount').html(current - 1);
+        }
+
+        return false;
+      }).on('click', '.dispatch', function () {
+        if (!my_settlement.can_recruit_soldiers()) {
+          core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
+          return false;
+        }
+
+        var destination = parseInt($(self.handle + ' .army-destination').val(), 10);
+
+        if (settlement && settlement.id() !== destination || !settlement) {
+          settlement = core.get_settlement(destination);
+        } // TODO there is an error here when there is no shipyard to send navy.
+
+
+        if (destination === 0 || !settlement || my_settlement.num_soldiers(self.assigned_army) === 0 && my_settlement.num_ships(self.assigned_navy) === 0) {
+          core.ui().error('There was an error creating and dispatching the army, check the data you entered and try again.');
+          return false;
+        }
+
+        if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY, {
+          army: self.assigned_army,
+          navy: self.assigned_navy
+        })) {
+          core.do_achievement('sendarmy');
+          self.destroy();
+        } else {
+          core.ui().error('There was an error creating and dispatching the army, check the data you entered and try again.');
+        }
+
+        return false;
+      });
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_army).call(this, params));
+  }
+
+  return ui_panel_new_army;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Create a new spy panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_new_spy
+ * @extends ui_panel
+ * @returns {ui_panel_new_spy}
+ */
+var ui_panel_new_spy =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_new_spy, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_new_spy}
+   * @param {Object} params
+   */
+  function ui_panel_new_spy(params) {
+    _classCallCheck(this, ui_panel_new_spy);
+
+    params.template = ui.campaign_panel_template('New spy');
+    params.id = 'new-spy';
+
+    params.on_show = function (params) {
+      var self = this;
+      var core = this.core();
+      var my_settlement = core.get_settlement();
+      var settlement = params.data;
+      var settlements = core.get_settlements();
+      var espionage = my_settlement.espionage();
+      var location = my_settlement.location();
+      var distance = core.world().get_distance_in_days(location, settlement.location());
+
+      var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
+
+      for (var item in game.SPY_COSTS) {
+        var _cost = 0;
+
+        if (item === 'coins') {
+          _cost = game.SPY_COSTS[item] * distance;
+        } else if (item === 'provisions') {
+          _cost = Math.ceil(game.SPY_COSTS[item] * distance / 4);
+        } else {
+          _cost = game.SPY_COSTS[item];
+        }
+
+        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(item) + '</dd>';
+      }
+
+      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<select class="espionage-destination">' + '<option value="0">-- select --</option>';
+
+      for (var i = 1; i < settlements.length; i++) {
+        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+      }
+
+      _t += '</select>' + '</fieldset>' + '<fieldset class="range-combo">' + '<legend>Espionage</legend>' + '<input type="range" value="' + espionage + '" min="1" max="' + espionage + '" class="espionage-range" />' + '<input type="text" readonly value="' + espionage + '" class="espionage-value tips" title="Total espionage assigned to this spy." />' + '<input type="text" readonly value="' + Math.ceil(espionage / 100) + '%" class="espionage-chance tips" title="Chance of mission success." />' + '</fieldset>' + '<fieldset>' + '<legend>Mission</legend>' + '<select class="espionage-mission">' + '<option value="0">-- select --</option>';
+
+      for (var _i = 1; _i < game.SPY_MISSIONS.length; _i++) {
+        _t += '<option value="' + _i + '">' + game.SPY_MISSIONS[_i].capitalize() + '</option>';
+      }
+
+      _t += '</select>' + '</fieldset>' + '<fieldset class="espionage-rel">' + '<legend>Religion' + (settlement ? ' (currently ' + settlement.religion().name + ')' : '') + '</legend>' + '<select class="espionage-religion">';
+
+      for (var _i2 = 0; _i2 < game.RELIGIONS.length; _i2++) {
+        _t += '<option value="' + _i2 + '">' + game.RELIGIONS[_i2].capitalize() + (_i2 === my_settlement.religion().id ? ' (your religion)' : '') + '</option>';
+      }
+
+      _t += '</select>' + '<p><strong>Note!</strong> Attempting to change a settlement`s religion uses up all your accumulated faith.</p>' + '</fieldset>';
+      $(this.handle + ' section').empty().append(_t);
+      $(this.handle).on('change', '.espionage-range', function () {
+        var value = parseInt($(this).val(), 10);
+        $(self.handle + ' .espionage-value').val(value);
+        $(self.handle + ' .espionage-chance').val(Math.ceil(value / 100) + '%');
+      }).on('change', '.espionage-mission', function () {
+        var value = parseInt($(this).val(), 10);
+
+        if (value === game.SPY_MISSION_RELIGION) {
+          $(self.handle + ' .espionage-rel').show();
+        } else {
+          $(self.handle + ' .espionage-rel').hide();
+        }
+      }).on('click', '.dispatch', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
+          return false;
+        }
+
+        var _espionage = parseInt($(self.handle + ' .espionage-value').val(), 10);
+
+        var destination = parseInt($(self.handle + ' .espionage-destination').val(), 10);
+        var mission = parseInt($(self.handle + ' .espionage-mission').val(), 10);
+
+        if (settlement && settlement.id() !== destination || !settlement) {
+          settlement = core.get_settlement(destination);
+        }
+
+        if (destination === 0 || _espionage > espionage || !settlement || mission <= 0) {
+          core.ui().error('There was an error creating and dispatching the spy, check the data you entered and try again.');
+          return false;
+        }
+
+        var data = {
+          espionage: _espionage,
+          mission: mission
+        };
+
+        if (mission === game.SPY_MISSION_RELIGION) {
+          data.religion = parseInt($(self.handle + ' .espionage-religion').val(), 10);
+        }
+
+        if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_SPY, data)) {
+          core.do_achievement('jamesbond');
+          self.destroy();
+        } else {
+          core.ui().error('There was an error creating and dispatching the spy, check the data you entered and try again.');
+        }
+
+        return false;
+      });
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var my_settlement = core.get_settlement();
+      var espionage = my_settlement.espionage();
+      $(this.handle + ' .espionage-range').attr('max', espionage);
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_spy).call(this, params));
+  }
+
+  return ui_panel_new_spy;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Create a new scout panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_new_scout
+ * @extends ui_panel
+ * @returns {ui_panel_new_scout}
+ */
+var ui_panel_new_scout =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_new_scout, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_new_scout}
+   * @param {Object} params
+   */
+  function ui_panel_new_scout(params) {
+    _classCallCheck(this, ui_panel_new_scout);
+
+    params.template = ui.campaign_panel_template('New scout');
+    params.id = 'new-scout';
+
+    params.on_show = function (params) {
+      var self = this;
+      var core = this.core();
+      var my_settlement = core.get_settlement();
+      var place = params.data;
+      var location = my_settlement.location();
+      var distance = core.world().get_distance_in_days(location, place.location());
+
+      var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
+
+      for (var item in game.SCOUT_COSTS) {
+        var _cost = 0;
+
+        if (item === 'coins') {
+          _cost = game.SCOUT_COSTS[item] * distance;
+        } else if (item === 'provisions') {
+          _cost = Math.ceil(game.SCOUT_COSTS[item] * distance / 4);
+        } else {
+          _cost = game.SCOUT_COSTS[item];
+        }
+
+        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(item) + '</dd>';
+      }
+
+      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<input type="hidden" class="scout-destination" value="' + place.id() + '" />' + '</fieldset>';
+      $(this.handle + ' section').empty().append(_t);
+      $(this.handle).on('click', '.dispatch', function () {
+        if (!my_settlement.can_diplomacy()) {
+          core.ui().error('You will need to construct an Embassy before being able to send scouts to other settlements.');
+          return false;
+        } //let destination = parseInt($(self.handle + ' .scout-destination').val(), 10);
+
+
+        var data = {// Todo
+        };
+
+        if (core.queue_add(my_settlement, place, game.ACTION_CAMPAIGN, game.CAMPAIGN_SCOUT, data)) {
+          self.destroy();
+        } else {
+          core.ui().error('There was an error creating and dispatching the scout, check the data you entered and try again.');
+        }
+
+        return false;
+      });
+    };
+
+    params.on_refresh = function () {// Todo
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_scout).call(this, params));
+  }
+
+  return ui_panel_new_scout;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Create a new caravan panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_new_caravan
+ * @extends ui_panel
+ * @returns {ui_panel_new_caravan}
+ */
+var ui_panel_new_caravan =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_new_caravan, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_new_caravan}
+   * @param {Object} params
+   */
+  function ui_panel_new_caravan(params) {
+    _classCallCheck(this, ui_panel_new_caravan);
+
+    params.template = ui.campaign_panel_template('New caravan');
+    params.id = 'new-caravan';
+
+    params.on_show = function (params) {
+      this.resources = {};
+      var self = this;
+      var core = this.core();
+      var my_settlement = core.get_settlement();
+      var settlement = params.data;
+      var settlements = core.get_settlements();
+      var location = my_settlement.location();
+      var distance = core.world().get_distance_in_days(location, settlement.location());
+
+      var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
+
+      for (var item in game.CARAVAN_COSTS) {
+        var _cost = 0;
+
+        if (item === 'coins') {
+          _cost = game.CARAVAN_COSTS[item] * distance;
+        } else if (item === 'provisions') {
+          _cost = Math.ceil(game.CARAVAN_COSTS[item] * distance / 4);
+        } else {
+          _cost = game.CARAVAN_COSTS[item];
+        }
+
+        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(item) + '</dd>';
+      }
+
+      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<select class="caravan-destination">' + '<option value="0">-- select --</option>';
+
+      for (var i = 1; i < settlements.length; i++) {
+        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+      }
+
+      _t += '</select>' + '</fieldset>' + '<fieldset class="select-combo">' + '<legend>Resources</legend>' + '<select class="caravan-resources-select">' + '<option value="0">-- select --</option>' + '<option value="coins">Coins</option>';
+      var resources = my_settlement.get_resources();
+
+      for (var _item in resources) {
+        if (!game.is_virtual_resource(_item)) {
+          _t += '<option value="' + _item + '"> ' + game.get_resource_name(_item) + '</option>';
+        }
+      }
+
+      _t += '</select>' + '<input title="Add the resources to the list." type="button" class="tips caravan-resources-add" value="+" />' + '<input title="Amount of selected resource to add to the caravan." type="number" value="1" class="tips caravan-resources-amount" min="1" max="999" />' + '<div class="caravan-resources clearfix"></div>' + '</fieldset>';
+      $(this.handle + ' section').empty().append(_t);
+
+      this.generate_table_data = function () {
+        var _t = '<table class="caravan-resources clearfix">' + '<thead>' + '<tr>' + '<td>Amount</td>' + '<td>Resource</td>' + '<td></td>' + '</tr>' + '</thead>' + '<tbody>';
+
+        for (var _item2 in this.resources) {
+          _t += '<tr>' + '<td>' + this.resources[_item2] + '</td>' + '<td>' + core.ui().resource_small_img(_item2) + '</td>' + '<td>' + '<a title="Remove this resource from the caravan." href="#" data-id="' + _item2 + '" class="tips caravan-resources-delete">-</a>' + '</td>' + '</tr>';
+        }
+
+        _t += '</tbody>' + '</table>';
+        $(this.handle + ' .caravan-resources').empty().append(_t);
+      };
+
+      $(this.handle).on('click', '.caravan-resources-add', function () {
+        var amount = parseInt($(self.handle + ' .caravan-resources-amount').val(), 10);
+        var resource = $(self.handle + ' .caravan-resources-select').val();
+
+        if (resource !== '0') {
+          if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
+            core.ui().error(my_settlement.name() + ' doesn`t have enough ' + game.get_resource_name(resource) + '.');
+            return false;
+          } else if (typeof self.resources[resource] === 'undefined' && !my_settlement.has_resource(resource, amount)) {
+            core.ui().error(my_settlement.name() + ' doesn`t have enough ' + game.get_resource_name(resource) + '.');
+            return false;
+          }
+
+          if (typeof self.resources[resource] !== 'undefined') {
+            self.resources[resource] = self.resources[resource] + amount;
+          } else {
+            self.resources[resource] = amount;
+          }
+
+          self.generate_table_data();
+        }
+
+        return false;
+      }).on('click', '.caravan-resources-delete', function () {
+        var resource = $(this).data('id');
+        delete self.resources[resource];
+        self.generate_table_data();
+        return false;
+      }).on('click', '.dispatch', function () {
+        if (!my_settlement.can_trade()) {
+          core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
+          return false;
+        }
+
+        var destination = parseInt($(self.handle + ' .caravan-destination').val(), 10);
+
+        if (settlement && settlement.id() !== destination || !settlement) {
+          settlement = core.get_settlement(destination);
+        }
+
+        if (destination === 0 || !settlement || $.isEmptyObject(self.resources)) {
+          core.ui().error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
+          return false;
+        }
+
+        if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_CARAVAN, {
+          resources: self.resources
+        })) {
+          core.do_achievement('donkeylord');
+          self.destroy();
+        } else {
+          core.ui().error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
+        }
+
+        return false;
+      });
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_caravan).call(this, params));
+  }
+
+  return ui_panel_new_caravan;
 }(ui_panel);
 "use strict";
 
@@ -19976,1064 +20764,64 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
- * Debug panel data.
+ * Army panel data.
  *
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class ui_panel_debug
+ * @class ui_panel_army
  * @extends ui_panel
- * @returns {ui_panel_debug}
+ * @returns {ui_panel_army}
  */
-var ui_panel_debug =
+var ui_panel_army =
 /*#__PURE__*/
 function (_ui_panel) {
-  _inherits(ui_panel_debug, _ui_panel);
+  _inherits(ui_panel_army, _ui_panel);
 
   /**
    * Object constructor.
    * 
    * @private
    * @constructor
-   * @returns {ui_panel_debug}
+   * @returns {ui_panel_army}
    * @param {Object} params
    */
-  function ui_panel_debug(params) {
-    _classCallCheck(this, ui_panel_debug);
+  function ui_panel_army(params) {
+    _classCallCheck(this, ui_panel_army);
 
-    params.id = 'debug';
-    params.template = ui.generic_panel_template('Debugging');
-
-    params.on_show = function (params) {
-      var core = this.core();
-      var settlement = core.get_settlement();
-      var handle = this.handle;
-      $(this.handle + ' section').append(core.ui().tabs(['Data', 'Console', 'Cheats']));
-      $(this.handle + ' #tab-console').empty().append('<div class="console"></div>');
-      $(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' + '<a href="#" class="btn iblock one">+1M coins</a> ' + '<a href="#" class="btn iblock two">+1000 cons. mats</a> ' + '<a href="#" class="btn iblock thirty">+1000 food / wine</a> ' + '<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a> <br /><br />' + '<a href="#" class="btn iblock five">level up</a> ' + '<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a> ' + '<a href="#" class="btn iblock six">+1000 fame</a> ' + '<a href="#" class="btn iblock seven">refresh trades</a> <br /><br />' + '<a href="#" class="btn iblock eleven">random soldiers</a> ' + '<a href="#" class="btn iblock twelve">random ships</a> ' + '<a href="#" class="btn iblock fourty">defend city</a> ' + '<a href="#" class="btn iblock fifty">battle-ready</a> <br /><br />' + '<a href="#" class="btn iblock ninety">add city</a> ' + '</div>');
-      $(this.handle + ' #tab-data').empty().append('<textarea class="storage-data"></textarea>' + '<div class="toolbar">' + '<a href="#" class="btn iblock refresh">Refresh</a> ' + '<a href="#" class="btn iblock load">Load</a> ' + '<a href="#" class="btn iblock save">Save</a> ' + '</div>');
-      $(this.handle).on('click', '.fourty', function () {
-        var city_index = game.get_random(1, core.get_num_settlements() - 1);
-
-        var _settlement = core.get_settlement(city_index);
-
-        core.queue_add(_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY, {
-          army: {
-            militia: 40,
-            axeman: 30,
-            knight: 10,
-            bowman: 20,
-            cannon: 200,
-            catapult: 300,
-            crossbowman: 10,
-            pikeman: 30
-          }
-        });
-        return false;
-      }).on('click', '.fifty', function () {
-        for (var i = 0; i < 9; i++) {
-          core.level_up();
-        }
-
-        settlement.add_to_storage('wood', 1000);
-        settlement.add_to_storage('stones', 1000);
-        settlement.add_to_storage('woodplanks', 1000);
-        settlement.add_to_storage('provisions', 1000);
-        settlement.add_to_storage('ropes', 50);
-        settlement.add_to_storage('barrels', 50);
-        settlement.add_to_storage('tools', 100);
-        settlement.inc_coins(2000000);
-        var army = settlement.army();
-
-        for (var soldier in army) {
-          army[soldier] = game.get_random(1, 100);
-        }
-
-        settlement.build('provisions');
-        settlement.build('barracks');
-        settlement.build('shipyard');
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.eleven', function () {
-        var army = settlement.army();
-
-        for (var soldier in army) {
-          army[soldier] = game.get_random(1, 100);
-        }
-
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.twelve', function () {
-        var navy = settlement.navy();
-
-        for (var ship in navy) {
-          navy[ship] = game.get_random(1, 10);
-        }
-
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.fourteen', function () {
-        settlement.raise_faith(900);
-        settlement.raise_espionage(900);
-        settlement.raise_research(900);
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.one', function () {
-        settlement.inc_coins(1000000);
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.fifteen', function () {
-        settlement.add_to_storage('provisions', 1000);
-        settlement.add_to_storage('donkeys', 1000);
-        settlement.add_to_storage('ropes', 1000);
-        settlement.add_to_storage('spyglasses', 1000);
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.two', function () {
-        settlement.add_to_storage('wood', 1000);
-        settlement.add_to_storage('stones', 1000);
-        settlement.add_to_storage('woodplanks', 1000);
-        settlement.add_to_storage('clay', 1000);
-        settlement.add_to_storage('bricks', 1000);
-        settlement.add_to_storage('tools', 500);
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.thirty', function () {
-        settlement.add_to_storage('bread', 1000);
-        settlement.add_to_storage('meat', 1000);
-        settlement.add_to_storage('wine', 1000);
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.five', function () {
-        core.level_up();
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.six', function () {
-        settlement.raise_fame(1000);
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.seven', function () {
-        core.refresh_trades();
-        core.save_and_refresh();
-        return false;
-      }).on('click', '.refresh', function () {
-        $(handle + ' .storage-data').val(core.get_storage_data('live', true));
-        return false;
-      }).on('click', '.ninety', function () {
-        core.add_random_settlement();
-        return false;
-      }).on('click', '.load', function () {
-        var save_game = $(handle + ' .storage-data').val();
-
-        if (save_game !== '') {
-          core.ui().open_modal(function (button) {
-            if (button === 'yes') {
-              core.set_storage_data('live', save_game, true);
-              document.location.reload();
-            }
-          }, 'Are you sure you want to load a new game? You will lose all progress on the current game!', 'Civitas');
-        } else {
-          core.ui().error('Invalid save game.');
-        }
-
-        return false;
-      }).on('click', '.save', function () {
-        var save_game = $(handle + ' .storage-data').val();
-
-        if (save_game === '') {
-          save_game = core.get_storage_data('live', true);
-        }
-
-        var a = document.createElement("a");
-        a.style.display = "none";
-        document.body.appendChild(a);
-        a.href = window.URL.createObjectURL(new Blob([save_game], {
-          type: 'text/plain'
-        }));
-        a.setAttribute("download", 'civitas_savegame.json');
-        a.click();
-        window.URL.revokeObjectURL(a.href);
-        document.body.removeChild(a);
-        return false;
-      });
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_debug).call(this, params));
-  }
-
-  return ui_panel_debug;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Help panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_help
- * @extends ui_panel
- * @returns {ui_panel_help}
- */
-var ui_panel_help =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_help, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_help}
-   * @param {Object} params
-   */
-  function ui_panel_help(params) {
-    _classCallCheck(this, ui_panel_help);
-
-    params.id = 'help';
-    params.template = ui.generic_panel_template('Help');
+    params.id = 'army';
+    params.template = ui.generic_panel_template('Army');
 
     params.on_show = function (params) {
-      var core = this.core();
-      $(this.handle + ' section').append(core.ui().tabs(['About', 'Buildings', 'Settlements', 'Religion', 'Research']));
-      $(this.handle + ' #tab-buildings').empty().append('<fieldset>' + '<legend>Table of Contents</legend>' + '<ul>' + '<li><a href="#">Intro</a></li>' + '<li><a href="#">Build</a></li>' + '<li><a href="#">Upgrade</a></li>' + '<li><a href="#">Demolish</a></li>' + '<li><a href="#">Production</a></li>' + '<li><a href="#">Housing</a></li>' + '<li><a href="#">Municipal</a></li>' + '<li><a href="#">Storage</a></li>' + '<li><a href="#">Coins</a></li>' + '</ul>' + '</fieldset>' + '<h3>Intro</h3>' + '<p>In Civitas, buildings are the backbone of your city, providing you with goods for export.</p>' + '<h3>Build</h3>' + '<p>Each building has some special requirements to build, whether a required city level or another existing building.</p>' + '<h3>Upgrade</h3>' + '<p>Upgrading one of your buildings has several benefits, besides the obvious estetic one.</p>' + '<img title="Level 1 house" class="help tips" src="' + game.ASSETS_URL + 'images/assets/buildings/house1.png" /> ' + '<img title="Level 3 house" class="help tips" src="' + game.ASSETS_URL + 'images/assets/buildings/house3.png" /> ' + '<img title="Maximum level house" class="help tips" src="' + game.ASSETS_URL + 'images/assets/buildings/house5.png" />' + '<p>Upgrading a building costs the initial building price multiplied by the level. So, if a building initially costs 100 ' + core.ui().resource_small_img('coins') + ' and 20 ' + core.ui().resource_small_img('wood') + ' to construct, upgrading it to level 2 will cost 200 ' + core.ui().resource_small_img('coins') + ' and 40 ' + core.ui().resource_small_img('wood') + ', so on.</p>' + '<p>When a building is upgraded, it produces the inital amount of goods multiplied by the level of the building. Keep in mind that the materials it uses for production are the same as for a building of level 1, so upgrading a building is an easy way of getting double (or triple) the production goods for the same materials as the previous level used.</p>' + '<h3>Demolish</h3>' + '<p>Demolishing a building has no actual benefits except it no longer used the production materials (a better way to adjust that will be to stop the production of the specific building, this way you can restart it when you want).</p>' + '<h3>Production</h3>' + '<p></p>' + '<h3>Housing</h3>' + '<p></p>' + '<h3>Municipal</h3>' + '<p></p>' + '<h3>Storage</h3>' + '<p>The goods you`re producing need a storage place inside your city, the initial Marketplace provides some storage space (100k <img class="small" src="' + game.ASSETS_URL + 'images/assets/resources/storage.png" /> ), and it can be increased even further with upgrading, but you will need to build Warehouses to store all the goods. If you have no free storage space, the produced goods will be lost.</p>' + '<h3>Coins</h3>' + '<p>Your city can only gain coins through trades and taxes.</p>');
-      $(this.handle + ' #tab-religion').empty().append('<h2>Religion</h2>');
-      $(this.handle + ' #tab-settlements').empty().append('<fieldset>' + '<legend>Table of Contents</legend>' + '<ul>' + '<li><a href="#">Intro</a></li>' + '<li><a href="#">Cities and villages</a></li>' + '<li><a href="#">Diplomacy</a></li>' + '<li><a href="#">Fame and levels</a></li>' + '<li><a href="#">Influence</a></li>' + '<li><a href="#">Espionage</a></li>' + '<li><a href="#">Prestige</a></li>' + '<li><a href="#">Pacts and alliances</a></li>' + '<li><a href="#">Wars</a></li>' + '<li><a href="#">Caravans</a></li>' + '</ul>' + '</fieldset>' + '<h3>Intro</h3>' + '<p></p>' + '<h3>Cities and villages</h3>' + '<p></p>' + '<h3>Diplomacy</h3>' + '<p></p>' + '<h3>Fame and levels</h3>' + '<p>Each time you reach a specific fame level, your city gets a new level, thus you never lose your initial fame. There are several ways of getting extra fame (besides your initial Marketplace), there are several municipal buildings that add a small amount of fame to your city each day (this amount can be increased by upgrading the buildings).</p>' + '<p>There is no fixed way in which you can lose fame, except the random events that occur from time to time, or if another city manages to incite your population to revolt.</p>' + '<h3>Influence</h3>' + '<p>All settlements in the game world have an influence rating with each of the other settlements. The influence drops over time (yearly) and needs to be kept above a certain level, else the other cities might attack your city.</p>' + '<p>Maximum influence a settlement can have is <strong>' + game.MAX_INFLUENCE_VALUE + '</strong>.</p>' + '<h3>Espionage</h3>' + '<p>After building your city Embassy, you can start assigning spies to other settlements using your accumulated espionage points. Depending on the amount of espionage you use for a spy mission, that mission has a rate of success. The most points you can assign are <strong>' + game.MAX_ESPIONAGE_VALUE + '</strong> ' + core.ui().resource_small_img('espionage') + ' (maximum espionage points a city can get) and this gives you approximately a <strong>' + game.MAX_ESPIONAGE_VALUE / game.MAX_ESPIONAGE_SUCESS_RATE + '%</strong> success rate.</p>' + '<h3>Prestige</h3>' + '<p>Prestige is a very important feature of your city because it influences the way other settlements see you and they will act upon that information. Low prestige might be good for your city if you plan to lay low and prepare (the other settlements won`t bother to go to war with a city with low prestige unless you manage somehow to piss them off) but usually, your city prestige should raise with the city level.</p>' + '<p>Prestige is gained through trading with other settlements, sending caravans with resources to help them when in need, etc. Random events can also affect your city prestige. The maximum prestige a settlement can get is <strong>' + game.MAX_PRESTIGE_VALUE + '</strong> ' + core.ui().resource_small_img('prestige') + '.</p>' + '<h3>Pacts and alliances</h3>' + '<p></p>' + '<h3>Wars</h3>' + '<p></p>' + '<h3>Caravans</h3>' + '<p></p>');
-      $(this.handle + ' #tab-about').empty().append('<h2>About Civitas</h2>' + '<p>Civitas is an empire-building game written in Javascript with the help of the <a target="_blank" href="https://jquery.com">jQuery</a> library. All the development is done over <a target="_blank" href="https://github.com/sizeofcat/civitas">GitHub</a> and everybody can contribute.</p>' + '<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>, is free and distributed under the <a target="_blank" href="https://raw.githubusercontent.com/sizeofcat/civitas/master/LICENSE">GPLv3 license</a>.</p>' + '<p>Big thanks to:</p>' + '<ul>' + '<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' + '<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' + '</ul>');
-      $(this.handle + ' #tab-research').empty().append('<h2>Research</h2>');
-      $(this.handle + ' #tab-diplomacy').empty().append('<h2>Diplomacy</h2>');
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_help).call(this, params));
-  }
-
-  return ui_panel_help;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Create a new army panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_new_army
- * @extends ui_panel
- * @returns {ui_panel_new_army}
- */
-var ui_panel_new_army =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_new_army, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_new_army}
-   * @param {Object} params
-   */
-  function ui_panel_new_army(params) {
-    _classCallCheck(this, ui_panel_new_army);
-
-    params.template = ui.campaign_panel_template('New army');
-    params.id = 'new-army';
-
-    params.on_show = function (params) {
-      var self = this;
       var core = this.core();
       var my_settlement = core.get_settlement();
-      var settlement = params.data;
-      var settlements = core.get_settlements();
-      var army = my_settlement.army();
-      var location = my_settlement.location();
-      var distance = core.world().get_distance_in_days(location, settlement.location());
-      this.assigned_army = {};
-      this.assigned_navy = {};
-
-      for (var item in army) {
-        this.assigned_army[item] = army[item];
-      }
-
-      if (my_settlement.can_build_ships()) {
-        var _navy = my_settlement.navy();
-
-        for (var _item in _navy) {
-          this.assigned_navy[_item] = _navy[_item];
-        }
-      }
-
-      var _t = '<div class="column">' + '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
-
-      for (var _item2 in game.ARMY_COSTS) {
-        var _cost = 0;
-
-        if (_item2 === 'coins') {
-          _cost = game.ARMY_COSTS[_item2] * distance;
-        } else if (_item2 === 'provisions') {
-          _cost = Math.ceil(game.ARMY_COSTS[_item2] * distance / 4);
-        } else {
-          _cost = game.ARMY_COSTS[_item2];
-        }
-
-        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(_item2) + '</dd>';
-      }
-
-      _t += '</dl>' + '</fieldset>';
-
-      if (typeof army !== 'undefined') {
-        _t += '<fieldset>' + '<legend>Soldiers</legend>';
-
-        for (var _item3 in army) {
-          _t += '<div class="army-item">' + '<a href="#" data-max="' + army[_item3] + '" data-soldier="' + _item3 + '" class="army-item-inc">+</a>' + '<a href="#" data-max="' + army[_item3] + '" data-soldier="' + _item3 + '" class="army-item-dec">-</a>' + '<img class="tips" title="' + game.SOLDIERS[_item3].name + '" src="' + game.ASSETS_URL + 'images/assets/army/' + _item3.toLowerCase().replace(/ /g, "_") + '.png" />' + '<span class="amount">' + army[_item3] + '</span>' + '</div>';
-        }
-
-        _t += '</fieldset>';
-      }
-
-      _t += '<fieldset>' + '<legend>Destination</legend>' + '<select class="army-destination">' + '<option value="0">-- select --</option>';
-
-      for (var i = 1; i < settlements.length; i++) {
-        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
-      }
-
-      _t += '</select>' + '</fieldset>' + '</div>' + '<div class="column">';
-
-      if (my_settlement.can_build_ships()) {
-        if (typeof navy !== 'undefined') {
-          _t += '<fieldset>' + '<legend>Ships</legend>';
-
-          for (var _item4 in navy) {
-            _t += '<div class="navy-item">' + '<a href="#" data-max="' + navy[_item4] + '" data-ship="' + _item4 + '" class="navy-item-inc">+</a>' + '<a href="#" data-max="' + navy[_item4] + '" data-ship="' + _item4 + '" class="navy-item-dec">-</a>' + '<img class="tips" title="' + _item4 + '" src="' + game.ASSETS_URL + 'images/assets/army/' + _item4.toLowerCase().replace(/ /g, "_") + '.png" />' + '<span class="amount">' + navy[_item4] + '</span>' + '</div>';
-          }
-
-          _t += '</fieldset>';
-        }
-      }
-
-      if (my_settlement.can_recruit_heroes()) {
-        var heroes = my_settlement.heroes();
-        _t += '<fieldset>' + '<legend>Hero</legend>' + '<select class="army-hero">';
-
-        if ($.isEmptyObject(heroes)) {
-          _t += '<option value="0">-- no heroes available --</option>';
-        } else {
-          _t += '<option value="0">-- select --</option>';
-
-          for (var _item5 in heroes) {
-            _t += '<option value="' + _item5 + '">' + heroes[_item5] + '</option>';
-          }
-        }
-
-        _t += '</select>' + '</fieldset>';
-      } else {
-        _t += '<p><strong>Note!</strong> Build a Tavern to be able to recruit powerful heroes and assign them to your armies.</p>';
-      }
-
-      _t += '</div>';
-      $(this.handle + ' section').empty().append(_t);
-      $(this.handle).on('click', '.navy-item-inc', function () {
-        var max = parseInt($(this).data('max'), 10);
-        var ship = $(this).data('ship');
-        var current = parseInt($(this).parent().children('.amount').html(), 10);
-
-        if (current + 1 <= max) {
-          self.assigned_navy[ship] = current + 1;
-          $(this).parent().children('.amount').html(current + 1);
-        }
-
-        return false;
-      }).on('click', '.navy-item-dec', function () {
-        var ship = $(this).data('ship');
-        var current = parseInt($(this).parent().children('.amount').html(), 10);
-
-        if (current - 1 >= 0) {
-          self.assigned_navy[ship] = current - 1;
-          $(this).parent().children('.amount').html(current - 1);
-        }
-
-        return false;
-      }).on('click', '.army-item-inc', function () {
-        var max = parseInt($(this).data('max'), 10);
-        var soldier = $(this).data('soldier');
-        var current = parseInt($(this).parent().children('.amount').html(), 10);
-
-        if (current + 1 <= max) {
-          self.assigned_army[soldier] = current + 1;
-          $(this).parent().children('.amount').html(current + 1);
-        }
-
-        return false;
-      }).on('click', '.army-item-dec', function () {
-        var soldier = $(this).data('soldier');
-        var current = parseInt($(this).parent().children('.amount').html(), 10);
-
-        if (current - 1 >= 0) {
-          self.assigned_army[soldier] = current - 1;
-          $(this).parent().children('.amount').html(current - 1);
-        }
-
-        return false;
-      }).on('click', '.dispatch', function () {
-        if (!my_settlement.can_recruit_soldiers()) {
-          core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
-          return false;
-        }
-
-        var destination = parseInt($(self.handle + ' .army-destination').val(), 10);
-
-        if (settlement && settlement.id() !== destination || !settlement) {
-          settlement = core.get_settlement(destination);
-        } // TODO there is an error here when there is no shipyard to send navy.
-
-
-        if (destination === 0 || !settlement || my_settlement.num_soldiers(self.assigned_army) === 0 && my_settlement.num_ships(self.assigned_navy) === 0) {
-          core.ui().error('There was an error creating and dispatching the army, check the data you entered and try again.');
-          return false;
-        }
-
-        if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_ARMY, {
-          army: self.assigned_army,
-          navy: self.assigned_navy
-        })) {
-          core.do_achievement('sendarmy');
-          self.destroy();
-        } else {
-          core.ui().error('There was an error creating and dispatching the army, check the data you entered and try again.');
-        }
-
-        return false;
-      });
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_army).call(this, params));
-  }
-
-  return ui_panel_new_army;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Create a new caravan panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_new_caravan
- * @extends ui_panel
- * @returns {ui_panel_new_caravan}
- */
-var ui_panel_new_caravan =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_new_caravan, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_new_caravan}
-   * @param {Object} params
-   */
-  function ui_panel_new_caravan(params) {
-    _classCallCheck(this, ui_panel_new_caravan);
-
-    params.template = ui.campaign_panel_template('New caravan');
-    params.id = 'new-caravan';
-
-    params.on_show = function (params) {
-      this.resources = {};
-      var self = this;
-      var core = this.core();
-      var my_settlement = core.get_settlement();
-      var settlement = params.data;
-      var settlements = core.get_settlements();
-      var location = my_settlement.location();
-      var distance = core.world().get_distance_in_days(location, settlement.location());
-
-      var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
-
-      for (var item in game.CARAVAN_COSTS) {
-        var _cost = 0;
-
-        if (item === 'coins') {
-          _cost = game.CARAVAN_COSTS[item] * distance;
-        } else if (item === 'provisions') {
-          _cost = Math.ceil(game.CARAVAN_COSTS[item] * distance / 4);
-        } else {
-          _cost = game.CARAVAN_COSTS[item];
-        }
-
-        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(item) + '</dd>';
-      }
-
-      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<select class="caravan-destination">' + '<option value="0">-- select --</option>';
-
-      for (var i = 1; i < settlements.length; i++) {
-        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
-      }
-
-      _t += '</select>' + '</fieldset>' + '<fieldset class="select-combo">' + '<legend>Resources</legend>' + '<select class="caravan-resources-select">' + '<option value="0">-- select --</option>' + '<option value="coins">Coins</option>';
-      var resources = my_settlement.get_resources();
-
-      for (var _item in resources) {
-        if (!game.is_virtual_resource(_item)) {
-          _t += '<option value="' + _item + '"> ' + game.get_resource_name(_item) + '</option>';
-        }
-      }
-
-      _t += '</select>' + '<input title="Add the resources to the list." type="button" class="tips caravan-resources-add" value="+" />' + '<input title="Amount of selected resource to add to the caravan." type="number" value="1" class="tips caravan-resources-amount" min="1" max="999" />' + '<div class="caravan-resources clearfix"></div>' + '</fieldset>';
-      $(this.handle + ' section').empty().append(_t);
-
-      this.generate_table_data = function () {
-        var _t = '<table class="caravan-resources clearfix">' + '<thead>' + '<tr>' + '<td>Amount</td>' + '<td>Resource</td>' + '<td></td>' + '</tr>' + '</thead>' + '<tbody>';
-
-        for (var _item2 in this.resources) {
-          _t += '<tr>' + '<td>' + this.resources[_item2] + '</td>' + '<td>' + core.ui().resource_small_img(_item2) + '</td>' + '<td>' + '<a title="Remove this resource from the caravan." href="#" data-id="' + _item2 + '" class="tips caravan-resources-delete">-</a>' + '</td>' + '</tr>';
-        }
-
-        _t += '</tbody>' + '</table>';
-        $(this.handle + ' .caravan-resources').empty().append(_t);
-      };
-
-      $(this.handle).on('click', '.caravan-resources-add', function () {
-        var amount = parseInt($(self.handle + ' .caravan-resources-amount').val(), 10);
-        var resource = $(self.handle + ' .caravan-resources-select').val();
-
-        if (resource !== '0') {
-          if (typeof self.resources[resource] !== 'undefined' && !my_settlement.has_resource(resource, self.resources[resource] + amount)) {
-            core.ui().error(my_settlement.name() + ' doesn`t have enough ' + game.get_resource_name(resource) + '.');
-            return false;
-          } else if (typeof self.resources[resource] === 'undefined' && !my_settlement.has_resource(resource, amount)) {
-            core.ui().error(my_settlement.name() + ' doesn`t have enough ' + game.get_resource_name(resource) + '.');
-            return false;
-          }
-
-          if (typeof self.resources[resource] !== 'undefined') {
-            self.resources[resource] = self.resources[resource] + amount;
-          } else {
-            self.resources[resource] = amount;
-          }
-
-          self.generate_table_data();
-        }
-
-        return false;
-      }).on('click', '.caravan-resources-delete', function () {
-        var resource = $(this).data('id');
-        delete self.resources[resource];
-        self.generate_table_data();
-        return false;
-      }).on('click', '.dispatch', function () {
-        if (!my_settlement.can_trade()) {
-          core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
-          return false;
-        }
-
-        var destination = parseInt($(self.handle + ' .caravan-destination').val(), 10);
-
-        if (settlement && settlement.id() !== destination || !settlement) {
-          settlement = core.get_settlement(destination);
-        }
-
-        if (destination === 0 || !settlement || $.isEmptyObject(self.resources)) {
-          core.ui().error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
-          return false;
-        }
-
-        if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_CARAVAN, {
-          resources: self.resources
-        })) {
-          core.do_achievement('donkeylord');
-          self.destroy();
-        } else {
-          core.ui().error('There was an error creating and dispatching the caravan, check the data you entered and try again.');
-        }
-
-        return false;
-      });
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_caravan).call(this, params));
-  }
-
-  return ui_panel_new_caravan;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Create a new scout panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_new_scout
- * @extends ui_panel
- * @returns {ui_panel_new_scout}
- */
-var ui_panel_new_scout =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_new_scout, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_new_scout}
-   * @param {Object} params
-   */
-  function ui_panel_new_scout(params) {
-    _classCallCheck(this, ui_panel_new_scout);
-
-    params.template = ui.campaign_panel_template('New scout');
-    params.id = 'new-scout';
-
-    params.on_show = function (params) {
-      var self = this;
-      var core = this.core();
-      var my_settlement = core.get_settlement();
-      var place = params.data;
-      var location = my_settlement.location();
-      var distance = core.world().get_distance_in_days(location, place.location());
-
-      var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
-
-      for (var item in game.SCOUT_COSTS) {
-        var _cost = 0;
-
-        if (item === 'coins') {
-          _cost = game.SCOUT_COSTS[item] * distance;
-        } else if (item === 'provisions') {
-          _cost = Math.ceil(game.SCOUT_COSTS[item] * distance / 4);
-        } else {
-          _cost = game.SCOUT_COSTS[item];
-        }
-
-        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(item) + '</dd>';
-      }
-
-      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<input type="hidden" class="scout-destination" value="' + place.id() + '" />' + '</fieldset>';
-      $(this.handle + ' section').empty().append(_t);
-      $(this.handle).on('click', '.dispatch', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to send scouts to other settlements.');
-          return false;
-        } //let destination = parseInt($(self.handle + ' .scout-destination').val(), 10);
-
-
-        var data = {// Todo
-        };
-
-        if (core.queue_add(my_settlement, place, game.ACTION_CAMPAIGN, game.CAMPAIGN_SCOUT, data)) {
-          self.destroy();
-        } else {
-          core.ui().error('There was an error creating and dispatching the scout, check the data you entered and try again.');
-        }
-
-        return false;
-      });
-    };
-
-    params.on_refresh = function () {// Todo
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_scout).call(this, params));
-  }
-
-  return ui_panel_new_scout;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Create a new spy panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_new_spy
- * @extends ui_panel
- * @returns {ui_panel_new_spy}
- */
-var ui_panel_new_spy =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_new_spy, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_new_spy}
-   * @param {Object} params
-   */
-  function ui_panel_new_spy(params) {
-    _classCallCheck(this, ui_panel_new_spy);
-
-    params.template = ui.campaign_panel_template('New spy');
-    params.id = 'new-spy';
-
-    params.on_show = function (params) {
-      var self = this;
-      var core = this.core();
-      var my_settlement = core.get_settlement();
-      var settlement = params.data;
-      var settlements = core.get_settlements();
-      var espionage = my_settlement.espionage();
-      var location = my_settlement.location();
-      var distance = core.world().get_distance_in_days(location, settlement.location());
-
-      var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
-
-      for (var item in game.SPY_COSTS) {
-        var _cost = 0;
-
-        if (item === 'coins') {
-          _cost = game.SPY_COSTS[item] * distance;
-        } else if (item === 'provisions') {
-          _cost = Math.ceil(game.SPY_COSTS[item] * distance / 4);
-        } else {
-          _cost = game.SPY_COSTS[item];
-        }
-
-        _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(item) + '</dd>';
-      }
-
-      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<select class="espionage-destination">' + '<option value="0">-- select --</option>';
-
-      for (var i = 1; i < settlements.length; i++) {
-        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
-      }
-
-      _t += '</select>' + '</fieldset>' + '<fieldset class="range-combo">' + '<legend>Espionage</legend>' + '<input type="range" value="' + espionage + '" min="1" max="' + espionage + '" class="espionage-range" />' + '<input type="text" readonly value="' + espionage + '" class="espionage-value tips" title="Total espionage assigned to this spy." />' + '<input type="text" readonly value="' + Math.ceil(espionage / 100) + '%" class="espionage-chance tips" title="Chance of mission success." />' + '</fieldset>' + '<fieldset>' + '<legend>Mission</legend>' + '<select class="espionage-mission">' + '<option value="0">-- select --</option>';
-
-      for (var _i = 1; _i < game.SPY_MISSIONS.length; _i++) {
-        _t += '<option value="' + _i + '">' + game.SPY_MISSIONS[_i].capitalize() + '</option>';
-      }
-
-      _t += '</select>' + '</fieldset>' + '<fieldset class="espionage-rel">' + '<legend>Religion' + (settlement ? ' (currently ' + settlement.religion().name + ')' : '') + '</legend>' + '<select class="espionage-religion">';
-
-      for (var _i2 = 0; _i2 < game.RELIGIONS.length; _i2++) {
-        _t += '<option value="' + _i2 + '">' + game.RELIGIONS[_i2].capitalize() + (_i2 === my_settlement.religion().id ? ' (your religion)' : '') + '</option>';
-      }
-
-      _t += '</select>' + '<p><strong>Note!</strong> Attempting to change a settlement`s religion uses up all your accumulated faith.</p>' + '</fieldset>';
-      $(this.handle + ' section').empty().append(_t);
-      $(this.handle).on('change', '.espionage-range', function () {
-        var value = parseInt($(this).val(), 10);
-        $(self.handle + ' .espionage-value').val(value);
-        $(self.handle + ' .espionage-chance').val(Math.ceil(value / 100) + '%');
-      }).on('change', '.espionage-mission', function () {
-        var value = parseInt($(this).val(), 10);
-
-        if (value === game.SPY_MISSION_RELIGION) {
-          $(self.handle + ' .espionage-rel').show();
-        } else {
-          $(self.handle + ' .espionage-rel').hide();
-        }
-      }).on('click', '.dispatch', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
-          return false;
-        }
-
-        var _espionage = parseInt($(self.handle + ' .espionage-value').val(), 10);
-
-        var destination = parseInt($(self.handle + ' .espionage-destination').val(), 10);
-        var mission = parseInt($(self.handle + ' .espionage-mission').val(), 10);
-
-        if (settlement && settlement.id() !== destination || !settlement) {
-          settlement = core.get_settlement(destination);
-        }
-
-        if (destination === 0 || _espionage > espionage || !settlement || mission <= 0) {
-          core.ui().error('There was an error creating and dispatching the spy, check the data you entered and try again.');
-          return false;
-        }
-
-        var data = {
-          espionage: _espionage,
-          mission: mission
-        };
-
-        if (mission === game.SPY_MISSION_RELIGION) {
-          data.religion = parseInt($(self.handle + ' .espionage-religion').val(), 10);
-        }
-
-        if (core.queue_add(my_settlement, settlement, game.ACTION_CAMPAIGN, game.CAMPAIGN_SPY, data)) {
-          core.do_achievement('jamesbond');
-          self.destroy();
-        } else {
-          core.ui().error('There was an error creating and dispatching the spy, check the data you entered and try again.');
-        }
-
-        return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var my_settlement = core.get_settlement();
-      var espionage = my_settlement.espionage();
-      $(this.handle + ' .espionage-range').attr('max', espionage);
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_new_spy).call(this, params));
-  }
-
-  return ui_panel_new_spy;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Place panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_place
- * @extends ui_panel
- * @returns {ui_panel_place}
- */
-var ui_panel_place =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_place, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_place}
-   * @param {Object} params
-   */
-  function ui_panel_place(params) {
-    _classCallCheck(this, ui_panel_place);
-
-    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '</footer>' + '</div>', params.params_data = null;
-    params.id = 'place';
-
-    params.on_show = function (params) {
-      var self = this;
-      var core = this.core();
-      var my_settlement = core.get_settlement();
-      var location = my_settlement.location();
-      var place = params.data;
-      this.params_data = params;
-      $(this.handle + ' header').append('Place');
+      var army = params.data;
+      $(this.handle + ' header').append(army.name);
       var tabs = ['Info'];
 
-      if (place.is_scouted()) {
-        tabs.push('Resources', 'Construction');
+      if (my_settlement.num_soldiers(army.army) > 0) {
+        tabs.push('Soldiers');
+      }
+
+      if (my_settlement.num_ships(army.navy) > 0) {
+        tabs.push('Ships');
       }
 
       $(this.handle + ' section').append(core.ui().tabs(tabs));
-      var claimed_by = place.is_claimed();
-      var claimed_by_settlement = core.get_settlement(claimed_by);
-      $(this.handle + ' #tab-info').empty().append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' + '<dl>' + (place.is_scouted() || claimed_by !== false && claimed_by_settlement.id() === my_settlement.id() ? '<dt>Name</dt>' + '<dd>' + place.name() + '</dd>' + '<dt>Claimed by</dt>' + '<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>' : '') + '<dt>Scouted</dt>' + '<dd>' + (place.is_scouted() ? 'yes' : 'no') + '</dd>' + '<dt>Time to build</dt>' + '<dd>' + game.PLACE_TIME_TO_BUILD + ' days</dd>' + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, place.location()) + ' miles (' + core.world().get_distance_in_days(location, place.location()) + ' days)</dd>' + '</dl>');
+      $(this.handle + ' #tab-info').append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/emblems/' + (typeof army.icon !== 'undefined' ? army.icon : '22') + '.png" />' + '<p>' + army.description + '</p>');
 
-      if (place.is_scouted()) {
-        $(this.handle + ' #tab-resources').empty().append('<p>Stage 2: Gather the resources below and use caravans to send them to this place.</p>' + '<p><strong>Note!</strong> If the place is not claimed by anybody, do not send resources or they will be lost.</p>' + '<div class="required">' + '<p>This place has no required resources.</p>' + '</div>');
-        $(this.handle + ' #tab-construction').empty().append('<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>');
-
-        if (claimed_by !== false && claimed_by === my_settlement.id()) {
-          $(this.handle + ' footer').empty().append('<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"></a>' + '<a class="tips caravan" title="Send a caravan to this place." href="#"></a>');
-        } else if (claimed_by === false) {
-          $(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"></a>');
-        }
-      } else {
-        $(this.handle + ' footer').empty().append('<a class="tips scout" title="Send a scout to this place." href="#"></a>');
+      if (my_settlement.num_soldiers(army.army) > 0) {
+        $(this.handle + ' #tab-soldiers').append(core.ui().army_list(army.army));
       }
 
-      $(this.handle).on('click', '.claim', function () {
-        if (!my_settlement.can_diplomacy() || !my_settlement.can_research()) {
-          core.ui().error('You will need to construct an Embassy and Academy before being able to claim world places.');
-          return false;
-        }
-
-        if (place.is_claimed() !== false) {
-          core.ui().error('This place has been claimed by another settlement.');
-          return false;
-        }
-
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            if (!place.claim(my_settlement)) {
-              core.ui().error('There was an error claiming this world place, check the data you entered and try again.');
-              return false;
-            } else {
-              core.ui().notify('A place in the world has been claimed by your settlement.');
-              core.save_and_refresh();
-              self.destroy();
-            }
-          }
-        }, 'Are you sure you want to claim this world place?');
-        return false;
-      }).on('click', '.unclaim', function () {
-        if (!my_settlement.can_diplomacy() || !my_settlement.can_research()) {
-          core.ui().error('You will need to construct an Embassy and Academy before being able to unclaim world places.');
-          return false;
-        }
-
-        if (place.is_claimed() === false) {
-          core.ui().error('This place is not claimed by your settlement.');
-          return false;
-        }
-
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            if (!place.unclaim(my_settlement)) {
-              core.ui().error('There was an error unclaiming this world place, check the data you entered and try again.');
-              return false;
-            } else {
-              core.ui().notify('A place in the world has been unclaimed by your settlement.');
-              core.save_and_refresh();
-              self.destroy();
-            }
-          }
-        }, 'Are you sure you want to unclaim this world place?');
-        return false;
-      }).on('click', '.caravan', function () {
-        if (!my_settlement.can_trade()) {
-          core.ui().error('You will need to construct a Trading Post before being able to send caravans to other places.');
-          return false;
-        }
-
-        core.ui().open_panel('new_caravan', place);
-        return false;
-      }).on('click', '.view', function () {
-        var _settlement_id = parseInt($(this).data('id'), 10);
-
-        var _settlement = core.get_settlement(_settlement_id);
-
-        if (_settlement) {
-          if (_settlement.id() === my_settlement.id()) {
-            core.ui().open_panel('council');
-          } else {
-            core.ui().open_panel('settlement', _settlement);
-          }
-        }
-
-        return false;
-      }).on('click', '.scout', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to send scouts to other places.');
-          return false;
-        }
-
-        core.ui().open_panel('new_scout', place);
-        return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var place = this.params_data.data;
-
-      if (place.is_scouted()) {
-        var out = '';
-
-        for (var item in place.resources().required) {
-          if (!game.is_virtual_resource(item)) {
-            if (place._resources.required[item] > 0) {
-              out += core.ui().resource_storage_small_el(item, place._resources.required[item]);
-            }
-          }
-        }
-
-        if (out !== '') {
-          $(this.handle + ' #tab-resources .required').empty().append(out);
-        }
+      if (my_settlement.num_ships(army.navy) > 0) {
+        $(this.handle + ' #tab-ships').append(core.ui().navy_list(army.navy));
       }
     };
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_place).call(this, params));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_army).call(this, params));
   }
 
-  return ui_panel_place;
+  return ui_panel_army;
 }(ui_panel);
 "use strict";
 
@@ -21052,452 +20840,227 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
- * Ranks panel data.
+ * Buildings panel data.
  *
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class ui_panel_ranks
+ * @class ui_panel_buildings
  * @extends ui_panel
- * @returns {ui_panel_ranks}
+ * @returns {ui_panel_buildings}
  */
-var ui_panel_ranks =
+var ui_panel_buildings =
 /*#__PURE__*/
 function (_ui_panel) {
-  _inherits(ui_panel_ranks, _ui_panel);
+  _inherits(ui_panel_buildings, _ui_panel);
 
   /**
    * Object constructor.
    * 
    * @private
    * @constructor
-   * @returns {ui_panel_ranks}
+   * @returns {ui_panel_buildings}
    * @param {Object} params
    */
-  function ui_panel_ranks(params) {
-    _classCallCheck(this, ui_panel_ranks);
-
-    params.id = 'ranks';
-    params.template = ui.generic_panel_template('World Ranks');
-
-    params.on_show = function (params) {
-      $(this.handle + ' section').append('<div class="ranks-list"></div>');
-    };
-
-    params.on_refresh = function () {
-      var ranking_list = [];
-      var settlements = this.core().get_settlements();
-
-      for (var i = 0; i < settlements.length; i++) {
-        if (settlements[i].is_urban()) {
-          ranking_list.push({
-            name: settlements[i].name(),
-            data: settlements[i].get_rank()
-          });
-        }
-      }
-
-      ranking_list.sort(function (a, b) {
-        var keyA = new Date(a.data.score);
-        var keyB = new Date(b.data.score);
-
-        if (keyA > keyB) {
-          return -1;
-        }
-
-        if (keyA < keyB) {
-          return 1;
-        }
-
-        return 0;
-      });
-      var _t = '<table class="normal">';
-      _t += '<thead>' + '<tr>' + '<td class="center">Rank</td>' + '<td>City</td>' + '<td class="center">Score</td>' + '</tr>' + '</thead>' + '<tbody>';
-
-      for (var _i = 0; _i < ranking_list.length; _i++) {
-        _t += '<tr>' + '<td class="center">' + (_i + 1) + '</td>' + '<td>' + ranking_list[_i].name + '</td>' + '<td class="center">' + ranking_list[_i].data.score + '</td>' + '</tr>';
-      }
-
-      _t += '</tbody>' + '</table>';
-      $(this.handle + ' .ranks-list').empty().append(_t);
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_ranks).call(this, params));
-  }
-
-  return ui_panel_ranks;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Settlement panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_settlement
- * @extends ui_panel
- * @returns {ui_panel_settlement}
- */
-var ui_panel_settlement =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_settlement, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_settlement}
-   * @param {Object} params
-   */
-  function ui_panel_settlement(params) {
-    _classCallCheck(this, ui_panel_settlement);
-
-    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips attack" title="Attack this settlement." href="#"></a>' + '<a class="tips caravan" title="Send a caravan to this settlement." href="#"></a>' + '<a class="tips spy" title="Send a spy to this settlement." href="#"></a>' + '<a class="tips alliance" title="Propose an alliance to this settlement." href="#"></a>' + '<a class="tips pact" title="Propose a pact to this settlement." href="#"></a>' + '<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"></a>' + '<a class="tips join" title="Ask this settlement to join your city." href="#"></a>' + '<a class="tips war" title="Declare war to this settlement." href="#"></a>' + '</footer>' + '</div>';
-    params.params_data = null;
-    params.id = 'settlement';
-
-    params.on_show = function (params) {
-      var core = this.core();
-      var my_settlement = core.get_settlement();
-      var settlement = params.data;
-      this.params_data = params;
-      $(this.handle + ' header').append(settlement.name());
-      var tabs = [];
-
-      if (settlement.is_urban()) {
-        tabs.push('Info');
-
-        if (my_settlement.can_diplomacy()) {
-          tabs.push('Army');
-
-          if (settlement.waterside() === true) {
-            tabs.push('Navy');
-          }
-        }
-
-        tabs.push('Resources', 'Imports', 'Exports');
-      } else {
-        tabs.push('Info');
-
-        if (my_settlement.can_diplomacy() || settlement.is_camp()) {
-          tabs.push('Army');
-
-          if (settlement.waterside() === true) {
-            tabs.push('Navy');
-          }
-        }
-
-        tabs.push('Resources');
-      }
-
-      $(this.handle + ' section').append(core.ui().tabs(tabs));
-      $(this.handle).on('click', '.alliance', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to propose an alliance to other settlements.');
-          return false;
-        }
-
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_ALLIANCE, {})) {
-              core.ui().error('There was an error proposing an alliance to this settlement, check the data you entered and try again.');
-              return false;
-            }
-
-            core.do_achievement('pacifist');
-          }
-        }, 'Are you sure you want to propose an alliance to this settlement?');
-        return false;
-      }).on('click', '.join', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to ask other settlements to join your city.');
-          return false;
-        }
-
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_JOIN, {})) {
-              core.ui().error('There was an error proposing this settlement to join your city, check the data you entered and try again.');
-              return false;
-            }
-
-            core.do_achievement('rulethemall');
-          }
-        }, 'Are you sure you want to propose this this settlement to join you?');
-        return false;
-      }).on('click', '.pact', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to propose a pact to other settlements.');
-          return false;
-        }
-
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_PACT, {})) {
-              core.ui().error('There was an error proposing a pact to this settlement, check the data you entered and try again.');
-              return false;
-            }
-
-            core.do_achievement('friendly');
-          }
-        }, 'Are you sure you want to propose a pact to this settlement?');
-        return false;
-      }).on('click', '.ceasefire', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to propose a cease fire to other settlements.');
-          return false;
-        }
-
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            if (!core.queue_add(my_settlement, settlement, game.ACTION_DIPLOMACY, game.DIPLOMACY_PROPOSE_CEASE_FIRE, {})) {
-              core.ui().error('There was an error proposing a cease fire to this settlement, check the data you entered and try again.');
-              return false;
-            }
-          }
-        }, 'Are you sure you want to propose a cease fire to this settlement?');
-        return false;
-      }).on('click', '.war', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to declare war to other settlements.');
-          return false;
-        }
-
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            my_settlement.diplomacy(settlement.id(), game.DIPLOMACY_WAR);
-          }
-        }, 'Are you sure you want to declare war to this settlement?<br /><br />You will lose all influence over ' + settlement.name() + ' and the settlement might retaliate back!');
-        return false;
-      }).on('click', '.caravan', function () {
-        if (!my_settlement.can_trade()) {
-          core.ui().error('You will need to construct a Trading Post before being able to trade resources with other settlements.');
-          return false;
-        }
-
-        core.ui().open_panel('new_caravan', settlement);
-        return false;
-      }).on('click', '.spy', function () {
-        if (!my_settlement.can_diplomacy()) {
-          core.ui().error('You will need to construct an Embassy before being able to send spies to other settlements.');
-          return false;
-        }
-
-        core.ui().open_panel('new_spy', settlement);
-        return false;
-      }).on('click', '.attack', function () {
-        if (!my_settlement.can_recruit_soldiers()) {
-          core.ui().error('You will need to construct a Military Camp before being able to attack other settlements.');
-          return false;
-        }
-
-        core.ui().open_panel('new_army', settlement);
-        return false;
-      });
-    };
-
-    params.on_refresh = function () {
-      var core = this.core();
-      var my_settlement = core.get_settlement();
-      var settlement = this.params_data.data;
-      var trades = settlement.get_trades();
-
-      var _status = my_settlement.get_diplomacy_status(settlement.id());
-
-      var sett_type_text = '';
-      var location = my_settlement.location();
-
-      if (settlement.is_city()) {
-        sett_type_text = 'City';
-      } else if (settlement.is_metropolis()) {
-        sett_type_text = 'Metropolis';
-      } else if (settlement.is_village()) {
-        sett_type_text = 'Village';
-      } else if (settlement.is_camp()) {
-        sett_type_text = 'Raider Camp';
-      }
-
-      $(this.handle + ' #tab-info').empty().append('' + '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' + '<dl>' + '<dt>' + settlement.ruler().title + '</dt><dd>' + settlement.ruler().name + '</dd>' + '<dt>Settlement Type</dt>' + '<dd>' + sett_type_text + '</dd>' + '<dt>Climate</dt>' + '<dd>' + settlement.climate().name + '</dd>' + (my_settlement.can_diplomacy() ? '<dt>Personality</dt>' + '<dd>' + settlement.personality().name + '</dd>' : '') + '<dt>Nationality</dt>' + '<dd>' + settlement.nationality().name + '</dd>' + (my_settlement.can_diplomacy() && settlement.is_urban() ? '<dt>Level</dt>' + '<dd>' + settlement.level() + '</dd>' + '<dt>Prestige</dt>' + '<dd>' + core.ui().progress(settlement.prestige() * 100 / game.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' : '') + '<dt>Population</dt>' + '<dd>' + game.nice_numbers(settlement.population()) + '</dd>' + (my_settlement.can_diplomacy() ? '<dt>Coins</dt>' + '<dd>' + game.nice_numbers(settlement.coins()) + '</dd>' + '<dt>Religion</dt>' + '<dd>' + settlement.religion().name + '</dd>' + '<dt>Influence</dt>' + '<dd>' + core.ui().progress(my_settlement.get_influence_with_settlement(settlement.id()), 'small') + '</dd>' + '<dt>Diplomatic Status</dt>' + '<dd>' + my_settlement.get_diplomacy_status(settlement.id()).name + '</dd>' : '') + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, settlement.location()) + ' miles (' + core.world().get_distance_in_days(location, settlement.location()) + ' days)</dd>' + '</dl>');
-
-      if (my_settlement.can_diplomacy() || settlement.is_camp()) {
-        $(this.handle + ' #tab-army').empty().append(core.ui().army_list(settlement.army()));
-
-        if (settlement.waterside() === true) {
-          $(this.handle + ' #tab-navy').empty().append(core.ui().navy_list(settlement.navy()));
-        }
-      }
-
-      if (settlement.is_urban()) {
-        $(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + core.ui().trades_list(trades, 'imports'));
-        $(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this city will be selling this year.</p>' + core.ui().trades_list(trades, 'exports'));
-      }
-
-      var out = '';
-      var _out = '<p>This settlement has the the following resources:</p>';
-
-      for (var item in settlement.get_resources()) {
-        if (!game.is_virtual_resource(item)) {
-          if (settlement.resources[item] > 0) {
-            out += core.ui().resource_storage_small_el(item, settlement.resources[item]);
-          }
-        }
-      }
-
-      if (out !== '') {
-        _out += out;
-      } else {
-        _out = '<p>This settlement has no resources.</p>';
-      }
-
-      $(this.handle + ' #tab-resources').empty().append(_out);
-
-      if (_status.id === game.DIPLOMACY_VASSAL) {
-        $(this.handle + ' footer .attack').css('display', 'none');
-      } else {
-        $(this.handle + ' footer .attack').css('display', 'inline-block');
-      }
-
-      if (my_settlement.can_diplomacy()) {
-        if (settlement.is_camp()) {
-          $(this.handle + ' footer .caravan, ' + this.handle + ' footer .spy').hide();
-        } else {
-          $(this.handle + ' footer .caravan, ' + this.handle + ' footer .spy').css('display', 'inline-block');
-        }
-
-        if (_status.id === game.DIPLOMACY_PACT && settlement.is_urban()) {
-          $(this.handle + ' footer .alliance').css('display', 'inline-block');
-        } else if (!settlement.is_camp()) {
-          $(this.handle + ' footer .alliance').css('display', 'none');
-        }
-
-        if ((_status.id === game.DIPLOMACY_TRUCE || _status.id === game.DIPLOMACY_CEASE_FIRE) && !settlement.is_camp()) {
-          $(this.handle + ' footer .pact').css('display', 'inline-block');
-        } else {
-          $(this.handle + ' footer .pact').css('display', 'none');
-        }
-
-        if (_status.id === game.DIPLOMACY_WAR && !settlement.is_camp()) {
-          $(this.handle + ' footer .ceasefire').css('display', 'inline-block');
-        } else {
-          $(this.handle + ' footer .ceasefire').css('display', 'none');
-        }
-
-        if (_status.id !== game.DIPLOMACY_WAR && _status.id !== game.DIPLOMACY_VASSAL && !settlement.is_camp()) {
-          $(this.handle + ' footer .war').css('display', 'inline-block');
-        } else {
-          $(this.handle + ' footer .war').css('display', 'none');
-        }
-
-        if (_status.id === game.DIPLOMACY_PACT && settlement.is_village() && !settlement.is_camp()) {
-          $(this.handle + ' footer .join').css('display', 'inline-block');
-        } else {
-          $(this.handle + ' footer .join').css('display', 'none');
-        }
-      }
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_settlement).call(this, params));
-  }
-
-  return ui_panel_settlement;
-}(ui_panel);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Storage panel data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_panel_storage
- * @extends ui_panel
- * @returns {ui_panel_storage}
- */
-var ui_panel_storage =
-/*#__PURE__*/
-function (_ui_panel) {
-  _inherits(ui_panel_storage, _ui_panel);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_panel_storage}
-   * @param {Object} params
-   */
-  function ui_panel_storage(params) {
-    _classCallCheck(this, ui_panel_storage);
-
-    params.id = 'storage';
-    params.template = ui.generic_panel_template('City Storage');
+  function ui_panel_buildings(params) {
+    _classCallCheck(this, ui_panel_buildings);
+
+    params.id = 'buildings';
+    params.template = ui.generic_panel_template('City Buildings');
 
     params.on_show = function (params) {
       var core = this.core();
       var settlement = core.get_settlement();
-      var storage_space = settlement.storage();
-      var resources = settlement.get_resources();
-      $(this.handle + ' section').append(core.ui().tabs(game.RESOURCE_CATEGORIES));
-      $(this.handle + ' section').append('<p>Total storage space: <span class="total-storage">' + storage_space.all + '</span>, used: <span class="used-storage">' + storage_space.occupied + '</span></p>');
+      var el = this.handle;
+      var building;
+      var building_data;
+      var building_image;
+      var _t = '<div class="left buildings">';
+      _t += '<div class="tabs">' + '<ul>';
 
-      for (var i = 0; i < game.RESOURCE_CATEGORIES.length; i++) {
-        $(this.handle + ' #tab-' + game.RESOURCE_CATEGORIES[i]).append('<div class="storage-board"></div>');
+      for (var category in game.BUILDINGS_CATEGORIES) {
+        _t += '<li><a href="#tab-' + category.toLowerCase() + '">' + category + '</a></li>';
       }
 
-      for (var resource in resources) {
-        if (!game.is_virtual_resource(resource)) {
-          $(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board').append(core.ui().resource_storage_el(resource, resources[resource]));
+      _t += '</ul>';
+
+      for (var _category in game.BUILDINGS_CATEGORIES) {
+        _t += '<div id="tab-' + _category.toLowerCase() + '" class="bldg-tabs">';
+
+        for (var i = 0; i < game.BUILDINGS_CATEGORIES[_category].length; i++) {
+          building = game.BUILDINGS_CATEGORIES[_category][i];
+
+          if ($.inArray(building, game['BUILDINGS_ALL']) !== -1) {
+            building_data = core.get_building_config_data(building);
+
+            if (building_data) {
+              var _i = settlement.is_building_built(building_data.handle);
+
+              building_image = building_data.handle;
+
+              if (typeof building_data.tax !== 'undefined') {
+                building_image = building_data.handle.slice(0, 5);
+              }
+
+              var _image = typeof building_data.visible_upgrades === 'undefined' || building_data.visible_upgrades === false ? building_image : building_image + '1';
+
+              _t += '<div data-handle="' + building_data.handle + '" class="building-item' + (_i === true ? ' disabled' : '') + '">' + '<span class="title">' + building_data.name + '</span>' + '<img class="building" src="' + game.ASSETS_URL + 'images/assets/buildings/' + _image + '.png" />' + '</div>';
+            }
+          }
         }
+
+        _t += '</div>';
       }
+
+      _t += '</div>' + '</div>' + '<div class="buildings-info right">' + '<div class="b-desc"></div>' + '<div class="column-small">' + '<fieldset class="levels">' + '<legend>Levels</legend>' + '<div class="b-levels"></div>' + '</fieldset>' + '<fieldset>' + '<legend>Cost</legend>' + '<div class="b-cost"></div>' + '</fieldset>' + '</div>' + '<div class="column-small">' + '<fieldset class="materials">' + '<legend>Materials</legend>' + '<div class="b-mats"></div>' + '</fieldset>' + '<fieldset class="production">' + '<legend>Production</legend>' + '<div class="b-prod"></div>' + '</fieldset>' + '<fieldset class="extra">' + '<legend>Extra materials</legend>' + '<div class="b-chance"></div>' + '</fieldset>' + '<fieldset class="storage">' + '<legend>Storage</legend>' + '<div class="b-store"></div>' + '</fieldset>' + '<fieldset class="taxes">' + '<legend>Taxes</legend>' + '<div class="b-tax"></div>' + '</fieldset>' + '</div>' + '<div class="column-full">' + '<fieldset>' + '<legend>Requirements</legend>' + '<div class="b-req"></div>' + '</fieldset>' + '</div>' + '<div class="toolbar"></div>' + '</div>' + '<div class="clearfix"></div>';
+      $(el + ' section').append(_t);
+      $(el).on('click', '.building-item', function () {
+        $(el).addClass('expanded');
+        $(el + ' .building-item').removeClass('active');
+        $(this).addClass('active');
+        $(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
+        var handle = $(this).data('handle');
+        var building = core.get_building_config_data(handle);
+
+        if (building) {
+          $(el + ' header span').empty().html('City Buildings - ' + building.name);
+          $(el + ' .b-desc').html(building.description);
+          var _z = '<dl class="nomg">';
+
+          for (var y in building.cost) {
+            _z += '<dt>' + game.nice_numbers(building.cost[y]) + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(y) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
+          }
+
+          _z += '</dl>';
+          $(el + ' .b-cost').append(_z);
+
+          if (typeof building.levels !== 'undefined') {
+            $(el + ' .b-levels').empty().append('<dl class="nomg">' + '<dt>Upgrades</dt>' + '<dd>' + building.levels + '</dd>' + '</dl>');
+            $('fieldset.levels').show();
+          } else {
+            $('fieldset.levels').hide();
+          }
+
+          if (typeof building.requires !== 'undefined') {
+            _z = '<dl class="nomg">';
+
+            if (typeof building.requires.buildings !== 'undefined') {
+              for (var item in building.requires.buildings) {
+                _z += '<dt>Building</dt>' + '<dd>' + core.get_building_config_data(item).name + ' (level ' + building.requires.buildings[item] + ')</dd>';
+              }
+            }
+
+            if (typeof building.requires.research !== 'undefined') {
+              _z += '<dt>Research</dt>' + '<dd>' + core.get_research_config_data(building.requires.research).name + '</dd>';
+            }
+
+            if (typeof building.requires.climate !== 'undefined') {
+              var climates = [];
+
+              for (var _i3 = 0; _i3 < building.requires.climate.length; _i3++) {
+                climates.push(game.CLIMATES[building.requires.climate[_i3]].capitalize());
+              }
+
+              _z += '<dt>Climate</dt>' + '<dd>' + climates.join(', ') + '</dd>';
+            }
+
+            _z += '<dt>City level</dt>' + '<dd>' + building.requires.settlement_level + '</dd>' + '</dl>';
+            $(el + ' .b-req').append(_z);
+          }
+
+          if (typeof building.chance !== 'undefined') {
+            _z = '<dl class="nomg">';
+
+            for (var chance in building.chance) {
+              _z += '<dt>' + building.chance[chance] * 100 + '%</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(chance) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + chance + '.png" /></dd>';
+            }
+
+            _z += '</dl>';
+            $(el + ' .b-chance').append(_z);
+            $('fieldset.extra').show();
+          } else {
+            $('fieldset.extra').hide();
+          }
+
+          if (typeof building.production !== 'undefined') {
+            _z = '<dl class="nomg">';
+
+            for (var _y in building.production) {
+              _z += '<dt>' + building.production[_y] + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(_y) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + _y + '.png" /></dd>';
+            }
+
+            _z += '</dl>';
+            $(el + ' .b-prod').append(_z);
+            $('fieldset.production').show();
+          } else {
+            $('fieldset.production').hide();
+          }
+
+          if (typeof building.materials !== 'undefined') {
+            _z = '<dl class="nomg">';
+
+            if (Array.isArray(building.materials)) {
+              for (var _i4 = 0; _i4 < building.materials.length; _i4++) {
+                for (var _y2 in building.materials[_i4]) {
+                  _z += '<dt>' + building.materials[_i4][_y2] + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(_y2) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + _y2 + '.png" /></dd>';
+                }
+              }
+            } else {
+              for (var _y3 in building.materials) {
+                _z += '<dt>' + building.materials[_y3] + '</dt>' + '<dd><img class="small tips" title="' + game.get_resource_name(_y3) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + _y3 + '.png" /></dd>';
+              }
+            }
+
+            _z += '</dl>';
+            $(el + ' .b-mats').append(_z);
+            $('fieldset.materials').show();
+          } else {
+            $('fieldset.materials').hide();
+          }
+
+          if (typeof building.tax !== 'undefined') {
+            _z = '<dl class="nomg">' + '<dt>Tax</dt>' + '<dd>' + building.tax + '<img class="small tips" title="Coins" src="' + game.ASSETS_URL + 'images/assets/resources/coins.png" /></dd>' + '</dl>';
+            $(el + ' .b-tax').append(_z);
+            $('fieldset.taxes').show();
+          } else {
+            $('fieldset.taxes').hide();
+          }
+
+          if (typeof building.storage !== 'undefined') {
+            $('fieldset.taxes, fieldset.materials').hide();
+            _z = '<dl class="nomg">' + '<dt>' + building.storage + '</dt>' + '<dd><img class="small tips" title="Storage Space" src="' + game.ASSETS_URL + 'images/assets/resources/storage.png" /></dd>' + '</dl>';
+            $(el + ' .b-store').append(_z);
+            $('fieldset.storage').show();
+          } else {
+            $('fieldset.storage').hide();
+          }
+
+          var _i2 = settlement.is_building_built(building.handle);
+
+          if (_i2 !== true) {
+            $(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
+          } else {//$(el + ' .toolbar').append('You already constructed this building.');
+          }
+
+          $(el + ' .right').show();
+        }
+
+        return false;
+      }).on('click', '.btn.build', function () {
+        var handle = $(this).data('handle');
+
+        if (settlement.build(handle) !== false) {
+          $(el + ' .building-item[data-handle=' + handle + ']').addClass('disabled');
+          $(el + ' .toolbar').empty(); //.append('You already constructed this building.');
+        }
+
+        return false;
+      });
     };
 
-    params.on_refresh = function () {
-      var settlement = this.core().get_settlement();
-      var resources = settlement.get_resources();
-      var storage_space = settlement.storage();
-
-      for (var resource in resources) {
-        if (!game.is_virtual_resource(resource)) {
-          $(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
-        }
-      }
-
-      $(this.handle + ' .total-storage').empty().append(storage_space.all);
-      $(this.handle + ' .used-storage').empty().append(storage_space.occupied);
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_storage).call(this, params));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_buildings).call(this, params));
   }
 
-  return ui_panel_storage;
+  return ui_panel_buildings;
 }(ui_panel);
 "use strict";
 
@@ -21795,188 +21358,735 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
- * World panel data.
+ * Barracks panel data.
  *
  * @param {Object} params
  * @license GPL-3.0-or-later
- * @class ui_panel_world
+ * @class ui_panel_barracks
  * @extends ui_panel
- * @returns {ui_panel_world}
+ * @returns {ui_panel_barracks}
  */
-var ui_panel_world =
+var ui_panel_barracks =
 /*#__PURE__*/
 function (_ui_panel) {
-  _inherits(ui_panel_world, _ui_panel);
+  _inherits(ui_panel_barracks, _ui_panel);
 
   /**
    * Object constructor.
    * 
    * @private
    * @constructor
-   * @returns {ui_panel_world}
+   * @returns {ui_panel_barracks}
    * @param {Object} params
    */
-  function ui_panel_world(params) {
-    _classCallCheck(this, ui_panel_world);
+  function ui_panel_barracks(params) {
+    _classCallCheck(this, ui_panel_barracks);
 
-    params.id = 'world';
-    params.template = ui.generic_panel_template('World Map');
+    params.id = 'barracks';
+    params.template = ui.building_panel_template();
+
+    params.on_show = function (params) {
+      var self = this;
+      var core = this.core();
+      var settlement = core.get_settlement();
+      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Army']));
+
+      var _t = '<div class="army-list"></div>' + '<div class="army-recruiter">';
+
+      for (var item in game.SOLDIERS) {
+        _t += '<fieldset>' + '<legend>' + game.SOLDIERS[item].name + '</legend>' + '<div class="cost">' + '<dl class="nomg">';
+
+        for (var res in game.SOLDIERS[item].cost) {
+          _t += '<dt>' + game.nice_numbers(game.SOLDIERS[item].cost[res]) + '</dt><dd>' + core.ui().resource_small_img(res) + '</dd>';
+        }
+
+        _t += '</dl>' + '</div>' + '<div class="info">' + '<dl class="nomg">' + '<dt>Attack</dt><dd>' + game.SOLDIERS[item].attack + '</dd>' + '<dt>Defense</dt><dd>' + game.SOLDIERS[item].defense + '</dd>' + '</dl>' + '</div>' + '<img data-handle="' + item + '" title="Recruit ' + game.SOLDIERS[item].name + '" class="tips recruit-soldier" src="' + game.ASSETS_URL + 'images/assets/army/' + item.toLowerCase() + '.png" />' + '</fieldset>';
+      }
+
+      _t += '</div>';
+      $(this.handle + ' #tab-army').empty().append(_t);
+      $(this.handle).on('click', '.recruit-soldier', function () {
+        var soldier = $(this).data('handle');
+        var costs = game.SOLDIERS[soldier].cost;
+
+        if (settlement.has_resources(costs)) {
+          if (settlement.remove_resources(costs)) {
+            if (settlement.recruit_soldier(soldier)) {
+              core.ui().notify('A new ' + game.SOLDIERS[soldier].name + ' has been recruited.');
+              self.on_refresh();
+              return false;
+            }
+          }
+        }
+
+        core.ui().error('You don`t have enough resources to recruit a ' + game.SOLDIERS[soldier].name + '.');
+        return false;
+      });
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      var building = core.get_settlement().get_building(this.params_data.handle);
+
+      if (building) {
+        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
+        $(this.handle + ' .army-list').empty().append('<fieldset>' + '<legend>Current Army</legend>' + core.ui().army_list(settlement.army(), true) + '</fieldset>');
+      } else {
+        this.destroy();
+      }
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_barracks).call(this, params));
+  }
+
+  return ui_panel_barracks;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Shipyard panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_shipyard
+ * @extends ui_panel
+ * @returns {ui_panel_shipyard}
+ */
+var ui_panel_shipyard =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_shipyard, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_shipyard}
+   * @param {Object} params
+   */
+  function ui_panel_shipyard(params) {
+    _classCallCheck(this, ui_panel_shipyard);
+
+    params.id = 'shipyard';
+    params.template = ui.building_panel_template();
 
     params.on_show = function (params) {
       var core = this.core();
       var settlement = core.get_settlement();
-      $(this.handle + ' section').append('<div class="worldmap"></div>');
-      core.world().draw();
-      var clicked = false;
-      var clickY, clickX;
+      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Navy']));
 
-      var update_scroll_pos = function update_scroll_pos(event) {
-        $('.worldmap').scrollTop($('.worldmap').scrollTop() + (clickY - event.pageY));
-        $('.worldmap').scrollLeft($('.worldmap').scrollLeft() + (clickX - event.pageX));
-        clickY = event.pageY;
-        clickX = event.pageX;
-      };
+      var _t = '<div class="navy-list"></div>' + '<div class="navy-recruiter">';
 
-      $('.worldmap').on({
-        mousemove: function mousemove(event) {
-          clicked && update_scroll_pos(event);
-        },
-        mousedown: function mousedown(event) {
-          clicked = true;
-          clickY = event.pageY;
-          clickX = event.pageX;
-          $('html').css('cursor', 'grab');
-        },
-        mouseup: function mouseup() {
-          clicked = false;
-          $('html').css('cursor', 'auto');
-        }
-      });
-      $(this.handle).on('click', '.settlement', function () {
-        var _settlement_name = $(this).data('name');
+      for (var item in game.SHIPS) {
+        _t += '<fieldset>' + '<legend>' + game.SHIPS[item].name + '</legend>' + '<div class="cost">' + '<dl class="nomg">';
 
-        if (_settlement_name === settlement.name()) {
-          core.ui().open_panel('council');
-        } else {
-          core.ui().open_panel('settlement', core.get_settlement(_settlement_name));
+        for (var res in game.SHIPS[item].cost) {
+          _t += '<dt>' + game.nice_numbers(game.SHIPS[item].cost[res]) + '</dt><dd>' + core.ui().resource_small_img(res) + '</dd>';
         }
 
-        return false;
-      }).on('click', '.place', function () {
-        var place_id = parseInt($(this).data('id'), 10);
-        core.ui().open_panel('place', core.get_place(place_id));
-        return false;
-      }).on('click', '.troop', function () {
-        var _action_id = parseInt($(this).data('id'), 10);
+        _t += '</dl>' + '</div>' + '<div class="info">' + '<dl class="nomg">' + '<dt>Attack</dt><dd>' + game.SHIPS[item].attack + '</dd>' + '<dt>Defense</dt><dd>' + game.SHIPS[item].defense + '</dd>' + '</dl>' + '</div>' + '<img data-handle="' + item + '" title="Recruit ' + game.SHIPS[item].name + '" class="tips recruit-ship" src="' + game.ASSETS_URL + 'images/assets/army/' + item.toLowerCase().replace(/ /g, "_") + '.png" />' + '</fieldset>';
+      }
 
-        if (core._queue[_action_id].mode === game.ACTION_CAMPAIGN) {
-          core.ui().open_panel('campaign', core._queue[_action_id]);
+      _t += '</div>';
+      $(this.handle + ' #tab-navy').empty().append(_t);
+      $(this.handle).on('click', '.recruit-ship', function () {
+        var ship = $(this).data('handle');
+        var costs = game.SHIPS[ship].cost;
+
+        if (settlement.has_resources(costs)) {
+          if (settlement.remove_resources(costs)) {
+            if (settlement.recruit_ship(ship)) {
+              core.ui().notify('A new ' + game.SHIPS[ship].name + ' has been recruited.');
+              self.on_refresh();
+              return false;
+            }
+          }
         }
 
-        return false;
-      }).on('click', '.canvas-map', function () {
-        // Todo
+        core.ui().error('You don`t have enough resources to recruit a ' + game.SHIPS[ship].name + '.');
         return false;
       });
-      core.ui().worldmap_scrollto(settlement.location());
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      var building = settlement.get_building(this.params_data.handle);
+
+      if (building) {
+        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
+        $(this.handle + ' .navy-list').empty().append('<fieldset>' + '<legend>Current Navy</legend>' + core.ui().navy_list(settlement.navy(), true) + '</fieldset>');
+      } else {
+        this.destroy();
+      }
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_shipyard).call(this, params));
+  }
+
+  return ui_panel_shipyard;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Church panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_church
+ * @extends ui_panel
+ * @returns {ui_panel_church}
+ */
+var ui_panel_church =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_church, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_church}
+   * @param {Object} params
+   */
+  function ui_panel_church(params) {
+    _classCallCheck(this, ui_panel_church);
+
+    params.id = 'church';
+    params.template = ui.building_panel_template();
+
+    params.on_show = function (params) {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Faith', 'Religion']));
+      $(this.handle).on('click', '.religion', function () {
+        var id = parseInt($(this).data('id'), 10);
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            settlement.change_religion(id);
+          }
+        }, 'Are you sure you want to switch religions? You will lose all your city`s faith!');
+        return false;
+      });
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      var building = core.get_settlement().get_building(this.params_data.handle);
+      var _t = '';
+
+      if (building) {
+        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
+        _t = '<h2>Faith</h2>' + '<div class="section">' + core.ui().progress(settlement.faith() * 100 / game.MAX_FAITH_VALUE, 'large', settlement.faith() + ' / ' + game.MAX_FAITH_VALUE) + '</div>';
+        $(this.handle + ' #tab-faith').empty().append(_t);
+        _t = '<p>Changing your settlement`s religion requires <strong>' + game.MAX_FAITH_VALUE + '</strong> faith, each religion gives you access to different heroes in your Tavern and gives you a boost to the influence with the cities sharing the same religion.</p>' + '<div class="religion-list">';
+
+        for (var i = 0; i < game.RELIGIONS.length; i++) {
+          _t += '<div data-handle="' + game.RELIGIONS[i] + '" data-id="' + i + '" class="religion' + (settlement.religion().id === i ? ' selected' : '') + '"><span>' + game.RELIGIONS[i].capitalize() + '</span></div>';
+        }
+
+        _t += '</div>';
+        $(this.handle + ' #tab-religion').empty().append(_t);
+      } else {
+        this.destroy();
+      }
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_church).call(this, params));
+  }
+
+  return ui_panel_church;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Embassy panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_embassy
+ * @extends ui_panel
+ * @returns {ui_panel_embassy}
+ */
+var ui_panel_embassy =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_embassy, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_embassy}
+   * @param {Object} params
+   */
+  function ui_panel_embassy(params) {
+    _classCallCheck(this, ui_panel_embassy);
+
+    params.id = 'embassy';
+    params.template = ui.building_panel_template();
+
+    params.on_show = function (params) {
+      var core = this.core();
+      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Espionage', 'Diplomacy']));
+      $(this.handle + ' #tab-diplomacy').empty().append('<div class="settlements-list"></div>');
+      $(this.handle).on('click', '.view', function () {
+        var _settlement_id = parseInt($(this).data('id'), 10);
+
+        var _settlement = core.get_settlement(_settlement_id);
+
+        if (_settlement) {
+          core.ui().open_panel('settlement', _settlement);
+        }
+
+        return false;
+      });
     };
 
     params.on_refresh = function () {
       var core = this.core();
       var settlement = core.get_settlement();
       var settlements = core.get_settlements();
-      var places = core.places();
-      var world = core.world();
-      var queue_actions = core.queue();
-      $('.troop, .settlement, .place').remove();
+      var status = settlement.status();
+      var building = core.get_settlement().get_building(this.params_data.handle);
 
-      for (var i = 0; i < settlements.length; i++) {
-        var image = 'village';
-        var name = settlements[i].name();
-        var location = settlements[i].location();
-        var coords = core.ui().get_cell_middle_coords(location.y, location.x);
+      if (building) {
+        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
+        $(this.handle + ' #tab-espionage').empty().append('<h2>Espionage points</h2>' + '<div class="section">' + core.ui().progress(settlement.espionage() * 100 / game.MAX_ESPIONAGE_VALUE, 'large', settlement.espionage() + ' / ' + game.MAX_ESPIONAGE_VALUE) + '</div>');
 
-        if (typeof settlement !== 'undefined' && name === settlement.name()) {
-          image = 'settlement';
-        } else {
-          if (settlements[i].is_metropolis()) {
-            image = 'metropolis' + settlements[i].icon();
-          } else if (settlements[i].is_city()) {
-            image = 'city' + settlements[i].icon();
-          } else if (settlements[i].is_village()) {
-            image = 'village' + settlements[i].icon();
-          } else if (settlements[i].is_camp()) {
-            image = 'camp';
-          }
+        var _t = '<table class="normal">' + '<thead>' + '<tr>' + '<td>Settlement</td>' + '<td>Ruler</td>' + '<td>Influence</td>' + '<td>Religion</td>' + '<td>Status</td>' + '<td>Personality</td>' + '</tr>' + '</thead>';
+
+        for (var i = 1; i < settlements.length; i++) {
+          _t += '<tr>' + '<td>' + '<a data-id="' + settlements[i].id() + '" title="View info about this settlement." class="tips view" href="#">' + settlements[i].name() + '</a> ' + '</td>' + '<td class="icon">' + '<img class="avatar small" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + settlements[i].ruler().avatar + '.png" />' + '</td>' + '<td>' + '<div data-id="' + settlements[i].id() + '" >' + core.ui().progress(status[settlements[i].id()].influence, 'small') + '</div>' + '</td>' + '<td>' + '<p>' + settlements[i].religion().name + '</p>' + '</td>' + '<td>' + '<p>' + settlement.get_diplomacy_status(settlements[i].id()).name + '</p>' + '</td>' + '<td>' + '<p>' + settlements[i].personality().name + '</p>' + '</td>' + '</tr>';
         }
 
-        $('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
-      } //if (core.has_research('archeology')) {
-
-
-      for (var _i = 0; _i < places.length; _i++) {
-        var _location = places[_i].location;
-
-        var _coords = core.ui().get_cell_middle_coords(_location.y, _location.x);
-
-        $('.worldmap').append('<img data-x="' + _location.x + '" data-y="' + _location.y + '" title="Ruins of ' + places[_i].name + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + places[_i].properties.id + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
-      } //}
-
-
-      for (var _i2 = 0; _i2 < queue_actions.length; _i2++) {
-        var action = queue_actions[_i2];
-        var source = action.source;
-        var destination = action.destination;
-        var distance_in_days = core.world().get_distance_in_days(source, destination);
-
-        if (action.mode === game.ACTION_DIPLOMACY) {
-          distance_in_days = distance_in_days / 2;
-        }
-
-        var title = '';
-        var troop_type = 'troop';
-
-        var _source = core.get_settlement(source.id);
-
-        var _destination = core.get_settlement(destination.id);
-
-        var x = source.x + Math.floor((destination.x - source.x) / distance_in_days * action.passed);
-        var y = source.y - Math.floor((source.y - destination.y) / distance_in_days * action.passed); //let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
-        //let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
-
-        if (action.mode === game.ACTION_CAMPAIGN) {
-          if (action.type === game.CAMPAIGN_CARAVAN) {
-            troop_type = 'troop_caravan';
-            title = 'Caravan from ' + _source.name() + ' sent to ' + _destination.name() + '.';
-          } else if (action.type === game.CAMPAIGN_SCOUT) {
-            troop_type = 'troop_scout';
-            title = 'Scout from ' + _source.name() + ' going to a specific place.';
-          } else if (action.type === game.CAMPAIGN_SPY) {
-            troop_type = 'troop_spy';
-            title = 'Spy from ' + _source.name() + ' sneaking into ' + _destination.name() + '.';
-          } else if (action.type === game.CAMPAIGN_ARMY_RETURN) {
-            troop_type = 'troop_return';
-            title = _destination.name() + ' army returning from ' + _source.name() + '.';
-          } else {
-            troop_type = 'troop_attack';
-            title = _source.name() + ' army marching to ' + _destination.name() + '.';
-          }
-        } else if (action.mode === game.ACTION_DIPLOMACY) {
-          troop_type = 'troop_diplomatic';
-          title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
-        }
-
-        var _coords2 = core.ui().get_cell_middle_coords(y, x);
-
-        $('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (_coords2.x + 3) + 'px;top:' + _coords2.y + 'px" data-id="' + _i2 + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
+        _t += '<tfoot>' + '<tr>' + '<td>Settlement</td>' + '<td>Ruler</td>' + '<td>Influence</td>' + '<td>Religion</td>' + '<td>Status</td>' + '<td>Personality</td>' + '</tr>' + '</tfoot>' + '</table>';
+        $(this.handle + ' .settlements-list').empty().append(_t);
+      } else {
+        this.destroy();
       }
     };
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_world).call(this, params));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_embassy).call(this, params));
   }
 
-  return ui_panel_world;
+  return ui_panel_embassy;
 }(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Tavern panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_tavern
+ * @extends ui_panel
+ * @returns {ui_panel_tavern}
+ */
+var ui_panel_tavern =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_tavern, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_tavern}
+   * @param {Object} params
+   */
+  function ui_panel_tavern(params) {
+    _classCallCheck(this, ui_panel_tavern);
+
+    params.id = 'tavern';
+    params.template = ui.building_panel_template();
+
+    params.on_show = function (params) {
+      var self = this;
+      var core = self.core();
+      var _t = '';
+      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Heroes', 'Items', 'Quests']));
+      var building = core.get_settlement().get_building(self.params_data.handle);
+
+      if (building) {
+        $(self.handle + ' #tab-items').empty().append('<p>Not implemented yet.</p>');
+        $(self.handle + ' #tab-quests').empty().append('<p>Not implemented yet.</p>');
+        $(self.handle + ' #tab-heroes').empty().append('<div class="column hero-list"></div>' + '<div class="column hero-info"></div>' + '<div class="column hero-items"></div>');
+        $(self.handle + ' #tab-info').empty().append(core.ui().building_panel(self.params_data, building.level));
+
+        self.empty_items = function () {
+          $(self.handle + ' .hero-items').empty().append('<h3>Equipment</h3>');
+
+          for (var i = 1; i < game.ITEM_SLOTS_NUM; i++) {
+            $(self.handle + ' .hero-items').append('<div class="slot" data-slot="' + i + '"></div>');
+          }
+
+          $(self.handle + ' .hero-items').append('<br class="clearfix" />').append('<h3>Bags</h3>');
+
+          for (var _i = 0; _i < game.ITEM_BACKPACK_NUM; _i++) {
+            $(self.handle + ' .hero-items').append('<div class="slot" data-backpack-slot="' + _i + '"></div>');
+          }
+        };
+
+        self.empty_items();
+
+        for (var i = 0; i < game.HEROES.length; i++) {
+          _t += '<p><a href="#" data-hero="' + game.HEROES[i].handle + '">' + game.HEROES[i].name + '</a></p>';
+        }
+
+        $(self.handle + ' .hero-list').empty().append(_t);
+        $(self.handle).on('click', '.hero-list a', function () {
+          var hero = $(this).data('hero');
+          var hero_data = core.get_hero_config_data(hero);
+
+          if (hero_data) {
+            $(self.handle + ' .hero-info').empty().append('<h3>Info <a title="Information provided by Wikipedia." href="' + hero_data.link + '" class="tips external-link wikipedia"></a></h3>' + hero_data.description + '<br /><br />' + '<h3>Class</h3>' + game.HERO_CLASS_LIST[hero_data.class] + '' + '<br /><br />' + '<h3>Attributes</h3>' + 'Strength: <span class="green">' + hero_data.stats.strength + '</span><br />' + 'Stamina: <span class="green">' + hero_data.stats.stamina + '</span><br />' + 'Agility: <span class="green">' + hero_data.stats.agility + '</span><br />' + 'Intellect: <span class="green">' + hero_data.stats.intellect + '</span><br />' + 'Spirit: <span class="green">' + hero_data.stats.spirit + '</span><br />' + 'Health Points: <span class="blue">' + game.get_health_points(hero_data) + '</span><br />' + 'Mana Points: <span class="blue">' + game.get_mana_points(hero_data) + '</span><br />' + 'Damage: <span class="red">' + game.get_damage_points(hero_data).min + '-' + game.get_damage_points(hero_data).max + '</span>');
+            self.empty_items();
+
+            for (var x = 0; x < hero_data.items.length; x++) {
+              var slot = hero_data.items[x].slot;
+              $(self.handle + ' .hero-items > div.slot[data-slot="' + slot + '"]').empty().append('X').attr('title', core.ui().item_tooltip(hero_data.items[x])).tipsy({
+                className: 'item',
+                html: true
+              });
+            }
+
+            for (var _x = 0; _x < hero_data.backpack.length; _x++) {
+              $(self.handle + ' .hero-items > div.slot[data-backpack-slot="' + _x + '"]').empty().append('X').attr('title', core.ui().item_tooltip(hero_data.backpack[_x])).tipsy({
+                className: 'item',
+                html: true
+              });
+            }
+          }
+
+          return false;
+        });
+      } else {
+        self.destroy();
+      }
+    };
+
+    params.on_refresh = function () {// TODO
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_tavern).call(this, params));
+  }
+
+  return ui_panel_tavern;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Academy panel data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_panel_academy
+ * @extends ui_panel
+ * @returns {ui_panel_academy}
+ */
+var ui_panel_academy =
+/*#__PURE__*/
+function (_ui_panel) {
+  _inherits(ui_panel_academy, _ui_panel);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_panel_academy}
+   * @param {Object} params
+   */
+  function ui_panel_academy(params) {
+    _classCallCheck(this, ui_panel_academy);
+
+    params.id = 'academy';
+    params.template = ui.building_panel_template();
+
+    params.on_show = function (params) {
+      var _t = '';
+      var self = this;
+      var core = this.core();
+      var my_settlement = core.get_settlement();
+      $(this.handle + ' section').append(core.ui().tabs(['Info', 'Research', 'Technologies', 'Projects']));
+      _t += '<div class="column-left">' + '</div>' + '<div class="column-right">' + '<h2>Technology Tree</h2>' + '<p>Select a technology from the left panel to view information about it.</p>' + '</div>';
+      $(this.handle + ' #tab-technologies').empty().append(_t);
+      _t = '';
+
+      for (var i = 0; i < game.TECHNOLOGIES.length; i++) {
+        _t += '<div data-technology="' + game.TECHNOLOGIES[i].handle + '" class="technology"><img src="' + game.ASSETS_URL + 'images/assets/research/' + game.TECHNOLOGIES[i].handle + '.png" /></div>';
+      }
+
+      $(this.handle + ' .column-left').empty().append(_t);
+      $(self.handle + ' #tab-projects').empty().append('<p>Not implemented yet.</p>');
+      $(this.handle).on('click', '.technology', function () {
+        $(self.handle + ' .technology').removeClass('selected');
+        $(this).addClass('selected');
+        var technology_name = $(this).data('technology');
+        var technology = core.get_research_config_data(technology_name);
+
+        if (technology) {
+          _t = '<h2>' + technology.name + '</h2>' + '<p>' + technology.description + '</p>' + '<dl>' + '<dt>Duration</dt>' + '<dd>' + technology.duration + ' days</dd>' + '<dt>Cost</dt>';
+
+          for (var y in technology.cost) {
+            _t += '<dd>' + game.nice_numbers(technology.cost[y]) + ' <img class="small tips" title="' + game.get_resource_name(y) + '" src="' + game.ASSETS_URL + 'images/assets/resources/' + y + '.png" /></dd>';
+          }
+
+          _t += '<dt>Effect</dt>';
+
+          for (var _y in technology.effect) {
+            if (_y === 'buildings') {
+              for (var b in technology.effect[_y]) {
+                var _z = core.get_building_config_data(b);
+
+                _t += '<dd>' + _z.name + ' +' + technology.effect[_y][b] + '</dd>';
+              }
+            } else if (_y === 'tax') {
+              _t += '<dd>+' + technology.effect[_y] + core.ui().resource_small_img('coins') + ' each house</dd>';
+            } else if (_y === 'distance') {
+              _t += '<dd>Faster world map travel</dd>';
+            }
+          }
+
+          _t += '<div class="toolbar"></div>';
+          $(self.handle + ' .column-right').empty().append(_t);
+
+          if (core.has_research(technology.handle)) {
+            $(self.handle + ' .toolbar').empty().append('You already researched this technology.');
+          } else if (core.in_queue(technology.handle) !== false) {
+            $(self.handle + ' .toolbar').empty().append('You are currently researching this technology.');
+          } else {
+            $(self.handle + ' .toolbar').empty().append('<a href="#" class="btn do-research" data-technology="' + technology.handle + '">Research</a>');
+          }
+        }
+
+        return false;
+      }).on('click', '.do-research', function () {
+        var technology_name = $(this).data('technology');
+        var technology = core.get_research_config_data(technology_name);
+
+        if (technology) {
+          if (core.has_research_in_queue() === false) {
+            if (core.get_settlement().has_resources(technology.cost)) {
+              if (core.queue_add(my_settlement, null, game.ACTION_RESEARCH, null, {
+                handle: technology.handle,
+                name: technology.name,
+                duration: technology.duration
+              })) {
+                my_settlement.remove_resources(technology.cost);
+                $(self.handle + ' .toolbar').empty();
+                core.save_and_refresh();
+              }
+            } else {
+              core.ui().error('You don`t have enough resources to research this technology.');
+            }
+          } else {
+            core.ui().error('You can research only one technology at a time. Wait for the current research to finish.');
+          }
+        }
+
+        return false;
+      });
+    };
+
+    params.on_refresh = function () {
+      var core = this.core();
+      var settlement = core.get_settlement();
+      var research = settlement.research();
+      var technologies = core.research();
+      var _t = '';
+      var building = core.get_settlement().get_building(this.params_data.handle);
+
+      if (building) {
+        $(this.handle + ' #tab-info').empty().append(core.ui().building_panel(this.params_data, building.level));
+        _t = '<h2>Research points</h2>' + '<div class="section">' + core.ui().progress(research * 100 / game.MAX_RESEARCH_VALUE, 'large', research + ' / ' + game.MAX_RESEARCH_VALUE) + '</div>';
+        var queue_action = core.has_research_in_queue();
+
+        if (queue_action !== false) {
+          _t += '<h2>Currently researching `' + queue_action.data.name + '`</h2>' + '<div class="section">' + core.ui().progress(queue_action.passed * 100 / queue_action.duration, 'large', queue_action.passed + ' / ' + queue_action.duration + ' days') + '</div>';
+        }
+
+        $(this.handle + ' #tab-research').empty().append(_t);
+      } else {
+        this.destroy();
+      }
+
+      for (var f = 0; f < technologies.length; f++) {
+        if (typeof technologies[f] !== 'undefined') {
+          $(this.handle + ' .technology[data-technology=' + technologies[f].handle + ']').addClass('has');
+        }
+      }
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_panel_academy).call(this, params));
+  }
+
+  return ui_panel_academy;
+}(ui_panel);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Login window data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_window_signin
+ * @extends ui_window
+ * @returns {ui_window_signin}
+ */
+var ui_window_signin =
+/*#__PURE__*/
+function (_ui_window) {
+  _inherits(ui_window_signin, _ui_window);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_window_signin}
+   * @param {Object} params
+   */
+  function ui_window_signin(params) {
+    _classCallCheck(this, ui_window_signin);
+
+    params.id = 'signin';
+    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="new-game">' + '<p>Enter the city password to decrypt the game data.</p>' + '<dl>' + '<dt class="clearfix">Password:</dt>' + '<dd>' + '<input type="password" class="password text-input" />' + '</dd>' + '</dl>' + '<a href="#" class="do-start highlight button">Load Game</a>' + '</div>' + '<a href="#" class="do-restart button">Restart</a>' + ui.window_about_section() + '</fieldset>' + '</section>';
+
+    params.on_show = function () {
+      var self = this;
+      var handle = this.handle;
+      var core = this.core();
+      $(handle).on('click', '.do-start', function () {
+        var password = $(handle + ' .password').val();
+
+        if (password === '') {
+          core.ui().error('Enter your city password.', 'Error', true);
+          return false;
+        }
+
+        if (!core.load_game_data(password)) {
+          $(handle + ' .password').val('');
+          core.ui().error('Error decrypting the game data with the specified password. Try again.', 'Error', true);
+        } else {
+          self.destroy();
+        }
+
+        return false;
+      }).on('click', '.do-restart', function () {
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            core.reset_storage_data();
+            document.location.reload();
+          }
+        }, 'Are you sure you want to restart the game? You will lose all progress on the current game!', 'Civitas');
+        return false;
+      }).on('click', '.do-about', function () {
+        $(handle + ' .about-game').slideToggle();
+        return false;
+      });
+    };
+
+    params.on_hide = function () {
+      this.core().ui().hide_loader();
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_window_signin).call(this, params));
+  }
+
+  return ui_window_signin;
+}(ui_window);
 "use strict";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -22075,297 +22185,6 @@ function (_ui_window) {
   }
 
   return ui_window_battle;
-}(ui_window);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Options window data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_window_error
- * @extends ui_window
- * @returns {ui_window_error}
- */
-var ui_window_error =
-/*#__PURE__*/
-function (_ui_window) {
-  _inherits(ui_window_error, _ui_window);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_window_error}
-   * @param {Object} params
-   */
-  function ui_window_error(params) {
-    _classCallCheck(this, ui_window_error);
-
-    params.id = 'error';
-    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + 'An error has occured in Civitas and the game is unable to resume.' + '<br /><br />' + '<span class="error-message"></span>' + '<br />' + '<span class="error-code"></span>' + '<br /><br />' + '<a href="#" class="do-restart button">Restart</a>' + '</fieldset>' + '</section>';
-
-    params.on_show = function () {
-      var core = this.core();
-      var handle = this.handle;
-      $(handle + ' .error-message').html('Message: ' + this.params_data.error);
-      $(handle + ' .error-code').html('Code: ' + this.params_data.code);
-      $(handle).on('click', '.do-restart', function () {
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            core.reset_storage_data();
-            document.location.reload();
-          }
-        }, 'Are you sure you want to restart the game? You will lose all progress on the current game!', 'Civitas');
-        return false;
-      });
-    };
-
-    params.on_hide = function () {
-      this.core().ui().hide_loader();
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_window_error).call(this, params));
-  }
-
-  return ui_window_error;
-}(ui_window);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Options window data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_window_options
- * @extends ui_window
- * @returns {ui_window_options}
- */
-var ui_window_options =
-/*#__PURE__*/
-function (_ui_window) {
-  _inherits(ui_window_options, _ui_window);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_window_options}
-   * @param {Object} params
-   */
-  function ui_window_options(params) {
-    _classCallCheck(this, ui_window_options);
-
-    params.id = 'options';
-    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<a href="#" class="do-pause button">Pause</a>' + '<a href="#" class="do-restart button">Restart</a>' + '<a href="#" class="do-options button">Options</a>' + '<div class="options-game"></div>' + ui.window_about_section() + '<br />' + '<a href="#" class="do-resume button">Resume Playing</a>' + '</fieldset>' + '</section>';
-
-    params.on_show = function () {
-      var self = this;
-      var handle = this.handle;
-      var core = this.core();
-      $(handle + ' .options-game').append(core.ui().tabs(['Sounds', 'UI', 'Gameplay']));
-      $(handle + ' #tab-sounds').append('<div>' + '<a href="#" class="music-control ui-control ' + (core.get_settings('music') === true ? 'on' : 'off') + '">music</a>' + '<input class="music-volume" type="range" min="0" max="1" step="0.1" ' + (core.get_settings('music') !== true ? 'disabled' : '') + ' />' + '</div>');
-      $(handle + ' #tab-ui').append('<div>' + '<a href="#" class="worldmap-grid-control ui-control ' + (core.get_settings('worldmap_grid') === true ? 'on' : 'off') + '">worldmap grid</a> ' + '<a href="#" class="worldmap-beautify-control ui-control ' + (core.get_settings('worldmap_beautify') === true ? 'on' : 'off') + '">worldmap beautify</a>' + '</div>');
-      $(handle + ' .tabs').tabs();
-      $(handle).on('click', '.do-resume', function () {
-        core.ui().hide_loader();
-        core.unpause();
-        self.destroy();
-        return false;
-      }).on('click', '.do-pause', function () {
-        if (core.is_paused() === true) {
-          $(this).removeClass('highlight').html('Pause');
-          core.ui().show_loader();
-          core.unpause();
-        } else {
-          $(this).addClass('highlight').html('Resume');
-          core.ui().hide_loader();
-          core.pause();
-        }
-
-        return false;
-      }).on('click', '.do-options', function () {
-        $(handle + ' .options-game').slideToggle();
-        return false;
-      }).on('click', '.do-about', function () {
-        $(handle + ' .about-game').slideToggle();
-        return false;
-      }).on('click', '.do-restart', function () {
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            core.reset_storage_data();
-            document.location.reload();
-          }
-        }, 'Are you sure you want to restart the game? You will lose all progress on the current game!', 'Civitas');
-        return false;
-      }).on('click', '.music-control', function () {
-        if ($(this).hasClass('on')) {
-          $(this).removeClass('on').addClass('off');
-          $('.music-volume').attr('disabled', true);
-          core.set_settings('music', false);
-        } else {
-          $(this).removeClass('off').addClass('on');
-          $('.music-volume').attr('disabled', false);
-          core.set_settings('music', true);
-        }
-
-        core.save();
-        return false;
-      }).on('click', '.worldmap-grid-control', function () {
-        if ($(this).hasClass('on')) {
-          $(this).removeClass('on').addClass('off');
-          core.set_settings('worldmap_grid', false);
-        } else {
-          $(this).removeClass('off').addClass('on');
-          core.set_settings('worldmap_grid', true);
-        }
-
-        core.save();
-        return false;
-      }).on('click', '.worldmap-beautify-control', function () {
-        if ($(this).hasClass('on')) {
-          $(this).removeClass('on').addClass('off');
-          core.set_settings('worldmap_beautify', false);
-        } else {
-          $(this).removeClass('off').addClass('on');
-          core.set_settings('worldmap_beautify', true);
-        }
-
-        core.save();
-        return false;
-      }).on('change', '.music-volume', function () {
-        var value = parseInt($(this).val(), 10);
-        core.music.volume = value;
-        core.save();
-        return false;
-      });
-    };
-
-    params.on_hide = function () {
-      this.core().ui().hide_loader();
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_window_options).call(this, params));
-  }
-
-  return ui_window_options;
-}(ui_window);
-"use strict";
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * Login window data.
- *
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class ui_window_signin
- * @extends ui_window
- * @returns {ui_window_signin}
- */
-var ui_window_signin =
-/*#__PURE__*/
-function (_ui_window) {
-  _inherits(ui_window_signin, _ui_window);
-
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {ui_window_signin}
-   * @param {Object} params
-   */
-  function ui_window_signin(params) {
-    _classCallCheck(this, ui_window_signin);
-
-    params.id = 'signin';
-    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="new-game">' + '<p>Enter the city password to decrypt the game data.</p>' + '<dl>' + '<dt class="clearfix">Password:</dt>' + '<dd>' + '<input type="password" class="password text-input" />' + '</dd>' + '</dl>' + '<a href="#" class="do-start highlight button">Load Game</a>' + '</div>' + '<a href="#" class="do-restart button">Restart</a>' + ui.window_about_section() + '</fieldset>' + '</section>';
-
-    params.on_show = function () {
-      var self = this;
-      var handle = this.handle;
-      var core = this.core();
-      $(handle).on('click', '.do-start', function () {
-        var password = $(handle + ' .password').val();
-
-        if (password === '') {
-          core.ui().error('Enter your city password.', 'Error', true);
-          return false;
-        }
-
-        if (!core.load_game_data(password)) {
-          $(handle + ' .password').val('');
-          core.ui().error('Error decrypting the game data with the specified password. Try again.', 'Error', true);
-        } else {
-          self.destroy();
-        }
-
-        return false;
-      }).on('click', '.do-restart', function () {
-        core.ui().open_modal(function (button) {
-          if (button === 'yes') {
-            core.reset_storage_data();
-            document.location.reload();
-          }
-        }, 'Are you sure you want to restart the game? You will lose all progress on the current game!', 'Civitas');
-        return false;
-      }).on('click', '.do-about', function () {
-        $(handle + ' .about-game').slideToggle();
-        return false;
-      });
-    };
-
-    params.on_hide = function () {
-      this.core().ui().hide_loader();
-    };
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ui_window_signin).call(this, params));
-  }
-
-  return ui_window_signin;
 }(ui_window);
 "use strict";
 
@@ -22500,4 +22319,213 @@ function (_ui_window) {
   }
 
   return ui_window_signup;
+}(ui_window);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Options window data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_window_error
+ * @extends ui_window
+ * @returns {ui_window_error}
+ */
+var ui_window_error =
+/*#__PURE__*/
+function (_ui_window) {
+  _inherits(ui_window_error, _ui_window);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_window_error}
+   * @param {Object} params
+   */
+  function ui_window_error(params) {
+    _classCallCheck(this, ui_window_error);
+
+    params.id = 'error';
+    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + 'An error has occured in Civitas and the game is unable to resume.' + '<br /><br />' + '<span class="error-message"></span>' + '<br />' + '<span class="error-code"></span>' + '<br /><br />' + '<a href="#" class="do-restart button">Restart</a>' + '</fieldset>' + '</section>';
+
+    params.on_show = function () {
+      var core = this.core();
+      var handle = this.handle;
+      $(handle + ' .error-message').html('Message: ' + this.params_data.error);
+      $(handle + ' .error-code').html('Code: ' + this.params_data.code);
+      $(handle).on('click', '.do-restart', function () {
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            core.reset_storage_data();
+            document.location.reload();
+          }
+        }, 'Are you sure you want to restart the game? You will lose all progress on the current game!', 'Civitas');
+        return false;
+      });
+    };
+
+    params.on_hide = function () {
+      this.core().ui().hide_loader();
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_window_error).call(this, params));
+  }
+
+  return ui_window_error;
+}(ui_window);
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Options window data.
+ *
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class ui_window_options
+ * @extends ui_window
+ * @returns {ui_window_options}
+ */
+var ui_window_options =
+/*#__PURE__*/
+function (_ui_window) {
+  _inherits(ui_window_options, _ui_window);
+
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {ui_window_options}
+   * @param {Object} params
+   */
+  function ui_window_options(params) {
+    _classCallCheck(this, ui_window_options);
+
+    params.id = 'options';
+    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<a href="#" class="do-pause button">Pause</a>' + '<a href="#" class="do-restart button">Restart</a>' + '<a href="#" class="do-options button">Options</a>' + '<div class="options-game"></div>' + ui.window_about_section() + '<br />' + '<a href="#" class="do-resume button">Resume Playing</a>' + '</fieldset>' + '</section>';
+
+    params.on_show = function () {
+      var self = this;
+      var handle = this.handle;
+      var core = this.core();
+      var theme = core.get_settings('theme');
+      $(handle + ' .options-game').append(core.ui().tabs(['Sounds', 'UI', 'Gameplay']));
+      $(handle + ' #tab-sounds').append('<div>' + '<a href="#" class="music-control ui-control ' + (core.get_settings('music') === true ? 'on' : 'off') + '">music</a>' + '<input class="music-volume" type="range" min="0" max="1" step="0.1" ' + (core.get_settings('music') !== true ? 'disabled' : '') + ' />' + '</div>');
+      $(handle + ' #tab-ui').append('<div>' + '<a href="#" class="worldmap-grid-control ui-control ' + (core.get_settings('worldmap_grid') === true ? 'on' : 'off') + '">worldmap grid</a> ' + '<a href="#" class="worldmap-beautify-control ui-control ' + (core.get_settings('worldmap_beautify') === true ? 'on' : 'off') + '">worldmap beautify</a>' + '<select class="game-theme"><option ' + (theme === 'default' ? 'selected ' : '') + 'value="default">default</option><option ' + (theme === 'second' ? 'selected ' : '') + 'value="second">second</option></select>' + '</div>');
+      $(handle + ' .tabs').tabs();
+      $(handle).on('click', '.do-resume', function () {
+        core.ui().hide_loader();
+        core.unpause();
+        self.destroy();
+        return false;
+      }).on('change', '.game-theme', function () {
+        var theme = $('.game-theme').val();
+        core.ui().theme(theme);
+        return false;
+      }).on('click', '.do-pause', function () {
+        if (core.is_paused() === true) {
+          $(this).removeClass('highlight').html('Pause');
+          core.ui().show_loader();
+          core.unpause();
+        } else {
+          $(this).addClass('highlight').html('Resume');
+          core.ui().hide_loader();
+          core.pause();
+        }
+
+        return false;
+      }).on('click', '.do-options', function () {
+        $(handle + ' .options-game').slideToggle();
+        return false;
+      }).on('click', '.do-about', function () {
+        $(handle + ' .about-game').slideToggle();
+        return false;
+      }).on('click', '.do-restart', function () {
+        core.ui().open_modal(function (button) {
+          if (button === 'yes') {
+            core.reset_storage_data();
+            document.location.reload();
+          }
+        }, 'Are you sure you want to restart the game? You will lose all progress on the current game!', 'Civitas');
+        return false;
+      }).on('click', '.music-control', function () {
+        if ($(this).hasClass('on')) {
+          $(this).removeClass('on').addClass('off');
+          $('.music-volume').attr('disabled', true);
+          core.set_settings('music', false);
+        } else {
+          $(this).removeClass('off').addClass('on');
+          $('.music-volume').attr('disabled', false);
+          core.set_settings('music', true);
+        }
+
+        core.save();
+        return false;
+      }).on('click', '.worldmap-grid-control', function () {
+        if ($(this).hasClass('on')) {
+          $(this).removeClass('on').addClass('off');
+          core.set_settings('worldmap_grid', false);
+        } else {
+          $(this).removeClass('off').addClass('on');
+          core.set_settings('worldmap_grid', true);
+        }
+
+        core.save();
+        return false;
+      }).on('click', '.worldmap-beautify-control', function () {
+        if ($(this).hasClass('on')) {
+          $(this).removeClass('on').addClass('off');
+          core.set_settings('worldmap_beautify', false);
+        } else {
+          $(this).removeClass('off').addClass('on');
+          core.set_settings('worldmap_beautify', true);
+        }
+
+        core.save();
+        return false;
+      }).on('change', '.music-volume', function () {
+        var value = parseInt($(this).val(), 10);
+        core.music.volume = value;
+        core.save();
+        return false;
+      });
+    };
+
+    params.on_hide = function () {
+      this.core().ui().hide_loader();
+    };
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ui_window_options).call(this, params));
+  }
+
+  return ui_window_options;
 }(ui_window);

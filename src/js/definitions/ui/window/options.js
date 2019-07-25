@@ -35,6 +35,7 @@ class ui_window_options extends ui_window {
 			let self = this;
 			let handle = this.handle;
 			let core = this.core();
+			let theme = core.get_settings('theme');
 			$(handle + ' .options-game').append(core.ui().tabs([
 				'Sounds',
 				'UI',
@@ -47,12 +48,17 @@ class ui_window_options extends ui_window {
 			$(handle + ' #tab-ui').append('<div>' +
 				'<a href="#" class="worldmap-grid-control ui-control ' + ((core.get_settings('worldmap_grid') === true) ? 'on' : 'off') + '">worldmap grid</a> ' +
 				'<a href="#" class="worldmap-beautify-control ui-control ' + ((core.get_settings('worldmap_beautify') === true) ? 'on' : 'off') + '">worldmap beautify</a>' +
+				'<select class="game-theme"><option ' + (theme === 'default' ? 'selected ' : '') + 'value="default">default</option><option ' + (theme === 'second' ? 'selected ' : '') + 'value="second">second</option></select>' +
 				'</div>');
 			$(handle + ' .tabs').tabs();
 			$(handle).on('click', '.do-resume', function () {
 				core.ui().hide_loader();
 				core.unpause();
 				self.destroy();
+				return false;
+			}).on('change', '.game-theme', function() {
+				let theme = $('.game-theme').val();
+				core.ui().theme(theme);
 				return false;
 			}).on('click', '.do-pause', function () {
 				if (core.is_paused() === true) {

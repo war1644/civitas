@@ -1218,4 +1218,19 @@ class ui {
 		let colors = Math.random() * 255;
 		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
 	}
+
+	/**
+	 * Set the game theme.
+	 *
+	 * @public
+	 * @param {String} name
+	 * @returns {ui}
+	 */
+	theme (name) {
+		if (name === 'default' || name === 'second') {
+			$('#theme').attr('href', 'dist/' + name + '.css');
+		}
+		this.core().set_settings('theme', name);
+		return this;
+	}
 }

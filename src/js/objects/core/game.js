@@ -33,7 +33,8 @@ class game {
 		this.settings = {
 			worldmap_beautify: game.WORLD_BEAUTIFY,
 			worldmap_grid: game.WORLD_GRID,
-			music: false
+			music: false,
+			theme: 'default'
 		};
 		this.encryption = {
 			key: null,
@@ -2099,6 +2100,9 @@ class game {
 			this.settings = key;
 		} else {
 			this.settings[key] = value;
+		}
+		if (this.settings.theme !== 'default') {
+			$('#theme').attr('href', 'dist/' + this.settings.theme + '.css');
 		}
 		return this;
 	}
