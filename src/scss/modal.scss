@@ -1,38 +1,5 @@
 /* Modal Windows */
 
-.modal {
-	width: 500px;
-	margin-left: auto;
-	margin-right: auto;
-	z-index: 999999;
-	position: absolute;
-	color: #666;
-	display: none;
-	box-shadow: 0 0 5px #000;
-}
-
-.modal > header {
-	background-color: #694224;
-	background-image: linear-gradient(to bottom, #9b6b46, #694224);
-	color: #fff;
-	font-size: 18px;
-	padding: 4px 10px;
-	text-align: left;
-	text-transform: uppercase;
-}
-
-.modal > section {
-	background-color: #fff;
-	border-bottom: 1px solid #bfbfbf;
-	min-height: 50px;
-	padding: 20px;
-	text-align: left;
-}
-
-.modal > footer {
-	background-color: #efefef;
-	padding: 10px;
-}
 
 .modal-overlay {
 	width: 100%;
@@ -44,14 +11,56 @@
 	background-position: 0 0;
 	background-repeat: repeat;
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiOAMAANUAz5n+TlUAAAAASUVORK5CYII=);
-}
 
-.modal .btn {
-	border-radius: 3px;
-	padding: 4px 10px;
-	color: #fff !important;
-	text-transform: uppercase;
-	text-align: center;
-	font-size: 12px;
-	display: inline-block;
+	.modal {
+		width: 500px;
+		margin-left: auto;
+		margin-right: auto;
+		z-index: 999999;
+		position: absolute;
+		color: $modal-fg;
+		display: none;
+		box-shadow: 0 0 5px $box-shadow;
+
+		&> header {
+			background-image: $modal-header-bg;
+			color: $modal-header-fg;
+			font-size: 18px;
+			padding: 4px 10px;
+			text-align: left;
+			text-transform: uppercase;
+		}
+
+		&> section {
+			background-color: $modal-section-bg;
+			border-bottom: 1px solid $border;
+			min-height: 50px;
+			padding: 20px;
+			text-align: left;
+		}
+
+		&> footer {
+			background-color: $modal-footer-bg;
+			padding: 10px;
+		}
+
+		.btn {
+			border-radius: 3px;
+			padding: 4px 10px;
+			color: $modal-btn-fg !important;
+			text-transform: uppercase;
+			text-align: center;
+			font-size: 12px;
+			display: inline-block;
+			border: 1px solid $btn-border;
+			background-image: $btn-bg;
+			color: $btn-fg;
+		}
+
+		.btn:hover {
+			border: 1px solid $btn-border-hover;
+			background-image: $btn-bg-hover;
+			color: $btn-fg;
+		}
+	}
 }

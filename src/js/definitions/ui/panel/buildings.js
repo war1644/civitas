@@ -99,7 +99,8 @@ class ui_panel_buildings extends ui_panel {
 						'</fieldset>' +
 					'</div>' +
 					'<div class="toolbar"></div>' +
-				'</div>';
+				'</div>' +
+				'<div class="clearfix"></div>';
 			$(el + ' section').append(_t);
 			$(el).on('click', '.building-item', function () {
 				$(el).addClass('expanded');

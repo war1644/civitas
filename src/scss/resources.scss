@@ -140,7 +140,7 @@ footer a[data-panel=help] {
 }
 
 .game {
-	background: #000 url(../images/city/map.jpg) no-repeat;
+	background: $body-bg url(../images/city/map.jpg) no-repeat;
 }
 
 .panel td a.btn.start {
@@ -152,11 +152,11 @@ footer a[data-panel=help] {
 }
 
 #window-battle .battleground {
-	background: #fff url(../images/battle/bg2.png) no-repeat;
+	background: transparent url(../images/battle/bg2.png) no-repeat;
 }
 
 .ui > aside {
-	background: #ECD0B7 url(../images/ui/sidebar.png) repeat-y left top;
+	background: $aside-bg url(../images/ui/sidebar.png) repeat-y left top;
 }
 
 a.wikipedia {

@@ -285,7 +285,7 @@ class game {
 				date: Number(new Date()),
 				data,
 				hash: hash.toString(CryptoJS.enc.Hex)
-			}
+			};
 			this.set_storage_data('live', new_data, true);
 			return new_data;
 		}
@@ -1433,7 +1433,7 @@ class game {
 		if (typeof id === 'number') {
 			for (let i = 0; i < _places.length; i++) {
 				if (typeof _places[i] !== 'undefined') {
-					if (_places[i].id() === id) {
+					if (_places[i].id === id) {
 						return _places[i];
 					}
 				}

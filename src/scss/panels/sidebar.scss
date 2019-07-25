@@ -5,8 +5,7 @@
 	top: 0;
 	left: 0;
 	z-index: 99997;
-	background-color: #ECD0B7;
-	color: #444;
+	background-color: $aside-bg;
 	padding: 10px;
 	box-shadow: 0 0 0 transparent;
 }
@@ -29,7 +28,7 @@
 }
 
 .ui aside .panel section {
-	overflow: scroll;
+	/*overflow: scroll; */
 	height: calc(100% - 81px);
 }
 
@@ -44,11 +43,15 @@
 }
 
 .ui aside .panel .column {
-	border-bottom: 1px solid #935F22;
+	border-bottom: 1px solid $border-special;
 	margin-bottom: 10px;
 	width: 100% !important;
 }
 
 .ui aside .panel .column:last-of-type {
 	margin-left: 0 !important;
+}
+
+.ui aside .panel .column {
+	float: none;
 }

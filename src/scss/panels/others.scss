@@ -39,11 +39,11 @@
 }
 
 #panel-academy .technology.selected img {
-	background-color: #BADEC6;
+	box-shadow: $box-shadow-active;
 }
 
 #panel-academy .technology.has img {
-	background-color: #935F22;
+	box-shadow: $box-shadow-disabled;
 }
 
 #panel-academy .technology img {
@@ -51,7 +51,7 @@
 	height: 46px;
 	border-radius: 100%;
 	padding: 10px;
-	box-shadow: 0 0 4px 0 #935F22;
+	box-shadow: $box-shadow-enabled;
 }
 
 #panel-church h2,
@@ -107,13 +107,13 @@
 	height: 128px;
 	margin: 0 10px 10px 0;
 	float: left;
-	box-shadow: inset 0 0 8px 0 rgba(0, 0, 0, 0.75);
+	box-shadow: $box-shadow-enabled;
 	position: relative;
 	cursor: pointer;
 }
 
 #panel-church .religion-list .religion.selected {
-	background-color: #ddd;
+	box-shadow: $box-shadow-active;
 }
 
 #panel-church .religion-list .religion span {
@@ -152,7 +152,7 @@
 	text-align: center;
 	margin: 0 4px 4px 0;
 	position: relative;
-	box-shadow: inset 0 0 3px 0 rgba(20, 20, 20, 0.75);
+	box-shadow: inset 0 0 3px 0 hsla(0, 0%, 0%, 0.75);
 	font-size: 34px;
 }
 
@@ -177,4 +177,10 @@
 	max-width: 780px;
 	height: auto;
 	max-height: 600px;
+}
+
+#panel-council section dd,
+#panel-barracks section dd,
+#panel-shipyard section dd {
+	width: auto;
 }

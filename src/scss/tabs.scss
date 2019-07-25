@@ -5,19 +5,14 @@
 }
 
 .tabs > div {
-	border-top: 1px solid #ccc;
+	border-top: 1px solid $border;
 }
 
 .tabs > ul > li > a {
-	color: #666;
+	color: $anchor-fg-dark;
 	text-decoration: none;
 	padding: 6px 8px;
 	display: block;
-}
-
-.ui-tabs-panel > p, 
-.ui-tabs-panel > div > p {
-	margin-top: 10px;
 }
 
 .tabs ul {
@@ -25,7 +20,17 @@
 }
 
 .tabs ul li.ui-tabs-active a {
-	color: #fff !important;
+	color: $white !important;
+}
+
+.tabs ul li.ui-tabs-active {
+	background-image: $tab-bg;
+	color: $tab-fg;
+}
+
+.ui-tabs-panel > p, 
+.ui-tabs-panel > div > p {
+	margin-top: 10px;
 }
 
 .ui-tabs-panel .contents {

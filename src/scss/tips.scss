@@ -8,8 +8,8 @@
 }
 
 .tipsy-inner {
-	background-color: #fff;
-	color: #000;
+	background-color: $tips-bg;
+	color: $tips-fg;
 	max-width: 280px;
 	padding: 10px;
 	text-align: left;
@@ -20,7 +20,7 @@
 }
 
 .tipsy-inner {
-	box-shadow: 0 0 5px #ccc;
+	box-shadow: 0 0 5px $grey;
 }
 
 .tipsy-arrow {
@@ -28,23 +28,23 @@
 	width: 0;
 	height: 0;
 	line-height: 0;
-	border: 5px dashed #fff;
+	border: 5px dashed $white;
 }
 
 .tipsy-arrow-n {
-	border-bottom-color: #fff;
+	border-bottom-color: $white;
 }
 
 .tipsy-arrow-s {
-	border-top-color: #fff;
+	border-top-color: $white;
 }
 
 .tipsy-arrow-e {
-	border-left-color: #fff;
+	border-left-color: $white;
 }
 
 .tipsy-arrow-w {
-	border-right-color: #fff;
+	border-right-color: $white;
 }
 
 .tipsy-n .tipsy-arrow {
@@ -124,29 +124,29 @@
 }
 
 .tipsy.item .tipsy-inner {
-	background-color: #111;
+	background-color: $main;
 	opacity: 0.98;
-	color: #fff;
+	color: $white;
 }
 
 .tipsy.item .tipsy-arrow {
-	border: 5px dashed #222;
+	border: 5px dashed $main;
 }
 
 .tipsy.item .tipsy-arrow-n {
-	border-bottom-color: #222;
+	border-bottom-color: $main;
 }
 
 .tipsy.item .tipsy-arrow-s {
-	border-top-color: #222;
+	border-top-color: $main;
 }
 
 .tipsy.item .tipsy-arrow-e {
-	border-left-color: #222;
+	border-left-color: $main;
 }
 
 .tipsy.item .tipsy-arrow-w {
-	border-right-color: #222;
+	border-right-color: $main;
 }
 
 .tipsy.item h4 {
@@ -157,5 +157,5 @@
 
 .tipsy.item span.flavour {
 	font-style: italic;
-	color: #FFD200;
+	color: $yellow;
 }

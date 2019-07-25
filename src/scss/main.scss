@@ -10,11 +10,11 @@
 
 * {
 	user-select: none;
-	font-family: 'Poppins';
+	font-family: $font-family;
 }
 
 a {
-	color: #fff;
+	color: $anchor-fg;
 	text-decoration: none;
 }
 
@@ -24,6 +24,8 @@ body {
 	font-style: normal;
 	font-weight: 400;
 	overflow: hidden;
+	background-color: $body-bg;
+	font-size: 14px;
 }
 
 body > p {
@@ -49,40 +51,6 @@ li {
 	border: 0;
 }
 
-.hr {
-	border-top: 1px solid #ccc;
-	padding-top: 5px;
-	margin-top: 5px;
-	clear: both;
-	height: 0;
-}
-
-.float-left {
-	float: left;
-}
-
-.float-right {
-	float: right;
-}
-
-img.avatar {
-	border-radius: 100%;
-	border: 0;
-	padding: 0;
-	width: 90px;
-	height: 90px;
-}
-
-img.avatar.small {
-	width: 64px;
-	height: 64px;
-}
-
-img.avatar.right {
-	float: right;
-	margin: 0 10px 0 0;
-}
-
 p {
 	margin-top: 0;
 }
@@ -101,42 +69,46 @@ input[type=range]::-webkit-slider-runnable-track {
 	width: 100%;
 	height: 14px;
 	cursor: pointer;
-	background-color: #B37D1A;
+	background-color: $slider-track-bg;
 	border-radius: 2px;
-	border: 1px solid #B37D1A;
+	border: 1px solid $slider-track-border;
 }
 
 input[type=range]::-webkit-slider-thumb {
 	height: 16px;
 	width: 16px;
-	border: 1px solid #2D1C0C;
+	border: 1px solid $slider-thumb-bg;
 	border-radius: 100%;
-	background-color: #2D1C0C;
+	background-color: $slider-thumb-border;
 	cursor: pointer;
 	-webkit-appearance: none;
 	margin-top: -15px;
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
-	background: #B37D1A;
+	background: $slider-track-focus;
 }
 
 input[type=range]::-moz-range-track {
 	width: 100%;
 	height: 14px;
 	cursor: pointer;
-	background-color: #B37D1A;
+	background-color: $slider-track-bg;
 	border-radius: 2px;
-	border: 1px solid #B37D1A;
+	border: 1px solid $slider-track-border;
 }
 
 input[type=range]::-moz-range-thumb {
 	height: 16px;
 	width: 16px;
-	border: 1px solid #2D1C0C;
+	border: 1px solid $slider-thumb-border;
 	border-radius: 100%;
-	background: #2D1C0C;
+	background: $slider-thumb-bg;
 	cursor: pointer;
+}
+
+input[type=range]:focus::-moz-slider-runnable-track {
+	background: $slider-track-focus;
 }
 
 input[type=number].small,
@@ -148,11 +120,286 @@ input[type=text].small {
 input[type=text],
 input[type=number],
 select {
-	border: 1px solid #908c68;
-	background: #fff;
-	color: #000;
+	border: 1px solid $input-border;
+	background: $input-bg;
+	color: $input-fg;
 	padding: 2px 6px;
 	font-size: 12px;
+}
+
+.ui {
+	width: 100%;
+	height: 100%;
+	position: relative;
+
+	&> header {
+		width: 100%;
+		height: 48px;
+		left: 0;
+		z-index: 9999;
+		top: 0;
+		position: fixed;
+
+		.cityavatar {
+			width: 16px;
+			height: 16px;
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-size: 20px;
+			display: inline-block;
+			cursor: pointer;
+		}
+
+		.cityname {
+			text-align: center;
+			text-transform: uppercase;
+		}
+
+		.citylevel {
+			text-align: center;
+		}
+
+		.resource-panel {
+			width: 65%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			padding: 12px 0 10px 12px;
+
+			.resource {
+				float: left;
+
+				.amount {
+					color: $grey;
+					font-size: 12px;
+					padding: 0 2px 0 4px;
+				}
+			}
+
+			img {
+				height: 24px;
+				width: 24px;
+				display: inline-block;
+				vertical-align: middle;
+				line-height: 24px;
+				text-align: center;
+				margin-right: 6px;
+			}
+		}
+
+		.top-panel {
+			width: 30%;
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 10px 12px 10px 0;
+			color: $grey;
+			font-size: 16px;
+			text-align: right;
+		}
+	}
+
+	&> footer {
+		background-color: transparent;
+		width: 460px;
+		position: fixed;
+		bottom: 0;
+		z-index: 9999;
+
+		&> a {
+			width: 52px;
+			height: 52px;
+			margin: 0 5px 0 0;
+			cursor: pointer;
+			float: left;
+			background-size: 52px;
+			background-repeat: no-repeat;
+			background-color: transparent;
+		}
+	}
+
+	.game {
+		position: relative;
+		z-index: 99;
+		width: 3549px;
+		height: 1824px;
+		overflow: hidden;
+
+		.building {
+			width: 160px;
+			height: 160px;
+			cursor: pointer;
+			position: absolute;
+			background-size: 160px;
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-position: center;
+
+			&.large {
+				width: 260px;
+				height: 260px;
+				background-size: 260px;
+			}
+
+			.notification {
+				width: 46px;
+				height: 46px;
+				position: absolute;
+				top: 45%;
+				left: 45%;
+			}
+		}
+	}
+
+	dd img {
+		vertical-align: middle;
+		margin-left: 4px;
+	}
+
+	dt img {
+		vertical-align: middle;
+	}
+
+	a.disabled {
+		background-color: $darkgrey;
+		color: $main;
+		cursor: default;
+	}
+
+	.hidden,
+	.espionage-rel {
+		display: none;
+	}
+
+	.range-combo input[type=range],
+	.select-combo select {
+		float: left;
+		width: 60% !important;
+		padding: 4px 0;
+	}
+
+	.range-combo input[type=text],
+	.select-combo input[type=number] {
+		float: right;
+		width: 40px;
+		text-align: center;
+		border: 1px solid $border-dark;
+		padding: 4px 0;
+		background-color: $input-bg;
+	}
+
+	.select-combo input[type=button] {
+		float: right;
+		border: 1px solid $border-dark;
+		background-color: $input-bg;
+		padding: 4px;
+		border-left: 0;
+		cursor: pointer;
+	}
+
+	.range-combo input[type=text].espionage-chance {
+		width: 26px;
+		border-top-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+		border-right: 0;
+	}
+
+	.range-combo input[type="text"].espionage-value {
+		border-top-right-radius: 3px;
+		border-bottom-right-radius: 3px;
+	}
+
+	span.green {
+		color: $green;
+	}
+
+	span.red {
+		color: $red;
+	}
+
+	span.blue {
+		color: $blue;
+	}
+
+	a.wikipedia {
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+	}
+
+	&> aside {
+		position: fixed;
+		top: 48px;
+		right: 0;
+		background-color: $aside-bg;
+		bottom: 0;
+		z-index: 999;
+		padding-left: 6px;
+	}
+
+	&> aside:empty {
+		display: none;
+	}
+
+	.viewport {
+		top: 48px;
+		position: relative;
+		overflow: hidden;
+	}
+}
+
+/* Others */
+
+.loading {
+	display: none;
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	background-color: $black;
+	height: 46px;
+	width: 46px;
+	z-index: 99999999;
+}
+
+.hr {
+	border-top: 1px solid $border;
+	padding-top: 5px;
+	margin-top: 5px;
+	clear: both;
+	height: 0;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+img {
+	&.avatar {
+		border-radius: 100%;
+		border: 0;
+		padding: 0;
+		width: $avatar-size;
+		height: $avatar-size;
+	}
+
+	&.avatar.small {
+		width: $avatar-small-size;
+		height: $avatar-small-size;
+	}
+
+	&.avatar.right {
+		float: right;
+		margin: 0 10px 0 0;
+	}
+
+	&.small {
+		width: $resource-size;
+		height: $resource-size;
+	}
 }
 
 p.title,
@@ -171,297 +418,4 @@ dl.nomg {
 
 td.icon {
 	width: 60px;
-}
-
-/* Header */
-
-.ui > header {
-	width: 100%;
-	height: 48px;
-	left: 0;
-	z-index: 9999;
-	top: 0;
-	position: fixed;
-}
-
-.ui > header .cityavatar {
-	width: 16px;
-	height: 16px;
-	background-color: transparent;
-	background-repeat: no-repeat;
-	background-size: 20px;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.ui > header .cityname {
-	text-align: center;
-	text-transform: uppercase;
-}
-
-.ui > header .citylevel {
-	text-align: center;
-}
-
-.ui > header .resource-panel {
-	width: 65%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	padding: 12px 0 10px 12px;
-}
-
-.ui > header .resource-panel .resource {
-	float: left;
-}
-
-.ui > header .resource-panel .resource .amount {
-	color: #bbb;
-	font-size: 12px;
-	padding: 0 2px 0 4px;
-}
-
-.ui > header .top-panel {
-	width: 30%;
-	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 10px 12px 10px 0;
-	color: #bbb;
-	font-size: 16px;
-	text-align: right;
-}
-
-.ui > header .resource-panel img {
-	height: 24px;
-	width: 24px;
-	display: inline-block;
-	vertical-align: middle;
-	line-height: 24px;
-	text-align: center;
-	margin-right: 6px;
-}
-
-/* Footer */
-
-.ui > footer {
-	background-color: transparent;
-	width: 460px;
-	position: fixed;
-	bottom: 0;
-	z-index: 9999;
-}
-
-.ui > footer > a {
-	width: 52px;
-	height: 52px;
-	margin: 0 5px 0 0;
-	cursor: pointer;
-	float: left;
-	background-size: 52px;
-	background-repeat: no-repeat;
-	background-color: transparent;
-}
-
-/* Main */
-
-.ui {
-	width: 100%;
-	height: 100%;
-	position: relative;
-}
-
-.ui .game {
-	position: relative;
-	z-index: 99;
-	width: 3549px;
-	height: 1824px;
-	overflow: hidden;
-}
-
-.ui .game .building {
-	width: 160px;
-	height: 160px;
-	cursor: pointer;
-	position: absolute;
-	background-size: 160px;
-	background-color: transparent;
-	background-repeat: no-repeat;
-	background-position: center; 
-}
-
-.ui .game .building.large {
-	width: 260px;
-	height: 260px;
-	background-size: 260px;
-}
-
-.ui .game .building .notification {
-	width: 46px;
-	height: 46px;
-	position: absolute;
-	top: 45%;
-	left: 45%;
-}
-
-.ui dd img {
-	vertical-align: middle;
-	margin-left: 4px;
-}
-
-.ui dt img {
-	vertical-align: middle;
-}
-
-a.disabled {
-	background-color: #777;
-	color: #502d13;
-	cursor: default;
-}
-
-/* Others */
-
-.loading {
-	display: none;
-	position: fixed;
-	top: 10px;
-	right: 10px;
-	background-color: #000;
-	height: 46px;
-	width: 46px;
-	z-index: 99999999;
-}
-
-.hidden,
-.espionage-rel {
-	display: none;
-}
-
-table tr td:last-child a,
-.window .button.highlight,
-.tabs ul li.ui-tabs-active,
-.panel .toolbar .btn,
-table thead td,
-.modal .btn,
-.window .toolbar a,
-table tfoot td {
-	background-color: #694224;
-	border: 1px solid #694224;
-	background-image: linear-gradient(to bottom, #9b6b46, #694224);
-	color: #fff;
-}
-
-table tr td:last-child a:hover,
-.panel .toolbar .btn:hover,
-.modal .btn:hover,
-.window .toolbar a:hover,
-.window .button.highlight:hover {
-	background-color: #422712;
-	border: 1px solid #422712;
-	background-image: linear-gradient(to bottom, #694224, #422712);
-	color: #fff;
-}
-
-.range-combo input[type=range],
-.select-combo select {
-	float: left;
-	width: 60% !important;
-	padding: 4px 0;
-}
-
-.range-combo input[type=text],
-.select-combo input[type=number] {
-	float: right;
-	width: 40px;
-	text-align: center;
-	border: 1px solid #aaa;
-	padding: 4px 0;
-	background-color: #ddd;
-}
-
-.select-combo input[type=button] {
-	float: right;
-	border: 1px solid #aaa;
-	background-color: #ddd;
-	padding: 4px;
-	border-left: 0;
-	cursor: pointer;
-}
-
-.range-combo input[type=text].espionage-chance {
-	width: 26px;
-	border-top-left-radius: 3px;
-	border-bottom-left-radius: 3px;
-	border-right: 0;
-}
-
-.range-combo input[type="text"].espionage-value {
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;
-}
-
-.ui-control {
-	border-radius: 3px;
-	padding: 2px 10px;
-	color: #000;
-	font-size: 12px;
-}
-
-.ui-control.on {
-	background-color: #c0f5d3;
-	box-shadow: 0 0 5px #c0f5d3;
-}
-
-.ui-control.off {
-	background-color: #ef705a;
-	box-shadow: 0 0 5px #ef705a;
-}
-
-.github {
-	position: absolute;
-	top: 10px;
-	right: 0;
-}
-
-span.green {
-	color: #0f0;
-}
-
-span.red {
-	color: #e11;
-}
-
-span.blue {
-	color: #11f;
-}
-
-img.small {
-	width: 20px;
-	height: 20px;
-}
-
-a.wikipedia {
-	width: 20px;
-	height: 20px;
-	display: inline-block;
-}
-
-.ui > aside {
-	position: fixed;
-	top: 48px;
-	right: 0;
-	background-color: #ECD0B7;
-	bottom: 0;
-	z-index: 999;
-	padding-left: 6px;
-}
-
-.ui > aside:empty {
-	display: none;
-}
-
-.ui .viewport {
-	top: 48px;
-	position: relative;
-	overflow: hidden;
 }

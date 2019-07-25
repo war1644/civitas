@@ -20,7 +20,7 @@
 .achievement {
 	padding: 10px;
 	margin-bottom: 10px;
-	color: #444;
+	color: $anchor-fg-dark;
 	font-size: 12px;
 	background-color: #DCDCE6;
 	box-shadow: 0 0 2px #000;
@@ -60,31 +60,29 @@
 
 .achievement {
 	border-radius: 60px;
-	background: #e5e5e5;
-	background: linear-gradient(to bottom, #e5e5e5 0%,#8e8e8e 100%);
+	background: linear-gradient(to bottom, #e5e5e5 0%, #8e8e8e 100%);
 }
 
 .achievements-notifications .notty {
 	border-radius: 60px;
-	background-color: #c6c438;
-	background-image: linear-gradient(to bottom, #f5f36b, #c6c438);
+	background-image: $notif-achievement-bg;
 	box-shadow: 0 0 2px #000;
 }
 
 .notifications .notty.error {
-	background-color: #E194A1;
+	background-color: $notif-error-bg;
 }
 
 .notifications .notty.event {
-	background-color: #77BDE5;
+	background-color: $notif-event-bg;
 }
 
 .notifications .notty.research {
-	background-color: #7AE3D2;
+	background-color: $notif-research-bg;
 }
 
 .notifications .notty.religion {
-	background-color: #C79BFD;
+	background-color: $notif-religion-bg;
 }
 
 .notifications .notty .hide,
@@ -150,7 +148,7 @@
 .notifications .notty .left .img:after {
 	content: '';
 	background: #000;
-	background: linear-gradient(transparent, rgba(0, 0, 0, 0.6), transparent);
+	background: linear-gradient(transparent, hsla(0, 0%, 0%, 0.6), transparent);
 	width: 1px;
 	height: 50px;
 	position: absolute;
@@ -191,6 +189,6 @@
 .achievement h2 {
 	margin: 0 0 5px 0;
 	font-size: 14px;
-	color: #444;
+	color: $anchor-fg-dark;
 	text-transform: uppercase;
 }

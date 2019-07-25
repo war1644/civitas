@@ -22,10 +22,10 @@
 	font-size: 12px;
 	position: absolute;
 	top: -32px;
-	background-color: #fff;
+	background-color: $white;
 	border-radius: 20px;
 	padding: 4px 10px;
-	color: #000;
+	color: $black;
 	z-index: 2;
 }
 
@@ -43,9 +43,9 @@
 	position: absolute;
 	bottom: -60px;
 	left: 22%;
-	border: 1px solid #ccc;
+	border: 1px solid $border;
 	overflow: auto;
-	background-color: #fff;
+	background-color: $white;
 	padding: 20px;
 }
 
@@ -55,16 +55,16 @@
 	left: -8px;
 	transform: rotate(90deg);
 	display: block;
-	z-index:1;
+	z-index: 1;
 }
 
 #window-battle .battleground .cell .amount {
-	color: #fff;
+	color: $white;
 	position: absolute;
 	font-size: 10px;
 	right: 16px;
 	bottom: 2px;
-	background-color: #000;
+	background-color: $black;
 	border-radius: 100%;
 	transform: rotate(90deg);
 	padding: 4px;
@@ -76,15 +76,15 @@
 	position: absolute;
 	top: -36px;
 	right: 49%;
-	background-color: #fff;
+	background-color: $white;
 	border-radius: 100%;
 	padding: 6px;
-	color: #000;
+	color: $black;
 	z-index: 2;
 }
 
 #window-battle .status p {
-	color: #444;
+	color: $anchor-fg-dark;
 	font-size: 10px;
 }
 
@@ -106,7 +106,7 @@
 	background-color: #c53636;
 	position: absolute;
 	top: 42px;
-	box-shadow: 0 0 2px #000;
+	box-shadow: 0 0 2px $box-shadow;
 	right: 0;
 	z-index:2;
 }
@@ -165,7 +165,7 @@
 #window-battle .battleground .cell.empty,
 #window-battle .battleground .cell.selected,
 #window-battle .battleground .cell:hover {
-	background-color: #fff;
+	background-color: $white;
 }
 
 #window-battle .battleground .cell.empty {

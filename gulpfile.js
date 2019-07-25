@@ -17,6 +17,7 @@ const remember = require('gulp-remember');
 const plumber = require('gulp-plumber');
 const beep = require('beepbeep');
 const pkg = require('./package.json');
+const imagemin = require('gulp-imagemin');
 const header = require('gulp-header');
 const fs = require('fs');
 const jsdoc = require('gulp-jsdoc3');
@@ -153,70 +154,9 @@ gulp.task('app', () => {
 		.src([
 			'src/js/others/functions.js',
 			'src/js/bootstrap.js',
-			'src/js/objects/modules/ai.js',
-			'src/js/objects/modules/api.js',
-			'src/js/objects/modules/jailer.js',
-			'src/js/objects/core/place.js',
-			'src/js/objects/core/world.js',
-			'src/js/objects/core/building.js',
-			'src/js/objects/core/settlement.js',
-			'src/js/objects/core/event.js',
-			'src/js/objects/core/battleground.js',
-			'src/js/objects/core/hero.js',
-			'src/js/objects/ui/controls/window.js',
-			'src/js/objects/ui/controls/modal.js',
-			'src/js/objects/ui/controls/panel.js',
-			'src/js/objects/ui/ui.js',
-			'src/js/objects/core/game.js',
-			'src/js/constants/default.js',
-			'src/js/constants/api.js',
-			'src/js/constants/timeline.js',
-			'src/js/constants/religion.js',
-			'src/js/constants/diplomacy.js',
-			'src/js/constants/nation.js',
-			'src/js/constants/climate.js',
-			'src/js/constants/personality.js',
-			'src/js/constants/military.js',
-			'src/js/constants/research.js',
-			'src/js/constants/buildings.js',
-			'src/js/constants/world.js',
-			'src/js/constants/trades.js',
-			'src/js/constants/places.js',
-			'src/js/constants/settlements.js',
-			'src/js/constants/events.js',
-			'src/js/constants/resources.js',
-			'src/js/constants/achievements.js',
-			'src/js/constants/items.js',
-			'src/js/constants/hero.js',
-			'src/js/constants/initial.js',
-			'src/js/definitions/ui/panel/place.js',
-			'src/js/definitions/ui/panel/settlement.js',
-			'src/js/definitions/ui/panel/help.js',
-			'src/js/definitions/ui/panel/debug.js',
-			'src/js/definitions/ui/panel/building.js',
-			'src/js/definitions/ui/panel/campaign.js',
-			'src/js/definitions/ui/panel/storage.js',
-			'src/js/definitions/ui/panel/world.js',
-			'src/js/definitions/ui/panel/ranks.js',
-			'src/js/definitions/ui/panel/new_army.js',
-			'src/js/definitions/ui/panel/new_spy.js',
-			'src/js/definitions/ui/panel/new_scout.js',
-			'src/js/definitions/ui/panel/new_caravan.js',
-			'src/js/definitions/ui/panel/council.js',
-			'src/js/definitions/ui/panel/army.js',
-			'src/js/definitions/ui/panel/buildings.js',
-			'src/js/definitions/ui/panel/trades.js',
-			'src/js/definitions/ui/panel/building/barracks.js',
-			'src/js/definitions/ui/panel/building/shipyard.js',
-			'src/js/definitions/ui/panel/building/church.js',
-			'src/js/definitions/ui/panel/building/embassy.js',
-			'src/js/definitions/ui/panel/building/tavern.js',
-			'src/js/definitions/ui/panel/building/academy.js',
-			'src/js/definitions/ui/window/signin.js',
-			'src/js/definitions/ui/window/battle.js',
-			'src/js/definitions/ui/window/signup.js',
-			'src/js/definitions/ui/window/error.js',
-			'src/js/definitions/ui/window/options.js'
+			'src/js/objects/**/*.js',
+			'src/js/constants/**/*.js',
+			'src/js/definitions/**/*.js'
 		], {
 			since: gulp.lastRun('app')
 		})
@@ -252,6 +192,38 @@ gulp.task('app', () => {
 		.pipe(gulp.dest('./dist/'))
 		.pipe(notify({
 			message: '\n\n----- Application libraries compiled -----\n',
+			onLast: true
+		}));
+});
+
+gulp.task('images', () => {
+	return gulp
+		.src('./images/**/*')
+		.pipe(
+			cache(
+				imagemin([
+					imagemin.gifsicle({
+						interlaced: true
+						}),
+					imagemin.jpegtran({
+						progressive: true
+						}),
+					imagemin.optipng({
+						optimizationLevel: 3
+					}),
+					imagemin.svgo({
+						plugins: [{
+							removeViewBox: true
+						}, {
+							cleanupIDs: false
+						}]
+					})
+				])
+			)
+		)
+		.pipe(gulp.dest('./dist/images/'))
+		.pipe(notify({
+			message: '\n\n----- Images compressed -----\n',
 			onLast: true
 		}));
 });

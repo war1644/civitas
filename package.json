@@ -57,6 +57,10 @@
 		"start": "gulp",
 		"styles": "gulp css",
 		"lib": "gulp lib",
-		"app": "gulp app"
+		"app": "gulp app",
+		"doc": "gulp doc"
+	},
+	"dependencies": {
+		"gulp-imagemin": "^6.0.0"
 	}
 }

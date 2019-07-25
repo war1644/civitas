@@ -7,3 +7,5 @@ images/assets/**/*
 temp/**/*
 .DS_Store
 saves/*
+*.sublime-project
+*.sublime-workspace
