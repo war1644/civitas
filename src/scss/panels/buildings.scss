@@ -1,0 +1,91 @@
+/* City Builder panel */
+
+#panel-buildings {
+	max-width: 1190px;
+	max-height: 630px;
+	height: auto;
+	width: 690px;
+}
+
+#panel-buildings .b-desc {
+	margin-bottom: 10px;
+}
+
+#panel-buildings.expanded {
+	width: 1150px !important;
+}
+
+#panel-buildings .building-item {
+	width: 160px;
+	height: 160px;
+	float: left;
+	text-align: center;
+	margin: 0 10px 10px 0;
+	position: relative;
+	background-color: hsl(28, 58%, 82%);
+	border-radius: 8px;
+	cursor: pointer;
+	border-top-right-radius: 0;
+}
+
+#panel-buildings .building-item:nth-child(4n) {
+	margin-right: 0;
+}
+
+#panel-buildings .building-item:after  {
+	display: block;
+	background: transparent;
+	border: 10px solid hsla(125, 100%, 27%, 1);
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid transparent;
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#panel-buildings .building-item.disabled:after {
+	display: block;
+	background: transparent;
+	border: 10px solid hsla(0, 100%, 27%, 1);
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid transparent;
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#panel-buildings .building-item.disabled img {
+	filter: grayscale(1);
+	opacity: 0.6;
+}
+
+#panel-buildings .building-item.active {
+	box-shadow: $box-shadow-active;
+}
+
+#panel-buildings .building-item.disabled {
+	/*box-shadow: $box-shadow-disabled;*/
+}
+
+#panel-buildings .building-item .title {
+	padding-top: 6px;
+	display: inline-block;
+	color: $main;
+	font-size: 14px;
+}
+
+#panel-buildings .building-item img.building {
+	width: 130px;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, -10px);
+}
+
+#panel-buildings .bldg-tabs {
+	padding: 10px 0 0 0;
+	overflow: auto;
+	max-height: 534px;
+}

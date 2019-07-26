@@ -73,8 +73,7 @@ function () {
     this.settings = {
       worldmap_beautify: game.WORLD_BEAUTIFY,
       worldmap_grid: game.WORLD_GRID,
-      music: false,
-      theme: 'default'
+      music: false
     };
     this.encryption = {
       key: null,
@@ -1764,7 +1763,7 @@ function () {
       if (typeof id === 'number') {
         for (var i = 0; i < _places.length; i++) {
           if (typeof _places[i] !== 'undefined') {
-            if (_places[i].id === id) {
+            if (_places[i].id() === id) {
               return _places[i];
             }
           }
@@ -2539,10 +2538,6 @@ function () {
         this.settings[key] = value;
       }
 
-      if (this.settings.theme !== 'default') {
-        $('#theme').attr('href', 'dist/' + this.settings.theme + '.css');
-      }
-
       return this;
     }
     /**
@@ -2579,15 +2574,14 @@ function () {
 
       this._setup_neighbours(data);
 
-      $('header .cityname').html(this.get_settlement().name());
-      $('header .cityavatar').css({
+      $('.cityname').html(this.get_settlement().name());
+      $('.cityavatar').css({
         'background-image': 'url(' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.get_settlement().ruler().avatar + '.png)'
       });
       ui.refresh();
       setInterval(function () {
         if (!self.is_paused() && seconds === game.SECONDS_TO_DAY) {
-          self._do_daily();
-
+          //self._do_daily();
           seconds = 1;
         } else if (!self.is_paused()) {
           seconds++;
@@ -11609,6 +11603,7 @@ function () {
       personality: this._properties.type === game.CAMP ? game.PERSONALITY_WARLORD : this.core().get_random_personality(),
       name: game.get_random_unique(game.NAMES)
     };
+    this._properties.storage = 0;
     this._properties.icon = typeof params.properties.icon !== 'undefined' ? params.properties.icon : 1;
     this._properties.waterside = typeof params.properties.waterside !== 'undefined' ? params.properties.waterside : false;
     this._army = this.load_army(params.army);
@@ -14466,6 +14461,16 @@ function () {
       return this.properties.scouted;
     }
   }, {
+    key: "id",
+    value: function id() {
+      return this.properties.id;
+    }
+  }, {
+    key: "name",
+    value: function name() {
+      return this.properties.name;
+    }
+  }, {
     key: "scout",
     value: function scout() {
       this.properties.scouted = true;
@@ -14475,7 +14480,7 @@ function () {
     value: function claim(settlement) {
       if (this.properties.sid === null) {
         this.properties.sid = settlement.id();
-        this.core().world().lock_hex(this.location(), settlement.id());
+        this.core().world().lock_hex(this.location, settlement.id());
         return true;
       }
 
@@ -14486,7 +14491,7 @@ function () {
     value: function unclaim(settlement) {
       if (settlement.id() === this.properties.sid) {
         this.properties.sid = null;
-        this.core().world().unlock_hex(this.location());
+        this.core().world().unlock_hex(this.location);
         return true;
       }
 
@@ -16699,7 +16704,7 @@ function () {
 
       $('.modal header').html(options.title);
       $('.modal footer').html('<a data-id="yes" href="#" class="btn float-right">Yes</a><a data-id="no" href="#" class="btn">No</a>');
-      $('.modal section').html((settlement ? '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
+      $('.modal section').html((settlement ? '<img class="avatar right small" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
       $('.modal footer').on('click', 'a', function () {
         self._action($(this).data('id'));
 
@@ -17190,7 +17195,7 @@ function () {
       var _t = '';
       var clicked = false;
       var clickY, clickX;
-      var out = '<section class="ui">' + '<header>' + '<div class="resource-panel"></div>' + '<div class="top-panel">' + '<span title="City level" class="tips citylevel"></span>&nbsp;&nbsp;&nbsp;' + '<span title="City Council" class="tips cityavatar"></span>&nbsp;&nbsp;&nbsp;' + '<span class="cityname"></span>' + '</div>' + '</header>' + '<aside></aside>' + '<div class="viewport">' + '<section class="game"></section>' + '</div>' + '<footer>' + '<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' + '<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' + '<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' + '<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' + '<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' + '<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' + '<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' + '<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' + '</footer>' + '</section>' + '<audio id="music" loop>' + '<source src="music/track1.mp3" type="audio/mpeg">' + '</audio>' + '<div title="Game is doing stuff in the background." class="loading"></div>';
+      var out = '<section class="ui">' + '<header>' + '<div class="resource-panel"></div>' + '<div class="top-panel">' + '</div>' + '</header>' + '<div class="character-info">' + '<span class="avatar-banner"><span class="cityavatar"></span></span>' + '<span class="cityname"></span>' + '<small>Level <span class="citylevel"></span></small>' + '</div>' + '<aside></aside>' + '<div class="viewport">' + '<section class="game"></section>' + '</div>' + '<footer>' + '<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' + '<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' + '<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' + '<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' + '<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' + '<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' + '<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' + '<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' + '</footer>' + '</section>' + '<audio id="music" loop>' + '<source src="music/track1.mp3" type="audio/mpeg">' + '</audio>' + '<div title="Game is doing stuff in the background." class="loading"></div>';
       $('body').empty().append(out);
 
       for (var item in game.RESOURCES) {
@@ -18364,28 +18369,10 @@ function () {
       var colors = Math.random() * 255;
       return "hsl(" + color * (360 / colors) % 360 + ", 50%, 50%)";
     }
-    /**
-     * Set the game theme.
-     *
-     * @public
-     * @param {String} name
-     * @returns {ui}
-     */
-
-  }, {
-    key: "theme",
-    value: function theme(name) {
-      if (name === 'default' || name === 'second') {
-        $('#theme').attr('href', 'dist/' + name + '.css');
-      }
-
-      this.core().set_settings('theme', name);
-      return this;
-    }
   }], [{
     key: "window_about_section",
     value: function window_about_section() {
-      var out = '<a href="#" class="do-about button">About</a>' + '<div class="about-game">' + '<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"></a>' + '<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' + '<p>Big thanks to:</p>' + '<ul>' + '<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' + '<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' + '</ul>' + '</div>';
+      var out = '<a href="#" class="do-about button button-blue">About</a>' + '<div class="about-game">' + '<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"></a>' + '<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' + '<p>Big thanks to:</p>' + '<ul>' + '<li><a target="_blank" href="https://soundcloud.com/shantifax">Shantifax</a> for the music (Glandula Pinealis).</li>' + '<li><a target="_blank" href="http://bluebyte.com">Blue Byte</a> for Anno 1404.</li>' + '</ul>' + '</div>';
       return out;
     }
     /**
@@ -18439,7 +18426,7 @@ function () {
         title = '';
       }
 
-      var out = '<div id="panel-{ID}" class="panel">' + '<header>' + title + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips demolish" title="Demolish this building" href="#"></a>' + '<a class="tips pause start" href="#"></a>' + '<a class="tips upgrade" title="Upgrade building" href="#"></a>' + '<a class="tips downgrade" title="Downgrade building" href="#"></a>' + '</footer>' + '</div>';
+      var out = '<div id="panel-{ID}" class="panel">' + '<header>' + title + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips demolish" title="Demolish this building" href="#"><span></span></a>' + '<a class="tips pause start" href="#"><span></span></a>' + '<a class="tips upgrade" title="Upgrade building" href="#"><span></span></a>' + '<a class="tips downgrade" title="Downgrade building" href="#"><span></span></a>' + '</footer>' + '</div>';
       return out;
     }
   }]);
@@ -18507,19 +18494,19 @@ function (_ui_panel) {
       $(this.handle + ' section').append(core.ui().tabs(tabs));
       var claimed_by = place.is_claimed();
       var claimed_by_settlement = core.get_settlement(claimed_by);
-      $(this.handle + ' #tab-info').empty().append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' + '<dl>' + (place.is_scouted() || claimed_by !== false && claimed_by_settlement.id() === my_settlement.id() ? '<dt>Name</dt>' + '<dd>' + place.name() + '</dd>' + '<dt>Claimed by</dt>' + '<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>' : '') + '<dt>Scouted</dt>' + '<dd>' + (place.is_scouted() ? 'yes' : 'no') + '</dd>' + '<dt>Time to build</dt>' + '<dd>' + game.PLACE_TIME_TO_BUILD + ' days</dd>' + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, place.location()) + ' miles (' + core.world().get_distance_in_days(location, place.location()) + ' days)</dd>' + '</dl>');
+      $(this.handle + ' #tab-info').empty().append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' + '<dl>' + (place.is_scouted() || claimed_by !== false && claimed_by_settlement.id() === my_settlement.id() ? '<dt>Name</dt>' + '<dd>' + place.name() + '</dd>' + '<dt>Claimed by</dt>' + '<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>' : '') + '<dt>Scouted</dt>' + '<dd>' + (place.is_scouted() ? 'yes' : 'no') + '</dd>' + '<dt>Time to build</dt>' + '<dd>' + game.PLACE_TIME_TO_BUILD + ' days</dd>' + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, place.location) + ' miles (' + core.world().get_distance_in_days(location, place.location) + ' days)</dd>' + '</dl>');
 
       if (place.is_scouted()) {
         $(this.handle + ' #tab-resources').empty().append('<p>Stage 2: Gather the resources below and use caravans to send them to this place.</p>' + '<p><strong>Note!</strong> If the place is not claimed by anybody, do not send resources or they will be lost.</p>' + '<div class="required">' + '<p>This place has no required resources.</p>' + '</div>');
         $(this.handle + ' #tab-construction').empty().append('<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>');
 
         if (claimed_by !== false && claimed_by === my_settlement.id()) {
-          $(this.handle + ' footer').empty().append('<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"></a>' + '<a class="tips caravan" title="Send a caravan to this place." href="#"></a>');
+          $(this.handle + ' footer').empty().append('<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"><span></span></a>' + '<a class="tips caravan" title="Send a caravan to this place." href="#"><span></span></a>');
         } else if (claimed_by === false) {
-          $(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"></a>');
+          $(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"><span></span></a>');
         }
       } else {
-        $(this.handle + ' footer').empty().append('<a class="tips scout" title="Send a scout to this place." href="#"></a>');
+        $(this.handle + ' footer').empty().append('<a class="tips scout" title="Send a scout to this place." href="#"><span></span></a>');
       }
 
       $(this.handle).on('click', '.claim', function () {
@@ -18670,7 +18657,7 @@ function (_ui_panel) {
   function ui_panel_settlement(params) {
     _classCallCheck(this, ui_panel_settlement);
 
-    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips attack" title="Attack this settlement." href="#"></a>' + '<a class="tips caravan" title="Send a caravan to this settlement." href="#"></a>' + '<a class="tips spy" title="Send a spy to this settlement." href="#"></a>' + '<a class="tips alliance" title="Propose an alliance to this settlement." href="#"></a>' + '<a class="tips pact" title="Propose a pact to this settlement." href="#"></a>' + '<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"></a>' + '<a class="tips join" title="Ask this settlement to join your city." href="#"></a>' + '<a class="tips war" title="Declare war to this settlement." href="#"></a>' + '</footer>' + '</div>';
+    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips attack" title="Attack this settlement." href="#"><span></span></a>' + '<a class="tips caravan" title="Send a caravan to this settlement." href="#"><span></span></a>' + '<a class="tips spy" title="Send a spy to this settlement." href="#"><span></span></a>' + '<a class="tips alliance" title="Propose an alliance to this settlement." href="#"><span></span></a>' + '<a class="tips pact" title="Propose a pact to this settlement." href="#"><span></span></a>' + '<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"><span></span></a>' + '<a class="tips join" title="Ask this settlement to join your city." href="#"><span></span></a>' + '<a class="tips war" title="Declare war to this settlement." href="#"><span></span></a>' + '</footer>' + '</div>';
     params.params_data = null;
     params.id = 'settlement';
 
@@ -19498,6 +19485,7 @@ function (_ui_panel) {
         }
       }
 
+      console.log(storage_space);
       $(this.handle + ' .total-storage').empty().append(storage_space.all);
       $(this.handle + ' .used-storage').empty().append(storage_space.occupied);
     };
@@ -19648,7 +19636,7 @@ function (_ui_panel) {
 
         var _coords = core.ui().get_cell_middle_coords(_location.y, _location.x);
 
-        $('.worldmap').append('<img data-x="' + _location.x + '" data-y="' + _location.y + '" title="Ruins of ' + places[_i].name + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + places[_i].properties.id + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
+        $('.worldmap').append('<img data-x="' + _location.x + '" data-y="' + _location.y + '" title="Ruins of ' + places[_i].name() + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + places[_i].id() + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
       } //}
 
 
@@ -20217,7 +20205,7 @@ function (_ui_panel) {
       var my_settlement = core.get_settlement();
       var place = params.data;
       var location = my_settlement.location();
-      var distance = core.world().get_distance_in_days(location, place.location());
+      var distance = core.world().get_distance_in_days(location, place.location);
 
       var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
 
@@ -21312,7 +21300,7 @@ function (_ui_panel) {
 
             var _discount_price = Math.ceil(game.RESOURCES[_item3].price + _discount);
 
-            out += '<tr>' + '<td>' + settlements[_z].name() + '</td>' + '<td class="center">' + core.ui().resource_small_img(_item3) + '</td>' + '<td class="center">' + exports[_item3] + '</td>' + '<td class="center">' + game.RESOURCES[_item3].price + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + _discount + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + _discount_price + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + Math.ceil(_discount_price * exports[_item3]) + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + '<a title="Buy those goods" data-resource="' + _item3 + '" data-settlement="' + settlements[_z].name() + '" class="tips buy' + (exports[_item3] === 0 ? ' disabled' : '') + '" href="#">buy</a>' + '</td>' + '</tr>';
+            out += '<tr>' + '<td><a href="#" class="settlement-info tips" data-settlement="' + settlements[_z].name() + '" title="View info about this settlement.">' + settlements[_z].name() + '</a></td>' + '<td class="center">' + core.ui().resource_small_img(_item3) + '</td>' + '<td class="center">' + exports[_item3] + '</td>' + '<td class="center">' + game.RESOURCES[_item3].price + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + _discount + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + _discount_price + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + Math.ceil(_discount_price * exports[_item3]) + core.ui().resource_small_img('coins') + '</td>' + '<td class="center">' + '<a title="Buy those goods" data-resource="' + _item3 + '" data-settlement="' + settlements[_z].name() + '" class="tips buy' + (exports[_item3] === 0 ? ' disabled' : '') + '" href="#">buy</a>' + '</td>' + '</tr>';
           }
         }
       }
@@ -22228,7 +22216,8 @@ function (_ui_window) {
     _classCallCheck(this, ui_window_signup);
 
     params.id = 'signup';
-    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="new-game">' + '<p>Choose your city details well, climate changes and game difficulty affects your building options and resources.</p>' + '<dl>' + '<dt class="clearfix">Your Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" />' + '</dd>' + (game.ENCRYPTION === true ? '<dt class="clearfix">Password:</dt>' + '<dd>' + '<input type="password" class="password text-input" />' + '</dd>' + '<dt class="clearfix">Confirm Password:</dt>' + '<dd>' + '<input type="password" class="password2 text-input" />' + '</dd>' : '') + '<div class="hr"></div>' + '<dt class="clearfix">City Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" />' + '</dd>' + '<dt class="clearfix">Nationality:</dt>' + '<dd>' + '<select class="nation text-input"></select>' + '</dd>' + '<dt class="clearfix">Climate:</dt>' + '<dd>' + '<select class="climate text-input"></select>' + '</dd>' + '<dt class="clearfix">Difficulty:</dt>' + '<dd>' + '<select class="difficulty text-input">' + '<option value="1">Easy</option>' + '<option value="2">Medium</option>' + '<option value="3">Hard</option>' + '<option value="4">Hardcore</option>' + '</select>' + '</dd>' + '<div class="avatar-select"></div>' + '</dl>' + '<a href="#" class="do-start highlight button">Start Playing</a>' + '</div>' + ui.window_about_section() + '</fieldset>' + '</section>';
+    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="new-game">' + '<img class="avatar-select-top" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar1.png">' + '<p>Choose your city details well, climate and game difficulty affects your building options and resources.</p>' + '<dl>' + '<dt class="clearfix">Your Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" />' + '</dd>' + (game.ENCRYPTION === true ? '<dt class="clearfix">Password:</dt>' + '<dd>' + '<input type="password" class="password text-input" />' + '</dd>' + '<dt class="clearfix">Confirm Password:</dt>' + '<dd>' + '<input type="password" class="password2 text-input" />' + '</dd>' : '') + '<div class="hr"></div>' + '<dt class="clearfix">City Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" />' + '</dd>' + '<dt class="clearfix">Nationality:</dt>' + '<dd>' + '<select class="nation text-input"></select>' + '</dd>' + '<dt class="clearfix">Climate:</dt>' + '<dd>' + '<select class="climate text-input"></select>' + '</dd>' + '<dt class="clearfix">Difficulty:</dt>' + '<dd>' + '<select class="difficulty text-input">' + '<option value="1">Easy</option>' + '<option value="2">Medium</option>' + '<option value="3">Hard</option>' + '<option value="4">Hardcore</option>' + '</select>' + '</dd>' + '<div class="avatar-select"></div>' + '</dl>' + //'<a href="#" class="change-picture">change picture</a>' +
+    '<a href="#" class="do-start highlight button">Start Playing</a>' + ui.window_about_section() + '</div>' + '</fieldset>' + '</section>';
 
     params.on_show = function () {
       var self = this;
@@ -22302,8 +22291,12 @@ function (_ui_window) {
 
         if (new_avatar >= 1 && new_avatar <= game.AVATARS) {
           avatar = new_avatar;
+          $('.avatar-select-top').attr('src', game.ASSETS_URL + 'images/assets/avatars/avatar' + avatar + '.png');
         }
 
+        return false;
+      }).on('click', '.avatar-select-top', function () {
+        $('.avatar-select').fadeToggle('fast');
         return false;
       }).on('click', '.do-about', function () {
         $(handle + ' .about-game').slideToggle();
@@ -22437,27 +22430,22 @@ function (_ui_window) {
       var self = this;
       var handle = this.handle;
       var core = this.core();
-      var theme = core.get_settings('theme');
       $(handle + ' .options-game').append(core.ui().tabs(['Sounds', 'UI', 'Gameplay']));
       $(handle + ' #tab-sounds').append('<div>' + '<a href="#" class="music-control ui-control ' + (core.get_settings('music') === true ? 'on' : 'off') + '">music</a>' + '<input class="music-volume" type="range" min="0" max="1" step="0.1" ' + (core.get_settings('music') !== true ? 'disabled' : '') + ' />' + '</div>');
-      $(handle + ' #tab-ui').append('<div>' + '<a href="#" class="worldmap-grid-control ui-control ' + (core.get_settings('worldmap_grid') === true ? 'on' : 'off') + '">worldmap grid</a> ' + '<a href="#" class="worldmap-beautify-control ui-control ' + (core.get_settings('worldmap_beautify') === true ? 'on' : 'off') + '">worldmap beautify</a>' + '<select class="game-theme"><option ' + (theme === 'default' ? 'selected ' : '') + 'value="default">default</option><option ' + (theme === 'second' ? 'selected ' : '') + 'value="second">second</option></select>' + '</div>');
+      $(handle + ' #tab-ui').append('<div>' + '<a href="#" class="worldmap-grid-control ui-control ' + (core.get_settings('worldmap_grid') === true ? 'on' : 'off') + '">worldmap grid</a> ' + '<a href="#" class="worldmap-beautify-control ui-control ' + (core.get_settings('worldmap_beautify') === true ? 'on' : 'off') + '">worldmap beautify</a>' + '</div>');
       $(handle + ' .tabs').tabs();
       $(handle).on('click', '.do-resume', function () {
         core.ui().hide_loader();
         core.unpause();
         self.destroy();
         return false;
-      }).on('change', '.game-theme', function () {
-        var theme = $('.game-theme').val();
-        core.ui().theme(theme);
-        return false;
       }).on('click', '.do-pause', function () {
         if (core.is_paused() === true) {
-          $(this).removeClass('highlight').html('Pause');
+          $(this).removeClass('button-green').html('Pause');
           core.ui().show_loader();
           core.unpause();
         } else {
-          $(this).addClass('highlight').html('Resume');
+          $(this).addClass('button-green').html('Resume');
           core.ui().hide_loader();
           core.pause();
         }

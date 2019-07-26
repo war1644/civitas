@@ -1,0 +1,164 @@
+/* Bottom panel with game actions */
+
+footer a[data-panel=trades] {
+	background-image: url(../images/assets/ui/toolbar/trades.png);
+}
+
+footer a[data-panel=storage] {
+	background-image: url(../images/assets/ui/toolbar/storage.png);
+}
+
+footer a[data-panel=buildings] {
+	background-image: url(../images/assets/ui/toolbar/build.png);
+}
+
+footer a[data-panel=council] {
+	background-image: url(../images/assets/ui/toolbar/council.png);
+}
+
+footer a[data-panel=world] {
+	background-image: url(../images/assets/ui/toolbar/worldmap.png);
+}
+
+footer a[data-panel=ranks] {
+	background-image: url(../images/assets/ui/toolbar/ranks.png);
+}
+
+footer a[data-panel=debug] {
+	background-image: url(../images/assets/ui/toolbar/debug.png);
+}
+
+footer a[data-panel=help] {
+	background-image: url(../images/assets/ui/toolbar/help.png);
+}
+
+/* Panel footer icons */
+
+.panel header .close {
+	background: transparent url(../images/ui/close.png) no-repeat;
+}
+
+.panel footer .attack span {
+	background: transparent url(../images/assets/ui/icons/attack.png) no-repeat;
+}
+
+.panel footer .spy span {
+	background: transparent url(../images/assets/ui/icons/spy.png) no-repeat;
+}
+
+.panel footer .scout span {
+	background: transparent url(../images/assets/ui/icons/spy.png) no-repeat;
+}
+
+.panel footer .ceasefire span {
+	background: transparent url(../images/assets/ui/icons/sign.png) no-repeat;
+}
+
+.panel footer .claim span {
+	background: transparent url(../images/assets/ui/icons/upgrade.png) no-repeat;
+}
+
+.panel footer .unclaim span {
+	background: transparent url(../images/assets/ui/icons/downgrade.png) no-repeat;
+}
+
+.panel footer .caravan span {
+	background: transparent url(../images/assets/ui/icons/caravan.png) no-repeat;
+}
+
+.panel footer .join span {
+	background: transparent url(../images/assets/ui/icons/home.png) no-repeat;
+}
+
+.panel footer .alliance span {
+	background: transparent url(../images/assets/ui/icons/alliance.png) no-repeat;
+}
+
+.panel footer .pact span {
+	background: transparent url(../images/assets/ui/icons/pact.png) no-repeat;
+}
+
+.panel footer .start span {
+	background: transparent url(../images/assets/ui/icons/start.png) no-repeat;
+}
+
+.panel footer .pause span {
+	background: transparent url(../images/assets/ui/icons/stop.png) no-repeat;
+}
+
+.panel footer .demolish span {
+	background: transparent url(../images/assets/ui/icons/demolish.png) no-repeat;
+}
+
+.panel footer .war span {
+	background: transparent url(../images/assets/ui/icons/war.png) no-repeat;
+}
+
+.panel footer .upgrade span {
+	background: transparent url(../images/assets/ui/icons/upgrade.png) no-repeat;
+}
+
+.panel footer .downgrade span {
+	background: transparent url(../images/assets/ui/icons/downgrade.png) no-repeat;
+}
+
+/* Building notifications */
+
+.game .building .notification.error {
+	background: transparent url(../images/assets/ui/icons/notify-error.png) no-repeat;
+}
+
+.game .building .notification.paused {
+	background: transparent url(../images/assets/ui/icons/notify-pause.png) no-repeat;
+}
+
+.game .building .notification.requirements {
+	background: transparent url(../images/assets/ui/icons/notify-missing.png) no-repeat;
+}
+
+/* Others */
+
+.ach.img {
+	background: transparent url(../images/assets/ui/icon_achievement.png) no-repeat;
+}
+
+.loading {
+	background: transparent url(../images/ui/loading.svg) no-repeat;
+}
+
+.notifications .notty .hide,
+.achievements-notifications .notty .hide {
+	background: transparent url(../images/ui/close.png) no-repeat;
+}
+
+.panel ul.advices li {
+	background: transparent url(../images/ui/check.png) no-repeat left top;
+}
+
+.religion-list .religion {
+	background: transparent url(../images/assets/ui/religion.png) no-repeat center;
+}
+
+.game {
+	background: $body-bg url(../images/city/map.jpg) no-repeat;
+}
+
+.panel td a.btn.start {
+	background: transparent url(../images/assets/ui/icons/start.png) no-repeat;
+}
+
+.panel td a.btn.pause {
+	background: transparent url(../images/assets/ui/icons/stop.png) no-repeat;
+}
+
+#window-battle .battleground {
+	background: transparent url(../images/battle/bg2.png) no-repeat;
+}
+
+a.wikipedia {
+	background: transparent url(../images/ui/wikipedia.png) no-repeat;
+}
+
+a.github {
+	background: transparent url(../images/ui/github.png) no-repeat;
+}

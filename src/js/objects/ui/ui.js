@@ -90,11 +90,13 @@ class ui {
 					'<header>' +
 						'<div class="resource-panel"></div>' +
 						'<div class="top-panel">' +
-							'<span title="City level" class="tips citylevel"></span>&nbsp;&nbsp;&nbsp;' +
-							'<span title="City Council" class="tips cityavatar"></span>&nbsp;&nbsp;&nbsp;' +
-							'<span class="cityname"></span>' +
 						'</div>' +
 					'</header>' +
+					'<div class="character-info">' +
+						'<span class="avatar-banner"><span class="cityavatar"></span></span>' +
+						'<span class="cityname"></span>' +
+						'<small>Level <span class="citylevel"></span></small>' +
+					'</div>' +
 					'<aside></aside>' +
 					'<div class="viewport">' +
 						'<section class="game"></section>' +
@@ -192,7 +194,7 @@ class ui {
 	 * @returns {String}
 	 */
 	static window_about_section () {
-		let out = '<a href="#" class="do-about button">About</a>' +
+		let out = '<a href="#" class="do-about button button-blue">About</a>' +
 			'<div class="about-game">' +
 				'<a class="github" target="_blank" href="https://github.com/sizeofcat/civitas"></a>' +
 				'<p>Civitas is written by <a target="_blank" href="https://sizeof.cat">sizeof(cat)</a>.</p>' +
@@ -265,10 +267,10 @@ class ui {
 					'</header>' +
 					'<section></section>' +
 					'<footer>' +
-						'<a class="tips demolish" title="Demolish this building" href="#"></a>' +
-						'<a class="tips pause start" href="#"></a>' +
-						'<a class="tips upgrade" title="Upgrade building" href="#"></a>' +
-						'<a class="tips downgrade" title="Downgrade building" href="#"></a>' +
+						'<a class="tips demolish" title="Demolish this building" href="#"><span></span></a>' +
+						'<a class="tips pause start" href="#"><span></span></a>' +
+						'<a class="tips upgrade" title="Upgrade building" href="#"><span></span></a>' +
+						'<a class="tips downgrade" title="Downgrade building" href="#"><span></span></a>' +
 					'</footer>' +
 				'</div>';
 		return out;
@@ -1217,20 +1219,5 @@ class ui {
 		let color = (Math.random() * 250) + 1;
 		let colors = Math.random() * 255;
 		return "hsl(" + (color * (360 / colors) % 360) + ", 50%, 50%)";
-	}
-
-	/**
-	 * Set the game theme.
-	 *
-	 * @public
-	 * @param {String} name
-	 * @returns {ui}
-	 */
-	theme (name) {
-		if (name === 'default' || name === 'second') {
-			$('#theme').attr('href', 'dist/' + name + '.css');
-		}
-		this.core().set_settings('theme', name);
-		return this;
 	}
 }

@@ -45,6 +45,14 @@ class place {
 		return this.properties.scouted;
 	}
 
+	id () {
+		return this.properties.id;
+	}
+
+	name () {
+		return this.properties.name;
+	}
+
 	scout () {
 		this.properties.scouted = true;
 	}
@@ -52,7 +60,7 @@ class place {
 	claim (settlement) {
 		if (this.properties.sid === null) {
 			this.properties.sid = settlement.id();
-			this.core().world().lock_hex(this.location(), settlement.id());
+			this.core().world().lock_hex(this.location, settlement.id());
 			return true;
 		}
 		return false;
@@ -61,7 +69,7 @@ class place {
 	unclaim (settlement) {
 		if (settlement.id() === this.properties.sid) {
 			this.properties.sid = null;
-			this.core().world().unlock_hex(this.location());
+			this.core().world().unlock_hex(this.location);
 			return true;
 		}
 		return false;

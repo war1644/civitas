@@ -51,7 +51,8 @@
 		"gulp-header": "^2.0.9",
 		"gulp-jsdoc3": "^2.0.0",
 		"gulp-replace": "^1.0.0",
-		"docdash": "^1.1.1"
+		"docdash": "^1.1.1",
+		"gulp-imagemin": "^6.0.0"
 	},
 	"scripts": {
 		"start": "gulp",
@@ -59,8 +60,5 @@
 		"lib": "gulp lib",
 		"app": "gulp app",
 		"doc": "gulp doc"
-	},
-	"dependencies": {
-		"gulp-imagemin": "^6.0.0"
 	}
 }

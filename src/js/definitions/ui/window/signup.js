@@ -23,7 +23,8 @@ class ui_window_signup extends ui_window {
 				'<div class="logo">Civitas</div>' +
 				'<fieldset>' +
 					'<div class="new-game">' +
-						'<p>Choose your city details well, climate changes and game difficulty affects your building options and resources.</p>' +
+						'<img class="avatar-select-top" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar1.png">' +
+						'<p>Choose your city details well, climate and game difficulty affects your building options and resources.</p>' +
 						'<dl>' +
 							'<dt class="clearfix">Your Name:</dt>' +
 							'<dd>' +
@@ -63,9 +64,10 @@ class ui_window_signup extends ui_window {
 							'</dd>' +
 							'<div class="avatar-select"></div>' +
 						'</dl>' +
+						//'<a href="#" class="change-picture">change picture</a>' +
 						'<a href="#" class="do-start highlight button">Start Playing</a>' +
+						ui.window_about_section() +
 					'</div>' +
-					ui.window_about_section() +
 				'</fieldset>' +
 			'</section>';
 		params.on_show = function() {
@@ -127,7 +129,11 @@ class ui_window_signup extends ui_window {
 				let new_avatar = parseInt($(this).data('avatar'), 10);
 				if (new_avatar >= 1 && new_avatar <= game.AVATARS) {
 					avatar = new_avatar;
+					$('.avatar-select-top').attr('src', game.ASSETS_URL + 'images/assets/avatars/avatar' + avatar + '.png');
 				}
+				return false;
+			}).on('click', '.avatar-select-top', function() {
+				$('.avatar-select').fadeToggle('fast');
 				return false;
 			}).on('click', '.do-about', function () {
 				$(handle + ' .about-game').slideToggle();

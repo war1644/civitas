@@ -104,7 +104,7 @@ class ui_panel_world extends ui_panel {
 				for (let i = 0; i < places.length; i++) {
 					let location = places[i].location;
 					let coords = core.ui().get_cell_middle_coords(location.y, location.x);
-					$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Ruins of ' + places[i].name + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].properties.id + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
+					$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="Ruins of ' + places[i].name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + places[i].id() + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
 				}
 			//}
 			for (let i = 0; i < queue_actions.length; i++) {

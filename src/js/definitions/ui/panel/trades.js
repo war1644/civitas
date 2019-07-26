@@ -308,7 +308,7 @@ class ui_panel_trades extends ui_panel {
 						let discount = Math.ceil((game.RESOURCES[item].price * game.TRADES_ADDITION) / 100);
 						let discount_price = Math.ceil(game.RESOURCES[item].price + discount);
 						out += '<tr>' +
-								'<td>' + settlements[z].name() + '</td>' +
+								'<td><a href="#" class="settlement-info tips" data-settlement="' + settlements[z].name() + '" title="View info about this settlement.">' + settlements[z].name() + '</a></td>' +
 								'<td class="center">' + core.ui().resource_small_img(item) + '</td>' +
 								'<td class="center">' + exports[item] + '</td>' +
 								'<td class="center">' + game.RESOURCES[item].price + core.ui().resource_small_img('coins') + '</td>' +

@@ -56,57 +56,9 @@ const reload = done => {
 	done();
 };
 
-gulp.task('css_default', () => {
+gulp.task('css', () => {
 	return gulp
-		.src('./src/scss/default/default.scss', {
-			allowEmpty: true
-		})
-		.pipe(plumber(errorHandler))
-		.pipe(sourcemaps.init())
-		.pipe(
-			sass({
-				errLogToConsole: true,
-				outputStyle: 'expanded',
-				precision: 10
-			})
-		)
-		.on('error', sass.logError)
-		.pipe(sourcemaps.write({
-			includeContent: false
-		}))
-		.pipe(sourcemaps.init({
-			loadMaps: true
-		}))
-		.pipe(autoprefixer(BROWSERS_LIST))
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('./dist/'))
-		.pipe(filter('**/*.css'))
-		.pipe(mmq({
-			log: true
-		}))
-		.pipe(browserSync.stream())
-		.pipe(rename({
-			suffix: '.min'
-		}))
-		.pipe(minifycss({
-			maxLineLen: 10
-		}))
-		.pipe(header(fs.readFileSync('HEADER', 'utf8'), {
-			pkg
-		}))
-		.pipe(replace('__VERSION_NUMBER__', pkg.version + '.' + ((new Date()).getMonth() + 1) + '' + (new Date()).getDate() + '' + (new Date()).getFullYear()))
-		.pipe(gulp.dest('./dist/'))
-		.pipe(filter('**/*.css'))
-		.pipe(browserSync.stream())
-		.pipe(notify({
-			message: '\n\n----- CSS compiled -----\n',
-			onLast: true
-		}));
-});
-
-gulp.task('css_second', () => {
-	return gulp
-		.src('./src/scss/second/second.scss', {
+		.src('./src/scss/default.scss', {
 			allowEmpty: true
 		})
 		.pipe(plumber(errorHandler))
@@ -353,9 +305,8 @@ gulp.task('doc', () => {
 });
 
 gulp.task('default',
-	gulp.parallel('css_default', 'css_second', 'lib', 'app', 'doc', browsersync, () => {
-		gulp.watch('./src/scss/default/**/*.scss', gulp.parallel('css_default'));
-		gulp.watch('./src/scss/second/**/*.scss', gulp.parallel('css_second'));
+	gulp.parallel('css', 'lib', 'app', 'doc', browsersync, () => {
+		gulp.watch('./src/scss/**/*.scss', gulp.parallel('css'));
 		gulp.watch('./vendor/js/**/*.js', gulp.series('lib', reload));
 		gulp.watch('./src/js/**/*.js', gulp.series('app', reload));
 	})

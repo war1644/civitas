@@ -1,0 +1,124 @@
+/* Fonts */
+
+$font-family:				Lumberjack;
+
+/* Various palette colors */
+
+$red:						hsla(0, 100%, 47%, 1);
+$green:						hsla(125, 100%, 27%, 1);
+$blue:						hsla(240, 82%, 65%, 1);
+$yellow:					hsla(49, 100%, 50%, 1);
+$white:						hsla(0, 0%, 100%, 1);
+$grey: 						hsla(0, 0%, 73%, 1);
+$darkgrey:					hsla(0, 0%, 53%, 1);
+$black:						hsla(0, 0%, 0%, 1);
+$azure: 					hsla(190, 100%, 34%, 1);
+$biloba:					hsla(258, 93%, 78%, 1);
+$main:						hsla(26, 62%, 19%, 1);
+
+$body-bg:					$black;
+$anchor-fg:					$white;
+$anchor-fg-dark:			hsla(0, 0%, 27%, 1);
+
+$input-bg:					$white;
+$input-fg:					$black;
+$input-border:				hsla(54, 16%, 49%, 1);
+$border:					hsla(0, 0%, 80%, 1);
+$border-dark:				hsla(0, 0%, 67%, 1);
+$border-special:			hsla(32, 62%, 36%, 1);
+$box-shadow:				$black;
+
+$box-shadow-active:			inset 0 0 30px 0 hsla(125, 100%, 27%, 1);
+$box-shadow-disabled:		inset 0 0 10px 0 $red;
+$box-shadow-enabled:		inset 0 0 10px 0 hsla(125, 100%, 27%, 1);
+$box-shadow-sec-active:		inset 0 0 20px 0 hsla(0, 0%, 0%, 0.75);
+
+/* Controls */
+
+$control-on:				$green;
+$control-off:				$red;
+
+$input-bg:					$grey;
+
+$slider-track-bg:			hsla(26, 38%, 44%, 1);
+$slider-track-border:		hsla(26, 38%, 44%, 1);
+$slider-track-focus:		hsla(26, 38%, 44%, 1);
+$slider-thumb-bg:			hsla(26, 57%, 17%, 1);
+$slider-thumb-border:		hsla(26, 57%, 17%, 1);
+
+/* Modal */
+
+$modal-fg:					hsla(0, 0%, 40%, 1);
+$modal-header-bg:			linear-gradient(to bottom, hsla(26, 38%, 44%, 1), hsla(26, 49%, 28%, 1));
+$modal-header-fg:			$white;
+$modal-section-bg:			$white;
+$modal-footer-bg:			hsla(0, 0%, 94%, 1);
+$modal-btn-fg:				$white;
+
+/* Panels */
+
+$panel-bg: 					$white;
+$panel-fg: 					hsla(33, 19%, 18%, 1);
+$panel-footer-btn-bg:		hsla(30, 36%, 61%, 1);
+$panel-footer-btn-bg-hover:	hsla(30, 26%, 50%, 1);
+
+$aside-bg:					hsla(28, 58%, 82%, 1);
+
+/* Windows */
+
+$window-bg: 				radial-gradient(ellipse at center, hsla(218, 6%, 29%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+$window-fg: 				$white;
+
+/* Buttons */
+
+$btn-bg: 					linear-gradient(to bottom, hsla(26, 38%, 44%, 1), hsla(26, 49%, 28%, 1));
+$btn-bg-hover:				linear-gradient(to bottom, hsla(26, 49%, 28%, 1), hsla(26, 57%, 17%, 1));
+$btn-border:				hsla(26, 49%, 28%, 1);
+$btn-border-hover:			hsla(26, 57%, 17%, 1);
+$btn-fg:					$white;
+
+$btn-secondary-bg: 			linear-gradient(to bottom, hsla(53, 16%, 60%, 1), hsla(51, 22%, 46%, 1));
+$btn-secondary-fg:			$white;
+$btn-secondary-bg-hover:	linear-gradient(to bottom, hsla(53, 16%, 50%, 1), hsla(51, 22%, 36%, 1));
+
+/* Tabs */
+
+$tab-bg:					linear-gradient(to bottom, hsla(26, 38%, 44%, 1), hsla(26, 49%, 28%, 1));
+$tab-fg:					$white;
+
+/* Tables */
+
+$tbl-bg-notify:				hsla(0, 73%, 86%, 1);
+$tbl-bg-hover:				hsla(26, 38%, 56%, 1);
+$tbl-fg-hover:				$white;
+
+/* Progress Bars */
+
+$progress-bg:				linear-gradient(to bottom, hsla(0, 0%, 66%, 1) 0%, hsla(0, 0%, 80%, 1) 23%);
+$progress-bar-bg:			linear-gradient(to bottom, hsla(26, 49%, 28%, 1) 0%, $white 50%, hsla(26, 49%, 28%, 1) 100%);
+$progress-bar-bg-l1:		linear-gradient(to bottom, hsla(125, 100%, 27%, 1) 0%, hsla(120, 82%, 65%, 1) 50%, hsla(125, 100%, 27%, 1) 100%);
+$progress-bar-bg-l2:		linear-gradient(to bottom, hsla(60, 100%, 44%, 1) 0%, hsla(44, 100%, 41%, 1) 50%, hsla(60, 100%, 44%, 1) 100%);
+$progress-bar-bg-l3:		linear-gradient(to bottom, $red 0%, hsla(0, 100%, 36%, 1) 50%, $red 100%);
+$progress-bar-bg-l4:		linear-gradient(to bottom, hsla(0, 100%, 27%, 1) 0%, $red 50%, hsla(0, 100%, 27%, 1) 100%);
+$progress-bar-bg-l5:		linear-gradient(to bottom, $azure 0%, hsla(173, 100%, 56%, 1) 50%, $azure 100%);
+$progress-bar-bg-l6:		linear-gradient(to bottom, $blue 0%, hsla(240, 82%, 65%, 1) 50%, $blue 100%);
+
+/* Notifications */
+
+$notif-achievement-bg:		linear-gradient(to bottom, hsla(60, 100%, 44%, 1), hsla(59, 56%, 50%, 1));
+$notif-error-bg:			hsla(350, 56%, 73%, 1);
+$notif-religion-bg:			hsla(267, 96%, 80%, 1);
+$notif-research-bg:			hsla(170, 65%, 68%, 1);
+$notif-event-bg:			hsla(202, 68%, 68%, 1);
+
+/* Tips */
+
+$tips-bg: 					$white;
+$tips-fg: 					$black;
+
+/* Images */
+
+$avatar-size:				90px;
+$avatar-small-size:			64px;
+$resource-size:				20px;
+

@@ -1,0 +1,22 @@
+/* City Storage panel */
+
+#panel-storage {
+	max-width: 650px;
+	width: 650px;
+	max-height: 700px;
+	height: auto;
+}
+
+#panel-storage .storage-board {
+	width: 640px;
+	height: 100%;
+}
+
+#panel-storage .total-storage, 
+#panel-storage .used-storage {
+	font-weight: bold;
+}
+
+#panel-storage p {
+	margin-top: 10px;
+}

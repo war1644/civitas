@@ -1,0 +1,112 @@
+/* Progress bars */
+
+.progress {
+	height: 20px;
+	border: 1px solid $darkgrey;
+	background: $progress-bg;
+	line-height: 100%;
+	display: inline-block;
+	position: relative;
+	padding: 0;
+
+	&.small {
+		width: 200px;
+	}
+
+	&.big {
+		width: 400px;
+	}
+
+	&.large {
+		width: 400px;
+		margin: 0 auto;
+		display: block;
+	}
+
+	&.large .bar {
+	}
+
+	&.large .bar p {
+		height: 40px;
+		font-size: 20px;
+	}
+
+	.bar {
+		background: $progress-bar-bg;
+		height: 20px;
+		border-right: 1px solid $darkgrey; 
+	}
+
+	.bar p {
+		position: absolute;
+		text-align: center;
+		width: 100%;
+		margin: 0;
+		line-height: 20px;
+		text-shadow: 1px 1px 2px $black;
+		color: $white;
+	}
+
+	.bar.good {
+		background: $progress-bar-bg-l1;
+	}
+
+	.bar.bad {
+		background: $progress-bar-bg-l2;
+	}
+
+	.bar.vbad {
+		background: $progress-bar-bg-l3;
+	}
+
+	.bar.ubad {
+		background: $progress-bar-bg-l4;
+	}
+
+	.bar.vgood {
+		background: $progress-bar-bg-l5;
+	}
+
+	.bar.ugood {
+		background: $progress-bar-bg-l6;
+	}
+}
+
+
+
+.progress {
+	background: 
+		url(../images/ui/progress-bar-corners-big.png) no-repeat -50px 0px,
+		url(../images/ui/progress-bar-corners-big.png) no-repeat calc(100% + 50px) 0,
+		url(../images/ui/progress-bar-big.png) repeat-x 0 0;
+	padding: 7px 10px;
+	height: 48px;
+	border: none;
+	width: 100% !important;
+	box-sizing: border-box;
+}
+.progress .bar {
+	height: 34px;
+	line-height: 34px;
+	font-size: 20px;
+	border-radius: 4px;
+	border: none;
+}
+.progress .bar p {
+	line-height: inherit;
+	font-size: inherit; 
+}
+.progress.small {
+	background: 
+		url(../images/ui/progress-bar-corners-small.png) no-repeat -25px 0px,
+		url(../images/ui/progress-bar-corners-small.png) no-repeat calc(100% + 25px) 0,
+		url(../images/ui/progress-bar-small.png) repeat-x 0 0;
+	padding: 4px 5px;
+	height: 25px;
+}
+.progress.small .bar {
+	height: 17px;
+	line-height: 17px;
+	font-size: 13px;
+	border-radius: 2px;
+}

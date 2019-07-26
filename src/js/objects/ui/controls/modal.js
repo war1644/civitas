@@ -56,7 +56,7 @@ class ui_modal {
 		this._resize();
 		$('.modal header').html(options.title);
 		$('.modal footer').html('<a data-id="yes" href="#" class="btn float-right">Yes</a><a data-id="no" href="#" class="btn">No</a>');
-		$('.modal section').html((settlement ? '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
+		$('.modal section').html((settlement ? '<img class="avatar right small" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.core().get_settlement().ruler().avatar + '.png" />' : '') + '<p>' + options.text + '</p>');
 		$('.modal footer').on('click', 'a', function() {
 			self._action($(this).data('id'));
 			return false;

@@ -1,0 +1,429 @@
+/* Panels */
+
+.ui .panel {
+	position: fixed;
+	top: 30%;
+	left: 30%;
+	z-index: 99997;
+	background-color: $panel-bg;
+	min-width: 220px;
+	max-width: 360px;
+	min-height: 100px;
+	max-height: 460px;
+	color: $panel-fg;
+	padding: 10px;
+	box-shadow: 0 0 10px $box-shadow;
+
+	header {
+		text-transform: uppercase;
+		font-size: 22px;
+		margin-bottom: 10px;
+		cursor: move;
+
+		a {
+			width: 24px;
+			height: 24px;
+			display: block;
+			float: right;
+			cursor: pointer;
+		}
+	}
+
+	section {
+		font-size: 12px;
+
+		dl {
+			margin: 10px auto;
+		}
+
+		dt {
+			float: left;
+			text-align: right;
+			width: 45%;
+			line-height: 20px;
+			margin-bottom: 5px;
+		}
+
+		dd {
+			margin-left: 50%;
+			line-height: 20px;
+			margin-bottom: 5px;
+		}
+
+		.buildings.left {
+			width: 680px;
+			float: left;
+			position: relative;
+		}
+
+		.buildings-info.right {
+			display: none;
+			float: left;
+			width: 440px;
+			margin-left: 10px;
+		}
+	}
+
+	footer {
+		border-top: 1px solid $border;
+		padding-top: 10px;
+		margin-top: 10px;
+		clear: both;
+
+		a {
+			width: 46px;
+			height: 46px;
+			display: inline-block;
+			cursor: pointer;
+			margin-right: 8px;
+			background-color: $panel-footer-btn-bg;
+			border-radius: 10px;
+			background-size: 32px 32px;
+			background-position: center center;
+
+			&:hover {
+				background-color: $panel-footer-btn-bg-hover;
+			}
+		}
+	}
+
+	.toolbar {
+		margin-top: 10px;
+		clear: both;
+		font-size: 14px;
+
+		.btn {
+			border-radius: 3px;
+			padding: 10px;
+			text-transform: uppercase;
+			text-align: center;
+			display: block;
+			cursor: pointer;
+			border: 1px solid $btn-border;
+			background-image: $btn-bg;
+			color: $btn-fg;
+			text-decoration: none;
+			font-size: 16px;
+		}
+
+		.btn.iblock {
+			display: inline-block;
+			width: auto;
+			margin-right: 4px;
+		}
+
+		.btn:hover {
+			border: 1px solid $btn-border-hover;
+			background-image: $btn-bg-hover;
+			color: $btn-fg;
+		}
+	}
+
+	a {
+		color: $white;
+		text-decoration: underline;
+	}
+/*
+	.section {
+		padding: 10px;
+	}
+*/
+	.section {
+		padding: 20px;
+	}
+
+	fieldset {
+		border: 1px solid $border-special;
+		margin-bottom: 10px;
+
+		legend {
+			padding: 0 10px;
+		}
+
+		select {
+			width: 100%;
+			border: 1px solid $border-dark;
+			padding: 4px 0;
+		}
+
+		p {
+			margin: 10px 0 0 0;
+		}
+	}
+
+	.b-name {
+		font-size: 26px;
+		margin: 0 0 10px 0;
+	}
+
+	.army-item-inc,
+	.army-item-dec,
+	.navy-item-inc,
+	.navy-item-dec {
+		width: 20px;
+		height: 20px;
+		border: 1px solid $border-dark;
+		position: absolute;
+	}
+
+	.army-item-inc,
+	.navy-item-inc {
+		left: 0;
+		top: 0;
+		background-color: $green;
+		border-bottom-right-radius: 20px;
+	}
+
+	.army-item-dec,
+	.navy-item-dec {
+		right: 0;
+		top: 0;
+		background-color: $red;
+		border-bottom-left-radius: 20px;
+	}
+
+	.army-recruiter,
+	.navy-recruiter {
+		width: 630px;
+		float: right;
+		padding: 10px 0 0 0;
+		max-height: 410px;
+		overflow: auto;
+	}
+
+	.navy-item,
+	.army-item,
+	.storage-item {
+		width: 75px;
+		height: 75px;
+		float: left;
+		text-align: center;
+		margin: 0 4px 4px 0;
+		position: relative;
+		box-shadow: inset 0 0 30px 0 rgba(0, 0, 0, 0.6);
+		border-radius: 8px;
+		font-size: 11px;
+	}
+
+	.navy-item,
+	.army-item {
+		width: 65px;
+		height: 65px;
+		font-size: 11px;
+		position: relative;
+	}
+
+	.storage-item.small {
+		width: 46px;
+		height: 50px;
+		font-size: 11px;
+	}
+
+	.storage-item .title {
+		width: 100%;
+		display: inline-block;
+		width: 100%;
+		padding-top: 4px;
+	}
+
+	.navy-item span.amount,
+	.army-item span.amount,
+	.storage-item span.amount {
+		position: absolute;
+		bottom: 0;
+		right: 4px;
+	}
+
+	.navy-item img {
+		margin: 8px auto 0 auto;
+	}
+
+	.army-item img {
+		margin: 15px auto 0 auto;
+	}
+
+	.storage-item.small img {
+		margin: 10px auto 0 auto;
+		width: 20px;
+	}
+
+	.storage-item img {
+		width: 32px;
+	}
+
+	.settlements-list {
+		overflow: auto;
+		max-height: 415px;
+	}
+
+	.column {
+		width: 290px;
+		float: left;
+	}
+
+	.column-small {
+		width: 215px;
+		float: left;
+	}
+
+	.column-full {
+		width: 440px;
+		clear: both;
+	}
+
+	.column-small:nth-child(3) {
+		margin-left: 10px;
+	}
+
+	.column:last-of-type {
+		margin-left: 10px;
+	}
+
+	.army-list,
+	.navy-list {
+		float: left;
+		width: 140px;
+		padding: 10px 0 0 0;
+	}
+
+	.army-recruiter fieldset,
+	.navy-recruiter fieldset {
+		display: block;
+		float: left;
+		margin: 0 10px 10px 0;
+		width: 176px;
+		position: relative;
+	}
+
+	.army-recruiter fieldset:nth-child(3n) {
+		margin-right:0 !important;
+	}
+
+	.army-recruiter fieldset > img,
+	.navy-recruiter fieldset > img {
+		float: right;
+		cursor: pointer;
+		bottom: 10px;
+		right: 10px;
+		position: absolute;
+	}
+
+	.army-recruiter fieldset .info,
+	.navy-recruiter fieldset .info {
+		float: right;
+		width: 100px;
+		margin-left: 10px;
+	}
+
+	.army-recruiter fieldset .cost,
+	.navy-recruiter fieldset .cost {
+		float: left;
+		width: 60px;
+	}
+
+	ul.advices {
+		max-height: 300px;
+		display: block;
+		margin: 0;
+		padding: 10px 0 0 0;
+		overflow: auto;
+	}
+
+	ul.advices li {
+		line-height: 30px;
+		padding-left: 50px;
+	}
+
+	.hired-mercenaries-list {
+		max-height: 370px;
+		overflow: auto;
+	}
+}
+
+
+
+.ui .panel {
+	color: #fff;
+	position: absolute;
+	background: 
+		url(../images/ui/border-top-left.png) no-repeat left top,
+		url(../images/ui/border-top-right.png) no-repeat right top,
+		url(../images/ui/border-bottom-right.png) no-repeat right bottom,
+		url(../images/ui/border-bottom-left.png) no-repeat left bottom,
+		url(../images/ui/border-top.png) repeat-x left top,
+		url(../images/ui/border-right.png) repeat-y right bottom,
+		url(../images/ui/border-bottom.png) repeat-x right bottom,
+		url(../images/ui/border-left.png) repeat-y left bottom,
+		url(../images/ui/panel-background.png) repeat left top;
+	padding: 14px;
+}
+.ui .panel header {
+	font-size: 18px;
+	text-shadow: -1px -1px #201106;
+	font-weight: 300;
+	text-transform: uppercase;
+	padding: 5px 10px;
+}
+.ui .panel header .close {
+	display: block;
+	float: right;
+	height: 24px;
+	width: 24px;
+	display: block;
+	overflow: hidden;
+	text-indent: -9999em;
+	background: url(../images/ui/panel-close.png) no-repeat left top;
+}
+.ui .panel header .close:hover {
+	background-position: left bottom;		
+}
+.ui .panel section {
+	border: 1px solid #6e5036;
+	background-color: #150f0c;
+	padding: 8px;
+}
+.ui .panel footer {
+	border: 1px solid #6e5036;
+	border-top: none;
+	background-color: #150f0c;
+	padding: 0 20px 20px;
+	margin-top: -2px;
+}
+
+.ui .panel footer a {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	padding: 9px;
+	background: url(../images/ui/button-bg.png) no-repeat 0 0;
+}
+
+.ui .panel footer a span {
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	display: block;
+	background-size: cover;
+}
+
+.ui .panel footer a + a{
+	margin-left: 10px;
+}
+	.ui .panel footer a.light-link 	{ background: url(../images/ui/button-bg.png) no-repeat -100px 0; }
+	.ui .panel footer a.green-link 	{ background: url(../images/ui/button-bg.png) no-repeat -150px 0; }
+	.ui .panel footer a.red-link 	{ background: url(../images/ui/button-bg.png) no-repeat -200px 0; }
+	.ui .panel footer a.blue-link 	{ background: url(../images/ui/button-bg.png) no-repeat -250px 0; }
+	.ui .panel footer a.indigo-link { background: url(../images/ui/button-bg.png) no-repeat -300px 0; }
+	.ui .panel footer a.orange-link { background: url(../images/ui/button-bg.png) no-repeat -350px 0; }
+.ui .panel footer a:hover{
+	background: url(../images/ui/button-bg.png) no-repeat -50px 0 !important;
+}
+.ui .panel footer a img {
+	display: block;
+}
+
+.ui .panel .column img.building {
+	width: 100%;
+}

@@ -33,8 +33,7 @@ class game {
 		this.settings = {
 			worldmap_beautify: game.WORLD_BEAUTIFY,
 			worldmap_grid: game.WORLD_GRID,
-			music: false,
-			theme: 'default'
+			music: false
 		};
 		this.encryption = {
 			key: null,
@@ -1434,7 +1433,7 @@ class game {
 		if (typeof id === 'number') {
 			for (let i = 0; i < _places.length; i++) {
 				if (typeof _places[i] !== 'undefined') {
-					if (_places[i].id === id) {
+					if (_places[i].id() === id) {
 						return _places[i];
 					}
 				}
@@ -2101,9 +2100,6 @@ class game {
 		} else {
 			this.settings[key] = value;
 		}
-		if (this.settings.theme !== 'default') {
-			$('#theme').attr('href', 'dist/' + this.settings.theme + '.css');
-		}
 		return this;
 	}
 
@@ -2134,14 +2130,14 @@ class game {
 		const ui = this.ui();
 		let seconds = 1;
 		this._setup_neighbours(data);
-		$('header .cityname').html(this.get_settlement().name());
-		$('header .cityavatar').css({
+		$('.cityname').html(this.get_settlement().name());
+		$('.cityavatar').css({
 			'background-image': 'url(' + game.ASSETS_URL + 'images/assets/avatars/avatar' + this.get_settlement().ruler().avatar + '.png)'
 		});
 		ui.refresh();
 		setInterval(function () {
 			if (!self.is_paused() && seconds === game.SECONDS_TO_DAY) {
-				self._do_daily();
+				//self._do_daily();
 				seconds = 1;
 			} else if (!self.is_paused()) {
 				seconds++;

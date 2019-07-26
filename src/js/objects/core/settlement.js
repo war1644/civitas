@@ -39,6 +39,7 @@ class settlement {
 				personality: (this._properties.type === game.CAMP) ? game.PERSONALITY_WARLORD : this.core().get_random_personality(),
 				name: game.get_random_unique(game.NAMES)
 			};
+		this._properties.storage = 0;
 		this._properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;
 		this._properties.waterside = (typeof params.properties.waterside !== 'undefined') ? params.properties.waterside : false;
 		this._army = this.load_army(params.army);
