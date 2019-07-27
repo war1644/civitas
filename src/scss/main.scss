@@ -140,15 +140,15 @@ select {
 		position: fixed;
 
 		.resource-panel {
-			/*width: 65%;*/
+			width: 65%;
 			position: absolute;
 			top: 0;
 			right: 0;
-			padding: 12px 0 10px 12px;
+			padding: 12px 12px 10px 0;
 			font-size: 16px;
 
 			.resource {
-				float: left;
+				float: right;
 
 				.amount {
 					color: $grey;
@@ -171,11 +171,30 @@ select {
 			width: 30%;
 			position: absolute;
 			top: 0;
-			right: 0;
-			padding: 10px 12px 10px 0;
+			left: 0;
+			padding: 10px 0 10px 12px;
 			color: $grey;
 			font-size: 16px;
-			text-align: right;
+			text-align: left;
+
+			.resource {
+				float: left;
+
+				.amount {
+					color: $grey;
+					padding: 0 2px 0 4px;
+				}
+			}
+
+			img {
+				height: 24px;
+				width: 24px;
+				display: inline-block;
+				vertical-align: middle;
+				line-height: 24px;
+				text-align: center;
+				margin-right: 6px;
+			}
 		}
 	}
 
@@ -300,21 +319,6 @@ select {
 		color: $blue;
 	}
 
-	&> aside {
-		position: fixed;
-		top: 48px;
-		right: 0;
-		bottom: 0;
-		z-index: 999;
-		background-color: #150f0c;
-		height: 100%;
-		box-sizing: border-box;
-	}
-
-	&> aside:empty {
-		display: none;
-	}
-
 	.viewport {
 		top: 48px;
 		position: relative;
@@ -409,20 +413,7 @@ a.wikipedia {
 
 
 
-
-
-
-
-
-
 .ui > footer {
-	background: 
-		url(../images/ui/border-top-left.png) no-repeat left top,
-		url(../images/ui/border-top-right.png) no-repeat right top,
-		url(../images/ui/border-top.png) repeat-x left top,
-		url(../images/ui/border-right.png) repeat-y right bottom,
-		url(../images/ui/border-left.png) repeat-y left bottom,
-		url(../images/ui/panel-background.png) repeat left top;
 	padding: 8px 8px 0 8px;
 	position: fixed;
 	bottom: 0;
@@ -433,9 +424,6 @@ a.wikipedia {
 }
 
 .ui > header {
-	background: 
-		url(../images/ui/border-bottom.png) repeat-x right bottom,
-		url(../images/ui/panel-background.png) repeat left top;
 	color: #fff;
 	padding: 5px 10 16px;
 }
@@ -451,19 +439,21 @@ a.wikipedia {
 	color: #fff;
 	white-space: nowrap;
 }
+
 .character-info small {
 	font-size: 18px;
 	display: block;
 }
+
 .avatar-banner {
 	float: left;
 	margin-right: 10px;
 	width: 86px;
 	height: 86px;
 	padding: 9px;
-	background: url(../images/ui/avatar-banner-circle.png) no-repeat;
 	border-radius: 50%;
 }
+
 .avatar-banner span {
 	width: 86px;
 	height: 86px;
@@ -471,31 +461,35 @@ a.wikipedia {
 	background-size: cover;
 	border-radius: 50%;
 }
+
 .character-info:after {
 	content: "";
 	width: 104px;
 	height: 108px;
-	background: url(../images/ui/avatar-banner-flag.png) no-repeat;
 	position: absolute;
 	left: 15px;
 	margin-top: 10px;
 	z-index: -1;
 	filter: hue-rotate(0deg);
 }
+
 .character-info.right {
 	left: auto;
 	right: 0px;
 	text-align: right;
 }
+
 .character-info.right .avatar-banner {
 	float: right;
 	margin-right: 0px;
 	margin-left: 10px;
 }
+
 .character-info.right:after {
 	right: 15px;
 	left: auto;
 }
+
 .ui .cityavatar {
 	cursor: pointer;
 }

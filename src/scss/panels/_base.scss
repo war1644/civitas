@@ -133,7 +133,7 @@
 	}
 
 	fieldset {
-		border: 1px solid $border-special;
+		border: 1px solid #6e5036;
 		margin-bottom: 10px;
 
 		legend {
@@ -271,7 +271,7 @@
 		clear: both;
 	}
 
-	.column-small:nth-child(3) {
+	.column-small:nth-child(2) {
 		margin-left: 10px;
 	}
 
@@ -341,22 +341,12 @@
 }
 
 
-.ui aside,
 .ui .panel {
 	color: #fff;
 	position: absolute;
-	background: 
-		url(../images/ui/border-top-left.png) no-repeat left top,
-		url(../images/ui/border-top-right.png) no-repeat right top,
-		url(../images/ui/border-bottom-right.png) no-repeat right bottom,
-		url(../images/ui/border-bottom-left.png) no-repeat left bottom,
-		url(../images/ui/border-top.png) repeat-x left top,
-		url(../images/ui/border-right.png) repeat-y right bottom,
-		url(../images/ui/border-bottom.png) repeat-x right bottom,
-		url(../images/ui/border-left.png) repeat-y left bottom,
-		url(../images/ui/panel-background.png) repeat left top;
 	padding: 14px;
 }
+
 .ui .panel header {
 	font-size: 18px;
 	text-shadow: -1px -1px #201106;
@@ -364,6 +354,7 @@
 	text-transform: uppercase;
 	padding: 5px 10px;
 }
+
 .ui .panel header .close {
 	display: block;
 	float: right;
@@ -372,16 +363,18 @@
 	display: block;
 	overflow: hidden;
 	text-indent: -9999em;
-	background: url(../images/ui/panel-close.png) no-repeat left top;
 }
+
 .ui .panel header .close:hover {
 	background-position: left bottom;		
 }
+
 .ui .panel section {
 	border: 1px solid #6e5036;
 	background-color: #150f0c;
 	padding: 8px;
 }
+
 .ui .panel footer {
 	border: 1px solid #6e5036;
 	border-top: none;
@@ -397,7 +390,6 @@
 	line-height: 32px;
 	text-align: center;
 	padding: 9px;
-	background: url(../images/ui/button-bg.png) no-repeat 0 0;
 }
 
 .ui .panel footer a span {
@@ -411,19 +403,19 @@
 .ui .panel footer a + a {
 	margin-right: 10px;
 }
-	.ui .panel footer a.light-link 	{ background: url(../images/ui/button-bg.png) no-repeat -100px 0; }
-	.ui .panel footer a.green-link 	{ background: url(../images/ui/button-bg.png) no-repeat -150px 0; }
-	.ui .panel footer a.red-link 	{ background: url(../images/ui/button-bg.png) no-repeat -200px 0; }
-	.ui .panel footer a.blue-link 	{ background: url(../images/ui/button-bg.png) no-repeat -250px 0; }
-	.ui .panel footer a.indigo-link { background: url(../images/ui/button-bg.png) no-repeat -300px 0; }
-	.ui .panel footer a.orange-link { background: url(../images/ui/button-bg.png) no-repeat -350px 0; }
-.ui .panel footer a:hover{
-	background: url(../images/ui/button-bg.png) no-repeat -50px 0 !important;
-}
+
 .ui .panel footer a img {
 	display: block;
 }
 
 .ui .panel .column img.building {
 	width: 100%;
+}
+
+.panel .column .image {
+	background-size: contain;
+    margin: 0 auto;
+    height: 300px;
+    background-position: bottom;
+    background-repeat: no-repeat;
 }

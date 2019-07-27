@@ -22,13 +22,15 @@ class ui_window_options extends ui_window {
 		params.template = '<section id="window-{ID}" class="window">' +
 				'<div class="logo">Civitas</div>' +
 				'<fieldset>' +
-					'<a href="#" class="do-pause button">Pause</a>' +
-					'<a href="#" class="do-restart button">Restart</a>' +
-					'<a href="#" class="do-options button">Options</a>' +
-					'<div class="options-game"></div>' +
-					ui.window_about_section() +
-					'<br />' +
-					'<a href="#" class="do-resume button">Resume Playing</a>' +
+					'<div class="options">' +
+						'<a href="#" class="do-pause button">Pause</a>' +
+						'<a href="#" class="do-restart button">Restart</a>' +
+						'<a href="#" class="do-options button">Options</a>' +
+						'<div class="options-game"></div>' +
+						ui.window_about_section() +
+						'<br />' +
+						'<a href="#" class="do-resume button">Resume Playing</a>' +
+					'</div>' +
 				'</fieldset>' +
 			'</section>';
 		params.on_show = function () {

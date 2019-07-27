@@ -47,6 +47,20 @@ And point your browser to `http://localhost:10082`.
 
 Choose an archive format from below, download and uncompress it. Point your browser to `index.html`, you don't need a game server to play.
 
+## Development
+
+Start by installing all the prerequisites:
+
+```
+$ npm install
+```
+
+Run the main script that will load gulp and proxy the requests from `civitas.test` to `localhost:3000`.
+
+```
+$ npm start
+```
+
 ## Releases
 
 - bleeding edge version - [GitHub .zip](https://github.com/sizeofcat/civitas/archive/master.zip) - [GitHub .tar.gz](https://github.com/sizeofcat/civitas/archive/master.tar.gz) - [Gitee .zip](https://gitee.com/sizeofcat/civitas/repository/archive/develop.zip)

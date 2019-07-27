@@ -59,6 +59,7 @@ class ui_panel_buildings extends ui_panel {
 			_t += '</div>' +
 				'</div>' +
 				'<div class="buildings-info right">' +
+					'<div class="b-name"></div>' +
 					'<div class="b-desc"></div>' +
 					'<div class="column-small">' +
 						'<fieldset class="levels">' +
@@ -106,12 +107,12 @@ class ui_panel_buildings extends ui_panel {
 				$(el).addClass('expanded');
 				$(el + ' .building-item').removeClass('active');
 				$(this).addClass('active');
-				$(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
+				$(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
 				let handle = $(this).data('handle');
 				let building = core.get_building_config_data(handle);
 				if (building) {
-					$(el + ' header span').empty().html('City Buildings - ' + building.name);
 					$(el + ' .b-desc').html(building.description);
+					$(el + ' .b-name').html(building.name);
 					let _z = '<dl class="nomg">';
 					for (let y in building.cost) {
 						_z += '<dt>' + game.nice_numbers(building.cost[y]) + '</dt>' +

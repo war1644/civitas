@@ -30,11 +30,14 @@ input[type=number].small,input[type=password].small,input[type=text].small{width
 input[type=text],input[type=number],select{border:1px solid #918d69;background:#bababa;color:black;padding:2px 6px;font-size:14px}
 .ui{width:100%;height:100%;position:relative}
 .ui>header{width:100%;height:48px;left:0;z-index:9999;top:0;position:fixed}
-.ui>header .resource-panel{position:absolute;top:0;right:0;padding:12px 0 10px 12px;font-size:16px}
-.ui>header .resource-panel .resource{float:left}
+.ui>header .resource-panel{width:65%;position:absolute;top:0;right:0;padding:12px 12px 10px 0;font-size:16px}
+.ui>header .resource-panel .resource{float:right}
 .ui>header .resource-panel .resource .amount{color:#bababa;padding:0 2px 0 4px}
 .ui>header .resource-panel img{height:24px;width:24px;display:inline-block;vertical-align:middle;line-height:24px;text-align:center;margin-right:6px}
-.ui>header .top-panel{width:30%;position:absolute;top:0;right:0;padding:10px 12px 10px 0;color:#bababa;font-size:16px;text-align:right}
+.ui>header .top-panel{width:30%;position:absolute;top:0;left:0;padding:10px 0 10px 12px;color:#bababa;font-size:16px;text-align:left}
+.ui>header .top-panel .resource{float:left}
+.ui>header .top-panel .resource .amount{color:#bababa;padding:0 2px 0 4px}
+.ui>header .top-panel img{height:24px;width:24px;display:inline-block;vertical-align:middle;line-height:24px;text-align:center;margin-right:6px}
 .ui>footer{background-color:transparent;position:fixed;bottom:0;z-index:9999}
 .ui>footer>a{width:52px;height:52px;margin:0 5px 0 0;cursor:pointer;float:left;background-size:52px;background-repeat:no-repeat;background-color:transparent}
 .ui .game{position:relative;z-index:99;width:3549px;height:1824px;overflow:hidden}
@@ -53,8 +56,6 @@ input[type=text],input[type=number],select{border:1px solid #918d69;background:#
 .ui span.green{color:#008a0b}
 .ui span.red{color:#f00000}
 .ui span.blue{color:#5d5def}
-.ui>aside{position:fixed;top:48px;right:0;bottom:0;z-index:999;background-color:#150f0c;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box}
-.ui>aside:empty{display:none}
 .ui .viewport{top:48px;position:relative;overflow:hidden}
 .loading{display:none;position:fixed;top:10px;right:10px;background-color:black;height:46px;width:46px;z-index:99999999}
 .hr{border-top:1px solid #ccc;padding-top:5px;margin-top:5px;clear:both;height:0}
@@ -70,14 +71,14 @@ dl.nomg{margin:0 !important}
 td.icon{width:60px}
 a.github{width:32px;height:32px;display:inline-block}
 a.wikipedia{width:20px;height:20px;display:inline-block}
-.ui>footer{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top;padding:8px 8px 0 8px;position:fixed;bottom:0}
+.ui>footer{padding:8px 8px 0 8px;position:fixed;bottom:0}
 .ui>footer a{display:inline-block;text-indent:-999em}
-.ui>header{background:url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/panel-background.png) repeat left top;color:#fff;padding:5px 10 16px}
+.ui>header{color:#fff;padding:5px 10 16px}
 .character-info{position:fixed;top:48px;left:0;padding:15px;z-index:999;font-size:28px;text-shadow:-1px -1px #201106;color:#fff;white-space:nowrap}
 .character-info small{font-size:18px;display:block}
-.avatar-banner{float:left;margin-right:10px;width:86px;height:86px;padding:9px;background:url(../images/ui/avatar-banner-circle.png) no-repeat;border-radius:50%}
+.avatar-banner{float:left;margin-right:10px;width:86px;height:86px;padding:9px;border-radius:50%}
 .avatar-banner span{width:86px;height:86px;display:block;background-size:cover;border-radius:50%}
-.character-info:after{content:"";width:104px;height:108px;background:url(../images/ui/avatar-banner-flag.png) no-repeat;position:absolute;left:15px;margin-top:10px;z-index:-1;-webkit-filter:hue-rotate(0);filter:hue-rotate(0)}
+.character-info:after{content:"";width:104px;height:108px;position:absolute;left:15px;margin-top:10px;z-index:-1;-webkit-filter:hue-rotate(0);filter:hue-rotate(0)}
 .character-info.right{left:auto;right:0;text-align:right}
 .character-info.right .avatar-banner{float:right;margin-right:0;margin-left:10px}
 .character-info.right:after{right:15px;left:auto}
@@ -117,24 +118,20 @@ a.wikipedia{width:20px;height:20px;display:inline-block}
 .achievement .left .points{font-size:14px;text-align:center}
 .notifications .notty:after,.achievements-notifications .notty:after,.achievement:after{content:".";visibility:hidden;display:block;clear:both;height:0;font-size:0}
 .notifications .notty h2,.achievements-notifications .notty h2,.achievement h2{margin:0 0 5px 0;font-size:18px;color:#454545;text-transform:uppercase}
-.progress{height:20px;border:1px solid #878787;background:-webkit-gradient(linear,left top,left bottom,from(#a8a8a8),color-stop(23%,#ccc));background:linear-gradient(to bottom,#a8a8a8 0,#ccc 23%);line-height:100%;display:inline-block;position:relative;padding:0}
-.progress.small{width:200px}
-.progress.big{width:400px}
-.progress.large{width:400px;margin:0 auto;display:block}
-.progress.large .bar p{height:40px;font-size:20px}
-.progress .bar{background:-webkit-gradient(linear,left top,left bottom,from(#6a4324),color-stop(50%,white),to(#6a4324));background:linear-gradient(to bottom,#6a4324 0,white 50%,#6a4324 100%);height:20px;border-right:1px solid #878787}
-.progress .bar p{position:absolute;text-align:center;width:100%;margin:0;line-height:20px;text-shadow:1px 1px 2px black;color:white}
-.progress .bar.good{background:-webkit-gradient(linear,left top,left bottom,from(#008a0b),color-stop(50%,#5def5d),to(#008a0b));background:linear-gradient(to bottom,#008a0b 0,#5def5d 50%,#008a0b 100%)}
-.progress .bar.bad{background:-webkit-gradient(linear,left top,left bottom,from(#e0e000),color-stop(50%,#d19900),to(#e0e000));background:linear-gradient(to bottom,#e0e000 0,#d19900 50%,#e0e000 100%)}
-.progress .bar.vbad{background:-webkit-gradient(linear,left top,left bottom,from(#f00000),color-stop(50%,#b80000),to(#f00000));background:linear-gradient(to bottom,#f00000 0,#b80000 50%,#f00000 100%)}
-.progress .bar.ubad{background:-webkit-gradient(linear,left top,left bottom,from(#8a0000),color-stop(50%,#f00000),to(#8a0000));background:linear-gradient(to bottom,#8a0000 0,#f00000 50%,#8a0000 100%)}
-.progress .bar.vgood{background:-webkit-gradient(linear,left top,left bottom,from(#0091ad),color-stop(50%,#1fffe5),to(#0091ad));background:linear-gradient(to bottom,#0091ad 0,#1fffe5 50%,#0091ad 100%)}
-.progress .bar.ugood{background:-webkit-gradient(linear,left top,left bottom,from(#5d5def),color-stop(50%,#5d5def),to(#5d5def));background:linear-gradient(to bottom,#5d5def 0,#5d5def 50%,#5d5def 100%)}
-.progress{background:url(../images/ui/progress-bar-corners-big.png) no-repeat -50px 0,url(../images/ui/progress-bar-corners-big.png) no-repeat calc(100% + 50px) 0, url(../images/ui/progress-bar-big.png) repeat-x 0 0;padding:7px 10px;height:48px;border:0;width:100% !important;-webkit-box-sizing:border-box;box-sizing:border-box}
-.progress .bar{height:34px;line-height:34px;font-size:20px;border-radius:4px;border:0}
-.progress .bar p{line-height:inherit;font-size:inherit}
-.progress.small{background:url(../images/ui/progress-bar-corners-small.png) no-repeat -25px 0,url(../images/ui/progress-bar-corners-small.png) no-repeat calc(100% + 25px) 0, url(../images/ui/progress-bar-small.png) repeat-x 0 0;padding:4px 5px;height:25px}
-.progress.small .bar{height:17px;line-height:17px;font-size:13px;border-radius:2px}
+.ui .progress{border:1px solid #878787;background:-webkit-gradient(linear,left top,left bottom,from(#a8a8a8),color-stop(23%,#ccc));background:linear-gradient(to bottom,#a8a8a8 0,#ccc 23%);line-height:100%;display:inline-block;position:relative;padding:0;padding:7px 10px;height:48px;border:0;width:100% !important;-webkit-box-sizing:border-box;box-sizing:border-box}
+.ui .progress.small{width:200px;padding:4px 5px;height:25px}
+.ui .progress.big{width:400px}
+.ui .progress.large{width:400px;margin:0 auto;display:block}
+.ui .progress.small .bar{height:17px;line-height:17px;font-size:13px;border-radius:2px}
+.ui .progress.large .bar p{height:40px;font-size:20px}
+.ui .progress .bar{background:-webkit-gradient(linear,left top,left bottom,from(#6a4324),color-stop(50%,white),to(#6a4324));background:linear-gradient(to bottom,#6a4324 0,white 50%,#6a4324 100%);height:34px;line-height:34px;font-size:20px;border-radius:4px;border:0}
+.ui .progress .bar p{position:absolute;text-align:center;width:100%;margin:0;text-shadow:1px 1px 2px black;color:white;line-height:inherit;font-size:inherit}
+.ui .progress .bar.good{background:-webkit-gradient(linear,left top,left bottom,from(#008a0b),color-stop(50%,#5def5d),to(#008a0b));background:linear-gradient(to bottom,#008a0b 0,#5def5d 50%,#008a0b 100%)}
+.ui .progress .bar.bad{background:-webkit-gradient(linear,left top,left bottom,from(#e0e000),color-stop(50%,#d19900),to(#e0e000));background:linear-gradient(to bottom,#e0e000 0,#d19900 50%,#e0e000 100%)}
+.ui .progress .bar.vbad{background:-webkit-gradient(linear,left top,left bottom,from(#f00000),color-stop(50%,#b80000),to(#f00000));background:linear-gradient(to bottom,#f00000 0,#b80000 50%,#f00000 100%)}
+.ui .progress .bar.ubad{background:-webkit-gradient(linear,left top,left bottom,from(#8a0000),color-stop(50%,#f00000),to(#8a0000));background:linear-gradient(to bottom,#8a0000 0,#f00000 50%,#8a0000 100%)}
+.ui .progress .bar.vgood{background:-webkit-gradient(linear,left top,left bottom,from(#0091ad),color-stop(50%,#1fffe5),to(#0091ad));background:linear-gradient(to bottom,#0091ad 0,#1fffe5 50%,#0091ad 100%)}
+.ui .progress .bar.ugood{background:-webkit-gradient(linear,left top,left bottom,from(#5d5def),color-stop(50%,#5d5def),to(#5d5def));background:linear-gradient(to bottom,#5d5def 0,#5d5def 50%,#5d5def 100%)}
 footer a[data-panel=trades]{background-image:url(../images/assets/ui/toolbar/trades.png)}
 footer a[data-panel=storage]{background-image:url(../images/assets/ui/toolbar/storage.png)}
 footer a[data-panel=buildings]{background-image:url(../images/assets/ui/toolbar/build.png)}
@@ -174,6 +171,37 @@ footer a[data-panel=help]{background-image:url(../images/assets/ui/toolbar/help.
 #window-battle .battleground{background:transparent url(../images/battle/bg2.png) no-repeat}
 a.wikipedia{background:transparent url(../images/ui/wikipedia.png) no-repeat}
 a.github{background:transparent url(../images/ui/github.png) no-repeat}
+.window .avatar-select-top{background:url(../images/ui/avatar-background.png) no-repeat center center}
+.window fieldset{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
+.window .button{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px 0,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) 0, url(../images/ui/buttons-bg.png) repeat-x 0 0}
+.window .button.highlight{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -106px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -106px, url(../images/ui/buttons-bg.png) repeat-x 0 -106px}
+.window .button.button-gray{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -159px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -159px, url(../images/ui/buttons-bg.png) repeat-x 0 -159px}
+.window .button.button-green{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -212px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -212px, url(../images/ui/buttons-bg.png) repeat-x 0 -212px}
+.window .button.button-blue{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -265px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -265px, url(../images/ui/buttons-bg.png) repeat-x 0 -265px}
+.window .button:hover{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -53px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -53px, url(../images/ui/buttons-bg.png) repeat-x 0 -53px !important}
+.ui>footer{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
+.ui>header{background:url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/panel-background.png) repeat left top}
+.avatar-banner{background:url(../images/ui/avatar-banner-circle.png) no-repeat}
+.character-info:after{background:url(../images/ui/avatar-banner-flag.png) no-repeat}
+.ui .progress{background:url(../images/ui/progress-bar-corners-big.png) no-repeat -50px 0,url(../images/ui/progress-bar-corners-big.png) no-repeat calc(100% + 50px) 0, url(../images/ui/progress-bar-big.png) repeat-x 0 0}
+.ui .progress.small{background:url(../images/ui/progress-bar-corners-small.png) no-repeat -25px 0,url(../images/ui/progress-bar-corners-small.png) no-repeat calc(100% + 25px) 0, url(../images/ui/progress-bar-small.png) repeat-x 0 0}
+.ui .panel footer a{background:url(../images/ui/button-bg.png) no-repeat 0 0}
+.ui .panel header .close{background:url(../images/ui/panel-close.png) no-repeat left top}
+.ui .panel footer a.light-link{background:url(../images/ui/button-bg.png) no-repeat -100px 0}
+.ui .panel footer a.green-link{background:url(../images/ui/button-bg.png) no-repeat -150px 0}
+.ui .panel footer a.red-link{background:url(../images/ui/button-bg.png) no-repeat -200px 0}
+.ui .panel footer a.blue-link{background:url(../images/ui/button-bg.png) no-repeat -250px 0}
+.ui .panel footer a.indigo-link{background:url(../images/ui/button-bg.png) no-repeat -300px 0}
+.ui .panel footer a.orange-link{background:url(../images/ui/button-bg.png) no-repeat -350px 0}
+.ui .panel footer a:hover{background:url(../images/ui/button-bg.png) no-repeat -50px 0 !important}
+.ui .panel{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
+.ui>aside{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px 0,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) 0, url(../images/ui/tab-bg.png) repeat-x 0 0}
+.ui-tabs .ui-tabs-nav li.gray .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -108px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -108px, url(../images/ui/tab-bg.png) repeat-x 0 -108px}
+.ui-tabs .ui-tabs-nav li.green .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -144px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -144px, url(../images/ui/tab-bg.png) repeat-x 0 -144px}
+.ui-tabs .ui-tabs-nav li.blue .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -180px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -180px, url(../images/ui/tab-bg.png) repeat-x 0 -180px}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor:hover{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -36px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -36px, url(../images/ui/tab-bg.png) repeat-x 0 -36px !important}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -72px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -72px, url(../images/ui/tab-bg.png) repeat-x 0 -72px !important}
 table{width:100%;padding:0;border-spacing:1px;border-collapse:separate}
 table td{text-align:left;vertical-align:middle;padding:10px}
 table thead td,table tfoot td{padding:10px}
@@ -201,12 +229,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui-tabs-panel{position:relative;margin-top:10px}
 .ui-tabs-panel>span{display:inline-block;padding:4px 10px}
 .ui-tabs .ui-tabs-nav li{position:relative;margin-right:2px}
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor{font-size:14px;color:#fff;text-decoration:none;text-shadow:-1px -1px #201106;font-weight:300;position:relative;padding:8px 20px;background:url(../images/ui/tab-bg-corners.png) no-repeat -36px 0,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) 0, url(../images/ui/tab-bg.png) repeat-x 0 0}
-.ui-tabs .ui-tabs-nav li.gray .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -108px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -108px, url(../images/ui/tab-bg.png) repeat-x 0 -108px}
-.ui-tabs .ui-tabs-nav li.green .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -144px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -144px, url(../images/ui/tab-bg.png) repeat-x 0 -144px}
-.ui-tabs .ui-tabs-nav li.blue .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -180px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -180px, url(../images/ui/tab-bg.png) repeat-x 0 -180px}
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor:hover{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -36px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -36px, url(../images/ui/tab-bg.png) repeat-x 0 -36px !important}
-.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -72px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -72px, url(../images/ui/tab-bg.png) repeat-x 0 -72px !important}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor{font-size:14px;color:#fff;text-decoration:none;text-shadow:-1px -1px #201106;font-weight:300;position:relative;padding:8px 20px}
 .tipsy{font-size:12px;position:absolute;padding:5px;z-index:100000}
 .tipsy-inner{background-color:white;color:black;max-width:280px;padding:10px;text-align:left}
 .tipsy-inner{border-radius:3px}
@@ -250,7 +273,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel .toolbar .btn:hover{border:1px solid #442813;background-image:-webkit-gradient(linear,left top,left bottom,from(#6a4324),to(#442813));background-image:linear-gradient(to bottom,#6a4324,#442813);color:white}
 .ui .panel a{color:white;text-decoration:underline}
 .ui .panel .section{padding:20px}
-.ui .panel fieldset{border:1px solid #956023;margin-bottom:10px}
+.ui .panel fieldset{border:1px solid #6e5036;margin-bottom:10px}
 .ui .panel fieldset legend{padding:0 10px}
 .ui .panel fieldset select{width:100%;border:1px solid #ababab;padding:4px 0}
 .ui .panel fieldset p{margin:10px 0 0 0}
@@ -272,7 +295,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel .column{width:290px;float:left}
 .ui .panel .column-small{width:215px;float:left}
 .ui .panel .column-full{width:440px;clear:both}
-.ui .panel .column-small:nth-child(3){margin-left:10px}
+.ui .panel .column-small:nth-child(2){margin-left:10px}
 .ui .panel .column:last-of-type{margin-left:10px}
 .ui .panel .army-list,.ui .panel .navy-list{float:left;width:140px;padding:10px 0 0 0}
 .ui .panel .army-recruiter fieldset,.ui .panel .navy-recruiter fieldset{display:block;float:left;margin:0 10px 10px 0;width:176px;position:relative}
@@ -283,24 +306,18 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel ul.advices{max-height:300px;display:block;margin:0;padding:10px 0 0 0;overflow:auto}
 .ui .panel ul.advices li{line-height:30px;padding-left:50px}
 .ui .panel .hired-mercenaries-list{max-height:370px;overflow:auto}
-.ui aside,.ui .panel{color:#fff;position:absolute;background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top;padding:14px}
+.ui .panel{color:#fff;position:absolute;padding:14px}
 .ui .panel header{font-size:18px;text-shadow:-1px -1px #201106;font-weight:300;text-transform:uppercase;padding:5px 10px}
-.ui .panel header .close{display:block;float:right;height:24px;width:24px;display:block;overflow:hidden;text-indent:-9999em;background:url(../images/ui/panel-close.png) no-repeat left top}
+.ui .panel header .close{display:block;float:right;height:24px;width:24px;display:block;overflow:hidden;text-indent:-9999em}
 .ui .panel header .close:hover{background-position:left bottom}
 .ui .panel section{border:1px solid #6e5036;background-color:#150f0c;padding:8px}
 .ui .panel footer{border:1px solid #6e5036;border-top:0;background-color:#150f0c;padding:0 10px 10px 10px;margin-top:-2px}
-.ui .panel footer a{display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;padding:9px;background:url(../images/ui/button-bg.png) no-repeat 0 0}
+.ui .panel footer a{display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;padding:9px}
 .ui .panel footer a span{width:32px;height:32px;line-height:32px;display:block;background-size:cover}
 .ui .panel footer a+a{margin-right:10px}
-.ui .panel footer a.light-link{background:url(../images/ui/button-bg.png) no-repeat -100px 0}
-.ui .panel footer a.green-link{background:url(../images/ui/button-bg.png) no-repeat -150px 0}
-.ui .panel footer a.red-link{background:url(../images/ui/button-bg.png) no-repeat -200px 0}
-.ui .panel footer a.blue-link{background:url(../images/ui/button-bg.png) no-repeat -250px 0}
-.ui .panel footer a.indigo-link{background:url(../images/ui/button-bg.png) no-repeat -300px 0}
-.ui .panel footer a.orange-link{background:url(../images/ui/button-bg.png) no-repeat -350px 0}
-.ui .panel footer a:hover{background:url(../images/ui/button-bg.png) no-repeat -50px 0 !important}
 .ui .panel footer a img{display:block}
 .ui .panel .column img.building{width:100%}
+.panel .column .image{background-size:contain;margin:0 auto;height:300px;background-position:bottom;background-repeat:no-repeat}
 #panel-new-army,#panel-new-spy,#panel-new-scout,#panel-new-caravan{max-width:640px;max-height:600px}
 #panel-academy{max-height:700px;max-width:620px;width:620px}
 #panel-academy .column-left{width:290px;max-height:400px;overflow:auto;margin-top:10px;float:left}
@@ -332,7 +349,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-place{width:450px;max-width:450px;max-height:600px;height:auto}
 #panel-barracks,#panel-shipyard{width:790px;max-width:790px;height:auto;max-height:600px}
 #panel-council section dd,#panel-barracks section dd,#panel-shipyard section dd{width:auto}
-#panel-buildings{max-width:1190px;max-height:630px;height:auto;width:690px}
+#panel-buildings{max-width:1190px;max-height:650px;height:auto;width:690px}
 #panel-buildings .b-desc{margin-bottom:10px}
 #panel-buildings.expanded{width:1150px !important}
 #panel-buildings .building-item{width:160px;height:160px;float:left;text-align:center;margin:0 10px 10px 0;position:relative;background-color:#eccfb6;border-radius:8px;cursor:pointer;border-top-right-radius:0}
@@ -366,22 +383,21 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-help .ui-tabs-panel{max-height:510px;overflow:auto}
 #panel-help .ui-tabs-panel p,#panel-help .ui-tabs-panel li{font-size:13px;line-height:20px}
 #panel-help img.help{width:200px}
+#panel-help h3{font-size:20px}
 #panel-settlement{width:470px;max-width:470px;max-height:600px;height:auto}
 #panel-settlement .ui-tabs-panel{padding:0 10px}
 #panel-building{max-height:600px;max-width:1400px}
 #panel-settlement footer a.attack,#panel-settlement footer a.caravan,#panel-settlement footer a.spy,#panel-settlement footer a.alliance,#panel-settlement footer a.pact,#panel-settlement footer a.join,#panel-settlement footer a.war,#panel-settlement footer a.ceasefire{display:none}
 #panel-settlement .pact,#panel-settlement .alliance,#panel-settlement .war,#panel-settlement .ceasefire{display:none}
-.ui aside .panel{position:static;top:0;left:0;z-index:99997;background-color:#eccfb6;padding:10px;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent}
-.ui aside .panel{width:310px;max-height:100%}
-.ui aside .panel header{cursor:default}
-.ui aside .panel section{height:calc(100% - 81px)}
-.ui aside .panel section p{text-align:justify}
-.ui aside .panel .column img.building{width:200px;margin:0 auto;display:block}
-.ui aside .panel .column{border-bottom:1px solid #6e5036;margin-bottom:10px;width:100% !important}
-.ui aside .panel .column:last-of-type{margin-left:0 !important}
-.ui aside .panel .column{float:none}
-.ui aside .panel{background:0}
-.panel .column .image{height:200px;background-size:cover;margin:0 auto}
+.ui>aside{color:#fff;position:absolute;padding:14px;position:fixed;top:48px;right:0;bottom:0;z-index:999;background-color:#150f0c;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box}
+.ui>aside .panel{position:static;top:0;left:0;z-index:99997;background-color:#eccfb6;padding:10px;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent;width:310px;background:0;max-height:100%}
+.ui>aside .panel header{cursor:default}
+.ui>aside .panel section{height:calc(100% - 81px)}
+.ui>aside .panel section p{text-align:justify}
+.ui>aside .panel .column{border-bottom:1px solid #6e5036;margin-bottom:10px;width:100% !important;float:none}
+.ui>aside .panel .column:last-of-type{margin-left:0 !important}
+.ui>aside .panel .column .image{height:200px}
+.ui>aside:empty{display:none}
 #panel-storage{max-width:650px;width:650px;max-height:700px;height:auto}
 #panel-storage .storage-board{width:640px;height:100%}
 #panel-storage .total-storage,#panel-storage .used-storage{font-weight:bold}
@@ -394,7 +410,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-world .w-t-p{opacity:.3}
 .window{width:100%;height:100%;position:fixed;top:0;left:0;color:white;z-index:99999;background:radial-gradient(ellipse at center,#46494e 0,black 100%)}
 .window .logo{margin:3% auto 0 auto;width:300px;text-align:center;font-size:62px}
-.window fieldset{margin:20px auto 0 auto;width:360px;border:0}
+.window fieldset{margin:20px auto 0 auto;border:0;color:#fff;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);width:460px;font-size:18px;padding:40px}
 .window fieldset>p{font-size:14px}
 .window ul{margin-left:20px}
 .window .about-game,.window .options-game{position:relative;display:none;padding:10px 0;margin:0}
@@ -405,8 +421,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .window select option{color:black}
 .window select{width:122px}
 .window input[type=password],.window input[type=text]{width:100px}
-.window .button{display:block;margin-top:5px;border-radius:3px;padding:10px;text-shadow:-1px -1px 0 rgba(0,0,0,0.3);color:white;border:1px solid #918d69;background-image:-webkit-gradient(linear,left top,left bottom,from(#a9a689),to(#8f875b));background-image:linear-gradient(to bottom,#a9a689,#8f875b);font-size:18px;text-transform:uppercase;text-align:center}
-.window .button:hover{border:1px solid #767255;background-image:-webkit-gradient(linear,left top,left bottom,from(#948f6b),to(#706a48));background-image:linear-gradient(to bottom,#948f6b,#706a48)}
+.window .button{display:block;margin-top:5px;border-radius:3px;padding:10px;text-shadow:-1px -1px 0 rgba(0,0,0,0.3);color:white;font-size:18px;text-transform:uppercase;text-align:center}
 .window .avatar-select{width:100%;height:180px;overflow:auto;padding:0;margin:0}
 .window .avatar-select img.avatar{cursor:pointer;border-radius:100%;border:0;padding:0;margin:0;width:90px;height:90px;float:left}
 .window .avatar-select img.avatar.selected{-webkit-box-shadow:inset 0 0 20px 0 rgba(0,0,0,0.75);box-shadow:inset 0 0 20px 0 rgba(0,0,0,0.75)}
@@ -419,23 +434,16 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .window .ui-control.on{background-color:#008a0b;-webkit-box-shadow:0 0 5px #008a0b;box-shadow:0 0 5px #008a0b}
 .window .ui-control.off{background-color:#f00000;-webkit-box-shadow:0 0 5px #f00000;box-shadow:0 0 5px #f00000}
 .window .github{position:absolute;top:10px;right:10px}
-.window fieldset{color:#fff;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top;width:460px;font-size:18px;padding:40px}
-.window fieldset .new-game{border:1px solid #6e5036;background-color:#150f0c;padding:20px}
-.window fieldset{width:460px;font-size:18px;padding:40px}
+.window fieldset .error,.window fieldset .options,.window fieldset .new-game{border:1px solid #6e5036;background-color:#150f0c;padding:20px}
 .window .new-game dd input,.window .new-game dd select{border:1px solid #563a25;-webkit-box-shadow:inset 0 0 2px #1e0f05;box-shadow:inset 0 0 2px #1e0f05;background:#201106;border-radius:5px;height:33px;-webkit-box-sizing:border-box;box-sizing:border-box;font-size:18px;color:#fff;padding:0 8px !important;margin:0 0 10px;width:240px}
 .window .new-game dl{width:100%}
 .window .new-game dd{margin-left:38%}
 .window .new-game dt{line-height:33px;width:35%}
 .hr{padding:0;margin:5px 0 15px;border-top:1px solid #251b13}
-.window .button{font-size:30px;margin-top:10px;padding:7px 10px !important;border:none !important;background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px 0,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) 0, url(../images/ui/buttons-bg.png) repeat-x 0 0}
-.window .button.highlight{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -106px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -106px, url(../images/ui/buttons-bg.png) repeat-x 0 -106px}
-.window .button.button-gray{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -159px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -159px, url(../images/ui/buttons-bg.png) repeat-x 0 -159px}
-.window .button.button-green{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -212px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -212px, url(../images/ui/buttons-bg.png) repeat-x 0 -212px}
-.window .button.button-blue{background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -265px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -265px, url(../images/ui/buttons-bg.png) repeat-x 0 -265px}
-.window .button:hover{font-size:30px;padding:7px 10px;border:0;background:url(../images/ui/buttons-bg-corners.png) no-repeat -219px -53px,url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -53px, url(../images/ui/buttons-bg.png) repeat-x 0 -53px !important}
+.window .button{font-size:30px;margin-top:10px;padding:7px 10px !important;border:none !important}
+.window .button:hover{font-size:30px;padding:7px 10px;border:0}
 .window .new-game dl{margin:20px auto}
-.window .avatar-select-top{position:absolute;top:50%;left:0;-webkit-transform:translate(-50%,-67%);transform:translate(-50%,-67%);width:128px;height:128px;background:url(../images/ui/avatar-background.png) no-repeat center center;background-size:cover;padding:13px;border-radius:50%;z-index:2;cursor:pointer}
-.change-picture{right:100%;left:auto;top:50%;margin:0;-webkit-transform:translate(-85px,-46px);transform:translate(-85px,-46px);white-space:normal;font-size:15px;position:absolute;color:#fff;font-size:18px;z-index:4}
+.window .avatar-select-top{position:absolute;top:50%;left:0;-webkit-transform:translate(-50%,-67%);transform:translate(-50%,-67%);width:128px;height:128px;background-size:cover;padding:13px;border-radius:50%;z-index:2;cursor:pointer}
 .window .avatar-select{display:none;height:320px;position:absolute;top:61px;left:61px;right:61px;width:auto;background:#150f0c}
 .window .avatar-select img.avatar{width:100px;height:100px;margin:2px}
 .window fieldset .about-game{border-top:0}

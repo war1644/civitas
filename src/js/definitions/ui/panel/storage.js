@@ -45,7 +45,6 @@ class ui_panel_storage extends ui_panel {
 					$(this.handle + ' #tab-' + game.RESOURCES[resource].category + ' .storage-board > .storage-item[data-resource="' + resource + '"] > .amount').empty().html(resources[resource]);
 				}
 			}
-			console.log(storage_space);
 			$(this.handle + ' .total-storage').empty().append(storage_space.all);
 			$(this.handle + ' .used-storage').empty().append(storage_space.occupied);
 		};

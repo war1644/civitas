@@ -2343,7 +2343,6 @@ function () {
         properties: {
           id: id,
           sid: null,
-          name: null,
           scouted: false
         },
         resources: {
@@ -8226,7 +8225,8 @@ game.RESOURCES = {
   },
   prestige: {
     name: 'Prestige',
-    category: 'virtual'
+    category: 'virtual',
+    toolbar: true
   },
   espionage: {
     name: 'Espionage',
@@ -17193,19 +17193,25 @@ function () {
   }, {
     key: "build_main",
     value: function build_main() {
-      var _t = '';
       var clicked = false;
       var clickY, clickX;
-      var out = '<section class="ui">' + '<header>' + '<div class="resource-panel"></div>' + '<div class="top-panel">' + '</div>' + '</header>' + '<div class="character-info">' + '<span class="avatar-banner"><span class="cityavatar"></span></span>' + '<span class="cityname"></span>' + '<small>Level <span class="citylevel"></span></small>' + '</div>' + '<aside></aside>' + '<div class="viewport">' + '<section class="game"></section>' + '</div>' + '<footer>' + '<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' + '<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' + '<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' + '<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' + '<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' + '<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' + '<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' + '<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' + '</footer>' + '</section>' + '<audio id="music" loop>' + '<source src="music/track1.mp3" type="audio/mpeg">' + '</audio>' + '<div title="Game is doing stuff in the background." class="loading"></div>';
+      var out = '<section class="ui">' + '<header>' + '<div class="resource-panel"></div>' + '<div class="top-panel"></div>' + '</header>' + '<div class="character-info">' + '<span class="avatar-banner"><span class="cityavatar"></span></span>' + '<span class="cityname"></span>' + '<small>Level <span class="citylevel"></span></small>' + '</div>' + '<aside></aside>' + '<div class="viewport">' + '<section class="game"></section>' + '</div>' + '<footer>' + '<a href="#" data-action="panel" data-panel="buildings" class="tips" title="Buildings"></a>' + '<a href="#" data-action="panel" data-panel="storage" class="tips" title="Storage Space"></a>' + '<a href="#" data-action="panel" data-panel="trades" class="tips" title="Trades"></a>' + '<a href="#" data-action="panel" data-panel="council" class="tips" title="City Council"></a>' + '<a href="#" data-action="panel" data-panel="ranks" class="tips" title="Ranks"></a>' + '<a href="#" data-action="panel" data-panel="world" class="tips" title="World Map"></a>' + '<a href="#" data-action="panel" data-panel="debug" class="tips" title="Debug"></a>' + '<a href="#" data-action="panel" data-panel="help" class="tips" title="Help"></a>' + '</footer>' + '</section>' + '<audio id="music" loop>' + '<source src="music/track1.mp3" type="audio/mpeg">' + '</audio>' + '<div title="Game is doing stuff in the background." class="loading"></div>';
       $('body').empty().append(out);
+      var _t = '';
+      var __t = '';
 
       for (var item in game.RESOURCES) {
         if (game.RESOURCES[item].toolbar === true) {
-          _t += '<div class="resource ' + item + '">' + '<span class="amount">0</span>' + '<img title="' + game.RESOURCES[item].name + '" class="tips small" src="' + game.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' + '</div>';
+          if (game.is_virtual_resource(item)) {
+            __t += '<div class="resource ' + item + '">' + '<span class="amount">0</span>' + '<img title="' + game.RESOURCES[item].name + '" class="tips small" src="' + game.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' + '</div>';
+          } else {
+            _t += '<div class="resource ' + item + '">' + '<span class="amount">0</span>' + '<img title="' + game.RESOURCES[item].name + '" class="tips small" src="' + game.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' + '</div>';
+          }
         }
       }
 
       $('.resource-panel').append(_t);
+      $('.top-panel').append(__t);
 
       var update_scroll_pos = function update_scroll_pos(event) {
         $('.viewport').scrollTop($('.viewport').scrollTop() + (clickY - event.pageY));
@@ -18200,20 +18206,27 @@ function () {
     key: "refresh_toolbar",
     value: function refresh_toolbar() {
       var settlement = this.core().get_settlement();
+      var pos;
 
       if (typeof settlement !== 'undefined') {
         var resources = settlement.get_resources();
 
         for (var item in game.RESOURCES) {
           if (game.RESOURCES[item].toolbar === true) {
+            if (game.is_virtual_resource(item)) {
+              pos = '.top-panel';
+            } else {
+              pos = '.resource-panel';
+            }
+
             if (typeof resources[item] !== 'undefined') {
               if (resources[item] === 0) {
-                $('.resource-panel .resource.' + item).hide();
+                $(pos + ' .resource.' + item).hide();
               } else {
-                $('.resource-panel .resource.' + item).show();
+                $(pos + ' .resource.' + item).show();
               }
 
-              $('.resource-panel .resource.' + item + ' span').html(resources[item]);
+              $(pos + ' .resource.' + item + ' span').html(resources[item]);
             }
           }
         }
@@ -19020,7 +19033,7 @@ function (_ui_panel) {
       var handle = this.handle;
       $(this.handle + ' section').append(core.ui().tabs(['Data', 'Console', 'Cheats']));
       $(this.handle + ' #tab-console').empty().append('<div class="console"></div>');
-      $(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' + '<a href="#" class="btn iblock one">+1M coins</a> ' + '<a href="#" class="btn iblock two">+1000 cons. mats</a> ' + '<a href="#" class="btn iblock thirty">+1000 food / wine</a> ' + '<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a> <br /><br />' + '<a href="#" class="btn iblock five">level up</a> ' + '<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a> ' + '<a href="#" class="btn iblock six">+1000 fame</a> ' + '<a href="#" class="btn iblock seven">refresh trades</a> <br /><br />' + '<a href="#" class="btn iblock eleven">random soldiers</a> ' + '<a href="#" class="btn iblock twelve">random ships</a> ' + '<a href="#" class="btn iblock fourty">defend city</a> ' + '<a href="#" class="btn iblock fifty">battle-ready</a> <br /><br />' + '<a href="#" class="btn iblock ninety">add city</a> ' + '</div>');
+      $(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' + '<a href="#" class="btn iblock one">+1M coins</a>' + '<a href="#" class="btn iblock two">+1000 cons. mats</a>' + '<a href="#" class="btn iblock thirty">+1000 food / wine</a>' + '<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a><br /><br />' + '<a href="#" class="btn iblock five">level up</a>' + '<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a>' + '<a href="#" class="btn iblock six">+1000 fame</a><br /><br />' + '<a href="#" class="btn iblock eleven">random soldiers</a>' + '<a href="#" class="btn iblock twelve">random ships</a>' + '<a href="#" class="btn iblock fourty">defend city</a>' + '<a href="#" class="btn iblock fifty">battle-ready</a><br /><br />' + '<a href="#" class="btn iblock ninety">add city</a>' + '<a href="#" class="btn iblock seven">refresh trades</a>' + '</div>');
       $(this.handle + ' #tab-data').empty().append('<textarea class="storage-data"></textarea>' + '<div class="toolbar">' + '<a href="#" class="btn iblock refresh">Refresh</a> ' + '<a href="#" class="btn iblock load">Load</a> ' + '<a href="#" class="btn iblock save">Save</a> ' + '</div>');
       $(this.handle).on('click', '.fourty', function () {
         var city_index = game.get_random(1, core.get_num_settlements() - 1);
@@ -19489,7 +19502,6 @@ function (_ui_panel) {
         }
       }
 
-      console.log(storage_space);
       $(this.handle + ' .total-storage').empty().append(storage_space.all);
       $(this.handle + ' .used-storage').empty().append(storage_space.occupied);
     };
@@ -20903,19 +20915,19 @@ function (_ui_panel) {
         _t += '</div>';
       }
 
-      _t += '</div>' + '</div>' + '<div class="buildings-info right">' + '<div class="b-desc"></div>' + '<div class="column-small">' + '<fieldset class="levels">' + '<legend>Levels</legend>' + '<div class="b-levels"></div>' + '</fieldset>' + '<fieldset>' + '<legend>Cost</legend>' + '<div class="b-cost"></div>' + '</fieldset>' + '</div>' + '<div class="column-small">' + '<fieldset class="materials">' + '<legend>Materials</legend>' + '<div class="b-mats"></div>' + '</fieldset>' + '<fieldset class="production">' + '<legend>Production</legend>' + '<div class="b-prod"></div>' + '</fieldset>' + '<fieldset class="extra">' + '<legend>Extra materials</legend>' + '<div class="b-chance"></div>' + '</fieldset>' + '<fieldset class="storage">' + '<legend>Storage</legend>' + '<div class="b-store"></div>' + '</fieldset>' + '<fieldset class="taxes">' + '<legend>Taxes</legend>' + '<div class="b-tax"></div>' + '</fieldset>' + '</div>' + '<div class="column-full">' + '<fieldset>' + '<legend>Requirements</legend>' + '<div class="b-req"></div>' + '</fieldset>' + '</div>' + '<div class="toolbar"></div>' + '</div>' + '<div class="clearfix"></div>';
+      _t += '</div>' + '</div>' + '<div class="buildings-info right">' + '<div class="b-name"></div>' + '<div class="b-desc"></div>' + '<div class="column-small">' + '<fieldset class="levels">' + '<legend>Levels</legend>' + '<div class="b-levels"></div>' + '</fieldset>' + '<fieldset>' + '<legend>Cost</legend>' + '<div class="b-cost"></div>' + '</fieldset>' + '</div>' + '<div class="column-small">' + '<fieldset class="materials">' + '<legend>Materials</legend>' + '<div class="b-mats"></div>' + '</fieldset>' + '<fieldset class="production">' + '<legend>Production</legend>' + '<div class="b-prod"></div>' + '</fieldset>' + '<fieldset class="extra">' + '<legend>Extra materials</legend>' + '<div class="b-chance"></div>' + '</fieldset>' + '<fieldset class="storage">' + '<legend>Storage</legend>' + '<div class="b-store"></div>' + '</fieldset>' + '<fieldset class="taxes">' + '<legend>Taxes</legend>' + '<div class="b-tax"></div>' + '</fieldset>' + '</div>' + '<div class="column-full">' + '<fieldset>' + '<legend>Requirements</legend>' + '<div class="b-req"></div>' + '</fieldset>' + '</div>' + '<div class="toolbar"></div>' + '</div>' + '<div class="clearfix"></div>';
       $(el + ' section').append(_t);
       $(el).on('click', '.building-item', function () {
         $(el).addClass('expanded');
         $(el + ' .building-item').removeClass('active');
         $(this).addClass('active');
-        $(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
+        $(el + ' .b-chance, ' + el + ' .b-tax, ' + el + ' .b-store, ' + el + ' .b-req, ' + el + ' .b-cost, ' + el + ' .b-name, ' + el + ' .b-name, ' + el + ' .b-desc, ' + el + ' .b-mats, ' + el + ' .b-prod, ' + el + ' .toolbar').empty();
         var handle = $(this).data('handle');
         var building = core.get_building_config_data(handle);
 
         if (building) {
-          $(el + ' header span').empty().html('City Buildings - ' + building.name);
           $(el + ' .b-desc').html(building.description);
+          $(el + ' .b-name').html(building.name);
           var _z = '<dl class="nomg">';
 
           for (var y in building.cost) {
@@ -22220,8 +22232,7 @@ function (_ui_window) {
     _classCallCheck(this, ui_window_signup);
 
     params.id = 'signup';
-    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="new-game">' + '<img class="avatar-select-top" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar1.png">' + '<p>Choose your city details well, climate and game difficulty affects your building options and resources.</p>' + '<dl>' + '<dt class="clearfix">Your Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" />' + '</dd>' + (game.ENCRYPTION === true ? '<dt class="clearfix">Password:</dt>' + '<dd>' + '<input type="password" class="password text-input" />' + '</dd>' + '<dt class="clearfix">Confirm Password:</dt>' + '<dd>' + '<input type="password" class="password2 text-input" />' + '</dd>' : '') + '<div class="hr"></div>' + '<dt class="clearfix">City Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" />' + '</dd>' + '<dt class="clearfix">Nationality:</dt>' + '<dd>' + '<select class="nation text-input"></select>' + '</dd>' + '<dt class="clearfix">Climate:</dt>' + '<dd>' + '<select class="climate text-input"></select>' + '</dd>' + '<dt class="clearfix">Difficulty:</dt>' + '<dd>' + '<select class="difficulty text-input">' + '<option value="1">Easy</option>' + '<option value="2">Medium</option>' + '<option value="3">Hard</option>' + '<option value="4">Hardcore</option>' + '</select>' + '</dd>' + '<div class="avatar-select"></div>' + '</dl>' + //'<a href="#" class="change-picture">change picture</a>' +
-    '<a href="#" class="do-start highlight button">Start Playing</a>' + ui.window_about_section() + '</div>' + '</fieldset>' + '</section>';
+    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="new-game">' + '<img class="avatar-select-top" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar1.png">' + '<p>Choose your city details well, climate and game difficulty affects your building options and resources.</p>' + '<dl>' + '<dt class="clearfix">Your Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips name text-input" />' + '</dd>' + (game.ENCRYPTION === true ? '<dt class="clearfix">Password:</dt>' + '<dd>' + '<input type="password" class="password text-input" />' + '</dd>' + '<dt class="clearfix">Confirm Password:</dt>' + '<dd>' + '<input type="password" class="password2 text-input" />' + '</dd>' : '') + '<div class="hr"></div>' + '<dt class="clearfix">City Name:</dt>' + '<dd>' + '<input type="text" maxlength="12" title="Maximum of 12 characters." class="tips cityname text-input" />' + '</dd>' + '<dt class="clearfix">Nationality:</dt>' + '<dd>' + '<select class="nation text-input"></select>' + '</dd>' + '<dt class="clearfix">Climate:</dt>' + '<dd>' + '<select class="climate text-input"></select>' + '</dd>' + '<dt class="clearfix">Difficulty:</dt>' + '<dd>' + '<select class="difficulty text-input">' + '<option value="1">Easy</option>' + '<option value="2">Medium</option>' + '<option value="3">Hard</option>' + '<option value="4">Hardcore</option>' + '</select>' + '</dd>' + '<div class="avatar-select"></div>' + '</dl>' + '<a href="#" class="do-start highlight button">Start Playing</a>' + ui.window_about_section() + '</div>' + '</fieldset>' + '</section>';
 
     params.on_show = function () {
       var self = this;
@@ -22359,7 +22370,7 @@ function (_ui_window) {
     _classCallCheck(this, ui_window_error);
 
     params.id = 'error';
-    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + 'An error has occured in Civitas and the game is unable to resume.' + '<br /><br />' + '<span class="error-message"></span>' + '<br />' + '<span class="error-code"></span>' + '<br /><br />' + '<a href="#" class="do-restart button">Restart</a>' + '</fieldset>' + '</section>';
+    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="error">' + 'An error has occured in Civitas and the game is unable to resume.' + '<br /><br />' + '<span class="error-message"></span>' + '<br />' + '<span class="error-code"></span>' + '<br /><br />' + '<a href="#" class="do-restart button">Restart</a>' + '</div>' + '</fieldset>' + '</section>';
 
     params.on_show = function () {
       var core = this.core();
@@ -22428,7 +22439,7 @@ function (_ui_window) {
     _classCallCheck(this, ui_window_options);
 
     params.id = 'options';
-    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<a href="#" class="do-pause button">Pause</a>' + '<a href="#" class="do-restart button">Restart</a>' + '<a href="#" class="do-options button">Options</a>' + '<div class="options-game"></div>' + ui.window_about_section() + '<br />' + '<a href="#" class="do-resume button">Resume Playing</a>' + '</fieldset>' + '</section>';
+    params.template = '<section id="window-{ID}" class="window">' + '<div class="logo">Civitas</div>' + '<fieldset>' + '<div class="options">' + '<a href="#" class="do-pause button">Pause</a>' + '<a href="#" class="do-restart button">Restart</a>' + '<a href="#" class="do-options button">Options</a>' + '<div class="options-game"></div>' + ui.window_about_section() + '<br />' + '<a href="#" class="do-resume button">Resume Playing</a>' + '</div>' + '</fieldset>' + '</section>';
 
     params.on_show = function () {
       var self = this;

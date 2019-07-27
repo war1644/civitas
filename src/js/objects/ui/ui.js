@@ -83,14 +83,12 @@ class ui {
 	 * @returns {ui}
 	 */
 	build_main () {
-		let _t = '';
 		let clicked = false;
 		let clickY, clickX;
 		let out = '<section class="ui">' +
 					'<header>' +
 						'<div class="resource-panel"></div>' +
-						'<div class="top-panel">' +
-						'</div>' +
+						'<div class="top-panel"></div>' +
 					'</header>' +
 					'<div class="character-info">' +
 						'<span class="avatar-banner"><span class="cityavatar"></span></span>' +
@@ -117,15 +115,25 @@ class ui {
 				'</audio>' +
 				'<div title="Game is doing stuff in the background." class="loading"></div>';
 		$('body').empty().append(out);
+		let _t = '';
+		let __t = '';
 		for (let item in game.RESOURCES) {
 			if (game.RESOURCES[item].toolbar === true) {
-				_t += '<div class="resource ' + item + '">' +
-					'<span class="amount">0</span>' +
-					'<img title="' + game.RESOURCES[item].name + '" class="tips small" src="' + game.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' +
-				'</div>';
+				if (game.is_virtual_resource(item)) {
+					__t += '<div class="resource ' + item + '">' +
+						'<span class="amount">0</span>' +
+						'<img title="' + game.RESOURCES[item].name + '" class="tips small" src="' + game.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' +
+					'</div>';
+				} else {
+					_t += '<div class="resource ' + item + '">' +
+						'<span class="amount">0</span>' +
+						'<img title="' + game.RESOURCES[item].name + '" class="tips small" src="' + game.ASSETS_URL + 'images/assets/resources/' + item + '.png" />' +
+					'</div>';
+				}
 			}
 		}
 		$('.resource-panel').append(_t);
+		$('.top-panel').append(__t);
 		let update_scroll_pos = function (event) {
 			$('.viewport').scrollTop($('.viewport').scrollTop() + (clickY - event.pageY));
 			$('.viewport').scrollLeft($('.viewport').scrollLeft() + (clickX - event.pageX));
@@ -1076,17 +1084,23 @@ class ui {
 	 */
 	refresh_toolbar () {
 		const settlement = this.core().get_settlement();
+		let pos;
 		if (typeof settlement !== 'undefined') {
 			const resources = settlement.get_resources();
 			for (let item in game.RESOURCES) {
 				if (game.RESOURCES[item].toolbar === true) {
+					if (game.is_virtual_resource(item)) {
+						pos = '.top-panel';
+					} else {
+						pos = '.resource-panel';
+					}
 					if (typeof resources[item] !== 'undefined') {
 						if (resources[item] === 0) {
-							$('.resource-panel .resource.' + item).hide();
+							$(pos + ' .resource.' + item).hide();
 						} else {
-							$('.resource-panel .resource.' + item).show();
+							$(pos + ' .resource.' + item).show();
 						}
-						$('.resource-panel .resource.' + item + ' span').html(resources[item]);
+						$(pos + ' .resource.' + item + ' span').html(resources[item]);
 					}
 				}
 			}

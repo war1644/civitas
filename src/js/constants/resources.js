@@ -34,7 +34,8 @@ game.RESOURCES = {
 	},
 	prestige: {
 		name: 'Prestige',
-		category: 'virtual'
+		category: 'virtual',
+		toolbar: true
 	},
 	espionage: {
 		name: 'Espionage',

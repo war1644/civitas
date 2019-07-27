@@ -19,8 +19,15 @@
 
 	fieldset {
 		margin: 20px auto 0 auto;
-		width: 360px;
 		border: 0;
+		color: #fff;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 460px;
+		font-size: 18px;
+		padding: 40px;
 	}
 
 	fieldset > p {
@@ -82,15 +89,12 @@
 		padding: 10px;
 		text-shadow: -1px -1px 0 hsla(0, 0%, 0%, 0.3);
 		color: $btn-secondary-fg;
-		border: 1px solid $input-border;
-		background-image: $btn-secondary-bg;
 		font-size: 18px;
 		text-transform: uppercase;
 		text-align: center;
 
 		&:hover {
-			border: 1px solid #767255;
-			background-image: $btn-secondary-bg-hover;
+
 		}
 	}
 
@@ -177,42 +181,14 @@
 
 
 
-
-
-
-.window fieldset {
-	color: #fff;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	background: 
-		url(../images/ui/border-top-left.png) no-repeat left top,
-		url(../images/ui/border-top-right.png) no-repeat right top,
-		url(../images/ui/border-bottom-right.png) no-repeat right bottom,
-		url(../images/ui/border-bottom-left.png) no-repeat left bottom,
-		url(../images/ui/border-top.png) repeat-x left top,
-		url(../images/ui/border-right.png) repeat-y right bottom,
-		url(../images/ui/border-bottom.png) repeat-x right bottom,
-		url(../images/ui/border-left.png) repeat-y left bottom,
-		url(../images/ui/panel-background.png) repeat left top;
-	width: 460px;
-	font-size: 18px;
-	padding: 40px;
-}
-
-
+.window fieldset .error,
+.window fieldset .options,
 .window fieldset .new-game {
 	border: 1px solid #6e5036;
 	background-color: #150f0c;
 	padding: 20px;
 }
 
-.window fieldset {
-	width: 460px;
-	font-size: 18px;
-	padding: 40px;
-}
 .window .new-game dd input,
 .window .new-game dd select {
 	border: 1px solid #563a25;
@@ -227,72 +203,43 @@
 	margin: 0 0 10px;
 	width: 240px;
 }
+
 .window .new-game dl {
 	width: 100%;
 }
+
 .window .new-game dd {
 	margin-left: 38%;
 }
+
 .window .new-game dt {
 	line-height: 33px;
 	width: 35%;
 }
+
 .hr {
 	padding: 0;
 	margin: 5px 0 15px;
 	border-top: 1px solid #251b13;
 }
+
 .window .button {
 	font-size: 30px;
 	margin-top: 10px;
 	padding: 7px 10px !important;
 	border: none !important;
-	background: 
-		url(../images/ui/buttons-bg-corners.png) no-repeat -219px 0px,
-		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) 0,
-		url(../images/ui/buttons-bg.png) repeat-x 0 0
-}
-.window .button.highlight {
-	background: 
-		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -106px,
-		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -106px,
-		url(../images/ui/buttons-bg.png) repeat-x 0 -106px
-}
-
-.window .button.button-gray {
-	background: 
-		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -159px,
-		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -159px,
-		url(../images/ui/buttons-bg.png) repeat-x 0 -159px
-}
-
-.window .button.button-green {
-	background: 
-		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -212px,
-		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -212px,
-		url(../images/ui/buttons-bg.png) repeat-x 0 -212px
-}
-
-.window .button.button-blue {
-	background: 
-		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -265px,
-		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -265px,
-		url(../images/ui/buttons-bg.png) repeat-x 0 -265px
 }
 
 .window .button:hover {
 	font-size: 30px;
 	padding: 7px 10px;
 	border: none;
-	background: 
-		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -53px,
-		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -53px,
-		url(../images/ui/buttons-bg.png) repeat-x 0 -53px !important;
 }
 
 .window .new-game dl {
 	margin: 20px auto;
 }
+
 .window .avatar-select-top {
 	position: absolute;
 	top: 50%;
@@ -300,26 +247,13 @@
 	transform: translate(-50%, -67%);
 	width: 128px;
 	height: 128px;
-	background: url(../images/ui/avatar-background.png) no-repeat center center;
 	background-size: cover;
 	padding: 13px;
 	border-radius: 50%;
 	z-index: 2;
 	cursor: pointer;
 }
-.change-picture {
-	right: 100%;
-	left: auto;
-	top: 50%;
-	margin:0;
-	transform: translate(-85px, -46px);
-	white-space: normal;
-	font-size: 15px;
-	position: absolute;
-	color: #fff;
-	font-size: 18px;
-	z-index: 4;
-}
+
 .window .avatar-select {
 	display: none;
 	height: 320px;
@@ -330,11 +264,14 @@
 	width: auto;
 	background: #150f0c;
 }
+
 .window .avatar-select img.avatar {
 	width: 100px;
 	height: 100px;
 	margin: 2px;
 }
+
 .window fieldset .about-game {
 	border-top: none;
 }
+

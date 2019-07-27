@@ -162,3 +162,201 @@ a.wikipedia {
 a.github {
 	background: transparent url(../images/ui/github.png) no-repeat;
 }
+
+.window .avatar-select-top {
+	background: url(../images/ui/avatar-background.png) no-repeat center center;
+}
+.window fieldset {
+	background: 
+		url(../images/ui/border-top-left.png) no-repeat left top,
+		url(../images/ui/border-top-right.png) no-repeat right top,
+		url(../images/ui/border-bottom-right.png) no-repeat right bottom,
+		url(../images/ui/border-bottom-left.png) no-repeat left bottom,
+		url(../images/ui/border-top.png) repeat-x left top,
+		url(../images/ui/border-right.png) repeat-y right bottom,
+		url(../images/ui/border-bottom.png) repeat-x right bottom,
+		url(../images/ui/border-left.png) repeat-y left bottom,
+		url(../images/ui/panel-background.png) repeat left top;
+}
+
+.window .button {
+	background: 
+		url(../images/ui/buttons-bg-corners.png) no-repeat -219px 0px,
+		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) 0,
+		url(../images/ui/buttons-bg.png) repeat-x 0 0
+}
+
+.window .button.highlight {
+	background: 
+		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -106px,
+		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -106px,
+		url(../images/ui/buttons-bg.png) repeat-x 0 -106px
+}
+
+.window .button.button-gray {
+	background: 
+		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -159px,
+		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -159px,
+		url(../images/ui/buttons-bg.png) repeat-x 0 -159px
+}
+
+.window .button.button-green {
+	background: 
+		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -212px,
+		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -212px,
+		url(../images/ui/buttons-bg.png) repeat-x 0 -212px
+}
+
+.window .button.button-blue {
+	background: 
+		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -265px,
+		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -265px,
+		url(../images/ui/buttons-bg.png) repeat-x 0 -265px
+}
+
+.window .button:hover {
+	background: 
+		url(../images/ui/buttons-bg-corners.png) no-repeat -219px -53px,
+		url(../images/ui/buttons-bg-corners.png) no-repeat calc(100% + 131px) -53px,
+		url(../images/ui/buttons-bg.png) repeat-x 0 -53px !important;
+}
+
+.ui > footer {
+	background: 
+		url(../images/ui/border-top-left.png) no-repeat left top,
+		url(../images/ui/border-top-right.png) no-repeat right top,
+		url(../images/ui/border-top.png) repeat-x left top,
+		url(../images/ui/border-right.png) repeat-y right bottom,
+		url(../images/ui/border-left.png) repeat-y left bottom,
+		url(../images/ui/panel-background.png) repeat left top;
+}
+
+.ui > header {
+	background: 
+		url(../images/ui/border-bottom.png) repeat-x right bottom,
+		url(../images/ui/panel-background.png) repeat left top;
+}
+
+.avatar-banner {
+	background: url(../images/ui/avatar-banner-circle.png) no-repeat;
+}
+
+.character-info:after {
+	background: url(../images/ui/avatar-banner-flag.png) no-repeat;
+}
+
+.ui .progress {
+	background: 
+		url(../images/ui/progress-bar-corners-big.png) no-repeat -50px 0px,
+		url(../images/ui/progress-bar-corners-big.png) no-repeat calc(100% + 50px) 0,
+		url(../images/ui/progress-bar-big.png) repeat-x 0 0;
+}
+
+.ui .progress.small {
+	background: 
+		url(../images/ui/progress-bar-corners-small.png) no-repeat -25px 0px,
+		url(../images/ui/progress-bar-corners-small.png) no-repeat calc(100% + 25px) 0,
+		url(../images/ui/progress-bar-small.png) repeat-x 0 0;
+}
+
+.ui .panel footer a {
+	background: url(../images/ui/button-bg.png) no-repeat 0 0;
+}
+
+.ui .panel header .close {
+	background: url(../images/ui/panel-close.png) no-repeat left top;
+}
+
+.ui .panel footer a.light-link {
+	background: url(../images/ui/button-bg.png) no-repeat -100px 0;
+}
+
+.ui .panel footer a.green-link {
+	background: url(../images/ui/button-bg.png) no-repeat -150px 0;
+}
+
+.ui .panel footer a.red-link {
+	background: url(../images/ui/button-bg.png) no-repeat -200px 0;
+}
+
+.ui .panel footer a.blue-link {
+	background: url(../images/ui/button-bg.png) no-repeat -250px 0;
+}
+
+.ui .panel footer a.indigo-link {
+	background: url(../images/ui/button-bg.png) no-repeat -300px 0;
+}
+
+.ui .panel footer a.orange-link {
+	background: url(../images/ui/button-bg.png) no-repeat -350px 0;
+}
+
+.ui .panel footer a:hover{
+	background: url(../images/ui/button-bg.png) no-repeat -50px 0 !important;
+}
+
+.ui .panel {
+	background: 
+		url(../images/ui/border-top-left.png) no-repeat left top,
+		url(../images/ui/border-top-right.png) no-repeat right top,
+		url(../images/ui/border-bottom-right.png) no-repeat right bottom,
+		url(../images/ui/border-bottom-left.png) no-repeat left bottom,
+		url(../images/ui/border-top.png) repeat-x left top,
+		url(../images/ui/border-right.png) repeat-y right bottom,
+		url(../images/ui/border-bottom.png) repeat-x right bottom,
+		url(../images/ui/border-left.png) repeat-y left bottom,
+		url(../images/ui/panel-background.png) repeat left top;
+}
+
+.ui > aside {
+	background: 
+		url(../images/ui/border-top-left.png) no-repeat left top,
+		url(../images/ui/border-top-right.png) no-repeat right top,
+		url(../images/ui/border-bottom-right.png) no-repeat right bottom,
+		url(../images/ui/border-bottom-left.png) no-repeat left bottom,
+		url(../images/ui/border-top.png) repeat-x left top,
+		url(../images/ui/border-right.png) repeat-y right bottom,
+		url(../images/ui/border-bottom.png) repeat-x right bottom,
+		url(../images/ui/border-left.png) repeat-y left bottom,
+		url(../images/ui/panel-background.png) repeat left top;
+}
+
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+	background: 
+		url(../images/ui/tab-bg-corners.png) no-repeat -36px 0px,
+		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) 0,
+		url(../images/ui/tab-bg.png) repeat-x 0 0
+}
+
+.ui-tabs .ui-tabs-nav li.gray .ui-tabs-anchor {
+	background: 
+		url(../images/ui/tab-bg-corners.png) no-repeat -36px -108px,
+		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -108px,
+		url(../images/ui/tab-bg.png) repeat-x 0 -108px
+}
+.ui-tabs .ui-tabs-nav li.green .ui-tabs-anchor {
+	background: 
+		url(../images/ui/tab-bg-corners.png) no-repeat -36px -144px,
+		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -144px,
+		url(../images/ui/tab-bg.png) repeat-x 0 -144px
+}
+.ui-tabs .ui-tabs-nav li.blue .ui-tabs-anchor {
+	background: 
+		url(../images/ui/tab-bg-corners.png) no-repeat -36px -180px,
+		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -180px,
+		url(../images/ui/tab-bg.png) repeat-x 0 -180px
+}
+
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor:hover {
+	background: 
+		url(../images/ui/tab-bg-corners.png) no-repeat -36px -36px,
+		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -36px,
+		url(../images/ui/tab-bg.png) repeat-x 0 -36px !important;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+	background: 
+		url(../images/ui/tab-bg-corners.png) no-repeat -36px -72px,
+		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -72px,
+		url(../images/ui/tab-bg.png) repeat-x 0 -72px !important;
+}

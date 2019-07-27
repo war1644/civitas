@@ -1940,7 +1940,6 @@ class game {
 			properties: {
 				id,
 				sid: null,
-				name: null,
 				scouted: false
 			},
 			resources: {

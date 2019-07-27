@@ -64,7 +64,6 @@ class ui_window_signup extends ui_window {
 							'</dd>' +
 							'<div class="avatar-select"></div>' +
 						'</dl>' +
-						//'<a href="#" class="change-picture">change picture</a>' +
 						'<a href="#" class="do-start highlight button">Start Playing</a>' +
 						ui.window_about_section() +
 					'</div>' +

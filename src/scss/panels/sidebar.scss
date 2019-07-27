@@ -1,60 +1,59 @@
 /* Sidebar */
 
-.ui aside .panel {
-	position: static;
-	top: 0;
-	left: 0;
-	z-index: 99997;
-	background-color: $aside-bg;
-	padding: 10px;
-	box-shadow: 0 0 0 transparent;
+.ui > aside {
+	color: #fff;
+	position: absolute;
+	padding: 14px;
+	position: fixed;
+	top: 48px;
+	right: 0;
+	bottom: 0;
+	z-index: 999;
+	background-color: #150f0c;
+	height: 100%;
+	box-sizing: border-box;
+
+	.panel {
+		position: static;
+		top: 0;
+		left: 0;
+		z-index: 99997;
+		background-color: $aside-bg;
+		padding: 10px;
+		box-shadow: 0 0 0 transparent;
+		width: 310px;
+		background: none;
+		max-height: 100%;
+
+		header {
+			cursor: default;
+		}
+
+		section {
+			height: calc(100% - 81px);
+		}
+
+		section p {
+			text-align: justify;
+		}
+
+		.column {
+			border-bottom: 1px solid #6e5036;
+			margin-bottom: 10px;
+			width: 100% !important;
+			float: none;
+		}
+
+		.column:last-of-type {
+			margin-left: 0 !important;
+		}
+
+		.column .image {
+			height: 200px;
+		}
+	}
 }
 
-.ui aside .panel {
-	width: 310px;
-	max-height: 100%;
-}
-
-.ui aside .panel header {
-	cursor: default;
-}
-
-.ui aside .panel section {
-	/*overflow: scroll; */
-	height: calc(100% - 81px);
-}
-
-.ui aside .panel section p {
-	text-align: justify;
-}
-
-.ui aside .panel .column img.building {
-	width: 200px;
-	margin: 0 auto;
-	display: block;
-}
-
-.ui aside .panel .column {
-	border-bottom: 1px solid #6e5036;
-	margin-bottom: 10px;
-	width: 100% !important;
-}
-
-.ui aside .panel .column:last-of-type {
-	margin-left: 0 !important;
-}
-
-.ui aside .panel .column {
-	float: none;
-}
-
-.ui aside .panel {
-	background: none;
-}
-
-
-.panel .column .image {
-	height: 200px;
-	background-size: cover;
-	margin: 0 auto;
+.ui > aside:empty {
+	display: none;
 }
