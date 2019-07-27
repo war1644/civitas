@@ -2137,7 +2137,7 @@ class game {
 		ui.refresh();
 		setInterval(function () {
 			if (!self.is_paused() && seconds === game.SECONDS_TO_DAY) {
-				//self._do_daily();
+				self._do_daily();
 				seconds = 1;
 			} else if (!self.is_paused()) {
 				seconds++;

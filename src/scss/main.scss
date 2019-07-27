@@ -306,6 +306,9 @@ select {
 		right: 0;
 		bottom: 0;
 		z-index: 999;
+		background-color: #150f0c;
+		height: 100%;
+		box-sizing: border-box;
 	}
 
 	&> aside:empty {

@@ -294,7 +294,7 @@ class ui {
 		}
 		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
 		let out = '<div class="column">' +
-					'<img class="building" src="' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
+					'<div class="image" style="background-image:url(' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png)"></div>' +
 				'</div>' +
 				'<div class="column">' +
 					'<p>' + params.description + '</p>' +
@@ -919,6 +919,9 @@ class ui {
 		const footer_width = parseInt($('.ui > footer').width(), 10);
 		$('.ui > footer').css({
 			left: (window_width / 2) - (footer_width / 2)
+		});
+		$('.ui > aside').css({
+			height: window_height - header_height
 		});
 		$('.ui > .viewport').width(window_width - sidebar_width);
 		$('.ui > .viewport').height(window_height - header_height);

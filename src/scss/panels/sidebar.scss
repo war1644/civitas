@@ -19,14 +19,6 @@
 	cursor: default;
 }
 
-.ui aside .panel footer {
-	border: 0;
-	margin: 0;
-	padding: 0;
-	position: fixed;
-	bottom: 0;
-}
-
 .ui aside .panel section {
 	/*overflow: scroll; */
 	height: calc(100% - 81px);
@@ -43,7 +35,7 @@
 }
 
 .ui aside .panel .column {
-	border-bottom: 1px solid $border-special;
+	border-bottom: 1px solid #6e5036;
 	margin-bottom: 10px;
 	width: 100% !important;
 }
@@ -55,6 +47,14 @@
 .ui aside .panel .column {
 	float: none;
 }
-.ui aside .panel footer {
-	background-color: transparent !important;
+
+.ui aside .panel {
+	background: none;
+}
+
+
+.panel .column .image {
+	height: 200px;
+	background-size: cover;
+	margin: 0 auto;
 }

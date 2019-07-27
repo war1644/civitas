@@ -2581,7 +2581,8 @@ function () {
       ui.refresh();
       setInterval(function () {
         if (!self.is_paused() && seconds === game.SECONDS_TO_DAY) {
-          //self._do_daily();
+          self._do_daily();
+
           seconds = 1;
         } else if (!self.is_paused()) {
           seconds++;
@@ -17308,7 +17309,7 @@ function () {
       }
 
       var image = typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false ? building_image : building_image + params.level;
-      var out = '<div class="column">' + '<img class="building" src="' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' + '</div>' + '<div class="column">' + '<p>' + params.description + '</p>' + '<dl>' + this.level_panel(params.level, level, params.levels) + this.cost_panel(params.cost, level, params.levels) + this.materials_panel(params.materials) + this.production_panel(params.production, level) + this.requires_panel(params.requires) + this.chance_panel(params.chance, level) + this.tax_panel(params.tax, level) + this.storage_panel(params.storage, level) + '</dl>' + '</div>';
+      var out = '<div class="column">' + '<div class="image" style="background-image:url(' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png)"></div>' + '</div>' + '<div class="column">' + '<p>' + params.description + '</p>' + '<dl>' + this.level_panel(params.level, level, params.levels) + this.cost_panel(params.cost, level, params.levels) + this.materials_panel(params.materials) + this.production_panel(params.production, level) + this.requires_panel(params.requires) + this.chance_panel(params.chance, level) + this.tax_panel(params.tax, level) + this.storage_panel(params.storage, level) + '</dl>' + '</div>';
       return out;
     }
     /**
@@ -18014,6 +18015,9 @@ function () {
       var footer_width = parseInt($('.ui > footer').width(), 10);
       $('.ui > footer').css({
         left: window_width / 2 - footer_width / 2
+      });
+      $('.ui > aside').css({
+        height: window_height - header_height
       });
       $('.ui > .viewport').width(window_width - sidebar_width);
       $('.ui > .viewport').height(window_height - header_height);

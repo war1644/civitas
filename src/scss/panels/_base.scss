@@ -341,7 +341,7 @@
 }
 
 
-
+.ui aside,
 .ui .panel {
 	color: #fff;
 	position: absolute;
@@ -386,7 +386,7 @@
 	border: 1px solid #6e5036;
 	border-top: none;
 	background-color: #150f0c;
-	padding: 0 20px 20px;
+	padding: 0 10px 10px 10px;
 	margin-top: -2px;
 }
 
@@ -408,8 +408,8 @@
 	background-size: cover;
 }
 
-.ui .panel footer a + a{
-	margin-left: 10px;
+.ui .panel footer a + a {
+	margin-right: 10px;
 }
 	.ui .panel footer a.light-link 	{ background: url(../images/ui/button-bg.png) no-repeat -100px 0; }
 	.ui .panel footer a.green-link 	{ background: url(../images/ui/button-bg.png) no-repeat -150px 0; }
