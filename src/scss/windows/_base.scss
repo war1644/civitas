@@ -141,15 +141,11 @@
 
 	.button.highlight,
 	.toolbar a {
-		border: 1px solid $btn-border;
-		background-image: $btn-bg;
 		color: $btn-fg;
 	}
 
 	.toolbar a:hover,
 	.button.highlight:hover {
-		border: 1px solid $btn-border-hover;
-		background-image: $btn-bg-hover;
 		color: $btn-fg;
 	}
 

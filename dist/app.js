@@ -17315,7 +17315,7 @@ function () {
       }
 
       var image = typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false ? building_image : building_image + params.level;
-      var out = '<div class="column">' + '<div class="image" style="background-image:url(' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png)"></div>' + '</div>' + '<div class="column">' + '<p>' + params.description + '</p>' + '<dl>' + this.level_panel(params.level, level, params.levels) + this.cost_panel(params.cost, level, params.levels) + this.materials_panel(params.materials) + this.production_panel(params.production, level) + this.requires_panel(params.requires) + this.chance_panel(params.chance, level) + this.tax_panel(params.tax, level) + this.storage_panel(params.storage, level) + '</dl>' + '</div>';
+      var out = '<div class="column preview-image">' + '<img class="image" src="' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' + '</div>' + '<div class="column">' + '<p>' + params.description + '</p>' + '<dl>' + this.level_panel(params.level, level, params.levels) + this.cost_panel(params.cost, level, params.levels) + this.materials_panel(params.materials) + this.production_panel(params.production, level) + this.requires_panel(params.requires) + this.chance_panel(params.chance, level) + this.tax_panel(params.tax, level) + this.storage_panel(params.storage, level) + '</dl>' + '</div>';
       return out;
     }
     /**

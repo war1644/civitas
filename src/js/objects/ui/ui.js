@@ -301,8 +301,8 @@ class ui {
 			building_image = params.handle.slice(0, 5);
 		}
 		let image = (typeof params.visible_upgrades === 'undefined' || params.visible_upgrades === false) ? building_image: building_image + params.level;
-		let out = '<div class="column">' +
-					'<div class="image" style="background-image:url(' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png)"></div>' +
+		let out = '<div class="column preview-image">' +
+					'<img class="image" src="' + game.ASSETS_URL + 'images/assets/buildings/' + image + '.png" />' +
 				'</div>' +
 				'<div class="column">' +
 					'<p>' + params.description + '</p>' +

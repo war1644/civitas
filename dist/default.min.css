@@ -29,7 +29,7 @@ input[type=range]:focus::-moz-slider-runnable-track{background:#9b6b46}
 input[type=number].small,input[type=password].small,input[type=text].small{width:70px}
 input[type=text],input[type=number],select{border:1px solid #918d69;background:#bababa;color:black;padding:2px 6px;font-size:14px}
 .ui{width:100%;height:100%;position:relative}
-.ui>header{width:100%;height:48px;left:0;z-index:9999;top:0;position:fixed}
+.ui>header{width:100%;height:48px;left:0;z-index:9999;top:0;position:fixed;-webkit-box-sizing:border-box;box-sizing:border-box}
 .ui>header .resource-panel{width:65%;position:absolute;top:0;right:0;padding:12px 12px 10px 0;font-size:16px}
 .ui>header .resource-panel .resource{float:right}
 .ui>header .resource-panel .resource .amount{color:#bababa;padding:0 2px 0 4px}
@@ -195,7 +195,7 @@ a.github{background:transparent url(../images/ui/github.png) no-repeat}
 .ui .panel footer a.orange-link{background:url(../images/ui/button-bg.png) no-repeat -350px 0}
 .ui .panel footer a:hover{background:url(../images/ui/button-bg.png) no-repeat -50px 0 !important}
 .ui .panel{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
-.ui>aside{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
+.ui>aside{background:url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px 0,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) 0, url(../images/ui/tab-bg.png) repeat-x 0 0}
 .ui-tabs .ui-tabs-nav li.gray .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -108px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -108px, url(../images/ui/tab-bg.png) repeat-x 0 -108px}
 .ui-tabs .ui-tabs-nav li.green .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -144px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -144px, url(../images/ui/tab-bg.png) repeat-x 0 -144px}
@@ -255,8 +255,8 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .tipsy.item .tipsy-arrow-w{border-right-color:#4e2c12}
 .tipsy.item h4{font-size:14px;padding:0;margin:0 0 10px 0}
 .tipsy.item span.flavour{font-style:italic;color:#ffd000}
-.ui .panel{position:fixed;top:30%;left:30%;z-index:99997;background-color:white;min-width:220px;max-width:360px;min-height:100px;max-height:460px;color:#372f25;padding:10px;-webkit-box-shadow:0 0 10px black;box-shadow:0 0 10px black}
-.ui .panel header{text-transform:uppercase;font-size:22px;margin-bottom:10px;cursor:move}
+.ui .panel{position:fixed;top:30%;left:30%;z-index:99997;background-color:white;min-width:220px;max-width:360px;min-height:100px;max-height:460px;color:#fff;padding:20px;-webkit-box-shadow:0 0 10px black;box-shadow:0 0 10px black}
+.ui .panel header{text-transform:uppercase;margin-bottom:10px;cursor:move;font-size:18px;text-shadow:-1px -1px #201106;font-weight:300;padding:0}
 .ui .panel header a{width:24px;height:24px;display:block;float:right;cursor:pointer}
 .ui .panel section{font-size:12px}
 .ui .panel section dl{margin:10px auto}
@@ -264,8 +264,8 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel section dd{margin-left:50%;line-height:20px;margin-bottom:5px}
 .ui .panel section .buildings.left{width:680px;float:left;position:relative}
 .ui .panel section .buildings-info.right{display:none;float:left;width:440px;margin-left:10px}
-.ui .panel footer{border-top:1px solid #ccc;padding-top:10px;margin-top:10px;clear:both}
-.ui .panel footer a{width:46px;height:46px;display:inline-block;cursor:pointer;margin-right:8px;background-color:#bf9c78;border-radius:10px;background-size:32px 32px;background-position:center center}
+.ui .panel footer{clear:both;border:1px solid #6e5036;border-top:0;background-color:#150f0c;padding:0 10px 10px 10px;margin-top:-2px}
+.ui .panel footer a{width:46px;height:46px;display:inline-block;cursor:pointer;margin-right:8px;border-radius:10px}
 .ui .panel footer a:hover{background-color:#a1805e}
 .ui .panel .toolbar{margin-top:10px;clear:both;font-size:14px}
 .ui .panel .toolbar .btn{border-radius:3px;padding:10px;text-transform:uppercase;text-align:center;display:block;cursor:pointer;border:1px solid #6a4324;background-image:-webkit-gradient(linear,left top,left bottom,from(#9b6b46),to(#6a4324));background-image:linear-gradient(to bottom,#9b6b46,#6a4324);color:white;text-decoration:none;font-size:16px}
@@ -306,18 +306,14 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel ul.advices{max-height:300px;display:block;margin:0;padding:10px 0 0 0;overflow:auto}
 .ui .panel ul.advices li{line-height:30px;padding-left:50px}
 .ui .panel .hired-mercenaries-list{max-height:370px;overflow:auto}
-.ui .panel{color:#fff;position:absolute;padding:14px}
-.ui .panel header{font-size:18px;text-shadow:-1px -1px #201106;font-weight:300;text-transform:uppercase;padding:5px 10px}
 .ui .panel header .close{display:block;float:right;height:24px;width:24px;display:block;overflow:hidden;text-indent:-9999em}
 .ui .panel header .close:hover{background-position:left bottom}
 .ui .panel section{border:1px solid #6e5036;background-color:#150f0c;padding:8px}
-.ui .panel footer{border:1px solid #6e5036;border-top:0;background-color:#150f0c;padding:0 10px 10px 10px;margin-top:-2px}
 .ui .panel footer a{display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;padding:9px}
 .ui .panel footer a span{width:32px;height:32px;line-height:32px;display:block;background-size:cover}
 .ui .panel footer a+a{margin-right:10px}
 .ui .panel footer a img{display:block}
 .ui .panel .column img.building{width:100%}
-.panel .column .image{background-size:contain;margin:0 auto;height:300px;background-position:bottom;background-repeat:no-repeat}
 #panel-new-army,#panel-new-spy,#panel-new-scout,#panel-new-caravan{max-width:640px;max-height:600px}
 #panel-academy{max-height:700px;max-width:620px;width:620px}
 #panel-academy .column-left{width:290px;max-height:400px;overflow:auto;margin-top:10px;float:left}
@@ -389,14 +385,15 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-building{max-height:600px;max-width:1400px}
 #panel-settlement footer a.attack,#panel-settlement footer a.caravan,#panel-settlement footer a.spy,#panel-settlement footer a.alliance,#panel-settlement footer a.pact,#panel-settlement footer a.join,#panel-settlement footer a.war,#panel-settlement footer a.ceasefire{display:none}
 #panel-settlement .pact,#panel-settlement .alliance,#panel-settlement .war,#panel-settlement .ceasefire{display:none}
-.ui>aside{color:#fff;position:absolute;padding:14px;position:fixed;top:48px;right:0;bottom:0;z-index:999;background-color:#150f0c;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box}
+.ui>aside{color:#fff;position:absolute;padding:0 0 0 10px;position:fixed;top:48px;right:0;bottom:0;z-index:999;background-color:#150f0c;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box}
 .ui>aside .panel{position:static;top:0;left:0;z-index:99997;background-color:#eccfb6;padding:10px;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent;width:310px;background:0;max-height:100%}
-.ui>aside .panel header{cursor:default}
+.ui>aside .panel header{cursor:default;padding:0}
 .ui>aside .panel section{height:calc(100% - 81px)}
 .ui>aside .panel section p{text-align:justify}
 .ui>aside .panel .column{border-bottom:1px solid #6e5036;margin-bottom:10px;width:100% !important;float:none}
 .ui>aside .panel .column:last-of-type{margin-left:0 !important}
-.ui>aside .panel .column .image{height:200px}
+.ui>aside .panel .preview-image{height:200px;position:relative}
+.ui>aside .panel .preview-image img{max-width:100%;max-height:200px;width:auto;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
 .ui>aside:empty{display:none}
 #panel-storage{max-width:650px;width:650px;max-height:700px;height:auto}
 #panel-storage .storage-board{width:640px;height:100%}
@@ -428,8 +425,8 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .window dt{line-height:20px;float:left;text-align:right;width:45%;margin-bottom:5px}
 .window dl{width:360px;margin:10px auto}
 .window dd{margin-left:50%;line-height:20px;margin-bottom:5px}
-.window .button.highlight,.window .toolbar a{border:1px solid #6a4324;background-image:-webkit-gradient(linear,left top,left bottom,from(#9b6b46),to(#6a4324));background-image:linear-gradient(to bottom,#9b6b46,#6a4324);color:white}
-.window .toolbar a:hover,.window .button.highlight:hover{border:1px solid #442813;background-image:-webkit-gradient(linear,left top,left bottom,from(#6a4324),to(#442813));background-image:linear-gradient(to bottom,#6a4324,#442813);color:white}
+.window .button.highlight,.window .toolbar a{color:white}
+.window .toolbar a:hover,.window .button.highlight:hover{color:white}
 .window .ui-control{border-radius:3px;padding:2px 10px;color:black;font-size:14px}
 .window .ui-control.on{background-color:#008a0b;-webkit-box-shadow:0 0 5px #008a0b;box-shadow:0 0 5px #008a0b}
 .window .ui-control.off{background-color:#f00000;-webkit-box-shadow:0 0 5px #f00000;box-shadow:0 0 5px #f00000}
