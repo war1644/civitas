@@ -13,15 +13,16 @@ game.INITIAL_SEED = [
 		/* Number of settlements to build initially */
 		settlements: {
 			/* Cities */
-			0: 8, //5,
+			0: 8,
 			/* Villages */
 			1: 5,
 			/* Metropolis */
-			2: 6, //1,
+			2: 6,
 			/* Raider camps */
-			3: 6 //0
+			3: 6,
+			/* Ruins */
+			4: 10
 		},
-		places: 6,
 		/* Number of soldiers and ships to build initially */
 		military: {
 			army: {
@@ -76,9 +77,9 @@ game.INITIAL_SEED = [
 			0: 5,
 			1: 10,
 			2: 5,
-			3: 3
+			3: 3,
+			4: 4
 		},
-		places: 4,
 		military: {
 			army: {
 				militia: 5,
@@ -132,9 +133,9 @@ game.INITIAL_SEED = [
 			0: 10,
 			1: 10,
 			2: 6,
-			3: 10
+			3: 10,
+			4: 3
 		},
-		places: 3,
 		military: {
 			army: {
 				militia: 3,
@@ -185,9 +186,9 @@ game.INITIAL_SEED = [
 			0: 10,
 			1: 20,
 			2: 20,
-			3: 20
+			3: 20,
+			4: 1
 		},
-		places: 1,
 		military: {
 			army: {},
 			navy: {}

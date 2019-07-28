@@ -26,7 +26,7 @@ class ui_panel_new_scout extends ui_panel {
 			let my_settlement = core.get_settlement();
 			let place = params.data;
 			let location = my_settlement.location();
-			let distance = core.world().get_distance_in_days(location, place.location);
+			let distance = core.world().get_distance_in_days(location, place.location());
 			let _t = '<fieldset>' +
 				'<legend>Initial costs</legend>' +
 				'<dl>';

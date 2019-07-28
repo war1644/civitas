@@ -16,7 +16,6 @@ class game {
 	 */
 	constructor () {
 		let self = this;
-		this._places = [];
 		this.settlements = [];
 		this._queue = [];
 		this._achievements = [];
@@ -251,20 +250,13 @@ class game {
 	 */
 	export (to_local_storage) {
 		const settlements_list = [];
-		const places_list = [];
 		for (let i = 0; i < this.settlements.length; i++) {
 			if (typeof this.settlements[i] !== 'undefined') {
 				settlements_list.push(this.settlements[i].export());
 			}
 		}
-		for (let i = 0; i < this._places.length; i++) {
-			if (typeof this._places[i] !== 'undefined') {
-				places_list.push(this._places[i].export());
-			}
-		}
 		const data = {
 			settlements: settlements_list,
-			places: places_list,
 			difficulty: this.difficulty(),
 			seeds: this.world().seeds,
 			achievements: this.achievements(),
@@ -1061,7 +1053,7 @@ class game {
 		let destination_settlement;
 		let settlement = this.get_settlement(action.source.id);
 		if (action.type === game.CAMPAIGN_SCOUT) {
-			destination_settlement = this.get_place(action.destination.id);
+			destination_settlement = this.get_settlement(action.destination.id);
 			if (!destination_settlement) {
 				this.queue_remove_action(id);
 				return false;
@@ -1422,27 +1414,6 @@ class game {
 	}
 
 	/**
-	 * Get a pointer to a special place (har har).
-	 * 
-	 * @public
-	 * @param {String|Number} name
-	 * @returns {place|Boolean}
-	 */
-	get_place (id) {
-		const _places = this.places();
-		if (typeof id === 'number') {
-			for (let i = 0; i < _places.length; i++) {
-				if (typeof _places[i] !== 'undefined') {
-					if (_places[i].id() === id) {
-						return _places[i];
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Get a pointer to the player's settlement.
 	 * 
 	 * @public
@@ -1704,10 +1675,19 @@ class game {
 			level,
 			resources: resources.resources,
 			army: this.generate_random_army(s_type),
-			navy: this.generate_random_navy(s_type)
+			navy: this.generate_random_navy(s_type),
+			ruins: {}
 		};
 		if (s_type === game.CITY || s_type === game.METROPOLIS) {
 			settlement.trades = resources.trades;
+		}
+		if (s_type === game.RUINS) {
+			settlement.ruins.resources = {
+				current: {
+					// Todo
+				},
+				required: this.generate_random_ruins_resources()
+			}
 		}
 		return settlement;
 	}
@@ -1835,6 +1815,7 @@ class game {
 				army: typeof s_data.army !== 'undefined' ? s_data.army : {},
 				navy: typeof s_data.navy !== 'undefined' ? s_data.navy : {},
 				trades: typeof s_data.trades !== 'undefined' ? s_data.trades : {},
+				ruins: s_data.ruins,
 				location
 			});
 			if (player === false) {
@@ -1880,11 +1861,10 @@ class game {
 	 */
 	_setup_neighbours (data) {
 		let new_settlement;
-		let new_place;
 		let s_data;
 		const difficulty = this.difficulty();
 		let num;
-		let num_places;
+		let num_ruins;
 		if (data !== null) {
 			for (let i = 1; i < data.settlements.length; i++) {
 				s_data = data.settlements[i];
@@ -1892,22 +1872,12 @@ class game {
 				new_settlement = new settlement(s_data);
 				this.settlements.push(new_settlement);
 			}
-			for (let i = 0; i < data.places.length; i++) {
-				s_data = data.places[i];
-				s_data.core = this;
-				new_place = new place(s_data);
-				this._places.push(new_place);
-			}
 		} else {
 			for (let i = 0; i < game.SETTLEMENTS.length; i++) {
 				num = game.INITIAL_SEED[difficulty - 1].settlements[i];
 				for (let z = 0; z < num; z++) {
 					this.add_random_settlement(i);
 				}
-			}
-			num_places = game.INITIAL_SEED[difficulty - 1].places;
-			for (let i = 0; i < num_places; i++) {
-				this.add_random_place(i);
 			}
 		}
 		return this;
@@ -1926,43 +1896,15 @@ class game {
 		return this;
 	}
 
-	/**
-	 * Add a random place into the world.
-	 *
-	 * @public
-	 * @param {Number} id
-	 * @returns {place}
-	 */
-	add_random_place (id) {
-		let location = this.world().get_random_location();
-		let _place = new place({
-			core: this,
-			properties: {
-				id,
-				sid: null,
-				scouted: false
-			},
-			resources: {
-				current: {
-					// Todo
-				},
-				required: this.generate_random_place_resources()
-			},
-			location
-		});
-		this._places.push(_place);
-		return _place;
-	}
-
-	generate_random_place_resources () {
+	generate_random_ruins_resources () {
 		let resources = {};
 		let plusminus;
-		for (let item in game.PLACE_RESOURCES_REQ) {
+		for (let item in game.RUINS_RESOURCES_REQ) {
 			if (game.is_virtual_resource(item)) {
-				resources[item] = game.PLACE_RESOURCES_REQ[item];
+				resources[item] = game.RUINS_RESOURCES_REQ[item];
 			} else {
-				plusminus = (game.PLACE_RESOURCES_REQ[item] * 10) / 100;
-				resources[item] = game.get_random(game.PLACE_RESOURCES_REQ[item] - plusminus, game.PLACE_RESOURCES_REQ[item] + plusminus);
+				plusminus = (game.RUINS_RESOURCES_REQ[item] * 10) / 100;
+				resources[item] = game.get_random(game.RUINS_RESOURCES_REQ[item] - plusminus, game.RUINS_RESOURCES_REQ[item] + plusminus);
 			}
 		}
 		return resources;
@@ -2346,10 +2288,6 @@ class game {
 		this.save();
 		this.ui().refresh();
 		return this;
-	}
-
-	places () {
-		return this._places;
 	}
 
 	/**

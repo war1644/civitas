@@ -45,7 +45,7 @@
 	}
 
 	.bar {
-		background: $progress-bar-bg;
+		background-color: $progress-bar-bg;
 		height: 34px;
 		line-height: 34px;
 		font-size: 20px;
@@ -65,26 +65,26 @@
 	}
 
 	.bar.good {
-		background: $progress-bar-bg-l1;
+		background-color: $progress-bar-bg-l1;
 	}
 
 	.bar.bad {
-		background: $progress-bar-bg-l2;
+		background-color: $progress-bar-bg-l2;
 	}
 
 	.bar.vbad {
-		background: $progress-bar-bg-l3;
+		background-color: $progress-bar-bg-l3;
 	}
 
 	.bar.ubad {
-		background: $progress-bar-bg-l4;
+		background-color: $progress-bar-bg-l4;
 	}
 
 	.bar.vgood {
-		background: $progress-bar-bg-l5;
+		background-color: $progress-bar-bg-l5;
 	}
 
 	.bar.ugood {
-		background: $progress-bar-bg-l6;
+		background-color: $progress-bar-bg-l6;
 	}
 }

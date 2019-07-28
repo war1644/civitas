@@ -16,6 +16,10 @@
 	max-width: 1400px;
 }
 
+#panel-place footer a.claim,
+#panel-place footer a.unclaim,
+#panel-place footer a.scout,
+#panel-place footer a.caravan,
 #panel-settlement footer a.attack,
 #panel-settlement footer a.caravan,
 #panel-settlement footer a.spy,
@@ -24,12 +28,5 @@
 #panel-settlement footer a.join,
 #panel-settlement footer a.war,
 #panel-settlement footer a.ceasefire {
-	display: none;
-}
-
-#panel-settlement .pact,
-#panel-settlement .alliance,
-#panel-settlement .war,
-#panel-settlement .ceasefire {
 	display: none;
 }

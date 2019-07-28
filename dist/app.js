@@ -56,7 +56,6 @@ function () {
     _classCallCheck(this, game);
 
     var self = this;
-    this._places = [];
     this.settlements = [];
     this._queue = [];
     this._achievements = [];
@@ -331,7 +330,6 @@ function () {
     key: "export",
     value: function _export(to_local_storage) {
       var settlements_list = [];
-      var places_list = [];
 
       for (var i = 0; i < this.settlements.length; i++) {
         if (typeof this.settlements[i] !== 'undefined') {
@@ -339,15 +337,8 @@ function () {
         }
       }
 
-      for (var _i = 0; _i < this._places.length; _i++) {
-        if (typeof this._places[_i] !== 'undefined') {
-          places_list.push(this._places[_i].export());
-        }
-      }
-
       var data = {
         settlements: settlements_list,
-        places: places_list,
         difficulty: this.difficulty(),
         seeds: this.world().seeds,
         achievements: this.achievements(),
@@ -1306,7 +1297,7 @@ function () {
       var settlement = this.get_settlement(action.source.id);
 
       if (action.type === game.CAMPAIGN_SCOUT) {
-        destination_settlement = this.get_place(action.destination.id);
+        destination_settlement = this.get_settlement(action.destination.id);
 
         if (!destination_settlement) {
           this.queue_remove_action(id);
@@ -1748,31 +1739,6 @@ function () {
       }
     }
     /**
-     * Get a pointer to a special place (har har).
-     * 
-     * @public
-     * @param {String|Number} name
-     * @returns {place|Boolean}
-     */
-
-  }, {
-    key: "get_place",
-    value: function get_place(id) {
-      var _places = this.places();
-
-      if (typeof id === 'number') {
-        for (var i = 0; i < _places.length; i++) {
-          if (typeof _places[i] !== 'undefined') {
-            if (_places[i].id() === id) {
-              return _places[i];
-            }
-          }
-        }
-      }
-
-      return false;
-    }
-    /**
      * Get a pointer to the player's settlement.
      * 
      * @public
@@ -1798,10 +1764,10 @@ function () {
           }
         }
       } else if (typeof name === 'number') {
-        for (var _i2 = 0; _i2 < settlements.length; _i2++) {
-          if (typeof settlements[_i2] !== 'undefined') {
-            if (settlements[_i2].id() === name) {
-              return settlements[_i2];
+        for (var _i = 0; _i < settlements.length; _i++) {
+          if (typeof settlements[_i] !== 'undefined') {
+            if (settlements[_i].id() === name) {
+              return settlements[_i];
             }
           }
         }
@@ -2002,7 +1968,7 @@ function () {
       }
 
       if (settlement === game.CITY || settlement === game.METROPOLIS) {
-        for (var _i3 = 0; _i3 < num_resources; _i3++) {
+        for (var _i2 = 0; _i2 < num_resources; _i2++) {
           resource = this.get_random_resource();
           trades.imports[resource] = game.get_random(game.IMPORTANCE_LOW, game.IMPORTANCE_VITAL);
         }
@@ -2071,11 +2037,20 @@ function () {
         level: level,
         resources: resources.resources,
         army: this.generate_random_army(s_type),
-        navy: this.generate_random_navy(s_type)
+        navy: this.generate_random_navy(s_type),
+        ruins: {}
       };
 
       if (s_type === game.CITY || s_type === game.METROPOLIS) {
         settlement.trades = resources.trades;
+      }
+
+      if (s_type === game.RUINS) {
+        settlement.ruins.resources = {
+          current: {// Todo
+          },
+          required: this.generate_random_ruins_resources()
+        };
       }
 
       return settlement;
@@ -2219,6 +2194,7 @@ function () {
           army: typeof s_data.army !== 'undefined' ? s_data.army : {},
           navy: typeof s_data.navy !== 'undefined' ? s_data.navy : {},
           trades: typeof s_data.trades !== 'undefined' ? s_data.trades : {},
+          ruins: s_data.ruins,
           location: location
         });
 
@@ -2271,11 +2247,10 @@ function () {
     key: "_setup_neighbours",
     value: function _setup_neighbours(data) {
       var new_settlement;
-      var new_place;
       var s_data;
       var difficulty = this.difficulty();
       var num;
-      var num_places;
+      var num_ruins;
 
       if (data !== null) {
         for (var i = 1; i < data.settlements.length; i++) {
@@ -2284,27 +2259,13 @@ function () {
           new_settlement = new settlement(s_data);
           this.settlements.push(new_settlement);
         }
-
-        for (var _i4 = 0; _i4 < data.places.length; _i4++) {
-          s_data = data.places[_i4];
-          s_data.core = this;
-          new_place = new place(s_data);
-
-          this._places.push(new_place);
-        }
       } else {
-        for (var _i5 = 0; _i5 < game.SETTLEMENTS.length; _i5++) {
-          num = game.INITIAL_SEED[difficulty - 1].settlements[_i5];
+        for (var _i3 = 0; _i3 < game.SETTLEMENTS.length; _i3++) {
+          num = game.INITIAL_SEED[difficulty - 1].settlements[_i3];
 
           for (var z = 0; z < num; z++) {
-            this.add_random_settlement(_i5);
+            this.add_random_settlement(_i3);
           }
-        }
-
-        num_places = game.INITIAL_SEED[difficulty - 1].places;
-
-        for (var _i6 = 0; _i6 < num_places; _i6++) {
-          this.add_random_place(_i6);
         }
       }
 
@@ -2325,50 +2286,18 @@ function () {
       this.add_settlement(data);
       return this;
     }
-    /**
-     * Add a random place into the world.
-     *
-     * @public
-     * @param {Number} id
-     * @returns {place}
-     */
-
   }, {
-    key: "add_random_place",
-    value: function add_random_place(id) {
-      var location = this.world().get_random_location();
-
-      var _place = new place({
-        core: this,
-        properties: {
-          id: id,
-          sid: null,
-          scouted: false
-        },
-        resources: {
-          current: {// Todo
-          },
-          required: this.generate_random_place_resources()
-        },
-        location: location
-      });
-
-      this._places.push(_place);
-
-      return _place;
-    }
-  }, {
-    key: "generate_random_place_resources",
-    value: function generate_random_place_resources() {
+    key: "generate_random_ruins_resources",
+    value: function generate_random_ruins_resources() {
       var resources = {};
       var plusminus;
 
-      for (var item in game.PLACE_RESOURCES_REQ) {
+      for (var item in game.RUINS_RESOURCES_REQ) {
         if (game.is_virtual_resource(item)) {
-          resources[item] = game.PLACE_RESOURCES_REQ[item];
+          resources[item] = game.RUINS_RESOURCES_REQ[item];
         } else {
-          plusminus = game.PLACE_RESOURCES_REQ[item] * 10 / 100;
-          resources[item] = game.get_random(game.PLACE_RESOURCES_REQ[item] - plusminus, game.PLACE_RESOURCES_REQ[item] + plusminus);
+          plusminus = game.RUINS_RESOURCES_REQ[item] * 10 / 100;
+          resources[item] = game.get_random(game.RUINS_RESOURCES_REQ[item] - plusminus, game.RUINS_RESOURCES_REQ[item] + plusminus);
         }
       }
 
@@ -2504,10 +2433,10 @@ function () {
           }
         }
 
-        for (var _i7 = 0; _i7 < buildings.length; _i7++) {
-          if (typeof buildings[_i7] !== 'undefined') {
-            if (buildings[_i7].has_problems()) {
-              problem_buildings.push(buildings[_i7].name);
+        for (var _i4 = 0; _i4 < buildings.length; _i4++) {
+          if (typeof buildings[_i4] !== 'undefined') {
+            if (buildings[_i4].has_problems()) {
+              problem_buildings.push(buildings[_i4].name);
             }
           }
         }
@@ -2833,11 +2762,6 @@ function () {
       this.ui().refresh();
       return this;
     }
-  }, {
-    key: "places",
-    value: function places() {
-      return this._places;
-    }
     /**
      * Refresh the world trades.
      * 
@@ -3150,10 +3074,10 @@ function () {
         }
       }
 
-      for (var _i8 = 0; _i8 < hero.items.length; _i8++) {
-        if (hero.items[_i8].type === game.ITEM_TYPE_WEAPON) {
-          damage_min += hero.items[_i8].stats.damageMin + damage_val;
-          damage_max += hero.items[_i8].stats.damageMax + damage_val;
+      for (var _i5 = 0; _i5 < hero.items.length; _i5++) {
+        if (hero.items[_i5].type === game.ITEM_TYPE_WEAPON) {
+          damage_min += hero.items[_i5].stats.damageMin + damage_val;
+          damage_max += hero.items[_i5].stats.damageMax + damage_val;
         }
       }
 
@@ -5028,7 +4952,7 @@ game.TECHNOLOGIES = [{
   duration: 80,
   cost: {
     research: 500,
-    coins: 500000,
+    coins: 200000,
     woodplanks: 200,
     wheat: 100,
     tools: 10
@@ -5872,7 +5796,7 @@ game.BUILDINGS = [{
     clay: 3
   },
   cost: {
-    coins: 30000,
+    coins: 20000,
     woodplanks: 30,
     stones: 30,
     clay: 100
@@ -7987,67 +7911,13 @@ game.AUCTIONEER_DISCOUNT = 20;
 "use strict";
 
 /**
- * Special place.
- *
- * @constant
- * @default
- * @type {Number}
- */
-game.SPECIAL_PLACE = 99;
-/**
- * Days it takes to complete a world project.
- *
- * @constant
- * @default
- * @type {Number}
- */
-
-game.PLACE_TIME_TO_BUILD = 7200;
-/**
- * Resources required to complete atage 2 or builging a world project.
- *
- * @constant
- * @default
- * @type {Object}
- */
-
-game.PLACE_RESOURCES_REQ = {
-  coins: 100000000,
-  wood: 10000,
-  woodplanks: 50000,
-  stones: 50000,
-  limestone: 10000,
-  mosaic: 1000,
-  meals: 10000,
-  tools: 1000,
-  bricks: 50000,
-  sand: 1000,
-  steel: 10000,
-  gold: 10000,
-  silver: 10000,
-  clothes: 10000,
-  furcoats: 10000,
-  gems: 1000,
-  diamonds: 1000,
-  champagne: 1000,
-  cigars: 1000,
-  jewelery: 1000,
-  robes: 1000,
-  perfume: 1000,
-  soap: 1000,
-  silk: 1000
-};
-game.PLACES_NAMES = ['Aria', 'Zeffari', 'Laenteglos', 'Eastborne', 'Larton', 'Nantgarw', 'Kingcardine', 'Swindlincote', 'Cewmann', 'Rochdale', 'Malrton', 'Falcon Haven', 'Rotherham', 'Ironforge', 'Halivaara', 'Ularee', 'Snake Canyon', 'Dornwich', 'Stawford', 'Eastborne', 'Dry Gulch', 'Tamworth', 'Ferncombe', 'Rutherglen', 'Dewhurst', 'Haedleigh', 'Chepstow'];
-"use strict";
-
-/**
  * List of settlement types
  *
  * @constant
  * @default
  * @type {Array}
  */
-game.SETTLEMENTS = ['city', 'village', 'metropolis', 'camp'];
+game.SETTLEMENTS = ['city', 'village', 'metropolis', 'camp', 'ruins'];
 /**
  * City settlement.
  *
@@ -8084,6 +7954,15 @@ game.METROPOLIS = 2;
  */
 
 game.CAMP = 3;
+/**
+ * Ruins.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RUINS = 4;
 /**
  * Max number of settlements on a map.
  *
@@ -8130,13 +8009,56 @@ game.POPULATION_PER_LEVEL = 2300;
 
 game.MIN_FAME_VALUE = 1;
 /**
+ * Days it takes to complete a world project.
+ *
+ * @constant
+ * @default
+ * @type {Number}
+ */
+
+game.RUINS_TIME_TO_BUILD = 7200;
+/**
+ * Resources required to complete atage 2 or builging a world project.
+ *
+ * @constant
+ * @default
+ * @type {Object}
+ */
+
+game.RUINS_RESOURCES_REQ = {
+  coins: 100000000,
+  wood: 10000,
+  woodplanks: 50000,
+  stones: 50000,
+  limestone: 10000,
+  mosaic: 1000,
+  meals: 10000,
+  tools: 1000,
+  bricks: 50000,
+  sand: 1000,
+  steel: 10000,
+  gold: 10000,
+  silver: 10000,
+  clothes: 10000,
+  furcoats: 10000,
+  gems: 1000,
+  diamonds: 1000,
+  champagne: 1000,
+  cigars: 1000,
+  jewelery: 1000,
+  robes: 1000,
+  perfume: 1000,
+  soap: 1000,
+  silk: 1000
+};
+/**
  * List of possible world settlement names.
  *
  * @constant
  * @type {Array}
  */
 
-game.SETTLEMENT_NAMES = ['Alexandria', 'Rome', 'Carthage', 'Constantinople', 'Karakorum', 'Niniveh', 'Damascus', 'Thebes', 'Men-nefer', 'Peshawar', 'Uruk', 'Abydos', 'Actium', 'Tripolis', 'Troia', 'Chengdu', 'Mombasa', 'Apullum', 'Byblos', 'Abu', 'Pi-Ramesses', 'Djedu', 'Kyrene', 'Athens', 'Menat Khufu', 'Niani', 'Novgorod', 'Sarmizegetusa', 'Sigiriya', 'Selima Oasis', 'Tournai', 'Taruga', 'Amarna', 'Toledo', 'Mogadishu', 'Xinjiang', 'Yinxu', 'Bublidrus', 'Mylyra', 'Ialezus', 'Thebeia', 'Demaphos', 'Smyrnione', 'Dimonassa', 'Cyrarnassus', 'Posigeneia', 'Kasmigeneia', 'Khemdjumunein', 'Sakpi', 'Kersatennu', 'Farsou', 'Dehsa', 'Djasumar', 'Absaitunis', 'Avsi', 'Wasvarmeru', 'Behdju', 'Galamia', 'Pekies', 'VyVyrodari', 'Viasseto', 'Messibria', 'Molfeserta', 'Quanes', 'Braga', 'Seicer', 'Legara', 'Albadolid', 'Getastela', 'Drepanum', 'Canusium', 'Mogontiacum', 'Leucarum', 'Pautalia', 'Scallabis', 'Chernogan', 'Yelatrov', 'Novomoksary', 'Chistongelsk', 'Timaryevsk', 'Naberkuta', 'Koloyevka', 'Obnirodvinsk', 'Beloredimir', 'Kaspikarino', 'Troten', 'Neunsee', 'Weveltals', 'Oudenhout', 'Plailimar', 'Puciennes', 'Bernsloh', 'Geiselkau', 'Waterlina', 'Clonkenny', 'Terbommel', 'Drachnisse', 'Werdenthal', 'Erzell', 'Arrabona', 'Ugernum', 'Bulla Regia', 'Umbracum', 'Aquae Armenetiae', 'Isara', 'Regium Lepidum', 'Aquisgranium', 'Saint Petersburg', 'Gerasa', 'Besontio', 'Rhegium', 'Argentoratum', 'Apamea', 'Hadrianopolis', 'Byzantium', 'Ravenna', 'Carnotum', 'Podium Aniciense', 'Beroe Augusta Trajana', 'Dubris', 'Avenio', 'Luentinum', 'Castra Nicia', 'Crotona', 'Concordia Sagittaria', 'Vibo Valentia', 'Portus', 'Faventia', 'Tchidimbo', 'Concala', 'Berlowa', 'Bagangoua', 'Bangamo', 'Bossemlindao', 'Boti', 'Bonnamar', 'Dilobunda', 'Lupugani', 'Mimomo', 'Nkolabo', 'Mindo', 'Kindamno', 'Kanyesisi', 'Mwinirenje', 'Tbouleang', 'Kamphon', 'Jamya', 'Yogtar', 'Ambu', 'Kubak', 'Wainlet', 'Shwebyu', 'Gaguio', 'Cartangas', 'Surakham', 'Kratai', 'Sa Pha', 'My Tinh', 'Neurau', 'Hollatrenk', 'Woluten', 'Forwerpen', 'Sarsir', 'Pérission', 'Alsfeld', 'Goldburg', 'Thurway', 'Watertowel', 'Hengeloopen', 'Alkningen', 'Mornach', 'Gorpen', 'Novoupa', 'Ozyosinsk', 'Cheregansk', 'Sibanovsk', 'Vserodvinsk', 'Polelensk', 'Novokugadan', 'Belgovgrad', 'Chelyakala', 'Tovodsk', 'Kensato', 'Kurishiri', 'Aridakoshi', 'Pingguan', 'Zoajiang', 'Ulaanteeg', 'Nomsai', 'Tangye', 'Chuncheon', 'Ikju'];
+game.SETTLEMENT_NAMES = ['Alexandria', 'Rome', 'Carthage', 'Constantinople', 'Karakorum', 'Niniveh', 'Damascus', 'Thebes', 'Men-nefer', 'Aria', 'Zeffari', 'Laenteglos', 'Eastborne', 'Larton', 'Nantgarw', 'Kingcardine', 'Swindlincote', 'Cewmann', 'Rochdale', 'Malrton', 'Falcon Haven', 'Rotherham', 'Ironforge', 'Halivaara', 'Ularee', 'Snake Canyon', 'Dornwich', 'Stawford', 'Eastborne', 'Dry Gulch', 'Tamworth', 'Ferncombe', 'Rutherglen', 'Dewhurst', 'Haedleigh', 'Chepstow', 'Peshawar', 'Uruk', 'Abydos', 'Actium', 'Tripolis', 'Troia', 'Chengdu', 'Mombasa', 'Apullum', 'Byblos', 'Abu', 'Pi-Ramesses', 'Djedu', 'Kyrene', 'Athens', 'Menat Khufu', 'Niani', 'Novgorod', 'Sarmizegetusa', 'Sigiriya', 'Selima Oasis', 'Tournai', 'Taruga', 'Amarna', 'Toledo', 'Mogadishu', 'Xinjiang', 'Yinxu', 'Bublidrus', 'Mylyra', 'Ialezus', 'Thebeia', 'Demaphos', 'Smyrnione', 'Dimonassa', 'Cyrarnassus', 'Posigeneia', 'Kasmigeneia', 'Khemdjumunein', 'Sakpi', 'Kersatennu', 'Farsou', 'Dehsa', 'Djasumar', 'Absaitunis', 'Avsi', 'Wasvarmeru', 'Behdju', 'Galamia', 'Pekies', 'VyVyrodari', 'Viasseto', 'Messibria', 'Molfeserta', 'Quanes', 'Braga', 'Seicer', 'Legara', 'Albadolid', 'Getastela', 'Drepanum', 'Canusium', 'Mogontiacum', 'Leucarum', 'Pautalia', 'Scallabis', 'Chernogan', 'Yelatrov', 'Novomoksary', 'Chistongelsk', 'Timaryevsk', 'Naberkuta', 'Koloyevka', 'Obnirodvinsk', 'Beloredimir', 'Kaspikarino', 'Troten', 'Neunsee', 'Weveltals', 'Oudenhout', 'Plailimar', 'Puciennes', 'Bernsloh', 'Geiselkau', 'Waterlina', 'Clonkenny', 'Terbommel', 'Drachnisse', 'Werdenthal', 'Erzell', 'Arrabona', 'Ugernum', 'Bulla Regia', 'Umbracum', 'Aquae Armenetiae', 'Isara', 'Regium Lepidum', 'Aquisgranium', 'Saint Petersburg', 'Gerasa', 'Besontio', 'Rhegium', 'Argentoratum', 'Apamea', 'Hadrianopolis', 'Byzantium', 'Ravenna', 'Carnotum', 'Podium Aniciense', 'Beroe Augusta Trajana', 'Dubris', 'Avenio', 'Luentinum', 'Castra Nicia', 'Crotona', 'Concordia Sagittaria', 'Vibo Valentia', 'Portus', 'Faventia', 'Tchidimbo', 'Concala', 'Berlowa', 'Bagangoua', 'Bangamo', 'Bossemlindao', 'Boti', 'Bonnamar', 'Dilobunda', 'Lupugani', 'Mimomo', 'Nkolabo', 'Mindo', 'Kindamno', 'Kanyesisi', 'Mwinirenje', 'Tbouleang', 'Kamphon', 'Jamya', 'Yogtar', 'Ambu', 'Kubak', 'Wainlet', 'Shwebyu', 'Gaguio', 'Cartangas', 'Surakham', 'Kratai', 'Sa Pha', 'My Tinh', 'Neurau', 'Hollatrenk', 'Woluten', 'Forwerpen', 'Sarsir', 'Pérission', 'Alsfeld', 'Goldburg', 'Thurway', 'Watertowel', 'Hengeloopen', 'Alkningen', 'Mornach', 'Gorpen', 'Novoupa', 'Ozyosinsk', 'Cheregansk', 'Sibanovsk', 'Vserodvinsk', 'Polelensk', 'Novokugadan', 'Belgovgrad', 'Chelyakala', 'Tovodsk', 'Kensato', 'Kurishiri', 'Aridakoshi', 'Pingguan', 'Zoajiang', 'Ulaanteeg', 'Nomsai', 'Tangye', 'Chuncheon', 'Ikju'];
 /**
  * List of possible ruler names for settlements and various other obscure
  * reasons.
@@ -8632,7 +8554,7 @@ game.RESOURCES = {
     name: 'Silver Ore',
     price: 120,
     imported: true,
-    category: 'luxury'
+    category: 'industry'
   },
   silver: {
     name: 'Silver',
@@ -10233,20 +10155,19 @@ game.INITIAL_SEED = [
   settlements: {
     /* Cities */
     0: 8,
-    //5,
 
     /* Villages */
     1: 5,
 
     /* Metropolis */
     2: 6,
-    //1,
 
     /* Raider camps */
-    3: 6 //0
+    3: 6,
 
+    /* Ruins */
+    4: 10
   },
-  places: 6,
 
   /* Number of soldiers and ships to build initially */
   military: {
@@ -10300,9 +10221,9 @@ game.INITIAL_SEED = [
     0: 5,
     1: 10,
     2: 5,
-    3: 3
+    3: 3,
+    4: 4
   },
-  places: 4,
   military: {
     army: {
       militia: 5,
@@ -10354,9 +10275,9 @@ game.INITIAL_SEED = [
     0: 10,
     1: 10,
     2: 6,
-    3: 10
+    3: 10,
+    4: 3
   },
-  places: 3,
   military: {
     army: {
       militia: 3,
@@ -10405,9 +10326,9 @@ game.INITIAL_SEED = [
     0: 10,
     1: 20,
     2: 20,
-    3: 20
+    3: 20,
+    4: 1
   },
-  places: 1,
   military: {
     army: {},
     navy: {}
@@ -10506,6 +10427,80 @@ function () {
   }]);
 
   return ai;
+}();
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/**
+ * Main Game Chat object.
+ * 
+ * @param {Object} params
+ * @license GPL-3.0-or-later
+ * @class chat
+ * @returns {chat}
+ */
+var chat =
+/*#__PURE__*/
+function () {
+  /**
+   * Object constructor.
+   * 
+   * @private
+   * @constructor
+   * @returns {chat}
+   * @param {Object} params
+   */
+  function chat(params) {
+    _classCallCheck(this, chat);
+
+    this._core = params.core; // Todo
+
+    return this;
+  }
+  /**
+   * Send data to the server.
+   *
+   * @public
+   * @returns {chat}
+   * @param {String} message
+   */
+
+
+  _createClass(chat, [{
+    key: "send",
+    value: function send(message) {} // Todo
+
+    /**
+     * Get messages from the server.
+     *
+     * @public
+     * @returns {Object}
+     */
+
+  }, {
+    key: "get",
+    value: function get() {} // Todo
+
+    /**
+     * Return a pointer to the game core.
+     * 
+     * @public
+     * @returns {game}
+     */
+
+  }, {
+    key: "core",
+    value: function core() {
+      return this._core;
+    }
+  }]);
+
+  return chat;
 }();
 "use strict";
 
@@ -11133,28 +11128,6 @@ function () {
       return this.data[hex.y][hex.x][key] = value;
     }
     /**
-     * Add a place into the world data.
-     *
-     * @public
-     * @param {place} place
-     * @returns {world}
-     */
-
-  }, {
-    key: "add_place",
-    value: function add_place(place) {
-      var location = place.location;
-      this.set_hex(location, 'p', place.properties.id);
-
-      if (place.is_claimed() === false) {
-        this.lock_hex(location, place.properties.id);
-      } else {
-        this.lock_hex(location, place.is_claimed());
-      }
-
-      return this;
-    }
-    /**
      * Add a settlement into the world data.
      *
      * @public
@@ -11166,10 +11139,22 @@ function () {
     key: "add_settlement",
     value: function add_settlement(settlement) {
       var location = settlement.location();
-      this.set_hex(location, 's', settlement.id());
-      this.set_hex(location, 'n', settlement.name());
-      this.lock_hex(location, settlement.id());
-      this.calc_neighbours(settlement);
+
+      if (settlement.is_ruins()) {
+        this.set_hex(location, 'p', settlement.id());
+
+        if (settlement.is_claimed() === false) {
+          this.lock_hex(location, settlement.id());
+        } else {
+          this.lock_hex(location, settlement.is_claimed());
+        }
+      } else {
+        this.set_hex(location, 's', settlement.id());
+        this.set_hex(location, 'n', settlement.name());
+        this.lock_hex(location, settlement.id());
+        this.calc_neighbours(settlement);
+      }
+
       return this;
     }
     /**
@@ -11476,10 +11461,10 @@ function () {
                 color = settlements[lid].color();
               }
             } else if (lid !== null && pid !== null) {
-              var place = this.core().get_place(pid);
+              var ruin = this.core().get_settlement(pid);
 
-              if (place) {
-                if (place.is_claimed() !== false) {
+              if (ruin) {
+                if (ruin.is_claimed() !== false) {
                   color = settlements[lid].color();
                 }
               }
@@ -11590,6 +11575,7 @@ function () {
     this._navy = {};
     this._mercenary = [];
     this.resources = {};
+    this._ruins = {};
     this._heroes = [];
     this._properties.id = params.properties.id;
     this._properties.name = typeof params.properties.name !== 'undefined' ? params.properties.name : game.get_random_unique(game.SETTLEMENT_NAMES);
@@ -11604,6 +11590,16 @@ function () {
       personality: this._properties.type === game.CAMP ? game.PERSONALITY_WARLORD : this.core().get_random_personality(),
       name: game.get_random_unique(game.NAMES)
     };
+
+    if (typeof params.ruins !== 'undefined') {
+      this._ruins.sid = typeof params.ruins.sid !== 'undefined' ? params.ruins.sid : null;
+      this._ruins.scouted = typeof params.ruins.scouted !== 'undefined' ? params.ruins.scouted : false;
+      this._ruins.resources = typeof params.ruins.resources !== 'undefined' ? params.ruins.resources : {
+        current: {},
+        required: {}
+      };
+    }
+
     this._properties.storage = 0;
     this._properties.icon = typeof params.properties.icon !== 'undefined' ? params.properties.icon : 1;
     this._properties.waterside = typeof params.properties.waterside !== 'undefined' ? params.properties.waterside : false;
@@ -11655,14 +11651,105 @@ function () {
     return this;
   }
   /**
-   * Export settlement data.
+   * Get the ruins data if the settlement is in ruins.
    *
-   * @returns {Object}
    * @public
+   * @returns {Object}
    */
 
 
   _createClass(settlement, [{
+    key: "ruins",
+    value: function ruins() {
+      return this._ruins;
+    }
+    /**
+     * Check if the ruins have been claimed by a settlement.
+     *
+     * @public
+     * @returns {Number|Boolean}
+     */
+
+  }, {
+    key: "is_claimed",
+    value: function is_claimed() {
+      if (this._ruins.sid === null) {
+        return false;
+      } else {
+        return this._ruins.sid;
+      }
+    }
+    /**
+     * Check if the ruins have been scouted by the player's settlement.
+     *
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "is_scouted",
+    value: function is_scouted() {
+      return this._ruins.scouted;
+    }
+    /**
+     * Scout the ruins
+     *
+     * @public
+     * @returns {settlement}
+     */
+
+  }, {
+    key: "scout",
+    value: function scout() {
+      this._ruins.scouted = true;
+      return this;
+    }
+    /**
+     * Claim the ruins.
+     *
+     * @public
+     * @param {settlement} settlement
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "claim",
+    value: function claim(settlement) {
+      if (this._ruins.sid === null) {
+        this._ruins.sid = settlement.id();
+        this.core().world().lock_hex(this.location(), settlement.id());
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Unclaim the ruins.
+     *
+     * @public
+     * @param {settlement} settlement
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "unclaim",
+    value: function unclaim(settlement) {
+      if (settlement.id() === this._ruins.sid) {
+        this._ruins.sid = null;
+        this.core().world().unlock_hex(this.location());
+        return true;
+      }
+
+      return false;
+    }
+    /**
+     * Export settlement data.
+     *
+     * @returns {Object}
+     * @public
+     */
+
+  }, {
     key: "export",
     value: function _export() {
       var data = {
@@ -11674,7 +11761,8 @@ function () {
         buildings: this.export_buildings(),
         mercenary: this.mercenary(),
         heroes: this.heroes(),
-        location: this.location()
+        location: this.location(),
+        ruins: this.ruins()
       };
 
       if (this.is_player()) {
@@ -12016,6 +12104,18 @@ function () {
       return this._properties.type === game.VILLAGE;
     }
     /**
+     * Check if this settlement is a ruin.
+     *
+     * @public
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "is_ruins",
+    value: function is_ruins() {
+      return this._properties.type === game.RUINS;
+    }
+    /**
      * Refresh the heroes in the Tavern.
      *
      * @public
@@ -12133,6 +12233,18 @@ function () {
     key: "to_metropolis",
     value: function to_metropolis() {
       this._properties.type = game.METROPOLIS;
+    }
+    /**
+     * Change this settlement's type to ruins.
+     *
+     * @public
+     * @returns {settlement}
+     */
+
+  }, {
+    key: "to_ruins",
+    value: function to_ruins() {
+      this._properties.type = game.RUINS;
     }
     /**
      * Check if the settlement has soldiers in its army.
@@ -14379,6 +14491,8 @@ function () {
         return 'Village of ' + this.name();
       } else if (this.is_camp()) {
         return 'Raider Camp ' + this.name();
+      } else if (this.is_ruins()) {
+        return 'Ruins of ' + this.name();
       } else {
         return '';
       }
@@ -14400,136 +14514,6 @@ function () {
   }]);
 
   return settlement;
-}();
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/**
- * Main Game place object.
- * 
- * @param {Object} params
- * @license GPL-3.0-or-later
- * @class place
- * @returns {place}
- */
-var place =
-/*#__PURE__*/
-function () {
-  /**
-   * Object constructor.
-   * 
-   * @private
-   * @constructor
-   * @returns {place}
-   * @param {Object} params
-   */
-  function place(params) {
-    _classCallCheck(this, place);
-
-    this._core = params.core;
-    this.resources = {
-      current: {},
-      required: {}
-    };
-    this.properties = {};
-    this.properties.id = params.properties.id;
-    this.properties.sid = params.properties.sid;
-    this.properties.scouted = params.properties.scouted;
-    this.properties.name = typeof params.properties.name !== 'undefined' ? params.properties.name : game.get_random_unique(game.PLACES_NAMES);
-    this.location = params.location;
-    this.resources = params.resources;
-    this.core().world().add_place(this);
-    return this;
-  }
-
-  _createClass(place, [{
-    key: "is_claimed",
-    value: function is_claimed() {
-      if (this.properties.sid === null) {
-        return false;
-      } else {
-        return this.properties.sid;
-      }
-    }
-  }, {
-    key: "is_scouted",
-    value: function is_scouted() {
-      return this.properties.scouted;
-    }
-  }, {
-    key: "id",
-    value: function id() {
-      return this.properties.id;
-    }
-  }, {
-    key: "name",
-    value: function name() {
-      return this.properties.name;
-    }
-  }, {
-    key: "scout",
-    value: function scout() {
-      this.properties.scouted = true;
-    }
-  }, {
-    key: "claim",
-    value: function claim(settlement) {
-      if (this.properties.sid === null) {
-        this.properties.sid = settlement.id();
-        this.core().world().lock_hex(this.location, settlement.id());
-        return true;
-      }
-
-      return false;
-    }
-  }, {
-    key: "unclaim",
-    value: function unclaim(settlement) {
-      if (settlement.id() === this.properties.sid) {
-        this.properties.sid = null;
-        this.core().world().unlock_hex(this.location);
-        return true;
-      }
-
-      return false;
-    }
-    /**
-     * Return a pointer to the game core.
-     * 
-     * @public
-     * @returns {game}
-     */
-
-  }, {
-    key: "core",
-    value: function core() {
-      return this._core;
-    }
-    /**
-     * Export place data.
-     *
-     * @returns {Object}
-     * @public
-     */
-
-  }, {
-    key: "export",
-    value: function _export() {
-      var data = {
-        properties: this.properties,
-        location: this.location,
-        resources: this.resources
-      };
-      return data;
-    }
-  }]);
-
-  return place;
 }();
 "use strict";
 
@@ -18443,7 +18427,7 @@ function () {
         title = '';
       }
 
-      var out = '<div id="panel-{ID}" class="panel">' + '<header>' + title + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips demolish" title="Demolish this building" href="#"><span></span></a>' + '<a class="tips pause start" href="#"><span></span></a>' + '<a class="tips upgrade" title="Upgrade building" href="#"><span></span></a>' + '<a class="tips downgrade" title="Downgrade building" href="#"><span></span></a>' + '</footer>' + '</div>';
+      var out = '<div id="panel-{ID}" class="panel">' + '<header>' + title + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips red-link demolish" title="Demolish this building" href="#"><span></span></a>' + '<a class="tips blue-link pause start" href="#"><span></span></a>' + '<a class="tips green-link upgrade" title="Upgrade building" href="#"><span></span></a>' + '<a class="tips red-link downgrade" title="Downgrade building" href="#"><span></span></a>' + '</footer>' + '</div>';
       return out;
     }
   }]);
@@ -18491,7 +18475,7 @@ function (_ui_panel) {
   function ui_panel_place(params) {
     _classCallCheck(this, ui_panel_place);
 
-    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '</footer>' + '</div>', params.params_data = null;
+    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips green-link scout" title="Send a scout to this place." href="#"><span></span></a>' + '<a class="tips green-link claim" title="Claim this place for your settlement." href="#"><span></span></a>' + '<a class="tips red-link unclaim" title="Remove your settlement`s claim of this place." href="#"><span></span></a>' + '<a class="tips blue-link caravan" title="Send a caravan to this place." href="#"><span></span></a>' + '</footer>' + '</div>', params.params_data = null;
     params.id = 'place';
 
     params.on_show = function (params) {
@@ -18511,19 +18495,20 @@ function (_ui_panel) {
       $(this.handle + ' section').append(core.ui().tabs(tabs));
       var claimed_by = place.is_claimed();
       var claimed_by_settlement = core.get_settlement(claimed_by);
-      $(this.handle + ' #tab-info').empty().append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' + '<dl>' + (place.is_scouted() || claimed_by !== false && claimed_by_settlement.id() === my_settlement.id() ? '<dt>Name</dt>' + '<dd>' + place.name() + '</dd>' + '<dt>Claimed by</dt>' + '<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>' : '') + '<dt>Scouted</dt>' + '<dd>' + (place.is_scouted() ? 'yes' : 'no') + '</dd>' + '<dt>Time to build</dt>' + '<dd>' + game.PLACE_TIME_TO_BUILD + ' days</dd>' + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, place.location) + ' miles (' + core.world().get_distance_in_days(location, place.location) + ' days)</dd>' + '</dl>');
+      $(this.handle + ' #tab-info').empty().append('<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar999.png" />' + '<dl>' + (place.is_scouted() || claimed_by !== false && claimed_by_settlement.id() === my_settlement.id() ? '<dt>Name</dt>' + '<dd>' + place.name() + '</dd>' + '<dt>Claimed by</dt>' + '<dd>' + (claimed_by !== false ? '<span data-id="' + claimed_by_settlement.id() + '" title="View info about this settlement" class="tips view">' + claimed_by_settlement.name() + '</span>' : 'nobody') + '</dd>' : '') + '<dt>Scouted</dt>' + '<dd>' + (place.is_scouted() ? 'yes' : 'no') + '</dd>' + '<dt>Time to build</dt>' + '<dd>' + game.RUINS_TIME_TO_BUILD + ' days</dd>' + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, place.location()) + ' miles (' + core.world().get_distance_in_days(location, place.location()) + ' days)</dd>' + '</dl>');
 
       if (place.is_scouted()) {
         $(this.handle + ' #tab-resources').empty().append('<p>Stage 2: Gather the resources below and use caravans to send them to this place.</p>' + '<p><strong>Note!</strong> If the place is not claimed by anybody, do not send resources or they will be lost.</p>' + '<div class="required">' + '<p>This place has no required resources.</p>' + '</div>');
         $(this.handle + ' #tab-construction').empty().append('<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>');
 
         if (claimed_by !== false && claimed_by === my_settlement.id()) {
-          $(this.handle + ' footer').empty().append('<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"><span></span></a>' + '<a class="tips caravan" title="Send a caravan to this place." href="#"><span></span></a>');
+          $(this.handle + ' footer .unclaim').css('display', 'inline-block');
+          $(this.handle + ' footer .caravan').css('display', 'inline-block');
         } else if (claimed_by === false) {
-          $(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"><span></span></a>');
+          $(this.handle + ' footer .claim').css('display', 'inline-block');
         }
       } else {
-        $(this.handle + ' footer').empty().append('<a class="tips scout" title="Send a scout to this place." href="#"><span></span></a>');
+        $(this.handle + ' footer .scout').css('display', 'inline-block');
       }
 
       $(this.handle).on('click', '.claim', function () {
@@ -18674,7 +18659,7 @@ function (_ui_panel) {
   function ui_panel_settlement(params) {
     _classCallCheck(this, ui_panel_settlement);
 
-    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips attack" title="Attack this settlement." href="#"><span></span></a>' + '<a class="tips caravan" title="Send a caravan to this settlement." href="#"><span></span></a>' + '<a class="tips spy" title="Send a spy to this settlement." href="#"><span></span></a>' + '<a class="tips alliance" title="Propose an alliance to this settlement." href="#"><span></span></a>' + '<a class="tips pact" title="Propose a pact to this settlement." href="#"><span></span></a>' + '<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"><span></span></a>' + '<a class="tips join" title="Ask this settlement to join your city." href="#"><span></span></a>' + '<a class="tips war" title="Declare war to this settlement." href="#"><span></span></a>' + '</footer>' + '</div>';
+    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips red-link attack" title="Attack this settlement." href="#"><span></span></a>' + '<a class="tips blue-link caravan" title="Send a caravan to this settlement." href="#"><span></span></a>' + '<a class="tips red-link spy" title="Send a spy to this settlement." href="#"><span></span></a>' + '<a class="tips green-link alliance" title="Propose an alliance to this settlement." href="#"><span></span></a>' + '<a class="tips green-link pact" title="Propose a pact to this settlement." href="#"><span></span></a>' + '<a class="tips blue-link ceasefire" title="Propose a cease fire to this settlement." href="#"><span></span></a>' + '<a class="tips green-link join" title="Ask this settlement to join your city." href="#"><span></span></a>' + '<a class="tips red-link war" title="Declare war to this settlement." href="#"><span></span></a>' + '</footer>' + '</div>';
     params.params_data = null;
     params.id = 'settlement';
 
@@ -19595,15 +19580,15 @@ function (_ui_panel) {
         }
 
         return false;
-      }).on('click', '.place', function () {
-        var place_id = parseInt($(this).data('id'), 10);
-        core.ui().open_panel('place', core.get_place(place_id));
+      }).on('click', '.ruins', function () {
+        var id = parseInt($(this).data('id'), 10);
+        core.ui().open_panel('place', core.get_settlement(id));
         return false;
       }).on('click', '.troop', function () {
-        var _action_id = parseInt($(this).data('id'), 10);
+        var id = parseInt($(this).data('id'), 10);
 
-        if (core._queue[_action_id].mode === game.ACTION_CAMPAIGN) {
-          core.ui().open_panel('campaign', core._queue[_action_id]);
+        if (core._queue[id].mode === game.ACTION_CAMPAIGN) {
+          core.ui().open_panel('campaign', core._queue[id]);
         }
 
         return false;
@@ -19618,16 +19603,18 @@ function (_ui_panel) {
       var core = this.core();
       var settlement = core.get_settlement();
       var settlements = core.get_settlements();
-      var places = core.places();
       var world = core.world();
       var queue_actions = core.queue();
-      $('.troop, .settlement, .place').remove();
+      $('.troop, .settlement, .ruins').remove();
 
       for (var i = 0; i < settlements.length; i++) {
         var image = 'village';
+        var class_name = 'settlement';
         var name = settlements[i].name();
         var location = settlements[i].location();
         var coords = core.ui().get_cell_middle_coords(location.y, location.x);
+
+        var _name = settlements[i].nice_name();
 
         if (typeof settlement !== 'undefined' && name === settlement.name()) {
           image = 'settlement';
@@ -19640,24 +19627,22 @@ function (_ui_panel) {
             image = 'village' + settlements[i].icon();
           } else if (settlements[i].is_camp()) {
             image = 'camp';
+          } else if (settlements[i].is_ruins()) {
+            image = 'ruins';
+            class_name = 'ruins';
+
+            if (!settlements[i].is_scouted()) {
+              _name = 'Some distant ruins';
+            }
           }
-        }
-
-        $('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + settlements[i].nice_name() + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-name="' + name + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips settlement" />');
-      } //if (core.has_research('archeology')) {
+        } //if ((!settlements[i].is_ruins()) || (core.has_research('archeology') && settlements[i].is_ruins())) {
 
 
-      for (var _i = 0; _i < places.length; _i++) {
-        var _location = places[_i].location;
+        $('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + _name + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + settlements[i].id() + '" data-name="' + name + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips ' + class_name + '" />'); //}
+      }
 
-        var _coords = core.ui().get_cell_middle_coords(_location.y, _location.x);
-
-        $('.worldmap').append('<img data-x="' + _location.x + '" data-y="' + _location.y + '" title="Ruins of ' + places[_i].name() + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + places[_i].id() + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/place.png' + '" class="tips place" />');
-      } //}
-
-
-      for (var _i2 = 0; _i2 < queue_actions.length; _i2++) {
-        var action = queue_actions[_i2];
+      for (var _i = 0; _i < queue_actions.length; _i++) {
+        var action = queue_actions[_i];
         var source = action.source;
         var destination = action.destination;
         var distance_in_days = core.world().get_distance_in_days(source, destination);
@@ -19699,9 +19684,9 @@ function (_ui_panel) {
           title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
         }
 
-        var _coords2 = core.ui().get_cell_middle_coords(y, x);
+        var _coords = core.ui().get_cell_middle_coords(y, x);
 
-        $('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (_coords2.x + 3) + 'px;top:' + _coords2.y + 'px" data-id="' + _i2 + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
+        $('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + _i + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
       }
     };
 
@@ -20221,7 +20206,7 @@ function (_ui_panel) {
       var my_settlement = core.get_settlement();
       var place = params.data;
       var location = my_settlement.location();
-      var distance = core.world().get_distance_in_days(location, place.location);
+      var distance = core.world().get_distance_in_days(location, place.location());
 
       var _t = '<fieldset>' + '<legend>Initial costs</legend>' + '<dl>';
 

@@ -3,7 +3,7 @@
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
  * @copyright 2012 - 2019 sizeof(cat)
- * @version 0.3.0.7272019
+ * @version 0.3.0.7282019
  * @license GPL-3.0-or-later
  */
  .scale{-webkit-animation:scale-frames linear 1s;animation:scale-frames linear 1s;-webkit-animation-iteration-count:1;animation-iteration-count:1;-webkit-transform-origin:50% 50%;transform-origin:50% 50%}
@@ -30,11 +30,11 @@ input[type=number].small,input[type=password].small,input[type=text].small{width
 input[type=text],input[type=number],select{border:1px solid #918d69;background:#bababa;color:black;padding:2px 6px;font-size:14px}
 .ui{width:100%;height:100%;position:relative}
 .ui>header{width:100%;height:48px;left:0;z-index:9999;top:0;position:fixed;-webkit-box-sizing:border-box;box-sizing:border-box}
-.ui>header .resource-panel{width:65%;position:absolute;top:0;right:0;padding:12px 12px 10px 0;font-size:16px}
+.ui>header .resource-panel{width:65%;position:absolute;top:0;right:0;padding:8px 12px 14px 0;font-size:16px}
 .ui>header .resource-panel .resource{float:right}
 .ui>header .resource-panel .resource .amount{color:#bababa;padding:0 2px 0 4px}
 .ui>header .resource-panel img{height:24px;width:24px;display:inline-block;vertical-align:middle;line-height:24px;text-align:center;margin-right:6px}
-.ui>header .top-panel{width:30%;position:absolute;top:0;left:0;padding:10px 0 10px 12px;color:#bababa;font-size:16px;text-align:left}
+.ui>header .top-panel{width:30%;position:absolute;top:0;left:0;padding:8px 0 14px 12px;color:#bababa;font-size:16px;text-align:left}
 .ui>header .top-panel .resource{float:left}
 .ui>header .top-panel .resource .amount{color:#bababa;padding:0 2px 0 4px}
 .ui>header .top-panel img{height:24px;width:24px;display:inline-block;vertical-align:middle;line-height:24px;text-align:center;margin-right:6px}
@@ -118,20 +118,20 @@ a.wikipedia{width:20px;height:20px;display:inline-block}
 .achievement .left .points{font-size:14px;text-align:center}
 .notifications .notty:after,.achievements-notifications .notty:after,.achievement:after{content:".";visibility:hidden;display:block;clear:both;height:0;font-size:0}
 .notifications .notty h2,.achievements-notifications .notty h2,.achievement h2{margin:0 0 5px 0;font-size:18px;color:#454545;text-transform:uppercase}
-.ui .progress{border:1px solid #878787;background:-webkit-gradient(linear,left top,left bottom,from(#a8a8a8),color-stop(23%,#ccc));background:linear-gradient(to bottom,#a8a8a8 0,#ccc 23%);line-height:100%;display:inline-block;position:relative;padding:0;padding:7px 10px;height:48px;border:0;width:100% !important;-webkit-box-sizing:border-box;box-sizing:border-box}
+.ui .progress{border:1px solid #878787;background:#a8a8a8;line-height:100%;display:inline-block;position:relative;padding:0;padding:7px 10px;height:48px;border:0;width:100% !important;-webkit-box-sizing:border-box;box-sizing:border-box}
 .ui .progress.small{width:200px;padding:4px 5px;height:25px}
 .ui .progress.big{width:400px}
 .ui .progress.large{width:400px;margin:0 auto;display:block}
 .ui .progress.small .bar{height:17px;line-height:17px;font-size:13px;border-radius:2px}
 .ui .progress.large .bar p{height:40px;font-size:20px}
-.ui .progress .bar{background:-webkit-gradient(linear,left top,left bottom,from(#6a4324),color-stop(50%,white),to(#6a4324));background:linear-gradient(to bottom,#6a4324 0,white 50%,#6a4324 100%);height:34px;line-height:34px;font-size:20px;border-radius:4px;border:0}
+.ui .progress .bar{background-color:#6a4324;height:34px;line-height:34px;font-size:20px;border-radius:4px;border:0}
 .ui .progress .bar p{position:absolute;text-align:center;width:100%;margin:0;text-shadow:1px 1px 2px black;color:white;line-height:inherit;font-size:inherit}
-.ui .progress .bar.good{background:-webkit-gradient(linear,left top,left bottom,from(#008a0b),color-stop(50%,#5def5d),to(#008a0b));background:linear-gradient(to bottom,#008a0b 0,#5def5d 50%,#008a0b 100%)}
-.ui .progress .bar.bad{background:-webkit-gradient(linear,left top,left bottom,from(#e0e000),color-stop(50%,#d19900),to(#e0e000));background:linear-gradient(to bottom,#e0e000 0,#d19900 50%,#e0e000 100%)}
-.ui .progress .bar.vbad{background:-webkit-gradient(linear,left top,left bottom,from(#f00000),color-stop(50%,#b80000),to(#f00000));background:linear-gradient(to bottom,#f00000 0,#b80000 50%,#f00000 100%)}
-.ui .progress .bar.ubad{background:-webkit-gradient(linear,left top,left bottom,from(#8a0000),color-stop(50%,#f00000),to(#8a0000));background:linear-gradient(to bottom,#8a0000 0,#f00000 50%,#8a0000 100%)}
-.ui .progress .bar.vgood{background:-webkit-gradient(linear,left top,left bottom,from(#0091ad),color-stop(50%,#1fffe5),to(#0091ad));background:linear-gradient(to bottom,#0091ad 0,#1fffe5 50%,#0091ad 100%)}
-.ui .progress .bar.ugood{background:-webkit-gradient(linear,left top,left bottom,from(#5d5def),color-stop(50%,#5d5def),to(#5d5def));background:linear-gradient(to bottom,#5d5def 0,#5d5def 50%,#5d5def 100%)}
+.ui .progress .bar.good{background-color:#008a0b}
+.ui .progress .bar.bad{background-color:#d19900}
+.ui .progress .bar.vbad{background-color:#f00000}
+.ui .progress .bar.ubad{background-color:#8a0000}
+.ui .progress .bar.vgood{background-color:#0091ad}
+.ui .progress .bar.ugood{background-color:#5d5def}
 footer a[data-panel=trades]{background-image:url(../images/assets/ui/toolbar/trades.png)}
 footer a[data-panel=storage]{background-image:url(../images/assets/ui/toolbar/storage.png)}
 footer a[data-panel=buildings]{background-image:url(../images/assets/ui/toolbar/build.png)}
@@ -313,7 +313,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel footer a span{width:32px;height:32px;line-height:32px;display:block;background-size:cover}
 .ui .panel footer a+a{margin-right:10px}
 .ui .panel footer a img{display:block}
-.ui .panel .column img.building{width:100%}
+.ui .panel .column.preview-image img{max-width:290px}
 #panel-new-army,#panel-new-spy,#panel-new-scout,#panel-new-caravan{max-width:640px;max-height:600px}
 #panel-academy{max-height:700px;max-width:620px;width:620px}
 #panel-academy .column-left{width:290px;max-height:400px;overflow:auto;margin-top:10px;float:left}
@@ -383,8 +383,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-settlement{width:470px;max-width:470px;max-height:600px;height:auto}
 #panel-settlement .ui-tabs-panel{padding:0 10px}
 #panel-building{max-height:600px;max-width:1400px}
-#panel-settlement footer a.attack,#panel-settlement footer a.caravan,#panel-settlement footer a.spy,#panel-settlement footer a.alliance,#panel-settlement footer a.pact,#panel-settlement footer a.join,#panel-settlement footer a.war,#panel-settlement footer a.ceasefire{display:none}
-#panel-settlement .pact,#panel-settlement .alliance,#panel-settlement .war,#panel-settlement .ceasefire{display:none}
+#panel-place footer a.claim,#panel-place footer a.unclaim,#panel-place footer a.scout,#panel-place footer a.caravan,#panel-settlement footer a.attack,#panel-settlement footer a.caravan,#panel-settlement footer a.spy,#panel-settlement footer a.alliance,#panel-settlement footer a.pact,#panel-settlement footer a.join,#panel-settlement footer a.war,#panel-settlement footer a.ceasefire{display:none}
 .ui>aside{color:#fff;position:absolute;padding:0 0 0 10px;position:fixed;top:48px;right:0;bottom:0;z-index:999;background-color:#150f0c;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box}
 .ui>aside .panel{position:static;top:0;left:0;z-index:99997;background-color:#eccfb6;padding:10px;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent;width:310px;background:0;max-height:100%}
 .ui>aside .panel header{cursor:default;padding:0}
@@ -403,7 +402,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-trades table.mercenaries td:nth-child(3){width:20%;text-align:right}
 #panel-world{max-width:1000px;max-height:600px;width:1000px;height:600px;-webkit-box-sizing:border-box;box-sizing:border-box}
 #panel-world .worldmap{width:960px;height:510px;background-size:auto 100%;position:relative;overflow:hidden}
-#panel-world .worldmap .place,#panel-world .worldmap .settlement,#panel-world .worldmap .troop{width:40px;height:40px;position:absolute;cursor:pointer}
+#panel-world .worldmap .ruins,#panel-world .worldmap .settlement,#panel-world .worldmap .troop{width:40px;height:40px;position:absolute;cursor:pointer}
 #panel-world .w-t-p{opacity:.3}
 .window{width:100%;height:100%;position:fixed;top:0;left:0;color:white;z-index:99999;background:radial-gradient(ellipse at center,#46494e 0,black 100%)}
 .window .logo{margin:3% auto 0 auto;width:300px;text-align:center;font-size:62px}

@@ -736,7 +736,7 @@ game.BUILDINGS = [
 			clay: 3
 		},
 		cost: {
-			coins: 30000,
+			coins: 20000,
 			woodplanks: 30,
 			stones: 30,
 			clay: 100

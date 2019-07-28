@@ -24,6 +24,10 @@ class ui_panel_place extends ui_panel {
 				'</header>' +
 				'<section></section>' +
 				'<footer>' +
+					'<a class="tips green-link scout" title="Send a scout to this place." href="#"><span></span></a>' +
+					'<a class="tips green-link claim" title="Claim this place for your settlement." href="#"><span></span></a>' +
+					'<a class="tips red-link unclaim" title="Remove your settlement`s claim of this place." href="#"><span></span></a>' +
+					'<a class="tips blue-link caravan" title="Send a caravan to this place." href="#"><span></span></a>' +
 				'</footer>' +
 			'</div>',
 		params.params_data = null;
@@ -55,9 +59,9 @@ class ui_panel_place extends ui_panel {
 					'<dt>Scouted</dt>' +
 					'<dd>' + (place.is_scouted() ? 'yes': 'no') + '</dd>' +
 					'<dt>Time to build</dt>' +
-					'<dd>' + game.PLACE_TIME_TO_BUILD + ' days</dd>' +
+					'<dd>' + game.RUINS_TIME_TO_BUILD + ' days</dd>' +
 					'<dt>Distance</dt>' +
-					'<dd>' + core.world().get_distance(location, place.location) + ' miles (' + core.world().get_distance_in_days(location, place.location) + ' days)</dd>' +
+					'<dd>' + core.world().get_distance(location, place.location()) + ' miles (' + core.world().get_distance_in_days(location, place.location()) + ' days)</dd>' +
 				'</dl>'
 			);
 			if (place.is_scouted()) {
@@ -72,15 +76,13 @@ class ui_panel_place extends ui_panel {
 					'<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>'
 				);
 				if (claimed_by !== false && claimed_by === my_settlement.id()) {
-					$(this.handle + ' footer').empty().append(
-						'<a class="tips unclaim" title="Remove your settlement`s claim of this place." href="#"><span></span></a>' +
-						'<a class="tips caravan" title="Send a caravan to this place." href="#"><span></span></a>'
-					);
+					$(this.handle + ' footer .unclaim').css('display', 'inline-block');
+					$(this.handle + ' footer .caravan').css('display', 'inline-block');
 				} else if (claimed_by === false) {
-					$(this.handle + ' footer').empty().append('<a class="tips claim" title="Claim this place for your settlement." href="#"><span></span></a>');
+					$(this.handle + ' footer .claim').css('display', 'inline-block');
 				}
 			} else {
-				$(this.handle + ' footer').empty().append('<a class="tips scout" title="Send a scout to this place." href="#"><span></span></a>');
+				$(this.handle + ' footer .scout').css('display', 'inline-block');
 			}
 			$(this.handle).on('click', '.claim', function () {
 				if (!my_settlement.can_diplomacy() || !my_settlement.can_research()) {

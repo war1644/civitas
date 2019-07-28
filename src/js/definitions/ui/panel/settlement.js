@@ -24,14 +24,14 @@ class ui_panel_settlement extends ui_panel {
 				'</header>' +
 				'<section></section>' +
 				'<footer>' +
-					'<a class="tips attack" title="Attack this settlement." href="#"><span></span></a>' +
-					'<a class="tips caravan" title="Send a caravan to this settlement." href="#"><span></span></a>' +
-					'<a class="tips spy" title="Send a spy to this settlement." href="#"><span></span></a>' +
-					'<a class="tips alliance" title="Propose an alliance to this settlement." href="#"><span></span></a>' +
-					'<a class="tips pact" title="Propose a pact to this settlement." href="#"><span></span></a>' +
-					'<a class="tips ceasefire" title="Propose a cease fire to this settlement." href="#"><span></span></a>' +
-					'<a class="tips join" title="Ask this settlement to join your city." href="#"><span></span></a>' +
-					'<a class="tips war" title="Declare war to this settlement." href="#"><span></span></a>' +
+					'<a class="tips red-link attack" title="Attack this settlement." href="#"><span></span></a>' +
+					'<a class="tips blue-link caravan" title="Send a caravan to this settlement." href="#"><span></span></a>' +
+					'<a class="tips red-link spy" title="Send a spy to this settlement." href="#"><span></span></a>' +
+					'<a class="tips green-link alliance" title="Propose an alliance to this settlement." href="#"><span></span></a>' +
+					'<a class="tips green-link pact" title="Propose a pact to this settlement." href="#"><span></span></a>' +
+					'<a class="tips blue-link ceasefire" title="Propose a cease fire to this settlement." href="#"><span></span></a>' +
+					'<a class="tips green-link join" title="Ask this settlement to join your city." href="#"><span></span></a>' +
+					'<a class="tips red-link war" title="Declare war to this settlement." href="#"><span></span></a>' +
 				'</footer>' +
 			'</div>';
 		params.params_data = null;

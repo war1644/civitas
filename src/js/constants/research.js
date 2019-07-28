@@ -30,7 +30,7 @@ game.TECHNOLOGIES = [
 		duration: 80,
 		cost: {
 			research: 500,
-			coins: 500000,
+			coins: 200000,
 			woodplanks: 200,
 			wheat: 100,
 			tools: 10

@@ -275,10 +275,10 @@ class ui {
 					'</header>' +
 					'<section></section>' +
 					'<footer>' +
-						'<a class="tips demolish" title="Demolish this building" href="#"><span></span></a>' +
-						'<a class="tips pause start" href="#"><span></span></a>' +
-						'<a class="tips upgrade" title="Upgrade building" href="#"><span></span></a>' +
-						'<a class="tips downgrade" title="Downgrade building" href="#"><span></span></a>' +
+						'<a class="tips red-link demolish" title="Demolish this building" href="#"><span></span></a>' +
+						'<a class="tips blue-link pause start" href="#"><span></span></a>' +
+						'<a class="tips green-link upgrade" title="Upgrade building" href="#"><span></span></a>' +
+						'<a class="tips red-link downgrade" title="Downgrade building" href="#"><span></span></a>' +
 					'</footer>' +
 				'</div>';
 		return out;

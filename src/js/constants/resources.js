@@ -441,7 +441,7 @@ game.RESOURCES = {
 		name: 'Silver Ore',
 		price: 120,
 		imported: true,
-		category: 'luxury'
+		category: 'industry'
 	},
 	silver: {
 		name: 'Silver',

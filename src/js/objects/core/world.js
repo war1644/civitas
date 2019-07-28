@@ -343,24 +343,6 @@ class world {
 	}
 
 	/**
-	 * Add a place into the world data.
-	 *
-	 * @public
-	 * @param {place} place
-	 * @returns {world}
-	 */
-	add_place (place) {
-		const location = place.location;
-		this.set_hex(location, 'p', place.properties.id);
-		if (place.is_claimed() === false) {
-			this.lock_hex(location, place.properties.id);
-		} else {
-			this.lock_hex(location, place.is_claimed());
-		}
-		return this;
-	}
-
-	/**
 	 * Add a settlement into the world data.
 	 *
 	 * @public
@@ -369,10 +351,19 @@ class world {
 	 */
 	add_settlement (settlement) {
 		const location = settlement.location();
-		this.set_hex(location, 's', settlement.id());
-		this.set_hex(location, 'n', settlement.name());
-		this.lock_hex(location, settlement.id());
-		this.calc_neighbours(settlement);
+		if (settlement.is_ruins()) {
+			this.set_hex(location, 'p', settlement.id());
+			if (settlement.is_claimed() === false) {
+				this.lock_hex(location, settlement.id());
+			} else {
+				this.lock_hex(location, settlement.is_claimed());
+			}
+		} else {
+			this.set_hex(location, 's', settlement.id());
+			this.set_hex(location, 'n', settlement.name());
+			this.lock_hex(location, settlement.id());
+			this.calc_neighbours(settlement);
+		}
 		return this;
 	}
 
@@ -646,9 +637,9 @@ class world {
 							color = settlements[lid].color();
 						}
 					} else if (lid !== null && pid !== null) {
-						let place = this.core().get_place(pid);
-						if (place) {
-							if (place.is_claimed() !== false) {
+						let ruin = this.core().get_settlement(pid);
+						if (ruin) {
+							if (ruin.is_claimed() !== false) {
 								color = settlements[lid].color();
 							}
 						}

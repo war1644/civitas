@@ -387,6 +387,6 @@
 	display: block;
 }
 
-.ui .panel .column img.building {
-	width: 100%;
+.ui .panel .column.preview-image img {
+	max-width: 290px;
 }

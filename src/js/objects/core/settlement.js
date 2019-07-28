@@ -25,6 +25,7 @@ class settlement {
 		this._navy = {};
 		this._mercenary = [];
 		this.resources = {};
+		this._ruins = {};
 		this._heroes = [];
 		this._properties.id = params.properties.id;
 		this._properties.name = (typeof params.properties.name !== 'undefined') ? params.properties.name: game.get_random_unique(game.SETTLEMENT_NAMES);
@@ -39,6 +40,14 @@ class settlement {
 				personality: (this._properties.type === game.CAMP) ? game.PERSONALITY_WARLORD : this.core().get_random_personality(),
 				name: game.get_random_unique(game.NAMES)
 			};
+		if (typeof params.ruins !== 'undefined') {
+			this._ruins.sid = (typeof params.ruins.sid !== 'undefined') ? params.ruins.sid : null;
+			this._ruins.scouted = (typeof params.ruins.scouted !== 'undefined') ? params.ruins.scouted : false;
+			this._ruins.resources = (typeof params.ruins.resources !== 'undefined') ? params.ruins.resources : {
+				current: {},
+				required: {}
+			}
+		}
 		this._properties.storage = 0;
 		this._properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;
 		this._properties.waterside = (typeof params.properties.waterside !== 'undefined') ? params.properties.waterside : false;
@@ -83,6 +92,83 @@ class settlement {
 	}
 
 	/**
+	 * Get the ruins data if the settlement is in ruins.
+	 *
+	 * @public
+	 * @returns {Object}
+	 */
+	ruins () {
+		return this._ruins;
+	}
+
+	/**
+	 * Check if the ruins have been claimed by a settlement.
+	 *
+	 * @public
+	 * @returns {Number|Boolean}
+	 */
+	is_claimed () {
+		if (this._ruins.sid === null) {
+			return false;
+		} else {
+			return this._ruins.sid;
+		}
+	}
+
+	/**
+	 * Check if the ruins have been scouted by the player's settlement.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
+	is_scouted () {
+		return this._ruins.scouted;
+	}
+
+	/**
+	 * Scout the ruins
+	 *
+	 * @public
+	 * @returns {settlement}
+	 */
+	scout () {
+		this._ruins.scouted = true;
+		return this;
+	}
+
+	/**
+	 * Claim the ruins.
+	 *
+	 * @public
+	 * @param {settlement} settlement
+	 * @returns {Boolean}
+	 */
+	claim (settlement) {
+		if (this._ruins.sid === null) {
+			this._ruins.sid = settlement.id();
+			this.core().world().lock_hex(this.location(), settlement.id());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Unclaim the ruins.
+	 *
+	 * @public
+	 * @param {settlement} settlement
+	 * @returns {Boolean}
+	 */
+	unclaim (settlement) {
+		if (settlement.id() === this._ruins.sid) {
+			this._ruins.sid = null;
+			this.core().world().unlock_hex(this.location());
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Export settlement data.
 	 *
 	 * @returns {Object}
@@ -98,7 +184,8 @@ class settlement {
 			buildings: this.export_buildings(),
 			mercenary: this.mercenary(),
 			heroes: this.heroes(),
-			location: this.location()
+			location: this.location(),
+			ruins: this.ruins()
 		};
 		if (this.is_player()) {
 			data.status = this.status();
@@ -379,6 +466,16 @@ class settlement {
 	}
 
 	/**
+	 * Check if this settlement is a ruin.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
+	is_ruins () {
+		return this._properties.type === game.RUINS;
+	}
+
+	/**
 	 * Refresh the heroes in the Tavern.
 	 *
 	 * @public
@@ -476,6 +573,16 @@ class settlement {
 	 */
 	to_metropolis () {
 		this._properties.type = game.METROPOLIS;
+	}
+
+	/**
+	 * Change this settlement's type to ruins.
+	 *
+	 * @public
+	 * @returns {settlement}
+	 */
+	to_ruins () {
+		this._properties.type = game.RUINS;
 	}
 
 	/**
@@ -2321,6 +2428,8 @@ class settlement {
 			return 'Village of ' + this.name();
 		} else if (this.is_camp()) {
 			return 'Raider Camp ' + this.name();
+		} else if (this.is_ruins()) {
+			return 'Ruins of ' + this.name();
 		} else {
 			return '';
 		}
