@@ -304,7 +304,7 @@ gulp.task('doc', () => {
 });
 
 gulp.task('default',
-	gulp.parallel('css', 'lib', 'app', 'doc', browsersync, () => {
+	gulp.parallel('css', 'lib', 'app', browsersync, () => {
 		gulp.watch('./src/scss/**/*.scss', gulp.parallel('css'));
 		gulp.watch('./vendor/js/**/*.js', gulp.series('lib', reload));
 		gulp.watch('./src/js/**/*.js', gulp.series('app', reload));
