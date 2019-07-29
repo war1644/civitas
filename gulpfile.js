@@ -30,12 +30,12 @@ const BROWSERS_LIST = [
 	'ie >= 11'
 ];
 
-const errorHandler = r => {
+const errorHandler = (r) => {
 	notify.onError('\n\n----- ERROR: <%= error.message %> -----\n')(r);
 	beep();
 };
 
-const browsersync = done => {
+const browsersync = (done) => {
 	browserSync.init({
 		proxy: 'http://civitas.test',
 		open: true,
@@ -51,7 +51,7 @@ const browsersync = done => {
 	done();
 };
 
-const reload = done => {
+const reload = (done) => {
 	browserSync.reload();
 	done();
 };
@@ -152,9 +152,9 @@ gulp.task('lib', () => {
 gulp.task('app', () => {
 	return gulp
 		.src([
-	  	'src/js/others/functions.js',
-	  	'src/js/objects/core/game.js',
-	  	'src/js/bootstrap.js',
+		'src/js/others/functions.js',
+		'src/js/objects/core/game.js',
+		'src/js/bootstrap.js',
 		'src/js/constants/default.js',
 		'src/js/constants/api.js',
 		'src/js/constants/timeline.js',
@@ -217,7 +217,7 @@ gulp.task('app', () => {
 		'src/js/definitions/ui/window/signup.js',
 		'src/js/definitions/ui/window/error.js',
 		'src/js/definitions/ui/window/options.js'
-  	], {
+	], {
 			since: gulp.lastRun('app')
 		})
 		.pipe(plumber(errorHandler))

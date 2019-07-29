@@ -46,7 +46,7 @@ class settlement {
 			this._ruins.resources = (typeof params.ruins.resources !== 'undefined') ? params.ruins.resources : {
 				current: {},
 				required: {}
-			}
+			};
 		}
 		this._properties.storage = 0;
 		this._properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;

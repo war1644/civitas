@@ -18475,7 +18475,7 @@ function (_ui_panel) {
   function ui_panel_place(params) {
     _classCallCheck(this, ui_panel_place);
 
-    params.template = '<div id="panel-{ID}" class="panel">' + '<header>' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips green-link scout" title="Send a scout to this place." href="#"><span></span></a>' + '<a class="tips green-link claim" title="Claim this place for your settlement." href="#"><span></span></a>' + '<a class="tips red-link unclaim" title="Remove your settlement`s claim of this place." href="#"><span></span></a>' + '<a class="tips blue-link caravan" title="Send a caravan to this place." href="#"><span></span></a>' + '</footer>' + '</div>', params.params_data = null;
+    params.template = '<div id="panel-{ID}" class="panel">' + '<header>Ruins' + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<footer>' + '<a class="tips green-link scout" title="Send a scout to this place." href="#"><span></span></a>' + '<a class="tips green-link claim" title="Claim this place for your settlement." href="#"><span></span></a>' + '<a class="tips red-link unclaim" title="Remove your settlement`s claim of this place." href="#"><span></span></a>' + '<a class="tips blue-link caravan" title="Send a caravan to this place." href="#"><span></span></a>' + '</footer>' + '</div>', params.params_data = null;
     params.id = 'place';
 
     params.on_show = function (params) {
@@ -18485,7 +18485,6 @@ function (_ui_panel) {
       var location = my_settlement.location();
       var place = params.data;
       this.params_data = params;
-      $(this.handle + ' header').append('Place');
       var tabs = ['Info'];
 
       if (place.is_scouted()) {
@@ -18598,11 +18597,13 @@ function (_ui_panel) {
 
       if (place.is_scouted()) {
         var out = '';
+        var ruin_data = place.ruins();
+        var resources = ruin_data.resources;
 
-        for (var item in place.resources().required) {
+        for (var item in resources.required) {
           if (!game.is_virtual_resource(item)) {
-            if (place._resources.required[item] > 0) {
-              out += core.ui().resource_storage_small_el(item, place._resources.required[item]);
+            if (resources.required[item] > 0) {
+              out += core.ui().resource_storage_small_el(item, resources.required[item]);
             }
           }
         }
@@ -19292,7 +19293,7 @@ function (_ui_panel) {
         class_name = 'spy';
       }
 
-      $(this.handle + ' header').append(class_name.capitalize() + ' mission');
+      $(this.handle + ' header').append(' - ' + class_name.capitalize() + ' mission');
 
       if (campaign.type === game.CAMPAIGN_ARMY) {
         if (my_settlement.num_soldiers(campaign.data.army) > 0) {

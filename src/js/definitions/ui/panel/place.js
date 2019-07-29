@@ -19,7 +19,7 @@ class ui_panel_place extends ui_panel {
 	 */
 	constructor (params) {
 		params.template = '<div id="panel-{ID}" class="panel">' +
-				'<header>' +
+				'<header>Ruins' +
 					'<a class="tips close" title="Close"></a>' +
 				'</header>' +
 				'<section></section>' +
@@ -39,7 +39,6 @@ class ui_panel_place extends ui_panel {
 			let location = my_settlement.location();
 			let place = params.data;
 			this.params_data = params;
-			$(this.handle + ' header').append('Place');
 			let tabs = ['Info'];
 			if (place.is_scouted()) {
 				tabs.push('Resources', 'Construction');
@@ -166,10 +165,12 @@ class ui_panel_place extends ui_panel {
 			let place = this.params_data.data;
 			if (place.is_scouted()) {
 				let out = '';
-				for (let item in place.resources().required) {
+				let ruin_data = place.ruins();
+				let resources = ruin_data.resources;
+				for (let item in resources.required) {
 					if (!game.is_virtual_resource(item)) {
-						if (place._resources.required[item] > 0) {
-							out += core.ui().resource_storage_small_el(item, place._resources.required[item]);
+						if (resources.required[item] > 0) {
+							out += core.ui().resource_storage_small_el(item, resources.required[item]);
 						}
 					}
 				}

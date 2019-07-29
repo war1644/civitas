@@ -35,7 +35,7 @@ class ui_panel_campaign extends ui_panel {
 			} else if (campaign.type === game.CAMPAIGN_SPY) {
 				class_name = 'spy';
 			}
-			$(this.handle + ' header').append(class_name.capitalize() + ' mission');
+			$(this.handle + ' header').append(' - ' + class_name.capitalize() + ' mission');
 			if (campaign.type === game.CAMPAIGN_ARMY) {
 				if (my_settlement.num_soldiers(campaign.data.army) > 0) {
 					tabs.push('Soldiers');
