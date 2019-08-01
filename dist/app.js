@@ -1447,8 +1447,11 @@ function () {
                 destination_settlement.add_to_storage(item, action.data.resources[item]);
               }
 
-              settlement.raise_influence(action.destination.id, game.CARAVAN_INFLUENCE);
-              this.ui().notify('The caravan sent from ' + settlement.name() + ' to ' + destination_settlement.name() + action.duration + ' days ago reached its destination.');
+              if (!destination_settlement.is_ruins()) {
+                settlement.raise_influence(action.destination.id, game.CARAVAN_INFLUENCE);
+              }
+
+              this.ui().notify('The caravan sent from ' + settlement.name() + ' to ' + destination_settlement.name() + ' ' + action.duration + ' days ago reached its destination.');
             }
 
             break;
@@ -2046,11 +2049,7 @@ function () {
       }
 
       if (s_type === game.RUINS) {
-        settlement.ruins.resources = {
-          current: {// Todo
-          },
-          required: this.generate_random_ruins_resources()
-        };
+        settlement.ruins.resources = this.generate_random_ruins_resources();
       }
 
       return settlement;
@@ -11594,10 +11593,7 @@ function () {
     if (typeof params.ruins !== 'undefined') {
       this._ruins.sid = typeof params.ruins.sid !== 'undefined' ? params.ruins.sid : null;
       this._ruins.scouted = typeof params.ruins.scouted !== 'undefined' ? params.ruins.scouted : false;
-      this._ruins.resources = typeof params.ruins.resources !== 'undefined' ? params.ruins.resources : {
-        current: {},
-        required: {}
-      };
+      this._ruins.resources = typeof params.ruins.resources !== 'undefined' ? params.ruins.resources : {};
     }
 
     this._properties.storage = 0;
@@ -13893,15 +13889,19 @@ function () {
   }, {
     key: "add_to_storage",
     value: function add_to_storage(item, amount) {
+      var res;
+
       if (!game.resource_exists(item)) {
         return false;
       }
 
-      if (!this.has_storage_space_for(item, amount)) {
-        return false;
+      if (!this.is_ruins()) {
+        if (!this.has_storage_space_for(item, amount)) {
+          return false;
+        }
       }
 
-      var res = this.get_resources();
+      res = this.get_resources();
 
       if (typeof res[item] !== 'undefined') {
         res[item] = res[item] + amount;
@@ -17423,6 +17423,27 @@ function () {
      * 
      *
      * @public
+     * @param {Object} heroes
+     * @returns {String}
+     */
+
+  }, {
+    key: "heroes_list",
+    value: function heroes_list(heroes) {
+      var out2 = '<p>There are no heroes in this settlement.</p>';
+      var out = '';
+      var total = 0;
+
+      if (total > 0) {
+        return out;
+      } else {
+        return out2;
+      }
+    }
+    /**
+     * 
+     *
+     * @public
      * @param {Object} army
      * @param {Boolean} no_margin
      * @returns {String}
@@ -17443,6 +17464,76 @@ function () {
       }
 
       out += '<dt>' + total + '</dt>' + '<dd>Total</dd>' + '</dl>';
+
+      if (total > 0) {
+        return out;
+      } else {
+        return out2;
+      }
+    }
+    /**
+     * 
+     *
+     * @public
+     * @param {Object} navy
+     * @param {Boolean} no_margin
+     * @returns {String}
+     */
+
+  }, {
+    key: "navy_horizontal_list",
+    value: function navy_horizontal_list(navy) {
+      var out2 = '<p>There are no ships in this navy.</p>';
+      var out = '<p>This settlement has the following navy:</p>';
+      var total = 0;
+      var total_attack = 0;
+      var total_defense = 0;
+
+      for (var ship in navy) {
+        if (navy[ship] > 0) {
+          out += '<span class="tips storage-item small" title="' + game.SHIPS[ship].name + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/navy/' + ship.toLowerCase().replace(/ /g, "_") + '.png" /><span class="amount">' + navy[ship] + '</span></span>';
+          total += navy[ship];
+          total_attack += game.SHIPS[ship].attack * navy[ship];
+          total_defense += game.SHIPS[ship].defense * navy[ship];
+        }
+      }
+
+      out += '<p>Total ships: ' + total + '</p>' + '<p>Total attack: <span class="red">' + total_attack + '</span></p>' + '<p>Total defense: <span class="blue">' + total_defense + '</span></p>';
+
+      if (total > 0) {
+        return out;
+      } else {
+        return out2;
+      }
+    }
+    /**
+     * 
+     *
+     * @public
+     * @param {Object} army
+     * @param {Boolean} no_margin
+     * @returns {String}
+     */
+
+  }, {
+    key: "army_horizontal_list",
+    value: function army_horizontal_list(army) {
+      var out2 = '<p>There are no soldiers in this army.</p>';
+      var out = '<p>This settlement has the following army:</p>';
+      var total_attack = 0;
+      var total_defense = 0;
+      var total = 0;
+
+      for (var soldier in army) {
+        if (army[soldier] > 0) {
+          out += '<span class="tips storage-item small" title="' + game.SOLDIERS[soldier].name + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/army/' + soldier.toLowerCase().replace(/ /g, "_") + '.png" /><span class="amount">' + army[soldier] + '</span></span>';
+          total += army[soldier];
+          total_attack += game.SOLDIERS[soldier].attack * army[soldier];
+          total_defense += game.SOLDIERS[soldier].defense * army[soldier];
+        }
+      }
+
+      out += '<p>Total soldiers: ' + total + '</p>' + '<p>Total attack: <span class="red">' + total_attack + '</span></p>' + '<p>Total defense: <span class="blue">' + total_defense + '</span></p>';
 
       if (total > 0) {
         return out;
@@ -17589,7 +17680,7 @@ function () {
   }, {
     key: "resource_storage_small_el",
     value: function resource_storage_small_el(resource, amount) {
-      return '<div class="tips storage-item small" title="' + game.get_resource_name(resource) + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></div>';
+      return '<span class="tips storage-item small" title="' + game.get_resource_name(resource) + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></span>';
     }
     /**
      * 
@@ -18409,7 +18500,7 @@ function () {
         title = '';
       }
 
-      var out = '<div id="panel-{ID}" class="panel">' + '<header>' + title + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<div class="toolbar">' + '<a class="btn dispatch" href="#">Dispatch</a>' + '</div>' + '</div>';
+      var out = '<div id="panel-{ID}" class="panel">' + '<header>' + title + '<a class="tips close" title="Close"></a>' + '</header>' + '<section></section>' + '<div class="toolbar">' + '<a class="btn blue dispatch" href="#">Dispatch</a>' + '</div>' + '</div>';
       return out;
     }
     /**
@@ -18498,7 +18589,7 @@ function (_ui_panel) {
 
       if (place.is_scouted()) {
         $(this.handle + ' #tab-resources').empty().append('<p>Stage 2: Gather the resources below and use caravans to send them to this place.</p>' + '<p><strong>Note!</strong> If the place is not claimed by anybody, do not send resources or they will be lost.</p>' + '<div class="required">' + '<p>This place has no required resources.</p>' + '</div>');
-        $(this.handle + ' #tab-construction').empty().append('<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>');
+        $(this.handle + ' #tab-construction').empty().append('<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>' + '<div class="toolbar"></div>');
 
         if (claimed_by !== false && claimed_by === my_settlement.id()) {
           $(this.handle + ' footer .unclaim').css('display', 'inline-block');
@@ -18566,6 +18657,8 @@ function (_ui_panel) {
 
         core.ui().open_panel('new_caravan', place);
         return false;
+      }).on('click', '.construct', function () {
+        return false;
       }).on('click', '.view', function () {
         var _settlement_id = parseInt($(this).data('id'), 10);
 
@@ -18594,22 +18687,37 @@ function (_ui_panel) {
     params.on_refresh = function () {
       var core = this.core();
       var place = this.params_data.data;
+      var amount = 0;
+      var total = 0;
+      var all_resources = 0;
+
+      var _resources = place.get_resources();
 
       if (place.is_scouted()) {
         var out = '';
         var ruin_data = place.ruins();
         var resources = ruin_data.resources;
 
-        for (var item in resources.required) {
+        for (var item in resources) {
           if (!game.is_virtual_resource(item)) {
-            if (resources.required[item] > 0) {
-              out += core.ui().resource_storage_small_el(item, resources.required[item]);
+            if (resources[item] > 0) {
+              amount = typeof _resources[item] !== 'undefined' ? _resources[item] : 0;
+              total = resources[item] - amount;
+
+              if (total > 0) {
+                out += core.ui().resource_storage_small_el(item, total);
+                all_resources += total;
+              }
             }
           }
         }
 
         if (out !== '') {
           $(this.handle + ' #tab-resources .required').empty().append(out);
+        }
+
+        if (all_resources <= 0) {
+          $(this.handle + ' #tab-construction .toolbar').empty().append('<a class="btn blue construct">Start Construction</a>');
         }
       }
     };
@@ -18683,7 +18791,7 @@ function (_ui_panel) {
           }
         }
 
-        tabs.push('Resources', 'Imports', 'Exports');
+        tabs.push('Heroes', 'Resources', 'Imports', 'Exports');
       } else {
         tabs.push('Info');
 
@@ -18828,16 +18936,17 @@ function (_ui_panel) {
       $(this.handle + ' #tab-info').empty().append('' + '<img class="avatar right" src="' + game.ASSETS_URL + 'images/assets/avatars/avatar' + settlement.ruler().avatar + '.png" />' + '<dl>' + '<dt>' + settlement.ruler().title + '</dt><dd>' + settlement.ruler().name + '</dd>' + '<dt>Settlement Type</dt>' + '<dd>' + sett_type_text + '</dd>' + '<dt>Climate</dt>' + '<dd>' + settlement.climate().name + '</dd>' + (my_settlement.can_diplomacy() ? '<dt>Personality</dt>' + '<dd>' + settlement.personality().name + '</dd>' : '') + '<dt>Nationality</dt>' + '<dd>' + settlement.nationality().name + '</dd>' + (my_settlement.can_diplomacy() && settlement.is_urban() ? '<dt>Level</dt>' + '<dd>' + settlement.level() + '</dd>' + '<dt>Prestige</dt>' + '<dd>' + core.ui().progress(settlement.prestige() * 100 / game.MAX_PRESTIGE_VALUE, 'small', settlement.prestige()) + '</dd>' : '') + '<dt>Population</dt>' + '<dd>' + game.nice_numbers(settlement.population()) + '</dd>' + (my_settlement.can_diplomacy() ? '<dt>Coins</dt>' + '<dd>' + game.nice_numbers(settlement.coins()) + '</dd>' + '<dt>Religion</dt>' + '<dd>' + settlement.religion().name + '</dd>' + '<dt>Influence</dt>' + '<dd>' + core.ui().progress(my_settlement.get_influence_with_settlement(settlement.id()), 'small') + '</dd>' + '<dt>Diplomatic Status</dt>' + '<dd>' + my_settlement.get_diplomacy_status(settlement.id()).name + '</dd>' : '') + '<dt>Distance</dt>' + '<dd>' + core.world().get_distance(location, settlement.location()) + ' miles (' + core.world().get_distance_in_days(location, settlement.location()) + ' days)</dd>' + '</dl>');
 
       if (my_settlement.can_diplomacy() || settlement.is_camp()) {
-        $(this.handle + ' #tab-army').empty().append(core.ui().army_list(settlement.army()));
+        $(this.handle + ' #tab-army').empty().append(core.ui().army_horizontal_list(settlement.army()));
 
         if (settlement.waterside() === true) {
-          $(this.handle + ' #tab-navy').empty().append(core.ui().navy_list(settlement.navy()));
+          $(this.handle + ' #tab-navy').empty().append(core.ui().navy_horizontal_list(settlement.navy()));
         }
       }
 
       if (settlement.is_urban()) {
-        $(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + core.ui().trades_list(trades, 'imports'));
-        $(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this city will be selling this year.</p>' + core.ui().trades_list(trades, 'exports'));
+        $(this.handle + ' #tab-heroes').empty().append('<p>Below are the heroes of this settlement.</p>' + core.ui().heroes_list(settlement.heroes()));
+        $(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this settlement will be buying this year.</p>' + core.ui().trades_list(trades, 'imports'));
+        $(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this settlement will be selling this year.</p>' + core.ui().trades_list(trades, 'exports'));
       }
 
       var out = '';
@@ -19019,7 +19128,7 @@ function (_ui_panel) {
       var handle = this.handle;
       $(this.handle + ' section').append(core.ui().tabs(['Data', 'Console', 'Cheats']));
       $(this.handle + ' #tab-console').empty().append('<div class="console"></div>');
-      $(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' + '<a href="#" class="btn iblock one">+1M coins</a>' + '<a href="#" class="btn iblock two">+1000 cons. mats</a>' + '<a href="#" class="btn iblock thirty">+1000 food / wine</a>' + '<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a><br /><br />' + '<a href="#" class="btn iblock five">level up</a>' + '<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a>' + '<a href="#" class="btn iblock six">+1000 fame</a><br /><br />' + '<a href="#" class="btn iblock eleven">random soldiers</a>' + '<a href="#" class="btn iblock twelve">random ships</a>' + '<a href="#" class="btn iblock fourty">defend city</a>' + '<a href="#" class="btn iblock fifty">battle-ready</a><br /><br />' + '<a href="#" class="btn iblock ninety">add city</a>' + '<a href="#" class="btn iblock seven">refresh trades</a>' + '</div>');
+      $(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' + '<a href="#" class="btn gray one">+1M coins</a>' + '<a href="#" class="btn two">+1000 cons. mats</a>' + '<a href="#" class="btn thirty">+1000 food / wine</a>' + '<a href="#" class="btn fifteen">+1000 prov./spyg.</a><br /><br />' + '<a href="#" class="btn green five">level up</a>' + '<a href="#" class="btn fourteen">+900 faith/research/espionage</a>' + '<a href="#" class="btn six">+1000 fame</a><br /><br />' + '<a href="#" class="btn eleven">random soldiers</a>' + '<a href="#" class="btn twelve">random ships</a>' + '<a href="#" class="btn fourty">defend city</a>' + '<a href="#" class="btn blue fifty">battle-ready</a><br /><br />' + '<a href="#" class="btn ninety">add city</a>' + '<a href="#" class="btn seven">refresh trades</a>' + '</div>');
       $(this.handle + ' #tab-data').empty().append('<textarea class="storage-data"></textarea>' + '<div class="toolbar">' + '<a href="#" class="btn iblock refresh">Refresh</a> ' + '<a href="#" class="btn iblock load">Load</a> ' + '<a href="#" class="btn iblock save">Save</a> ' + '</div>');
       $(this.handle).on('click', '.fourty', function () {
         var city_index = game.get_random(1, core.get_num_settlements() - 1);
@@ -19588,7 +19697,7 @@ function (_ui_panel) {
       }).on('click', '.troop', function () {
         var id = parseInt($(this).data('id'), 10);
 
-        if (core._queue[id].mode === game.ACTION_CAMPAIGN) {
+        if (core._queue[id].mode === game.ACTION_CAMPAIGN || core._queue[id].mode === game.ACTION_DIPLOMACY) {
           core.ui().open_panel('campaign', core._queue[id]);
         }
 
@@ -19636,10 +19745,11 @@ function (_ui_panel) {
               _name = 'Some distant ruins';
             }
           }
-        } //if ((!settlements[i].is_ruins()) || (core.has_research('archeology') && settlements[i].is_ruins())) {
+        }
 
-
-        $('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + _name + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + settlements[i].id() + '" data-name="' + name + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips ' + class_name + '" />'); //}
+        if (!settlements[i].is_ruins() || core.has_research('archeology') && settlements[i].is_ruins()) {
+          $('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + _name + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + settlements[i].id() + '" data-name="' + name + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips ' + class_name + '" />');
+        }
       }
 
       for (var _i = 0; _i < queue_actions.length; _i++) {
@@ -19660,8 +19770,7 @@ function (_ui_panel) {
         var _destination = core.get_settlement(destination.id);
 
         var x = source.x + Math.floor((destination.x - source.x) / distance_in_days * action.passed);
-        var y = source.y - Math.floor((source.y - destination.y) / distance_in_days * action.passed); //let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
-        //let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
+        var y = source.y - Math.floor((source.y - destination.y) / distance_in_days * action.passed);
 
         if (action.mode === game.ACTION_CAMPAIGN) {
           if (action.type === game.CAMPAIGN_CARAVAN) {
@@ -19741,7 +19850,24 @@ function (_ui_panel) {
     params.template = ui.generic_panel_template('World Ranks');
 
     params.on_show = function (params) {
+      var core = this.core();
+      var settlement = core.get_settlement();
       $(this.handle + ' section').append('<div class="ranks-list"></div>');
+      $(this.handle).on('click', '.view', function () {
+        var _settlement_id = parseInt($(this).data('id'), 10);
+
+        var _settlement = core.get_settlement(_settlement_id);
+
+        if (_settlement) {
+          if (_settlement.is_player()) {
+            core.ui().open_panel('council');
+          } else {
+            core.ui().open_panel('settlement', _settlement);
+          }
+        }
+
+        return false;
+      });
     };
 
     params.on_refresh = function () {
@@ -19751,6 +19877,7 @@ function (_ui_panel) {
       for (var i = 0; i < settlements.length; i++) {
         if (settlements[i].is_urban()) {
           ranking_list.push({
+            id: settlements[i].id(),
             name: settlements[i].name(),
             data: settlements[i].get_rank()
           });
@@ -19772,13 +19899,13 @@ function (_ui_panel) {
         return 0;
       });
       var _t = '<table class="normal">';
-      _t += '<thead>' + '<tr>' + '<td class="center">Rank</td>' + '<td>City</td>' + '<td class="center">Score</td>' + '</tr>' + '</thead>' + '<tbody>';
+      _t += '<thead>' + '<tr>' + '<td class="center">Rank</td>' + '<td>Settlement</td>' + '<td class="center">Score</td>' + '</tr>' + '</thead>' + '<tbody>';
 
       for (var _i = 0; _i < ranking_list.length; _i++) {
-        _t += '<tr>' + '<td class="center">' + (_i + 1) + '</td>' + '<td>' + ranking_list[_i].name + '</td>' + '<td class="center">' + ranking_list[_i].data.score + '</td>' + '</tr>';
+        _t += '<tr>' + '<td class="center">' + (_i + 1) + '</td>' + '<td>' + '<a data-id="' + ranking_list[_i].id + '" title="View info about this settlement." class="tips view" href="#">' + ranking_list[_i].name + '</a> ' + '</td>' + '<td class="center">' + ranking_list[_i].data.score + '</td>' + '</tr>';
       }
 
-      _t += '</tbody>' + '</table>';
+      _t += '</tbody>' + '<tfoot>' + '<tr>' + '<td class="center">Rank</td>' + '<td>Settlement</td>' + '<td class="center">Score</td>' + '</tr>' + '</tfoot>' + '</table>';
       $(this.handle + ' .ranks-list').empty().append(_t);
     };
 
@@ -19886,7 +20013,9 @@ function (_ui_panel) {
       _t += '<fieldset>' + '<legend>Destination</legend>' + '<select class="army-destination">' + '<option value="0">-- select --</option>';
 
       for (var i = 1; i < settlements.length; i++) {
-        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+        if (!settlements[i].is_ruins() || core.has_research('archeology') && settlements[i].is_ruins()) {
+          _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+        }
       }
 
       _t += '</select>' + '</fieldset>' + '</div>' + '<div class="column">';
@@ -19912,8 +20041,8 @@ function (_ui_panel) {
         } else {
           _t += '<option value="0">-- select --</option>';
 
-          for (var _item5 in heroes) {
-            _t += '<option value="' + _item5 + '">' + heroes[_item5] + '</option>';
+          for (var _i = 0; _i < heroes.length; _i++) {
+            _t += '<option value="' + _i + '">' + heroes[_i] + '</option>';
           }
         }
 
@@ -19922,7 +20051,7 @@ function (_ui_panel) {
         _t += '<p><strong>Note!</strong> Build a Tavern to be able to recruit powerful heroes and assign them to your armies.</p>';
       }
 
-      _t += '</div>';
+      _t += '</div>' + '<div class="clearfix"></div>';
       $(this.handle + ' section').empty().append(_t);
       $(this.handle).on('click', '.navy-item-inc', function () {
         var max = parseInt($(this).data('max'), 10);
@@ -20076,10 +20205,12 @@ function (_ui_panel) {
       _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<select class="espionage-destination">' + '<option value="0">-- select --</option>';
 
       for (var i = 1; i < settlements.length; i++) {
-        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+        if (!settlements[i].is_ruins()) {
+          _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+        }
       }
 
-      _t += '</select>' + '</fieldset>' + '<fieldset class="range-combo">' + '<legend>Espionage</legend>' + '<input type="range" value="' + espionage + '" min="1" max="' + espionage + '" class="espionage-range" />' + '<input type="text" readonly value="' + espionage + '" class="espionage-value tips" title="Total espionage assigned to this spy." />' + '<input type="text" readonly value="' + Math.ceil(espionage / 100) + '%" class="espionage-chance tips" title="Chance of mission success." />' + '</fieldset>' + '<fieldset>' + '<legend>Mission</legend>' + '<select class="espionage-mission">' + '<option value="0">-- select --</option>';
+      _t += '</select>' + '</fieldset>' + '<fieldset class="range-combo">' + '<legend>Espionage</legend>' + '<input type="range" value="' + espionage + '" min="1" max="' + espionage + '" class="espionage-range" />' + '<input type="text" readonly value="' + espionage + '" class="espionage-value tips" title="Total espionage points assigned to this spy." />' + '<input type="text" readonly value="' + Math.ceil(espionage / 100) + '%" class="espionage-chance tips" title="Chance of mission success." />' + '</fieldset>' + '<fieldset>' + '<legend>Mission</legend>' + '<select class="espionage-mission">' + '<option value="0">-- select --</option>';
 
       for (var _i = 1; _i < game.SPY_MISSIONS.length; _i++) {
         _t += '<option value="' + _i + '">' + game.SPY_MISSIONS[_i].capitalize() + '</option>';
@@ -20204,6 +20335,7 @@ function (_ui_panel) {
     params.on_show = function (params) {
       var self = this;
       var core = this.core();
+      var settlements = core.get_settlements();
       var my_settlement = core.get_settlement();
       var place = params.data;
       var location = my_settlement.location();
@@ -20225,8 +20357,17 @@ function (_ui_panel) {
         _t += '<dt>' + game.nice_numbers(_cost) + '</dt>' + '<dd>' + core.ui().resource_small_img(item) + '</dd>';
       }
 
-      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<input type="hidden" class="scout-destination" value="' + place.id() + '" />' + '</fieldset>';
-      $(this.handle + ' section').empty().append(_t);
+      _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<select class="caravan-destination">' + '<option value="0">-- select --</option>';
+
+      for (var i = 1; i < settlements.length; i++) {
+        if (settlements[i].is_ruins()) {
+          if (!settlements[i].is_ruins() || core.has_research('archeology') && settlements[i].is_ruins()) {
+            _t += '<option ' + (place && settlements[i].id() === place.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+          }
+        }
+      }
+
+      _t += '</select>' + '</fieldset>' + $(this.handle + ' section').empty().append(_t);
       $(this.handle).on('click', '.dispatch', function () {
         if (!my_settlement.can_diplomacy()) {
           core.ui().error('You will need to construct an Embassy before being able to send scouts to other settlements.');
@@ -20328,7 +20469,11 @@ function (_ui_panel) {
       _t += '</dl>' + '</fieldset>' + '<fieldset>' + '<legend>Destination</legend>' + '<select class="caravan-destination">' + '<option value="0">-- select --</option>';
 
       for (var i = 1; i < settlements.length; i++) {
-        _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+        if (settlements[i].is_ruins() || settlements[i].is_urban() || settlements[i].is_village()) {
+          if (!settlements[i].is_ruins() || core.has_research('archeology') && settlements[i].is_ruins()) {
+            _t += '<option ' + (settlement && settlements[i].id() === settlement.id() ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+          }
+        }
       }
 
       _t += '</select>' + '</fieldset>' + '<fieldset class="select-combo">' + '<legend>Resources</legend>' + '<select class="caravan-resources-select">' + '<option value="0">-- select --</option>' + '<option value="coins">Coins</option>';
@@ -20724,7 +20869,7 @@ function (_ui_panel) {
             }
           }
 
-          _t += '</td>' + '<td class="center">' + '<a title="' + (!buildings[_l2].is_stopped() ? 'Stop production' : 'Start production') + '" data-handle="' + buildings[_l2].handle + '" class="tips ' + (!buildings[_l2].is_stopped() ? 'pause' : 'start') + ' btn" href="#"></a>' + '</td>' + '</tr>';
+          _t += '</td>' + '<td class="center">' + '<a title="' + (!buildings[_l2].is_stopped() ? 'Stop production' : 'Start production') + '" data-handle="' + buildings[_l2].handle + '" class="tips ' + (!buildings[_l2].is_stopped() ? 'pause' : 'start') + ' sbtn" href="#"></a>' + '</td>' + '</tr>';
         }
       }
 
@@ -21027,7 +21172,7 @@ function (_ui_panel) {
           var _i2 = settlement.is_building_built(building.handle);
 
           if (_i2 !== true) {
-            $(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
+            $(el + ' .toolbar').append('<a href="#" class="btn green build" data-handle="' + building.handle + '">Build</a>');
           } else {//$(el + ' .toolbar').append('You already constructed this building.');
           }
 

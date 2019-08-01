@@ -76,7 +76,9 @@ class ui_panel_new_army extends ui_panel {
 				'<select class="army-destination">' +
 					'<option value="0">-- select --</option>';
 			for (let i = 1; i < settlements.length; i++) {
-				_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+				if ((!settlements[i].is_ruins()) || (core.has_research('archeology') && settlements[i].is_ruins())) {
+					_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+				}
 			}
 			_t += '</select>' +
 				'</fieldset>' +
@@ -106,8 +108,8 @@ class ui_panel_new_army extends ui_panel {
 					_t += '<option value="0">-- no heroes available --</option>';
 				} else {
 					_t += '<option value="0">-- select --</option>';
-					for (let item in heroes) {
-						_t += '<option value="' + item + '">' + heroes[item] + '</option>';
+					for (let i = 0; i < heroes.length; i++) {
+						_t += '<option value="' + i + '">' + heroes[i] + '</option>';
 					}
 				}
 				_t += '</select>' +
@@ -115,7 +117,8 @@ class ui_panel_new_army extends ui_panel {
 			} else {
 				_t += '<p><strong>Note!</strong> Build a Tavern to be able to recruit powerful heroes and assign them to your armies.</p>';		
 			}
-			_t += '</div>';
+			_t += '</div>' +
+				'<div class="clearfix"></div>';
 			$(this.handle + ' section').empty().append(_t);
 			$(this.handle).on('click', '.navy-item-inc', function() {
 				let max = parseInt($(this).data('max'), 10);

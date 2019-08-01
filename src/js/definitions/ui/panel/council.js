@@ -372,7 +372,7 @@ class ui_panel_council extends ui_panel {
 						}
 					_t += '</td>' +
 						'<td class="center">' + 
-							'<a title="' + (!buildings[l].is_stopped() ? 'Stop production' : 'Start production') + '" data-handle="' + buildings[l].handle + '" class="tips ' + (!buildings[l].is_stopped() ? 'pause' : 'start') + ' btn" href="#"></a>' +
+							'<a title="' + (!buildings[l].is_stopped() ? 'Stop production' : 'Start production') + '" data-handle="' + buildings[l].handle + '" class="tips ' + (!buildings[l].is_stopped() ? 'pause' : 'start') + ' sbtn" href="#"></a>' +
 						'</td>' +
 					'</tr>';
 				}

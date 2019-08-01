@@ -1173,8 +1173,10 @@ class game {
 							}
 							destination_settlement.add_to_storage(item, action.data.resources[item]);
 						}
-						settlement.raise_influence(action.destination.id, game.CARAVAN_INFLUENCE);
-						this.ui().notify('The caravan sent from ' + settlement.name() + ' to ' + destination_settlement.name() + action.duration + ' days ago reached its destination.');
+						if (!destination_settlement.is_ruins()) {
+							settlement.raise_influence(action.destination.id, game.CARAVAN_INFLUENCE);
+						}
+						this.ui().notify('The caravan sent from ' + settlement.name() + ' to ' + destination_settlement.name() + ' ' + action.duration + ' days ago reached its destination.');
 					}
 					break;
 			}
@@ -1682,12 +1684,7 @@ class game {
 			settlement.trades = resources.trades;
 		}
 		if (s_type === game.RUINS) {
-			settlement.ruins.resources = {
-				current: {
-					// Todo
-				},
-				required: this.generate_random_ruins_resources()
-			}
+			settlement.ruins.resources = this.generate_random_ruins_resources();
 		}
 		return settlement;
 	}

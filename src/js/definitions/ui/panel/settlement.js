@@ -51,7 +51,7 @@ class ui_panel_settlement extends ui_panel {
 						tabs.push('Navy');
 					}
 				}
-				tabs.push('Resources', 'Imports', 'Exports');
+				tabs.push('Heroes', 'Resources', 'Imports', 'Exports');
 			} else {
 				tabs.push('Info');
 				if (my_settlement.can_diplomacy() || settlement.is_camp()) {
@@ -224,14 +224,15 @@ class ui_panel_settlement extends ui_panel {
 					'<dd>' + core.world().get_distance(location, settlement.location()) + ' miles (' + core.world().get_distance_in_days(location, settlement.location()) + ' days)</dd>' +
 				'</dl>');
 			if (my_settlement.can_diplomacy() || settlement.is_camp()) {
-				$(this.handle + ' #tab-army').empty().append(core.ui().army_list(settlement.army()));
+				$(this.handle + ' #tab-army').empty().append(core.ui().army_horizontal_list(settlement.army()));
 				if (settlement.waterside() === true) {
-					$(this.handle + ' #tab-navy').empty().append(core.ui().navy_list(settlement.navy()));
+					$(this.handle + ' #tab-navy').empty().append(core.ui().navy_horizontal_list(settlement.navy()));
 				}
 			}
 			if (settlement.is_urban()) {
-				$(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this city will be buying this year.</p>' + core.ui().trades_list(trades, 'imports'));
-				$(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this city will be selling this year.</p>' + core.ui().trades_list(trades, 'exports'));
+				$(this.handle + ' #tab-heroes').empty().append('<p>Below are the heroes of this settlement.</p>' + core.ui().heroes_list(settlement.heroes()));
+				$(this.handle + ' #tab-imports').empty().append('<p>Below are the goods this settlement will be buying this year.</p>' + core.ui().trades_list(trades, 'imports'));
+				$(this.handle + ' #tab-exports').empty().append('<p>Below are the goods this settlement will be selling this year.</p>' + core.ui().trades_list(trades, 'exports'));
 			}
 			let out = '';
 			let _out = '<p>This settlement has the the following resources:</p>';

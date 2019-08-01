@@ -3,7 +3,7 @@
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
  * @copyright 2012 - 2019 sizeof(cat)
- * @version 0.3.0.7282019
+ * @version 0.3.0.812019
  * @license GPL-3.0-or-later
  */
  .scale{-webkit-animation:scale-frames linear 1s;animation:scale-frames linear 1s;-webkit-animation-iteration-count:1;animation-iteration-count:1;-webkit-transform-origin:50% 50%;transform-origin:50% 50%}
@@ -18,16 +18,16 @@ ul,li{margin:0;padding:0;list-style-type:none}
 :focus{outline:0}
 ::-moz-focus-inner{border:0}
 p{margin-top:0}
-input[type=range]{-webkit-appearance:none;width:100%;margin:10px 0 0 0}
+input[type=range]{width:100%;margin:10px 0 0 0}
 input[type=range]:focus{outline:0}
-input[type=range]::-webkit-slider-runnable-track{width:100%;height:14px;cursor:pointer;background-color:#9b6b46;border-radius:2px;border:1px solid #9b6b46}
-input[type=range]::-webkit-slider-thumb{height:16px;width:16px;border:1px solid #442813;border-radius:100%;background-color:#442813;cursor:pointer;-webkit-appearance:none;margin-top:-15px}
-input[type=range]:focus::-webkit-slider-runnable-track{background:#9b6b46}
+input[type=range]::-webkit-slider-runnable-track{width:100%;height:8px;cursor:pointer;background-color:#9b6b46;border-radius:2px;border:1px solid #9b6b46}
+input[type=range]::-webkit-slider-thumb{height:16px;width:16px;border:1px solid #442813;border-radius:100%;background-color:#000;cursor:pointer;margin-top:-5px}
+input[type=range]:focus::-webkit-slider-runnable-track{background-color:#9b6b46}
 input[type=range]::-moz-range-track{width:100%;height:14px;cursor:pointer;background-color:#9b6b46;border-radius:2px;border:1px solid #9b6b46}
 input[type=range]::-moz-range-thumb{height:16px;width:16px;border:1px solid #442813;border-radius:100%;background:#442813;cursor:pointer}
 input[type=range]:focus::-moz-slider-runnable-track{background:#9b6b46}
 input[type=number].small,input[type=password].small,input[type=text].small{width:70px}
-input[type=text],input[type=number],select{border:1px solid #918d69;background:#bababa;color:black;padding:2px 6px;font-size:14px}
+input[type=text],input[type=number],select{border:1px solid #c0a582;background:#c0a582;color:#000;padding:2px 6px;font-size:12px;border-radius:0}
 .ui{width:100%;height:100%;position:relative}
 .ui>header{width:100%;height:48px;left:0;z-index:9999;top:0;position:fixed;-webkit-box-sizing:border-box;box-sizing:border-box}
 .ui>header .resource-panel{width:65%;position:absolute;top:0;right:0;padding:8px 12px 14px 0;font-size:16px}
@@ -49,9 +49,9 @@ input[type=text],input[type=number],select{border:1px solid #918d69;background:#
 .ui a.disabled{background-color:#878787;color:#4e2c12;cursor:default}
 .ui .hidden,.ui .espionage-rel{display:none}
 .ui .range-combo input[type=range],.ui .select-combo select{float:left;width:60% !important;padding:4px 0}
-.ui .range-combo input[type=text],.ui .select-combo input[type=number]{float:right;width:40px;text-align:center;border:1px solid #ababab;padding:4px 0;background-color:#bababa}
-.ui .select-combo input[type=button]{float:right;border:1px solid #ababab;background-color:#bababa;padding:4px;border-left:0;cursor:pointer}
-.ui .range-combo input[type=text].espionage-chance{width:26px;border-top-left-radius:3px;border-bottom-left-radius:3px;border-right:0}
+.ui .range-combo input[type=text],.ui .select-combo input[type=number]{float:right;width:40px;text-align:center;padding:4px 0}
+.ui .select-combo input[type=button]{float:right;border:1px solid #c0a582;border-left:1px solid #000;background-color:#c0a582;padding:4px;font-size:12px;cursor:pointer;border-top-right-radius:3px;border-bottom-right-radius:3px}
+.ui .range-combo input[type=text].espionage-chance{width:26px;border-right:0}
 .ui .range-combo input[type="text"].espionage-value{border-top-right-radius:3px;border-bottom-right-radius:3px}
 .ui span.green{color:#008a0b}
 .ui span.red{color:#f00000}
@@ -166,8 +166,8 @@ footer a[data-panel=help]{background-image:url(../images/assets/ui/toolbar/help.
 .panel ul.advices li{background:transparent url(../images/ui/check.png) no-repeat left top}
 .religion-list .religion{background:transparent url(../images/assets/ui/religion.png) no-repeat center}
 .game{background:black url(../images/city/map.jpg) no-repeat}
-.panel td a.btn.start{background:transparent url(../images/assets/ui/icons/start.png) no-repeat}
-.panel td a.btn.pause{background:transparent url(../images/assets/ui/icons/stop.png) no-repeat}
+.panel td a.sbtn.start{background:transparent url(../images/assets/ui/icons/start.png) no-repeat}
+.panel td a.sbtn.pause{background:transparent url(../images/assets/ui/icons/stop.png) no-repeat}
 #window-battle .battleground{background:transparent url(../images/battle/bg2.png) no-repeat}
 a.wikipedia{background:transparent url(../images/ui/wikipedia.png) no-repeat}
 a.github{background:transparent url(../images/ui/github.png) no-repeat}
@@ -196,16 +196,16 @@ a.github{background:transparent url(../images/ui/github.png) no-repeat}
 .ui .panel footer a:hover{background:url(../images/ui/button-bg.png) no-repeat -50px 0 !important}
 .ui .panel{background:url(../images/ui/border-top-left.png) no-repeat left top,url(../images/ui/border-top-right.png) no-repeat right top,url(../images/ui/border-bottom-right.png) no-repeat right bottom,url(../images/ui/border-bottom-left.png) no-repeat left bottom,url(../images/ui/border-top.png) repeat-x left top,url(../images/ui/border-right.png) repeat-y right bottom,url(../images/ui/border-bottom.png) repeat-x right bottom,url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
 .ui>aside{background:url(../images/ui/border-left.png) repeat-y left bottom,url(../images/ui/panel-background.png) repeat left top}
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px 0,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) 0, url(../images/ui/tab-bg.png) repeat-x 0 0}
-.ui-tabs .ui-tabs-nav li.gray .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -108px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -108px, url(../images/ui/tab-bg.png) repeat-x 0 -108px}
-.ui-tabs .ui-tabs-nav li.green .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -144px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -144px, url(../images/ui/tab-bg.png) repeat-x 0 -144px}
-.ui-tabs .ui-tabs-nav li.blue .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -180px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -180px, url(../images/ui/tab-bg.png) repeat-x 0 -180px}
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor:hover{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -36px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -36px, url(../images/ui/tab-bg.png) repeat-x 0 -36px !important}
+.ui .btn,.ui-tabs .ui-tabs-nav .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px 0,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) 0, url(../images/ui/tab-bg.png) repeat-x 0 0}
+.ui .btn.gray,.ui-tabs .ui-tabs-nav li.gray .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -108px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -108px, url(../images/ui/tab-bg.png) repeat-x 0 -108px}
+.ui .btn.green,.ui-tabs .ui-tabs-nav li.green .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -144px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -144px, url(../images/ui/tab-bg.png) repeat-x 0 -144px}
+.ui .btn.blue,.ui-tabs .ui-tabs-nav li.blue .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -180px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -180px, url(../images/ui/tab-bg.png) repeat-x 0 -180px}
+.ui .btn:hover,.ui-tabs .ui-tabs-nav .ui-tabs-anchor:hover{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -36px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -36px, url(../images/ui/tab-bg.png) repeat-x 0 -36px !important}
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor{background:url(../images/ui/tab-bg-corners.png) no-repeat -36px -72px,url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -72px, url(../images/ui/tab-bg.png) repeat-x 0 -72px !important}
 table{width:100%;padding:0;border-spacing:1px;border-collapse:separate}
 table td{text-align:left;vertical-align:middle;padding:10px}
 table thead td,table tfoot td{padding:10px}
-table tr.notify{background-color:#f5c1c1}
+table tr.notify{background-color:#8a0000}
 table td.center{text-align:center}
 table td img{vertical-align:middle}
 table tbody tr:hover{background-color:#b98964;color:white;opacity:1}
@@ -214,7 +214,7 @@ table tr td:last-child a{border-radius:3px;padding:4px 10px;color:white !importa
 table tr td a.disabled{display:none}
 table tr td.large{width:45%}
 table tr td.medium{width:25%}
-table td a.btn{width:28px;height:28px;padding:0 !important;border:0 !important;background-size:contain !important}
+table td a.sbtn{width:28px;height:28px;padding:0 !important;border:0 !important;background-size:contain !important}
 table tr td:last-child a,table thead td,table tfoot td{border:1px solid #6a4324;background-image:-webkit-gradient(linear,left top,left bottom,from(#9b6b46),to(#6a4324));background-image:linear-gradient(to bottom,#9b6b46,#6a4324);color:white}
 table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit-gradient(linear,left top,left bottom,from(#6a4324),to(#442813));background-image:linear-gradient(to bottom,#6a4324,#442813);color:white}
 .tabs>ul>li{float:left}
@@ -255,7 +255,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .tipsy.item .tipsy-arrow-w{border-right-color:#4e2c12}
 .tipsy.item h4{font-size:14px;padding:0;margin:0 0 10px 0}
 .tipsy.item span.flavour{font-style:italic;color:#ffd000}
-.ui .panel{position:fixed;top:30%;left:30%;z-index:99997;background-color:white;min-width:220px;max-width:360px;min-height:100px;max-height:460px;color:#fff;padding:20px;-webkit-box-shadow:0 0 10px black;box-shadow:0 0 10px black}
+.ui .panel{position:fixed;top:30%;left:30%;z-index:99997;background-color:#150f0c;min-width:220px;max-width:360px;min-height:100px;max-height:460px;color:#fff;padding:20px;-webkit-box-shadow:0 0 10px black;box-shadow:0 0 10px black}
 .ui .panel header{text-transform:uppercase;margin-bottom:10px;cursor:move;font-size:18px;text-shadow:-1px -1px #201106;font-weight:300;padding:0}
 .ui .panel header a{width:24px;height:24px;display:block;float:right;cursor:pointer}
 .ui .panel section{font-size:12px}
@@ -268,28 +268,28 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel footer a{width:46px;height:46px;display:inline-block;cursor:pointer;margin-right:8px;border-radius:10px}
 .ui .panel footer a:hover{background-color:#a1805e}
 .ui .panel .toolbar{margin-top:10px;clear:both;font-size:14px}
-.ui .panel .toolbar .btn{border-radius:3px;padding:10px;text-transform:uppercase;text-align:center;display:block;cursor:pointer;border:1px solid #6a4324;background-image:-webkit-gradient(linear,left top,left bottom,from(#9b6b46),to(#6a4324));background-image:linear-gradient(to bottom,#9b6b46,#6a4324);color:white;text-decoration:none;font-size:16px}
+.ui .panel .toolbar .btn{font-size:14px;color:#fff;text-decoration:none;text-shadow:-1px -1px #201106;font-weight:300;position:relative;padding:8px 20px;text-transform:uppercase;text-align:center;display:inline-block;cursor:pointer;text-decoration:none}
 .ui .panel .toolbar .btn.iblock{display:inline-block;width:auto;margin-right:4px}
-.ui .panel .toolbar .btn:hover{border:1px solid #442813;background-image:-webkit-gradient(linear,left top,left bottom,from(#6a4324),to(#442813));background-image:linear-gradient(to bottom,#6a4324,#442813);color:white}
 .ui .panel a{color:white;text-decoration:underline}
 .ui .panel .section{padding:20px}
 .ui .panel fieldset{border:1px solid #6e5036;margin-bottom:10px}
-.ui .panel fieldset legend{padding:0 10px}
+.ui .panel fieldset legend{padding:0 10px;margin:auto}
 .ui .panel fieldset select{width:100%;border:1px solid #ababab;padding:4px 0}
 .ui .panel fieldset p{margin:10px 0 0 0}
 .ui .panel .b-name{font-size:26px;margin:0 0 10px 0}
-.ui .panel .army-item-inc,.ui .panel .army-item-dec,.ui .panel .navy-item-inc,.ui .panel .navy-item-dec{width:20px;height:20px;border:1px solid #ababab;position:absolute}
+.ui .panel .army-item-inc,.ui .panel .army-item-dec,.ui .panel .navy-item-inc,.ui .panel .navy-item-dec{width:20px;height:20px;border:1px solid #ababab;position:absolute;text-decoration:none}
 .ui .panel .army-item-inc,.ui .panel .navy-item-inc{left:0;top:0;background-color:#008a0b;border-bottom-right-radius:20px}
 .ui .panel .army-item-dec,.ui .panel .navy-item-dec{right:0;top:0;background-color:#f00000;border-bottom-left-radius:20px}
 .ui .panel .army-recruiter,.ui .panel .navy-recruiter{width:630px;float:right;padding:10px 0 0 0;max-height:410px;overflow:auto}
-.ui .panel .navy-item,.ui .panel .army-item,.ui .panel .storage-item{width:75px;height:75px;float:left;text-align:center;margin:0 4px 4px 0;position:relative;-webkit-box-shadow:inset 0 0 30px 0 rgba(0,0,0,0.6);box-shadow:inset 0 0 30px 0 rgba(0,0,0,0.6);border-radius:8px;font-size:11px}
+.ui .panel .navy-item,.ui .panel .army-item,.ui .panel .storage-item{width:75px;height:75px;float:left;text-align:center;margin:0 4px 4px 0;position:relative;-webkit-box-shadow:inset 0 0 30px 0 #4e2c12;box-shadow:inset 0 0 30px 0 #4e2c12;border-radius:4px;font-size:11px}
+.ui .panel .storage-item:hover{-webkit-box-shadow:inset 0 0 30px 0 rgba(78,44,18,0.3);box-shadow:inset 0 0 30px 0 rgba(78,44,18,0.3)}
 .ui .panel .navy-item,.ui .panel .army-item{width:65px;height:65px;font-size:11px;position:relative}
-.ui .panel .storage-item.small{width:46px;height:50px;font-size:11px}
-.ui .panel .storage-item .title{width:100%;display:inline-block;width:100%;padding-top:4px}
+.ui .panel .storage-item.small{width:46px;height:46px;font-size:11px;padding:4px;float:none;display:inline-block}
+.ui .panel .storage-item .title{width:100%;display:inline-block;width:100%;padding-top:4px;font-size:12px}
 .ui .panel .navy-item span.amount,.ui .panel .army-item span.amount,.ui .panel .storage-item span.amount{position:absolute;bottom:0;right:4px}
 .ui .panel .navy-item img{margin:8px auto 0 auto}
 .ui .panel .army-item img{margin:15px auto 0 auto}
-.ui .panel .storage-item.small img{margin:10px auto 0 auto;width:20px}
+.ui .panel .storage-item.small img{margin:4px auto 0 auto;width:32px;height:32px}
 .ui .panel .storage-item img{width:32px}
 .ui .panel .settlements-list{overflow:auto;max-height:415px}
 .ui .panel .column{width:290px;float:left}
@@ -314,7 +314,11 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui .panel footer a+a{margin-right:10px}
 .ui .panel footer a img{display:block}
 .ui .panel .column.preview-image img{max-width:290px}
-#panel-new-army,#panel-new-spy,#panel-new-scout,#panel-new-caravan{max-width:640px;max-height:600px}
+.ui .panel section:after{clear:both}
+.ui .panel .preview-image{height:300px;position:relative}
+.ui .panel .preview-image img{max-width:100%;max-height:200px;width:auto;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
+#panel-new-spy,#panel-new-scout,#panel-new-caravan{max-width:660px;max-height:600px;width:280px}
+#panel-new-army{max-width:660px;max-height:600px}
 #panel-academy{max-height:700px;max-width:620px;width:620px}
 #panel-academy .column-left{width:290px;max-height:400px;overflow:auto;margin-top:10px;float:left}
 #panel-academy .column-right{width:298px;float:left;margin-left:10px}
@@ -324,7 +328,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-academy .technology.has img{-webkit-box-shadow:inset 0 0 10px 0 #f00000;box-shadow:inset 0 0 10px 0 #f00000}
 #panel-academy .technology img{width:46px;height:46px;border-radius:100%;padding:10px;-webkit-box-shadow:inset 0 0 10px 0 #008a0b;box-shadow:inset 0 0 10px 0 #008a0b}
 #panel-church h2,#panel-embassy h2,#panel-academy h2{text-align:center}
-#panel-tavern{max-height:700px;max-width:620px;width:620px}
+#panel-tavern{max-height:700px;max-width:640px;width:640px}
 #panel-embassy{max-height:600px;max-width:720px;width:720px}
 #panel-church{max-height:600px;max-width:620px;width:620px}
 #panel-help .ui-tabs-panel li>a,#panel-help p>a{text-decoration:underline}
@@ -342,7 +346,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-tavern .hero-items .slot{width:46px;height:50px;font-size:11px;float:left;text-align:center;margin:0 4px 4px 0;position:relative;-webkit-box-shadow:inset 0 0 3px 0 rgba(0,0,0,0.75);box-shadow:inset 0 0 3px 0 rgba(0,0,0,0.75);font-size:34px}
 #panel-tavern .hero-info h3{margin:0 0 10px 0}
 #panel-campaign{min-width:400px}
-#panel-place{width:450px;max-width:450px;max-height:600px;height:auto}
+#panel-place{width:490px;max-width:490px;max-height:600px;height:auto}
 #panel-barracks,#panel-shipyard{width:790px;max-width:790px;height:auto;max-height:600px}
 #panel-council section dd,#panel-barracks section dd,#panel-shipyard section dd{width:auto}
 #panel-buildings{max-width:1190px;max-height:650px;height:auto;width:690px}
@@ -380,8 +384,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-help .ui-tabs-panel p,#panel-help .ui-tabs-panel li{font-size:13px;line-height:20px}
 #panel-help img.help{width:200px}
 #panel-help h3{font-size:20px}
-#panel-settlement{width:470px;max-width:470px;max-height:600px;height:auto}
-#panel-settlement .ui-tabs-panel{padding:0 10px}
+#panel-settlement{width:540px;max-width:540px;max-height:600px;height:auto}
 #panel-building{max-height:600px;max-width:1400px}
 #panel-place footer a.claim,#panel-place footer a.unclaim,#panel-place footer a.scout,#panel-place footer a.caravan,#panel-settlement footer a.attack,#panel-settlement footer a.caravan,#panel-settlement footer a.spy,#panel-settlement footer a.alliance,#panel-settlement footer a.pact,#panel-settlement footer a.join,#panel-settlement footer a.war,#panel-settlement footer a.ceasefire{display:none}
 .ui>aside{color:#fff;position:absolute;padding:0 0 0 10px;position:fixed;top:48px;right:0;bottom:0;z-index:999;background-color:#150f0c;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box}
@@ -391,8 +394,6 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 .ui>aside .panel section p{text-align:justify}
 .ui>aside .panel .column{border-bottom:1px solid #6e5036;margin-bottom:10px;width:100% !important;float:none}
 .ui>aside .panel .column:last-of-type{margin-left:0 !important}
-.ui>aside .panel .preview-image{height:200px;position:relative}
-.ui>aside .panel .preview-image img{max-width:100%;max-height:200px;width:auto;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
 .ui>aside:empty{display:none}
 #panel-storage{max-width:650px;width:650px;max-height:700px;height:auto}
 #panel-storage .storage-board{width:640px;height:100%}
@@ -400,7 +401,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-storage p{margin-top:10px}
 #panel-trades{width:800px;max-width:800px;max-height:500px;height:auto}
 #panel-trades table.mercenaries td:nth-child(3){width:20%;text-align:right}
-#panel-world{max-width:1000px;max-height:600px;width:1000px;height:600px;-webkit-box-sizing:border-box;box-sizing:border-box}
+#panel-world{max-width:1020px;max-height:600px;width:1020px;height:600px;-webkit-box-sizing:border-box;box-sizing:border-box}
 #panel-world .worldmap{width:960px;height:510px;background-size:auto 100%;position:relative;overflow:hidden}
 #panel-world .worldmap .ruins,#panel-world .worldmap .settlement,#panel-world .worldmap .troop{width:40px;height:40px;position:absolute;cursor:pointer}
 #panel-world .w-t-p{opacity:.3}

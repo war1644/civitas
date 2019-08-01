@@ -5,7 +5,7 @@
 	top: 30%;
 	left: 30%;
 	z-index: 99997;
-	background-color: $panel-bg;
+	background-color: #150f0c;
 	min-width: 220px;
 	max-width: 360px;
 	min-height: 100px;
@@ -95,29 +95,24 @@
 		font-size: 14px;
 
 		.btn {
-			border-radius: 3px;
-			padding: 10px;
+			font-size: 14px;
+			color: #fff;
+			text-decoration: none;
+			text-shadow: -1px -1px #201106;
+			font-weight: 300;
+			position: relative;
+			padding: 8px 20px;
 			text-transform: uppercase;
 			text-align: center;
-			display: block;
+			display: inline-block;
 			cursor: pointer;
-			border: 1px solid $btn-border;
-			background-image: $btn-bg;
-			color: $btn-fg;
 			text-decoration: none;
-			font-size: 16px;
 		}
 
 		.btn.iblock {
 			display: inline-block;
 			width: auto;
 			margin-right: 4px;
-		}
-
-		.btn:hover {
-			border: 1px solid $btn-border-hover;
-			background-image: $btn-bg-hover;
-			color: $btn-fg;
 		}
 	}
 
@@ -140,6 +135,7 @@
 
 		legend {
 			padding: 0 10px;
+			margin: auto;
 		}
 
 		select {
@@ -166,6 +162,7 @@
 		height: 20px;
 		border: 1px solid $border-dark;
 		position: absolute;
+		text-decoration: none;
 	}
 
 	.army-item-inc,
@@ -202,9 +199,13 @@
 		text-align: center;
 		margin: 0 4px 4px 0;
 		position: relative;
-		box-shadow: inset 0 0 30px 0 rgba(0, 0, 0, 0.6);
-		border-radius: 8px;
+		box-shadow: inset 0 0 30px 0 hsla(26, 62%, 19%, 1);
+		border-radius: 4px;
 		font-size: 11px;
+	}
+
+	.storage-item:hover {
+		box-shadow: inset 0 0 30px 0 hsla(26, 62%, 19%, 0.3);
 	}
 
 	.navy-item,
@@ -217,8 +218,11 @@
 
 	.storage-item.small {
 		width: 46px;
-		height: 50px;
+		height: 46px;
 		font-size: 11px;
+		padding: 4px;
+		float: none;
+		display: inline-block;
 	}
 
 	.storage-item .title {
@@ -226,6 +230,7 @@
 		display: inline-block;
 		width: 100%;
 		padding-top: 4px;
+		font-size: 12px;
 	}
 
 	.navy-item span.amount,
@@ -245,8 +250,9 @@
 	}
 
 	.storage-item.small img {
-		margin: 10px auto 0 auto;
-		width: 20px;
+		margin: 4px auto 0 auto;
+		width: 32px;
+		height: 32px;
 	}
 
 	.storage-item img {
@@ -389,4 +395,23 @@
 
 .ui .panel .column.preview-image img {
 	max-width: 290px;
+}
+
+.ui .panel section:after {
+	clear: both;
+}
+
+.ui .panel .preview-image { 
+	height: 300px;
+	position: relative;
+}
+
+.ui .panel .preview-image img { 
+	max-width:100%;
+	max-height: 200px; 
+	width: auto; 
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }

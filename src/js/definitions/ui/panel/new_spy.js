@@ -51,14 +51,16 @@ class ui_panel_new_spy extends ui_panel {
 				'<select class="espionage-destination">' +
 					'<option value="0">-- select --</option>';
 			for (let i = 1; i < settlements.length; i++) {
-				_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+				if (!settlements[i].is_ruins()) {
+					_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+				}
 			}
 			_t += '</select>' +
 			'</fieldset>' +
 			'<fieldset class="range-combo">' +
 				'<legend>Espionage</legend>' +
 				'<input type="range" value="' + espionage + '" min="1" max="' + espionage + '" class="espionage-range" />' +
-				'<input type="text" readonly value="' + espionage + '" class="espionage-value tips" title="Total espionage assigned to this spy." />' +
+				'<input type="text" readonly value="' + espionage + '" class="espionage-value tips" title="Total espionage points assigned to this spy." />' +
 				'<input type="text" readonly value="' + Math.ceil(espionage / 100) + '%" class="espionage-chance tips" title="Chance of mission success." />' +
 			'</fieldset>' +
 			'<fieldset>' +

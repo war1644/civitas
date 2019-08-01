@@ -72,7 +72,8 @@ class ui_panel_place extends ui_panel {
 					'</div>'
 				);
 				$(this.handle + ' #tab-construction').empty().append(
-					'<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>'
+					'<p>Stage 3: Once the required resources have been stored you can start building the world wonder on this place. It will take a dozen of years to build it (around 20) and other settlements might attack so make sure you have an army to guard it.</p>' +
+					'<div class="toolbar"></div>'
 				);
 				if (claimed_by !== false && claimed_by === my_settlement.id()) {
 					$(this.handle + ' footer .unclaim').css('display', 'inline-block');
@@ -140,6 +141,8 @@ class ui_panel_place extends ui_panel {
 				}
 				core.ui().open_panel('new_caravan', place);
 				return false;
+			}).on('click', '.construct', function () {
+				return false;
 			}).on('click', '.view', function () {
 				let _settlement_id = parseInt($(this).data('id'), 10);
 				let _settlement = core.get_settlement(_settlement_id);
@@ -163,19 +166,31 @@ class ui_panel_place extends ui_panel {
 		params.on_refresh = function() {
 			let core = this.core();
 			let place = this.params_data.data;
+			let amount = 0;
+			let total = 0;
+			let all_resources = 0;
+			let _resources = place.get_resources();
 			if (place.is_scouted()) {
 				let out = '';
 				let ruin_data = place.ruins();
 				let resources = ruin_data.resources;
-				for (let item in resources.required) {
+				for (let item in resources) {
 					if (!game.is_virtual_resource(item)) {
-						if (resources.required[item] > 0) {
-							out += core.ui().resource_storage_small_el(item, resources.required[item]);
+						if (resources[item] > 0) {
+							amount = typeof _resources[item] !== 'undefined' ? _resources[item] : 0;
+							total = resources[item] - amount;
+							if (total > 0) {
+								out += core.ui().resource_storage_small_el(item, total);
+								all_resources += total;
+							}
 						}
 					}
 				}
 				if (out !== '') {
 					$(this.handle + ' #tab-resources .required').empty().append(out);
+				}
+				if (all_resources <= 0) {
+					$(this.handle + ' #tab-construction .toolbar').empty().append('<a class="btn blue construct">Start Construction</a>');
 				}
 			}
 		};

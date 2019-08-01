@@ -31,19 +31,19 @@ class ui_panel_debug extends ui_panel {
 			]));
 			$(this.handle + ' #tab-console').empty().append('<div class="console"></div>');
 			$(this.handle + ' #tab-cheats').empty().append('<div class="toolbar">' +
-						'<a href="#" class="btn iblock one">+1M coins</a>' +
-						'<a href="#" class="btn iblock two">+1000 cons. mats</a>' +
-						'<a href="#" class="btn iblock thirty">+1000 food / wine</a>' +
-						'<a href="#" class="btn iblock fifteen">+1000 prov./spyg.</a><br /><br />' +
-						'<a href="#" class="btn iblock five">level up</a>' +
-						'<a href="#" class="btn iblock fourteen">+900 faith/research/espionage</a>' +
-						'<a href="#" class="btn iblock six">+1000 fame</a><br /><br />' +
-						'<a href="#" class="btn iblock eleven">random soldiers</a>' +
-						'<a href="#" class="btn iblock twelve">random ships</a>' +
-						'<a href="#" class="btn iblock fourty">defend city</a>' +
-						'<a href="#" class="btn iblock fifty">battle-ready</a><br /><br />' +
-						'<a href="#" class="btn iblock ninety">add city</a>' +
-						'<a href="#" class="btn iblock seven">refresh trades</a>' +
+						'<a href="#" class="btn gray one">+1M coins</a>' +
+						'<a href="#" class="btn two">+1000 cons. mats</a>' +
+						'<a href="#" class="btn thirty">+1000 food / wine</a>' +
+						'<a href="#" class="btn fifteen">+1000 prov./spyg.</a><br /><br />' +
+						'<a href="#" class="btn green five">level up</a>' +
+						'<a href="#" class="btn fourteen">+900 faith/research/espionage</a>' +
+						'<a href="#" class="btn six">+1000 fame</a><br /><br />' +
+						'<a href="#" class="btn eleven">random soldiers</a>' +
+						'<a href="#" class="btn twelve">random ships</a>' +
+						'<a href="#" class="btn fourty">defend city</a>' +
+						'<a href="#" class="btn blue fifty">battle-ready</a><br /><br />' +
+						'<a href="#" class="btn ninety">add city</a>' +
+						'<a href="#" class="btn seven">refresh trades</a>' +
 					'</div>');
 			$(this.handle + ' #tab-data').empty().append(
 				'<textarea class="storage-data"></textarea>' +

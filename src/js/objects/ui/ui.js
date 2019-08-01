@@ -252,7 +252,7 @@ class ui {
 				'</header>' +
 				'<section></section>' +
 				'<div class="toolbar">' +
-					'<a class="btn dispatch" href="#">Dispatch</a>' +
+					'<a class="btn blue dispatch" href="#">Dispatch</a>' +
 				'</div>' +
 			'</div>';
 		return out;
@@ -433,6 +433,24 @@ class ui {
 	 * 
 	 *
 	 * @public
+	 * @param {Object} heroes
+	 * @returns {String}
+	 */
+	heroes_list (heroes) {
+		let out2 = '<p>There are no heroes in this settlement.</p>';
+		let out = '';
+		let total = 0;
+		if (total > 0) {
+			return out;
+		} else {
+			return out2;
+		}
+	}
+
+	/**
+	 * 
+	 *
+	 * @public
 	 * @param {Object} army
 	 * @param {Boolean} no_margin
 	 * @returns {String}
@@ -450,6 +468,70 @@ class ui {
 		out += '<dt>' + total + '</dt>' +
 				'<dd>Total</dd>' +
 			'</dl>';
+		if (total > 0) {
+			return out;
+		} else {
+			return out2;
+		}
+	}
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} navy
+	 * @param {Boolean} no_margin
+	 * @returns {String}
+	 */
+	navy_horizontal_list (navy) {
+		let out2 = '<p>There are no ships in this navy.</p>';
+		let out = '<p>This settlement has the following navy:</p>';
+		let total = 0;
+		let total_attack = 0;
+		let total_defense = 0;
+		for (let ship in navy) {
+			if (navy[ship] > 0) {
+				out += '<span class="tips storage-item small" title="' + game.SHIPS[ship].name + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/navy/' + ship.toLowerCase().replace(/ /g,"_") + '.png" /><span class="amount">' + navy[ship] + '</span></span>';
+				total += navy[ship];
+				total_attack += (game.SHIPS[ship].attack * navy[ship]);
+				total_defense += (game.SHIPS[ship].defense * navy[ship]);
+			}
+		}
+		out += '<p>Total ships: ' + total + '</p>' +
+			'<p>Total attack: <span class="red">' + total_attack + '</span></p>' +
+			'<p>Total defense: <span class="blue">' + total_defense + '</span></p>';
+		if (total > 0) {
+			return out;
+		} else {
+			return out2;
+		}
+	}
+
+	/**
+	 * 
+	 *
+	 * @public
+	 * @param {Object} army
+	 * @param {Boolean} no_margin
+	 * @returns {String}
+	 */
+	army_horizontal_list (army) {
+		let out2 = '<p>There are no soldiers in this army.</p>';
+		let out = '<p>This settlement has the following army:</p>';
+		let total_attack = 0;
+		let total_defense = 0;
+		let total = 0;
+		for (let soldier in army) {
+			if (army[soldier] > 0) {
+				out += '<span class="tips storage-item small" title="' + game.SOLDIERS[soldier].name + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/army/' + soldier.toLowerCase().replace(/ /g,"_") + '.png" /><span class="amount">' + army[soldier] + '</span></span>';
+				total += army[soldier];
+				total_attack += (game.SOLDIERS[soldier].attack * army[soldier]);
+				total_defense += (game.SOLDIERS[soldier].defense * army[soldier]);
+			}
+		}
+		out += '<p>Total soldiers: ' + total + '</p>' +
+			'<p>Total attack: <span class="red">' + total_attack + '</span></p>' +
+			'<p>Total defense: <span class="blue">' + total_defense + '</span></p>';
 		if (total > 0) {
 			return out;
 		} else {
@@ -573,7 +655,7 @@ class ui {
 	 * @returns {String}
 	 */
 	resource_storage_small_el (resource, amount) {
-		return '<div class="tips storage-item small" title="' + game.get_resource_name(resource) + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></div>';
+		return '<span class="tips storage-item small" title="' + game.get_resource_name(resource) + '"><img class="small" src="' + game.ASSETS_URL + 'images/assets/resources/' + resource + '.png" /><span class="amount">' + amount + '</span></span>';
 	}
 
 	/**

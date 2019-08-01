@@ -222,7 +222,7 @@ class ui_panel_buildings extends ui_panel {
 					}
 					let _i = settlement.is_building_built(building.handle);
 					if (_i !== true) {
-						$(el + ' .toolbar').append('<a href="#" class="btn build" data-handle="' + building.handle + '">Build</a>');
+						$(el + ' .toolbar').append('<a href="#" class="btn green build" data-handle="' + building.handle + '">Build</a>');
 					} else {
 						//$(el + ' .toolbar').append('You already constructed this building.');
 					}

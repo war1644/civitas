@@ -94,7 +94,6 @@ class ui_panel_campaign extends ui_panel {
 					'<dd>' + mission_type + '</dd>' +
 					'<dt>Sent By</dt>' +
 					'<dd>' + (campaign.type === game.CAMPAIGN_ARMY_RETURN ? destination.name() : source.name()) + '</dd>' +
-					
 					'<dt>Destination</dt>' +
 					'<dd>' + (campaign.type === game.CAMPAIGN_ARMY_RETURN ? source.name() : destination.name()) + '</dd>' +
 					'<dt>Action</dt>' +

@@ -23,6 +23,7 @@ class ui_panel_new_scout extends ui_panel {
 		params.on_show = function(params) {
 			let self = this;
 			let core = this.core();
+			let settlements = core.get_settlements();
 			let my_settlement = core.get_settlement();
 			let place = params.data;
 			let location = my_settlement.location();
@@ -46,8 +47,17 @@ class ui_panel_new_scout extends ui_panel {
 			'</fieldset>' +
 			'<fieldset>' +
 				'<legend>Destination</legend>' +
-				'<input type="hidden" class="scout-destination" value="' + place.id() + '" />' +
-			'</fieldset>';
+				'<select class="caravan-destination">' +
+					'<option value="0">-- select --</option>';
+			for (let i = 1; i < settlements.length; i++) {
+				if (settlements[i].is_ruins()) {
+					if ((!settlements[i].is_ruins()) || (core.has_research('archeology') && settlements[i].is_ruins())) {
+						_t += '<option ' + (place && (settlements[i].id() === place.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+					}
+				}
+			}
+			_t += '</select>' +
+			'</fieldset>' +
 			$(this.handle + ' section').empty().append(_t);
 			$(this.handle).on('click', '.dispatch', function() {
 				if (!my_settlement.can_diplomacy()) {

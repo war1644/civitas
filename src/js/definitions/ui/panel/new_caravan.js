@@ -51,7 +51,11 @@ class ui_panel_new_caravan extends ui_panel {
 				'<select class="caravan-destination">' +
 					'<option value="0">-- select --</option>';
 			for (let i = 1; i < settlements.length; i++) {
-				_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+				if (settlements[i].is_ruins() || settlements[i].is_urban() || settlements[i].is_village()) {
+					if ((!settlements[i].is_ruins()) || (core.has_research('archeology') && settlements[i].is_ruins())) {
+						_t += '<option ' + (settlement && (settlements[i].id() === settlement.id()) ? 'selected ' : '') + 'value="' + settlements[i].id() + '">' + settlements[i].nice_name() + '</option>';
+					}
+				}
 			}
 			_t += '</select>' +
 			'</fieldset>' +

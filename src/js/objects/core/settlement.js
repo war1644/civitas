@@ -43,10 +43,7 @@ class settlement {
 		if (typeof params.ruins !== 'undefined') {
 			this._ruins.sid = (typeof params.ruins.sid !== 'undefined') ? params.ruins.sid : null;
 			this._ruins.scouted = (typeof params.ruins.scouted !== 'undefined') ? params.ruins.scouted : false;
-			this._ruins.resources = (typeof params.ruins.resources !== 'undefined') ? params.ruins.resources : {
-				current: {},
-				required: {}
-			};
+			this._ruins.resources = (typeof params.ruins.resources !== 'undefined') ? params.ruins.resources : {};
 		}
 		this._properties.storage = 0;
 		this._properties.icon = (typeof params.properties.icon !== 'undefined') ? params.properties.icon : 1;
@@ -1946,13 +1943,16 @@ class settlement {
 	 * @returns {Boolean}
 	 */
 	add_to_storage (item, amount) {
+		let res;
 		if (!game.resource_exists(item)) {
 			return false;
 		}
-		if (!this.has_storage_space_for(item, amount)) {
-			return false;
+		if (!this.is_ruins()) {
+			if (!this.has_storage_space_for(item, amount)) {
+				return false;
+			}
 		}
-		const res = this.get_resources();
+		res = this.get_resources();
 		if (typeof res[item] !== 'undefined') {
 			res[item] = res[item] + amount;
 		} else {

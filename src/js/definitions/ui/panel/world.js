@@ -62,7 +62,7 @@ class ui_panel_world extends ui_panel {
 				return false;
 			}).on('click', '.troop', function () {
 				let id = parseInt($(this).data('id'), 10);
-				if (core._queue[id].mode === game.ACTION_CAMPAIGN) {
+				if (core._queue[id].mode === game.ACTION_CAMPAIGN || core._queue[id].mode === game.ACTION_DIPLOMACY) {
 					core.ui().open_panel('campaign', core._queue[id]);
 				}
 				return false;
@@ -105,9 +105,9 @@ class ui_panel_world extends ui_panel {
 						}
 					}
 				}
-				//if ((!settlements[i].is_ruins()) || (core.has_research('archeology') && settlements[i].is_ruins())) {
+				if ((!settlements[i].is_ruins()) || (core.has_research('archeology') && settlements[i].is_ruins())) {
 					$('.worldmap').append('<img data-x="' + location.x + '" data-y="' + location.y + '" title="' + _name + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + settlements[i].id() + '" data-name="' + name + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + image + '.png' + '" class="tips ' + class_name + '" />');
-				//}
+				}
 			}
 			for (let i = 0; i < queue_actions.length; i++) {
 				let action = queue_actions[i];
@@ -123,8 +123,6 @@ class ui_panel_world extends ui_panel {
 				let _destination = core.get_settlement(destination.id);
 				let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
 				let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
-				//let prev_x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * (action.passed - 1));
-				//let prev_y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * (action.passed - 1));
 				if (action.mode === game.ACTION_CAMPAIGN) {
 					if (action.type === game.CAMPAIGN_CARAVAN) {
 						troop_type = 'troop_caravan';

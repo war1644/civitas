@@ -143,11 +143,11 @@ footer a[data-panel=help] {
 	background: $body-bg url(../images/city/map.jpg) no-repeat;
 }
 
-.panel td a.btn.start {
+.panel td a.sbtn.start {
 	background: transparent url(../images/assets/ui/icons/start.png) no-repeat;
 }
 
-.panel td a.btn.pause {
+.panel td a.sbtn.pause {
 	background: transparent url(../images/assets/ui/icons/stop.png) no-repeat;
 }
 
@@ -314,32 +314,39 @@ a.github {
 		url(../images/ui/panel-background.png) repeat left top;
 }
 
+.ui .btn,
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
 	background: 
 		url(../images/ui/tab-bg-corners.png) no-repeat -36px 0px,
 		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) 0,
-		url(../images/ui/tab-bg.png) repeat-x 0 0
+		url(../images/ui/tab-bg.png) repeat-x 0 0;
 }
 
+.ui .btn.gray,
 .ui-tabs .ui-tabs-nav li.gray .ui-tabs-anchor {
 	background: 
 		url(../images/ui/tab-bg-corners.png) no-repeat -36px -108px,
 		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -108px,
-		url(../images/ui/tab-bg.png) repeat-x 0 -108px
+		url(../images/ui/tab-bg.png) repeat-x 0 -108px;
 }
+
+.ui .btn.green,
 .ui-tabs .ui-tabs-nav li.green .ui-tabs-anchor {
 	background: 
 		url(../images/ui/tab-bg-corners.png) no-repeat -36px -144px,
 		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -144px,
-		url(../images/ui/tab-bg.png) repeat-x 0 -144px
+		url(../images/ui/tab-bg.png) repeat-x 0 -144px;
 }
+
+.ui .btn.blue,
 .ui-tabs .ui-tabs-nav li.blue .ui-tabs-anchor {
 	background: 
 		url(../images/ui/tab-bg-corners.png) no-repeat -36px -180px,
 		url(../images/ui/tab-bg-corners.png) no-repeat calc(100% + 42px) -180px,
-		url(../images/ui/tab-bg.png) repeat-x 0 -180px
+		url(../images/ui/tab-bg.png) repeat-x 0 -180px;
 }
 
+.ui .btn:hover,
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor:hover {
 	background: 
 		url(../images/ui/tab-bg-corners.png) no-repeat -36px -36px,
