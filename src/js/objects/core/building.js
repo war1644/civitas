@@ -266,10 +266,16 @@ class building {
 	 */
 	demolish (notify) {
 		const settlement = this.settlement;
+		const costs = {};
+		const data = this.get_building_data(this.type);
+		const buildings = settlement.get_buildings();
 		if (this.type !== 'marketplace') {
-			for (let i = 0; i < settlement.buildings.length; i++) {
-				if (settlement.buildings[i].type === this.type) {
-					settlement.buildings.splice(i, 1);
+			for (let item in data.cost) {
+				settlement.add_to_storage(item, data.cost[item]);
+			}
+			for (let i = 0; i < buildings.length; i++) {
+				if (buildings[i].type === this.type) {
+					buildings.splice(i, 1);
 				}
 			}
 			if (settlement.is_player()) {

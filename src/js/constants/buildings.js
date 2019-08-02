@@ -938,8 +938,8 @@ game.BUILDINGS = [
 		description: 'The furrier uses furs from the Trapper`s Lodge mixed with salt and processes them into fur coats that will help your settlers during the cold winters.',
 		levels: 3,
 		position: {
-			x: 1640,
-			y: 1140
+			x: 2510,
+			y: 1560
 		},
 		production: {
 			furcoats: 1
@@ -1204,8 +1204,8 @@ game.BUILDINGS = [
 		description: 'The Cosmetics manufacturer produces soap and perfume.',
 		levels: 3,
 		position: {
-			x: 1500,
-			y: 1170
+			x: 2720,
+			y: 1360
 		},
 		production: {
 			perfume: 1,
@@ -1559,8 +1559,8 @@ game.BUILDINGS = [
 		description: 'The Catapult Workshop builds catapults, the ultimate siege weapon.',
 		levels: 3,
 		position: {
-			x: 1400,
-			y: 1050
+			x: 2800,
+			y: 1450
 		},
 		production: {
 			catapults: 1

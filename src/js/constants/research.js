@@ -71,7 +71,7 @@ game.TECHNOLOGIES = [
 	}, {
 		name: 'Archeology',
 		handle: 'archeology',
-		description: '',
+		description: 'Researching Archeology enables settlement ruins to show up on the world map.',
 		duration: 96,
 		cost: {
 			research: game.MAX_RESEARCH_VALUE,
@@ -79,6 +79,7 @@ game.TECHNOLOGIES = [
 			prestige: 100
 		},
 		effect: {
+			ruins: true
 		}
 	}, {
 		name: 'Canned Food',

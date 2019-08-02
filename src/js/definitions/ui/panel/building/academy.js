@@ -70,6 +70,8 @@ class ui_panel_academy extends ui_panel {
 							_t += '<dd>+' + technology.effect[y] + core.ui().resource_small_img('coins') + ' each house</dd>';
 						} else if (y === 'distance') {
 							_t += '<dd>Faster world map travel</dd>';
+						} else if (y === 'ruins') {
+							_t += '<dd>Show ruins on world map</dd>';
 						}
 					}
 					_t += '<div class="toolbar"></div>';
