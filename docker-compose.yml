@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  server:
+    build: .
+    image: civitas
+    ports:
+      - "80:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html

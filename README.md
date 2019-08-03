@@ -36,16 +36,18 @@ In development, Civitas is using several assets that are copyrighted by [Bluebyt
 ### 1. With Docker
 
 ```
-$ docker build -t civitas .
-
-$ docker run --name civitas-dev -d -p 10082:80 civitas
+$ docker-compose up --build
 ```
 
-And point your browser to `http://localhost:10082`.
+And point your browser to `http://localhost` (or even better, add the line below to your `/etc/hosts` file and browse `http://civitas.test`.
+
+```
+127.0.0.1	civitas.test
+```
 
 ### 2. Local
 
-Choose an archive format from below, download and uncompress it. Point your browser to `index.html`, you don't need a game server to play.
+Choose an archive format from below, download and uncompress it. Point your browser to `dist/index.html`, you don't need a game server to play.
 
 ## Development
 
