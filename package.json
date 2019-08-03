@@ -2,7 +2,7 @@
 	"name": "civitas",
 	"version": "0.3.0",
 	"description": "Civitas is an empire-building game written in Javascript with the help of the jQuery library.",
-	"main": "index.html",
+	"main": "dist/index.html",
 	"keywords": [
 		"game",
 		"strategy",
