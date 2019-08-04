@@ -5,7 +5,9 @@ Civitas
 
 ## Description
 
-Civitas is an empire-building game written in Javascript with the help of the [jQuery library](https://jquery.org/).
+Civitas is a free-to-play strategy empire-building browser game written in Javascript with the help of the [jQuery library](https://jquery.org/). Players develop and maintain their settlement from initial village to a fully grown metropolis, influencing and conquering the neighbouring settlements.
+
+There is no set goal, game is played on an infinite-round basis and there is a server component planned. The focus of the game is to manufacture and trade resources in order to raise the level of your city.
 
 <!--more-->
 
