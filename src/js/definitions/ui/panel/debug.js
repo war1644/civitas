@@ -107,6 +107,7 @@ class ui_panel_debug extends ui_panel {
 				settlement.raise_faith(900);
 				settlement.raise_espionage(900);
 				settlement.raise_research(900);
+				settlement.raise_prestige(900);
 				core.save_and_refresh();
 				return false;
 			}).on('click', '.one', function() {

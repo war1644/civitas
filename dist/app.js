@@ -19203,6 +19203,7 @@ function (_ui_panel) {
         settlement.raise_faith(900);
         settlement.raise_espionage(900);
         settlement.raise_research(900);
+        settlement.raise_prestige(900);
         core.save_and_refresh();
         return false;
       }).on('click', '.one', function () {
@@ -19763,49 +19764,53 @@ function (_ui_panel) {
 
       for (var _i = 0; _i < queue_actions.length; _i++) {
         var action = queue_actions[_i];
-        var source = action.source;
-        var destination = action.destination;
-        var distance_in_days = core.world().get_distance_in_days(source, destination);
 
-        if (action.mode === game.ACTION_DIPLOMACY) {
-          distance_in_days = distance_in_days / 2;
-        }
+        if (action.mode !== game.ACTION_RESEARCH) {
+          var source = action.source;
+          var destination = action.destination;
+          console.log(destination);
+          var distance_in_days = core.world().get_distance_in_days(source, destination);
 
-        var title = '';
-        var troop_type = 'troop';
-
-        var _source = core.get_settlement(source.id);
-
-        var _destination = core.get_settlement(destination.id);
-
-        var x = source.x + Math.floor((destination.x - source.x) / distance_in_days * action.passed);
-        var y = source.y - Math.floor((source.y - destination.y) / distance_in_days * action.passed);
-
-        if (action.mode === game.ACTION_CAMPAIGN) {
-          if (action.type === game.CAMPAIGN_CARAVAN) {
-            troop_type = 'troop_caravan';
-            title = 'Caravan from ' + _source.name() + ' sent to ' + _destination.name() + '.';
-          } else if (action.type === game.CAMPAIGN_SCOUT) {
-            troop_type = 'troop_scout';
-            title = 'Scout from ' + _source.name() + ' going to a specific place.';
-          } else if (action.type === game.CAMPAIGN_SPY) {
-            troop_type = 'troop_spy';
-            title = 'Spy from ' + _source.name() + ' sneaking into ' + _destination.name() + '.';
-          } else if (action.type === game.CAMPAIGN_ARMY_RETURN) {
-            troop_type = 'troop_return';
-            title = _destination.name() + ' army returning from ' + _source.name() + '.';
-          } else {
-            troop_type = 'troop_attack';
-            title = _source.name() + ' army marching to ' + _destination.name() + '.';
+          if (action.mode === game.ACTION_DIPLOMACY) {
+            distance_in_days = distance_in_days / 2;
           }
-        } else if (action.mode === game.ACTION_DIPLOMACY) {
-          troop_type = 'troop_diplomatic';
-          title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
+
+          var title = '';
+          var troop_type = 'troop';
+
+          var _source = core.get_settlement(source.id);
+
+          var _destination = core.get_settlement(destination.id);
+
+          var x = source.x + Math.floor((destination.x - source.x) / distance_in_days * action.passed);
+          var y = source.y - Math.floor((source.y - destination.y) / distance_in_days * action.passed);
+
+          if (action.mode === game.ACTION_CAMPAIGN) {
+            if (action.type === game.CAMPAIGN_CARAVAN) {
+              troop_type = 'troop_caravan';
+              title = 'Caravan from ' + _source.name() + ' sent to ' + _destination.name() + '.';
+            } else if (action.type === game.CAMPAIGN_SCOUT) {
+              troop_type = 'troop_scout';
+              title = 'Scout from ' + _source.name() + ' going to a specific place.';
+            } else if (action.type === game.CAMPAIGN_SPY) {
+              troop_type = 'troop_spy';
+              title = 'Spy from ' + _source.name() + ' sneaking into ' + _destination.name() + '.';
+            } else if (action.type === game.CAMPAIGN_ARMY_RETURN) {
+              troop_type = 'troop_return';
+              title = _destination.name() + ' army returning from ' + _source.name() + '.';
+            } else {
+              troop_type = 'troop_attack';
+              title = _source.name() + ' army marching to ' + _destination.name() + '.';
+            }
+          } else if (action.mode === game.ACTION_DIPLOMACY) {
+            troop_type = 'troop_diplomatic';
+            title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
+          }
+
+          var _coords = core.ui().get_cell_middle_coords(y, x);
+
+          $('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + _i + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
         }
-
-        var _coords = core.ui().get_cell_middle_coords(y, x);
-
-        $('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (_coords.x + 3) + 'px;top:' + _coords.y + 'px" data-id="' + _i + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
       }
     };
 

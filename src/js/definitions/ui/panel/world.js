@@ -111,41 +111,44 @@ class ui_panel_world extends ui_panel {
 			}
 			for (let i = 0; i < queue_actions.length; i++) {
 				let action = queue_actions[i];
-				let source = action.source;
-				let destination = action.destination;
-				let distance_in_days = core.world().get_distance_in_days(source, destination);
-				if (action.mode === game.ACTION_DIPLOMACY) {
-					distance_in_days = distance_in_days / 2;
-				}
-				let title = '';
-				let troop_type = 'troop';
-				let _source = core.get_settlement(source.id);
-				let _destination = core.get_settlement(destination.id);
-				let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
-				let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
-				if (action.mode === game.ACTION_CAMPAIGN) {
-					if (action.type === game.CAMPAIGN_CARAVAN) {
-						troop_type = 'troop_caravan';
-						title = 'Caravan from ' + _source.name() + ' sent to ' + _destination.name() + '.';
-					} else if (action.type === game.CAMPAIGN_SCOUT) {
-						troop_type = 'troop_scout';
-						title = 'Scout from ' + _source.name() + ' going to a specific place.';
-					} else if (action.type === game.CAMPAIGN_SPY) {
-						troop_type = 'troop_spy';
-						title = 'Spy from ' + _source.name() + ' sneaking into ' + _destination.name() + '.';
-					} else if (action.type === game.CAMPAIGN_ARMY_RETURN) {
-						troop_type = 'troop_return';
-						title = _destination.name() + ' army returning from ' + _source.name() + '.';
-					} else {
-						troop_type = 'troop_attack';
-						title = _source.name() + ' army marching to ' + _destination.name() + '.';
+				if (action.mode !== game.ACTION_RESEARCH) {
+					let source = action.source;
+					let destination = action.destination;
+					console.log(destination);
+					let distance_in_days = core.world().get_distance_in_days(source, destination);
+					if (action.mode === game.ACTION_DIPLOMACY) {
+						distance_in_days = distance_in_days / 2;
 					}
-				} else if (action.mode === game.ACTION_DIPLOMACY) {
-					troop_type = 'troop_diplomatic';
-					title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
+					let title = '';
+					let troop_type = 'troop';
+					let _source = core.get_settlement(source.id);
+					let _destination = core.get_settlement(destination.id);
+					let x = source.x + Math.floor(((destination.x - source.x) / distance_in_days) * action.passed);
+					let y = source.y - Math.floor(((source.y - destination.y) / distance_in_days) * action.passed);
+					if (action.mode === game.ACTION_CAMPAIGN) {
+						if (action.type === game.CAMPAIGN_CARAVAN) {
+							troop_type = 'troop_caravan';
+							title = 'Caravan from ' + _source.name() + ' sent to ' + _destination.name() + '.';
+						} else if (action.type === game.CAMPAIGN_SCOUT) {
+							troop_type = 'troop_scout';
+							title = 'Scout from ' + _source.name() + ' going to a specific place.';
+						} else if (action.type === game.CAMPAIGN_SPY) {
+							troop_type = 'troop_spy';
+							title = 'Spy from ' + _source.name() + ' sneaking into ' + _destination.name() + '.';
+						} else if (action.type === game.CAMPAIGN_ARMY_RETURN) {
+							troop_type = 'troop_return';
+							title = _destination.name() + ' army returning from ' + _source.name() + '.';
+						} else {
+							troop_type = 'troop_attack';
+							title = _source.name() + ' army marching to ' + _destination.name() + '.';
+						}
+					} else if (action.mode === game.ACTION_DIPLOMACY) {
+						troop_type = 'troop_diplomatic';
+						title = 'Diplomatic mission from ' + _source.name() + ' to ' + _destination.name() + '.';
+					}
+					let coords = core.ui().get_cell_middle_coords(y, x);
+					$('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + i + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
 				}
-				let coords = core.ui().get_cell_middle_coords(y, x);
-				$('.worldmap').append('<img data-name="' + troop_type + '" data-x="' + x + '" data-y="' + y + '" title="' + title + '" style="left:' + (coords.x + 3) + 'px;top:' + coords.y + 'px" data-id="' + i + '" src="' + game.ASSETS_URL + 'images/assets/ui/world/' + troop_type + '.png' + '" class="tips troop" />');
 			}
 		};
 		super(params);
