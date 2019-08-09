@@ -1,11 +1,11 @@
 const gulp = require('gulp');
+const terser = require('gulp-terser');
 const sass = require('gulp-sass');
 const minifycss = require('gulp-uglifycss');
 const autoprefixer = require('gulp-autoprefixer');
 const mmq = require('gulp-merge-media-queries');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
-const babel = require('gulp-babel');
 const rename = require('gulp-rename');
 const filter = require('gulp-filter');
 const sourcemaps = require('gulp-sourcemaps');
@@ -118,20 +118,6 @@ gulp.task('lib', () => {
 			since: gulp.lastRun('lib')
 		})
 		.pipe(plumber(errorHandler))
-		.pipe(
-			babel({
-				presets: [
-					[
-						'@babel/preset-env',
-						{
-							targets: {
-								browsers: BROWSERS_LIST
-							}
-						}
-					]
-				]
-			})
-		)
 		.pipe(remember('./vendor/js/**/*.js'))
 		.pipe(concat('lib.js'))
 		.pipe(gulp.dest('./dist/'))
@@ -141,7 +127,7 @@ gulp.task('lib', () => {
 				suffix: '.min'
 			})
 		)
-		.pipe(uglify())
+		.pipe(terser())
 		.pipe(gulp.dest('./dist/'))
 		.pipe(notify({
 			message: '\n\n----- External libraries compiled -----\n',
@@ -221,20 +207,6 @@ gulp.task('app', () => {
 			since: gulp.lastRun('app')
 		})
 		.pipe(plumber(errorHandler))
-		.pipe(
-			babel({
-				presets: [
-					[
-						'@babel/preset-env',
-						{
-							targets: {
-								browsers: BROWSERS_LIST
-							}
-						}
-					]
-				]
-			})
-		)
 		.pipe(remember('./src/js/**/*.js'))
 		.pipe(concat('app.js'))
 		.pipe(gulp.dest('./dist/'))
@@ -244,7 +216,7 @@ gulp.task('app', () => {
 				suffix: '.min'
 			})
 		)
-		.pipe(uglify())
+		.pipe(terser())
 		.pipe(header(fs.readFileSync('HEADER', 'utf8'), {
 			pkg
 		}))

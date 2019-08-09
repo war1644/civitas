@@ -3,7 +3,7 @@
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
  * @copyright 2012 - 2019 sizeof(cat)
- * @version 0.3.0.812019
+ * @version 0.3.0.892019
  * @license GPL-3.0-or-later
  */
  .scale{-webkit-animation:scale-frames linear 1s;animation:scale-frames linear 1s;-webkit-animation-iteration-count:1;animation-iteration-count:1;-webkit-transform-origin:50% 50%;transform-origin:50% 50%}
@@ -384,7 +384,7 @@ table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit
 #panel-help .ui-tabs-panel p,#panel-help .ui-tabs-panel li{font-size:13px;line-height:20px}
 #panel-help img.help{width:200px}
 #panel-help h3{font-size:20px}
-#panel-settlement{width:540px;max-width:540px;max-height:600px;height:auto}
+#panel-settlement{width:600px;max-width:600px;max-height:600px;height:auto}
 #panel-building{max-height:600px;max-width:1400px}
 #panel-place footer a.claim,#panel-place footer a.unclaim,#panel-place footer a.scout,#panel-place footer a.caravan,#panel-settlement footer a.attack,#panel-settlement footer a.caravan,#panel-settlement footer a.spy,#panel-settlement footer a.alliance,#panel-settlement footer a.pact,#panel-settlement footer a.join,#panel-settlement footer a.war,#panel-settlement footer a.ceasefire{display:none}
 .ui>aside{color:#fff;position:absolute;padding:0 0 0 10px;position:fixed;top:48px;right:0;bottom:0;z-index:999;background-color:#150f0c;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box}
