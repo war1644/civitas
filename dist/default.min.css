@@ -3,7 +3,7 @@
  *
  * @author sizeof(cat) <sizeofcat AT riseup.net>
  * @copyright 2012 - 2019 sizeof(cat)
- * @version 0.3.0.892019
+ * @version 0.3.0.8152019
  * @license GPL-3.0-or-later
  */
  .scale{-webkit-animation:scale-frames linear 1s;animation:scale-frames linear 1s;-webkit-animation-iteration-count:1;animation-iteration-count:1;-webkit-transform-origin:50% 50%;transform-origin:50% 50%}
@@ -208,14 +208,15 @@ table thead td,table tfoot td{padding:10px}
 table tr.notify{background-color:#8a0000}
 table td.center{text-align:center}
 table td img{vertical-align:middle}
-table tbody tr:hover{background-color:#b98964;color:white;opacity:1}
+table tbody tr:hover{background-color:rgba(149,96,35,0.4);color:white;opacity:1}
 table tr:hover td:first-child a{color:white}
 table tr td:last-child a{border-radius:3px;padding:4px 10px;color:white !important;text-transform:uppercase;text-align:center;font-size:14px;text-decoration:none !important;display:inline-block}
 table tr td a.disabled{display:none}
 table tr td.large{width:45%}
 table tr td.medium{width:25%}
 table td a.sbtn{width:28px;height:28px;padding:0 !important;border:0 !important;background-size:contain !important}
-table tr td:last-child a,table thead td,table tfoot td{border:1px solid #6a4324;background-image:-webkit-gradient(linear,left top,left bottom,from(#9b6b46),to(#6a4324));background-image:linear-gradient(to bottom,#9b6b46,#6a4324);color:white}
+table thead td,table tfoot td{background-color:rgba(0,0,0,0.5);color:white}
+table tr td:last-child a{border:1px solid #6a4324;background-image:-webkit-gradient(linear,left top,left bottom,from(#9b6b46),to(#6a4324));background-image:linear-gradient(to bottom,#9b6b46,#6a4324);color:white}
 table tr td:last-child a:hover{border:1px solid #442813;background-image:-webkit-gradient(linear,left top,left bottom,from(#6a4324),to(#442813));background-image:linear-gradient(to bottom,#6a4324,#442813);color:white}
 .tabs>ul>li{float:left}
 .tabs>ul>li>a{color:#454545;text-decoration:none;padding:6px 8px;display:block}

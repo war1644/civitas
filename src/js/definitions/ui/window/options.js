@@ -28,7 +28,6 @@ class ui_window_options extends ui_window {
 						'<a href="#" class="do-options button">Options</a>' +
 						'<div class="options-game"></div>' +
 						ui.window_about_section() +
-						'<br />' +
 						'<a href="#" class="do-resume button">Resume Playing</a>' +
 					'</div>' +
 				'</fieldset>' +

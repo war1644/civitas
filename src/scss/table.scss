@@ -30,7 +30,7 @@ table {
 	}
 
 	tbody tr:hover {
-		background-color: $tbl-bg-hover;
+		background-color: hsla(32, 62%, 36%, 0.4);
 		color: $tbl-fg-hover;
 		opacity: 1;
 	}
@@ -70,9 +70,13 @@ table {
 		background-size: contain !important;
 	}
 
-	tr td:last-child a,
 	thead td,
 	tfoot td {
+		background-color: hsla(0, 0, 0, 0.5);
+		color: $btn-fg;
+	}
+
+	tr td:last-child a {
 		border: 1px solid $btn-border;
 		background-image: $btn-bg;
 		color: $btn-fg;
