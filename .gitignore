@@ -3,9 +3,10 @@
 *.map
 Thumbs.db
 node_modules
-dist/images/assets/**/*
+#dist/images/assets/**/*
 temp/**/*
 .DS_Store
 saves/*
 *.sublime-project
 *.sublime-workspace
+.idea
